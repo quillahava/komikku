@@ -309,9 +309,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         # Window
         self.connect('notify::default-width', self.on_resize)
+        self.controller_key = Gtk.EventControllerKey.new()
+        self.controller_key.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.add_controller(self.controller_key)
+        self.controller_key.connect('key-pressed', self.on_key_pressed)
+
         # self.connect('notify::default-height', self.on_resize)
         # self.connect('delete-event', self.on_application_quit)
-        # self.connect('key-press-event', self.on_key_press)
         # self.connect('window-state-event', self.on_window_state_event)
         self.headerbar_revealer.connect('notify::child-revealed', self.on_headerbar_toggle)
 
@@ -450,7 +454,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         if self.page == 'reader' and self.reader.pager:
             self.reader.pager.resize_pages()
 
-    def on_key_press(self, widget, event):
+    def on_key_pressed(self, _controller, keyval, _keycode, _state):
         """
         Go back navigation with <Escape> key:
         - Library <- Manga <- Reader
@@ -460,7 +464,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         - Exit selection mode: Library, Card chapters, Download Manager
         - Exit search mode: Library, Explorer 'servers' and 'search' pages
         """
-        if event.keyval == Gdk.KEY_Escape:
+        if keyval == Gdk.KEY_Escape:
             self.on_left_button_clicked()
             return Gdk.EVENT_STOP
 

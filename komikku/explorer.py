@@ -72,14 +72,15 @@ class Explorer(Gtk.Stack):
 
         # Servers page
         self.servers_page_search_button = self.window.explorer_servers_page_search_button
-        self.servers_page_searchbar.connect_entry(self.servers_page_searchentry)
+        self.servers_page_search_button.connect('clicked', self.toggle_servers_search)
+
         self.servers_page_searchbar.bind_property(
             'search-mode-enabled', self.servers_page_search_button, 'active', GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
+        self.servers_page_searchbar.connect_entry(self.servers_page_searchentry)
+        self.servers_page_searchbar.set_key_capture_widget(self.window)
         self.servers_page_searchentry.connect('activate', self.on_servers_page_searchentry_activated)
         self.servers_page_searchentry.connect('search-changed', self.search_servers)
-
-        self.servers_page_search_button.connect('clicked', self.toggle_servers_search)
 
         self.servers_page_pinned_listbox.get_style_context().add_class('list-bordered')
         self.servers_page_pinned_listbox.connect('row-activated', self.on_server_clicked)
@@ -114,6 +115,7 @@ class Explorer(Gtk.Stack):
         self.search_page_server_website_button = self.window.explorer_search_page_server_website_button
         self.search_page_server_website_button.connect('clicked', self.on_search_page_server_website_button_clicked)
         self.search_page_searchbar.connect_entry(self.search_page_searchentry)
+        self.search_page_searchbar.set_key_capture_widget(self.window)
         self.search_page_searchentry.connect('activate', self.search)
 
         self.search_page_listbox.get_style_context().add_class('list-bordered')
@@ -124,8 +126,6 @@ class Explorer(Gtk.Stack):
         self.card_page_box.get_style_context().add_class('list-bordered')
         self.card_page_add_read_button = self.window.explorer_card_page_add_read_button
         self.card_page_add_read_button.connect('clicked', self.on_card_page_add_read_button_clicked)
-
-        # self.window.connect('key-press-event', self.on_key_press)
 
         self.window.stack.add_named(self, 'explorer')
 
@@ -314,14 +314,14 @@ class Explorer(Gtk.Stack):
 
             # Restore focus to search entry if in search mode
             if self.servers_page_searchbar.get_search_mode():
-                self.servers_page_searchentry.grab_focus_without_selecting()
+                self.servers_page_searchentry.grab_focus()
 
             self.show_page('servers')
         elif self.page == 'card':
             self.manga_slug = None
 
             # Restore focus to search entry
-            # self.search_page_searchentry.grab_focus_without_selecting()
+            self.search_page_searchentry.grab_focus()
 
             if self.preselection:
                 self.show_page('servers')
@@ -361,19 +361,6 @@ class Explorer(Gtk.Stack):
 
     def on_card_page_read_button_clicked(self):
         self.window.card.init(self.manga, transition=False)
-
-    def on_key_press(self, _widget, event):
-        """Search entry of servers/search pages can be focused by simply typing a printable character"""
-
-        if self.window.page != 'explorer':
-            return Gdk.EVENT_PROPAGATE
-
-        if self.page == 'servers':
-            return self.servers_page_searchbar.handle_event(event)
-        elif self.page == 'search':
-            return self.search_page_searchbar.handle_event(event)
-
-        return Gdk.EVENT_PROPAGATE
 
     def on_manga_clicked(self, listbox, row):
         if row.manga_data is None:

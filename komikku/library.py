@@ -55,11 +55,12 @@ class Library:
         self.search_entry = self.window.library_searchentry
         self.search_entry.connect('activate', self.on_search_entry_activated)
         self.search_entry.connect('changed', self.search)
-        self.searchbar.connect_entry(self.search_entry)
         self.search_button = self.window.library_search_button
         self.searchbar.bind_property(
             'search-mode-enabled', self.search_button, 'active', GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
+        self.searchbar.connect_entry(self.search_entry)
+        self.searchbar.set_key_capture_widget(self.window)
 
         # Flap (categories)
         self.flap = self.window.library_flap
@@ -86,7 +87,6 @@ class Library:
         # self.gesture.set_touch_only(False)
         # self.gesture.connect('pressed', self.on_gesture_long_press_activated)
 
-        # self.window.connect('key-press-event', self.on_key_press)
         self.window.updater.connect('manga-updated', self.on_manga_updated)
 
         def _filter(thumbnail):
@@ -330,14 +330,6 @@ class Library:
         else:
             self.enter_selection_mode(x, y)
 
-    def on_key_press(self, _widget, event):
-        """Search can be triggered by simply typing a printable character"""
-
-        if self.window.page != 'library' or self.page != 'flowbox':
-            return Gdk.EVENT_PROPAGATE
-
-        return self.searchbar.handle_event(event)
-
     def on_manga_added(self, manga):
         """Called from 'Add dialog' when user clicks on [+] button"""
         db_conn = create_db_connection()
@@ -351,7 +343,7 @@ class Library:
             self.add_manga(manga, position=0)
 
     def on_manga_clicked(self, _flowbox, thumbnail):
-        _ret, state = Gtk.get_current_event_state()
+        state = self.window.controller_key.get_current_event_state()
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
 
         # Enter selection mode if <Control>+Click or <Shift>+Click is done
@@ -511,7 +503,7 @@ class Library:
 
         if self.page == 'flowbox':
             if self.searchbar.get_search_mode():
-                self.search_entry.grab_focus_without_selecting()
+                self.search_entry.grab_focus()
 
             if invalidate_sort:
                 self.flowbox.invalidate_sort()
