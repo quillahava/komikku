@@ -22,14 +22,14 @@ class Controls:
         # Number of pages
         self.pages_count_label = Gtk.Label()
         self.pages_count_label.set_halign(Gtk.Align.START)
-        self.bottom_box.pack_start(self.pages_count_label, False, True, 4)
+        self.bottom_box.append(self.pages_count_label)
 
         # Chapter's pages slider: current / nb
         self.scale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 1, 2, 1)
         self.scale.set_increments(1, 0)  # Disable scrolling with mouse wheel
         self.scale_handler_id = self.scale.connect('change-value', self.on_scale_value_changed)
 
-        self.bottom_box.pack_start(self.scale, True, True, 0)
+        self.bottom_box.append(self.scale)
         self.reader.overlay.add_overlay(self.bottom_box)
 
     def hide(self):

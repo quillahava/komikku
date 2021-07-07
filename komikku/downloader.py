@@ -279,16 +279,16 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.subtitle_label = self.window.download_manager_subtitle_label
         self.start_stop_button = self.window.download_manager_start_stop_button
 
-        self.connect('key-press-event', self.on_key_press_event)
+        # self.connect('key-press-event', self.on_key_press_event)
         self.start_stop_button.connect('clicked', self.on_start_stop_button_clicked)
-        self.listbox.connect('button-press-event', self.on_button_pressed)
+        # self.listbox.connect('button-press-event', self.on_button_pressed)
         self.listbox.connect('row-activated', self.on_download_row_clicked)
         self.listbox.connect('selected-rows-changed', self.on_selection_changed)
 
         # Gesture for multi-selection mode
-        self.gesture = Gtk.GestureLongPress.new(self.listbox)
-        self.gesture.set_touch_only(False)
-        self.gesture.connect('pressed', self.on_gesture_long_press_activated)
+        # self.gesture = Gtk.GestureLongPress.new(self.listbox)
+        # self.gesture.set_touch_only(False)
+        # self.gesture.connect('pressed', self.on_gesture_long_press_activated)
 
         self.__gsignals_handlers_ids__ = [
             self.downloader.connect('download-changed', self.update_row),
@@ -300,7 +300,14 @@ class DownloadManager(Gtk.ScrolledWindow):
 
     @property
     def rows(self):
-        return self.listbox.get_children()
+        children = []
+
+        child = self.listbox.get_first_child()
+        while child:
+            children.append(child)
+            child = child.get_next_sibling()
+
+        return children
 
     def add_actions(self):
         # Delete All action
@@ -487,13 +494,13 @@ class DownloadManager(Gtk.ScrolledWindow):
     def show(self, transition=True):
         self.populate()
 
-        self.window.left_button_image.set_from_icon_name('go-previous-symbolic', Gtk.IconSize.BUTTON)
+        self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.library_flap_reveal_button.hide()
 
         self.window.right_button_stack.set_visible_child_name('download_manager')
 
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
-        self.window.menu_button_image.set_from_icon_name('view-more-symbolic', Gtk.IconSize.BUTTON)
+        self.window.menu_button.set_icon_name('view-more-symbolic')
 
         self.window.show_page('download_manager', transition=transition)
 

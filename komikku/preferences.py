@@ -4,9 +4,9 @@
 
 from gettext import gettext as _
 
+from gi.repository import Adw
 from gi.repository import Gio
 from gi.repository import Gtk
-from gi.repository import Handy
 
 from komikku.models import Settings
 from komikku.servers import get_server_main_id_by_id
@@ -16,7 +16,7 @@ from komikku.utils import KeyringHelper
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/preferences.ui')
-class Preferences(Handy.Deck):
+class Preferences(Adw.Leaflet):
     __gtype_name__ = 'Preferences'
 
     window = NotImplemented
@@ -63,10 +63,10 @@ class Preferences(Handy.Deck):
         if self.get_visible_child_name() == 'pages':
             self.window.library.show()
         else:
-            self.navigate(Handy.NavigationDirection.BACK)
+            self.navigate(Adw.NavigationDirection.BACK)
 
     def on_background_color_changed(self, row, param):
-        index = row.get_selected_index()
+        index = row.get_selected()
 
         if index == 0:
             self.settings.background_color = 'white'
@@ -115,7 +115,7 @@ class Preferences(Handy.Deck):
             self.subtitle_label.show()
 
     def on_reading_mode_changed(self, row, param):
-        index = row.get_selected_index()
+        index = row.get_selected()
 
         if index == 0:
             self.settings.reading_mode = 'right-to-left'
@@ -127,7 +127,7 @@ class Preferences(Handy.Deck):
             self.settings.reading_mode = 'webtoon'
 
     def on_scaling_changed(self, row, param):
-        index = row.get_selected_index()
+        index = row.get_selected()
 
         if index == 0:
             self.settings.scaling = 'screen'
@@ -207,35 +207,16 @@ class Preferences(Handy.Deck):
         #
 
         # Reading mode
-        liststore = Gio.ListStore.new(Handy.ValueObject)
-        liststore.insert(0, Handy.ValueObject.new(_('⬅ Right to Left')))
-        liststore.insert(1, Handy.ValueObject.new(_('➡ Left to Right')))
-        liststore.insert(2, Handy.ValueObject.new(_('⬇ Vertical')))
-        liststore.insert(3, Handy.ValueObject.new(_('⬇ Webtoon')))
-
-        self.reading_mode_row.bind_name_model(liststore, Handy.ValueObject.dup_string)
-        self.reading_mode_row.set_selected_index(self.settings.reading_mode_value)
-        self.reading_mode_row.connect('notify::selected-index', self.on_reading_mode_changed)
+        self.reading_mode_row.set_selected(self.settings.reading_mode_value)
+        self.reading_mode_row.connect('notify::selected', self.on_reading_mode_changed)
 
         # Image scaling
-        liststore = Gio.ListStore.new(Handy.ValueObject)
-        liststore.insert(0, Handy.ValueObject.new(_('Adapt to Screen')))
-        liststore.insert(1, Handy.ValueObject.new(_('Adapt to Width')))
-        liststore.insert(2, Handy.ValueObject.new(_('Adapt to Height')))
-        liststore.insert(3, Handy.ValueObject.new(_('Original Size')))
-
-        self.scaling_row.bind_name_model(liststore, Handy.ValueObject.dup_string)
-        self.scaling_row.set_selected_index(self.settings.scaling_value)
-        self.scaling_row.connect('notify::selected-index', self.on_scaling_changed)
+        self.scaling_row.set_selected(self.settings.scaling_value)
+        self.scaling_row.connect('notify::selected', self.on_scaling_changed)
 
         # Background color
-        liststore = Gio.ListStore.new(Handy.ValueObject)
-        liststore.insert(0, Handy.ValueObject.new(_('White')))
-        liststore.insert(1, Handy.ValueObject.new(_('Black')))
-
-        self.background_color_row.bind_name_model(liststore, Handy.ValueObject.dup_string)
-        self.background_color_row.set_selected_index(self.settings.background_color_value)
-        self.background_color_row.connect('notify::selected-index', self.on_background_color_changed)
+        self.background_color_row.set_selected(self.settings.background_color_value)
+        self.background_color_row.connect('notify::selected', self.on_background_color_changed)
 
         # Borders crop
         self.borders_crop_switch.set_active(self.settings.borders_crop)
@@ -254,7 +235,7 @@ class Preferences(Handy.Deck):
         self.credentials_storage_plaintext_fallback_switch.connect('notify::active', self.on_credentials_storage_plaintext_fallback_changed)
 
     def show(self, transition=True):
-        self.window.left_button_image.set_from_icon_name('go-previous-symbolic', Gtk.IconSize.BUTTON)
+        self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.library_flap_reveal_button.hide()
 
         self.window.right_button_stack.hide()
@@ -276,7 +257,7 @@ class PreferencesServersLanguagesSubpage:
         servers_languages = self.settings.servers_languages
 
         for code, language in LANGUAGES.items():
-            action_row = Handy.ActionRow()
+            action_row = Adw.ActionRow()
             action_row.set_title(language)
             action_row.set_activatable(True)
 
@@ -285,9 +266,8 @@ class PreferencesServersLanguagesSubpage:
             switch.set_halign(Gtk.Align.CENTER)
             switch.set_active(code in servers_languages)
             switch.connect('notify::active', self.on_language_activated, code)
-            action_row.add(switch)
+            action_row.add_suffix(switch)
             action_row.set_activatable_widget(switch)
-            action_row.show_all()
 
             self.parent.servers_languages_subpage_group.add(action_row)
 
@@ -342,10 +322,13 @@ class PreferencesServersSettingsSubpage:
             server_enabled = server_settings is None or server_settings['enabled'] is True
 
             if len(server_data['langs']) > 1 or has_login:
-                vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
-                vbox.set_border_width(12)
+                vbox = Gtk.Box(
+                    orientation=Gtk.Orientation.VERTICAL,
+                    margin_start=12, margin_top=6, margin_end=12, margin_bottom=6,
+                    spacing=12
+                )
 
-                expander_row = Handy.ExpanderRow()
+                expander_row = Adw.ExpanderRow()
                 expander_row.set_title(server_data['name'])
                 expander_row.set_enable_expansion(server_enabled)
                 expander_row.connect('notify::enable-expansion', self.on_server_activated, server_main_id)
@@ -357,47 +340,46 @@ class PreferencesServersSettingsSubpage:
                     for lang in server_data['langs']:
                         lang_enabled = server_settings is None or server_settings['langs'].get(lang, True)
 
-                        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+                        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin_top=6, margin_bottom=6, spacing=12)
 
-                        label = Gtk.Label(LANGUAGES[lang], xalign=0)
-                        label.get_style_context().add_class('dim-label')
-                        hbox.pack_start(label, True, True, 0)
+                        label = Gtk.Label(label=LANGUAGES[lang], xalign=0, hexpand=True)
+                        hbox.append(label)
 
                         switch = Gtk.Switch.new()
                         switch.set_active(lang_enabled)
                         switch.connect('notify::active', self.on_server_language_activated, server_main_id, lang)
-                        hbox.pack_start(switch, False, False, 0)
+                        hbox.append(switch)
 
-                        vbox.add(hbox)
+                        vbox.append(hbox)
 
                 if has_login:
-                    frame = Gtk.Frame()
-                    vbox.add(frame)
+                    box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, margin_top=12, margin_bottom=12, spacing=12)
+                    vbox.append(box)
 
-                    box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, margin=12, spacing=12)
-                    frame.add(box)
-
-                    label = Gtk.Label(_('User Account'))
+                    label = Gtk.Label(label=_('User Account'))
                     label.set_valign(Gtk.Align.CENTER)
-                    box.pack_start(label, True, True, 0)
+                    box.append(label)
 
                     if server_class.base_url is None:
                         # Server has a customizable address/base_url (ex. Komga)
                         address_entry = Gtk.Entry()
                         address_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'network-server-symbolic')
-                        box.pack_start(address_entry, True, True, 0)
+                        box.append(address_entry)
                     else:
                         address_entry = None
 
-                    username_entry = Gtk.Entry()
-                    username_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'avatar-default-symbolic')
-                    box.pack_start(username_entry, True, True, 0)
+                    entry_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+                    entry_box.append(Gtk.Image.new_from_icon_name('avatar-default-symbolic'))
+                    username_entry = Gtk.Entry(hexpand=True)
+                    entry_box.append(username_entry)
+                    box.append(entry_box)
 
-                    password_entry = Gtk.Entry()
-                    password_entry.set_input_purpose(Gtk.InputPurpose.PASSWORD)
-                    password_entry.set_visibility(False)
-                    password_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'dialog-password-symbolic')
-                    box.pack_start(password_entry, True, True, 0)
+                    entry_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+                    entry_box.append(Gtk.Image.new_from_icon_name('dialog-password-symbolic'))
+                    password_entry = Gtk.PasswordEntry(hexpand=True)
+                    password_entry.set_show_peek_icon(True)
+                    entry_box.append(password_entry)
+                    box.append(entry_box)
 
                     plaintext_checkbutton = None
                     if self.keyring_helper.is_disabled or not self.keyring_helper.has_recommended_backend:
@@ -406,25 +388,30 @@ class PreferencesServersSettingsSubpage:
                         if self.keyring_helper.is_disabled:
                             label.get_style_context().add_class('dim-label')
                             label.set_text(_('System keyring service is disabled. Credential cannot be saved.'))
-                            box.pack_start(label, False, False, 0)
+                            box.append(label)
                         elif not self.keyring_helper.has_recommended_backend:
                             if not credentials_storage_plaintext_fallback:
                                 plaintext_checkbutton = Gtk.CheckButton.new()
                                 label.set_text(_('No keyring backends were found to store credential. Use plaintext storage as fallback.'))
                                 plaintext_checkbutton.add(label)
-                                box.pack_start(plaintext_checkbutton, False, False, 0)
+                                box.append(plaintext_checkbutton)
                             else:
                                 label.get_style_context().add_class('dim-label')
                                 label.set_text(_('No keyring backends were found to store credential. Plaintext storage will be used as fallback.'))
-                                box.pack_start(label, False, False, 0)
+                                box.append(label)
 
-                    btn = Gtk.Button(_('Test'))
+                    btn = Gtk.Button()
+                    btn_hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+                    btn_hbox.set_halign(Gtk.Align.CENTER)
+                    btn.icon = Gtk.Image(visible=False)
+                    btn_hbox.append(btn.icon)
+                    btn_hbox.append(Gtk.Label(label=_('Test')))
                     btn.connect(
                         'clicked', self.save_credential,
                         server_main_id, server_class, username_entry, password_entry, address_entry, plaintext_checkbutton
                     )
-                    btn.set_always_show_image(True)
-                    box.pack_start(btn, False, False, 0)
+                    btn.set_child(btn_hbox)
+                    box.append(btn)
 
                     credential = self.keyring_helper.get(server_main_id)
                     if credential:
@@ -433,7 +420,7 @@ class PreferencesServersSettingsSubpage:
                         username_entry.set_text(credential.username)
                         password_entry.set_text(credential.password)
             else:
-                action_row = Handy.ActionRow()
+                action_row = Adw.ActionRow()
                 action_row.set_title(server_data['name'])
 
                 switch = Gtk.Switch.new()
@@ -442,14 +429,12 @@ class PreferencesServersSettingsSubpage:
                 switch.set_halign(Gtk.Align.CENTER)
                 switch.connect('notify::active', self.on_server_activated, server_main_id)
                 action_row.set_activatable_widget(switch)
-                action_row.add(switch)
+                action_row.add_suffix(switch)
 
                 self.parent.servers_settings_subpage_group.add(action_row)
 
-        self.parent.servers_settings_subpage_group.show_all()
-
     def on_server_activated(self, widget, _gparam, server_main_id):
-        if isinstance(widget, Handy.ExpanderRow):
+        if isinstance(widget, Adw.ExpanderRow):
             self.settings.toggle_server(server_main_id, widget.get_enable_expansion())
         else:
             self.settings.toggle_server(server_main_id, widget.get_active())
@@ -475,8 +460,9 @@ class PreferencesServersSettingsSubpage:
             address = None
             server = server_class(username=username, password=password)
 
+        button.icon.show()
         if server.logged_in:
-            button.set_image(Gtk.Image.new_from_icon_name('object-select-symbolic', Gtk.IconSize.BUTTON))
+            button.icon.set_from_icon_name('object-select-symbolic')
             if self.keyring_helper.is_disabled or plaintext_checkbutton is not None and not plaintext_checkbutton.get_active():
                 return
 
@@ -486,4 +472,4 @@ class PreferencesServersSettingsSubpage:
 
             self.keyring_helper.store(server_main_id, username, password, address)
         else:
-            button.set_image(Gtk.Image.new_from_icon_name('computer-fail-symbolic', Gtk.IconSize.BUTTON))
+            button.icon.set_from_icon_name('computer-fail-symbolic')

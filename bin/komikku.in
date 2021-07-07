@@ -40,8 +40,11 @@ def install_excepthook():
     def new_hook(etype, evalue, etb):
         old_hook(etype, evalue, etb)
 
-        while Gtk.main_level():
-            Gtk.main_quit()
+        context = GLib.main_context_default()
+        while context.iteration():
+            app = Gio.Application.get_default()
+            if app is not None:
+               app.quit()
 
         sys.exit()
 
@@ -51,9 +54,11 @@ def install_excepthook():
 if __name__ == '__main__':
     import gi
 
-    gi.require_version('Gtk', '3.0')
+    gi.require_version('Gtk', '4.0')
+    gi.require_version('Adw', '1')
 
     from gi.repository import Gio
+    from gi.repository import GLib
     from gi.repository import Gtk
 
     install_excepthook()

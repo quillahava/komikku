@@ -4,9 +4,9 @@
 
 from gettext import gettext as _
 
+from gi.repository import Adw
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository import Handy
 
 from komikku.models import Category
 from komikku.models import create_db_connection
@@ -14,7 +14,7 @@ from komikku.models import Settings
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/categories_editor.ui')
-class CategoriesEditor(Handy.Clamp):
+class CategoriesEditor(Adw.Clamp):
     __gtype_name__ = 'CategoriesEditor'
 
     window = NotImplemented
@@ -27,7 +27,7 @@ class CategoriesEditor(Handy.Clamp):
     listbox = Gtk.Template.Child('listbox')
 
     def __init__(self, window):
-        Handy.Clamp.__init__(self)
+        Adw.Clamp.__init__(self)
 
         self.window = window
 
@@ -38,7 +38,14 @@ class CategoriesEditor(Handy.Clamp):
 
     @property
     def rows(self):
-        return self.listbox.get_children()
+        children = []
+
+        child = self.listbox.get_first_child()
+        while child:
+            children.append(child)
+            child = child.get_next_sibling()
+
+        return children
 
     def add_category(self, _button):
         label = self.add_entry.get_text().strip()
@@ -94,7 +101,7 @@ class CategoriesEditor(Handy.Clamp):
 
     def populate(self):
         for row in self.rows:
-            row.destroy()
+            self.listbox.remove(row)
 
         db_conn = create_db_connection()
         records = db_conn.execute('SELECT * FROM categories ORDER BY label ASC').fetchall()
@@ -109,7 +116,7 @@ class CategoriesEditor(Handy.Clamp):
                 row.save_button.connect('clicked', self.update_category, row)
                 row.connect('edit-mode-changed', self.on_category_edit_mode_changed)
 
-                self.listbox.add(row)
+                self.listbox.append(row)
 
             self.stack.set_visible_child_name('list')
         else:
@@ -118,7 +125,7 @@ class CategoriesEditor(Handy.Clamp):
     def show(self, transition=True):
         self.populate()
 
-        self.window.left_button_image.set_from_icon_name('go-previous-symbolic', Gtk.IconSize.BUTTON)
+        self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.library_flap_reveal_button.hide()
 
         self.window.right_button_stack.hide()
@@ -152,42 +159,43 @@ class CategoryRow(Gtk.ListBoxRow):
     def __init__(self, category):
         Gtk.ListBoxRow.__init__(self, visible=True)
 
-        self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12, visible=True, margin=6)
+        self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12, margin_start=6, margin_end=6)
 
         self.category = category
 
         label = category.label
         if nb_mangas := len(category.mangas):
             label = f'{label} ({nb_mangas})'
-        self.label = Gtk.Label(label, visible=True)
+        self.label = Gtk.Label(label=label, hexpand=True)
+        # self.label.set_halign(Gtk.Fill.FULL)
         self.label.set_halign(Gtk.Align.START)
-        self.box.pack_start(self.label, True, True, 0)
+        self.box.append(self.label)
 
         self.edit_entry = Gtk.Entry(visible=False)
         self.edit_entry.set_valign(Gtk.Align.CENTER)
-        self.box.pack_start(self.edit_entry, True, True, 0)
+        self.box.append(self.edit_entry)
 
-        self.edit_button = Gtk.Button.new_from_icon_name('document-edit-symbolic', Gtk.IconSize.BUTTON)
+        self.edit_button = Gtk.Button.new_from_icon_name('document-edit-symbolic')
         self.edit_button.set_valign(Gtk.Align.CENTER)
         self.edit_button.show()
         self.edit_button.connect('clicked', self.set_edit_mode, True)
-        self.box.pack_end(self.edit_button, False, True, 0)
+        self.box.append(self.edit_button)
 
-        self.delete_button = Gtk.Button.new_from_icon_name('user-trash-symbolic', Gtk.IconSize.BUTTON)
+        self.delete_button = Gtk.Button.new_from_icon_name('user-trash-symbolic')
         self.delete_button.set_valign(Gtk.Align.CENTER)
         self.delete_button.show()
-        self.box.pack_end(self.delete_button, False, True, 0)
+        self.box.append(self.delete_button)
 
-        self.cancel_button = Gtk.Button.new_from_icon_name('edit-undo-symbolic', Gtk.IconSize.BUTTON)
+        self.cancel_button = Gtk.Button.new_from_icon_name('edit-undo-symbolic')
         self.cancel_button.set_valign(Gtk.Align.CENTER)
         self.cancel_button.connect('clicked', self.set_edit_mode, False)
-        self.box.pack_end(self.cancel_button, False, True, 0)
+        self.box.append(self.cancel_button)
 
-        self.save_button = Gtk.Button.new_from_icon_name('document-save-symbolic', Gtk.IconSize.BUTTON)
+        self.save_button = Gtk.Button.new_from_icon_name('document-save-symbolic')
         self.save_button.set_valign(Gtk.Align.CENTER)
-        self.box.pack_end(self.save_button, False, True, 0)
+        self.box.append(self.save_button)
 
-        self.add(self.box)
+        self.set_child(self.box)
 
     def set_edit_mode(self, _button=None, active=False):
         if active:

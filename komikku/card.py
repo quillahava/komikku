@@ -8,12 +8,12 @@ from gettext import ngettext as n_
 import natsort
 import time
 
+from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository import Handy
 from gi.repository.GdkPixbuf import Pixbuf
 from gi.repository.GdkPixbuf import PixbufAnimation
 
@@ -198,12 +198,12 @@ class Card:
     def show(self, transition=True):
         self.viewswitchertitle.set_title(self.manga.name)
 
-        self.window.left_button_image.set_from_icon_name('go-previous-symbolic', Gtk.IconSize.BUTTON)
+        self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.library_flap_reveal_button.hide()
         self.window.right_button_stack.set_visible_child_name('card')
 
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-card'))
-        self.window.menu_button_image.set_from_icon_name('view-more-symbolic', Gtk.IconSize.BUTTON)
+        self.window.menu_button.set_icon_name('view-more-symbolic')
         self.window.menu_button.show()
 
         self.window.show_page('card', transition=transition)
@@ -244,7 +244,7 @@ class CategoriesList:
             for record in records:
                 category = Category.get(record['id'])
 
-                action_row = Handy.ActionRow()
+                action_row = Adw.ActionRow()
                 action_row.set_title(category.label)
                 action_row.set_activatable(True)
 
@@ -285,14 +285,14 @@ class ChaptersList:
 
         self.listbox = self.window.card_chapters_listbox
         self.listbox.get_style_context().add_class('list-bordered')
-        self.listbox.connect('key-press-event', self.on_key_pressed)
+        # self.listbox.connect('key-press-event', self.on_key_pressed)
         self.listbox.connect('row-activated', self.on_chapter_row_clicked)
         self.listbox.connect('selected-rows-changed', self.on_selection_changed)
         self.listbox.connect('unselect-all', self.card.leave_selection_mode)
 
-        self.gesture = Gtk.GestureLongPress.new(self.listbox)
-        self.gesture.set_touch_only(False)
-        self.gesture.connect('pressed', self.on_gesture_long_press_activated)
+        # self.gesture = Gtk.GestureLongPress.new(self.listbox)
+        # self.gesture.set_touch_only(False)
+        # self.gesture.connect('pressed', self.on_gesture_long_press_activated)
 
         self.window.downloader.connect('download-changed', self.update_chapter_row)
 

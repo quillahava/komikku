@@ -11,12 +11,12 @@ import requests
 import time
 
 from gi.repository import GLib
-from gi.repository import WebKit2
+# from gi.repository import WebKit2
 
 from komikku.servers import get_buffer_mime_type
 from komikku.servers import convert_date_string
 from komikku.servers import get_soup_element_inner_text
-from komikku.servers import headless_browser
+# from komikku.servers import headless_browser
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
 

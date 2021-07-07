@@ -7,12 +7,14 @@ from gi.repository import Gtk
 
 class ActivityIndicator(Gtk.Box):
     def __init__(self):
-        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.CENTER)
+
+        self.props.can_target = False
 
         self.spinner = Gtk.Spinner()
         self.spinner.set_size_request(50, 50)
 
-        self.pack_start(self.spinner, True, False, 0)
+        self.append(self.spinner)
 
     def stop(self):
         self.spinner.stop()

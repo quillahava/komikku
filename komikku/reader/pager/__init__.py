@@ -6,10 +6,10 @@ from abc import abstractmethod
 import datetime
 from gettext import gettext as _
 
+from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import Gtk
-from gi.repository import Handy
 from gi.repository.GdkPixbuf import InterpType
 
 from komikku.reader.pager.page import Page
@@ -289,14 +289,14 @@ class BasePager:
         self.get_window().set_cursor(None)
 
 
-class Pager(Handy.Carousel, BasePager):
+class Pager(Adw.Carousel, BasePager):
     """Classic page by page pager (LTR, RTL, vertical)"""
 
     current_chapter_id = None
     init_flag = False
 
     def __init__(self, reader):
-        Handy.Carousel.__init__(self)
+        Adw.Carousel.__init__(self)
         BasePager.__init__(self, reader)
 
         self.set_animation_duration(500)

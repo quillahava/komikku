@@ -9,15 +9,15 @@ import sys
 from threading import Timer
 import time
 
-gi.require_version('Gtk', '3.0')
-gi.require_version('Handy', '1')
+gi.require_version('Gtk', '4.0')
+gi.require_version('Adw', '1')
 gi.require_version('Notify', '0.7')
 
+from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
-from gi.repository import Handy
 from gi.repository import Notify
 from gi.repository.GdkPixbuf import Pixbuf
 
@@ -130,12 +130,12 @@ class Application(Gtk.Application):
         GLib.set_application_name(_('Komikku'))
         GLib.set_prgname(self.application_id)
 
-        Handy.init()
+        Adw.init()
         Notify.init(_('Komikku'))
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/application_window.ui')
-class ApplicationWindow(Handy.ApplicationWindow):
+class ApplicationWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ApplicationWindow'
 
     hidpi_scale = 1
@@ -150,11 +150,9 @@ class ApplicationWindow(Handy.ApplicationWindow):
     headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
     headerbar = Gtk.Template.Child('headerbar')
     left_button = Gtk.Template.Child('left_button')
-    left_button_image = Gtk.Template.Child('left_button_image')
     title_stack = Gtk.Template.Child('title_stack')
     right_button_stack = Gtk.Template.Child('right_button_stack')
     menu_button = Gtk.Template.Child('menu_button')
-    menu_button_image = Gtk.Template.Child('menu_button_image')
 
     box = Gtk.Template.Child('box')
     overlay = Gtk.Template.Child('overlay')
@@ -236,8 +234,6 @@ class ApplicationWindow(Handy.ApplicationWindow):
 
         self.activity_indicator = ActivityIndicator()
         self.overlay.add_overlay(self.activity_indicator)
-        self.overlay.set_overlay_pass_through(self.activity_indicator, True)
-        self.activity_indicator.show_all()
 
         Gio.NetworkMonitor.get_default().connect('network-changed', self.on_network_status_changed)
         # Non-portal implementations of Gio.NetworkMonitor (app not running under Flatpak) don't actually change the value
@@ -312,21 +308,19 @@ class ApplicationWindow(Handy.ApplicationWindow):
         self.preferences = Preferences(self)
 
         # Window
-        self.connect('size-allocate', self.on_resize)
-        self.connect('delete-event', self.on_application_quit)
-        self.connect('key-press-event', self.on_key_press)
-        self.connect('window-state-event', self.on_window_state_event)
+        self.connect('notify::default-width', self.on_resize)
+        # self.connect('notify::default-height', self.on_resize)
+        # self.connect('delete-event', self.on_application_quit)
+        # self.connect('key-press-event', self.on_key_press)
+        # self.connect('window-state-event', self.on_window_state_event)
         self.headerbar_revealer.connect('notify::child-revealed', self.on_headerbar_toggle)
 
         # Custom CSS
-        screen = Gdk.Screen.get_default()
-
         css_provider = Gtk.CssProvider()
         css_provider_resource = Gio.File.new_for_uri('resource:///info/febvre/Komikku/css/style.css')
         css_provider.load_from_file(css_provider_resource)
+        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-        context = Gtk.StyleContext()
-        context.add_provider_for_screen(screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
         if Gio.Application.get_default().development_mode is True:
             self.get_style_context().add_class('devel')
 
@@ -403,21 +397,18 @@ class ApplicationWindow(Handy.ApplicationWindow):
             Gtk.Settings.get_default().set_property('gtk-application-prefer-dark-theme', Settings.get_default().dark_theme)
 
     def on_about_menu_clicked(self, action, param):
-        builder = Gtk.Builder()
-        builder.add_from_resource('/info/febvre/Komikku/about_dialog.ui')
-
-        about_dialog = builder.get_object('about_dialog')
-        about_dialog.set_authors([
+        builder = Gtk.Builder.new_from_resource('/info/febvre/Komikku/about_dialog.ui')
+        dialog = builder.get_object('about_dialog')
+        dialog.set_authors([
             *CREDITS['developers'], '',
 
             _('Contributors: Code, Patches, Debugging:'), '',
             *CREDITS['contributors'], '',
         ])
-        about_dialog.set_translator_credits('\n'.join(CREDITS['translators']))
-        about_dialog.set_modal(True)
-        about_dialog.set_transient_for(self)
-        if about_dialog.run() in (Gtk.ResponseType.CANCEL, Gtk.ResponseType.DELETE_EVENT):
-            about_dialog.hide()
+        dialog.set_translator_credits('\n'.join(CREDITS['translators']))
+        dialog.set_modal(True)
+        dialog.set_transient_for(self)
+        dialog.present()
 
     def on_application_quit(self, window, event):
         def quit():
@@ -542,8 +533,11 @@ class ApplicationWindow(Handy.ApplicationWindow):
                 self.downloader.stop()
 
     def on_resize(self, _window, _allocation):
-        size = self.get_size()
-        if self._prev_size and self._prev_size.width == size.width and self._prev_size.height == size.height:
+        size = dict(
+            width=self.get_size(Gtk.Orientation.HORIZONTAL),
+            height=self.get_size(Gtk.Orientation.VERTICAL),
+        )
+        if self._prev_size and self._prev_size['width'] == size['width'] and self._prev_size['height'] == size['height']:
             return
 
         self._prev_size = size
@@ -552,7 +546,7 @@ class ApplicationWindow(Handy.ApplicationWindow):
         if self.page == 'reader':
             self.reader.on_resize()
 
-        self.mobile_width = size.width <= 800
+        self.mobile_width = size['width'] <= 800
 
     def on_preferences_menu_clicked(self, action, param):
         self.preferences.show()

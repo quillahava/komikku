@@ -24,12 +24,12 @@ import requests
 from requests.adapters import TimeoutSauce
 import struct
 
-gi.require_version('Gtk', '3.0')
-gi.require_version('WebKit2', '4.0')
+gi.require_version('Gtk', '4.0')
+# gi.require_version('WebKit2', '4.0')
 
 from gi.repository import GLib
 from gi.repository import Gtk
-from gi.repository import WebKit2
+# from gi.repository import WebKit2
 
 from komikku.utils import get_cache_dir
 from komikku.utils import KeyringHelper
@@ -95,8 +95,8 @@ class HeadlessBrowser(Gtk.Window):
         self.scrolledwindow.get_vscrollbar().hide()
 
         self.viewport = Gtk.Viewport()
-        self.scrolledwindow.add(self.viewport)
-        self.add(self.scrolledwindow)
+        self.scrolledwindow.set_child(self.viewport)
+        self.set_child(self.scrolledwindow)
 
         self.webview = WebKit2.WebView()
         self.viewport.add(self.webview)
@@ -153,7 +153,7 @@ class HeadlessBrowser(Gtk.Window):
         return True
 
 
-headless_browser = HeadlessBrowser()
+# headless_browser = HeadlessBrowser()
 
 
 class Server:

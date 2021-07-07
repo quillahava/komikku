@@ -77,7 +77,7 @@ class Explorer(Gtk.Stack):
             'search-mode-enabled', self.servers_page_search_button, 'active', GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self.servers_page_searchentry.connect('activate', self.on_servers_page_searchentry_activated)
-        self.servers_page_searchentry.connect('changed', self.search_servers)
+        self.servers_page_searchentry.connect('search-changed', self.search_servers)
 
         self.servers_page_search_button.connect('clicked', self.toggle_servers_search)
 
@@ -125,7 +125,7 @@ class Explorer(Gtk.Stack):
         self.card_page_add_read_button = self.window.explorer_card_page_add_read_button
         self.card_page_add_read_button.connect('clicked', self.on_card_page_add_read_button_clicked)
 
-        self.window.connect('key-press-event', self.on_key_press)
+        # self.window.connect('key-press-event', self.on_key_press)
 
         self.window.stack.add_named(self, 'explorer')
 
@@ -138,52 +138,54 @@ class Explorer(Gtk.Stack):
             row.manga_data = data.pop('manga_initial_data')
 
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-        row.add(box)
+        row.set_child(box)
 
         # Server logo
-        logo = Gtk.Image()
+        logo = Gtk.Picture()
+        logo.set_size_request(24, 24)
         if data['logo_path']:
-            pixbuf = Pixbuf.new_from_file_at_scale(
-                data['logo_path'], 24 * self.window.hidpi_scale, 24 * self.window.hidpi_scale, True)
-            logo.set_from_surface(create_cairo_surface_from_pixbuf(pixbuf, self.window.hidpi_scale))
-        else:
-            logo.set_size_request(24, 24)
-        box.pack_start(logo, False, True, 0)
+            # pixbuf = Pixbuf.new_from_file_at_scale(data['logo_path'], 24, 24, True)
+            logo.set_filename(data['logo_path'])
+        # else:
+        box.append(logo)
 
         # Server title & language
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
 
-        label = Gtk.Label(xalign=0)
+        label = Gtk.Label(xalign=0, hexpand=True)
         title = data['name']
         if data['is_nsfw']:
             title += ' (NSFW)'
         label.set_text(title)
-        vbox.pack_start(label, True, True, 0)
+        vbox.append(label)
 
         label = Gtk.Label(xalign=0)
         label.set_text(LANGUAGES[data['lang']])
         label.get_style_context().add_class('subtitle')
-        vbox.pack_start(label, False, True, 0)
+        vbox.append(label)
 
-        box.pack_start(vbox, True, True, 0)
+        box.append(vbox)
 
         # Server requires a user account
         if data['has_login']:
-            label = Gtk.Image.new_from_icon_name('dialog-password-symbolic', Gtk.IconSize.BUTTON)
-            box.pack_start(label, False, True, 0)
+            label = Gtk.Image.new_from_icon_name('dialog-password-symbolic')
+            box.append(label)
 
         # Button to pin/unpin
         button = Gtk.ToggleButton()
-        button.set_image(Gtk.Image.new_from_icon_name('view-pin-symbolic', Gtk.IconSize.BUTTON))
+        button.set_icon_name('view-pin-symbolic')
         button.set_active(data['id'] in Settings.get_default().pinned_servers)
         button.connect('toggled', self.toggle_server_pinned_state, row)
-        box.pack_start(button, False, True, 0)
+        box.append(button)
 
         return row
 
     def clear_search_page_results(self):
-        for child in self.search_page_listbox.get_children():
+        child = self.search_page_listbox.get_first_child()
+        while child:
+            next_child = child.get_next_sibling()
             self.search_page_listbox.remove(child)
+            child = next_child
 
     def clear_search_page_search(self):
         self.search_page_searchentry.set_text('')
@@ -319,7 +321,7 @@ class Explorer(Gtk.Stack):
             self.manga_slug = None
 
             # Restore focus to search entry
-            self.search_page_searchentry.grab_focus_without_selecting()
+            # self.search_page_searchentry.grab_focus_without_selecting()
 
             if self.preselection:
                 self.show_page('servers')
@@ -434,7 +436,7 @@ class Explorer(Gtk.Stack):
             else:
                 cover_stream = Gio.MemoryInputStream.new_from_data(cover_data, None)
                 if get_buffer_mime_type(cover_data) != 'image/gif':
-                    pixbuf = Pixbuf.new_from_stream_at_scale(cover_stream, 174 * self.window.hidpi_scale, -1, True, None)
+                    pixbuf = Pixbuf.new_from_stream_at_scale(cover_stream, 174, -1, True, None)
                 else:
                     pixbuf = scale_pixbuf_animation(PixbufAnimation.new_from_stream(cover_stream), 174, -1, True, True)
 
@@ -442,7 +444,7 @@ class Explorer(Gtk.Stack):
             if isinstance(pixbuf, PixbufAnimation):
                 self.card_page_cover_image.set_from_animation(pixbuf)
             else:
-                self.card_page_cover_image.set_from_surface(create_cairo_surface_from_pixbuf(pixbuf, self.window.hidpi_scale))
+                self.card_page_cover_image.set_from_pixbuf(pixbuf)
 
             authors = html_escape(', '.join(self.manga_data['authors'])) if self.manga_data['authors'] else '-'
             self.card_page_authors_value_label.set_markup('<span size="small">{0}</span>'.format(authors))
@@ -495,8 +497,10 @@ class Explorer(Gtk.Stack):
         thread.start()
 
     def populate_pinned_servers(self):
-        for row in self.servers_page_pinned_listbox.get_children():
-            row.destroy()
+        row = self.servers_page_pinned_listbox.get_first_child()
+        while row:
+            self.servers_page_pinned_listbox.remove(row)
+            row = row.get_next_sibling()
 
         pinned_servers = Settings.get_default().pinned_servers
         if len(pinned_servers) == 0:
@@ -528,8 +532,10 @@ class Explorer(Gtk.Stack):
             self.servers = servers
             self.preselection = True
 
-        for row in self.servers_page_listbox.get_children():
-            row.destroy()
+        row = self.servers_page_listbox.get_first_child()
+        while row:
+            self.servers_page_listbox.remove(row)
+            row = row.get_next_sibling()
 
         last_lang = None
         for server_data in self.servers:
@@ -542,13 +548,11 @@ class Explorer(Gtk.Stack):
                 label = Gtk.Label(xalign=0)
                 label.get_style_context().add_class('subtitle')
                 label.set_text(LANGUAGES[server_data['lang']].upper())
-                row.add(label)
-                self.servers_page_listbox.add(row)
+                row.set_child(label)
+                self.servers_page_listbox.append(row)
 
             row = self.build_server_row(server_data)
-            self.servers_page_listbox.add(row)
-
-        self.servers_page_listbox.show_all()
+            self.servers_page_listbox.append(row)
 
         if self.preselection and len(self.servers) == 1:
             row = self.servers_page_listbox.get_children()[1]
@@ -606,26 +610,22 @@ class Explorer(Gtk.Stack):
                 row.get_style_context().add_class('explorer-dialog-search-section-listboxrow')
                 row.manga_data = None
                 box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-                row.add(box)
-                label = Gtk.Label(xalign=0, margin=6)
-                label.set_text(_('MOST POPULARS'))
-                box.pack_start(label, True, True, 0)
+                row.set_child(box)
+                label = Gtk.Label(label=_('MOST POPULARS'), xalign=0, margin_start=6, margin_end=6, margin_top=6, margin_bottom=6)
+                box.append(label)
 
-                self.search_page_listbox.add(row)
+                self.search_page_listbox.append(row)
 
             for item in result:
                 row = Gtk.ListBoxRow()
                 row.manga_data = item
                 box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-                row.add(box)
-                label = Gtk.Label(xalign=0, margin=6)
+                row.set_child(box)
+                label = Gtk.Label(label=item['name'], xalign=0, margin_start=6, margin_end=6, margin_top=6, margin_bottom=6)
                 label.set_ellipsize(Pango.EllipsizeMode.END)
-                label.set_text(item['name'])
-                box.pack_start(label, True, True, 0)
+                box.append(label)
 
-                self.search_page_listbox.add(row)
-
-            self.search_page_listbox.show_all()
+                self.search_page_listbox.append(row)
 
             self.search_lock = False
 
@@ -659,7 +659,7 @@ class Explorer(Gtk.Stack):
     def show(self, transition=True, servers=None):
         self.page = None
 
-        self.window.left_button_image.set_from_icon_name('go-previous-symbolic', Gtk.IconSize.BUTTON)
+        self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.library_flap_reveal_button.hide()
         self.window.right_button_stack.show()
         self.window.right_button_stack.set_visible_child_name('explorer.servers')
@@ -697,9 +697,9 @@ class Explorer(Gtk.Stack):
             if row:
                 self.manga = Manga.get(row['id'], self.server)
 
-                self.card_page_add_read_button.get_children()[0].set_from_icon_name('media-playback-start-symbolic', Gtk.IconSize.BUTTON)
+                self.card_page_add_read_button.set_icon_name('media-playback-start-symbolic')
             else:
-                self.card_page_add_read_button.get_children()[0].set_from_icon_name('list-add-symbolic', Gtk.IconSize.BUTTON)
+                self.card_page_add_read_button.set_icon_name('list-add-symbolic')
 
         self.window.right_button_stack.set_visible_child_name('explorer.' + name)
         self.set_visible_child_name(name)

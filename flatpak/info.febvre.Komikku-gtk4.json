@@ -1,0 +1,141 @@
+{
+    "app-id" : "info.febvre.Komikku",
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "40",
+    "sdk" : "org.gnome.Sdk",
+    "command" : "komikku",
+    "finish-args" : [
+        "--share=ipc",
+        "--share=network",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--device=dri",
+        "--filesystem=xdg-pictures",
+        "--talk-name=org.freedesktop.Notifications",
+        "--talk-name=org.freedesktop.secrets",
+        "--talk-name=org.gnome.SettingsDaemon.Color"
+    ],
+    "modules" : [
+        "python3-wheel.json",
+        "python3-cffi.json",
+        "python3-keyring.json",
+        "python3-dateparser.json",
+        "python3-file-magic.json",
+        "python3-natsort.json",
+        "python3-pillow.json",
+        "python3-pure-protobuf.json",
+        "python3-unidecode.json",
+        "python3-lxml.json",
+        "python3-beautifulsoup4.json",
+        "python3-brotli.json",
+        "python3-cloudscraper.json",
+        {
+            "name": "sassc",
+            "cleanup": [
+                "*"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/sass/sassc.git",
+                    "tag": "3.6.1"
+                },
+                {
+                    "type": "script",
+                    "dest-filename": "autogen.sh",
+                    "commands": [
+                        "autoreconf -si"
+                    ]
+                }
+            ],
+            "modules": [
+                {
+                    "name": "libsass",
+                    "cleanup": [
+                        "*"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/sass/libsass.git",
+                            "tag": "3.6.4"
+                        },
+                        {
+                            "type": "script",
+                            "dest-filename": "autogen.sh",
+                            "commands": [
+                                "autoreconf -si"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "gtk",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dtests=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/gtk",
+                    "tag": "4.3.1"
+                }
+            ]
+        },
+        {
+            "name": "pygobject",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dtests=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/pygobject",
+                    "commit": "b15e81fc1ed78ef9c4dc2ac890e1ff99c62e9ed0"
+                }
+            ]
+        },
+        {
+            "name": "libadwaita",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dexamples=false",
+                "-Dtests=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/libadwaita.git",
+                    "tag": "1.0.0-alpha.1"
+                }
+            ]
+        },
+        {
+            "name" : "komikku",
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "config-opts" : [
+                "-Dprofile=development"
+            ],
+            "sources" : [
+                {
+                    "type" : "archive",
+                    "url" : "https://gitlab.com/valos/Komikku/-/archive/v0.6.2/Komikku-v0.6.2.tar.bz2",
+                    "sha256" : "eecb17bc621e20f5ca5e2764fccfb125981dfa6fc14232243b68088be6b06f29"
+                }
+            ]
+        }
+    ],
+    "build-options" : {
+        "env" : {
+            "LANGUAGE" : "fr_FR.utf-8",
+            "LANG" : "fr_FR.utf-8",
+            "CRYPTOGRAPHY_DONT_BUILD_RUST" : "1",
+            "G_MESSAGES_DEBUG" : "1"
+        }
+    }
+}

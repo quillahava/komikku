@@ -9,12 +9,12 @@ import math
 import threading
 import time
 
+from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository import Handy
 from gi.repository.GdkPixbuf import InterpType
 from gi.repository.GdkPixbuf import Pixbuf
 from gi.repository.GdkPixbuf import PixbufAnimation
@@ -63,8 +63,8 @@ class Library:
 
         # Flap (categories)
         self.flap = self.window.library_flap
-        self.flap.props.transition_type = Handy.FlapTransitionType.OVER
-        self.flap.props.fold_policy = Handy.FlapFoldPolicy.ALWAYS
+        self.flap.props.transition_type = Adw.FlapTransitionType.OVER
+        self.flap.props.fold_policy = Adw.FlapFoldPolicy.ALWAYS
         self.flap.props.modal = True
         self.flap.props.swipe_to_close = True
         self.flap.props.swipe_to_open = True
@@ -77,15 +77,16 @@ class Library:
 
         # Mangas Flowbox
         self.flowbox = self.window.library_flowbox
-        self.flowbox.connect('button-press-event', self.on_button_pressed)
+        self.flowbox.set_valign(Gtk.Align.START)
+        # self.flowbox.connect('button-press-event', self.on_button_pressed)
         self.flowbox.connect('child-activated', self.on_manga_clicked)
         self.flowbox.connect('selected-children-changed', self.update_subtitle)
         self.flowbox.connect('unselect-all', self.leave_selection_mode)
-        self.gesture = Gtk.GestureLongPress.new(self.flowbox)
-        self.gesture.set_touch_only(False)
-        self.gesture.connect('pressed', self.on_gesture_long_press_activated)
+        # self.gesture = Gtk.GestureLongPress.new(self.flowbox)
+        # self.gesture.set_touch_only(False)
+        # self.gesture.connect('pressed', self.on_gesture_long_press_activated)
 
-        self.window.connect('key-press-event', self.on_key_press)
+        # self.window.connect('key-press-event', self.on_key_press)
         self.window.updater.connect('manga-updated', self.on_manga_updated)
 
         def _filter(thumbnail):
@@ -198,25 +199,24 @@ class Library:
         self.window.application.add_action(select_all_action)
 
     def add_manga(self, manga, position=-1):
-        thumbnail = Thumbnail(self.window, manga, *self.thumbnails_size)
+        thumbnail = Thumbnail(self, manga, *self.thumbnails_size)
         self.flowbox.insert(thumbnail, position)
 
     def compute_thumbnails_size(self):
         default_width = 180
         default_height = 250
 
-        container_width = self.window.get_size().width
+        container_width = self.window.get_size(Gtk.Orientation.HORIZONTAL)
+        if not container_width:
+            container_width = self.window.measure(Gtk.Orientation.HORIZONTAL, -1)[0]
+
         padding = 6  # flowbox children padding is set via CSS
         child_width = default_width + padding * 2
-        if container_width / child_width != container_width // child_width:
-            nb = container_width // child_width + 1
-            width = container_width // nb - (padding * 2)
-            height = default_height // (default_width / width)
-        else:
-            width = default_width
-            height = default_height
+        nb = container_width // child_width + 1
+        width = container_width // nb - (padding * 2)
+        height = default_height // (default_width / width)
 
-        self.thumbnails_size = (width, height)
+        self.thumbnails_size = (width, height, nb)
 
     def delete_selected(self, _action, _param):
         def confirm_callback():
@@ -281,7 +281,7 @@ class Library:
         self.selection_mode_last_thumbnail_index = selected_thumbnail.get_index()
 
         self.window.headerbar.get_style_context().add_class('selection-mode')
-        self.window.left_button_image.set_from_icon_name('go-previous-symbolic', Gtk.IconSize.BUTTON)
+        self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-library-selection-mode'))
 
     def leave_selection_mode(self, param=None):
@@ -300,7 +300,7 @@ class Library:
             self.categories_list.leave_edit_mode(refresh_library=refresh_library)
 
         self.window.headerbar.get_style_context().remove_class('selection-mode')
-        self.window.left_button_image.set_from_icon_name('list-add-symbolic', Gtk.IconSize.BUTTON)
+        self.window.left_button.set_icon_name('list-add-symbolic')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu'))
 
     def on_button_pressed(self, _widget, event):
@@ -433,8 +433,11 @@ class Library:
         if self.page == 'start_page':
             return
 
-        for thumbnail in self.flowbox.get_children():
-            thumbnail.resize(*self.thumbnails_size)
+        GLib.idle_add(self.flowbox.set_min_children_per_line, self.thumbnails_size[2])
+        thumbnail = self.flowbox.get_first_child()
+        while thumbnail:
+            GLib.idle_add(thumbnail.resize, *self.thumbnails_size[:2])
+            thumbnail = thumbnail.get_next_sibling()
 
     def open_categories_editor(self, action, param):
         self.window.categories_editor.show()
@@ -472,8 +475,11 @@ class Library:
         self.show_page('flowbox')
 
         # Clear library flowbox
-        for thumbnail in self.flowbox.get_children():
-            thumbnail.destroy()
+        thumbnail = self.flowbox.get_first_child()
+        while thumbnail:
+            next_thumbnail = thumbnail.get_next_sibling()
+            self.flowbox.remove(thumbnail)
+            thumbnail = next_thumbnail
 
         # Populate flowbox with mangas
         self.compute_thumbnails_size()
@@ -501,7 +507,7 @@ class Library:
             self.flowbox.select_child(thumbnail)
 
     def show(self, invalidate_sort=False):
-        self.window.left_button_image.set_from_icon_name('list-add-symbolic', Gtk.IconSize.BUTTON)
+        self.window.left_button.set_icon_name('list-add-symbolic')
 
         if self.page == 'flowbox':
             if self.searchbar.get_search_mode():
@@ -513,7 +519,7 @@ class Library:
         self.update_headerbar_buttons()
 
         self.window.menu_button.set_menu_model(self.builder.get_object('menu'))
-        self.window.menu_button_image.set_from_icon_name('open-menu-symbolic', Gtk.IconSize.BUTTON)
+        self.window.menu_button.set_icon_name('open-menu-symbolic')
         self.window.menu_button.show()
 
         self.window.show_page('library', True)
@@ -615,8 +621,10 @@ class CategoriesList(GObject.GObject):
         self.library.window.library_categories_edit_mode_cancel_button.connect('clicked', self.on_edit_mode_cancel_button_clicked)
 
     def clear(self):
-        for row in self.listbox.get_children():
-            row.destroy()
+        row = self.listbox.get_first_child()
+        while row:
+            self.listbox.remove(row)
+            row = row.get_next_sibling()
 
     def enter_edit_mode(self):
         self.populate(edit_mode=True)
@@ -741,7 +749,7 @@ class CategoriesList(GObject.GObject):
                     category = Category.get(item['id'])
                     label = category.label
 
-                row = Handy.ActionRow(visible=True, activatable=True)
+                row = Adw.ActionRow(visible=True, activatable=True)
                 row.category = category
                 row.set_title(label)
                 row.set_title_lines(2)
@@ -758,7 +766,7 @@ class CategoriesList(GObject.GObject):
                     row.set_activatable_widget(switch)
                     row.add(switch)
 
-                self.listbox.add(row)
+                self.listbox.append(row)
         else:
             Settings.get_default().selected_category = 0
             self.stack.set_visible_child_name('empty')
@@ -768,10 +776,13 @@ class CategoriesList(GObject.GObject):
 
 
 class Thumbnail(Gtk.FlowBoxChild):
-    def __init__(self, window, manga, width, height):
-        super().__init__(visible=True)
+    __gtype_name__ = "Thumbnail"
 
-        self.window = window
+    def __init__(self, parent, manga, width, height, nb_columns, **kwargs):
+        super().__init__(**kwargs)
+
+        self.parent = parent
+        self.window = parent.window
         self.manga = manga
 
         self._cover_pixbuf = None
@@ -779,23 +790,23 @@ class Thumbnail(Gtk.FlowBoxChild):
         self._filtered = False
         self._selected = False
 
-        self.overlay = Gtk.Overlay(visible=True)
+        self.overlay = Gtk.Overlay()
 
-        self.drawing_area = Gtk.DrawingArea(visible=True)
-        self.drawing_area.connect('draw', self._draw)
-        self.overlay.add(self.drawing_area)
+        self.drawing_area = Gtk.DrawingArea()
+        self.drawing_area.set_draw_func(self._draw)
+        self.overlay.set_child(self.drawing_area)
 
-        self.name_label = Gtk.Label(xalign=0, visible=True)
+        self.name_label = Gtk.Label(xalign=0, hexpand=True)
         self.name_label.get_style_context().add_class('library-manga-name-label')
         self.name_label.set_valign(Gtk.Align.END)
-        self.name_label.set_line_wrap(True)
+        self.name_label.set_wrap(True)
         self.overlay.add_overlay(self.name_label)
 
-        self.add(self.overlay)
+        self.set_child(self.overlay)
         self.resize(width, height)
         self._draw_name()
 
-    def _draw(self, _drawing_area, context):
+    def _draw(self, _drawing_area, context, _width, _height):
         context.save()
 
         self._draw_cover(context)
@@ -864,8 +875,7 @@ class Thumbnail(Gtk.FlowBoxChild):
                     # Invalid image, corrupted image, unsupported image format,...
                     self._cover_pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
 
-        pixbuf = self._cover_pixbuf.scale_simple(
-            self.width * self.window.hidpi_scale, self.height * self.window.hidpi_scale, InterpType.BILINEAR)
+        pixbuf = self._cover_pixbuf.scale_simple(self.width, self.height, InterpType.BILINEAR)
 
         radius = 6
         arc_0 = 0
@@ -881,8 +891,6 @@ class Thumbnail(Gtk.FlowBoxChild):
         context.close_path()
 
         context.clip()
-
-        context.scale(1 / self.window.hidpi_scale, 1 / self.window.hidpi_scale)
 
         Gdk.cairo_set_source_pixbuf(context, pixbuf, 0, 0)
         context.paint()
@@ -908,7 +916,8 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.width = width
         self.height = height
 
-        self.drawing_area.set_size_request(self.width, self.height)
+        self.drawing_area.set_content_width(self.width)
+        self.drawing_area.set_content_height(self.height)
 
     def update(self, manga):
         self.manga = manga
