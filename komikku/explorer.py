@@ -341,7 +341,7 @@ class Explorer(Gtk.Stack):
             self.window.library.on_manga_added(self.manga)
 
             self.card_page_add_read_button.set_sensitive(True)
-            self.card_page_add_read_button.get_children()[0].set_from_icon_name('media-playback-start-symbolic', Gtk.IconSize.BUTTON)
+            self.card_page_add_read_button.set_icon_name('media-playback-start-symbolic')
             self.window.activity_indicator.stop()
 
             return False
