@@ -538,12 +538,6 @@ class ChaptersList:
         run_generator(add_chapters_rows)
 
     def populate_chapter_row(self, row):
-        child = row.get_first_child()
-        while child:
-            next_child = child.get_next_sibling()
-            row.remove(child)
-            child = next_child
-
         # event_box = Gtk.EventBox.new()
         # event_box.connect('button-press-event', self.on_chapter_row_button_pressed)
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
@@ -634,7 +628,7 @@ class ChaptersList:
             if row.download:
                 download_status = row.download.status
 
-        label = Gtk.Label(xalign=0, yalign=1)
+        label = Gtk.Label(xalign=0, yalign=1, hexpand=True)
         label.set_valign(Gtk.Align.CENTER)
         label.get_style_context().add_class('card-chapter-sublabel')
         text = chapter.date.strftime(_('%m/%d/%Y')) if chapter.date else ''
@@ -651,7 +645,7 @@ class ChaptersList:
             progressbar.set_fraction(row.download.percent / 100)
             hbox.append(progressbar)
 
-            stop_button = Gtk.Button.new_from_icon_name('media-playback-stop-symbolic', Gtk.IconSize.BUTTON)
+            stop_button = Gtk.Button.new_from_icon_name('media-playback-stop-symbolic')
             stop_button.connect('clicked', lambda button, chapter: self.window.downloader.remove(chapter), chapter)
             hbox.append(stop_button)
         else:
@@ -859,13 +853,14 @@ class ChaptersList:
         if self.card.window.page not in ('card', 'reader') or self.card.manga.id != chapter.manga_id:
             return
 
-        for row in self.listbox.get_children():
+        row = self.listbox.get_first_child()
+        while row:
             if row.chapter.id == chapter.id:
                 row.chapter = chapter
                 row.download = download
                 self.populate_chapter_row(row)
                 break
-
+            row = row.get_next_sibling()
 
 class InfoGrid:
     def __init__(self, card):

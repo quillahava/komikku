@@ -349,17 +349,15 @@ class ApplicationWindow(Adw.ApplicationWindow):
         dialog.add_buttons(_('Yes'), Gtk.ResponseType.YES, _('Cancel'), Gtk.ResponseType.CANCEL)
         dialog.set_default_response(Gtk.ResponseType.YES)
 
-        label = Gtk.Label()
+        label = Gtk.Label(vexpand=True, margin_start=16, margin_top=16, margin_end=16, margin_bottom=16)
         label.set_text(message)
-        label.set_line_wrap(True)
+        label.set_wrap(True)
         label.set_vexpand(True)
-        label.set_property('margin', 16)
         label.set_valign(Gtk.Align.CENTER)
         label.set_halign(Gtk.Align.CENTER)
         label.set_justify(Gtk.Justification.CENTER)
-        dialog.get_content_area().add(label)
-
-        dialog.show_all()
+        dialog.get_content_area().append(label)
+        dialog.present()
 
     def enter_search_mode(self, action, param):
         if self.page == 'library':

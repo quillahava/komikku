@@ -561,8 +561,6 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                     <property name="column_homogeneous">1</property>
                                                     <child>
                                                       <object class="GtkImage" id="card_cover_image">
-                                                        <property name="halign">center</property>
-                                                        <property name="valign">start</property>
                                                         <layout>
                                                           <property name="column">0</property>
                                                           <property name="row">0</property>
