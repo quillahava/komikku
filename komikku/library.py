@@ -388,10 +388,12 @@ class Library:
 
     def on_manga_deleted(self, manga):
         # Remove manga thumbnail in flowbox
-        for thumbnail in self.flowbox.get_children():
+        thumbnail = self.flowbox.get_first_child()
+        while thumbnail:
             if thumbnail.manga.id == manga.id:
-                thumbnail.destroy()
+                self.flowbox.remove(thumbnail)
                 break
+            thumbnail = thumbnail.get_next_sibling()
 
     def on_manga_updated(self, _updater, manga, _nb_recent_chapters, _nb_deleted_chapters, _synced):
         for thumbnail in self.flowbox.get_children():
