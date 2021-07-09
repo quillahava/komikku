@@ -69,11 +69,9 @@ class Reader:
 
     @property
     def size(self):
-        window_size = self.window.get_size()
-
         size = Gtk.Requisition.new()
-        size.width = window_size.width
-        size.height = window_size.height
+        size.width = self.window.get_size(Gtk.Orientation.HORIZONTAL)
+        size.height = self.window.get_size(Gtk.Orientation.VERTICAL)
 
         if self.window.headerbar_revealer.get_child_revealed():
             size.height -= self.window.headerbar.get_preferred_size()[1].height
@@ -139,7 +137,7 @@ class Reader:
 
         self.set_orientation()
 
-        self.viewport.add(self.pager)
+        self.viewport.set_child(self.pager)
 
         self.pager.init(chapter)
 
@@ -189,7 +187,6 @@ class Reader:
     def remove_pager(self):
         if self.pager:
             self.pager.clear()
-            self.pager.destroy()
             self.pager = None
 
     def save_page(self, action, param):
@@ -241,9 +238,11 @@ class Reader:
     def set_action_background_color(self):
         self.background_color_action.set_state(GLib.Variant('s', self.background_color))
         if self.background_color == 'white':
-            self.pager.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(1, 1, 1, 1))
+            self.pager.get_style_context().remove_class('background-black')
+            self.pager.get_style_context().add_class('background-white')
         else:
-            self.pager.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(0, 0, 0, 1))
+            self.pager.get_style_context().remove_class('background-white')
+            self.pager.get_style_context().add_class('background-black')
 
     def set_action_borders_crop(self):
         self.borders_crop_action.set_state(GLib.Variant('b', self.borders_crop))

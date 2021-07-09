@@ -75,7 +75,10 @@ class Controls:
     def set_scale_direction(self, inverted):
         self.scale.set_inverted(inverted)
         self.scale.set_value_pos(Gtk.PositionType.RIGHT if inverted else Gtk.PositionType.LEFT)
-        self.bottom_box.set_child_packing(self.pages_count_label, False, True, 4, Gtk.PackType.START if inverted else Gtk.PackType.END)
+        if inverted:
+            self.bottom_box.reorder_child_after(self.pages_count_label, self.scale)
+        else:
+            self.bottom_box.reorder_child_after(self.scale, self.pages_count_label)
 
     def show(self):
         if not self.active:

@@ -43,15 +43,17 @@ class Page(Gtk.Overlay):
 
         self.set_size()
 
+        self.props.can_target = False  # Allows scrolling in zoom mode
+
         policy_type = Gtk.PolicyType.AUTOMATIC if self.reader.reading_mode != 'webtoon' else Gtk.PolicyType.NEVER
         self.scrolledwindow = Gtk.ScrolledWindow()
         self.scrolledwindow.set_policy(policy_type, policy_type)
         self.viewport = Gtk.Viewport()
         self.image = Gtk.Image()
         self.imagebuf = None
-        self.viewport.add(self.image)
-        self.scrolledwindow.add(self.viewport)
-        self.add(self.scrolledwindow)
+        self.viewport.set_child(self.image)
+        self.scrolledwindow.set_child(self.viewport)
+        self.set_child(self.scrolledwindow)
 
         if self.reader.reading_mode == 'vertical':
             self.scrolledwindow.get_vadjustment().connect('changed', self.on_scroll_changed, 'vertical')
@@ -66,9 +68,6 @@ class Page(Gtk.Overlay):
         # Activity indicator
         self.activity_indicator = ActivityIndicator()
         self.add_overlay(self.activity_indicator)
-        self.set_overlay_pass_through(self.activity_indicator, True)  # Allows scrolling in zoom mode
-
-        self.show_all()
 
     @GObject.Property(type=str)
     def status(self):
@@ -347,14 +346,16 @@ class Page(Gtk.Overlay):
         self.set_size_request(self.reader.size.width, self.reader.size.height)
 
     def show_retry_button(self):
-        button = Gtk.Button.new()
-        button.set_image(Gtk.Image.new_from_icon_name('view-refresh-symbolic', Gtk.IconSize.LARGE_TOOLBAR))
-        button.set_image_position(Gtk.PositionType.TOP)
-        button.set_always_show_image(True)
-        button.set_label(_('Retry'))
-        button.set_valign(Gtk.Align.CENTER)
-        button.set_halign(Gtk.Align.CENTER)
-        button.connect('clicked', self.on_button_retry_clicked)
+        btn = Gtk.Button()
+        btn.set_valign(Gtk.Align.CENTER)
+        btn.set_halign(Gtk.Align.CENTER)
+        btn.connect('clicked', self.on_button_retry_clicked)
 
-        self.add_overlay(button)
-        button.show()
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        icon = Gtk.Image.new_from_icon_name('view-refresh-symbolic')
+        icon.set_icon_size(Gtk.IconSize.LARGE)
+        vbox.append(icon)
+        vbox.append(Gtk.Label(label=_('Retry')))
+        btn.set_child(vbox)
+
+        self.add_overlay(btn)

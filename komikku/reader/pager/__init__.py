@@ -28,23 +28,29 @@ class BasePager:
         self.window = reader.window
 
         self.scrolledwindow = self.reader.scrolledwindow
-        self.scrolledwindow.add_events(
-            Gdk.EventMask.BUTTON_PRESS_MASK |
-            Gdk.EventMask.BUTTON_RELEASE_MASK |
-            Gdk.EventMask.KEY_PRESS_MASK |
-            Gdk.EventMask.SMOOTH_SCROLL_MASK
-        )
+        # self.scrolledwindow.add_events(
+        #     Gdk.EventMask.BUTTON_PRESS_MASK |
+        #     Gdk.EventMask.BUTTON_RELEASE_MASK |
+        #     Gdk.EventMask.KEY_PRESS_MASK |
+        #     Gdk.EventMask.SMOOTH_SCROLL_MASK
+        # )
         self.scrolledwindow.set_kinetic_scrolling(True)
         self.scrolledwindow.set_overlay_scrolling(True)
-        self.scrolledwindow.get_hscrollbar().hide()
-        self.scrolledwindow.get_vscrollbar().hide()
+        # self.scrolledwindow.get_hscrollbar().hide()
+        # self.scrolledwindow.get_vscrollbar().hide()
 
-        self.connect('motion-notify-event', self.on_motion_notify)
+        # self.connect('motion-notify-event', self.on_motion_notify)
 
     @property
     @abstractmethod
     def pages(self):
-        return self.get_children()
+        children = []
+        child = self.get_first_child()
+        while child:
+            children.append(child)
+            child = child.get_next_sibling()
+
+        return children
 
     @abstractmethod
     def add_page(self, position):
@@ -55,7 +61,7 @@ class BasePager:
 
         for page in self.pages:
             page.clean()
-            page.destroy()
+            self.remove(page)
 
     def crop_pages_borders(self):
         for page in self.pages:
@@ -74,13 +80,14 @@ class BasePager:
             self.btn_press_handler_id = None
 
     def enable_keyboard_and_mouse_click_navigation(self):
+        pass
         # Keyboard
-        if self.key_press_handler_id is None:
-            self.key_press_handler_id = self.window.connect('key-press-event', self.on_key_press)
-
-        # Mouse click
-        if self.btn_press_handler_id is None:
-            self.btn_press_handler_id = self.scrolledwindow.connect('button-press-event', self.on_btn_press)
+        # if self.key_press_handler_id is None:
+        #     self.key_press_handler_id = self.window.connect('key-press-event', self.on_key_press)
+        # 
+        # # Mouse click
+        # if self.btn_press_handler_id is None:
+        #     self.btn_press_handler_id = self.scrolledwindow.connect('button-press-event', self.on_btn_press)
 
     @abstractmethod
     def goto_page(self, page_index):
@@ -311,21 +318,21 @@ class Pager(Adw.Carousel, BasePager):
 
     def add_page(self, position):
         if position == 'start':
-            self.pages[2].clean()
-            self.pages[2].destroy()  # will remove it from carousel
+            self.get_nth_page(self.get_n_pages() - 1).clean()
+            self.remove(self.get_nth_page(self.get_n_pages() - 1))
 
-            page = self.pages[0]
+            page = self.get_nth_page(0)
             direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
             new_page = Page(self, page.chapter, page.index + direction)
             self.prepend(new_page)
         else:
-            self.pages[0].clean()
-            self.pages[0].destroy()  # will remove it from carousel
-
-            page = self.pages[-1]
+            page = self.get_nth_page(self.get_n_pages() - 1)
             direction = -1 if self.reader.reading_mode == 'right-to-left' else 1
             new_page = Page(self, page.chapter, page.index + direction)
-            self.insert(new_page, 2)
+            self.append(new_page)
+
+            self.get_nth_page(0).clean()
+            GLib.idle_add(self.remove, self.get_nth_page(0))
 
         new_page.connect('rendered', self.on_page_rendered)
         new_page.render()
@@ -358,23 +365,23 @@ class Pager(Adw.Carousel, BasePager):
         # Left page
         left_page = Page(self, chapter, page_index + direction)
         left_page.connect('rendered', self.on_page_rendered)
-        self.insert(left_page, 0)
+        self.append(left_page)
 
         # Center page
         center_page = Page(self, chapter, page_index)
         center_page.connect('rendered', self.on_page_rendered)
-        self.insert(center_page, 1)
+        self.append(center_page)
         center_page.render()
 
         # Right page
         right_page = Page(self, chapter, page_index - direction)
         right_page.connect('rendered', self.on_page_rendered)
-        self.insert(right_page, 2)
+        self.append(right_page)
 
         left_page.render()
         right_page.render()
 
-        self.scroll_to(center_page)
+        GLib.idle_add(self.scroll_to_full, center_page, 0)
 
     def on_key_press(self, _widget, event):
         if self.window.page != 'reader':
@@ -438,7 +445,7 @@ class Pager(Adw.Carousel, BasePager):
 
         return Gdk.EVENT_PROPAGATE
 
-    def on_page_changed(self, carousel, index):
+    def on_page_changed(self, _carousel, index):
         if self.pages[1].cropped:
             # Previous page's image has been cropped to allow 2-fingers swipe gesture, it must be restored
             self.pages[1].set_image()
@@ -448,10 +455,10 @@ class Pager(Adw.Carousel, BasePager):
             return
 
         self.init_flag = False
-        page = self.pages[index]
+        page = self.get_nth_page(index)
 
         if page.status == 'offlimit':
-            GLib.idle_add(self.scroll_to, self.pages[1])
+            GLib.idle_add(self.scroll_to, self.get_nth_page(1))
 
             if page.index == -1:
                 message = _('There is no previous chapter.')
