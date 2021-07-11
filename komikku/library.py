@@ -89,9 +89,11 @@ class Library:
         self.gesture_click.connect('released', self.on_right_click)
         self.flowbox.add_controller(self.gesture_click)
 
-        # self.gesture = Gtk.GestureLongPress.new(self.flowbox)
-        # self.gesture.set_touch_only(False)
-        # self.gesture.connect('pressed', self.on_gesture_long_press_activated)
+        self.gesture_long_press = Gtk.GestureLongPress.new()
+        self.gesture_long_press.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.gesture_long_press.set_touch_only(False)
+        self.gesture_long_press.connect('pressed', self.on_gesture_long_press_activated)
+        self.flowbox.add_controller(self.gesture_long_press)
 
         self.window.updater.connect('manga-updated', self.on_manga_updated)
 
@@ -608,12 +610,10 @@ class Library:
         self.subtitle_label.set_label(subtitle)
 
 
-class CategoriesList(GObject.GObject):
+class CategoriesList:
     edit_mode = False  # mode to edit categories (of a manga selection) in bulk
 
     def __init__(self, library):
-        GObject.Object.__init__(self)
-
         self.library = library
         self.listbox = self.library.window.library_categories_listbox
         self.stack = self.library.window.library_categories_stack
@@ -626,8 +626,9 @@ class CategoriesList(GObject.GObject):
     def clear(self):
         row = self.listbox.get_first_child()
         while row:
+            next_row = row.get_next_sibling()
             self.listbox.remove(row)
-            row = row.get_next_sibling()
+            row = next_row
 
     def enter_edit_mode(self):
         self.populate(edit_mode=True)
@@ -665,7 +666,8 @@ class CategoriesList(GObject.GObject):
             for thumbnail in self.library.flowbox.get_selected_children():
                 manga_ids.append(thumbnail.manga.id)
 
-            for row in self.listbox.get_children():
+            row = self.listbox.get_first_child()
+            while row:
                 if row.get_activatable_widget().get_active():
                     if Settings.get_default().selected_category == row.category.id:
                         # No insert, we are sure that category is already associated with all selected manga
@@ -687,6 +689,8 @@ class CategoriesList(GObject.GObject):
                             manga_id=manga_id,
                             category_id=row.category.id,
                         ))
+
+                row = row.get_next_sibling()
 
             db_conn = create_db_connection()
             with db_conn:
@@ -752,7 +756,7 @@ class CategoriesList(GObject.GObject):
                     category = Category.get(item['id'])
                     label = category.label
 
-                row = Adw.ActionRow(visible=True, activatable=True)
+                row = Adw.ActionRow(activatable=True)
                 row.category = category
                 row.set_title(label)
                 row.set_title_lines(2)
@@ -763,11 +767,11 @@ class CategoriesList(GObject.GObject):
                     self.listbox.select_row(row)
 
                 if edit_mode:
-                    switch = Gtk.Switch(visible=True)
+                    switch = Gtk.Switch()
                     switch.set_active(Settings.get_default().selected_category == category.id)
                     switch.set_valign(Gtk.Align.CENTER)
                     row.set_activatable_widget(switch)
-                    row.add(switch)
+                    row.add_suffix(switch)
 
                 self.listbox.append(row)
         else:
