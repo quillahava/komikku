@@ -79,10 +79,16 @@ class Library:
         # Mangas Flowbox
         self.flowbox = self.window.library_flowbox
         self.flowbox.set_valign(Gtk.Align.START)
-        # self.flowbox.connect('button-press-event', self.on_button_pressed)
         self.flowbox.connect('child-activated', self.on_manga_clicked)
         self.flowbox.connect('selected-children-changed', self.update_subtitle)
         self.flowbox.connect('unselect-all', self.leave_selection_mode)
+
+        self.gesture_click = Gtk.GestureClick.new()
+        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.gesture_click.set_button(3)
+        self.gesture_click.connect('released', self.on_right_click)
+        self.flowbox.add_controller(self.gesture_click)
+
         # self.gesture = Gtk.GestureLongPress.new(self.flowbox)
         # self.gesture.set_touch_only(False)
         # self.gesture.connect('pressed', self.on_gesture_long_press_activated)
@@ -292,8 +298,10 @@ class Library:
             self.window.right_button_stack.show()
 
         self.flowbox.set_selection_mode(Gtk.SelectionMode.NONE)
-        for thumbnail in self.flowbox.get_children():
+        thumbnail = self.flowbox.get_first_child()
+        while thumbnail:
             thumbnail._selected = False
+            thumbnail = thumbnail.get_next_sibling()
 
         if self.categories_list.edit_mode:
             refresh_library = param == 'refresh_library'
@@ -302,14 +310,6 @@ class Library:
         self.window.headerbar.get_style_context().remove_class('selection-mode')
         self.window.left_button.set_icon_name('list-add-symbolic')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu'))
-
-    def on_button_pressed(self, _widget, event):
-        thumbnail = self.flowbox.get_child_at_pos(event.x, event.y)
-        if not self.selection_mode and event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3 and thumbnail is not None:
-            self.enter_selection_mode(selected_thumbnail=thumbnail)
-            return Gdk.EVENT_STOP
-
-        return Gdk.EVENT_PROPAGATE
 
     def on_flap_revealed(self, _flap, _param):
         with self.flap_reveal_button.handler_block(self.flap_reveal_button_toggled_handler_id):
@@ -403,6 +403,14 @@ class Library:
             thumbnail.update(manga)
             break
 
+    def on_right_click(self, _gesture, _n_press, x, y):
+        thumbnail = self.flowbox.get_child_at_pos(x, y)
+        if not self.selection_mode and thumbnail is not None:
+            self.enter_selection_mode(selected_thumbnail=thumbnail)
+            return Gdk.EVENT_STOP
+
+        return Gdk.EVENT_PROPAGATE
+
     def on_search_entry_activated(self, _entry):
         """Open first manga in search when <Enter> is pressed"""
         thumbnail = self.flowbox.get_child_at_pos(0, 0)
@@ -427,10 +435,10 @@ class Library:
         if self.page == 'start_page':
             return
 
-        GLib.idle_add(self.flowbox.set_min_children_per_line, self.thumbnails_size[2])
+        self.flowbox.set_min_children_per_line(self.thumbnails_size[2])
         thumbnail = self.flowbox.get_first_child()
         while thumbnail:
-            GLib.idle_add(thumbnail.resize, *self.thumbnails_size[:2])
+            thumbnail.resize(*self.thumbnails_size[:2])
             thumbnail = thumbnail.get_next_sibling()
 
     def open_categories_editor(self, action, param):
@@ -494,11 +502,12 @@ class Library:
         if not self.selection_mode:
             return
 
-        for thumbnail in self.flowbox.get_children():
-            if thumbnail._selected or thumbnail._filtered:
-                continue
-            thumbnail._selected = True
-            self.flowbox.select_child(thumbnail)
+        thumbnail = self.flowbox.get_first_child()
+        while thumbnail:
+            if not thumbnail._selected and not thumbnail._filtered:
+                thumbnail._selected = True
+                self.flowbox.select_child(thumbnail)
+            thumbnail = thumbnail.get_next_sibling()
 
     def show(self, invalidate_sort=False):
         self.window.left_button.set_icon_name('list-add-symbolic')

@@ -143,8 +143,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
     network_available = False
     page = None
 
-    is_maximized = False
-    is_fullscreen = False
     _prev_size = None
 
     headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
@@ -309,14 +307,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         # Window
         self.connect('notify::default-width', self.on_resize)
+        self.connect('notify::default-height', self.on_resize)
         self.controller_key = Gtk.EventControllerKey.new()
         self.controller_key.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.add_controller(self.controller_key)
         self.controller_key.connect('key-pressed', self.on_key_pressed)
 
-        # self.connect('notify::default-height', self.on_resize)
-        # self.connect('delete-event', self.on_application_quit)
-        # self.connect('window-state-event', self.on_window_state_event)
+        self.connect('close-request', self.on_application_quit)
         self.headerbar_revealer.connect('notify::child-revealed', self.on_headerbar_toggle)
 
         # Custom CSS
@@ -412,7 +409,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         dialog.set_transient_for(self)
         dialog.present()
 
-    def on_application_quit(self, window, event):
+    def on_application_quit(self, _window):
         def quit():
             self.save_window_size()
             backup_db()
@@ -534,7 +531,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
             if Settings.get_default().downloader_state:
                 self.downloader.stop()
 
-    def on_resize(self, _window, _allocation):
+    def on_resize(self, _window, allocation):
         size = dict(
             width=self.get_size(Gtk.Orientation.HORIZONTAL),
             height=self.get_size(Gtk.Orientation.VERTICAL),
@@ -544,7 +541,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         self._prev_size = size
 
-        self.library.on_resize()
+        if allocation.name == 'default-width':
+            GLib.idle_add(self.library.on_resize)
         if self.page == 'reader':
             self.reader.on_resize()
 
@@ -562,14 +560,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
         shortcuts_overview.set_transient_for(self)
         shortcuts_overview.present()
 
-    def on_window_state_event(self, widget, event):
-        self.is_maximized = (event.new_window_state & Gdk.WindowState.MAXIMIZED) != 0
-        self.is_fullscreen = (event.new_window_state & Gdk.WindowState.FULLSCREEN) != 0
-
     def save_window_size(self):
-        if not self.is_maximized and not self.is_fullscreen:
-            size = self.get_size()
-            Settings.get_default().window_size = [size.width, size.height]
+        if not self.is_maximized() and not self.is_fullscreen():
+            alloc = self.get_allocation()
+            Settings.get_default().window_size = [alloc.width, alloc.height]
 
     def select_all(self, action, param):
         if self.page == 'library':
@@ -578,12 +572,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
             self.card.chapters_list.select_all()
 
     def set_fullscreen(self):
-        if not self.is_fullscreen:
+        if not self.is_fullscreen():
             self.reader.controls.on_fullscreen()
             self.fullscreen()
 
     def set_unfullscreen(self):
-        if self.is_fullscreen:
+        if self.is_fullscreen():
             self.reader.controls.on_unfullscreen()
             self.unfullscreen()
 
@@ -613,7 +607,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.page = name
 
     def toggle_fullscreen(self, *args):
-        if self.is_fullscreen:
+        if self.is_fullscreen():
             self.set_unfullscreen()
         else:
             self.set_fullscreen()

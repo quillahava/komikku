@@ -73,6 +73,13 @@ flowbox flowboxchild {
     margin-bottom: 8px;
 }
 
+.background-black {
+    background-color: rgba(0, 0, 0, 1);
+}
+.background-white {
+    background-color: rgba(255, 255, 255, 1);
+}
+
 /* Explorer - servers page */
 .explorer-dialog-server-listboxrow {
     padding: 16px 12px;

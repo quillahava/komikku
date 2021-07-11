@@ -34,7 +34,7 @@ class Controls:
 
     def hide(self):
         self.is_visible = False
-        if self.window.is_fullscreen:
+        if self.window.is_fullscreen():
             self.window.headerbar_revealer.set_reveal_child(False)
         self.bottom_box.hide()
 
@@ -86,7 +86,7 @@ class Controls:
 
         self.is_visible = True
 
-        if self.window.is_fullscreen:
+        if self.window.is_fullscreen():
             self.window.headerbar_revealer.set_reveal_child(True)
 
         self.bottom_box.show_all()
