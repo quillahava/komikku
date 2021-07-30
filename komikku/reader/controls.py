@@ -21,11 +21,14 @@ class Controls:
 
         # Number of pages
         self.pages_count_label = Gtk.Label()
+        self.pages_count_label.props.margin_start = 6
+        self.pages_count_label.props.margin_end = 6
         self.pages_count_label.set_halign(Gtk.Align.START)
         self.bottom_box.append(self.pages_count_label)
 
         # Chapter's pages slider: current / nb
         self.scale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 1, 2, 1)
+        self.scale.set_hexpand(True)
         self.scale.set_increments(1, 0)  # Disable scrolling with mouse wheel
         self.scale_handler_id = self.scale.connect('change-value', self.on_scale_value_changed)
 
@@ -89,4 +92,4 @@ class Controls:
         if self.window.is_fullscreen():
             self.window.headerbar_revealer.set_reveal_child(True)
 
-        self.bottom_box.show_all()
+        self.bottom_box.show()

@@ -30,8 +30,6 @@ class Reader:
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/reader.xml')
 
         self.overlay = self.window.reader_overlay
-        self.scrolledwindow = self.window.reader_scrolledwindow
-        self.viewport = self.window.reader_viewport
 
         # Headerbar
         self.title_label = self.window.reader_title_label
@@ -44,6 +42,13 @@ class Reader:
         self.page_number_label.get_style_context().add_class('reader-page-number-indicator-label')
         self.page_number_label.set_valign(Gtk.Align.END)
         self.overlay.add_overlay(self.page_number_label)
+
+        self.gesture_click = Gtk.GestureClick.new()
+        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.gesture_click.set_button(1)
+        self.overlay.add_controller(self.gesture_click)
+
+        self.controller_motion = Gtk.EventControllerMotion.new()
 
         # Controls
         self.controls = Controls(self)
@@ -69,9 +74,10 @@ class Reader:
 
     @property
     def size(self):
-        size = Gtk.Requisition.new()
-        size.width = self.window.get_size(Gtk.Orientation.HORIZONTAL)
-        size.height = self.window.get_size(Gtk.Orientation.VERTICAL)
+        size = self.window.get_allocation()
+        # size = Gtk.Requisition.new()
+        # size.width = self.window.get_size(Gtk.Orientation.HORIZONTAL)
+        # size.height = self.window.get_size(Gtk.Orientation.VERTICAL)
 
         if self.window.headerbar_revealer.get_child_revealed():
             size.height -= self.window.headerbar.get_preferred_size()[1].height
@@ -137,7 +143,7 @@ class Reader:
 
         self.set_orientation()
 
-        self.viewport.set_child(self.pager)
+        self.overlay.set_child(self.pager)
 
         self.pager.init(chapter)
 

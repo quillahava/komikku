@@ -27,19 +27,7 @@ class BasePager:
         self.reader = reader
         self.window = reader.window
 
-        self.scrolledwindow = self.reader.scrolledwindow
-        # self.scrolledwindow.add_events(
-        #     Gdk.EventMask.BUTTON_PRESS_MASK |
-        #     Gdk.EventMask.BUTTON_RELEASE_MASK |
-        #     Gdk.EventMask.KEY_PRESS_MASK |
-        #     Gdk.EventMask.SMOOTH_SCROLL_MASK
-        # )
-        self.scrolledwindow.set_kinetic_scrolling(True)
-        self.scrolledwindow.set_overlay_scrolling(True)
-        # self.scrolledwindow.get_hscrollbar().hide()
-        # self.scrolledwindow.get_vscrollbar().hide()
-
-        # self.connect('motion-notify-event', self.on_motion_notify)
+        self.reader.controller_motion.connect('motion', self.on_pointer_motion)
 
     @property
     @abstractmethod
@@ -71,52 +59,50 @@ class BasePager:
     def disable_keyboard_and_mouse_click_navigation(self):
         # Keyboard
         if self.key_press_handler_id:
-            self.window.disconnect(self.key_press_handler_id)
+            self.window.controller_key.disconnect(self.key_press_handler_id)
             self.key_press_handler_id = None
 
         # Mouse click
         if self.btn_press_handler_id:
-            self.scrolledwindow.disconnect(self.btn_press_handler_id)
+            self.reader.gesture_click.disconnect(self.btn_press_handler_id)
             self.btn_press_handler_id = None
 
     def enable_keyboard_and_mouse_click_navigation(self):
-        pass
         # Keyboard
-        # if self.key_press_handler_id is None:
-        #     self.key_press_handler_id = self.window.connect('key-press-event', self.on_key_press)
-        # 
+        if self.key_press_handler_id is None:
+            self.key_press_handler_id = self.window.controller_key.connect('key-pressed', self.on_key_pressed)
+
         # # Mouse click
-        # if self.btn_press_handler_id is None:
-        #     self.btn_press_handler_id = self.scrolledwindow.connect('button-press-event', self.on_btn_press)
+        if self.btn_press_handler_id is None:
+            self.btn_press_handler_id = self.reader.gesture_click.connect('released', self.on_btn_press)
 
     @abstractmethod
     def goto_page(self, page_index):
         raise NotImplementedError()
 
     def hide_cursor(self):
-        self.get_window().set_cursor(Gdk.Cursor.new_from_name(Gdk.Display.get_default(), 'none'))
+        self.set_cursor(Gdk.Cursor.new_from_name('none'))
 
     @abstractmethod
     def init(self):
         raise NotImplementedError()
 
-    def on_btn_press(self, widget, event):
-        if event.button == 1:
-            if self.btn_press_timeout_id is None and event.type == Gdk.EventType.BUTTON_PRESS:
-                # Schedule single click event to be able to detect double click
-                self.btn_press_timeout_id = GLib.timeout_add(self.default_double_click_time + 100, self.on_single_click, event.copy())
+    def on_btn_press(self, _gesture, _n_press, x, y):
+        if self.btn_press_timeout_id is None:  # and event.type == Gdk.EventType.BUTTON_PRESS:
+            # Schedule single click event to be able to detect double click
+            self.btn_press_timeout_id = GLib.timeout_add(self.default_double_click_time + 100, self.on_single_click, x, y)
 
-            elif event.type == Gdk.EventType._2BUTTON_PRESS:
-                # Remove scheduled single click event
-                if self.btn_press_timeout_id:
-                    GLib.source_remove(self.btn_press_timeout_id)
-                    self.btn_press_timeout_id = None
-
-                GLib.idle_add(self.on_double_click, event.copy())
+        # elif event.type == Gdk.EventType._2BUTTON_PRESS:
+        #     # Remove scheduled single click event
+        #     if self.btn_press_timeout_id:
+        #         GLib.source_remove(self.btn_press_timeout_id)
+        #         self.btn_press_timeout_id = None
+        #
+        #     GLib.idle_add(self.on_double_click, event.copy())
 
         return Gdk.EVENT_STOP
 
-    def on_double_click(self, event):
+    def on_double_click(self, x, y):
         # Zoom/unzoom
         if self.reader.reading_mode == 'webtoon':
             return
@@ -156,16 +142,16 @@ class BasePager:
             ratio = zoom_width / orig_width
 
             if orig_width <= self.reader.size.width:
-                rel_event_x = event.x - (self.reader.size.width - orig_width) / 2
+                rel_x = x - (self.reader.size.width - orig_width) / 2
             else:
-                rel_event_x = event.x + hadj.get_value()
+                rel_x = x + hadj.get_value()
             if orig_height <= self.reader.size.height:
-                rel_event_y = event.y - (self.reader.size.height - orig_height) / 2
+                rel_y = y - (self.reader.size.height - orig_height) / 2
             else:
-                rel_event_y = event.y + vadj.get_value()
+                rel_y = y + vadj.get_value()
 
-            h_value = rel_event_x * ratio - event.x
-            v_value = rel_event_y * ratio - event.y
+            h_value = rel_x * ratio - x
+            v_value = rel_y * ratio - y
 
             handler_id = hadj.connect('changed', on_adjustment_change, vadj, h_value, v_value)
 
@@ -189,14 +175,17 @@ class BasePager:
             self.zoom['active'] = False
 
     @abstractmethod
-    def on_key_press(self, _widget, event):
+    def on_key_pressed(self, _widget, event):
         raise NotImplementedError()
 
-    def on_motion_notify(self, widget, event):
-        if self.get_window().get_cursor():
+    def on_pointer_motion(self, _controller, x, y):
+        if int(x) == x and int(y) == y:
+            return Gdk.EVENT_PROPAGATE
+
+        if self.get_cursor():
             # Cursor is hidden during keyboard navigation
             # Make cursor visible again when mouse is moved
-            self.show_cursor()
+            self.set_cursor(None)
 
         return Gdk.EVENT_PROPAGATE
 
@@ -207,16 +196,16 @@ class BasePager:
         GLib.idle_add(self.update, page, 1)
         GLib.idle_add(self.save_progress, page)
 
-    def on_single_click(self, event):
+    def on_single_click(self, x, _y):
         self.btn_press_timeout_id = None
 
-        if event.x < self.reader.size.width / 3:
+        if x < self.reader.size.width / 3:
             # 1st third of the page
             if self.zoom['active']:
                 return False
 
             self.scroll_to_direction('left')
-        elif event.x > 2 * self.reader.size.width / 3:
+        elif x > 2 * self.reader.size.width / 3:
             # Last third of the page
             if self.zoom['active']:
                 return False
@@ -237,8 +226,10 @@ class BasePager:
     def resize_pages(self, _pager=None, _orientation=None):
         self.zoom['active'] = False
 
-        for page in self.pages:
+        page = self.get_first_child()
+        while page:
             page.resize()
+            page = page.get_next_sibling()
 
     def save_progress(self, page):
         """Save reading progress"""
@@ -291,30 +282,35 @@ class BasePager:
     def scroll_to_direction(self, direction):
         raise NotImplementedError()
 
-    def show_cursor(self):
-        # Restore the default cursor
-        self.get_window().set_cursor(None)
-
 
 class Pager(Adw.Carousel, BasePager):
     """Classic page by page pager (LTR, RTL, vertical)"""
 
+    can_scroll = True
     current_chapter_id = None
     init_flag = False
 
     def __init__(self, reader):
+
         Adw.Carousel.__init__(self)
         BasePager.__init__(self, reader)
 
         self.set_animation_duration(500)
-        self.set_allow_mouse_drag(False)
+        # Disable scroll wheel events handling to allow scrolling within pages
+        # In return, we must manage page changes (mouse, 2-fingers swiping with touchpad)
+        self.set_allow_scroll_wheel(False)
+
+        self.controller_key = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.BOTH_AXES)
+        self.controller_key.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.controller_key.connect('scroll', self.on_mouse_scroll)
+        self.add_controller(self.controller_key)
 
         self.connect('notify::orientation', self.resize_pages)
         self.connect('page-changed', self.on_page_changed)
 
     @property
     def current_page(self):
-        return self.pages[int(self.get_position())] if len(self.pages) == 3 else None
+        return self.get_nth_page(self.get_position())
 
     def add_page(self, position):
         if position == 'start':
@@ -335,6 +331,7 @@ class Pager(Adw.Carousel, BasePager):
             GLib.idle_add(self.remove, self.get_nth_page(0))
 
         new_page.connect('rendered', self.on_page_rendered)
+        new_page.connect('edge-overshot', self.on_page_edge_overshotted)
         new_page.render()
 
     def goto_page(self, index):
@@ -365,17 +362,20 @@ class Pager(Adw.Carousel, BasePager):
         # Left page
         left_page = Page(self, chapter, page_index + direction)
         left_page.connect('rendered', self.on_page_rendered)
+        left_page.connect('edge-overshot', self.on_page_edge_overshotted)
         self.append(left_page)
 
         # Center page
         center_page = Page(self, chapter, page_index)
         center_page.connect('rendered', self.on_page_rendered)
+        center_page.connect('edge-overshot', self.on_page_edge_overshotted)
         self.append(center_page)
         center_page.render()
 
         # Right page
         right_page = Page(self, chapter, page_index - direction)
         right_page.connect('rendered', self.on_page_rendered)
+        right_page.connect('edge-overshot', self.on_page_edge_overshotted)
         self.append(right_page)
 
         left_page.render()
@@ -383,64 +383,64 @@ class Pager(Adw.Carousel, BasePager):
 
         GLib.idle_add(self.scroll_to_full, center_page, 0)
 
-    def on_key_press(self, _widget, event):
+    def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.window.page != 'reader':
             return Gdk.EVENT_PROPAGATE
 
         modifiers = Gtk.accelerator_get_default_mod_mask()
-        if (event.state & modifiers) != 0:
+        if (state & modifiers) != 0:
             return Gdk.EVENT_PROPAGATE
 
-        if event.keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left, Gdk.KEY_Right, Gdk.KEY_KP_Right):
+        if keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left, Gdk.KEY_Right, Gdk.KEY_KP_Right):
             # Hide mouse cursor when using keyboard navigation
             self.hide_cursor()
 
             page = self.current_page
-            hadj = page.scrolledwindow.get_hadjustment()
+            hadj = page.get_hadjustment()
 
-            if event.keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left):
+            if keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left):
                 if hadj.get_value() == 0 and self.zoom['active'] is False:
                     self.scroll_to_direction('left')
                     return Gdk.EVENT_STOP
 
-                page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_LEFT, False)
+                page.emit('scroll-child', Gtk.ScrollType.STEP_LEFT, False)
                 return Gdk.EVENT_STOP
 
             if hadj.get_value() + self.reader.size.width == hadj.get_upper() and self.zoom['active'] is False:
                 self.scroll_to_direction('right')
                 return Gdk.EVENT_STOP
 
-            page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_RIGHT, False)
+            page.emit('scroll-child', Gtk.ScrollType.STEP_RIGHT, False)
             return Gdk.EVENT_STOP
 
-        if event.keyval in (Gdk.KEY_Up, Gdk.KEY_KP_Up, Gdk.KEY_Down, Gdk.KEY_KP_Down):
+        if keyval in (Gdk.KEY_Up, Gdk.KEY_KP_Up, Gdk.KEY_Down, Gdk.KEY_KP_Down):
             # Hide mouse cursor when using keyboard navigation
             self.hide_cursor()
 
             page = self.current_page
-            vadj = page.scrolledwindow.get_vadjustment()
+            vadj = page.get_vadjustment()
 
-            if event.keyval in (Gdk.KEY_Down, Gdk.KEY_KP_Down):
+            if keyval in (Gdk.KEY_Down, Gdk.KEY_KP_Down):
                 if self.reader.reading_mode == 'vertical' and vadj.get_value() + self.reader.size.height == vadj.get_upper():
                     self.scroll_to_direction('right')
                     return Gdk.EVENT_STOP
 
                 # If image height is greater than viewport height, arrow keys should scroll page down
                 # Emit scroll signal: one step down
-                page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_DOWN, False)
+                page.emit('scroll-child', Gtk.ScrollType.STEP_DOWN, False)
                 return Gdk.EVENT_STOP
 
             if self.reader.reading_mode == 'vertical' and vadj.get_value() == 0:
                 self.scroll_to_direction('left')
 
                 # After switching pages, go to the end of the page that is now the current page
-                vadj = self.current_page.scrolledwindow.get_vadjustment()
+                vadj = self.current_page.get_vadjustment()
                 vadj.set_value(vadj.get_upper() - self.reader.size.height)
                 return Gdk.EVENT_STOP
 
             # If image height is greater than viewport height, arrow keys should scroll page up
             # Emit scroll signal: one step up
-            page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_UP, False)
+            page.emit('scroll-child', Gtk.ScrollType.STEP_UP, False)
             return Gdk.EVENT_STOP
 
         return Gdk.EVENT_PROPAGATE
@@ -475,15 +475,55 @@ class Pager(Adw.Carousel, BasePager):
         GLib.idle_add(self.update, page, index)
         GLib.idle_add(self.save_progress, page)
 
+    def on_mouse_scroll(self, _controller, dx, dy):
+        if not self.can_scroll:
+            return Gdk.EVENT_PROPAGATE
+
+        page = self.current_page
+
+        def scroll_timeout_cb():
+            self.can_scroll = True
+
+        if self.reader.reading_mode in ('right-to-left', 'left-to-right'):
+            if (dy and page.get_height() == page.image.get_height()) or (dx and page.get_width() == page.image.get_width()):
+                self.can_scroll = False
+                if dx:
+                    self.scroll_to_direction('left' if dx < 0 else 'right')
+                else:
+                    self.scroll_to_direction('left' if dy > 0 else 'right')
+                GLib.timeout_add(500, scroll_timeout_cb)
+
+        elif self.reader.reading_mode == 'vertical':
+            if dy and not dx and page.get_height() == page.image.get_height():
+                self.can_scroll = False
+                self.scroll_to_direction('left' if dy < 0 else 'right')
+                GLib.timeout_add(500, scroll_timeout_cb)
+
+        return Gdk.EVENT_PROPAGATE
+
+    def on_page_edge_overshotted(self, _page, position):
+        if self.reader.reading_mode in ('right-to-left', 'left-to-right'):
+            if position in (Gtk.PositionType.TOP, Gtk.PositionType.BOTTOM):
+                return
+
+            self.scroll_to_direction('left' if position == Gtk.PositionType.LEFT else 'right')
+
+        elif self.reader.reading_mode == 'vertical':
+            if position in (Gtk.PositionType.LEFT, Gtk.PositionType.RIGHT):
+                return
+
+            self.scroll_to_direction('left' if position == Gtk.PositionType.TOP else 'right')
+
     def reverse_pages(self):
         self.reorder(self.pages[0], -1)
         self.reorder(self.pages[0], 1)
 
     def scroll_to_direction(self, direction):
+        print('Scroll to', direction)
         if direction == 'left':
-            page = self.pages[0]
+            page = self.get_nth_page(0)
         elif direction == 'right':
-            page = self.pages[-1]
+            page = self.get_nth_page(self.get_n_pages() - 1)
 
         if page.status == 'offlimit':
             # We reached first or last chapter

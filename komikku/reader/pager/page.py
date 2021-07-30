@@ -17,13 +17,13 @@ from komikku.utils import Imagebuf
 from komikku.utils import log_error_traceback
 
 
-class Page(Gtk.Overlay):
+class Page(Gtk.ScrolledWindow):
     __gsignals__ = {
         'rendered': (GObject.SIGNAL_RUN_FIRST, None, (bool, )),
     }
 
     def __init__(self, pager, chapter, index):
-        Gtk.Overlay.__init__(self)
+        super().__init__()
 
         self.pager = pager
         self.reader = pager.reader
@@ -36,38 +36,25 @@ class Page(Gtk.Overlay):
         self._status = None    # rendering, render, rendered, offlimit, cleaned
         self.error = None      # connection error, server error or corrupt file error
         self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
-
         self.cropped = False
-        self.last_hadj_value = None
-        self.last_vadj_value = None
-
-        self.set_size()
-
-        self.props.can_target = False  # Allows scrolling in zoom mode
 
         policy_type = Gtk.PolicyType.AUTOMATIC if self.reader.reading_mode != 'webtoon' else Gtk.PolicyType.NEVER
-        self.scrolledwindow = Gtk.ScrolledWindow()
-        self.scrolledwindow.set_policy(policy_type, policy_type)
-        self.viewport = Gtk.Viewport()
-        self.image = Gtk.Image()
+        self.set_policy(policy_type, policy_type)
+
+        self.overlay = Gtk.Overlay()
+        self.props.can_target = True
+        self.props.hexpand = True
+        self.props.vexpand = True
+        self.set_child(self.overlay)
+
+        self.image = Gtk.Picture()
+        self.image.set_can_shrink(False)
         self.imagebuf = None
-        self.viewport.set_child(self.image)
-        self.scrolledwindow.set_child(self.viewport)
-        self.set_child(self.scrolledwindow)
-
-        if self.reader.reading_mode == 'vertical':
-            self.scrolledwindow.get_vadjustment().connect('changed', self.on_scroll_changed, 'vertical')
-            self.scrolledwindow.get_vadjustment().connect('value-changed', self.on_scroll_value_changed, 'vertical')
-        elif self.reader.reading_mode != 'webtoon':
-            self.scrolledwindow.get_hadjustment().connect('changed', self.on_scroll_changed, 'horizontal')
-            self.scrolledwindow.get_hadjustment().connect('value-changed', self.on_scroll_value_changed, 'horizontal')
-
-        if self.reader.reading_mode != 'webtoon':
-            self.scrolledwindow.connect('edge-overshot', self.on_edge_overshotted)
+        self.overlay.set_child(self.image)
 
         # Activity indicator
         self.activity_indicator = ActivityIndicator()
-        self.add_overlay(self.activity_indicator)
+        self.overlay.add_overlay(self.activity_indicator)
 
     @GObject.Property(type=str)
     def status(self):
@@ -92,57 +79,10 @@ class Page(Gtk.Overlay):
         self.status = 'cleaned'
         self.loadable = False
         self.imagebuf = None
-        self.image.clear()
 
     def on_button_retry_clicked(self, button):
-        button.destroy()
+        self.overlay.remove_overlay(button)
         self.render(retry=True)
-
-    def on_edge_overshotted(self, widget_, position):
-        """During scrolling, a lower or upper limit has been surpassed.
-
-        To allow 2-fingers swipe gesture, we crop image to disable scrolling (otherwise, Gtk.ScrolledWindow consumes scroll events)
-        Full image must be restored at end of swipe
-        """
-
-        if self.pager.zoom['active']:
-            return
-
-        if self.reader.reading_mode == 'vertical':
-            if position == Gtk.PositionType.BOTTOM:
-                self.set_image(crop='top')
-            elif position == Gtk.PositionType.TOP:
-                self.set_image(crop='bottom')
-        else:
-            if position == Gtk.PositionType.LEFT:
-                self.set_image(crop='right')
-            elif position == Gtk.PositionType.RIGHT:
-                self.set_image(crop='left')
-
-    def on_scroll_changed(self, adj, type):
-        """Set/restore page scrollbar position when image is set or updated"""
-
-        if self.pager.zoom['active']:
-            return
-
-        if type == 'horizontal':
-            adj.set_value(self.last_hadj_value if self.last_hadj_value is not None else adj.get_upper())
-        else:
-            adj.set_value(self.last_vadj_value if self.last_vadj_value is not None else 0)
-
-    def on_scroll_value_changed(self, adj_, type):
-        """Store last horizontal or vertical scroll value"""
-
-        if self.pager.zoom['active']:
-            return
-
-        hadj = self.scrolledwindow.get_hadjustment()
-        vadj = self.scrolledwindow.get_vadjustment()
-
-        if type == 'horizontal' and hadj.get_upper() > self.reader.size.width:
-            self.last_hadj_value = hadj.get_value()
-        elif type == 'vertical' and vadj.get_upper() > self.reader.size.height:
-            self.last_vadj_value = vadj.get_value()
 
     def render(self, retry=False):
         def complete(error_code, error_message):
@@ -253,8 +193,6 @@ class Page(Gtk.Overlay):
             self.set_image()
 
     def resize(self):
-        self.set_size()
-
         if self.status == 'rendered':
             self.set_image()
 
@@ -272,8 +210,6 @@ class Page(Gtk.Overlay):
 
                     self.error = 'corrupt_file'
                     self.imagebuf = Imagebuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
-        else:
-            self.image.clear()
 
         # Crop image borders
         imagebuf = self.imagebuf.crop_borders() if self.reader.manga.borders_crop == 1 else self.imagebuf
@@ -337,13 +273,10 @@ class Page(Gtk.Overlay):
                 surface = create_cairo_surface_from_pixbuf(pixbuf, self.window.hidpi_scale)
                 self.image.set_from_surface(surface)
             else:
-                self.image.set_from_pixbuf(pixbuf)
+                self.image.set_pixbuf(pixbuf)
 
         if self.reader.reading_mode == 'webtoon':
             self.set_size_request(pixbuf.get_width() / self.window.hidpi_scale, pixbuf.get_height() / self.window.hidpi_scale)
-
-    def set_size(self):
-        self.set_size_request(self.reader.size.width, self.reader.size.height)
 
     def show_retry_button(self):
         btn = Gtk.Button()
@@ -358,4 +291,4 @@ class Page(Gtk.Overlay):
         vbox.append(Gtk.Label(label=_('Retry')))
         btn.set_child(vbox)
 
-        self.add_overlay(btn)
+        self.overlay.add_overlay(btn)

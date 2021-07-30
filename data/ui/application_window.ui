@@ -855,16 +855,6 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="name">reader</property>
                     <property name="child">
                       <object class="GtkOverlay" id="reader_overlay">
-                        <property name="child">
-                          <object class="GtkScrolledWindow" id="reader_scrolledwindow">
-                            <property name="kinetic_scrolling">0</property>
-                            <property name="overlay_scrolling">0</property>
-                            <property name="child">
-                              <object class="GtkViewport" id="reader_viewport">
-                              </object>
-                            </property>
-                          </object>
-                        </property>
                       </object>
                     </property>
                   </object>

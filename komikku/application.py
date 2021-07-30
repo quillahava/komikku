@@ -193,8 +193,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
     reader_fullscreen_button = Gtk.Template.Child('reader_fullscreen_button')
     reader_overlay = Gtk.Template.Child('reader_overlay')
-    reader_scrolledwindow = Gtk.Template.Child('reader_scrolledwindow')
-    reader_viewport = Gtk.Template.Child('reader_viewport')
     reader_title_label = Gtk.Template.Child('reader_title_label')
     reader_subtitle_label = Gtk.Template.Child('reader_subtitle_label')
 
@@ -308,6 +306,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Window
         self.connect('notify::default-width', self.on_resize)
         self.connect('notify::default-height', self.on_resize)
+        self.connect('notify::fullscreened', self.on_resize)
+        self.connect('notify::maximized', self.on_resize)
+
         self.controller_key = Gtk.EventControllerKey.new()
         self.controller_key.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.add_controller(self.controller_key)
