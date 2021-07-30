@@ -522,11 +522,10 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkBox" id="card_box">
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkStack" id="card_stack">
+                          <object class="AdwViewStack" id="card_stack">
                             <property name="vexpand">1</property>
-                            <property name="transition_type">slide-left-right</property>
                             <child>
-                              <object class="GtkStackPage">
+                              <object class="AdwViewStackPage">
                                 <property name="name">info</property>
                                 <property name="title" translatable="yes">Info</property>
                                 <property name="icon_name">preferences-system-details</property>
@@ -770,7 +769,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                               </object>
                             </child>
                             <child>
-                              <object class="GtkStackPage">
+                              <object class="AdwViewStackPage">
                                 <property name="name">chapters</property>
                                 <property name="title" translatable="yes">Chapters</property>
                                 <property name="icon_name">view-list-bullet</property>
@@ -795,7 +794,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                               </object>
                             </child>
                             <child>
-                              <object class="GtkStackPage">
+                              <object class="AdwViewStackPage">
                                 <property name="name">categories</property>
                                 <property name="title" translatable="yes">Categories</property>
                                 <property name="icon_name">user-bookmarks-symbolic</property>

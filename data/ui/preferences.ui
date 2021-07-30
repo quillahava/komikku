@@ -27,10 +27,10 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkStack" id="pages_stack">
+          <object class="AdwViewStack" id="pages_stack">
             <property name="vexpand">1</property>
             <child>
-              <object class="GtkStackPage">
+              <object class="AdwViewStackPage">
                 <property name="name">general</property>
                 <property name="title" translatable="yes">General</property>
                 <property name="icon_name">emblem-system-symbolic</property>
@@ -86,7 +86,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
               </object>
             </child>
             <child>
-              <object class="GtkStackPage">
+              <object class="AdwViewStackPage">
                 <property name="name">library</property>
                 <property name="title" translatable="yes">Library</property>
                 <property name="icon_name">preferences-desktop-apps</property>
@@ -186,7 +186,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
               </object>
             </child>
             <child>
-              <object class="GtkStackPage">
+              <object class="AdwViewStackPage">
                 <property name="name">reader</property>
                 <property name="title" translatable="yes">Reader</property>
                 <property name="icon_name">view-paged-symbolic</property>
@@ -275,7 +275,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
               </object>
             </child>
             <child>
-              <object class="GtkStackPage">
+              <object class="AdwViewStackPage">
                 <property name="name">advanced</property>
                 <property name="title" translatable="yes">Advanced</property>
                 <property name="icon_name">system-run-symbolic</property>
