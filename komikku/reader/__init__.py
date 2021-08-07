@@ -6,7 +6,6 @@ from gettext import gettext as _
 import os
 import shutil
 
-from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk

@@ -23,7 +23,6 @@ from komikku.models import Download
 from komikku.models import Settings
 from komikku.models import update_rows
 from komikku.servers import get_file_mime_type
-from komikku.utils import create_cairo_surface_from_pixbuf
 from komikku.utils import folder_size
 from komikku.utils import html_escape
 from komikku.utils import scale_pixbuf_animation

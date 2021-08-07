@@ -220,11 +220,11 @@ class Library:
 
         padding = 6  # flowbox children padding is set via CSS
         child_width = default_width + padding * 2
-        nb = container_width // child_width + 1
-        width = container_width // nb - (padding * 2)
+        nb_children_per_line = container_width // child_width + 1
+        width = container_width // nb_children_per_line - (padding * 2)
         height = default_height // (default_width / width)
 
-        self.thumbnails_size = (width, height, nb)
+        self.thumbnails_size = (width, height, nb_children_per_line)
 
     def delete_selected(self, _action, _param):
         def confirm_callback():
@@ -783,8 +783,6 @@ class CategoriesList:
 
 
 class Thumbnail(Gtk.FlowBoxChild):
-    __gtype_name__ = "Thumbnail"
-
     def __init__(self, parent, manga, width, height, nb_columns, **kwargs):
         super().__init__(**kwargs)
 
@@ -792,16 +790,20 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.window = parent.window
         self.manga = manga
 
-        self._cover_pixbuf = None
         self._server_logo_pixbuf = None
         self._filtered = False
         self._selected = False
 
         self.overlay = Gtk.Overlay()
 
+        self.cover = Gtk.Picture.new()
+        self.cover.props.can_shrink = True
+        self.cover.props.keep_aspect_ratio = False
+        self.overlay.set_child(self.cover)
+
         self.drawing_area = Gtk.DrawingArea()
         self.drawing_area.set_draw_func(self._draw)
-        self.overlay.set_child(self.drawing_area)
+        self.overlay.add_overlay(self.drawing_area)
 
         self.name_label = Gtk.Label(xalign=0, hexpand=True)
         self.name_label.get_style_context().add_class('library-manga-name-label')
@@ -811,12 +813,13 @@ class Thumbnail(Gtk.FlowBoxChild):
 
         self.set_child(self.overlay)
         self.resize(width, height)
+
+        self._draw_cover()
         self._draw_name()
 
     def _draw(self, _drawing_area, context, _width, _height):
         context.save()
 
-        self._draw_cover(context)
         self._draw_badges(context)
         self._draw_server_logo(context)
 
@@ -867,40 +870,21 @@ class Thumbnail(Gtk.FlowBoxChild):
         draw_badge(nb_recent_chapters, 0.2, 0.6, 1)        # #3399FF
         draw_badge(nb_downloaded_chapters, 1, 0.266, 0.2)  # #FF4433
 
-    def _draw_cover(self, context):
-        if self._cover_pixbuf is None:
-            if self.manga.cover_fs_path is None:
-                self._cover_pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
-            else:
-                try:
-                    if get_file_mime_type(self.manga.cover_fs_path) != 'image/gif':
-                        self._cover_pixbuf = Pixbuf.new_from_file_at_scale(self.manga.cover_fs_path, 200, -1, True)
-                    else:
-                        animation_pixbuf = scale_pixbuf_animation(PixbufAnimation.new_from_file(self.manga.cover_fs_path), 200, -1, True)
-                        self._cover_pixbuf = animation_pixbuf.get_static_image()
-                except Exception:
-                    # Invalid image, corrupted image, unsupported image format,...
-                    self._cover_pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+    def _draw_cover(self):
+        if self.manga.cover_fs_path is None:
+            pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+        else:
+            try:
+                if get_file_mime_type(self.manga.cover_fs_path) != 'image/gif':
+                    pixbuf = Pixbuf.new_from_file_at_scale(self.manga.cover_fs_path, 200, -1, True)
+                else:
+                    animation_pixbuf = scale_pixbuf_animation(PixbufAnimation.new_from_file(self.manga.cover_fs_path), 200, -1, True)
+                    pixbuf = animation_pixbuf.get_static_image()
+            except Exception:
+                # Invalid image, corrupted image, unsupported image format,...
+                pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
 
-        pixbuf = self._cover_pixbuf.scale_simple(self.width, self.height, InterpType.BILINEAR)
-
-        radius = 6
-        arc_0 = 0
-        arc_1 = math.pi * 0.5
-        arc_2 = math.pi
-        arc_3 = math.pi * 1.5
-
-        context.new_sub_path()
-        context.arc(self.width - radius, radius, radius, arc_3, arc_0)
-        context.arc(self.width - radius, self.height - radius, radius, arc_0, arc_1)
-        context.arc(radius, self.height - radius, radius, arc_1, arc_2)
-        context.arc(radius, radius, radius, arc_2, arc_3)
-        context.close_path()
-
-        context.clip()
-
-        Gdk.cairo_set_source_pixbuf(context, pixbuf, 0, 0)
-        context.paint()
+        self.cover.set_pixbuf(pixbuf)
 
     def _draw_name(self):
         self.name_label.set_text(self.manga.name)
@@ -923,13 +907,13 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.width = width
         self.height = height
 
-        self.drawing_area.set_content_width(self.width)
-        self.drawing_area.set_content_height(self.height)
+        self.set_size_request(width, height)
 
     def update(self, manga):
         self.manga = manga
         self._cover_pixbuf = None
 
+        self._draw_cover()
         self._draw_name()
-        # Schedule a redraw to update drawing areas (cover, server logo and badges)
+        # Schedule a redraw to update drawing areas (server logo and badges)
         self.queue_draw()

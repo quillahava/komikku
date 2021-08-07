@@ -542,8 +542,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         self._prev_size = size
 
-        if allocation.name == 'default-width':
-            GLib.idle_add(self.library.on_resize)
+        GLib.idle_add(self.library.on_resize)
         if self.page == 'reader':
             self.reader.on_resize()
 
