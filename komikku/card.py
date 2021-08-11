@@ -15,7 +15,6 @@ from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository.GdkPixbuf import Pixbuf
-from gi.repository.GdkPixbuf import PixbufAnimation
 
 from komikku.models import create_db_connection
 from komikku.models import Category
@@ -25,7 +24,7 @@ from komikku.models import update_rows
 from komikku.servers import get_file_mime_type
 from komikku.utils import folder_size
 from komikku.utils import html_escape
-from komikku.utils import scale_pixbuf_animation
+from komikku.utils import PaintablePixbufAnimation
 
 
 class Card:
@@ -861,6 +860,7 @@ class ChaptersList:
                 break
             row = row.get_next_sibling()
 
+
 class InfoGrid:
     def __init__(self, card):
         self.card = card
@@ -893,14 +893,14 @@ class InfoGrid:
                 if get_file_mime_type(manga.cover_fs_path) != 'image/gif':
                     pixbuf = Pixbuf.new_from_file_at_scale(manga.cover_fs_path, cover_width, -1, True)
                 else:
-                    pixbuf = scale_pixbuf_animation(PixbufAnimation.new_from_file(manga.cover_fs_path), cover_width, -1, True, True)
+                    pixbuf = PaintablePixbufAnimation(manga.cover_fs_path)
             except Exception:
                 # Invalid image, corrupted image, unsupported image format,...
                 pixbuf = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/missing_file.png', cover_width, -1, True)
 
         self.cover_image.clear()
-        if isinstance(pixbuf, PixbufAnimation):
-            self.cover_image.set_from_animation(pixbuf)
+        if isinstance(pixbuf, Gdk.Paintable):
+            self.cover_image.set_from_paintable(pixbuf)
         else:
             self.cover_image.set_from_pixbuf(pixbuf)
 

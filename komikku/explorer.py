@@ -6,7 +6,6 @@ from gettext import gettext as _
 import threading
 import time
 
-from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
@@ -21,7 +20,6 @@ from komikku.models import Settings
 from komikku.servers import get_allowed_servers_list
 from komikku.servers import get_buffer_mime_type
 from komikku.servers import LANGUAGES
-from komikku.utils import create_cairo_surface_from_pixbuf
 from komikku.utils import html_escape
 from komikku.utils import log_error_traceback
 from komikku.utils import scale_pixbuf_animation

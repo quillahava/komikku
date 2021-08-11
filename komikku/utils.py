@@ -25,11 +25,12 @@ gi.require_version('GdkPixbuf', '2.0')
 
 from gi.repository import Gdk
 from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository.GdkPixbuf import Colorspace
 from gi.repository.GdkPixbuf import InterpType
 from gi.repository.GdkPixbuf import Pixbuf
-from gi.repository.GdkPixbuf import PixbufLoader
 from gi.repository.GdkPixbuf import PixbufSimpleAnim
+from gi.repository.GdkPixbuf import PixbufAnimation
 
 from komikku.servers.exceptions import ServerException
 
@@ -53,6 +54,29 @@ def create_cairo_surface_from_pixbuf(pixbuf, hidpi_scale):
     context.paint()
 
     return surface
+
+
+def create_paintable_from_file(path):
+    try:
+        format, width, height = Pixbuf.get_file_info(path)
+    except GLib.GError:
+        return None
+
+    if 'image/gif' in format.get_mime_types():
+        return PaintablePixbufAnimation(path)
+    else:
+        return PaintablePixbuf.new_from_file(path)
+
+
+def create_paintable_from_resource(path):
+    return PaintablePixbuf.new_from_resource(path)
+
+
+def crop_pixbuf(pixbuf, src_x, src_y, width, height):
+    pixbuf_cropped = Pixbuf.new(Colorspace.RGB, pixbuf.get_has_alpha(), 8, width, height)
+    pixbuf.copy_area(src_x, src_y, width, height, pixbuf_cropped, 0, 0)
+
+    return pixbuf_cropped
 
 
 def folder_size(path):
@@ -142,13 +166,6 @@ def log_error_traceback(e):
     return None
 
 
-def crop_pixbuf(pixbuf, src_x, src_y, width, height):
-    pixbuf_cropped = Pixbuf.new(Colorspace.RGB, pixbuf.get_has_alpha(), 8, width, height)
-    pixbuf.copy_area(src_x, src_y, width, height, pixbuf_cropped, 0, 0)
-
-    return pixbuf_cropped
-
-
 def scale_pixbuf_animation(pixbuf, width, height, preserve_aspect_ratio, loop=False, rate=15):
     if preserve_aspect_ratio:
         if width == -1:
@@ -184,13 +201,18 @@ def skip_past(haystack, needle):
     return None
 
 
-class Imagebuf:
-    def __init__(self, path, buffer, width, height):
-        self._buffer = buffer
+class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
+    def __init__(self, path, pixbuf):
+        super().__init__()
+
+        self.pixbuf = pixbuf
         self.path = path
-        self.width = width
-        self.height = height
-        self.animated = isinstance(buffer, bytes)
+        self.croped = False
+
+        self.orig_width = self.pixbuf.get_width()
+        self.orig_height = self.pixbuf.get_height()
+        self.width = self.orig_width
+        self.height = self.orig_height
 
     @classmethod
     def new_from_file(cls, path):
@@ -199,24 +221,15 @@ class Imagebuf:
         except GLib.GError:
             return None
 
-        format, width, height = Pixbuf.get_file_info(path)
+        format, _width, _height = Pixbuf.get_file_info(path)
 
-        if 'image/gif' in format.get_mime_types():
-            # In case of GIF images (probably animated), buffer is image raw data
-            with open(path, 'rb') as fp:
-                buffer = fp.read()
-        else:
-            buffer = pixbuf
-
-        return cls(path, buffer, width, height)
+        return cls(path, pixbuf)
 
     @classmethod
     def new_from_resource(cls, path):
-        buffer = Pixbuf.new_from_resource(path)
-        width = buffer.get_width()
-        height = buffer.get_height()
+        pixbuf = Pixbuf.new_from_resource(path)
 
-        return cls(None, buffer, width, height)
+        return cls(None, pixbuf)
 
     def _compute_borders_crop_bbox(self):
         # TODO: Add a slider in settings
@@ -230,56 +243,70 @@ class Imagebuf:
 
         return ImageChops.difference(im, bg).getbbox()
 
-    def _get_pixbuf_from_bytes(self, width, height):
-        loader = PixbufLoader.new()
-        loader.set_size(width, height)
-        loader.write(self._buffer)
-        loader.close()
+    def do_get_intrinsic_height(self):
+        return self.height
 
-        animation = loader.get_animation()
-        if animation.is_static_image():
-            self.animated = False
-            return animation.get_static_image()
+    def do_get_intrinsic_width(self):
+        return self.width
 
-        return animation
+    def do_snapshot(self, snapshot, width, height):
+        def crop_borders():
+            """"Crop white borders"""
+            if self.path is None:
+                return self.pixbuf
 
-    def crop_borders(self):
-        """"Crop white borders
+            bbox = self._compute_borders_crop_bbox()
 
-        :return: New cropped Imagebuf or self if it can't be cropped
-        """
-        if self.animated or self.path is None:
-            return self
+            # Crop is possible if computed bbox is included in pixbuf
+            if bbox[2] - bbox[0] < self.orig_width or bbox[3] - bbox[1] < self.orig_height:
+                return crop_pixbuf(self.pixbuf, bbox[0], bbox[1], bbox[2] - bbox[0], bbox[3] - bbox[1])
 
-        bbox = self._compute_borders_crop_bbox()
+            return self.pixbuf
 
-        # Crop is possible if computed bbox is included in pixbuf
-        if bbox[2] - bbox[0] < self.width or bbox[3] - bbox[1] < self.height:
-            pixbuf = crop_pixbuf(self._buffer, bbox[0], bbox[1], bbox[2] - bbox[0], bbox[3] - bbox[1])
+        pixbuf = crop_borders() if self.croped else self.pixbuf
 
-            return Imagebuf(self.path, pixbuf, pixbuf.get_width(), pixbuf.get_height())
+        pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
+        texture = Gdk.Texture.new_for_pixbuf(pixbuf)
+        texture.snapshot(snapshot, width, height)
 
-        return self
+    def resize(self, width=None, height=None, croped=False):
+        self.width = width or self.orig_width
+        self.height = height or self.orig_height
+        self.croped = croped
 
-    def get_pixbuf(self):
-        if isinstance(self._buffer, bytes):
-            return self._get_pixbuf_from_bytes(self.width, self.height)
+        self.invalidate_size()
 
-        return self._buffer
 
-    def get_scaled_pixbuf(self, width, height, preserve_aspect_ratio, hidpi_scale):
-        if preserve_aspect_ratio:
-            if width == -1:
-                ratio = self.height / height
-                width = self.width / ratio
-            elif height == -1:
-                ratio = self.width / width
-                height = self.height / ratio
+class PaintablePixbufAnimation(GObject.GObject, Gdk.Paintable):
+    def __init__(self, path):
+        super().__init__()
 
-        if isinstance(self._buffer, bytes):
-            return self._get_pixbuf_from_bytes(width, height)
+        self.path = path
+        self.anim = PixbufAnimation.new_from_file(self.path)
+        self.iter = self.anim.get_iter(None)
 
-        return self._buffer.scale_simple(width * hidpi_scale, height * hidpi_scale, InterpType.BILINEAR)
+        self.__delay_cb()
+
+    def __delay_cb(self):
+        delay = self.iter.get_delay_time()
+        if delay == -1:
+            return
+        self.timeout_id = GLib.timeout_add(delay, self.__delay_cb)
+
+        self.invalidate_contents()
+
+    def do_get_intrinsic_height(self):
+        return self.anim.get_height()
+
+    def do_get_intrinsic_width(self):
+        return self.anim.get_width()
+
+    def do_snapshot(self, snapshot, width, height):
+        _res, timeval = GLib.TimeVal.from_iso8601(datetime.datetime.utcnow().isoformat())
+        self.iter.advance(timeval)
+        pixbuf = self.iter.get_pixbuf()
+        texture = Gdk.Texture.new_for_pixbuf(pixbuf)
+        texture.snapshot(snapshot, width, height)
 
 
 class CustomCredential(Credential):

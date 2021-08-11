@@ -8,13 +8,13 @@ import threading
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository.GdkPixbuf import PixbufAnimation
 
 from komikku.activity_indicator import ActivityIndicator
-from komikku.utils import create_cairo_surface_from_pixbuf
-from komikku.utils import crop_pixbuf
-from komikku.utils import Imagebuf
+from komikku.utils import create_paintable_from_file
+from komikku.utils import create_paintable_from_resource
 from komikku.utils import log_error_traceback
+from komikku.utils import PaintablePixbuf
+from komikku.utils import PaintablePixbufAnimation
 
 
 class Page(Gtk.ScrolledWindow):
@@ -49,7 +49,7 @@ class Page(Gtk.ScrolledWindow):
 
         self.image = Gtk.Picture()
         self.image.set_can_shrink(False)
-        self.imagebuf = None
+        self.paintable = None
         self.overlay.set_child(self.image)
 
         # Activity indicator
@@ -66,7 +66,7 @@ class Page(Gtk.ScrolledWindow):
 
     @property
     def animated(self):
-        return self.imagebuf.animated
+        return isinstance(self.paintable, PaintablePixbufAnimation)
 
     @property
     def loaded(self):
@@ -78,7 +78,7 @@ class Page(Gtk.ScrolledWindow):
 
         self.status = 'cleaned'
         self.loadable = False
-        self.imagebuf = None
+        self.paintable = None
 
     def on_button_retry_clicked(self, button):
         self.overlay.remove_overlay(button)
@@ -178,7 +178,7 @@ class Page(Gtk.ScrolledWindow):
         if self.status is not None and self.error is None:
             return
 
-        self.imagebuf = None
+        self.paintable = None
         self.status = 'rendering'
         self.error = None
 
@@ -196,87 +196,41 @@ class Page(Gtk.ScrolledWindow):
         if self.status == 'rendered':
             self.set_image()
 
-    def set_image(self, crop=None):
-        if self.imagebuf is None:
+    def set_image(self):
+        if self.paintable is None:
             if self.path is None:
-                self.imagebuf = Imagebuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+                paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png')
             else:
-                self.imagebuf = Imagebuf.new_from_file(self.path)
-                if self.imagebuf is None:
+                paintable = create_paintable_from_file(self.path)
+                if paintable is None:
                     GLib.unlink(self.path)
 
                     self.show_retry_button()
                     self.window.show_notification(_('Failed to load image'), 2)
 
                     self.error = 'corrupt_file'
-                    self.imagebuf = Imagebuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+                    paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png')
+        else:
+            paintable = self.paintable
 
-        # Crop image borders
-        imagebuf = self.imagebuf.crop_borders() if self.reader.manga.borders_crop == 1 else self.imagebuf
-
-        # Adjust image
         scaling = self.reader.scaling if self.reader.reading_mode != 'webtoon' else 'width'
         if self.reader.scaling != 'original':
-            adapt_to_width_height = imagebuf.height / (imagebuf.width / self.reader.size.width)
-            adapt_to_height_width = imagebuf.width / (imagebuf.height / self.reader.size.height)
+            if isinstance(paintable, PaintablePixbuf):
+                adapt_to_width_height = paintable.orig_height / (paintable.orig_width / self.reader.size.width)
+                adapt_to_height_width = paintable.orig_width / (paintable.orig_height / self.reader.size.height)
 
-            if not self.animated:
                 if scaling == 'width' or (scaling == 'screen' and adapt_to_width_height <= self.reader.size.height):
                     # Adapt image to width
-                    pixbuf = imagebuf.get_scaled_pixbuf(self.reader.size.width, adapt_to_width_height, False, self.window.hidpi_scale)
+                    paintable.resize(self.reader.size.width, adapt_to_width_height, self.reader.manga.borders_crop)
                 elif scaling == 'height' or (scaling == 'screen' and adapt_to_height_width <= self.reader.size.width):
                     # Adapt image to height
-                    pixbuf = imagebuf.get_scaled_pixbuf(adapt_to_height_width, self.reader.size.height, False, self.window.hidpi_scale)
-            else:
-                # NOTE: Special case of animated images (GIF)
-                # They cannot be cropped, which would prevent navigation by 2-finger swipe gesture
-                # Moreover, it's more comfortable to view them in their entirety (fit viewport)
-
-                if adapt_to_width_height <= self.reader.size.height:
-                    # Adapt image to width
-                    pixbuf = imagebuf.get_scaled_pixbuf(self.reader.size.width, adapt_to_width_height, False, self.window.hidpi_scale)
-                elif adapt_to_height_width <= self.reader.size.width:
-                    # Adapt image to height
-                    pixbuf = imagebuf.get_scaled_pixbuf(adapt_to_height_width, self.reader.size.height, False, self.window.hidpi_scale)
+                    paintable.resize(adapt_to_height_width, self.reader.size.height, self.reader.manga.borders_crop)
         else:
-            pixbuf = imagebuf.get_pixbuf()
+            paintable.resize(self.reader.manga.borders_crop)
 
-        if crop is not None:
-            # The 'crop' argument allows the image to be cropped to keep only its visible part
-            # Used during 2-fingers swipe gestures to disable Gtk.Scrolledwindow scrolling
-            if crop in ('right', 'bottom'):
-                pixbuf = crop_pixbuf(
-                    pixbuf,
-                    0, 0,
-                    self.reader.size.width * self.window.hidpi_scale, self.reader.size.height * self.window.hidpi_scale
-                )
-            elif crop == 'left':
-                pixbuf = crop_pixbuf(
-                    pixbuf,
-                    pixbuf.get_width() - self.reader.size.width * self.window.hidpi_scale, 0,
-                    self.reader.size.width * self.window.hidpi_scale, self.reader.size.height * self.window.hidpi_scale
-                )
-            elif crop == 'top':
-                pixbuf = crop_pixbuf(
-                    pixbuf,
-                    0, pixbuf.get_height() - self.reader.size.height * self.window.hidpi_scale,
-                    self.reader.size.width * self.window.hidpi_scale, self.reader.size.height * self.window.hidpi_scale
-                )
-            self.cropped = True
-        else:
-            self.cropped = False
-
-        if isinstance(pixbuf, PixbufAnimation):
-            self.image.set_from_animation(pixbuf)
-        else:
-            if self.window.hidpi_scale != 1:
-                surface = create_cairo_surface_from_pixbuf(pixbuf, self.window.hidpi_scale)
-                self.image.set_from_surface(surface)
-            else:
-                self.image.set_pixbuf(pixbuf)
-
-        if self.reader.reading_mode == 'webtoon':
-            self.set_size_request(pixbuf.get_width() / self.window.hidpi_scale, pixbuf.get_height() / self.window.hidpi_scale)
+        if self.paintable is None:
+            self.paintable = paintable
+            self.image.set_paintable(paintable)
 
     def show_retry_button(self):
         btn = Gtk.Button()

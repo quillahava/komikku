@@ -5,7 +5,6 @@
 from copy import deepcopy
 from gettext import gettext as _
 from gettext import ngettext as n_
-import math
 import threading
 import time
 
@@ -15,9 +14,7 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository.GdkPixbuf import InterpType
 from gi.repository.GdkPixbuf import Pixbuf
-from gi.repository.GdkPixbuf import PixbufAnimation
 
 from komikku.models import Category
 from komikku.models import create_db_connection
@@ -28,7 +25,7 @@ from komikku.models import Settings
 from komikku.models import update_rows
 from komikku.servers import get_file_mime_type
 from komikku.utils import create_cairo_surface_from_pixbuf
-from komikku.utils import scale_pixbuf_animation
+from komikku.utils import PaintablePixbufAnimation
 
 
 class Library:
@@ -878,13 +875,15 @@ class Thumbnail(Gtk.FlowBoxChild):
                 if get_file_mime_type(self.manga.cover_fs_path) != 'image/gif':
                     pixbuf = Pixbuf.new_from_file_at_scale(self.manga.cover_fs_path, 200, -1, True)
                 else:
-                    animation_pixbuf = scale_pixbuf_animation(PixbufAnimation.new_from_file(self.manga.cover_fs_path), 200, -1, True)
-                    pixbuf = animation_pixbuf.get_static_image()
+                    pixbuf = PaintablePixbufAnimation(self.manga.cover_fs_path)
             except Exception:
                 # Invalid image, corrupted image, unsupported image format,...
                 pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
 
-        self.cover.set_pixbuf(pixbuf)
+        if isinstance(pixbuf, Gdk.Paintable):
+            self.cover.set_paintable(pixbuf)
+        else:
+            self.cover.set_pixbuf(pixbuf)
 
     def _draw_name(self):
         self.name_label.set_text(self.manga.name)

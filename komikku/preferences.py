@@ -5,7 +5,6 @@
 from gettext import gettext as _
 
 from gi.repository import Adw
-from gi.repository import Gio
 from gi.repository import Gtk
 
 from komikku.models import Settings
