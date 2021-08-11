@@ -226,7 +226,7 @@ class Page(Gtk.ScrolledWindow):
                     # Adapt image to height
                     paintable.resize(adapt_to_height_width, self.reader.size.height, self.reader.manga.borders_crop)
         else:
-            paintable.resize(self.reader.manga.borders_crop)
+            paintable.resize(cropped=self.reader.manga.borders_crop)
 
         if self.paintable is None:
             self.paintable = paintable
