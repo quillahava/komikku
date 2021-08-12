@@ -488,17 +488,15 @@ class Explorer(Gtk.Stack):
         label = Gtk.Label(xalign=0)
         label.get_style_context().add_class('subtitle')
         label.set_text(_('Pinned').upper())
-        row.add(label)
-        self.servers_page_pinned_listbox.add(row)
+        row.set_child(label)
+        self.servers_page_pinned_listbox.append(row)
 
         for server_data in self.servers:
             if server_data['id'] not in pinned_servers:
                 continue
 
             row = self.build_server_row(server_data)
-            self.servers_page_pinned_listbox.add(row)
-
-        self.servers_page_pinned_listbox.show_all()
+            self.servers_page_pinned_listbox.append(row)
 
     def populate_servers(self, servers=None):
         if not servers:
@@ -689,12 +687,12 @@ class Explorer(Gtk.Stack):
             Settings.get_default().remove_pinned_server(row.server_data['id'])
 
         if row.get_parent().get_name() == 'pinned_servers':
-            for child_row in self.servers_page_listbox.get_children():
+            for child_row in self.servers_page_listbox:
                 if not hasattr(child_row, 'server_data'):
                     continue
 
                 if child_row.server_data['id'] == row.server_data['id']:
-                    child_row.get_children()[0].get_children()[-1].set_active(button.get_active())
+                    child_row.get_first_child().get_last_child().set_active(button.get_active())
                     break
 
         self.populate_pinned_servers()
