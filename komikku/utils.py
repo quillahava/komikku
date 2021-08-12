@@ -205,6 +205,7 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
 
         try:
             stream = Gio.MemoryInputStream.new_from_data(data, None)
+
             if (not width and not height) or mime_type == 'image/gif':
                 pixbuf = Pixbuf.new_from_stream(stream)
                 if mime_type == 'image/gif':
@@ -213,11 +214,13 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
                         width = pixbuf.get_width() / ratio
                     elif height == -1:
                         ratio = pixbuf.get_width() / width
-                        height = pixbuf.get_height / ratio
+                        height = pixbuf.get_height() / ratio
 
                     pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
             else:
                 pixbuf = Pixbuf.new_from_stream_at_scale(stream, width, height, True)
+
+            stream.close()
         except Exception:
             # Invalid image, corrupted image, unsupported image format,...
             return None
@@ -323,6 +326,7 @@ class PaintablePixbufAnimation(GObject.GObject, Gdk.Paintable):
     def new_from_data(cls, data):
         stream = Gio.MemoryInputStream.new_from_data(data, None)
         anim = PixbufAnimation.new_from_stream(stream)
+        stream.close()
 
         return cls(None, anim)
 
