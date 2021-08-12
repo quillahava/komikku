@@ -6,23 +6,20 @@ from gettext import gettext as _
 import threading
 import time
 
-from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository.GdkPixbuf import Pixbuf
-from gi.repository.GdkPixbuf import PixbufAnimation
 from gi.repository import Pango
 
 from komikku.models import create_db_connection
 from komikku.models import Manga
 from komikku.models import Settings
 from komikku.servers import get_allowed_servers_list
-from komikku.servers import get_buffer_mime_type
 from komikku.servers import LANGUAGES
 from komikku.utils import html_escape
 from komikku.utils import log_error_traceback
-from komikku.utils import scale_pixbuf_animation
+from komikku.utils import create_paintable_from_data
+from komikku.utils import create_paintable_from_resource
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/explorer.ui')
@@ -416,20 +413,14 @@ class Explorer(Gtk.Stack):
                     self.window.show_notification(user_error_message)
 
             if cover_data is None:
-                pixbuf = Pixbuf.new_from_resource_at_scale(
-                    '/info/febvre/Komikku/images/missing_file.png', 174 * self.window.hidpi_scale, -1, True)
+                paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', 174, -1)
             else:
-                cover_stream = Gio.MemoryInputStream.new_from_data(cover_data, None)
-                if get_buffer_mime_type(cover_data) != 'image/gif':
-                    pixbuf = Pixbuf.new_from_stream_at_scale(cover_stream, 174, -1, True, None)
-                else:
-                    pixbuf = scale_pixbuf_animation(PixbufAnimation.new_from_stream(cover_stream), 174, -1, True, True)
+                paintable = create_paintable_from_data(cover_data, 174, -1)
+                if paintable is None:
+                    paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', 174, -1)
 
             self.card_page_cover_image.clear()
-            if isinstance(pixbuf, PixbufAnimation):
-                self.card_page_cover_image.set_from_animation(pixbuf)
-            else:
-                self.card_page_cover_image.set_from_pixbuf(pixbuf)
+            self.card_page_cover_image.set_from_paintable(paintable)
 
             authors = html_escape(', '.join(self.manga_data['authors'])) if self.manga_data['authors'] else '-'
             self.card_page_authors_value_label.set_markup('<span size="small">{0}</span>'.format(authors))

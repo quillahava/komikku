@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+# flake8: noqa: F401
+
 from .database import backup_db
 from .database import Category
 from .database import Chapter

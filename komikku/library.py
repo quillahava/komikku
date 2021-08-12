@@ -23,9 +23,9 @@ from komikku.models import insert_rows
 from komikku.models import Manga
 from komikku.models import Settings
 from komikku.models import update_rows
-from komikku.servers import get_file_mime_type
 from komikku.utils import create_cairo_surface_from_pixbuf
-from komikku.utils import PaintablePixbufAnimation
+from komikku.utils import create_paintable_from_file
+from komikku.utils import create_paintable_from_resource
 
 
 class Library:
@@ -760,7 +760,7 @@ class CategoriesList:
                 row.set_hexpand(False)
 
                 if (isinstance(category, Category) and Settings.get_default().selected_category == category.id) or \
-                    (isinstance(category, int) and Settings.get_default().selected_category == category):
+                        (isinstance(category, int) and Settings.get_default().selected_category == category):
                     self.listbox.select_row(row)
 
                 if edit_mode:
@@ -869,21 +869,13 @@ class Thumbnail(Gtk.FlowBoxChild):
 
     def _draw_cover(self):
         if self.manga.cover_fs_path is None:
-            pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+            paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', 200, -1)
         else:
-            try:
-                if get_file_mime_type(self.manga.cover_fs_path) != 'image/gif':
-                    pixbuf = Pixbuf.new_from_file_at_scale(self.manga.cover_fs_path, 200, -1, True)
-                else:
-                    pixbuf = PaintablePixbufAnimation(self.manga.cover_fs_path)
-            except Exception:
-                # Invalid image, corrupted image, unsupported image format,...
-                pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+            paintable = create_paintable_from_file(self.manga.cover_fs_path, 200, -1, True)
+            if paintable is None:
+                paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', 200, -1)
 
-        if isinstance(pixbuf, Gdk.Paintable):
-            self.cover.set_paintable(pixbuf)
-        else:
-            self.cover.set_pixbuf(pixbuf)
+        self.cover.set_paintable(paintable)
 
     def _draw_name(self):
         self.name_label.set_text(self.manga.name)

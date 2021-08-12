@@ -14,17 +14,16 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository.GdkPixbuf import Pixbuf
 
 from komikku.models import create_db_connection
 from komikku.models import Category
 from komikku.models import Download
 from komikku.models import Settings
 from komikku.models import update_rows
-from komikku.servers import get_file_mime_type
+from komikku.utils import create_paintable_from_file
+from komikku.utils import create_paintable_from_resource
 from komikku.utils import folder_size
 from komikku.utils import html_escape
-from komikku.utils import PaintablePixbufAnimation
 
 
 class Card:
@@ -753,8 +752,8 @@ class ChaptersList:
                 return 1 if self.sort_order == 'date-desc' else -1
 
         elif self.sort_order in ('natural-asc', 'natural-desc'):
-            l = natsort.natsorted([child1.chapter.title, child2.chapter.title], alg=natsort.ns.INT | natsort.ns.IC)
-            if l[0] == child1.chapter.title:
+            lst = natsort.natsorted([child1.chapter.title, child2.chapter.title], alg=natsort.ns.INT | natsort.ns.IC)
+            if lst[0] == child1.chapter.title:
                 return 1 if self.sort_order == 'natural-desc' else -1
 
             return -1 if self.sort_order == 'natural-desc' else 1
@@ -887,22 +886,14 @@ class InfoGrid:
         self.name_label.set_text(manga.name)
 
         if manga.cover_fs_path is None:
-            pixbuf = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/missing_file.png', cover_width, -1, True)
+            paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', cover_width, -1)
         else:
-            try:
-                if get_file_mime_type(manga.cover_fs_path) != 'image/gif':
-                    pixbuf = Pixbuf.new_from_file_at_scale(manga.cover_fs_path, cover_width, -1, True)
-                else:
-                    pixbuf = PaintablePixbufAnimation(manga.cover_fs_path)
-            except Exception:
-                # Invalid image, corrupted image, unsupported image format,...
-                pixbuf = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/missing_file.png', cover_width, -1, True)
+            paintable = create_paintable_from_file(manga.cover_fs_path, cover_width, -1)
+            if paintable is None:
+                paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', cover_width, -1)
 
         self.cover_image.clear()
-        if isinstance(pixbuf, Gdk.Paintable):
-            self.cover_image.set_from_paintable(pixbuf)
-        else:
-            self.cover_image.set_from_pixbuf(pixbuf)
+        self.cover_image.set_from_paintable(paintable)
 
         authors = html_escape(', '.join(manga.authors)) if manga.authors else '-'
         self.authors_value_label.set_markup('<span size="small">{0}</span>'.format(authors))

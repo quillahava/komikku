@@ -24,15 +24,16 @@ import traceback
 gi.require_version('GdkPixbuf', '2.0')
 
 from gi.repository import Gdk
+from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository.GdkPixbuf import Colorspace
 from gi.repository.GdkPixbuf import InterpType
 from gi.repository.GdkPixbuf import Pixbuf
-from gi.repository.GdkPixbuf import PixbufSimpleAnim
 from gi.repository.GdkPixbuf import PixbufAnimation
 
 from komikku.servers.exceptions import ServerException
+
 
 keyring.core.init_backend()
 
@@ -56,20 +57,30 @@ def create_cairo_surface_from_pixbuf(pixbuf, hidpi_scale):
     return surface
 
 
-def create_paintable_from_file(path):
-    try:
-        format, width, height = Pixbuf.get_file_info(path)
-    except GLib.GError:
+def create_paintable_from_data(data, width=None, height=None, static_animation=False):
+    mime_type, _result_uncertain = Gio.content_type_guess(None, data)
+    if not mime_type:
         return None
 
-    if 'image/gif' in format.get_mime_types():
-        return PaintablePixbufAnimation(path)
+    if mime_type == 'image/gif' and not static_animation:
+        return PaintablePixbufAnimation.new_from_data(data)
     else:
-        return PaintablePixbuf.new_from_file(path)
+        return PaintablePixbuf.new_from_data(data, width, height)
 
 
-def create_paintable_from_resource(path):
-    return PaintablePixbuf.new_from_resource(path)
+def create_paintable_from_file(path, width=None, height=None, static_animation=False):
+    format, _width, _height = Pixbuf.get_file_info(path)
+    if format is None:
+        return None
+
+    if 'image/gif' in format.get_mime_types() and not static_animation:
+        return PaintablePixbufAnimation.new_from_file(path)
+    else:
+        return PaintablePixbuf.new_from_file(path, width, height)
+
+
+def create_paintable_from_resource(path, width=None, height=None):
+    return PaintablePixbuf.new_from_resource(path, width, height)
 
 
 def crop_pixbuf(pixbuf, src_x, src_y, width, height):
@@ -166,34 +177,6 @@ def log_error_traceback(e):
     return None
 
 
-def scale_pixbuf_animation(pixbuf, width, height, preserve_aspect_ratio, loop=False, rate=15):
-    if preserve_aspect_ratio:
-        if width == -1:
-            ratio = pixbuf.get_height() / height
-            width = pixbuf.get_width() / ratio
-        elif height == -1:
-            ratio = pixbuf.get_width() / width
-            height = pixbuf.get_height() / ratio
-
-    if pixbuf.is_static_image():
-        # Unanimated image
-        return pixbuf.get_static_image().scale_simple(width, height, InterpType.BILINEAR)
-
-    pixbuf_scaled = PixbufSimpleAnim.new(width, height, rate)
-    pixbuf_scaled.set_loop(loop)
-
-    _res, timeval = GLib.TimeVal.from_iso8601(datetime.datetime.utcnow().isoformat())
-    iter = pixbuf.get_iter(timeval)
-
-    pixbuf_scaled.add_frame(iter.get_pixbuf().scale_simple(width, height, InterpType.BILINEAR))
-    while not iter.on_currently_loading_frame():
-        timeval.add(iter.get_delay_time() * 1000)
-        iter.advance(timeval)
-        pixbuf_scaled.add_frame(iter.get_pixbuf().scale_simple(width, height, InterpType.BILINEAR))
-
-    return pixbuf_scaled
-
-
 def skip_past(haystack, needle):
     if (idx := haystack.find(needle)) >= 0:
         return idx + len(needle)
@@ -215,19 +198,68 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
         self.height = self.orig_height
 
     @classmethod
-    def new_from_file(cls, path):
-        try:
-            pixbuf = Pixbuf.new_from_file(path)
-        except GLib.GError:
+    def new_from_data(cls, data, width=None, height=None):
+        mime_type, _result_uncertain = Gio.content_type_guess(None, data)
+        if not mime_type:
             return None
 
-        format, _width, _height = Pixbuf.get_file_info(path)
+        try:
+            stream = Gio.MemoryInputStream.new_from_data(data, None)
+            if (not width and not height) or mime_type == 'image/gif':
+                pixbuf = Pixbuf.new_from_stream(stream)
+                if mime_type == 'image/gif':
+                    if width == -1:
+                        ratio = pixbuf.get_height() / height
+                        width = pixbuf.get_width() / ratio
+                    elif height == -1:
+                        ratio = pixbuf.get_width() / width
+                        height = pixbuf.get_height / ratio
+
+                    pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
+            else:
+                pixbuf = Pixbuf.new_from_stream_at_scale(stream, width, height, True)
+        except Exception:
+            # Invalid image, corrupted image, unsupported image format,...
+            return None
+
+        return cls(None, pixbuf)
+
+    @classmethod
+    def new_from_file(cls, path, width=None, height=None):
+        format, orig_width, orig_height = Pixbuf.get_file_info(path)
+        if format is None:
+            return None
+
+        try:
+            if (not width and not height) or 'image/gif' in format.get_mime_types():
+                pixbuf = Pixbuf.new_from_file(path)
+                if 'image/gif' in format.get_mime_types():
+                    if width == -1:
+                        ratio = orig_height / height
+                        width = orig_width / ratio
+                    elif height == -1:
+                        ratio = orig_width / width
+                        height = orig_height / ratio
+
+                    pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
+            else:
+                pixbuf = Pixbuf.new_from_file_at_scale(path, width, height, True)
+        except Exception:
+            # Invalid image, corrupted image, unsupported image format,...
+            return None
 
         return cls(path, pixbuf)
 
     @classmethod
-    def new_from_resource(cls, path):
-        pixbuf = Pixbuf.new_from_resource(path)
+    def new_from_resource(cls, path, width=None, height=None):
+        try:
+            if not width and not height:
+                pixbuf = Pixbuf.new_from_resource(path)
+            else:
+                pixbuf = Pixbuf.new_from_resource_at_scale(path, width, height, True)
+        except Exception:
+            # Invalid image, corrupted image, unsupported image format,...
+            return None
 
         return cls(None, pixbuf)
 
@@ -278,14 +310,27 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
 
 
 class PaintablePixbufAnimation(GObject.GObject, Gdk.Paintable):
-    def __init__(self, path):
+    def __init__(self, path, anim):
         super().__init__()
 
-        self.path = path
-        self.anim = PixbufAnimation.new_from_file(self.path)
+        self.anim = anim
         self.iter = self.anim.get_iter(None)
+        self.path = path
 
         self.__delay_cb()
+
+    @classmethod
+    def new_from_data(cls, data):
+        stream = Gio.MemoryInputStream.new_from_data(data, None)
+        anim = PixbufAnimation.new_from_stream(stream)
+
+        return cls(None, anim)
+
+    @classmethod
+    def new_from_file(cls, path):
+        anim = PixbufAnimation.new_from_file(path)
+
+        return cls(path, anim)
 
     def __delay_cb(self):
         delay = self.iter.get_delay_time()
