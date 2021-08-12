@@ -395,7 +395,7 @@ class Library:
             thumbnail = thumbnail.get_next_sibling()
 
     def on_manga_updated(self, _updater, manga, _nb_recent_chapters, _nb_deleted_chapters, _synced):
-        for thumbnail in self.flowbox.get_children():
+        for thumbnail in self.flowbox:
             if thumbnail.manga.id != manga.id:
                 continue
 

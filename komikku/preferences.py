@@ -59,10 +59,10 @@ class Preferences(Adw.Leaflet):
         self.connect('notify::visible-child', self.on_page_changed)
 
     def navigate_back(self, source):
-        if self.get_visible_child_name() == 'pages':
-            self.window.library.show()
-        else:
+        if self.get_visible_child_name() == 'subpages':
             self.navigate(Adw.NavigationDirection.BACK)
+        else:
+            self.window.library.show()
 
     def on_background_color_changed(self, row, param):
         index = row.get_selected()
@@ -108,10 +108,10 @@ class Preferences(Adw.Leaflet):
             self.settings.nsfw_content = False
 
     def on_page_changed(self, _deck, _child):
-        if self.get_visible_child_name() == 'pages':
-            self.subtitle_label.hide()
-        else:
+        if self.get_visible_child_name() == 'subpages':
             self.subtitle_label.show()
+        else:
+            self.subtitle_label.hide()
 
     def on_reading_mode_changed(self, row, param):
         index = row.get_selected()
