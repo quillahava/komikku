@@ -279,16 +279,23 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.subtitle_label = self.window.download_manager_subtitle_label
         self.start_stop_button = self.window.download_manager_start_stop_button
 
-        # self.connect('key-press-event', self.on_key_press_event)
         self.start_stop_button.connect('clicked', self.on_start_stop_button_clicked)
-        # self.listbox.connect('button-press-event', self.on_button_pressed)
         self.listbox.connect('row-activated', self.on_download_row_clicked)
         self.listbox.connect('selected-rows-changed', self.on_selection_changed)
+        self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
-        # Gesture for multi-selection mode
-        # self.gesture = Gtk.GestureLongPress.new(self.listbox)
-        # self.gesture.set_touch_only(False)
-        # self.gesture.connect('pressed', self.on_gesture_long_press_activated)
+        # Gestures for multi-selection mode
+        self.gesture_click = Gtk.GestureClick.new()
+        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.gesture_click.set_button(3)
+        self.gesture_click.connect('pressed', self.on_right_click)
+        self.listbox.add_controller(self.gesture_click)
+
+        self.gesture_long_press = Gtk.GestureLongPress.new()
+        self.gesture_long_press.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.gesture_long_press.set_touch_only(False)
+        self.gesture_long_press.connect('pressed', self.on_gesture_long_press_activated)
+        self.listbox.add_controller(self.gesture_long_press)
 
         self.__gsignals_handlers_ids__ = [
             self.downloader.connect('download-changed', self.update_row),
@@ -297,17 +304,6 @@ class DownloadManager(Gtk.ScrolledWindow):
         ]
 
         self.window.stack.add_named(self, 'download_manager')
-
-    @property
-    def rows(self):
-        children = []
-
-        child = self.listbox.get_first_child()
-        while child:
-            children.append(child)
-            child = child.get_next_sibling()
-
-        return children
 
     def add_actions(self):
         # Delete All action
@@ -320,11 +316,17 @@ class DownloadManager(Gtk.ScrolledWindow):
         delete_selected_action.connect('activate', self.on_menu_delete_selected_clicked)
         self.window.application.add_action(delete_selected_action)
 
-    def enter_selection_mode(self):
+    def enter_selection_mode(self, y=None):
         self.selection_mode = True
         self.selection_mode_count = 0
 
         self.listbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
+
+        if y is not None:
+            selected_row = self.listbox.get_row_at_y(y)
+            self.listbox.select_row(selected_row)
+            selected_row._selected = True
+            self.selection_mode_last_row_index = selected_row.get_index()
 
         self.window.headerbar.get_style_context().add_class('selection-mode')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-download-manager-selection-mode'))
@@ -333,24 +335,15 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.selection_mode = False
 
         self.listbox.set_selection_mode(Gtk.SelectionMode.NONE)
-        for row in self.rows:
+        for row in self.listbox:
             row._selected = False
 
         self.window.headerbar.get_style_context().remove_class('selection-mode')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
 
-    def on_button_pressed(self, _widget, event):
-        row = self.listbox.get_row_at_y(event.y)
-        if not self.selection_mode and event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3 and row is not None:
-            self.enter_selection_mode()
-            self.on_download_row_clicked(None, row)
-            return Gdk.EVENT_STOP
-
-        return Gdk.EVENT_PROPAGATE
-
     def on_download_row_clicked(self, _listbox, row):
-        _ret, state = Gtk.get_current_event_state()
-        modifiers = Gtk.accelerator_get_default_mod_mask()
+        state = self.window.controller_key.get_current_event_state()
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
 
         # Enter selection mode if <Control>+Click or <Shift>+Click is done
         if state & modifiers in (Gdk.ModifierType.CONTROL_MASK, Gdk.ModifierType.SHIFT_MASK) and not self.selection_mode:
@@ -396,31 +389,30 @@ class DownloadManager(Gtk.ScrolledWindow):
         if self.selection_mode_count == 0:
             self.leave_selection_mode()
 
-    def on_gesture_long_press_activated(self, _gesture, _x, _y):
+    def on_gesture_long_press_activated(self, _gesture, _x, y):
         if self.selection_mode:
             # Enter in 'Range' selection mode
             # Long press on a download row then long press on another to select everything in between
             self.selection_mode_range = True
         else:
-            self.enter_selection_mode()
+            self.enter_selection_mode(y)
 
-    def on_key_press_event(self, _widget, event):
-        modifiers = event.get_state() & Gtk.accelerator_get_default_mod_mask()
+    def on_key_pressed(self, _controller, keyval, _keycode, _state):
+        modifiers = _state & Gtk.accelerator_get_default_mod_mask()
 
         # <Control>+Key
         if modifiers == Gdk.ModifierType.CONTROL_MASK:
             # <Control>+A (select all)
-            if event.keyval in (Gdk.KEY_a, Gdk.KEY_A):
+            if keyval in (Gdk.KEY_a, Gdk.KEY_A):
                 self.select_all()
-                return Gdk.EVENT_STOP
 
         return Gdk.EVENT_PROPAGATE
 
     def on_menu_delete_all_clicked(self, _action, _param):
         chapters = []
-        for row in self.rows:
+        for row in self.listbox:
             chapters.append(row.download.chapter)
-            row.destroy()
+            self.listbox.remove(row)
 
         self.downloader.remove(chapters)
 
@@ -430,17 +422,27 @@ class DownloadManager(Gtk.ScrolledWindow):
 
     def on_menu_delete_selected_clicked(self, _action, _param):
         chapters = []
-        for row in self.rows:
+        for row in self.listbox:
             if row._selected:
                 chapters.append(row.download.chapter)
-                row.destroy()
+                self.listbox.remove(row)
 
         self.downloader.remove(chapters)
 
         self.leave_selection_mode()
         self.update_headerbar()
-        if not self.rows:
+        if self.listbox.get_first_child() is None:
+            # No more downloads
             GLib.idle_add(self.stack.set_visible_child_name, 'empty')
+
+    def on_right_click(self, _gesture, _n_press, _x, y):
+        row = self.listbox.get_row_at_y(y)
+        if not self.selection_mode and row is not None:
+            self.enter_selection_mode()
+            self.on_download_row_clicked(None, row)
+            return Gdk.EVENT_STOP
+
+        return Gdk.EVENT_PROPAGATE
 
     def on_selection_changed(self, _flowbox):
         number = len(self.listbox.get_selected_rows())
@@ -460,8 +462,8 @@ class DownloadManager(Gtk.ScrolledWindow):
             self.downloader.start()
 
     def populate(self):
-        for row in self.rows:
-            row.destroy()
+        for row in self.listbox:
+            self.listbox.remove(row)
 
         db_conn = create_db_connection()
         records = db_conn.execute('SELECT * FROM downloads ORDER BY date ASC').fetchall()
@@ -472,20 +474,20 @@ class DownloadManager(Gtk.ScrolledWindow):
                 download = Download.get(record['id'])
 
                 row = DownloadRow(download)
-                self.listbox.add(row)
+                self.listbox.append(row)
 
-            self.listbox.show_all()
             self.stack.set_visible_child_name('list')
         else:
+            # No downloads
             self.stack.set_visible_child_name('empty')
 
     def select_all(self):
         if not self.selection_mode:
             self.enter_selection_mode()
 
-        self.selection_mode_count = len(self.listbox.get_children())
+        self.selection_mode_count = len(list(self.listbox))
 
-        for row in self.listbox.get_children():
+        for row in self.listbox:
             if row._selected:
                 continue
             self.listbox.select_row(row)
@@ -510,33 +512,35 @@ class DownloadManager(Gtk.ScrolledWindow):
         if self.window.page != 'download_manager':
             return
 
-        if self.rows:
+        if self.listbox.get_first_child() is not None:
             self.window.right_button_stack.show()
             if self.downloader.running:
-                self.start_stop_button.get_children()[0].set_from_icon_name('media-playback-stop-symbolic', Gtk.IconSize.BUTTON)
+                self.start_stop_button.get_first_child().set_from_icon_name('media-playback-stop-symbolic')
             else:
-                self.start_stop_button.get_children()[0].set_from_icon_name('media-playback-start-symbolic', Gtk.IconSize.BUTTON)
+                self.start_stop_button.get_first_child().set_from_icon_name('media-playback-start-symbolic')
 
             self.start_stop_button.set_sensitive(True)
             self.start_stop_button.show()
             self.window.menu_button.show()
         else:
+            # No downloads
             self.window.right_button_stack.hide()
             self.window.menu_button.hide()
 
     def update_row(self, _downloader, download, chapter):
         chapter_id = chapter.id if chapter is not None else download.chapter.id
 
-        for row in self.rows:
+        for row in self.listbox:
             if row.download.chapter.id == chapter_id:
                 row.download = download
                 if row.download:
                     row.update()
                 else:
-                    row.destroy()
+                    self.listbox.remove(row)
                 break
 
-        if not self.rows:
+        if self.listbox.get_first_child() is None:
+            # No more downloads
             self.stack.set_visible_child_name('empty')
 
 
@@ -565,40 +569,40 @@ class DownloadRow(Gtk.ListBoxRow):
         label = Gtk.Label(xalign=0)
         label.get_style_context().add_class('download-manager-download-label')
         label.set_valign(Gtk.Align.CENTER)
-        label.set_line_wrap(True)
+        label.set_wrap(True)
         label.set_text(download.chapter.manga.name)
-        hbox.pack_start(label, True, True, 0)
+        hbox.append(label)
 
         # Progress label
         self.progress_label = Gtk.Label(xalign=0)
         self.progress_label.get_style_context().add_class('download-manager-download-sublabel')
         self.progress_label.set_valign(Gtk.Align.CENTER)
-        self.progress_label.set_line_wrap(True)
+        self.progress_label.set_wrap(True)
         text = _(Download.STATUSES[self.download.status]).upper() if self.download.status == 'error' else ''
         if counter:
             text = f'{text} {counter}/{nb_pages}'
         if text:
             self.progress_label.set_text(text)
-        hbox.pack_start(self.progress_label, False, False, 0)
+        hbox.append(self.progress_label)
 
-        vbox.pack_start(hbox, True, True, 0)
+        vbox.append(hbox)
 
         # Chapter
         label = Gtk.Label(xalign=0)
         label.get_style_context().add_class('download-manager-download-sublabel')
         label.set_valign(Gtk.Align.CENTER)
-        label.set_line_wrap(True)
+        label.set_wrap(True)
         label.set_text(download.chapter.title)
-        vbox.pack_start(label, True, True, 0)
+        vbox.append(label)
 
         # Progress bar
         self.progressbar = Gtk.ProgressBar()
         self.progressbar.set_show_text(False)
         if fraction:
             self.progressbar.set_fraction(fraction)
-        vbox.pack_start(self.progressbar, True, True, 0)
+        vbox.append(self.progressbar)
 
-        self.add(vbox)
+        self.set_child(vbox)
 
     def update(self):
         """

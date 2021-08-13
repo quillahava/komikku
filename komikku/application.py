@@ -294,15 +294,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         pix = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/logo.png', 256, 256, True)
         self.app_logo.set_from_pixbuf(pix)
 
-        # Init stack pages
-        self.library = Library(self)
-        self.card = Card(self)
-        self.reader = Reader(self)
-        self.categories_editor = CategoriesEditor(self)
-        self.download_manager = DownloadManager(self)
-        self.explorer = Explorer(self)
-        self.preferences = Preferences(self)
-
         # Window
         self.connect('notify::default-width', self.on_resize)
         self.connect('notify::default-height', self.on_resize)
@@ -316,6 +307,15 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         self.connect('close-request', self.on_application_quit)
         self.headerbar_revealer.connect('notify::child-revealed', self.on_headerbar_toggle)
+
+        # Init stack pages
+        self.library = Library(self)
+        self.card = Card(self)
+        self.reader = Reader(self)
+        self.categories_editor = CategoriesEditor(self)
+        self.download_manager = DownloadManager(self)
+        self.explorer = Explorer(self)
+        self.preferences = Preferences(self)
 
         # Custom CSS
         css_provider = Gtk.CssProvider()
