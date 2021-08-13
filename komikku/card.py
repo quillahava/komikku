@@ -73,7 +73,7 @@ class Card:
 
         self.chapters_list.enter_selection_mode()
 
-        self.window.headerbar.get_style_context().add_class('selection-mode')
+        self.window.headerbar.add_css_class('selection-mode')
         self.viewswitchertitle.set_view_switcher_enabled(False)
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-card-selection-mode'))
 
@@ -99,7 +99,7 @@ class Card:
 
         self.chapters_list.leave_selection_mode()
 
-        self.window.headerbar.get_style_context().remove_class('selection-mode')
+        self.window.headerbar.remove_css_class('selection-mode')
         self.viewswitchertitle.set_view_switcher_enabled(True)
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-card'))
 
@@ -222,7 +222,7 @@ class CategoriesList:
 
         self.stack = self.window.card_categories_stack
         self.listbox = self.window.card_categories_listbox
-        self.listbox.get_style_context().add_class('list-bordered')
+        self.listbox.add_css_class('list-bordered')
 
     def clear(self):
         row = self.listbox.get_first_child()
@@ -282,7 +282,7 @@ class ChaptersList:
         self.window = card.window
 
         self.listbox = self.window.card_chapters_listbox
-        self.listbox.get_style_context().add_class('list-bordered')
+        self.listbox.add_css_class('list-bordered')
         # self.listbox.connect('key-press-event', self.on_key_pressed)
         self.listbox.connect('row-activated', self.on_chapter_row_clicked)
         self.listbox.connect('selected-rows-changed', self.on_selection_changed)
@@ -508,7 +508,7 @@ class ChaptersList:
                     return
 
                 row = Gtk.ListBoxRow()
-                row.get_style_context().add_class('card-chapter-listboxrow')
+                row.add_css_class('card-chapter-listboxrow')
                 row.chapter = chapter
                 row.download = None
                 row._selected = False
@@ -627,7 +627,7 @@ class ChaptersList:
 
         label = Gtk.Label(xalign=0, yalign=1, hexpand=True)
         label.set_valign(Gtk.Align.CENTER)
-        label.get_style_context().add_class('card-chapter-sublabel')
+        label.add_css_class('card-chapter-sublabel')
         text = chapter.date.strftime(_('%m/%d/%Y')) if chapter.date else ''
         if download_status is not None and download_status != 'downloading':
             text = f'{text} - {_(Download.STATUSES[download_status]).upper()}'
@@ -652,7 +652,7 @@ class ChaptersList:
             if not chapter.read:
                 label = Gtk.Label(xalign=0.5, yalign=1)
                 label.set_valign(Gtk.Align.CENTER)
-                label.get_style_context().add_class('card-chapter-sublabel')
+                label.add_css_class('card-chapter-sublabel')
                 if chapter.last_page_read_index is not None:
                     nb_pages = len(chapter.pages) if chapter.pages else '?'
                     label.set_text(f'{chapter.last_page_read_index + 1}/{nb_pages}')
@@ -865,8 +865,8 @@ class InfoGrid:
         self.card = card
         self.window = card.window
 
-        self.window.card_info_box.get_style_context().add_class('card-info-box')
-        self.window.card_info_box.get_style_context().add_class('list-bordered')
+        self.window.card_info_box.add_css_class('card-info-box')
+        self.window.card_info_box.add_css_class('list-bordered')
 
         self.name_label = self.window.card_name_label
         self.cover_image = self.window.card_cover_image

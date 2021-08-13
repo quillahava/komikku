@@ -300,10 +300,10 @@ class Pager(Adw.Carousel, BasePager):
         # In return, we must manage page changes (mouse, 2-fingers swiping with touchpad)
         self.set_allow_scroll_wheel(False)
 
-        self.controller_key = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.BOTH_AXES)
-        self.controller_key.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
-        self.controller_key.connect('scroll', self.on_mouse_scroll)
-        self.add_controller(self.controller_key)
+        self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.BOTH_AXES)
+        self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.controller_scroll.connect('scroll', self.on_mouse_scroll)
+        self.add_controller(self.controller_scroll)
 
         self.connect('notify::orientation', self.resize_pages)
         self.connect('page-changed', self.on_page_changed)

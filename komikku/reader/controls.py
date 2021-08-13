@@ -16,7 +16,7 @@ class Controls:
         self.window = reader.window
 
         self.bottom_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        self.bottom_box.get_style_context().add_class('reader-controls-bottom-box')
+        self.bottom_box.add_css_class('reader-controls-bottom-box')
         self.bottom_box.set_valign(Gtk.Align.END)
 
         # Number of pages

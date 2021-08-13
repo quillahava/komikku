@@ -77,7 +77,7 @@ class Explorer(Gtk.Stack):
         self.servers_page_searchentry.connect('activate', self.on_servers_page_searchentry_activated)
         self.servers_page_searchentry.connect('search-changed', self.search_servers)
 
-        self.servers_page_pinned_listbox.get_style_context().add_class('list-bordered')
+        self.servers_page_pinned_listbox.add_css_class('list-bordered')
         self.servers_page_pinned_listbox.connect('row-activated', self.on_server_clicked)
 
         def _servers_filter(row):
@@ -102,7 +102,7 @@ class Explorer(Gtk.Stack):
                 term in server_lang.lower()
             )
 
-        self.servers_page_listbox.get_style_context().add_class('list-bordered')
+        self.servers_page_listbox.add_css_class('list-bordered')
         self.servers_page_listbox.connect('row-activated', self.on_server_clicked)
         self.servers_page_listbox.set_filter_func(_servers_filter)
 
@@ -113,12 +113,12 @@ class Explorer(Gtk.Stack):
         self.search_page_searchbar.set_key_capture_widget(self.window)
         self.search_page_searchentry.connect('activate', self.search)
 
-        self.search_page_listbox.get_style_context().add_class('list-bordered')
+        self.search_page_listbox.add_css_class('list-bordered')
         self.search_page_listbox.connect('row-activated', self.on_manga_clicked)
 
         # Card page
-        self.card_page_box.get_style_context().add_class('card-info-box')
-        self.card_page_box.get_style_context().add_class('list-bordered')
+        self.card_page_box.add_css_class('card-info-box')
+        self.card_page_box.add_css_class('list-bordered')
         self.card_page_add_read_button = self.window.explorer_card_page_add_read_button
         self.card_page_add_read_button.connect('clicked', self.on_card_page_add_read_button_clicked)
 
@@ -126,7 +126,7 @@ class Explorer(Gtk.Stack):
 
     def build_server_row(self, data):
         row = Gtk.ListBoxRow()
-        row.get_style_context().add_class('explorer-dialog-server-listboxrow')
+        row.add_css_class('explorer-dialog-server-listboxrow')
 
         row.server_data = data
         if 'manga_initial_data' in data:
@@ -156,7 +156,7 @@ class Explorer(Gtk.Stack):
 
         label = Gtk.Label(xalign=0)
         label.set_text(LANGUAGES[data['lang']])
-        label.get_style_context().add_class('subtitle')
+        label.add_css_class('subtitle')
         vbox.append(label)
 
         box.append(vbox)
@@ -484,9 +484,9 @@ class Explorer(Gtk.Stack):
 
         # Add header
         row = Gtk.ListBoxRow(activatable=False)
-        row.get_style_context().add_class('explorer-dialog-server-header-listboxrow')
+        row.add_css_class('explorer-dialog-server-header-listboxrow')
         label = Gtk.Label(xalign=0)
-        label.get_style_context().add_class('subtitle')
+        label.add_css_class('subtitle')
         label.set_text(_('Pinned').upper())
         row.set_child(label)
         self.servers_page_pinned_listbox.append(row)
@@ -518,9 +518,9 @@ class Explorer(Gtk.Stack):
                 last_lang = server_data['lang']
 
                 row = Gtk.ListBoxRow(activatable=False)
-                row.get_style_context().add_class('explorer-dialog-server-header-listboxrow')
+                row.add_css_class('explorer-dialog-server-header-listboxrow')
                 label = Gtk.Label(xalign=0)
-                label.get_style_context().add_class('subtitle')
+                label.add_css_class('subtitle')
                 label.set_text(LANGUAGES[server_data['lang']].upper())
                 row.set_child(label)
                 self.servers_page_listbox.append(row)
@@ -581,7 +581,7 @@ class Explorer(Gtk.Stack):
 
             if most_populars:
                 row = Gtk.ListBoxRow()
-                row.get_style_context().add_class('explorer-dialog-search-section-listboxrow')
+                row.add_css_class('explorer-dialog-search-section-listboxrow')
                 row.manga_data = None
                 box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
                 row.set_child(box)

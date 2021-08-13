@@ -285,7 +285,7 @@ class Library:
         selected_thumbnail._selected = True
         self.selection_mode_last_thumbnail_index = selected_thumbnail.get_index()
 
-        self.window.headerbar.get_style_context().add_class('selection-mode')
+        self.window.headerbar.add_css_class('selection-mode')
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-library-selection-mode'))
 
@@ -306,7 +306,7 @@ class Library:
             refresh_library = param == 'refresh_library'
             self.categories_list.leave_edit_mode(refresh_library=refresh_library)
 
-        self.window.headerbar.get_style_context().remove_class('selection-mode')
+        self.window.headerbar.remove_css_class('selection-mode')
         self.window.left_button.set_icon_name('list-add-symbolic')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu'))
 
@@ -422,9 +422,9 @@ class Library:
 
         self.search_menu_filters[action.props.name.split('.')[-1]] = value
         if sum(self.search_menu_filters.values()):
-            self.search_menu_button.get_style_context().add_class('button-warning')
+            self.search_menu_button.add_css_class('button-warning')
         else:
-            self.search_menu_button.get_style_context().remove_class('button-warning')
+            self.search_menu_button.remove_css_class('button-warning')
 
         self.flowbox.invalidate_filter()
 
@@ -803,7 +803,7 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.overlay.add_overlay(self.drawing_area)
 
         self.name_label = Gtk.Label(xalign=0, hexpand=True)
-        self.name_label.get_style_context().add_class('library-manga-name-label')
+        self.name_label.add_css_class('library-manga-name-label')
         self.name_label.set_valign(Gtk.Align.END)
         self.name_label.set_wrap(True)
         self.overlay.add_overlay(self.name_label)

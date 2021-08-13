@@ -324,7 +324,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         if Gio.Application.get_default().development_mode is True:
-            self.get_style_context().add_class('devel')
+            self.add_css_class('devel')
 
         # Theme (light or dark)
         self.init_theme()
@@ -341,7 +341,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         dialog = Gtk.Dialog.new()
         dialog.set_transient_for(self)
         dialog.set_modal(True)
-        dialog.get_style_context().add_class('solid-csd')
+        dialog.add_css_class('solid-csd')
         dialog.connect('response', on_response)
         dialog.set_title(title)
         dialog.add_buttons(_('Yes'), Gtk.ResponseType.YES, _('Cancel'), Gtk.ResponseType.CANCEL)

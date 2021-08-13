@@ -328,7 +328,7 @@ class DownloadManager(Gtk.ScrolledWindow):
             selected_row._selected = True
             self.selection_mode_last_row_index = selected_row.get_index()
 
-        self.window.headerbar.get_style_context().add_class('selection-mode')
+        self.window.headerbar.add_css_class('selection-mode')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-download-manager-selection-mode'))
 
     def leave_selection_mode(self):
@@ -338,7 +338,7 @@ class DownloadManager(Gtk.ScrolledWindow):
         for row in self.listbox:
             row._selected = False
 
-        self.window.headerbar.get_style_context().remove_class('selection-mode')
+        self.window.headerbar.remove_css_class('selection-mode')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
 
     def on_download_row_clicked(self, _listbox, row):
@@ -550,7 +550,7 @@ class DownloadRow(Gtk.ListBoxRow):
     def __init__(self, download):
         Gtk.ListBoxRow.__init__(self)
 
-        self.get_style_context().add_class('download-manager-download-listboxrow')
+        self.add_css_class('download-manager-download-listboxrow')
 
         self.download = download
 
@@ -567,7 +567,7 @@ class DownloadRow(Gtk.ListBoxRow):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         # Manga
         label = Gtk.Label(xalign=0)
-        label.get_style_context().add_class('download-manager-download-label')
+        label.add_css_class('download-manager-download-label')
         label.set_valign(Gtk.Align.CENTER)
         label.set_wrap(True)
         label.set_text(download.chapter.manga.name)
@@ -575,7 +575,7 @@ class DownloadRow(Gtk.ListBoxRow):
 
         # Progress label
         self.progress_label = Gtk.Label(xalign=0)
-        self.progress_label.get_style_context().add_class('download-manager-download-sublabel')
+        self.progress_label.add_css_class('download-manager-download-sublabel')
         self.progress_label.set_valign(Gtk.Align.CENTER)
         self.progress_label.set_wrap(True)
         text = _(Download.STATUSES[self.download.status]).upper() if self.download.status == 'error' else ''
@@ -589,7 +589,7 @@ class DownloadRow(Gtk.ListBoxRow):
 
         # Chapter
         label = Gtk.Label(xalign=0)
-        label.get_style_context().add_class('download-manager-download-sublabel')
+        label.add_css_class('download-manager-download-sublabel')
         label.set_valign(Gtk.Align.CENTER)
         label.set_wrap(True)
         label.set_text(download.chapter.title)

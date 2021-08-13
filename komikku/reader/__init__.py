@@ -38,7 +38,7 @@ class Reader:
 
         # Page number indicator
         self.page_number_label = Gtk.Label()
-        self.page_number_label.get_style_context().add_class('reader-page-number-indicator-label')
+        self.page_number_label.add_css_class('reader-page-number-indicator-label')
         self.page_number_label.set_valign(Gtk.Align.END)
         self.overlay.add_overlay(self.page_number_label)
 
@@ -243,11 +243,11 @@ class Reader:
     def set_action_background_color(self):
         self.background_color_action.set_state(GLib.Variant('s', self.background_color))
         if self.background_color == 'white':
-            self.pager.get_style_context().remove_class('background-black')
-            self.pager.get_style_context().add_class('background-white')
+            self.pager.remove_css_class('background-black')
+            self.pager.add_css_class('background-white')
         else:
-            self.pager.get_style_context().remove_class('background-white')
-            self.pager.get_style_context().add_class('background-black')
+            self.pager.remove_css_class('background-white')
+            self.pager.add_css_class('background-black')
 
     def set_action_borders_crop(self):
         self.borders_crop_action.set_state(GLib.Variant('b', self.borders_crop))
