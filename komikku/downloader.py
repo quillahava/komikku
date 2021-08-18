@@ -280,7 +280,7 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.start_stop_button = self.window.download_manager_start_stop_button
 
         self.start_stop_button.connect('clicked', self.on_start_stop_button_clicked)
-        self.listbox.connect('row-activated', self.on_download_row_clicked)
+        self.listbox.connect('row-activated', self.on_download_row_activated)
         self.listbox.connect('selected-rows-changed', self.on_selection_changed)
         self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
@@ -288,7 +288,7 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.gesture_click = Gtk.GestureClick.new()
         self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.gesture_click.set_button(3)
-        self.gesture_click.connect('pressed', self.on_right_click)
+        self.gesture_click.connect('pressed', self.on_download_row_right_click)
         self.listbox.add_controller(self.gesture_click)
 
         self.gesture_long_press = Gtk.GestureLongPress.new()
@@ -316,17 +316,11 @@ class DownloadManager(Gtk.ScrolledWindow):
         delete_selected_action.connect('activate', self.on_menu_delete_selected_clicked)
         self.window.application.add_action(delete_selected_action)
 
-    def enter_selection_mode(self, y=None):
+    def enter_selection_mode(self):
         self.selection_mode = True
         self.selection_mode_count = 0
 
         self.listbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
-
-        if y is not None:
-            selected_row = self.listbox.get_row_at_y(y)
-            self.listbox.select_row(selected_row)
-            selected_row._selected = True
-            self.selection_mode_last_row_index = selected_row.get_index()
 
         self.window.headerbar.add_css_class('selection-mode')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-download-manager-selection-mode'))
@@ -341,20 +335,11 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.window.headerbar.remove_css_class('selection-mode')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
 
-    def on_download_row_clicked(self, _listbox, row):
-        state = self.window.controller_key.get_current_event_state()
-        modifiers = state & Gtk.accelerator_get_default_mod_mask()
-
-        # Enter selection mode if <Control>+Click or <Shift>+Click is done
-        if state & modifiers in (Gdk.ModifierType.CONTROL_MASK, Gdk.ModifierType.SHIFT_MASK) and not self.selection_mode:
-            self.enter_selection_mode()
+    def on_download_row_activated(self, _listbox, row):
+        row.grab_focus()
 
         if not self.selection_mode:
             return
-
-        if state & modifiers == Gdk.ModifierType.SHIFT_MASK:
-            # Enter range selection mode if <Shift>+Click is done
-            self.selection_mode_range = True
 
         if self.selection_mode_range and self.selection_mode_last_row_index is not None:
             # Range selection mode: select all rows between last selected row and clicked row
@@ -389,22 +374,44 @@ class DownloadManager(Gtk.ScrolledWindow):
         if self.selection_mode_count == 0:
             self.leave_selection_mode()
 
-    def on_gesture_long_press_activated(self, _gesture, _x, y):
+    def on_download_row_right_click(self, _gesture, _n_press, _x, y):
+        """Allow to enter in selection mode with a right click on a row"""
         if self.selection_mode:
+            return Gdk.EVENT_PROPAGATE
+
+        row = self.listbox.get_row_at_y(y)
+        if not self.selection_mode and row is not None:
+            self.enter_selection_mode()
+            self.on_download_row_activated(None, row)
+            return Gdk.EVENT_STOP
+
+        return Gdk.EVENT_PROPAGATE
+
+    def on_gesture_long_press_activated(self, _gesture, _x, y):
+        """Allow to enter in selection mode with a long press on a row"""
+        if not self.selection_mode:
+            self.enter_selection_mode()
+        else:
             # Enter in 'Range' selection mode
             # Long press on a download row then long press on another to select everything in between
             self.selection_mode_range = True
-        else:
-            self.enter_selection_mode(y)
 
-    def on_key_pressed(self, _controller, keyval, _keycode, _state):
-        modifiers = _state & Gtk.accelerator_get_default_mod_mask()
+        selected_row = self.listbox.get_row_at_y(y)
+        self.on_download_row_activated(None, selected_row)
 
-        # <Control>+Key
-        if modifiers == Gdk.ModifierType.CONTROL_MASK:
-            # <Control>+A (select all)
-            if keyval in (Gdk.KEY_a, Gdk.KEY_A):
-                self.select_all()
+    def on_key_pressed(self, _controller, keyval, _keycode, state):
+        """Allow to enter in selection mode with <SHIFT>+Arrow key"""
+        if self.selection_mode:
+            return Gdk.EVENT_PROPAGATE
+
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
+        if modifiers != Gdk.ModifierType.SHIFT_MASK or keyval not in (Gdk.KEY_Up, Gdk.KEY_KP_Up, Gdk.KEY_Down, Gdk.KEY_KP_Down):
+            return Gdk.EVENT_PROPAGATE
+
+        row = self.listbox.get_focus_child()
+        if row is not None:
+            self.enter_selection_mode()
+            self.on_download_row_activated(None, row)
 
         return Gdk.EVENT_PROPAGATE
 
@@ -434,15 +441,6 @@ class DownloadManager(Gtk.ScrolledWindow):
         if self.listbox.get_first_child() is None:
             # No more downloads
             GLib.idle_add(self.stack.set_visible_child_name, 'empty')
-
-    def on_right_click(self, _gesture, _n_press, _x, y):
-        row = self.listbox.get_row_at_y(y)
-        if not self.selection_mode and row is not None:
-            self.enter_selection_mode()
-            self.on_download_row_clicked(None, row)
-            return Gdk.EVENT_STOP
-
-        return Gdk.EVENT_PROPAGATE
 
     def on_selection_changed(self, _flowbox):
         number = len(self.listbox.get_selected_rows())
