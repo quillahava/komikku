@@ -462,8 +462,11 @@ class DownloadManager(Gtk.ScrolledWindow):
             self.downloader.start()
 
     def populate(self):
-        for row in self.listbox:
+        row = self.listbox.get_first_child()
+        while row:
+            next_row = row.get_next_sibling()
             self.listbox.remove(row)
+            row = next_row
 
         db_conn = create_db_connection()
         records = db_conn.execute('SELECT * FROM downloads ORDER BY date ASC').fetchall()

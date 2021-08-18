@@ -7,6 +7,7 @@ from gettext import gettext as _
 from gettext import ngettext as n_
 import natsort
 import time
+import threading
 
 from gi.repository import Adw
 from gi.repository import Gdk
@@ -162,7 +163,7 @@ class Card:
             self.leave_selection_mode()
 
     def on_resume_read_button_clicked(self, widget):
-        chapters = [child.chapter for child in self.chapters_list.listbox.get_children()]
+        chapters = [row.chapter for row in self.chapters_list.listbox]
         if self.chapters_list.sort_order.endswith('desc'):
             chapters.reverse()
 
@@ -271,6 +272,118 @@ class CategoriesList:
             self.window.library.populate()
 
 
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/card_chapters_list_row.ui')
+class ChaptersListRow(Gtk.ListBoxRow):
+    __gtype_name__ = 'ChaptersListRow'
+
+    title_label = Gtk.Template.Child('title_label')
+    scanlators_label = Gtk.Template.Child('scanlators_label')
+    badge_label = Gtk.Template.Child('badge_label')
+    info_label = Gtk.Template.Child('info_label')
+    download_progress_progressbar = Gtk.Template.Child('download_progress_progressbar')
+    download_stop_button = Gtk.Template.Child('download_stop_button')
+    read_progress_label = Gtk.Template.Child('read_progress_label')
+    menu_button = Gtk.Template.Child('menu_button')
+
+    def __init__(self, card, chapter):
+        Gtk.ListBoxRow.__init__(self)
+
+        self.card = card
+        self.chapter = chapter
+        self.download = Download.get_by_chapter_id(self.chapter.id)
+        self._selected = False
+
+        # Menu button
+        popover = Gtk.PopoverMenu(margin_start=6, margin_end=6, margin_top=6, margin_bottom=6)
+        popover.connect('show', self.show_menu)
+        self.menu_button.set_popover(popover)
+
+        # Download Stop button
+        self.download_stop_button.connect('clicked', self.stop_download)
+
+    def populate(self):
+        # Title
+        self.title_label.remove_css_class('dim-label')
+        self.title_label.remove_css_class('card-chapter-label-started')
+        if self.chapter.read:
+            # Chapter reading ended
+            self.title_label.add_css_class('dim-label')
+        elif self.chapter.last_page_read_index is not None:
+            # Chapter reading started
+            self.title_label.add_css_class('card-chapter-label-started')
+
+        title = self.chapter.title
+        if self.card.manga.name != title and self.card.manga.name in title:
+            title = title.replace(self.card.manga.name, '').strip()
+        self.title_label.set_markup(html_escape(title))
+
+        # Scanlators
+        if self.chapter.scanlators:
+            self.scanlators_label.set_markup(html_escape(', '.join(self.chapter.scanlators)))
+
+        # Recent badge
+        if self.chapter.recent == 1:
+            self.badge_label.set_text(_('New'))
+        else:
+            self.badge_label.hide()
+
+        # Date
+        # Read progess or Download progressbar with stop button
+        download_status = None
+        if self.chapter.downloaded:
+            download_status = 'downloaded'
+        else:
+            if self.download:
+                download_status = self.download.status
+
+        text = self.chapter.date.strftime(_('%m/%d/%Y')) if self.chapter.date else ''
+        if download_status is not None and download_status != 'downloading':
+            text = f'{text} - {_(Download.STATUSES[download_status]).upper()}'
+        self.info_label.set_text(text)
+
+        if download_status == 'downloading':
+            self.info_label.set_hexpand(False)
+            self.download_progress_progressbar.show()
+            self.download_stop_button.show()
+            self.read_progress_label.hide()
+
+            # Set download progress
+            self.download_progress_progressbar.set_fraction(self.download.percent / 100)
+        else:
+            self.info_label.set_hexpand(True)
+            self.download_progress_progressbar.hide()
+            self.download_stop_button.hide()
+
+            # Read progress
+            if not self.chapter.read:
+                if self.chapter.last_page_read_index is not None:
+                    # Nb read / nb pages
+                    nb_pages = len(self.chapter.pages) if self.chapter.pages else '?'
+                    self.read_progress_label.set_text(f'{self.chapter.last_page_read_index + 1}/{nb_pages}')
+                else:
+                    self.read_progress_label.hide()
+            else:
+                self.read_progress_label.hide()
+
+    def show_menu(self, popover):
+        self.card.chapters_list.action_row = self
+
+        menu = Gio.Menu()
+        if self.chapter.pages:
+            menu.append(_('Reset'), 'app.card.reset-chapter')
+        if not self.chapter.downloaded:
+            menu.append(_('Download'), 'app.card.download-chapter')
+        if not self.chapter.read:
+            menu.append(_('Mark as Read'), 'app.card.mark-chapter-read')
+        if self.chapter.read or self.chapter.last_page_read_index is not None:
+            menu.append(_('Mark as Unread'), 'app.card.mark-chapter-unread')
+
+        popover.set_menu_model(menu)
+
+    def stop_download(self, _button):
+        self.card.window.downloader.remove(self.chapter)
+
+
 class ChaptersList:
     selection_mode_range = False
     selection_mode_last_row_index = None
@@ -280,17 +393,28 @@ class ChaptersList:
     def __init__(self, card):
         self.card = card
         self.window = card.window
+        self.action_row = None
 
         self.listbox = self.window.card_chapters_listbox
         self.listbox.add_css_class('list-bordered')
-        # self.listbox.connect('key-press-event', self.on_key_pressed)
-        self.listbox.connect('row-activated', self.on_chapter_row_clicked)
+        self.listbox.connect('row-activated', self.on_chapter_row_activated)
         self.listbox.connect('selected-rows-changed', self.on_selection_changed)
         self.listbox.connect('unselect-all', self.card.leave_selection_mode)
 
-        # self.gesture = Gtk.GestureLongPress.new(self.listbox)
-        # self.gesture.set_touch_only(False)
-        # self.gesture.connect('pressed', self.on_gesture_long_press_activated)
+        # Gestures for multi-selection mode
+        self.window.controller_key.connect('key-pressed', self.on_key_pressed)
+
+        self.gesture_click = Gtk.GestureClick.new()
+        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.gesture_click.set_button(3)
+        self.gesture_click.connect('pressed', self.on_chapter_row_right_click)
+        self.listbox.add_controller(self.gesture_click)
+
+        self.gesture_long_press = Gtk.GestureLongPress.new()
+        self.gesture_long_press.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.gesture_long_press.set_touch_only(False)
+        self.gesture_long_press.connect('pressed', self.on_gesture_long_press_activated)
+        self.listbox.add_controller(self.gesture_long_press)
 
         self.window.downloader.connect('download-changed', self.update_chapter_row)
 
@@ -338,11 +462,11 @@ class ChaptersList:
         self.window.application.add_action(reset_chapter_action)
 
     def clear(self):
-        child = self.listbox.get_first_child()
-        while child:
-            next_child = child.get_next_sibling()
-            self.listbox.remove(child)
-            child = next_child
+        row = self.listbox.get_first_child()
+        while row:
+            next_row = row.get_next_sibling()
+            self.listbox.remove(row)
+            row = next_row
 
     def download_chapter(self, action, param):
         # Add chapter in download queue
@@ -364,30 +488,13 @@ class ChaptersList:
 
     def leave_selection_mode(self):
         self.listbox.set_selection_mode(Gtk.SelectionMode.NONE)
-        for row in self.listbox.get_children():
+        for row in self.listbox:
             row._selected = False
 
-    def on_chapter_row_button_pressed(self, event_box, event):
-        row = event_box.get_parent()
-        if not self.card.selection_mode and event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3 and row is not None:
-            self.card.enter_selection_mode()
-            self.on_chapter_row_clicked(None, row)
-            return Gdk.EVENT_STOP
-
-        return Gdk.EVENT_PROPAGATE
-
-    def on_chapter_row_clicked(self, _listbox, row):
-        state = self.window.controller_key.get_current_event_state()
-        modifiers = Gtk.accelerator_get_default_mod_mask()
-
-        # Enter selection mode if <Control>+Click or <Shift>+Click is done
-        if state & modifiers in (Gdk.ModifierType.CONTROL_MASK, Gdk.ModifierType.SHIFT_MASK) and not self.card.selection_mode:
-            self.card.enter_selection_mode()
+    def on_chapter_row_activated(self, _listbox, row):
+        row.grab_focus()
 
         if self.card.selection_mode:
-            if state & modifiers == Gdk.ModifierType.SHIFT_MASK:
-                # Enter range selection mode if <Shift>+Click is done
-                self.selection_mode_range = True
             if self.selection_mode_range and self.selection_mode_last_row_index is not None:
                 # Range selection mode: select all rows between last selected row and clicked row
                 walk_index = self.selection_mode_last_row_index
@@ -420,63 +527,46 @@ class ChaptersList:
         else:
             self.window.reader.init(self.card.manga, row.chapter)
 
-    def on_gesture_long_press_activated(self, gesture, x, y):
+    def on_chapter_row_right_click(self, _gesture, _n_press, _x, y):
+        """Allow to enter in selection mode with a right click on a row"""
         if self.card.selection_mode:
+            return Gdk.EVENT_PROPAGATE
+
+        row = self.listbox.get_row_at_y(y)
+        if row is not None:
+            self.card.enter_selection_mode()
+            self.on_chapter_row_activated(None, row)
+            return Gdk.EVENT_STOP
+
+        return Gdk.EVENT_PROPAGATE
+
+    def on_gesture_long_press_activated(self, gesture, _x, y):
+        """Allow to enter in selection mode with a long press on a row"""
+        if not self.card.selection_mode:
+            self.card.enter_selection_mode()
+        else:
             # Enter in 'Range' selection mode
             # Long press on a chapter row then long press on another to select everything in between
             self.selection_mode_range = True
-        else:
+
+        selected_row = self.listbox.get_row_at_y(y)
+        self.on_chapter_row_activated(None, selected_row)
+
+    def on_key_pressed(self, _controller, keyval, _keycode, state):
+        """Allow to enter in selection mode with <SHIFT>+Arrow key"""
+        if self.card.selection_mode:
+            return Gdk.EVENT_PROPAGATE
+
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
+        if modifiers != Gdk.ModifierType.SHIFT_MASK or keyval not in (Gdk.KEY_Up, Gdk.KEY_KP_Up, Gdk.KEY_Down, Gdk.KEY_KP_Down):
+            return Gdk.EVENT_PROPAGATE
+
+        row = self.listbox.get_focus_child()
+        if row is not None:
             self.card.enter_selection_mode()
+            self.on_chapter_row_activated(None, row)
 
-    def on_key_pressed(self, _widget, event):
-        if event.keyval not in (Gdk.KEY_Up, Gdk.KEY_KP_Up, Gdk.KEY_Down, Gdk.KEY_KP_Down) or not self.card.selection_mode:
-            return Gdk.EVENT_STOP
-
-        modifiers = Gtk.accelerator_get_default_mod_mask()
-        is_single = event.state & modifiers != Gdk.ModifierType.SHIFT_MASK
-        walk_index = self.selection_mode_last_row_index
-        walk_row = None
-
-        if event.keyval in (Gdk.KEY_Up, Gdk.KEY_KP_Up):
-            walk_direction = -1
-        elif event.keyval in (Gdk.KEY_Down, Gdk.KEY_KP_Down):
-            walk_direction = 1
-
-        # Determine the row to select
-        if is_single or self.selection_mode_last_walk_direction in (None, walk_direction):
-            walk_index += walk_direction
-        self.selection_mode_last_walk_direction = walk_direction
-
-        walk_row = self.listbox.get_row_at_index(walk_index)
-        if walk_row:
-            self.selection_mode_last_row_index = walk_index
-        elif is_single:
-            # Out of bounds, but since we only mark that row it's fine
-            # also we might be changing from multi to single row selection and needed to unselect previously selected rows
-            walk_row = self.listbox.get_row_at_index(self.selection_mode_last_row_index)
-        else:
-            return Gdk.EVENT_STOP
-
-        # Actual selection
-        if is_single:
-            self.listbox.select_row(walk_row)
-            walk_row._selected = True
-
-            # Unselect previously selected rows in multi selection (with SHIFT modifier)
-            for row in self.listbox.get_selected_rows():
-                if row is not walk_row:
-                    self.listbox.unselect_row(row)
-                    row._selected = False
-
-            self.selection_mode_last_walk_direction = None
-        elif walk_row._selected:
-            self.listbox.unselect_row(walk_row)
-            walk_row._selected = False
-        else:
-            self.listbox.select_row(walk_row)
-            walk_row._selected = True
-
-        return Gdk.EVENT_STOP
+        return Gdk.EVENT_PROPAGATE
 
     def on_selection_changed(self, _flowbox):
         number = len(self.listbox.get_selected_rows())
@@ -501,164 +591,39 @@ class ChaptersList:
         if not self.card.manga.chapters:
             return
 
-        def add_chapters_rows():
+        def run():
+            rows = []
             for chapter in self.card.manga.chapters:
                 if self.populate_generator_stop_flag:
                     self.window.activity_indicator.stop()
                     return
 
-                row = Gtk.ListBoxRow()
-                row.add_css_class('card-chapter-listboxrow')
-                row.chapter = chapter
-                row.download = None
-                row._selected = False
-                self.populate_chapter_row(row)
-                self.listbox.append(row)
-                yield True
+                row = ChaptersListRow(self.card, chapter)
+                row.populate()
+                rows.append(row)
 
+            GLib.idle_add(append_rows, rows)
+
+        def append_rows(rows):
+            for row in rows:
+                self.listbox.append(row)
+
+            self.window.activity_indicator.stop()
+            self.card.stack.get_page(self.card.stack.get_child_by_name('chapters')).set_needs_attention(False)
+            self.card.set_actions_enabled(True)
             self.listbox.set_sort_func(self.sort_func)
             self.listbox.invalidate_sort()
-            self.card.set_actions_enabled(True)
             self.card.resume_read_button.set_sensitive(True)
-            self.window.activity_indicator.stop()
 
-        def run_generator(func):
-            self.window.activity_indicator.start()
-            self.card.set_actions_enabled(False)
-
-            gen = func()
-            GLib.idle_add(lambda: next(gen, False), priority=GLib.PRIORITY_DEFAULT_IDLE)
-
+        self.window.activity_indicator.start()
+        self.card.stack.get_page(self.card.stack.get_child_by_name('chapters')).set_needs_attention(True)
+        self.card.set_actions_enabled(False)
         self.populate_generator_stop_flag = False
         self.listbox.set_sort_func(None)
 
-        run_generator(add_chapters_rows)
-
-    def populate_chapter_row(self, row):
-        # event_box = Gtk.EventBox.new()
-        # event_box.connect('button-press-event', self.on_chapter_row_button_pressed)
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-        # event_box.add(box)
-        # row.add(event_box)
-        row.set_child(box)
-
-        chapter = row.chapter
-
-        #
-        # Title, scanlators, action button
-        #
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-
-        # Title
-        label = Gtk.Label(xalign=0, hexpand=True)
-        label.set_valign(Gtk.Align.CENTER)
-        ctx = label.get_style_context()
-        ctx.add_class('card-chapter-label')
-        if chapter.read:
-            # Chapter reading ended
-            ctx.add_class('dim-label')
-        elif chapter.last_page_read_index is not None:
-            # Chapter reading started
-            ctx.add_class('card-chapter-label-started')
-        label.set_wrap(True)
-        title = chapter.title
-        if self.card.manga.name != title and self.card.manga.name in title:
-            title = title.replace(self.card.manga.name, '').strip()
-        label.set_markup(html_escape(title))
-
-        if chapter.scanlators:
-            # Vertical box for title and scanlators
-            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, hexpand=True)
-
-            # Add title
-            vbox.append(label)
-
-            # Scanlators
-            label = Gtk.Label(xalign=0)
-            label.set_valign(Gtk.Align.CENTER)
-            ctx = label.get_style_context()
-            ctx.add_class('dim-label')
-            ctx.add_class('card-chapter-sublabel')
-            label.set_wrap(True)
-            label.set_markup(html_escape(', '.join(chapter.scanlators)))
-            vbox.append(label)
-
-            hbox.append(vbox)
-        else:
-            # Title only
-            hbox.append(label)
-
-        # Action button
-        button = Gtk.MenuButton.new()
-        button.set_icon_name('view-more-symbolic')
-        button.props.has_frame = False
-        popover = Gtk.PopoverMenu(margin_start=6, margin_end=6, margin_top=6, margin_bottom=6)
-        popover.connect('show', self.show_chapter_menu, row)
-        button.set_popover(popover)
-
-        hbox.append(button)
-
-        box.append(hbox)
-
-        #
-        # Recent badge, date, download status, page counter
-        #
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-
-        # Recent badge
-        if chapter.recent == 1:
-            label = Gtk.Label(xalign=0, yalign=1)
-            label.set_valign(Gtk.Align.CENTER)
-            ctx = label.get_style_context()
-            ctx.add_class('card-chapter-sublabel')
-            ctx.add_class('badge')
-            label.set_text(_('New'))
-            hbox.append(label)
-
-        # Date + Download status (text or progress bar)
-        download_status = None
-        if chapter.downloaded:
-            download_status = 'downloaded'
-        else:
-            if row.download is None:
-                row.download = Download.get_by_chapter_id(chapter.id)
-            if row.download:
-                download_status = row.download.status
-
-        label = Gtk.Label(xalign=0, yalign=1, hexpand=True)
-        label.set_valign(Gtk.Align.CENTER)
-        label.add_css_class('card-chapter-sublabel')
-        text = chapter.date.strftime(_('%m/%d/%Y')) if chapter.date else ''
-        if download_status is not None and download_status != 'downloading':
-            text = f'{text} - {_(Download.STATUSES[download_status]).upper()}'
-        label.set_text(text)
-
-        if download_status == 'downloading':
-            hbox.append(label)
-
-            # Download progress
-            progressbar = Gtk.ProgressBar()
-            progressbar.set_valign(Gtk.Align.CENTER)
-            progressbar.set_fraction(row.download.percent / 100)
-            hbox.append(progressbar)
-
-            stop_button = Gtk.Button.new_from_icon_name('media-playback-stop-symbolic')
-            stop_button.connect('clicked', lambda button, chapter: self.window.downloader.remove(chapter), chapter)
-            hbox.append(stop_button)
-        else:
-            hbox.append(label)
-
-            # Counter: nb read / nb pages
-            if not chapter.read:
-                label = Gtk.Label(xalign=0.5, yalign=1)
-                label.set_valign(Gtk.Align.CENTER)
-                label.add_css_class('card-chapter-sublabel')
-                if chapter.last_page_read_index is not None:
-                    nb_pages = len(chapter.pages) if chapter.pages else '?'
-                    label.set_text(f'{chapter.last_page_read_index + 1}/{nb_pages}')
-                hbox.append(label)
-
-        box.append(hbox)
+        thread = threading.Thread(target=run)
+        thread.daemon = True
+        thread.start()
 
     def refresh(self, chapters):
         for chapter in chapters:
@@ -669,7 +634,7 @@ class ChaptersList:
 
         chapter.reset()
 
-        self.populate_chapter_row(self.action_row)
+        self.action_row.populate()
 
     def reset_selected_chapters(self, action, param):
         for row in self.listbox.get_selected_rows():
@@ -677,7 +642,7 @@ class ChaptersList:
 
             chapter.reset()
 
-            self.populate_chapter_row(row)
+            row.populate()
 
         self.card.leave_selection_mode()
 
@@ -689,7 +654,7 @@ class ChaptersList:
             self.card.enter_selection_mode()
 
         def select_chapters_rows():
-            for row in self.listbox.get_children():
+            for row in self.listbox:
                 if row._selected:
                     continue
 
@@ -713,22 +678,6 @@ class ChaptersList:
         self.card.sort_order_action.set_state(GLib.Variant('s', self.sort_order))
         if invalidate:
             self.listbox.invalidate_sort()
-
-    def show_chapter_menu(self, popover, row):
-        chapter = row.chapter
-        self.action_row = row
-
-        menu = Gio.Menu()
-        if chapter.pages:
-            menu.append(_('Reset'), 'app.card.reset-chapter')
-        if not chapter.downloaded:
-            menu.append(_('Download'), 'app.card.download-chapter')
-        if not chapter.read:
-            menu.append(_('Mark as Read'), 'app.card.mark-chapter-read')
-        if chapter.read or chapter.last_page_read_index is not None:
-            menu.append(_('Mark as Unread'), 'app.card.mark-chapter-unread')
-
-        popover.set_menu_model(menu)
 
     def sort_func(self, child1, child2):
         """
@@ -806,7 +755,7 @@ class ChaptersList:
                     chapter.read = read
                     chapter.recent = False
 
-                    self.populate_chapter_row(row)
+                    row.populate()
                     yield True
 
                 self.card.leave_selection_mode()
@@ -836,7 +785,7 @@ class ChaptersList:
         )
 
         if chapter.update(data):
-            self.populate_chapter_row(self.action_row)
+            self.action_row.populate()
 
     def update_chapter_row(self, downloader=None, download=None, chapter=None):
         """
@@ -850,14 +799,12 @@ class ChaptersList:
         if self.card.window.page not in ('card', 'reader') or self.card.manga.id != chapter.manga_id:
             return
 
-        row = self.listbox.get_first_child()
-        while row:
+        for row in self.listbox:
             if row.chapter.id == chapter.id:
                 row.chapter = chapter
                 row.download = download
-                self.populate_chapter_row(row)
+                row.populate()
                 break
-            row = row.get_next_sibling()
 
 
 class InfoGrid:
