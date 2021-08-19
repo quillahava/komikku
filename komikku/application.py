@@ -570,6 +570,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
             self.library.select_all()
         elif self.page == 'card':
             self.card.chapters_list.select_all()
+        elif self.page == 'download_manager':
+            self.download_manager.select_all()
 
     def set_fullscreen(self):
         if not self.is_fullscreen():

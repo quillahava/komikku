@@ -76,14 +76,17 @@ class Library:
         # Mangas Flowbox
         self.flowbox = self.window.library_flowbox
         self.flowbox.set_valign(Gtk.Align.START)
-        self.flowbox.connect('child-activated', self.on_manga_clicked)
+        self.flowbox.connect('child-activated', self.on_manga_thumbnail_activated)
         self.flowbox.connect('selected-children-changed', self.update_subtitle)
         self.flowbox.connect('unselect-all', self.leave_selection_mode)
+
+        # Gestures for multi-selection mode
+        self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
         self.gesture_click = Gtk.GestureClick.new()
         self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.gesture_click.set_button(3)
-        self.gesture_click.connect('released', self.on_right_click)
+        self.gesture_click.connect('released', self.on_manga_thumbnail_right_click)
         self.flowbox.add_controller(self.gesture_click)
 
         self.gesture_long_press = Gtk.GestureLongPress.new()
@@ -275,16 +278,6 @@ class Library:
 
         self.flowbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
 
-        if selected_thumbnail is None:
-            if x is not None and y is not None:
-                selected_thumbnail = self.flowbox.get_child_at_pos(x, y)
-            else:
-                selected_thumbnail = self.flowbox.get_child_at_index(0)
-
-        self.flowbox.select_child(selected_thumbnail)
-        selected_thumbnail._selected = True
-        self.selection_mode_last_thumbnail_index = selected_thumbnail.get_index()
-
         self.window.headerbar.add_css_class('selection-mode')
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-library-selection-mode'))
@@ -297,10 +290,8 @@ class Library:
             self.window.right_button_stack.show()
 
         self.flowbox.set_selection_mode(Gtk.SelectionMode.NONE)
-        thumbnail = self.flowbox.get_first_child()
-        while thumbnail:
+        for thumbnail in self.flowbox:
             thumbnail._selected = False
-            thumbnail = thumbnail.get_next_sibling()
 
         if self.categories_list.edit_mode:
             refresh_library = param == 'refresh_library'
@@ -318,16 +309,38 @@ class Library:
             self.categories_list.leave_edit_mode()
 
     def on_gesture_long_press_activated(self, _gesture, x, y):
-        if self.selection_mode:
+        """Allow to enter in selection mode with a long press on a thumbnail"""
+        if not self.selection_mode:
+            self.enter_selection_mode()
+        else:
             # Enter in 'Range' selection mode
             # Long press on a manga then long press on another to select everything in between
             self.selection_mode_range = True
 
-            selected_thumbnail = self.flowbox.get_child_at_pos(x, y)
-            self.flowbox.select_child(selected_thumbnail)
-            self.on_manga_clicked(self.flowbox, selected_thumbnail)
-        else:
-            self.enter_selection_mode(x, y)
+        selected_thumbnail = self.flowbox.get_child_at_pos(x, y)
+        self.on_manga_thumbnail_activated(None, selected_thumbnail)
+
+    def on_key_pressed(self, _controller, keyval, _keycode, state):
+        """Allow to enter in selection mode with <SHIFT>+Arrow key"""
+        if self.selection_mode:
+            return Gdk.EVENT_PROPAGATE
+
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
+        arrow_keys = (
+            Gdk.KEY_Up, Gdk.KEY_KP_Up,
+            Gdk.KEY_Down, Gdk.KEY_KP_Down,
+            Gdk.KEY_Left, Gdk.KEY_KP_Left,
+            Gdk.KEY_Right, Gdk.KEY_KP_Right
+        )
+        if modifiers != Gdk.ModifierType.SHIFT_MASK or keyval not in arrow_keys:
+            return Gdk.EVENT_PROPAGATE
+
+        thumbnail = self.flowbox.get_focus_child()
+        if thumbnail is not None:
+            self.enter_selection_mode()
+            self.on_manga_thumbnail_activated(None, thumbnail)
+
+        return Gdk.EVENT_PROPAGATE
 
     def on_manga_added(self, manga):
         """Called from 'Add dialog' when user clicks on [+] button"""
@@ -341,19 +354,10 @@ class Library:
         else:
             self.add_manga(manga, position=0)
 
-    def on_manga_clicked(self, _flowbox, thumbnail):
-        state = self.window.controller_key.get_current_event_state()
-        modifiers = state & Gtk.accelerator_get_default_mod_mask()
-
-        # Enter selection mode if <Control>+Click or <Shift>+Click is done
-        if modifiers in (Gdk.ModifierType.CONTROL_MASK, Gdk.ModifierType.SHIFT_MASK) and not self.selection_mode:
-            self.enter_selection_mode(selected_thumbnail=thumbnail)
-            return Gdk.EVENT_PROPAGATE
+    def on_manga_thumbnail_activated(self, _flowbox, thumbnail):
+        thumbnail.grab_focus()
 
         if self.selection_mode:
-            if modifiers == Gdk.ModifierType.SHIFT_MASK:
-                # Enter range selection mode if <Shift>+Click is done
-                self.selection_mode_range = True
             if self.selection_mode_range and self.selection_mode_last_thumbnail_index is not None:
                 # Range selection mode: select all mangas between last selected manga and clicked manga
                 walk_index = self.selection_mode_last_thumbnail_index
@@ -373,10 +377,11 @@ class Library:
             self.selection_mode_range = False
 
             if thumbnail._selected:
-                self.selection_mode_last_thumbnail_index = None
                 self.flowbox.unselect_child(thumbnail)
+                self.selection_mode_last_thumbnail_index = None
                 thumbnail._selected = False
             else:
+                self.flowbox.select_child(thumbnail)
                 self.selection_mode_last_thumbnail_index = thumbnail.get_index()
                 thumbnail._selected = True
 
@@ -384,6 +389,19 @@ class Library:
                 self.leave_selection_mode()
         else:
             self.window.card.init(thumbnail.manga)
+
+    def on_manga_thumbnail_right_click(self, _gesture, _n_press, x, y):
+        """Allow to enter in selection mode with a right click on a thumbnail"""
+        if self.selection_mode:
+            return Gdk.EVENT_PROPAGATE
+
+        thumbnail = self.flowbox.get_child_at_pos(x, y)
+        if thumbnail is not None:
+            self.enter_selection_mode()
+            self.on_manga_thumbnail_activated(None, thumbnail)
+            return Gdk.EVENT_STOP
+
+        return Gdk.EVENT_PROPAGATE
 
     def on_manga_deleted(self, manga):
         # Remove manga thumbnail in flowbox
@@ -402,19 +420,11 @@ class Library:
             thumbnail.update(manga)
             break
 
-    def on_right_click(self, _gesture, _n_press, x, y):
-        thumbnail = self.flowbox.get_child_at_pos(x, y)
-        if not self.selection_mode and thumbnail is not None:
-            self.enter_selection_mode(selected_thumbnail=thumbnail)
-            return Gdk.EVENT_STOP
-
-        return Gdk.EVENT_PROPAGATE
-
     def on_search_entry_activated(self, _entry):
         """Open first manga in search when <Enter> is pressed"""
         thumbnail = self.flowbox.get_child_at_pos(0, 0)
         if thumbnail:
-            self.on_manga_clicked(self.flowbox, thumbnail)
+            self.on_manga_thumbnail_activated(None, thumbnail)
 
     def on_search_menu_action_changed(self, action, variant):
         value = variant.get_boolean()

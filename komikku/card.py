@@ -387,7 +387,6 @@ class ChaptersListRow(Gtk.ListBoxRow):
 class ChaptersList:
     selection_mode_range = False
     selection_mode_last_row_index = None
-    selection_mode_last_walk_direction = None
     populate_generator_stop_flag = False
 
     def __init__(self, card):
@@ -482,7 +481,6 @@ class ChaptersList:
 
     def enter_selection_mode(self):
         self.selection_mode_last_row_index = None
-        self.selection_mode_last_walk_direction = None
 
         self.listbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
 

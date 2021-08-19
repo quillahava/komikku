@@ -259,7 +259,6 @@ class DownloadManager(Gtk.ScrolledWindow):
     __gsignals_handlers_ids__ = None
 
     selection_mode = False
-    selection_mode_count = 0
     selection_mode_range = False
     selection_mode_last_row_index = None
 
@@ -318,7 +317,6 @@ class DownloadManager(Gtk.ScrolledWindow):
 
     def enter_selection_mode(self):
         self.selection_mode = True
-        self.selection_mode_count = 0
 
         self.listbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
 
@@ -349,7 +347,6 @@ class DownloadManager(Gtk.ScrolledWindow):
             while walk_index != last_index:
                 walk_row = self.listbox.get_row_at_index(walk_index)
                 if walk_row and not walk_row._selected:
-                    self.selection_mode_count += 1
                     self.listbox.select_row(walk_row)
                     walk_row._selected = True
 
@@ -361,17 +358,15 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.selection_mode_range = False
 
         if row._selected:
-            self.selection_mode_count -= 1
             self.listbox.unselect_row(row)
             self.selection_mode_last_row_index = None
             row._selected = False
         else:
-            self.selection_mode_count += 1
             self.listbox.select_row(row)
             self.selection_mode_last_row_index = row.get_index()
             row._selected = True
 
-        if self.selection_mode_count == 0:
+        if len(self.listbox.get_selected_rows()) == 0:
             self.leave_selection_mode()
 
     def on_download_row_right_click(self, _gesture, _n_press, _x, y):
@@ -485,8 +480,6 @@ class DownloadManager(Gtk.ScrolledWindow):
     def select_all(self):
         if not self.selection_mode:
             self.enter_selection_mode()
-
-        self.selection_mode_count = len(list(self.listbox))
 
         for row in self.listbox:
             if row._selected:
