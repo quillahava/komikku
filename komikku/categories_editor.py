@@ -36,17 +36,6 @@ class CategoriesEditor(Adw.Clamp):
 
         self.window.stack.add_named(self, 'categories_editor')
 
-    @property
-    def rows(self):
-        children = []
-
-        child = self.listbox.get_first_child()
-        while child:
-            children.append(child)
-            child = child.get_next_sibling()
-
-        return children
-
     def add_category(self, _button):
         label = self.add_entry.get_text().strip()
         if not label:
@@ -73,7 +62,8 @@ class CategoriesEditor(Adw.Clamp):
             row.category.delete()
             row.destroy()
 
-            if not self.rows:
+            if not self.listbox.get_first_child():
+                # No more categories
                 self.stack.set_visible_child_name('empty')
 
             # If category is current selected category in Library, reset selected category
@@ -100,8 +90,12 @@ class CategoriesEditor(Adw.Clamp):
         self.edited_row = row
 
     def populate(self):
-        for row in self.rows:
+        # Clear
+        row = self.listbox.get_first_child()
+        while row:
+            next_row = row.get_next_sibling()
             self.listbox.remove(row)
+            row = next_row
 
         db_conn = create_db_connection()
         records = db_conn.execute('SELECT * FROM categories ORDER BY label ASC').fetchall()

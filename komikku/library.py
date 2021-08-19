@@ -445,10 +445,8 @@ class Library:
             return
 
         self.flowbox.set_min_children_per_line(self.thumbnails_size[2])
-        thumbnail = self.flowbox.get_first_child()
-        while thumbnail:
+        for thumbnail in self.flowbox:
             thumbnail.resize(*self.thumbnails_size[:2])
-            thumbnail = thumbnail.get_next_sibling()
 
     def open_categories_editor(self, action, param):
         self.window.categories_editor.show()
@@ -511,12 +509,10 @@ class Library:
         if not self.selection_mode:
             return
 
-        thumbnail = self.flowbox.get_first_child()
-        while thumbnail:
+        for thumbnail in self.flowbox:
             if not thumbnail._selected and not thumbnail._filtered:
                 thumbnail._selected = True
                 self.flowbox.select_child(thumbnail)
-            thumbnail = thumbnail.get_next_sibling()
 
     def show(self, invalidate_sort=False):
         self.window.left_button.set_icon_name('list-add-symbolic')
@@ -673,8 +669,7 @@ class CategoriesList:
             for thumbnail in self.library.flowbox.get_selected_children():
                 manga_ids.append(thumbnail.manga.id)
 
-            row = self.listbox.get_first_child()
-            while row:
+            for row in self.listbox:
                 if row.get_activatable_widget().get_active():
                     if Settings.get_default().selected_category == row.category.id:
                         # No insert, we are sure that category is already associated with all selected manga
@@ -696,8 +691,6 @@ class CategoriesList:
                             manga_id=manga_id,
                             category_id=row.category.id,
                         ))
-
-                row = row.get_next_sibling()
 
             db_conn = create_db_connection()
             with db_conn:
