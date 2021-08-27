@@ -59,13 +59,13 @@ CREDITS = dict(
 )
 
 
-class Application(Gtk.Application):
+class Application(Adw.Application):
     application_id = 'info.febvre.Komikku'
     development_mode = False
     logger = None
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, application_id=self.application_id, flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE, **kwargs)
+    def __init__(self):
+        super().__init__(application_id=self.application_id, flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
 
         self.window = None
 
@@ -73,22 +73,10 @@ class Application(Gtk.Application):
             format='%(asctime)s | %(levelname)s | %(name)s | %(message)s', datefmt='%d-%m-%y %H:%M:%S',
             level=logging.DEBUG if self.development_mode else logging.INFO
         )
-
         self.logger = logging.getLogger('komikku')
 
-    def add_actions(self):
-        self.window.add_actions()
-
-    def add_accelerators(self):
-        self.window.add_accelerators()
-
     def do_activate(self):
-        if not self.window:
-            self.window = ApplicationWindow(application=self, title='Komikku', icon_name=self.application_id)
-
-            self.add_accelerators()
-            self.add_actions()
-
+        self.window = ApplicationWindow(application=self, title='Komikku', icon_name=self.application_id)
         self.window.present()
 
     def do_command_line(self, command_line):
@@ -125,12 +113,11 @@ class Application(Gtk.Application):
         return 0
 
     def do_startup(self):
-        Gtk.Application.do_startup(self)
+        Adw.Application.do_startup(self)
 
         GLib.set_application_name(_('Komikku'))
         GLib.set_prgname(self.application_id)
 
-        Adw.init()
         Notify.init(_('Komikku'))
 
 
@@ -143,7 +130,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
     network_available = False
     page = None
 
-    _prev_size = None
+    size = None
 
     headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
     headerbar = Gtk.Template.Child('headerbar')
@@ -157,11 +144,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
     stack = Gtk.Template.Child('stack')
 
     library_flap_reveal_button = Gtk.Template.Child('library_flap_reveal_button')
+    library_subtitle_label = Gtk.Template.Child('library_subtitle_label')
     library_search_button = Gtk.Template.Child('library_search_button')
     library_searchbar = Gtk.Template.Child('library_searchbar')
     library_search_menu_button = Gtk.Template.Child('library_search_menu_button')
     library_searchentry = Gtk.Template.Child('library_searchentry')
-    library_subtitle_label = Gtk.Template.Child('library_subtitle_label')
     library_flap = Gtk.Template.Child('library_flap')
     library_stack = Gtk.Template.Child('library_stack')
     library_categories_stack = Gtk.Template.Child('library_categories_stack')
@@ -237,14 +224,16 @@ class ApplicationWindow(Adw.ApplicationWindow):
         Gio.NetworkMonitor.get_default().emit('network-changed', None)
 
         self.assemble_window()
+        self.add_accelerators()
+        self.add_actions()
 
     def add_accelerators(self):
-        self.application.set_accels_for_action('app.add', ['<Control>plus'])
-        self.application.set_accels_for_action('app.enter-search-mode', ['<Control>f'])
+        self.application.set_accels_for_action('app.add', ['<Primary>plus'])
+        self.application.set_accels_for_action('app.enter-search-mode', ['<Primary>f'])
         self.application.set_accels_for_action('app.fullscreen', ['F11'])
-        self.application.set_accels_for_action('app.select-all', ['<Control>a'])
-        self.application.set_accels_for_action('app.preferences', ['<Control>p'])
-        self.application.set_accels_for_action('app.shortcuts', ['<Control>question'])
+        self.application.set_accels_for_action('app.select-all', ['<Primary>a'])
+        self.application.set_accels_for_action('app.preferences', ['<Primary>p'])
+        self.application.set_accels_for_action('app.shortcuts', ['<Primary>question'])
 
         self.reader.add_accelerators()
 
@@ -535,14 +524,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
     def on_resize(self, _window, allocation):
         size = dict(
             width=self.get_size(Gtk.Orientation.HORIZONTAL),
-            height=self.get_size(Gtk.Orientation.VERTICAL),
+            height=self.get_size(Gtk.Orientation.VERTICAL)
         )
-        if self._prev_size and self._prev_size['width'] == size['width'] and self._prev_size['height'] == size['height']:
+        if self.size and self.size['width'] == size['width'] and self.size['height'] == size['height']:
             return
 
-        self._prev_size = size
+        self.size = size
 
-        GLib.idle_add(self.library.on_resize)
+        self.library.on_resize()
         if self.page == 'reader':
             self.reader.on_resize()
 

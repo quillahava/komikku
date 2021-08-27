@@ -13,8 +13,11 @@ from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
+from gi.repository import Graphene
+from gi.repository import Gsk
 from gi.repository import Gtk
 from gi.repository.GdkPixbuf import Pixbuf
+from gi.repository.GdkPixbuf import PixbufAnimation
 
 from komikku.models import Category
 from komikku.models import create_db_connection
@@ -23,9 +26,7 @@ from komikku.models import insert_rows
 from komikku.models import Manga
 from komikku.models import Settings
 from komikku.models import update_rows
-from komikku.utils import create_cairo_surface_from_pixbuf
-from komikku.utils import create_paintable_from_file
-from komikku.utils import create_paintable_from_resource
+from komikku.servers import get_file_mime_type
 
 
 class Library:
@@ -99,24 +100,38 @@ class Library:
 
         def _filter(thumbnail):
             manga = thumbnail.manga
-            term = self.search_entry.get_text().lower()
+            selected_category = Settings.get_default().selected_category
 
-            # Search in name
-            ret = term in manga.name.lower()
+            if selected_category != 0:
+                if selected_category == -1:
+                    # Uncategorized
+                    ret = not manga.categories
+                else:
+                    # Categorized
+                    ret = selected_category in manga.categories
+            else:
+                # All
+                ret = True
 
-            # Search in server name
-            ret = ret or term in manga.server.name.lower()
+            if ret:
+                term = self.search_entry.get_text().lower()
 
-            # Search in genres (exact match)
-            ret = ret or term in [genre.lower() for genre in manga.genres]
+                # Search in name
+                ret = term in manga.name.lower()
 
-            # Optional menu filters
-            if ret and self.search_menu_filters.get('downloaded'):
-                ret = manga.nb_downloaded_chapters > 0
-            if ret and self.search_menu_filters.get('unread'):
-                ret = manga.nb_unread_chapters > 0
-            if ret and self.search_menu_filters.get('recents'):
-                ret = manga.nb_recent_chapters > 0
+                # Search in server name
+                ret = ret or term in manga.server.name.lower()
+
+                # Search in genres (exact match)
+                ret = ret or term in [genre.lower() for genre in manga.genres]
+
+                # Optional menu filters
+                if ret and self.search_menu_filters.get('downloaded'):
+                    ret = manga.nb_downloaded_chapters > 0
+                if ret and self.search_menu_filters.get('unread'):
+                    ret = manga.nb_unread_chapters > 0
+                if ret and self.search_menu_filters.get('recents'):
+                    ret = manga.nb_recent_chapters > 0
 
             if not ret and thumbnail._selected:
                 # Unselect thumbnail if it's selected
@@ -211,20 +226,24 @@ class Library:
         self.flowbox.insert(thumbnail, position)
 
     def compute_thumbnails_size(self):
-        default_width = 180
-        default_height = 250
+        default_width = Thumbnail.default_width
+        default_height = Thumbnail.default_height
+        padding = Thumbnail.padding
 
         container_width = self.window.get_size(Gtk.Orientation.HORIZONTAL)
-        if not container_width:
-            container_width = self.window.measure(Gtk.Orientation.HORIZONTAL, -1)[0]
+        if container_width == 0:
+            container_width = Settings.get_default().window_size[0]
 
-        padding = 6  # flowbox children padding is set via CSS
         child_width = default_width + padding * 2
-        nb_children_per_line = container_width // child_width + 1
-        width = container_width // nb_children_per_line - (padding * 2)
+        if container_width / child_width != container_width // child_width:
+            nb = container_width // child_width + 1
+        else:
+            nb = container_width // child_width
+
+        width = container_width // nb - (padding * 2)
         height = default_height // (default_width / width)
 
-        self.thumbnails_size = (width, height, nb_children_per_line)
+        self.thumbnails_size = (width, height)
 
     def delete_selected(self, _action, _param):
         def confirm_callback():
@@ -420,6 +439,14 @@ class Library:
             thumbnail.update(manga)
             break
 
+    def on_resize(self):
+        if self.page == 'start_page':
+            return
+
+        self.compute_thumbnails_size()
+        for thumbnail in self.flowbox:
+            thumbnail.resize(*self.thumbnails_size)
+
     def on_search_entry_activated(self, _entry):
         """Open first manga in search when <Enter> is pressed"""
         thumbnail = self.flowbox.get_child_at_pos(0, 0)
@@ -438,16 +465,6 @@ class Library:
 
         self.flowbox.invalidate_filter()
 
-    def on_resize(self):
-        self.compute_thumbnails_size()
-
-        if self.page == 'start_page':
-            return
-
-        self.flowbox.set_min_children_per_line(self.thumbnails_size[2])
-        for thumbnail in self.flowbox:
-            thumbnail.resize(*self.thumbnails_size[:2])
-
     def open_categories_editor(self, action, param):
         self.window.categories_editor.show()
 
@@ -459,23 +476,9 @@ class Library:
 
         self.update_subtitle(db_conn=db_conn)
 
-        selected_category_id = Settings.get_default().selected_category
-        if selected_category_id > 0:
-            # A true (from DB) category is selected
-            mangas_rows = db_conn.execute(
-                'SELECT m.id FROM categories_mangas_association cma JOIN mangas m ON cma.manga_id = m.id WHERE cma.category_id = ? ORDER BY m.last_read DESC',
-                (selected_category_id,)
-            ).fetchall()
-        elif selected_category_id == -1:
-            # Virtual category 'Uncategorized' is selected
-            mangas_rows = db_conn.execute(
-                'SELECT id FROM mangas WHERE id not in (SELECT manga_id FROM categories_mangas_association) ORDER BY last_read DESC'
-            ).fetchall()
-        else:
-            # Virtual category 'All' is selected
-            mangas_rows = db_conn.execute('SELECT id FROM mangas ORDER BY last_read DESC').fetchall()
+        mangas_rows = db_conn.execute('SELECT id FROM mangas ORDER BY last_read DESC').fetchall()
 
-        if len(mangas_rows) == 0 and selected_category_id == 0:
+        if len(mangas_rows) == 0:
             # Display start page
             self.show_page('start_page')
 
@@ -654,7 +657,8 @@ class CategoriesList:
         self.listbox.unselect_all()
         self.listbox.select_row(row)
 
-        self.library.populate()
+        self.library.update_subtitle()
+        self.library.flowbox.invalidate_filter()
 
     def on_edit_mode_cancel_button_clicked(self, _button):
         self.library.flap.set_reveal_flap(False)
@@ -783,66 +787,123 @@ class CategoriesList:
 
 
 class Thumbnail(Gtk.FlowBoxChild):
-    def __init__(self, parent, manga, width, height, nb_columns, **kwargs):
-        super().__init__(**kwargs)
+    __gtype_name__ = 'Thumbnail'
+
+    default_width = 180
+    default_height = 250
+    padding = 6  # flowbox child padding is set via CSS
+
+    def __init__(self, parent, manga, width, height):
+        super().__init__()
 
         self.parent = parent
-        self.window = parent.window
         self.manga = manga
-
-        self._server_logo_pixbuf = None
         self._filtered = False
         self._selected = False
 
         self.overlay = Gtk.Overlay()
-
-        self.cover = Gtk.Picture.new()
-        self.cover.props.can_shrink = True
-        self.cover.props.keep_aspect_ratio = False
-        self.overlay.set_child(self.cover)
-
-        self.drawing_area = Gtk.DrawingArea()
-        self.drawing_area.set_draw_func(self._draw)
-        self.overlay.add_overlay(self.drawing_area)
+        self.overlay.set_child(ThumbnailWidget(manga))
 
         self.name_label = Gtk.Label(xalign=0, hexpand=True)
-        self.name_label.add_css_class('library-manga-name-label')
+        self.name_label.add_css_class('library-thumbnail-name-label')
         self.name_label.set_valign(Gtk.Align.END)
         self.name_label.set_wrap(True)
         self.overlay.add_overlay(self.name_label)
 
         self.set_child(self.overlay)
-        self.resize(width, height)
 
-        self._draw_cover()
-        self._draw_name()
+        self.__draw_name()
 
-    def _draw(self, _drawing_area, context, _width, _height):
-        context.save()
+    def __draw_name(self):
+        self.name_label.set_text(self.manga.name)
 
-        self._draw_badges(context)
-        self._draw_server_logo(context)
+    def resize(self, width, height):
+        self.set_size_request(width, height)
 
-        context.restore()
+    def update(self, manga):
+        self.manga = manga
 
-    def _draw_badges(self, context):
-        """
-        Draws badges in top right corner of cover
-        * Unread chapter: green
-        * Recent chapters: blue
-        * Downloaded chapters: red
-        """
-        nb_unread_chapters = self.manga.nb_unread_chapters
-        nb_recent_chapters = self.manga.nb_recent_chapters
-        nb_downloaded_chapters = self.manga.nb_downloaded_chapters
+        self.__draw_name()
+        self.overlay.get_child().update(manga)
 
-        if nb_unread_chapters == nb_recent_chapters == nb_downloaded_chapters == 0:
+
+class ThumbnailWidget(Gtk.Widget):
+    __gtype_name__ = 'ThumbnailWidget'
+
+    corners_radius = 6
+    font_size = 13
+    min_width = Thumbnail.default_width / 2 - Thumbnail.padding * 2
+    min_height = Thumbnail.default_height / 2 - Thumbnail.padding * 2
+    ratio = Thumbnail.default_width / Thumbnail.default_height
+    server_logo_size = 20
+
+    def __init__(self, manga):
+        super().__init__()
+
+        self.manga = manga
+
+        self.nb_unread_chapters = self.manga.nb_unread_chapters
+        self.nb_recent_chapters = self.manga.nb_recent_chapters
+        self.nb_downloaded_chapters = self.manga.nb_downloaded_chapters
+
+        self.cover_texture = None
+        self.server_logo_texture = None
+        self.rect = Graphene.Rect().alloc()
+        self.rounded_rect = Gsk.RoundedRect()
+        self.rounded_rect_size = Graphene.Size().alloc()
+        self.rounded_rect_size.init(self.corners_radius, self.corners_radius)
+
+        self.__create_cover_texture()
+        self.__create_server_logo_texture()
+
+    def __create_cover_texture(self):
+        if self.manga.cover_fs_path is None:
+            pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+        else:
+            try:
+                if get_file_mime_type(self.manga.cover_fs_path) != 'image/gif':
+                    pixbuf = Pixbuf.new_from_file_at_scale(self.manga.cover_fs_path, 180, -1, True)
+                else:
+                    pixbuf = PixbufAnimation.new_from_file(self.manga.cover_fs_path).get_static_image()
+            except Exception:
+                # Invalid image, corrupted image, unsupported image format,...
+                pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+
+        self.cover_texture = Gdk.Texture.new_for_pixbuf(pixbuf)
+
+    def __create_server_logo_texture(self):
+        logo_path = self.manga.server.logo_path
+        if logo_path is None:
             return
 
-        spacing = 5  # with top and right borders, between badges
-        x = self.width
+        pixbuf = Pixbuf.new_from_file_at_scale(logo_path, self.server_logo_size, self.server_logo_size, True)
 
-        context.set_font_size(13)
+        self.server_logo_texture = Gdk.Texture.new_for_pixbuf(pixbuf)
+
+    def do_measure(self, orientation, for_size):
+        baseline = -1
+        if orientation == Gtk.Orientation.HORIZONTAL:
+            return self.min_width, for_size * self.ratio if for_size != -1 else self.min_width, baseline, baseline
+        else:
+            return self.min_height, for_size / self.ratio if for_size != -1 else self.min_height, baseline, baseline
+
+    def do_snapshot(self, snapshot):
+        width = self.get_width()
+        height = self.get_height()
+
+        self.rect.init(0, 0, width, height)
+
+        # Drow cover (rounded)
+        self.rounded_rect.init(self.rect, self.rounded_rect_size, self.rounded_rect_size, self.rounded_rect_size, self.rounded_rect_size)
+        snapshot.push_rounded_clip(self.rounded_rect)
+        snapshot.append_texture(self.cover_texture, self.rect)
+        snapshot.pop()
+
+        # Draw badges (top right corner)
+        context = snapshot.append_cairo(self.rect)
+        context.set_font_size(self.font_size)
+        spacing = 5  # with top border, right border and between badges
+        x = width
 
         def draw_badge(nb, color_r, color_g, color_b):
             nonlocal x
@@ -852,62 +913,40 @@ class Thumbnail(Gtk.FlowBoxChild):
 
             text = str(nb)
             text_extents = context.text_extents(text)
-            width = text_extents.x_advance + 2 * 3 + 1
-            height = text_extents.height + 2 * 5
+            badge_width = text_extents.x_advance + 2 * 3 + 1
+            badge_height = text_extents.height + 2 * 5
 
             # Draw rectangle
-            x = x - spacing - width
+            x = x - spacing - badge_width
             context.set_source_rgb(color_r, color_g, color_b)
-            context.rectangle(x, spacing, width, height)
+            context.rectangle(x, spacing, badge_width, badge_height)
             context.fill()
 
             # Draw number
             context.set_source_rgb(1, 1, 1)
-            context.move_to(x + 3, height)
+            context.move_to(x + 3, badge_height)
             context.show_text(text)
 
-        draw_badge(nb_unread_chapters, 0.2, 0.5, 0)        # #338000
-        draw_badge(nb_recent_chapters, 0.2, 0.6, 1)        # #3399FF
-        draw_badge(nb_downloaded_chapters, 1, 0.266, 0.2)  # #FF4433
+        draw_badge(self.nb_unread_chapters, 0.2, 0.5, 0)        # #338000
+        draw_badge(self.nb_recent_chapters, 0.2, 0.6, 1)        # #3399FF
+        draw_badge(self.nb_downloaded_chapters, 1, 0.266, 0.2)  # #FF4433
 
-    def _draw_cover(self):
-        if self.manga.cover_fs_path is None:
-            paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', 200, -1)
-        else:
-            paintable = create_paintable_from_file(self.manga.cover_fs_path, 200, -1, True)
-            if paintable is None:
-                paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', 200, -1)
-
-        self.cover.set_paintable(paintable)
-
-    def _draw_name(self):
-        self.name_label.set_text(self.manga.name)
-
-    def _draw_server_logo(self, context):
-        if self._server_logo_pixbuf is None:
-            logo_path = self.manga.server.logo_path
-            if logo_path is not None:
-                self._server_logo_pixbuf = Pixbuf.new_from_file_at_scale(
-                    logo_path, 20 * self.window.hidpi_scale, 20 * self.window.hidpi_scale, True)
-            else:
-                self._server_logo_pixbuf = 0
-
-        if self._server_logo_pixbuf:
-            surface = create_cairo_surface_from_pixbuf(self._server_logo_pixbuf, self.window.hidpi_scale)
-            context.set_source_surface(surface, 4, 4)
-            context.paint()
-
-    def resize(self, width, height):
-        self.width = width
-        self.height = height
-
-        self.set_size_request(width, height)
+        # Drow server logo (top left corner)
+        if self.server_logo_texture:
+            self.rect.init(4, 4, self.server_logo_size, self.server_logo_size)
+            snapshot.append_texture(self.server_logo_texture, self.rect)
 
     def update(self, manga):
         self.manga = manga
-        self._cover_pixbuf = None
 
-        self._draw_cover()
-        self._draw_name()
-        # Schedule a redraw to update drawing areas (server logo and badges)
+        self.nb_unread_chapters = self.manga.nb_unread_chapters
+        self.nb_recent_chapters = self.manga.nb_recent_chapters
+        self.nb_downloaded_chapters = self.manga.nb_downloaded_chapters
+
+        self.cover_texture = None
+        self.server_logo__texture = None
+        self.__create_cover_texture()
+        self.__create_server_logo_texture()
+
+        # Schedule a redraw to update
         self.queue_draw()

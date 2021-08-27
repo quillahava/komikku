@@ -455,6 +455,7 @@ class DownloadManager(Gtk.ScrolledWindow):
             self.downloader.start()
 
     def populate(self):
+        # Clear
         row = self.listbox.get_first_child()
         while row:
             next_row = row.get_next_sibling()

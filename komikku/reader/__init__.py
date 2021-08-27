@@ -84,24 +84,24 @@ class Reader:
         return size
 
     def add_accelerators(self):
-        self.window.application.set_accels_for_action('app.reader.save-page', ['<Control>s'])
+        self.window.application.set_accels_for_action('app.reader.save-page', ['<Primary>s'])
 
     def add_actions(self):
         # Reading mode
-        self.reading_mode_action = Gio.SimpleAction.new_stateful(
-            'reader.reading-mode', GLib.VariantType.new('s'), GLib.Variant('s', 'right-to-left'))
+        variant = GLib.Variant.new_string('right-to-left')
+        self.reading_mode_action = Gio.SimpleAction.new_stateful('reader.reading-mode', variant.get_type(), variant)
         self.reading_mode_action.connect('change-state', self.on_reading_mode_changed)
         self.window.application.add_action(self.reading_mode_action)
 
         # Scaling
-        self.scaling_action = Gio.SimpleAction.new_stateful(
-            'reader.scaling', GLib.VariantType.new('s'), GLib.Variant('s', 'screen'))
+        variant = GLib.Variant.new_string('screen')
+        self.scaling_action = Gio.SimpleAction.new_stateful('reader.scaling', variant.get_type(), variant)
         self.scaling_action.connect('change-state', self.on_scaling_changed)
         self.window.application.add_action(self.scaling_action)
 
         # Background color
-        self.background_color_action = Gio.SimpleAction.new_stateful(
-            'reader.background-color', GLib.VariantType.new('s'), GLib.Variant('s', 'white'))
+        variant = GLib.Variant.new_string('white')
+        self.background_color_action = Gio.SimpleAction.new_stateful('reader.background-color', variant.get_type(), variant)
         self.background_color_action.connect('change-state', self.on_background_color_changed)
         self.window.application.add_action(self.background_color_action)
 

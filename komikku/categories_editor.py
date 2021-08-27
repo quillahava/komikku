@@ -51,7 +51,7 @@ class CategoriesEditor(Adw.Clamp):
             row.save_button.connect('clicked', self.update_category, row)
             row.connect('edit-mode-changed', self.on_category_edit_mode_changed)
 
-            self.listbox.add(row)
+            self.listbox.append(row)
 
             self.window.library.categories_list.populate()
 
@@ -161,7 +161,6 @@ class CategoryRow(Gtk.ListBoxRow):
         if nb_mangas := len(category.mangas):
             label = f'{label} ({nb_mangas})'
         self.label = Gtk.Label(label=label, hexpand=True)
-        # self.label.set_halign(Gtk.Fill.FULL)
         self.label.set_halign(Gtk.Align.START)
         self.box.append(self.label)
 
