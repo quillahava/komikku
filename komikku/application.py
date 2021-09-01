@@ -53,6 +53,7 @@ CREDITS = dict(
         'GrownNed (Russian)',
         'Leo Prikler (German)',
         'Mek101 (Italian)',
+        'Óscar (Spanish)',
         'Heimen Stoffels (Dutch)',
         'VaGNaroK (Brazilian Portuguese)',
     ),
@@ -389,10 +390,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
         builder = Gtk.Builder.new_from_resource('/info/febvre/Komikku/about_dialog.ui')
         dialog = builder.get_object('about_dialog')
         dialog.set_authors([
-            *CREDITS['developers'], '',
-
-            _('Contributors: Code, Patches, Debugging:'), '',
-            *CREDITS['contributors'], '',
+            *CREDITS['developers'],
+            '',
+            _('Contributors: Code, Patches, Debugging:'),
+            '',
+            *CREDITS['contributors']
         ])
         dialog.set_translator_credits('\n'.join(CREDITS['translators']))
         dialog.set_modal(True)
