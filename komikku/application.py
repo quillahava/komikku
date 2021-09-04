@@ -43,6 +43,7 @@ CREDITS = dict(
         'GrownNed',
         'ISO-morphism',
         'jaskaranSM',
+        'Amelia Joison (amnetrine)',
         'Leo Prikler',
         'Romain Vaudois',
         'Arthur Williams (TAAPArthur)',
