@@ -251,6 +251,7 @@ class Mangadex(Server):
                 'translatedLanguage[]': [self.lang_code],
                 'limit': CHAPTERS_PER_REQUEST,
                 'offset': offset,
+                'order[chapter]': 'asc',
                 'includes[]': ['scanlation_group']
             })
             if r.status_code == 204:
