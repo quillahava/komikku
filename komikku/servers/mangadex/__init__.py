@@ -139,7 +139,7 @@ class Mangadex(Server):
         data['name'] = html.unescape(_name)
         assert data['name'] is not None
 
-        for relationship in resp_json['relationships']:
+        for relationship in resp_json['data']['relationships']:
             if relationship['type'] == 'author':
                 data['authors'].append(relationship['attributes']['name'])
             elif relationship['type'] == 'cover_art':
@@ -181,14 +181,14 @@ class Mangadex(Server):
         if r.status_code != 200:
             return None
 
-        resp_json = r.json()
+        data = r.json()['data']
 
-        attributes = resp_json['data']['attributes']
+        attributes = data['attributes']
         title = f'#{attributes["chapter"]}'
         if attributes['title']:
             title = f'{title} - {attributes["title"]}'
 
-        scanlators = [rel['attributes']['name'] for rel in resp_json['relationships'] if rel['type'] == 'scanlation_group']
+        scanlators = [rel['attributes']['name'] for rel in data['relationships'] if rel['type'] == 'scanlation_group']
         data = dict(
             slug=chapter_slug,
             title=title,
@@ -259,10 +259,10 @@ class Mangadex(Server):
             if r.status_code != 200:
                 return None
 
-            results = r.json()['results']
+            results = r.json()['data']
 
             for chapter in results:
-                attributes = chapter['data']['attributes']
+                attributes = chapter['attributes']
 
                 title = f'#{attributes["chapter"]}'
                 if attributes['title']:
@@ -271,7 +271,7 @@ class Mangadex(Server):
                 scanlators = [rel['attributes']['name'] for rel in chapter['relationships'] if rel['type'] == 'scanlation_group']
 
                 data = dict(
-                    slug=chapter['data']['id'],
+                    slug=chapter['id'],
                     title=title,
                     pages=[dict(slug=attributes['hash'] + '/' + page, image=None) for page in attributes['data']],
                     date=convert_date_string(attributes['publishAt'].split('T')[0], format='%Y-%m-%d'),
@@ -297,14 +297,7 @@ class Mangadex(Server):
             return None
 
         results = []
-        for result in r.json()['results']:
-            if result['result'] != 'ok':
-                continue
-
-            result = result['data']
-            if result['type'] != 'manga':
-                continue
-
+        for result in r.json()['data']:
             name = self._manga_title_from_attributes(result['attributes'])
 
             if name:
