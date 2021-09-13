@@ -328,6 +328,9 @@ class Webtoon(Server):
 
         return results
 
+    def is_long_strip(self, _manga_data):
+        return True
+
 
 class Dongmanmanhua(Webtoon):
     id = 'dongmanmanhua:webtoon'

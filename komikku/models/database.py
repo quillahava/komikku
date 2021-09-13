@@ -381,14 +381,11 @@ class Manga:
         ))
 
         # Long strip detection (Webtoon)
-        if long_strip_detection and server.long_strip_genres and data['genres']:
-            for genre in server.long_strip_genres:
-                if genre in data['genres']:
-                    data.update(dict(
-                        reading_mode='webtoon',
-                        scaling='width',
-                    ))
-                    break
+        if long_strip_detection and server.is_long_strip(data):
+            data.update(dict(
+                reading_mode='webtoon',
+                scaling='width',
+            ))
 
         db_conn = create_db_connection()
         with db_conn:

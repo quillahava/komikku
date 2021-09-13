@@ -400,6 +400,19 @@ class Server:
     def update_chapter_read_progress(self, data, manga_slug, manga_name, chapter_slug, chapter_url):
         return False
 
+    def is_long_strip(self, manga_data):
+        """
+        Return true if the manga is a long strip, false if not.
+
+        The server shall not modify manga_data to form the return value.
+        """
+        if not self.long_strip_genres:
+            return False
+        for genre in manga_data['genres']:
+            if genre in self.long_strip_genres:
+                return True
+        return False
+
 
 def convert_date_string(date, format=None):
     if format is not None:
