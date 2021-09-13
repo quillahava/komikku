@@ -524,14 +524,20 @@ def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
 
     modules = []
     if SERVERS_PATH:
-        logger.info('Load servers from external path: {0}'.format(SERVERS_PATH))
-
-        for path, _dirs, _files in os.walk(SERVERS_PATH):
-            if path.endswith(('/', '/multi')):
+        for servers_path in SERVERS_PATH.split(os.pathsep):
+            if not os.path.exists(servers_path):
                 continue
 
-            name = path.split('/')[-1]
-            modules.append(importlib.machinery.SourceFileLoader(name, os.path.join(path, '__init__.py')).load_module())
+            count = 0
+            for path, _dirs, _files in os.walk(servers_path):
+                if path.endswith(('/', '/multi')):
+                    continue
+
+                count += 1
+                name = os.path.basename(path)
+                modules.append(importlib.machinery.SourceFileLoader(name, os.path.join(path, '__init__.py')).load_module())
+
+            logger.info('Load {0} servers from external folder: {1}'.format(count, servers_path))
     else:
         import komikku.servers
 
