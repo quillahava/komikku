@@ -61,6 +61,8 @@ LANGUAGES = dict(
 
 REQUESTS_TIMEOUT = 5
 
+SERVERS_PATH = os.environ.get('KOMIKKU_SERVERS_PATH')
+
 USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0'
 USER_AGENT_MOBILE = 'Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30'
 
@@ -513,8 +515,6 @@ def get_server_module_name_by_id(id):
 
 @lru_cache(maxsize=None)
 def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
-    import komikku.servers
-
     def iter_namespace(ns_pkg):
         # Specifying the second argument (prefix) to iter_modules makes the
         # returned name an absolute name instead of a relative one. This allows
@@ -522,9 +522,24 @@ def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
         # the name.
         return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + '.')
 
+    modules = []
+    if SERVERS_PATH:
+        logger.info('Load servers from external path: {0}'.format(SERVERS_PATH))
+
+        for path, _dirs, _files in os.walk(SERVERS_PATH):
+            if path.endswith(('/', '/multi')):
+                continue
+
+            name = path.split('/')[-1]
+            modules.append(importlib.machinery.SourceFileLoader(name, os.path.join(path, '__init__.py')).load_module())
+    else:
+        import komikku.servers
+
+        for _finder, name, _ispkg in iter_namespace(komikku.servers):
+            modules.append(importlib.import_module(name))
+
     servers = []
-    for _finder, name, _ispkg in iter_namespace(komikku.servers):
-        module = importlib.import_module(name)
+    for module in modules:
         for _name, obj in dict(inspect.getmembers(module)).items():
             if not hasattr(obj, 'id') or not hasattr(obj, 'name') or not hasattr(obj, 'lang'):
                 continue
@@ -534,7 +549,7 @@ def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
             if not include_disabled and obj.status == 'disabled':
                 continue
 
-            if inspect.isclass(obj) and obj.__module__.startswith('komikku.servers.'):
+            if inspect.isclass(obj):
                 logo_path = os.path.join(os.path.dirname(os.path.abspath(module.__file__)), get_server_main_id_by_id(obj.id) + '.ico')
 
                 servers.append(dict(
