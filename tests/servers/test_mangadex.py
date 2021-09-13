@@ -14,7 +14,7 @@ def mangadex_server():
     return Mangadex()
 
 
-@test_steps('search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_most_popular', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_mangadex(mangadex_server):
     # Get most popular
     print('Get most popular')
