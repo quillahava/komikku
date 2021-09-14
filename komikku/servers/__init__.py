@@ -524,13 +524,16 @@ def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
 
     modules = []
     if SERVERS_PATH:
+        # Load servers from extermal folders defined in KOMIKKU_SERVERS_PATH environment variable
         for servers_path in SERVERS_PATH.split(os.pathsep):
+            servers_path = os.path.abspath(servers_path)
             if not os.path.exists(servers_path):
                 continue
 
             count = 0
             for path, _dirs, _files in os.walk(servers_path):
-                if path.endswith(('/', '/multi')):
+                if path == servers_path or path.endswith('/multi'):
+                    # Skip `./` and `./multi`
                     continue
 
                 count += 1

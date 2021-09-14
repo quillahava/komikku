@@ -17,6 +17,7 @@ from komikku.servers import convert_image
 from komikku.servers import get_server_class_name_by_id
 from komikku.servers import get_server_dir_name_by_id
 from komikku.servers import get_server_module_name_by_id
+from komikku.servers import SERVERS_PATH
 from komikku.servers import unscramble_image
 from komikku.utils import get_data_dir
 
@@ -495,7 +496,18 @@ class Manga:
     @property
     def server(self):
         if self._server is None:
-            module = importlib.import_module('.' + self.module_name, package='komikku.servers')
+            # Load server from extermal folders defined in KOMIKKU_SERVERS_PATH environment variable
+            if SERVERS_PATH:
+                for servers_path in SERVERS_PATH.split(os.pathsep):
+                    module_path = os.path.join(servers_path, self.module_name, '__init__.py')
+                    if not os.path.exists(module_path):
+                        continue
+
+                    module = importlib.machinery.SourceFileLoader(self.module_name, module_path).load_module()
+                    break
+            else:
+                module = importlib.import_module('.' + self.module_name, package='komikku.servers')
+
             self._server = getattr(module, self.class_name)()
 
         return self._server
