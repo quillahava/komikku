@@ -23,6 +23,7 @@ import pkgutil
 import requests
 from requests.adapters import TimeoutSauce
 import struct
+from sys import meta_path
 
 gi.require_version('Gtk', '4.0')
 # gi.require_version('WebKit2', '4.0')
@@ -69,6 +70,51 @@ USER_AGENT_MOBILE = 'Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) App
 VERSION = 1
 
 logger = logging.getLogger('komikku.servers')
+
+
+class KomikkuServerFinder(importlib.abc.MetaPathFinder):
+
+    def __init__(self):
+        servers_path_env = os.environ.get('KOMIKKU_SERVERS_PATH')
+        self._prefix = 'komikku.servers.'
+        if servers_path_env:
+            self._servers_path = servers_path_env.split(os.pathsep)
+        else:
+            self._servers_path = []
+
+    def find_spec(self, fullname, path, target=None):
+        if fullname.startswith(self._prefix):
+            shortname = fullname[len(self._prefix):]
+            filename_base = shortname.replace('.', '/')
+            for servers_path in self._servers_path:
+                candidate1 = os.path.join(servers_path, filename_base) + '.py'
+                candidate2 = os.path.join(servers_path, filename_base, '__init__.py')
+                if os.path.exists(candidate1):
+                    return self._module_spec(fullname, candidate1)
+                if os.path.exists(candidate2):
+                    return self._module_spec(fullname, candidate2)
+
+    def _module_spec(self, fullname, filename):
+        return importlib.machinery.ModuleSpec(
+            fullname,
+            KomikkuServerLoader(fullname, filename),
+            origin=filename,
+        )
+
+
+class KomikkuServerLoader(importlib.machinery.SourceFileLoader):
+
+    def create_module(self, spec):
+        # Compare and contrast _new_module in importlib._bootstrap
+        # We set the file name early, because we only load real files anyway,
+        # see KomikkuServerFinder.find_spec, and because it helps locating
+        # relative files, such as logos.
+        module = type(importlib)(spec.name)
+        module.__file__ = spec.origin
+        return module
+
+
+meta_path.append(KomikkuServerFinder())
 
 
 class CustomTimeout(TimeoutSauce):
@@ -532,13 +578,13 @@ def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
 
             count = 0
             for path, _dirs, _files in os.walk(servers_path):
-                if path == servers_path or path.endswith('/multi'):
-                    # Skip `./` and `./multi`
+                relpath = path[len(servers_path):]
+                if not relpath or relpath == 'multi':
                     continue
 
+                modules.append(importlib.import_module(relpath.replace('/', '.'),
+                                                       package='komikku.servers'))
                 count += 1
-                name = os.path.basename(path)
-                modules.append(importlib.machinery.SourceFileLoader(name, os.path.join(path, '__init__.py')).load_module())
 
             logger.info('Load {0} servers from external folder: {1}'.format(count, servers_path))
     else:
