@@ -4,8 +4,14 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from komikku.servers.multi.genkan import Genkan
-from komikku.servers.multi.genkan import GenkanInitial
+from komikku.servers import SERVERS_PATH
+if SERVERS_PATH:
+    # External module
+    from multi.genkan import Genkan
+    from multi.genkan import GenkanInitial
+else:
+    from komikku.servers.multi.genkan import Genkan
+    from komikku.servers.multi.genkan import GenkanInitial
 
 
 class Leviatanscans__old(Genkan):

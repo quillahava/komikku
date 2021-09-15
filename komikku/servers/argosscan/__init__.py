@@ -4,7 +4,12 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from komikku.servers.multi.madara import Madara
+from komikku.servers import SERVERS_PATH
+if SERVERS_PATH:
+    # External module
+    from multi.madara import Madara
+else:
+    from komikku.servers.multi.madara import Madara
 
 
 class Argosscan(Madara):

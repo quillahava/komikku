@@ -4,7 +4,12 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from komikku.servers.multi.genkan import Genkan
+from komikku.servers import SERVERS_PATH
+if SERVERS_PATH:
+    # External module
+    from multi.genkan import Genkan
+else:
+    from komikku.servers.multi.genkan import Genkan
 
 
 class Hunlightscans(Genkan):

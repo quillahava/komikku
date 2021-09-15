@@ -4,7 +4,12 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Mariusz Kurek <mariuszkurek@pm.me>
 
-from komikku.servers.multi.guya import Guya
+from komikku.servers import SERVERS_PATH
+if SERVERS_PATH:
+    # External module
+    from multi.guya import Guya
+else:
+    from komikku.servers.multi.guya import Guya
 
 
 class Coloredcouncil(Guya):
