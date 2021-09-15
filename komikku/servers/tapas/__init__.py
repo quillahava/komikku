@@ -24,12 +24,15 @@ class Tapas(Server):
     id = 'tapas'
     name = 'Tapas'
     lang = 'en'
+
     base_url = 'https://tapas.io'
     # g=0 is all genres, no parameter means looking only for romances
     # F2R means only comics available for free, TODO: premium support
     most_populars_url = base_url + '/comics?g=0&f=F2R'
     search_url = base_url + '/search'
     manga_url = base_url + '/series/{0}'
+    manga_info_url = base_url + '/series/{0}/info'
+    chapters_url = base_url + '/series/{0}/episodes'
     chapter_url = base_url + '/episode/{0}'
 
     def __init__(self):
@@ -54,7 +57,7 @@ class Tapas(Server):
         """
         assert 'slug' in initial_data, 'Manga slug is missing in initial data'
 
-        r = self.session_get(self.manga_url.format(initial_data['slug']) + '/info')
+        r = self.session_get(self.manga_info_url.format(initial_data['slug']))
         if r is None:
             return None
 
@@ -67,8 +70,6 @@ class Tapas(Server):
 
         data = initial_data.copy()
         data.update(dict(
-            name=None,
-            url=r.url,
             authors=[],
             scanlators=[],
             genres=[],
@@ -120,8 +121,9 @@ class Tapas(Server):
         for page in soup.find(class_='js-episode-article').find_all('img'):
             data['pages'].append(dict(
                 slug=None,
-                image=page.get('data-src')
+                image=page.get('data-src'),
             ))
+
         return data
 
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
@@ -170,8 +172,10 @@ class Tapas(Server):
         return results
 
     def resolve_chapters(self, manga_slug, page=1):
-        r = self.session_get(self.manga_url.format(manga_slug) + '/episodes',
-                             params=dict(max_limit=CHAPTERS_PER_REQUEST, page=page))
+        r = self.session_get(
+            self.chapters_url.format(manga_slug),
+            params=dict(max_limit=CHAPTERS_PER_REQUEST, page=page)
+        )
         if r.status_code != 200:
             return None
 
@@ -180,19 +184,17 @@ class Tapas(Server):
         soup = BeautifulSoup(content, 'html.parser')
 
         chapters = []
-
         for chapter in soup.find_all('li'):
             if 'js-coming-soon' in chapter.get('class') or 'js-have-to-sign' in chapter.get('class'):
                 continue
 
-            slug = chapter.get('data-id')
-            data = self.get_manga_chapter_data(None, None, slug, None)
             chapters.append(dict(
-                slug=slug,
-                title=chapter.find(class_='info__title').text,
-                pages=data['pages'],
-                scanlators=[],
-                date=data['date'],
+                slug=chapter.get('data-id'),
+                title='{0} - {1}'.format(
+                    chapter.find(class_='info__label').text.strip(),
+                    chapter.find(class_='info__title').text.strip()
+                ),
+                date=None,  # Unfortunately, date is missing at this stage
             ))
 
         if r.json()['data']['pagination']['has_next']:
@@ -212,7 +214,6 @@ class Tapas(Server):
         soup = BeautifulSoup(r.text, 'html.parser')
 
         results = []
-
         for li_element in soup.find_all(class_='search-item-wrap'):
             a_element = li_element.find(class_='title').a
 
@@ -230,6 +231,7 @@ class Tapas(Server):
                 no_of_pages = int(soup.find_all(class_='paging__button--num')[-1].text)
             except TypeError:
                 return results
+
             for page in range(2, min(SEARCH_RESULTS_PAGES + 1, no_of_pages + 1)):
                 results += self.search(term, page)
 
