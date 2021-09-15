@@ -164,6 +164,9 @@ class Bilibili(Server):
         """
         return self.manga_url.format(slug)
 
+    def is_long_strip(self, _manga_data):
+        return True
+
     def search(self, term):
         r = self.session_post(
             self.api_search_url,
@@ -190,6 +193,3 @@ class Bilibili(Server):
             ))
 
         return results
-
-    def is_long_strip(self, _manga_data):
-        return True

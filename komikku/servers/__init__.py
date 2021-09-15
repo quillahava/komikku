@@ -298,6 +298,21 @@ class Server:
 
         return buffer
 
+    def is_long_strip(self, data):
+        """
+        Returns True if the manga is a long strip, False otherwise.
+
+        The server shall not modify `data` to form the return value.
+        """
+        if not self.long_strip_genres:
+            return False
+
+        for genre in data['genres']:
+            if genre in self.long_strip_genres:
+                return True
+
+        return False
+
     def load_session(self):
         """ Load session from disk """
 
@@ -356,19 +371,6 @@ class Server:
         return r
 
     def update_chapter_read_progress(self, data, manga_slug, manga_name, chapter_slug, chapter_url):
-        return False
-
-    def is_long_strip(self, manga_data):
-        """
-        Return true if the manga is a long strip, false if not.
-
-        The server shall not modify manga_data to form the return value.
-        """
-        if not self.long_strip_genres:
-            return False
-        for genre in manga_data['genres']:
-            if genre in self.long_strip_genres:
-                return True
         return False
 
 
