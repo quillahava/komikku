@@ -174,7 +174,7 @@ class Tapas(Server):
     def resolve_chapters(self, manga_slug, page=1):
         r = self.session_get(
             self.chapters_url.format(manga_slug),
-            params=dict(max_limit=CHAPTERS_PER_REQUEST, page=page)
+            params=dict(max_limit=CHAPTERS_PER_REQUEST, page=page, large=True)
         )
         if r.status_code != 200:
             return None
@@ -184,17 +184,18 @@ class Tapas(Server):
         soup = BeautifulSoup(content, 'html.parser')
 
         chapters = []
-        for chapter in soup.find_all('li'):
+        for chapter in soup.find_all('a'):
             if 'js-coming-soon' in chapter.get('class') or 'js-have-to-sign' in chapter.get('class'):
                 continue
 
             chapters.append(dict(
                 slug=chapter.get('data-id'),
+                # is this really necessary? for ep1 of 111423 it prints "Episode 1 - 1. The End of the Tunnel"
                 title='{0} - {1}'.format(
-                    chapter.find(class_='info__label').text.strip(),
-                    chapter.find(class_='info__title').text.strip()
+                    chapter.find(class_='scene').text.strip(),
+                    chapter.find(class_='title__body').text.strip()
                 ),
-                date=None,  # Unfortunately, date is missing at this stage
+                date=convert_date_string(soup.find(class_='additional').span.text, format='%b %d, %Y'),
             ))
 
         if r.json()['data']['pagination']['has_next']:
