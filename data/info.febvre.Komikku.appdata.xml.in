@@ -56,6 +56,21 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.32.0" date="2021-09-17">
+            <description>
+                <ul>
+                    <li>[Library] Thumbnails: Fix rendering of servers logos and badges on mobile devices</li>
+                    <li>[Card] Fixed synopsis display when it contains HTML</li>
+                    <li>[Reader] Add option to hide page numbering</li>
+                    <li>[Reader] Fixed pager jumps when page rendering is retried</li>
+                    <li>[Explorer] Servers: Don't show Pinned when empty</li>
+                    <li>[Servers] Add Best Manga [RU]</li>
+                    <li>[Servers] Add Bilibili [EN]</li>
+                    <li>[Servers] Add Tapas [EN]</li>
+                    <li>[Servers] MangaDex: Update</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.31.0" date="2021-09-10">
             <description>
                 <ul>
