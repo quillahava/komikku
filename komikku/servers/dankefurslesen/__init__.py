@@ -18,5 +18,5 @@ class Dankefurslesen(Guya):
     lang = 'en'
     base_url = 'https://danke.moe'
     manga_url = base_url + '/read/manga/{0}/'
-    api_manga_url = base_url + '/api/series/{0}'
+    api_manga_url = base_url + '/api/series/{0}/'
     api_page_url = base_url + '/media/manga/{0}/chapters/{1}/{2}'
