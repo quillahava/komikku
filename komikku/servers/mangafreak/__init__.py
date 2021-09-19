@@ -18,6 +18,7 @@ from komikku.servers import get_buffer_mime_type
 # from komikku.servers import headless_browser
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
+from komikku.servers.exceptions import CloudflareBypassError
 
 logger = logging.getLogger('komikku.servers.mangafreak')
 
@@ -88,7 +89,7 @@ def bypass_cloudflare(func):
             nonlocal done
 
             server.session = requests.Session()
-            server.session.headers.update({'user-agent': USER_AGENT})
+            server.session.headers.update({'User-Agent': USER_AGENT})
 
             for cookie in cookie_manager.get_cookies_finish(result):
                 rcookie = requests.cookies.create_cookie(
@@ -110,7 +111,7 @@ def bypass_cloudflare(func):
 
         if error:
             logger.warning(error)
-            raise requests.exceptions.RequestException()
+            raise CloudflareBypassError
 
         return func(*args, **kwargs)
 
@@ -122,7 +123,7 @@ class Mangafreak(Server):
     name = SERVER_NAME
     lang = 'en'
 
-    base_url = 'https://w11.mangafreak.net'
+    base_url = 'https://w12.mangafreak.net'
     search_url = base_url + '/Search/{0}'
     most_populars_url = base_url
     manga_url = base_url + '/Manga/{0}'
