@@ -11,6 +11,7 @@ import requests
 from komikku.servers import convert_date_string
 from komikku.servers import get_buffer_mime_type
 from komikku.servers import Server
+from komikku.servers import USER_AGENT
 
 
 class Readmanga(Server):
@@ -27,6 +28,7 @@ class Readmanga(Server):
     def __init__(self):
         if self.session is None:
             self.session = requests.Session()
+            self.session.headers.update({'user-agent': USER_AGENT})
 
     def get_manga_data(self, initial_data):
         """
