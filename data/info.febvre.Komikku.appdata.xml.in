@@ -56,6 +56,19 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.33.0" date="2021-09-22">
+            <description>
+                <ul>
+                    <li>[Reader] Controls overlay: Fix a bug in pages slider</li>
+                    <li>[Servers] Add MangaKawaii [EN]</li>
+                    <li>[Servers] Guya: Update</li>
+                    <li>[Servers] MangaFreak: Add notification to notify user when webview failed to solve Cloudflare JS challenge</li>
+                    <li>[Servers] MangaKawaii: Update</li>
+                    <li>[Servers] Tapas: Get dates while resolving chapters</li>
+                    <li>[L10n] Update Polish translation</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.32.0" date="2021-09-17">
             <description>
                 <ul>
