@@ -17,7 +17,6 @@ from komikku.servers import convert_image
 from komikku.servers import get_server_class_name_by_id
 from komikku.servers import get_server_dir_name_by_id
 from komikku.servers import get_server_module_name_by_id
-from komikku.servers import SERVERS_PATH
 from komikku.servers import unscramble_image
 from komikku.utils import get_data_dir
 
