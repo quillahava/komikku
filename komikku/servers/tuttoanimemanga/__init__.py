@@ -4,12 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from komikku.servers import SERVERS_PATH
-if SERVERS_PATH:
-    # External module
-    from multi.foolslide import FoOlSlide
-else:
-    from komikku.servers.multi.foolslide import FoOlSlide
+from komikku.servers.multi.foolslide import FoOlSlide
 
 
 class Tuttoanimemanga(FoOlSlide):

@@ -4,12 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from komikku.servers import SERVERS_PATH
-if SERVERS_PATH:
-    # External module
-    from multi.my_manga_reader_cms import MyMangaReaderCMS
-else:
-    from komikku.servers.multi.my_manga_reader_cms import MyMangaReaderCMS
+from komikku.servers.multi.my_manga_reader_cms import MyMangaReaderCMS
 
 
 class Readcomicsonline(MyMangaReaderCMS):

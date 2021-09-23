@@ -493,11 +493,7 @@ class Manga:
     @property
     def server(self):
         if self._server is None:
-            if SERVERS_PATH:
-                module = importlib.import_module(self.module_name)
-            else:
-                module = importlib.import_module('.' + self.module_name, package='komikku.servers')
-
+            module = importlib.import_module('.' + self.module_name, package='komikku.servers')
             self._server = getattr(module, self.class_name)()
 
         return self._server

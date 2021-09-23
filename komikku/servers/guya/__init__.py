@@ -4,15 +4,10 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Mariusz Kurek <mariuszkurek@pm.me>
 
-from komikku.servers import SERVERS_PATH
-if SERVERS_PATH:
-    # External module
-    import multi.guya as multi_guya
-else:
-    import komikku.servers.multi.guya as multi_guya
+import komikku.servers.multi.guya
 
 
-class Guya(multi_guya.Guya):
+class Guya(komikku.servers.multi.guya.Guya):
     id = 'guya'
     name = 'Guya'
     lang = 'en'
