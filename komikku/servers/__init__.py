@@ -3,23 +3,20 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from .utils import *
+from .loader import server_finder, get_servers_list
 
 from bs4 import BeautifulSoup
 from functools import cached_property
-from functools import lru_cache
 import gi
-import importlib
 import inspect
 import logging
 from operator import itemgetter
 import os
 import pickle
 from PIL import Image
-import pkgutil
 import requests
 from requests.adapters import TimeoutSauce
 import struct
-from sys import meta_path
 
 gi.require_version('Gtk', '4.0')
 # gi.require_version('WebKit2', '4.0')
@@ -58,59 +55,13 @@ LANGUAGES = dict(
 
 REQUESTS_TIMEOUT = 5
 
-SERVERS_PATH = os.environ.get('KOMIKKU_SERVERS_PATH')
-
 USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0'
 USER_AGENT_MOBILE = 'Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30'
 
 VERSION = 1
 
 logger = logging.getLogger('komikku.servers')
-
-
-class KomikkuServerFinder(importlib.abc.MetaPathFinder):
-
-    def __init__(self):
-        servers_path_env = os.environ.get('KOMIKKU_SERVERS_PATH')
-        self._prefix = 'komikku.servers.'
-        if servers_path_env:
-            self._servers_path = servers_path_env.split(os.pathsep)
-        else:
-            self._servers_path = []
-
-    def find_spec(self, fullname, path, target=None):
-        if fullname.startswith(self._prefix):
-            shortname = fullname[len(self._prefix):]
-            filename_base = shortname.replace('.', '/')
-            for servers_path in self._servers_path:
-                candidate1 = os.path.join(servers_path, filename_base) + '.py'
-                candidate2 = os.path.join(servers_path, filename_base, '__init__.py')
-                if os.path.exists(candidate1):
-                    return self._module_spec(fullname, candidate1)
-                if os.path.exists(candidate2):
-                    return self._module_spec(fullname, candidate2)
-
-    def _module_spec(self, fullname, filename):
-        return importlib.machinery.ModuleSpec(
-            fullname,
-            KomikkuServerLoader(fullname, filename),
-            origin=filename,
-        )
-
-
-class KomikkuServerLoader(importlib.machinery.SourceFileLoader):
-
-    def create_module(self, spec):
-        # Compare and contrast _new_module in importlib._bootstrap
-        # We set the file name early, because we only load real files anyway,
-        # see KomikkuServerFinder.find_spec, and because it helps locating
-        # relative files, such as logos.
-        module = type(importlib)(spec.name)
-        module.__file__ = spec.origin
-        return module
-
-
-meta_path.append(KomikkuServerFinder())
+server_finder.install()
 
 
 class CustomTimeout(TimeoutSauce):
@@ -414,68 +365,6 @@ class Server:
 
     def update_chapter_read_progress(self, data, manga_slug, manga_name, chapter_slug, chapter_url):
         return False
-
-
-@lru_cache(maxsize=None)
-def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
-    def iter_namespace(ns_pkg):
-        # Specifying the second argument (prefix) to iter_modules makes the
-        # returned name an absolute name instead of a relative one. This allows
-        # import_module to work without having to do additional modification to
-        # the name.
-        return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + '.')
-
-    modules = []
-    if SERVERS_PATH:
-        # Load servers from extermal folders defined in KOMIKKU_SERVERS_PATH environment variable
-        for servers_path in SERVERS_PATH.split(os.pathsep):
-            servers_path = os.path.abspath(servers_path)
-            if not os.path.exists(servers_path):
-                continue
-
-            count = 0
-            for path, _dirs, _files in os.walk(servers_path):
-                relpath = path[len(servers_path):]
-                if not relpath or relpath == 'multi':
-                    continue
-
-                modules.append(importlib.import_module(relpath.replace('/', '.'),
-                                                       package='komikku.servers'))
-                count += 1
-
-            logger.info('Load {0} servers from external folder: {1}'.format(count, servers_path))
-    else:
-        import komikku.servers
-
-        for _finder, name, _ispkg in iter_namespace(komikku.servers):
-            modules.append(importlib.import_module(name))
-
-    servers = []
-    for module in modules:
-        for _name, obj in dict(inspect.getmembers(module)).items():
-            if not hasattr(obj, 'id') or not hasattr(obj, 'name') or not hasattr(obj, 'lang'):
-                continue
-            if NotImplemented in (obj.id, obj.name, obj.lang):
-                continue
-
-            if not include_disabled and obj.status == 'disabled':
-                continue
-
-            if inspect.isclass(obj):
-                logo_path = os.path.join(os.path.dirname(os.path.abspath(module.__file__)), get_server_main_id_by_id(obj.id) + '.ico')
-
-                servers.append(dict(
-                    id=obj.id,
-                    name=obj.name,
-                    lang=obj.lang,
-                    has_login=obj.has_login,
-                    is_nsfw=obj.is_nsfw,
-                    class_name=get_server_class_name_by_id(obj.id),
-                    logo_path=logo_path if os.path.exists(logo_path) else None,
-                    module=module,
-                ))
-
-    return sorted(servers, key=itemgetter(*order_by))
 
 
 def get_allowed_servers_list(settings):
