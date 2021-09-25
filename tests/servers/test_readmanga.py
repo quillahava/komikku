@@ -30,7 +30,7 @@ def test_readmanga(readmanga_server):
     # Search
     print('Search')
     try:
-        response = readmanga_server.search('Ван Пис')  # One Piece
+        response = readmanga_server.search('Поднятие уровня в одиночку') # Solo Leveling
         slug = response[0]['slug']
     except Exception as e:
         slug = None

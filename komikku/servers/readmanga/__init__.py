@@ -71,12 +71,16 @@ class Readmanga(Server):
         elements = info_element.find('div', class_='subject-meta').find_all('p', recursive=False)
 
         status = elements[1].find(text=True, recursive=False).strip()
+        i = 2 # next index of elements when main scanlator not found
+        if not status:
+            status = elements[i].find(text=True, recursive=False).strip()
+            i = i + 1 # next index of elements for case when main scanlator found
         if status == 'продолжается':
             data['status'] = 'ongoing'
         elif status == 'завершен':
             data['status'] = 'complete'
 
-        for element in elements[2:]:
+        for element in elements[i:]:
             label = element.span.text.strip()
 
             if label.startswith('Автор') or label.startswith('Сценарист') or label.startswith('Художник'):
