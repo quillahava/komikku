@@ -16,9 +16,13 @@ class ServerFinder(importlib.abc.MetaPathFinder):
 
     def __init__(self, path=None):
         if isinstance(path, str):
-            self.paths = [os.path.abspath(p) for p in path.split(os.pathsep)]
+            self._paths = [os.path.abspath(p) for p in path.split(os.pathsep)]
         else:
-            self.paths = []
+            self._paths = []
+
+    @property
+    def paths(self):
+        return self._paths
 
     def find_spec(self, fullname, path, target=None):
         """Attempt to locate the requested module
@@ -32,7 +36,7 @@ class ServerFinder(importlib.abc.MetaPathFinder):
 
         name = fullname[len(self._PREFIX):]
         base_dir = name.replace('.', '/')
-        for path in self.paths:
+        for path in self._paths:
             candidate_path = os.path.join(path, base_dir, '__init__.py')
             if os.path.exists(candidate_path):
                 return importlib.machinery.ModuleSpec(
@@ -44,23 +48,22 @@ class ServerFinder(importlib.abc.MetaPathFinder):
         return None
 
     def install(self):
-        if self.paths and self not in sys.meta_path:
+        if self._paths and self not in sys.meta_path:
             sys.meta_path.append(self)
 
 
 class ServerLoader(importlib.machinery.SourceFileLoader):
     def create_module(self, spec):
-        """Create the given module from the supplied module spec
+        """Create the given module from the supplied module spec"""
 
-        Compare and contrast _new_module in importlib._bootstrap
-        We set the file name early, because we only load real files anyway,
-        see ServerFinder.find_spec, and because it helps locating
-        relative files, such as logos.
-        """
         module = types.ModuleType(spec.name)
 
+        # Compare and contrast _new_module in importlib._bootstrap
+        # We set the file name early, because we only load real files anyway,
+        # see ServerFinder.find_spec, and because it helps locating relative files, such as logos.
         module.__file__ = spec.origin
         if not self.get_source(spec.name):
+            # __path__ must be set to make packages with empty `__init__.py` loadable, such as `multi` package
             module.__path__ = [os.path.dirname(spec.origin)]
 
         return module
