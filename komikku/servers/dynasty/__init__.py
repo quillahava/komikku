@@ -22,7 +22,7 @@ logger = logging.getLogger('komikku.servers.dynasty')
 class Dynasty(Server):
     lang = 'en'
     id = 'dynasty'
-    name = 'Dynasty'
+    name = 'Dynasty Reader'
 
     base_url = 'https://dynasty-scans.com'
     manga_url = base_url + '/{0}'
@@ -35,7 +35,7 @@ class Dynasty(Server):
             'key': 'classes',
             'type': 'select',
             'name': _('Categories'),
-            'description': _('Types of manga to search for'),
+            'description': _('Types of comics to search for'),
             'value_type': 'multiple',
             'options': [
                 {'key': 'Anthology', 'name': _('Anthology'), 'default': True},
