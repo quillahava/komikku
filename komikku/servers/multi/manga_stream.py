@@ -12,6 +12,7 @@
 
 from bs4 import BeautifulSoup
 from gettext import gettext as _
+import json
 import requests
 
 from komikku.servers import convert_date_string
@@ -21,6 +22,11 @@ from komikku.servers import USER_AGENT
 
 
 class MangaStream(Server):
+    base_url: str
+    search_url: str
+    manga_url: str
+    chapter_url: str
+
     filters = [
         {
             'key': 'type',
@@ -38,11 +44,10 @@ class MangaStream(Server):
             ],
         },
     ]
+    ignored_pages: list = []
 
     def __init__(self):
-        self.search_url = self.base_url + '/manga'
-        self.manga_url = self.base_url + '/comics/{0}/'
-        self.chapter_url = self.base_url + '/{0}-chapter-{1}/'
+        self.search_url = self.base_url + '/manga/'
 
         if self.session is None:
             self.session = requests.Session()
@@ -56,7 +61,6 @@ class MangaStream(Server):
         """
         assert 'slug' in initial_data, 'Manga slug is missing in initial data'
 
-        print(self.manga_url.format(initial_data['slug']))
         r = self.session_get(self.manga_url.format(initial_data['slug']))
         if r.status_code != 200:
             return None
@@ -112,7 +116,7 @@ class MangaStream(Server):
 
         # Chapters
         for item in reversed(soup.find('div', id='chapterlist').find_all('li')):
-            slug = item.get('data-num')
+            slug = item.get('data-num').replace('.', '-')
 
             a_element = item.div.div.a
             title = a_element.find('span', class_='chapternum').text.strip()
@@ -148,11 +152,38 @@ class MangaStream(Server):
         data = dict(
             pages=[],
         )
-        for p_element in soup.find('div', id='readerarea').find_all('p'):
-            data['pages'].append(dict(
-                slug=None,
-                image=p_element.img.get('src'),
-            ))
+
+        reader_element = soup.find('div', id='readerarea')
+
+        if reader_element.text == '':
+            # Pages images are loaded via javascript
+            for script_element in soup.find_all('script'):
+                script = script_element.string
+                if script is None:
+                    continue
+
+                for line in script.split('\n'):
+                    line = line.strip()
+                    if line.startswith('ts_reader'):
+                        json_data = json.loads(line[14:-2])
+                        for image in json_data['sources'][0]['images']:
+                            if image.split('/')[-1] in self.ignored_pages:
+                                continue
+
+                            data['pages'].append(dict(
+                                slug=None,
+                                image=image,
+                            ))
+        else:
+            for p_element in soup.find('div', id='readerarea').find_all('p'):
+                image = p_element.img.get('src')
+                if image.split('/')[-1] in self.ignored_pages:
+                    continue
+
+                data['pages'].append(dict(
+                    slug=None,
+                    image=image,
+                ))
 
         return data
 
