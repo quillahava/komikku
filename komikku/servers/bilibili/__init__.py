@@ -71,7 +71,7 @@ class Bilibili(Server):
             authors=json_data['author_name'],
             scanlators=[],
             genres=json_data['styles'],
-            status='completed' if json_data['is_finish'] else 'ongoing',
+            status='complete' if json_data['is_finish'] else 'ongoing',
             cover=json_data['vertical_cover'],
             chapters=[
                 dict(
