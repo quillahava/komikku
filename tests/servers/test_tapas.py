@@ -1,6 +1,6 @@
 import logging
 import pytest
-from pytest_steps import test_steps, optional_step
+from pytest_steps import test_steps
 
 from komikku.utils import log_error_traceback
 
