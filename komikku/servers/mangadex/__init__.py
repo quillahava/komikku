@@ -12,11 +12,11 @@ from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 from uuid import UUID
 
-from komikku.servers import convert_date_string
-from komikku.servers import get_buffer_mime_type
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
 from komikku.servers.exceptions import NotFoundError
+from komikku.servers.utils import convert_date_string
+from komikku.servers.utils import get_buffer_mime_type
 
 logger = logging.getLogger('komikku.servers.mangadex')
 

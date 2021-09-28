@@ -8,9 +8,9 @@ from bs4 import BeautifulSoup
 import datetime
 import json
 
-from komikku.servers import do_login
-from komikku.servers import get_buffer_mime_type
 from komikku.servers import Server
+from komikku.servers.utils import do_login
+from komikku.servers.utils import get_buffer_mime_type
 
 
 class Izneo(Server):

@@ -20,7 +20,9 @@ from gi.repository import Gtk
 # from gi.repository import WebKit2
 
 from komikku.servers.loader import server_finder
-from komikku.servers.utils import *
+from komikku.servers.utils import convert_image
+from komikku.servers.utils import get_buffer_mime_type
+from komikku.servers.utils import get_server_main_id_by_id
 from komikku.utils import get_cache_dir
 from komikku.utils import KeyringHelper
 

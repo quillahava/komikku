@@ -8,10 +8,10 @@ from bs4 import BeautifulSoup
 import logging
 import requests
 
-from komikku.servers import convert_date_string
-from komikku.servers import get_buffer_mime_type
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
+from komikku.servers.utils import convert_date_string
+from komikku.servers.utils import get_buffer_mime_type
 
 logger = logging.getLogger('komikku.servers.tapas')
 

@@ -16,9 +16,9 @@ import unidecode
 from pure_protobuf.dataclasses_ import field, message
 from pure_protobuf.types import int32
 
-from komikku.servers import get_buffer_mime_type
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
+from komikku.servers.utils import get_buffer_mime_type
 
 LANGUAGES_CODES = dict(
     en=0,

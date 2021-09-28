@@ -8,9 +8,9 @@ from gettext import gettext as _
 import requests
 
 from komikku.models import Settings
-from komikku.servers import get_buffer_mime_type
 from komikku.servers import USER_AGENT
 from komikku.servers import Server
+from komikku.servers.utils import get_buffer_mime_type
 
 SERVER_NAME = 'ReadManhwa'
 

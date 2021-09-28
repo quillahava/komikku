@@ -2,9 +2,9 @@ from PIL import Image
 from bs4 import BeautifulSoup
 import re
 
-from komikku.servers import convert_date_string
-from komikku.servers import do_login
 from komikku.servers import Server
+from komikku.servers.utils import convert_date_string
+from komikku.servers.utils import do_login
 
 # Improved from https://github.com/manga-py/manga-py
 

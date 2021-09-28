@@ -8,11 +8,11 @@ from bs4 import BeautifulSoup
 import cloudscraper
 import json
 
-from komikku.servers import convert_date_string
-from komikku.servers import get_buffer_mime_type
-from komikku.servers import get_soup_element_inner_text
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
+from komikku.servers.utils import convert_date_string
+from komikku.servers.utils import get_buffer_mime_type
+from komikku.servers.utils import get_soup_element_inner_text
 
 SERVER_NAME = 'MangaKawaii'
 
