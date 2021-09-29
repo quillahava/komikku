@@ -16,5 +16,5 @@ class Jpmangas(MyMangaReaderCMS):
     most_populars_url = base_url + '/filterList?page=1&sortBy=views&asc=false'
     manga_url = base_url + '/lecture-en-ligne/{0}'
     chapter_url = base_url + '/lecture-en-ligne/{0}/{1}'
-    image_url = base_url + '/uploads/manga/{0}/chapters/{1}/{2}'
+    image_url = None  # For some manga chapters, chapter slug can be used to compute images URLs
     cover_url = base_url + '/uploads/manga/{0}/cover/cover_250x350.jpg'
