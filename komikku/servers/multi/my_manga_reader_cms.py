@@ -7,12 +7,17 @@
 # My Manga Reader CMS
 
 # Supported servers:
+# FR Scan [FR]: https://frscan.cc
 # Jpmangas [FR]: https://jpmangas.co
+# Lelscan-VF [FR]: https://lelscan-vf.co
 # Leomanga [ES]: https://leomanga.me V1
 # Mangadoor [ES]: https://mangadoor.com
 # Mangasin [ES]: https://mangas.in
 # Read Comics Online [RU]: https://readcomicsonline.ru
+# Scan FR [FR]: https://www.scan-fr.cc
+# Scan OP [FR]: https://scan-op.cc
 # ScanOnePiece [FR]: https://www.scan-vf.net
+# Submanga [ES]: https://submanga.io
 
 from bs4 import BeautifulSoup
 import re
@@ -34,7 +39,7 @@ class MyMangaReaderCMS(Server):
     image_url: str
     cover_url: str
 
-    search_query_param = 'query'
+    search_query_param: str = 'query'
 
     def __init__(self):
         if self.session is None:
@@ -91,7 +96,7 @@ class MyMangaReaderCMS(Server):
                     t = t.strip()
                     if t not in data['authors']:
                         data['authors'].append(t)
-            elif label.startswith(('Categories', 'Catégories', 'Categorías', 'Género')):
+            elif label.startswith(('Categories', 'Catégories', 'Categorías', 'Género', 'Tags')):
                 data['genres'] = [a_element.text.strip() for a_element in element.find_all('a')]
             elif label.startswith(('Status', 'Statut', 'Estado')):
                 value = element.text.strip().lower()
@@ -112,7 +117,7 @@ class MyMangaReaderCMS(Server):
             data['synopsis'] += '\n\n' + alert_element.text.strip()
 
         # Chapters
-        elements = soup.find('ul', class_='chapters').find_all('li', recursive=False)
+        elements = soup.find('ul', class_=re.compile(r'chapters|chapterszozo')).find_all('li', recursive=False)
         for element in reversed(elements):
             h5 = element.h5
             if not h5:
@@ -127,7 +132,7 @@ class MyMangaReaderCMS(Server):
             else:
                 slug = h5.a.get('href').split('/')[-1]
                 title = h5.a.text.strip()
-                if h5.em:
+                if h5.em and h5.em.text.strip():
                     title = '{0}: {1}'.format(title, h5.em.text.strip())
                 date = element.div.div.text.strip()
                 date_format = '%d %b. %Y'
@@ -168,7 +173,7 @@ class MyMangaReaderCMS(Server):
                 image = None
             else:
                 slug = None
-                src = img.get('data-src')
+                src = img.get('data-src').strip()
                 image = src if src.startswith('http') else self.base_url + src
 
             data['pages'].append(dict(
