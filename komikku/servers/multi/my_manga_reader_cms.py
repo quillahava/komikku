@@ -8,6 +8,7 @@
 
 # Supported servers:
 # Jpmangas [FR]: https://jpmangas.co
+# Leomanga [ES]: https://leomanga.me V1
 # Read Comics Online [RU]: https://readcomicsonline.ru
 # ScanOnePiece [FR]: https://www.scan-vf.net
 
@@ -19,6 +20,7 @@ from komikku.servers import Server
 from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
+from komikku.servers.utils import get_soup_element_inner_text
 
 
 class MyMangaReaderCMS(Server):
@@ -223,3 +225,99 @@ class MyMangaReaderCMS(Server):
                 return None
 
         return None
+
+
+class MyMangaReaderCMSv1(MyMangaReaderCMS):
+    def get_manga_data(self, initial_data):
+        """
+        Returns manga data by scraping manga HTML page content
+
+        Initial data should contain at least manga's slug (provided by search)
+        """
+        assert 'slug' in initial_data, 'Manga slug is missing in initial data'
+
+        r = self.session_get(self.manga_url.format(initial_data['slug']))
+        if r is None:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+
+        if r.status_code != 200 or mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        data = initial_data.copy()
+        data.update(dict(
+            authors=[],
+            scanlators=[],
+            genres=[],
+            status=None,
+            synopsis=None,
+            chapters=[],
+            server_id=self.id,
+            cover=None,
+        ))
+
+        data['name'] = get_soup_element_inner_text(soup.find('div', class_='panel-heading').h3)
+        data['cover'] = self.cover_url.format(data['slug'])
+
+        # Details
+        elements = soup.find('div', class_=['panel', 'panel-default']).find_all('span', class_='list-group-item')
+        for element in elements:
+            label = element.b.text.strip()
+            element.b.extract()
+            value = element.text.strip()
+
+            if label.startswith(('Author', 'Auteur', 'Autor', 'Artist')):
+                for author in value.split(','):
+                    author = author.strip()
+                    if author not in data['authors']:
+                        data['authors'].append(author)
+            elif label.startswith(('Categories', 'Catégories', 'Categorías')):
+                data['genres'] = [genre.strip() for genre in value.split(',')]
+            elif label.startswith(('Status', 'Statut', 'Estado')):
+                value = value.lower()
+                if value in ('ongoing', 'en cours'):
+                    data['status'] = 'ongoing'
+                elif value in ('complete', 'terminé'):
+                    data['status'] = 'complete'
+            elif label.startswith('Resumen'):
+                data['synopsis'] = value
+
+        # Chapters
+        elements = soup.find('div', class_='capitulos-list').find_all('tr')
+        for element in reversed(elements):
+            td_elements = element.find_all('td')
+
+            data['chapters'].append(dict(
+                slug=td_elements[0].a.get('href').split('/')[-1],
+                date=convert_date_string(td_elements[1].text.strip(), format='%d %b. %Y'),
+                title=td_elements[0].a.text.strip(),
+            ))
+
+        return data
+
+    def get_most_populars(self):
+        """
+        Returns list of most viewed manga
+        """
+        r = self.session_get(self.most_populars_url)
+        if r is None:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+
+        if r.status_code != 200 or mime_type not in ('text/html', 'text/plain'):
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        for element in soup.find_all('div', class_='thumbnail'):
+            results.append(dict(
+                name=element.a.img.get('alt').strip(),
+                slug=element.a.get('href').split('/')[-1],
+            ))
+
+        return results
