@@ -78,7 +78,7 @@ class MyMangaReaderCMS(Server):
                 continue
 
             if element.name == 'dt':
-                label = element.text
+                label = element.text.strip()
                 continue
 
             if label.startswith(('Author', 'Auteur', 'Autor', 'Artist')):
@@ -91,9 +91,9 @@ class MyMangaReaderCMS(Server):
                 data['genres'] = [a_element.text.strip() for a_element in element.find_all('a')]
             elif label.startswith(('Status', 'Statut', 'Estado')):
                 value = element.text.strip().lower()
-                if value in ('ongoing', 'en cours'):
+                if value in ('ongoing', 'en cours', 'en curso'):
                     data['status'] = 'ongoing'
-                elif value in ('complete', 'terminé'):
+                elif value in ('complete', 'terminé', 'completa'):
                     data['status'] = 'complete'
 
         data['synopsis'] = soup.find('div', class_='well').p.text.strip()
@@ -144,10 +144,18 @@ class MyMangaReaderCMS(Server):
         data = dict(
             pages=[],
         )
-        for img in pages_imgs:
+        for index, img in enumerate(pages_imgs):
+            if self.image_url:
+                slug = img.get('data-src').strip().split('/')[-1]
+                image = None
+            else:
+                slug = None
+                image = self.base_url + img.get('data-src')
+
             data['pages'].append(dict(
-                slug=None,  # not necessary, we know image url directly
-                image=img.get('data-src').strip().split('/')[-1],
+                slug=slug,
+                image=image,
+                index=index + 1,
             ))
 
         return data
@@ -156,7 +164,10 @@ class MyMangaReaderCMS(Server):
         """
         Returns chapter page scan (image) content
         """
-        r = self.session_get(self.image_url.format(manga_slug, chapter_slug, page['image']))
+        if page['slug']:
+            r = self.session_get(self.image_url.format(manga_slug, chapter_slug, page['slug']))
+        else:
+            r = self.session_get(page['image'])
         if r is None or r.status_code != 200:
             return None
 
@@ -167,7 +178,7 @@ class MyMangaReaderCMS(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=page['image'],
+            name=page['slug'] if page['slug'] else '{0}.{1}'.format(page['index'], mime_type.split('/')[-1]),
         )
 
     def get_manga_url(self, slug, url):
