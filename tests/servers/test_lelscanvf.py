@@ -8,18 +8,18 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 @pytest.fixture
-def leomanga_server():
-    from komikku.servers.leomanga import Leomanga
+def lelscanvf_server():
+    from komikku.servers.lelscanvf import Lelscanvf
 
-    return Leomanga()
+    return Lelscanvf()
 
 
 @test_steps('get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
-def test_leomanga(leomanga_server):
+def test_lelscanvf(lelscanvf_server):
     # Get most populars
     print('Get most populars')
     try:
-        response = leomanga_server.get_most_populars()
+        response = lelscanvf_server.get_most_populars()
     except Exception as e:
         response = None
         log_error_traceback(e)
@@ -31,7 +31,7 @@ def test_leomanga(leomanga_server):
     print('Search')
     try:
         # Use first result of get_most_populars
-        response = leomanga_server.search(response[0]['name'])
+        response = lelscanvf_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
@@ -43,7 +43,7 @@ def test_leomanga(leomanga_server):
     # Get manga data
     print('Get manga data')
     try:
-        response = leomanga_server.get_manga_data(dict(slug=slug))
+        response = lelscanvf_server.get_manga_data(dict(slug=slug))
         chapter_slug = response['chapters'][0]['slug']
     except Exception as e:
         chapter_slug = None
@@ -55,7 +55,7 @@ def test_leomanga(leomanga_server):
     # Get chapter data
     print("Get chapter data")
     try:
-        response = leomanga_server.get_manga_chapter_data(slug, None, chapter_slug, None)
+        response = lelscanvf_server.get_manga_chapter_data(slug, None, chapter_slug, None)
         page = response['pages'][0]
     except Exception as e:
         page = None
@@ -67,7 +67,7 @@ def test_leomanga(leomanga_server):
     # Get page image
     print('Get page image')
     try:
-        response = leomanga_server.get_manga_chapter_page_image(slug, None, chapter_slug, page)
+        response = lelscanvf_server.get_manga_chapter_page_image(slug, None, chapter_slug, page)
     except Exception as e:
         response = None
         log_error_traceback(e)
