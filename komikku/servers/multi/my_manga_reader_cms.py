@@ -9,6 +9,8 @@
 # Supported servers:
 # Jpmangas [FR]: https://jpmangas.co
 # Leomanga [ES]: https://leomanga.me V1
+# Mangadoor [ES]: https://mangadoor.com
+# Mangasin [ES]: https://mangas.in
 # Read Comics Online [RU]: https://readcomicsonline.ru
 # ScanOnePiece [FR]: https://www.scan-vf.net
 
@@ -32,6 +34,8 @@ class MyMangaReaderCMS(Server):
     image_url: str
     cover_url: str
 
+    search_query_param = 'query'
+
     def __init__(self):
         if self.session is None:
             self.session = requests.Session()
@@ -54,7 +58,7 @@ class MyMangaReaderCMS(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'lxml')
+        soup = BeautifulSoup(r.text, 'html.parser')
 
         data = initial_data.copy()
         data.update(dict(
@@ -87,7 +91,7 @@ class MyMangaReaderCMS(Server):
                     t = t.strip()
                     if t not in data['authors']:
                         data['authors'].append(t)
-            elif label.startswith(('Categories', 'Catégories', 'Categorías')):
+            elif label.startswith(('Categories', 'Catégories', 'Categorías', 'Género')):
                 data['genres'] = [a_element.text.strip() for a_element in element.find_all('a')]
             elif label.startswith(('Status', 'Statut', 'Estado')):
                 value = element.text.strip().lower()
@@ -96,7 +100,13 @@ class MyMangaReaderCMS(Server):
                 elif value in ('complete', 'terminé', 'completa'):
                     data['status'] = 'complete'
 
-        data['synopsis'] = soup.find('div', class_='well').p.text.strip()
+        synopsis_element = soup.find('div', class_='well').p
+        if synopsis_element.p:
+            # Difference encountered on `mangasin` server
+            # Note: HTML is borken in this part, this is why we use html.parser above
+            # Anyway, the retrieved synopsis is not entirely correct, there is a surplus of text.
+            synopsis_element = synopsis_element.p
+        data['synopsis'] = synopsis_element.text.strip()
         alert_element = soup.find('div', class_='alert-danger')
         if alert_element:
             data['synopsis'] += '\n\n' + alert_element.text.strip()
@@ -108,15 +118,23 @@ class MyMangaReaderCMS(Server):
             if not h5:
                 continue
 
-            slug = h5.a.get('href').split('/')[-1]
-            title = h5.a.text.strip()
-            if h5.em:
-                title = '{0}: {1}'.format(title, h5.em.text.strip())
-            date = element.div.div
+            if h5.eee:
+                # Difference encountered on `mangasin` server
+                slug = h5.eee.a.get('href').split('/')[-1]
+                title = h5.eee.a.text.strip()
+                date = element.div.div.text.strip().split()[0]
+                date_format = '%Y-%m-%d'
+            else:
+                slug = h5.a.get('href').split('/')[-1]
+                title = h5.a.text.strip()
+                if h5.em:
+                    title = '{0}: {1}'.format(title, h5.em.text.strip())
+                date = element.div.div.text.strip()
+                date_format = '%d %b. %Y'
 
             data['chapters'].append(dict(
                 slug=slug,
-                date=convert_date_string(date.text.strip(), format='%d %b. %Y'),
+                date=convert_date_string(date, format=date_format),
                 title=title
             ))
 
@@ -150,7 +168,8 @@ class MyMangaReaderCMS(Server):
                 image = None
             else:
                 slug = None
-                image = self.base_url + img.get('data-src')
+                src = img.get('data-src')
+                image = src if src.startswith('http') else self.base_url + src
 
             data['pages'].append(dict(
                 slug=slug,
@@ -212,8 +231,9 @@ class MyMangaReaderCMS(Server):
         return results
 
     def search(self, term):
-        self.session_get(self.base_url)
-        r = self.session_get(self.search_url, params=dict(query=term))
+        params = {}
+        params[self.search_query_param] = term
+        r = self.session_get(self.search_url, params=params)
         if r is None:
             return None
 
@@ -222,7 +242,9 @@ class MyMangaReaderCMS(Server):
                 # Returned data for each manga:
                 # value: name of the manga
                 # data: slug of the manga
-                data = r.json()['suggestions']
+                data = r.json()
+                if 'suggestions' in data:
+                    data = data['suggestions']
 
                 results = []
                 for item in data:
@@ -285,7 +307,7 @@ class MyMangaReaderCMSv1(MyMangaReaderCMS):
                     author = author.strip()
                     if author not in data['authors']:
                         data['authors'].append(author)
-            elif label.startswith(('Categories', 'Catégories', 'Categorías')):
+            elif label.startswith(('Categories', 'Catégories', 'Categorías', 'Género')):
                 data['genres'] = [genre.strip() for genre in value.split(',')]
             elif label.startswith(('Status', 'Statut', 'Estado')):
                 value = value.lower()
