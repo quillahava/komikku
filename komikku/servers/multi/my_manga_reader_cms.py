@@ -174,7 +174,12 @@ class MyMangaReaderCMS(Server):
             else:
                 slug = None
                 src = img.get('data-src').strip()
-                image = src if src.startswith('http') else self.base_url + src
+                if src.startswith('http'):
+                    image = src
+                elif src.startswith('//'):
+                    image = 'https:' + src
+                else:
+                    image = self.base_url + src
 
             data['pages'].append(dict(
                 slug=slug,
