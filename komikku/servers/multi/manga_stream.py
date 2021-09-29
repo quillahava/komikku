@@ -9,6 +9,7 @@
 # Supported servers:
 # Asura Scans [EN]: https://www.asurascans.com
 # Asura Scans [TR]: https://tr.asurascans.com
+# Phoenix Fansub [ES]: https://phoenixfansub.com
 
 from bs4 import BeautifulSoup
 from gettext import gettext as _
