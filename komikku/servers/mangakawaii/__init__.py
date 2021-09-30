@@ -6,6 +6,7 @@
 
 from bs4 import BeautifulSoup
 import cloudscraper
+from functools import wraps
 import json
 
 from komikku.servers import Server
@@ -15,6 +16,19 @@ from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_soup_element_inner_text
 
 SERVER_NAME = 'MangaKawaii'
+
+
+def set_lang(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        server = args[0]
+        if not server.is_lang_set:
+            server.session_get(server.base_url + '/lang/' + server.lang)
+            server.is_lang_set = True
+
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 class Mangakawaii(Server):
@@ -28,22 +42,21 @@ class Mangakawaii(Server):
     most_populars_url = base_url + '/filterMangaList?page=1&cat=&alpha=&sortBy=views&asc=false&author='
     most_populars_referer_url = base_url + '/liste-manga'
     manga_url = base_url + '/manga/{0}'
-    chapter_url = base_url + '/manga/{0}/{1}/1'
+    chapter_url = base_url + '/manga/{0}/{1}/{2}/1'
     chapters_url = base_url + '/loadChapter?page={0}'
     cdn_base_url = 'https://cdn.mangakawaii.net'
     image_url = cdn_base_url + '/uploads/manga/{0}/chapters_{1}/{2}/{3}?{4}'
     cover_url = cdn_base_url + '/uploads/manga/{0}/cover/cover_250x350.jpg'
 
     csrf_token = None
+    is_lang_set = False
 
     def __init__(self):
         if self.session is None:
             self.session = cloudscraper.create_scraper()
             self.session.headers.update({'User-Agent': USER_AGENT})
 
-        # Set language
-        self.session_get(self.base_url + '/lang/' + self.lang)
-
+    @set_lang
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -156,7 +169,7 @@ class Mangakawaii(Server):
 
         Currently, only pages are expected.
         """
-        r = self.session_get(self.chapter_url.format(manga_slug, chapter_slug))
+        r = self.session_get(self.chapter_url.format(manga_slug, self.lang, chapter_slug))
         if r.status_code != 200:
             return None
 
@@ -260,6 +273,7 @@ class Mangakawaii(Server):
         """
         return self.manga_url.format(slug)
 
+    @set_lang
     def get_most_populars(self):
         """
         Returns list of most viewed manga
@@ -289,10 +303,11 @@ class Mangakawaii(Server):
 
         return results
 
+    @set_lang
     def search(self, term):
         r = self.session_get(
             self.search_url,
-            params=dict(query=term, search_type='manga'),
+            params=dict(query=term),
             headers={
                 'X-Requested-With': 'XMLHttpRequest',
                 'Referer': self.base_url,
@@ -303,16 +318,15 @@ class Mangakawaii(Server):
             try:
                 # Returned data for each manga:
                 # value: name of the manga
-                # data: slug of the manga
+                # slug: slug of the manga
                 # imageUrl: cover of the manga
                 data = r.json()['suggestions']
 
                 results = []
                 for item in data:
                     results.append(dict(
-                        slug=item['data'],
+                        slug=item['slug'],
                         name=item['value'],
-                        cover=item['imageUrl'],
                     ))
 
                 return results
