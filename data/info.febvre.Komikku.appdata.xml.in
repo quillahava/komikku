@@ -68,6 +68,24 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.34.0" date="2021-09-30">
+            <description>
+                <ul>
+                    <li>[Servers] Add Asura Scans [EN, TR]</li>
+                    <li>[Servers] Add FR Scan [FR]</li>
+                    <li>[Servers] Add Lelscan-VF [FR]</li>
+                    <li>[Servers] Add Leomanga [ES]</li>
+                    <li>[Servers] Add Phoenix Fansub [ES]</li>
+                    <li>[Servers] Add Mangadoor [ES]</li>
+                    <li>[Servers] Add Mangas.in [ES]</li>
+                    <li>[Servers] Add Scan FR [FR]</li>
+                    <li>[Servers] Add Scan OP [FR]</li>
+                    <li>[Servers] Bilibili: Update</li>
+                    <li>[Servers] Jpmangas: Update</li>
+                    <li>[L10n] Update French and German translations</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.33.1" date="2021-09-22">
             <description>
                 <ul>
