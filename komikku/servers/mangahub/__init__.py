@@ -168,7 +168,8 @@ class Mangahub(Server):
         for a_element in soup.find('p', class_='_3Czbn'):
             data['genres'].append(a_element.text.strip())
 
-        data['synopsis'] = soup.find('p', class_='ZyMp7').text.strip()
+        if p_element := soup.find('p', class_='ZyMp7'):
+            data['synopsis'] = p_element.text.strip()
 
         # Chapters
         for ul_element in reversed(soup.find_all('ul', class_='list-group')):
