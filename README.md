@@ -2,7 +2,7 @@
 
 [![pipeline status](https://gitlab.com/valos/Komikku/badges/master/pipeline.svg)](https://gitlab.com/valos/Komikku/commits/master)
 [![Please do not theme this app](https://stopthemingmy.app/badge.svg)](https://stopthemingmy.app)
-<img src="https://img.shields.io/liberapay/receives/valos.svg?logo=liberapay">
+[![Donate using Liberapay](https://img.shields.io/liberapay/receives/valos.svg?logo=liberapay)](https://en.liberapay.com/valos/donate)
 
 Komikku is a manga, comic and BD reader for [GNOME](https://www.gnome.org). It focuses on providing a clean, intuitive and responsive interface.
 
