@@ -13,7 +13,7 @@ class ServerException(Exception):
 
 class CloudflareBypassError(ServerException):
     def __init__(self):
-        super().__init__(_('Failed to bypass Cloudfare protection. Please try again.'))
+        super().__init__(_('Failed to bypass Cloudflare protection. Please try again.'))
 
 
 class NotFoundError(ServerException):
