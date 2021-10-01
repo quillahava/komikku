@@ -7,6 +7,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from enum import IntEnum
+from functools import wraps
 import requests
 import re
 from typing import List
@@ -21,8 +22,13 @@ from komikku.servers import USER_AGENT
 from komikku.servers.utils import get_buffer_mime_type
 
 LANGUAGES_CODES = dict(
-    en=0,
-    es=1,
+    en='eng',
+    es='esp',
+    fr='fra',
+    pt_BR='ptb',
+    ru='rus',
+    id='ind',
+    th='tha',
 )
 RE_ENCRYPTION_KEY = re.compile('.{1,2}')
 SERVER_NAME = 'MANGA Plus by SHUEISHA'
@@ -35,13 +41,29 @@ headers = {
 }
 
 
+def set_lang(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        server = args[0]
+        if not server.is_lang_set:
+            server.session_get(server.api_params_url, params=dict(lang=LANGUAGES_CODES[server.lang]))
+            server.is_lang_set = True
+
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
 class Mangaplus(Server):
     id = 'mangaplus'
     name = SERVER_NAME
     lang = 'en'
 
+    is_lang_set = False
+
     base_url = 'https://mangaplus.shueisha.co.jp'
     api_url = 'https://jumpg-webapi.tokyo-cdn.com/api'
+    api_params_url = api_url + '/featured'
     api_search_url = api_url + '/title_list/all'
     api_most_populars_url = api_url + '/title_list/ranking'
     api_manga_url = api_url + '/title_detail?title_id={0}'
@@ -53,6 +75,7 @@ class Mangaplus(Server):
             self.session = requests.Session()
             self.session.headers = headers
 
+    @set_lang
     def get_manga_data(self, initial_data):
         """
         Returns manga data from API
@@ -106,6 +129,7 @@ class Mangaplus(Server):
 
         return data
 
+    @set_lang
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
         Returns manga chapter data from API
@@ -175,6 +199,7 @@ class Mangaplus(Server):
         """
         return self.manga_url.format(slug)
 
+    @set_lang
     def get_most_populars(self):
         """
         Returns hottest manga list
@@ -194,7 +219,7 @@ class Mangaplus(Server):
 
         results = []
         for title in resp_data.success.titles_ranking.titles:
-            if title.language != LANGUAGES_CODES[self.lang]:
+            if title.language != LanguageEnum.from_code(self.lang):
                 continue
 
             results.append(dict(
@@ -205,6 +230,7 @@ class Mangaplus(Server):
 
         return results
 
+    @set_lang
     def search(self, term):
         r = self.session_get(self.api_search_url)
         if r is None:
@@ -222,7 +248,7 @@ class Mangaplus(Server):
         results = []
         term = unidecode.unidecode(term).lower()
         for title in resp_data.success.titles_all.titles:
-            if title.language != LANGUAGES_CODES[self.lang]:
+            if title.language != LanguageEnum.from_code(self.lang):
                 continue
             if term not in unidecode.unidecode(title.name).lower():
                 continue
@@ -242,6 +268,36 @@ class Mangaplus_es(Mangaplus):
     lang = 'es'
 
 
+class Mangaplus_fr(Mangaplus):
+    id = 'mangaplus_fr'
+    name = SERVER_NAME
+    lang = 'fr'
+
+
+class Mangaplus_id(Mangaplus):
+    id = 'mangaplus_id'
+    name = SERVER_NAME
+    lang = 'id'
+
+
+class Mangaplus_pt_br(Mangaplus):
+    id = 'mangaplus_pt_br'
+    name = SERVER_NAME
+    lang = 'pt_BR'
+
+
+class Mangaplus_ru(Mangaplus):
+    id = 'mangaplus_ru'
+    name = SERVER_NAME
+    lang = 'ru'
+
+
+class Mangaplus_th(Mangaplus):
+    id = 'mangaplus_th'
+    name = SERVER_NAME
+    lang = 'th'
+
+
 # Protocol Buffers messages used to deserialize API responses
 # https://gist.github.com/ZaneHannanAU/437531300c4df524bdb5fd8a13fbab50
 
@@ -255,6 +311,27 @@ class ActionEnum(IntEnum):
 class LanguageEnum(IntEnum):
     ENGLISH = 0
     SPANISH = 1
+    FRENCH = 2
+    INDONESIAN = 3
+    PORTUGUESE_BR = 4
+    RUSSIAN = 5
+    THAI = 6
+
+    @classmethod
+    def from_code(cls, code):
+        # MUST BE kept in sync with `LANGUAGES_CODES` defined above
+        if code == 'en':
+            return cls.ENGLISH.value
+        if code == 'es':
+            return cls.SPANISH.value
+        if code == 'fr':
+            return cls.FRENCH.value
+        if code == 'pt_BR':
+            return cls.PORTUGUESE_BR.value
+        if code == 'ru':
+            return cls.RUSSIAN.value
+        if code == 'id':
+            return cls.INDONESIAN.value
 
 
 class UpdateTimingEnum(IntEnum):
