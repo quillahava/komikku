@@ -65,6 +65,8 @@
 
     <url type="homepage">https://valos.gitlab.io/Komikku/</url>
     <url type="bugtracker">https://gitlab.com/valos/Komikku/-/issues</url>
+    <url type="donation">https://liberapay.com/valos/donate</url>
+    <url type="donation">https://ko-fi.com/valos</url>
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
