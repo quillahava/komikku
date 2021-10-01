@@ -68,6 +68,16 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.34.1" date="2021-10-02">
+            <description>
+                <ul>
+                    <li>[Servers] MANGA Plus by SHUEISHA: Update</li>
+                    <li>[Servers] Mangahub: Fixed bug when summary is missing</li>
+                    <li>[Servers] MangaKawaii: Update</li>
+                    <li>[L10n] Update French and Polish translations</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.34.0" date="2021-09-30">
             <description>
                 <ul>
