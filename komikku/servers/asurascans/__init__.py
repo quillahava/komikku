@@ -13,6 +13,7 @@ class Asurascans(MangaStream):
     lang = 'en'
 
     base_url = 'https://www.asurascans.com'
+    search_url = base_url + '/manga/'
     manga_url = base_url + '/comics/{0}/'
     chapter_url = base_url + '/{0}-chapter-{1}/'
 
@@ -25,5 +26,6 @@ class Asurascans_tr(MangaStream):
     ignored_pages = ['page100-10.jpg', 'zzzzzzz999999.jpg', ]
 
     base_url = 'https://tr.asurascans.com'
+    search_url = base_url + '/manga/'
     manga_url = base_url + '/manga/{0}/'
     chapter_url = base_url + '/{0}-bolum-{1}/'

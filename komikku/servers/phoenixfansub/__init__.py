@@ -13,5 +13,6 @@ class Phoenixfansub(MangaStream):
     lang = 'es'
 
     base_url = 'https://phoenixfansub.com'
+    search_url = base_url + '/manga/'
     manga_url = base_url + '/manga/{0}/'
     chapter_url = base_url + '/{0}-capitulo-{1}/'
