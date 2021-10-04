@@ -23,6 +23,7 @@ re_chapter_date = re.compile(r'\d{4}.\d{2}.\d{2}')
 # Supported servers:
 # Jaimini's Box [EN]: https://jaiminisbox.com/reader (disabled)
 # Kirei Cake [EN]: https://reader.kireicake.com
+# Le Cercle du Scan [FR]: https://lel.lecercleduscan.com
 # Lupi Team [IT]: https://lupiteam.net/reader
 # Tutto Anime Manga [IT]: http://tuttoanimemanga.net/slide
 
