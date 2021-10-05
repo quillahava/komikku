@@ -206,8 +206,8 @@ class MangaStream(Server):
                                     image=image,
                                 ))
             else:
-                for p_element in soup.find('div', id='readerarea').find_all('p'):
-                    image = p_element.img.get('src')
+                for img_element in reader_element.find_all('img'):
+                    image = img_element.get('src')
                     if image.split('/')[-1] in self.ignored_pages:
                         continue
 

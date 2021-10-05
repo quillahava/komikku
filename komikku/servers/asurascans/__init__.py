@@ -12,6 +12,8 @@ class Asurascans(MangaStream):
     name = 'Asura Scans'
     lang = 'en'
 
+    ignored_pages = ['page100-10.jpg', 'zzzzzzz999999.jpg', ]
+
     base_url = 'https://www.asurascans.com'
     search_url = base_url + '/manga/'
     manga_url = base_url + '/comics/{0}/'
