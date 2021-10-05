@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from gettext import gettext as _
 from functools import lru_cache
 import html
 import logging
@@ -47,6 +48,22 @@ class Mangadex(Server):
 
     manga_url = base_url + '/title/{0}'
     cover_url = 'https://uploads.mangadex.org/covers/{0}/{1}'
+
+    filters = [
+        {
+            'key': 'ratings',
+            'type': 'select',
+            'name': _('Rating'),
+            'description': _('Content ratings to include in search'),
+            'value_type': 'multiple',
+            'options': [
+                {'key': 'safe', 'name': _('Safe'), 'default': True},
+                {'key': 'suggestive', 'name': _('Suggestive'), 'default': True},
+                {'key': 'erotica', 'name': _('Erotica'), 'default': False},
+                {'key': 'pornographic', 'name': _('Pornographic'), 'default': False}
+            ]
+        }
+    ]
 
     def __init__(self):
         if self.session is None:
@@ -229,8 +246,8 @@ class Mangadex(Server):
         """
         return self.manga_url.format(slug)
 
-    def get_most_populars(self):
-        return self.search('')
+    def get_most_populars(self, ratings=None):
+        return self.search('', ratings)
 
     @lru_cache(maxsize=1)
     def get_server_url(self, chapter_slug):
@@ -252,7 +269,8 @@ class Mangadex(Server):
                 'limit': CHAPTERS_PER_REQUEST,
                 'offset': offset,
                 'order[chapter]': 'asc',
-                'includes[]': ['scanlation_group']
+                'includes[]': ['scanlation_group'],
+                'contentRating[]': ['safe', 'suggestive', 'erotica', 'pornographic']
             })
             if r.status_code == 204:
                 break
@@ -285,10 +303,11 @@ class Mangadex(Server):
 
         return chapters
 
-    def search(self, term):
-        params = dict(
-            limit=SEARCH_RESULTS_LIMIT,
-        )
+    def search(self, term, ratings=None):
+        params = {
+            'limit': SEARCH_RESULTS_LIMIT,
+            'contentRating[]': ratings
+        }
         if term:
             params['title'] = term
 
