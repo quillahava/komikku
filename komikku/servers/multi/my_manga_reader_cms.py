@@ -22,6 +22,7 @@
 from bs4 import BeautifulSoup
 import re
 import requests
+from urllib.parse import urljoin
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
@@ -179,7 +180,7 @@ class MyMangaReaderCMS(Server):
                 elif src.startswith('//'):
                     image = 'https:' + src
                 else:
-                    image = self.base_url + src
+                    image = urljoin(self.base_url, src.lstrip('/'))
 
             data['pages'].append(dict(
                 slug=slug,
