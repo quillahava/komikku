@@ -19,7 +19,7 @@ class Readmanga(Server):
     name = 'Read Manga'
     lang = 'ru'
 
-    base_url = 'https://readmanga.live'
+    base_url = 'https://readmanga.io'
     search_url = base_url + '/search/advanced'
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
