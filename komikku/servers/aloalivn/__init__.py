@@ -11,5 +11,6 @@ class Aloalivn(Madara):
     id = 'aloalivn'
     name = 'Aloalivn'
     lang = 'en'
+    status = 'disabled'
 
     base_url = 'https://aloalivn.com'

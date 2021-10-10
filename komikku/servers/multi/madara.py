@@ -9,7 +9,7 @@
 # Supported servers:
 # 24hRomance [EN]: https://24hromance.com
 # AkuManga [AR]: https://akumanga.com
-# Aloalivn [EN]: https://aloalivn.com
+# Aloalivn [EN]: https://aloalivn.com (disabled)
 # Apoll Comics [ES]: https://apollcomics.xyz
 # ArazNovel [TR]: https://araznovel.com
 # Argos Scan [PT]: https://argosscan.com
