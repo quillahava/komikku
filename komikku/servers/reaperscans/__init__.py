@@ -6,16 +6,30 @@
 
 from komikku.servers.multi.genkan import GenkanInitial
 from komikku.servers.multi.madara import Madara
+from komikku.servers.multi.manga_stream import MangaStream
 
 
 class Reaperscans(Madara):
     id = 'reaperscans'
     name = 'Reaper Scans'
-    lang = 'fr'
+    lang = 'en'
 
     series_name = 'series'
 
     base_url = 'https://reaperscans.com'
+
+
+class Reaperscans_fr(MangaStream):
+    id = 'reaperscans_fr'
+    name = 'Reaper Scans'
+    lang = 'fr'
+
+    info_selector = '.main-info'
+
+    base_url = 'https://reaperscans.fr'
+    search_url = base_url + '/manga/'
+    manga_url = base_url + '/manga/{0}/'
+    chapter_url = base_url + '/{0}-{1}/'
 
 
 class Reaperscans_pt(Madara):
