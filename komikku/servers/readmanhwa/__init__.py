@@ -153,7 +153,7 @@ class Readmanhwa(Server):
         """
         Returns chapter page scan (image) content
         """
-        r = self.session_get(self.base_url + page['image'])
+        r = self.session_get(page['image'])
         if r.status_code != 200:
             return None
 
