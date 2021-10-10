@@ -12,7 +12,7 @@
 # Hunlight Scans [EN]: https://hunlight-scans.info
 # Leviatan Scans [EN/ES]: https://leviatanscans.com (disabled)
 # One Shot Scans [EN]: https://oneshotscans.com (disabled)
-# Reaper Scans [EN]: https://reaperscans.com
+# Reaper Scans [EN]: https://reaperscans.com (disabled)
 # The Nonames Scans [EN]: https://the-nonames.com
 # Zero Scans [EN]: https://zeroscans.com
 
