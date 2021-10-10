@@ -5,12 +5,35 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from komikku.servers.multi.genkan import GenkanInitial
+from komikku.servers.multi.madara import Madara
 
 
-class Reaperscans(GenkanInitial):
+class Reaperscans(Madara):
     id = 'reaperscans'
     name = 'Reaper Scans'
+    lang = 'fr'
+
+    series_name = 'series'
+
+    base_url = 'https://reaperscans.com'
+
+
+class Reaperscans_pt(Madara):
+    id = 'reaperscans_pt'
+    name = 'Reaper Scans'
+    lang = 'pt'
+
+    date_format = '%d/%m/%Y'
+    series_name = 'obra'
+
+    base_url = 'https://reaperscans.com.br'
+
+
+class Reaperscans__old(GenkanInitial):
+    id = 'reaperscans__old'
+    name = 'Reaper Scans'
     lang = 'en'
+    status = 'disabled'
 
     # Use Cloudflare
     # Search is partially broken -> inherit from GenkanInitial instead of Genkan class

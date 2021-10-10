@@ -12,4 +12,4 @@ class Romance24h(Madara):
     name = '24hRomance'
     lang = 'en'
 
-    base_url = 'https://24hromance.com/'
+    base_url = 'https://24hromance.com'

@@ -12,4 +12,4 @@ class Apollcomics(Madara):
     name = 'Apoll Comics'
     lang = 'es'
 
-    base_url = 'https://apollcomics.xyz/'
+    base_url = 'https://apollcomics.xyz'

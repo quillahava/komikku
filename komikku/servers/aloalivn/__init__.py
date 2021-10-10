@@ -12,4 +12,4 @@ class Aloalivn(Madara):
     name = 'Aloalivn'
     lang = 'en'
 
-    base_url = 'https://aloalivn.com/'
+    base_url = 'https://aloalivn.com'

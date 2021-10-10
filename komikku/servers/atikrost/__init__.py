@@ -12,4 +12,4 @@ class Atikrost(Madara):
     name = 'Atikrost'
     lang = 'tr'
 
-    base_url = 'https://atikrost.com/'
+    base_url = 'https://atikrost.com'

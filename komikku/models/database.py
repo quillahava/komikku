@@ -254,6 +254,18 @@ def init_db():
             if res:
                 db_conn.execute('PRAGMA user_version = {0}'.format(8))
 
+        if 0 < db_version <= 8:
+            # Version 0.32.0
+            if execute_sql(db_conn, 'ALTER TABLE mangas ADD COLUMN page_numbering integer;'):
+                db_conn.execute('PRAGMA user_version = {0}'.format(9))
+
+        if 0 < db_version <= 9:
+            # Version 0.35.0
+            execute_sql(db_conn, "UPDATE mangas SET server_id = 'reaperscans__old' WHERE server_id = 'reaperscans';")
+
+            if execute_sql(db_conn, 'ALTER TABLE chapters ADD COLUMN last_read timestamp;'):
+                db_conn.execute('PRAGMA user_version = {0}'.format(10))
+
         print('DB version', db_conn.execute('PRAGMA user_version').fetchone()[0])
 
         db_conn.close()

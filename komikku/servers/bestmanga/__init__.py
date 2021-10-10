@@ -12,4 +12,6 @@ class Bestmanga(Madara):
     name = 'Best Manga'
     lang = 'ru'
 
-    base_url = 'https://bestmanga.club/'
+    date_format = '%d.%m.%Y'
+
+    base_url = 'https://bestmanga.club'

@@ -12,4 +12,4 @@ class Wakascan(Madara):
     name = 'Wakascan'
     lang = 'fr'
 
-    base_url = 'https://wakascan.com/'
+    base_url = 'https://wakascan.com'

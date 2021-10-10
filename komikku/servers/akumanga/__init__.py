@@ -12,4 +12,4 @@ class Akumanga(Madara):
     name = 'AkuManga'
     lang = 'ar'
 
-    base_url = 'https://akumanga.com/'
+    base_url = 'https://akumanga.com'

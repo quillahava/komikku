@@ -12,4 +12,4 @@ class Araznovel(Madara):
     name = 'ArazNovel'
     lang = 'tr'
 
-    base_url = 'https://araznovel.com/'
+    base_url = 'https://araznovel.com'

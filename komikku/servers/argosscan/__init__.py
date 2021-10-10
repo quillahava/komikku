@@ -12,4 +12,4 @@ class Argosscan(Madara):
     name = 'Argos Scan'
     lang = 'pt'
 
-    base_url = 'https://argosscan.com/'
+    base_url = 'https://argosscan.com'

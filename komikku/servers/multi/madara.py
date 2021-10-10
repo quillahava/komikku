@@ -7,6 +7,7 @@
 # Madara – WordPress Theme for Manga
 
 # Supported servers:
+# 24hRomance [EN]: https://24hromance.com
 # AkuManga [AR]: https://akumanga.com
 # Aloalivn [EN]: https://aloalivn.com
 # Apoll Comics [ES]: https://apollcomics.xyz
@@ -14,7 +15,8 @@
 # Argos Scan [PT]: https://argosscan.com
 # Atikrost [TR]: https://atikrost.com
 # Best Manga [RU]: https://bestmanga.club
-# 24hRomance [EN]: https://24hromance.com
+# Reaperscans [FR]: https://reaperscans.com
+# Reaperscans [PT]: https://reaperscans.com.br
 # Wakascan [FR]: https://wakascan.com
 
 from bs4 import BeautifulSoup
@@ -29,10 +31,13 @@ from komikku.servers.utils import get_soup_element_inner_text
 
 
 class Madara(Server):
+    series_name: str = 'manga'
+    date_format: str = '%B %d, %Y'
+
     def __init__(self):
-        self.api_url = self.base_url + 'wp-admin/admin-ajax.php'
-        self.manga_url = self.base_url + 'manga/{0}/'
-        self.chapter_url = self.base_url + 'manga/{0}/{1}/?style=list'
+        self.api_url = self.base_url + '/wp-admin/admin-ajax.php'
+        self.manga_url = self.base_url + '/' + self.series_name + '/{0}/'
+        self.chapter_url = self.base_url + '/' + self.series_name + '/{0}/{1}/?style=list'
 
         if self.session is None:
             self.session = requests.Session()
@@ -85,6 +90,12 @@ class Madara(Server):
                         continue
                     if author not in data['authors']:
                         data['authors'].append(author)
+            elif label.startswith(('Tradutor', 'Revisor')):
+                for scanlator in content_element.text.strip().split(','):
+                    scanlator = scanlator.strip()
+                    if scanlator == '' or scanlator in data['scanlators']:
+                        continue
+                    data['scanlators'].append(scanlator)
             elif label.startswith(('Genre', 'Gênero', 'Tür', 'Kategoriler', 'التصنيف', 'Жанр')):
                 for genre in content_element.text.strip().split(','):
                     genre = genre.strip()
@@ -128,9 +139,11 @@ class Madara(Server):
 
         elements = soup.find_all('li', class_='wp-manga-chapter')
         for element in reversed(elements):
-            a_element = element.find('a', recursive=False)
-            if date := element.span.text.strip():
-                date = convert_date_string(date, format='%B %d, %Y')
+            a_element = element.a
+            date_element = element.find(class_='chapter-release-date').extract()
+
+            if date := date_element.text.strip():
+                date = convert_date_string(date, format=self.date_format)
             else:
                 date = datetime.date.today().strftime('%Y-%m-%d')
 
