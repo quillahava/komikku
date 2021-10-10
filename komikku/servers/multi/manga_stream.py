@@ -12,6 +12,7 @@
 # Phoenix Fansub [ES]: https://phoenixfansub.com
 # Rawkuma [JA]: https://rawkuma.com
 # Raw Manga [JA]: https://mangaraw.org (v1)
+# Reaper Scans [FR]: https://reaperscans.fr
 
 from bs4 import BeautifulSoup
 from gettext import gettext as _
