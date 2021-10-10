@@ -30,6 +30,7 @@ class Centraldemangas(Server):
     id = 'centraldemangas'
     name = SERVER_NAME
     lang = 'pt'
+    status = 'disabled'
 
     base_url = 'http://centraldemangas.online'
     search_url = base_url + '/api/titulos'
