@@ -45,7 +45,7 @@ def test_scanmanga(scanmanga_server):
     print('Get manga data')
     try:
         response = scanmanga_server.get_manga_data(dict(url=url, slug=slug))
-        chapter_slug = response['chapters'][0]['slug']
+        chapter_slug = response['chapters'][-1]['slug']
     except Exception as e:
         chapter_slug = None
         log_error_traceback(e)
@@ -97,7 +97,7 @@ def test_scanmanga_2(scanmanga_server):
     print('Get manga data 2')
     try:
         response = scanmanga_server.get_manga_data(dict(url=url, slug=slug))
-        chapter_slug = response['chapters'][0]['slug']
+        chapter_slug = response['chapters'][-1]['slug']
     except Exception as e:
         chapter_slug = None
         log_error_traceback(e)

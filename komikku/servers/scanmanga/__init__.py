@@ -24,7 +24,7 @@ class Scanmanga(Server):
     search_url = base_url + '/qsearch.json'
     most_populars_url = base_url + '/Tout-le-TOP.html'
     manga_url = base_url + '{0}'
-    chapter_url = base_url + '/lecture-en-ligne/{0}-{1}.html'
+    chapter_url = base_url + '/lecture-en-ligne/{0}{1}.html'
     cover_url = base_url + '/img{0}'
 
     def __init__(self):
@@ -33,7 +33,7 @@ class Scanmanga(Server):
 
     def create_session(self):
         self.session = requests.Session()
-        self.session.headers.update({'user-agent': USER_AGENT})
+        self.session.headers.update({'User-Agent': USER_AGENT})
 
     @classmethod
     def get_manga_initial_data_from_url(cls, url):
@@ -53,8 +53,7 @@ class Scanmanga(Server):
         r = self.session_get(
             self.manga_url.format(initial_data['url']),
             headers={
-                'referer': self.base_url + '/?home',
-                'accept-language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+                'Referer': self.base_url + '/?home',
             }
         )
         if r.status_code != 200:
@@ -146,7 +145,7 @@ class Scanmanga(Server):
 
         for script_element in soup.find_all('script'):
             script = script_element.string
-            if not script or not script.strip().startswith('(function(d, s, id)'):
+            if not script or 'var nPa = new Array' not in script:
                 continue
 
             image_base_url = None
@@ -186,7 +185,7 @@ class Scanmanga(Server):
         r = self.session_get(
             page['image'],
             headers={
-                'referer': self.chapter_url.format(manga_slug, chapter_slug),
+                'Referer': self.chapter_url.format(manga_slug, chapter_slug),
             }
         )
         if r.status_code != 200:
@@ -215,7 +214,7 @@ class Scanmanga(Server):
         r = self.session_get(
             self.most_populars_url,
             headers={
-                'referer': self.base_url
+                'Referer': self.base_url
             }
         )
         if r.status_code != 200:
@@ -248,8 +247,8 @@ class Scanmanga(Server):
             self.search_url,
             params=dict(term=term),
             headers={
-                'x-requested-with': 'XMLHttpRequest',
-                'referer': self.base_url,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Referer': self.base_url,
             }
         )
 
