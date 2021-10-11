@@ -4,6 +4,12 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Mariusz Kurek <mariuszkurek@pm.me>
 
+# Supported servers:
+# Colored Council [EN]
+# Danke fürs Lesen [EN]
+# Hachirumi [EN]
+# Magical Translators [EN/PL]
+
 from bs4 import BeautifulSoup
 import datetime
 import requests

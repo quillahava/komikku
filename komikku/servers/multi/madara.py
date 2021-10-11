@@ -7,17 +7,17 @@
 # Madara – WordPress Theme for Manga
 
 # Supported servers:
-# 24hRomance [EN]: https://24hromance.com
-# AkuManga [AR]: https://akumanga.com
-# Aloalivn [EN]: https://aloalivn.com (disabled)
-# Apoll Comics [ES]: https://apollcomics.xyz
-# ArazNovel [TR]: https://araznovel.com
-# Argos Scan [PT]: https://argosscan.com
-# Atikrost [TR]: https://atikrost.com
-# Best Manga [RU]: https://bestmanga.club
-# Reaperscans [FR]: https://reaperscans.com
-# Reaperscans [PT]: https://reaperscans.com.br
-# Wakascan [FR]: https://wakascan.com
+# 24hRomance [EN]
+# AkuManga [AR]
+# Aloalivn [EN] (disabled)
+# Apoll Comics [ES]
+# ArazNovel [TR]
+# Argos Scan [PT]
+# Atikrost [TR]
+# Best Manga [RU]
+# Reaperscans [EN]
+# Reaperscans [PT]
+# Wakascan [FR]
 
 from bs4 import BeautifulSoup
 import datetime
@@ -174,6 +174,7 @@ class Madara(Server):
         data = dict(
             pages=[],
         )
+        print(manga_slug, chapter_slug)
         for img_element in soup.find_all('img', class_='wp-manga-chapter-img'):
             img_url = img_element.get('data-src')
             if img_url is None:
@@ -183,6 +184,7 @@ class Madara(Server):
                 slug=None,
                 image=img_url,
             ))
+        # print(r.text)
 
         return data
 

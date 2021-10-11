@@ -11,6 +11,7 @@ class Magicaltranslators(Guya):
     id = 'magicaltranslators'
     name = 'Magical Translators'
     lang = 'en'
+
     base_url = 'https://mahoushoujobu.com'
     manga_url = base_url + '/read/manga/{0}/'
     api_manga_url = base_url + '/api/series/{0}/'

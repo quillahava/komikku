@@ -11,6 +11,7 @@ class Coloredcouncil(Guya):
     id = 'coloredcouncil'
     name = 'Colored Council'
     lang = 'en'
+
     base_url = 'https://coloredcouncil.moe'
     manga_url = base_url + '/read/manga/{0}/'
     api_manga_url = base_url + '/api/series/{0}/'

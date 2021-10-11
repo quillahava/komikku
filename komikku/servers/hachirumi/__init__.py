@@ -12,6 +12,7 @@ class Hachirumi(Guya):
     name = 'Hachirumi'
     lang = 'en'
     is_nsfw = True
+
     base_url = 'https://hachirumi.com'
     manga_url = base_url + '/read/manga/{0}/'
     api_manga_url = base_url + '/api/series/{0}/'

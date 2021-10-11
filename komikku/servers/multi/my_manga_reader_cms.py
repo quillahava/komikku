@@ -7,17 +7,17 @@
 # My Manga Reader CMS
 
 # Supported servers:
-# FR Scan [FR]: https://frscan.cc
-# Jpmangas [FR]: https://jpmangas.co
-# Lelscan-VF [FR]: https://lelscan-vf.co
-# Leomanga [ES]: https://leomanga.me V1
-# Mangadoor [ES]: https://mangadoor.com
-# Mangasin [ES]: https://mangas.in
-# Read Comics Online [RU]: https://readcomicsonline.ru
-# Scan FR [FR]: https://www.scan-fr.cc
-# Scan OP [FR]: https://scan-op.cc
-# ScanOnePiece [FR]: https://www.scan-vf.net
-# Submanga [ES]: https://submanga.io
+# FR Scan [FR]
+# Jpmangas [FR]
+# Lelscan-VF [FR]
+# Leomanga [ES] (v1)
+# Mangadoor [ES]
+# Mangasin [ES]
+# Read Comics Online [RU]
+# Scan FR [FR]
+# Scan OP [FR]
+# ScanOnePiece [FR]
+# Submanga [ES]
 
 from bs4 import BeautifulSoup
 import re

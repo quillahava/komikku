@@ -21,11 +21,11 @@ re_chapter_date = re.compile(r'\d{4}.\d{2}.\d{2}')
 # https://github.com/FoolCode/FoOlSlide or https://github.com/chocolatkey/FoOlSlide2 (fork)
 
 # Supported servers:
-# Jaimini's Box [EN]: https://jaiminisbox.com/reader (disabled)
-# Kirei Cake [EN]: https://reader.kireicake.com
-# Le Cercle du Scan [FR]: https://lel.lecercleduscan.com
-# Lupi Team [IT]: https://lupiteam.net/reader
-# Tutto Anime Manga [IT]: http://tuttoanimemanga.net/slide
+# Jaimini's Box [EN] (disabled)
+# Kirei Cake [EN]
+# Le Cercle du Scan [FR]
+# Lupi Team [IT]
+# Tutto Anime Manga [IT] (disabled)
 
 
 class FoOlSlide(Server):

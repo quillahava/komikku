@@ -7,12 +7,12 @@
 # Manga Strean – WordPress Theme for read manga
 
 # Supported servers:
-# Asura Scans [EN]: https://www.asurascans.com
-# Asura Scans [TR]: https://tr.asurascans.com
-# Phoenix Fansub [ES]: https://phoenixfansub.com
-# Rawkuma [JA]: https://rawkuma.com
-# Raw Manga [JA]: https://mangaraw.org (v1)
-# Reaper Scans [FR]: https://reaperscans.fr
+# Asura Scans [EN]
+# Asura Scans [TR]
+# Phoenix Fansub [ES]
+# Rawkuma [JA]
+# Raw Manga [JA] (v1)
+# Reaper Scans [FR]
 
 from bs4 import BeautifulSoup
 from gettext import gettext as _

@@ -7,14 +7,14 @@
 # Genkan CMS
 
 # Supported servers
-# Edelgarde Scans [EN]: https://edelgardescans.com
-# Hatigarm Scans [EN]: https://hatigarmscanz.net
-# Hunlight Scans [EN]: https://hunlight-scans.info
-# Leviatan Scans [EN/ES]: https://leviatanscans.com (disabled)
-# One Shot Scans [EN]: https://oneshotscans.com (disabled)
-# Reaper Scans [EN]: https://reaperscans.com (disabled)
-# The Nonames Scans [EN]: https://the-nonames.com
-# Zero Scans [EN]: https://zeroscans.com
+# Edelgarde Scans [EN]
+# Hatigarm Scans [EN]
+# Hunlight Scans [EN]
+# Leviatan Scans [EN/ES] (disabled)
+# One Shot Scans [EN] (disabled)
+# Reaper Scans [EN] (disabled)
+# The Nonames Scans [EN]
+# Zero Scans [EN]
 
 from bs4 import BeautifulSoup
 import json
