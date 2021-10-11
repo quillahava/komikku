@@ -174,7 +174,6 @@ class Madara(Server):
         data = dict(
             pages=[],
         )
-        print(manga_slug, chapter_slug)
         for img_element in soup.find_all('img', class_='wp-manga-chapter-img'):
             img_url = img_element.get('data-src')
             if img_url is None:
@@ -184,7 +183,6 @@ class Madara(Server):
                 slug=None,
                 image=img_url,
             ))
-        # print(r.text)
 
         return data
 
