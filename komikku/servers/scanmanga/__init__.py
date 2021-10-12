@@ -53,7 +53,8 @@ class Scanmanga(Server):
         r = self.session_get(
             self.manga_url.format(initial_data['url']),
             headers={
-                'Referer': self.base_url + '/?home',
+                'Referer': self.base_url + '/?sm',
+                'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
             }
         )
         if r.status_code != 200:
