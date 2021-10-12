@@ -306,7 +306,8 @@ class Mangadex(Server):
     def search(self, term, ratings=None):
         params = {
             'limit': SEARCH_RESULTS_LIMIT,
-            'contentRating[]': ratings
+            'contentRating[]': ratings,
+            'availableTranslatedLanguage[]': [self.lang_code]
         }
         if term:
             params['title'] = term
