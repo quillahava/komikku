@@ -237,7 +237,7 @@ class Allhentai(Readmanga):
     name = 'AllHentai'
     is_nsfw = True
 
-    base_url = 'http://wwv.allhen.me'
+    base_url = 'http://23.allhen.online'
     search_url = base_url + '/search/advanced'
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
