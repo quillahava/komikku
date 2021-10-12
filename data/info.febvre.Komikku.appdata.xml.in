@@ -19,6 +19,7 @@
             <li>Support several types of navigation: keyboard arrows, right and left navigation layout via mouse click or tapping (touchpad/touch screen), mouse wheel, 2-fingers swipe gesture (touchpad), swipe gesture (touch screen)</li>
             <li>Automatic update of comics</li>
             <li>Automatic download of new chapters</li>
+            <li>Reading history</li>
             <li>Light and dark themes</li>
         </ul>
         <p>It focuses on providing a clean, intuitive and adaptive interface.</p>
@@ -70,6 +71,28 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.35.0" date="2021-10-12">
+            <description>
+                <ul>
+                    <li>Add Reading History</li>
+                    <li>[Servers] Add Le Cercle du Scan [FR]</li>
+                    <li>[Servers] Add Raw Manga [JA]</li>
+                    <li>[Servers] Add Rawkuma [JA]</li>
+                    <li>[Servers] Add Reaper Scans [FR/PT]</li>
+                    <li>[Servers] MangaDex: Add rating filter</li>
+                    <li>[Servers] AllHentai: Update</li>
+                    <li>[Servers] Read Manga: Update</li>
+                    <li>[Servers] ReadManhwa: Update</li>
+                    <li>[Servers] Reaper Scans: Update</li>
+                    <li>[Servers] Scan FR: Update</li>
+                    <li>[Servers] Scan Manga: Update</li>
+                    <li>[Servers] Aloalivn: Disable</li>
+                    <li>[Servers] Central de Mangás: Disable</li>
+                    <li>[Servers] TuttoAnimeManga: Disable</li>
+                    <li>[L10n] Update French, German and Polish translations</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.34.1" date="2021-10-02">
             <description>
                 <ul>

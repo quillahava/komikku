@@ -20,7 +20,11 @@ Komikku is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.html
   * Keyboard arrow keys
   * Mouse click
   * Mouse wheel
-  * 2-fingers swipe gesture
+  * 2-fingers swipe gesture (touchpad)
+  * Swipe gesture (touch screen)
+* Automatic update of comics
+* Automatic download of new chapters
+* Reading history
 * Light and dark themes
 
 ## Screenshots

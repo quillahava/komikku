@@ -388,6 +388,7 @@ class Manga:
 
         # Fill data with internal data
         data.update(dict(
+            # Add fake last_read date: allows to display recently added manga at the top of the library
             last_read=datetime.datetime.utcnow(),
         ))
 
