@@ -118,7 +118,7 @@ class MyMangaReaderCMS(Server):
             data['synopsis'] += '\n\n' + alert_element.text.strip()
 
         # Chapters
-        elements = soup.find('ul', class_=re.compile(r'chapters|chapterszozo')).find_all('li', recursive=False)
+        elements = soup.find('ul', class_=re.compile(r'chapter.*')).find_all('li', recursive=False)
         for element in reversed(elements):
             h5 = element.h5
             if not h5:
