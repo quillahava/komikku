@@ -80,7 +80,7 @@ class Mangadex(Server):
 
         return matching_group[0]['name']
 
-    def convert_old_slug(self, slug, type):
+    def __convert_old_slug(self, slug, type):
         # Removing this will break manga that were added before the change to the manga slug
         slug = slug.split('/')[0]
         try:
@@ -99,24 +99,36 @@ class Mangadex(Server):
 
             return None
 
-    def _manga_title_from_attributes(self, attributes):
+    def __get_manga_title(self, attributes):
+        # Check if title is available in server language
         if self.lang_code in attributes['title']:
             return attributes['title'][self.lang_code]
-        elif 'en' in attributes['title']:
+
+        # Fallback to English title
+        if 'en' in attributes['title']:
             return attributes['title']['en']
 
-        else:
-            lang_code_alt_name = None
-            en_alt_name = None
+        # Search in alternative titles
+        for alt_title in attributes['altTitles']:
+            if self.lang_code in alt_title:
+                return alt_title[self.lang_code]
 
-            for alt_title in attributes['altTitles']:
-                if not lang_code_alt_name and self.lang_code in alt_title:
-                    lang_code_alt_name = alt_title['en']
+            if 'en' in alt_title:
+                return alt_title['en']
 
-                if not en_alt_name and 'en' in alt_title:
-                    en_alt_name = alt_title['en']
+        # Last resort
+        if len(attributes['title']) > 0:
+            return list(attributes['title'].values())[0]
 
-            return lang_code_alt_name or en_alt_name
+        return None
+
+    @lru_cache(maxsize=1)
+    def __get_server_url(self, chapter_slug):
+        r = self.session_get(self.api_server_url.format(chapter_slug))
+        if r.status_code != 200:
+            return None
+
+        return r.json()['baseUrl']
 
     def get_manga_data(self, initial_data):
         """
@@ -126,7 +138,7 @@ class Mangadex(Server):
         """
         assert 'slug' in initial_data, 'Slug is missing in initial data'
 
-        slug = self.convert_old_slug(initial_data['slug'], type='manga')
+        slug = self.__convert_old_slug(initial_data['slug'], type='manga')
         if slug is None:
             raise NotFoundError
 
@@ -152,7 +164,7 @@ class Mangadex(Server):
         attributes = resp_json['data']['attributes']
 
         # FIXME: Should probably be lang_code, but the API returns weird stuff
-        _name = self._manga_title_from_attributes(attributes)
+        _name = self.__get_manga_title(attributes)
         data['name'] = html.unescape(_name)
         assert data['name'] is not None
 
@@ -211,7 +223,7 @@ class Mangadex(Server):
             title=title,
             pages=[dict(slug=attributes['hash'] + '/' + page, image=None) for page in attributes['data']],
             date=convert_date_string(attributes['publishAt'].split('T')[0], format='%Y-%m-%d'),
-            scanlators=scanlators
+            scanlators=scanlators,
         )
 
         return data
@@ -220,14 +232,14 @@ class Mangadex(Server):
         """
         Returns chapter page scan (image) content
         """
-        server_url = self.get_server_url(chapter_slug)
-        if server_url == None:
-            self.get_server_url.cache_clear()
+        server_url = self.__get_server_url(chapter_slug)
+        if server_url is None:
+            self.__get_server_url.cache_clear()
             return None
 
         r = self.session_get(self.api_page_url.format(server_url, page['slug']))
         if r.status_code != 200:
-            self.get_server_url.cache_clear()
+            self.__get_server_url.cache_clear()
             return None
 
         mime_type = get_buffer_mime_type(r.content)
@@ -249,14 +261,6 @@ class Mangadex(Server):
     def get_most_populars(self, ratings=None):
         return self.search('', ratings)
 
-    @lru_cache(maxsize=1)
-    def get_server_url(self, chapter_slug):
-        r = self.session_get(self.api_server_url.format(chapter_slug))
-        if r.status_code != 200:
-            return None
-
-        return r.json()['baseUrl']
-
     def resolve_chapters(self, manga_slug):
         chapters = []
         offset = 0
@@ -270,7 +274,7 @@ class Mangadex(Server):
                 'offset': offset,
                 'order[chapter]': 'asc',
                 'includes[]': ['scanlation_group'],
-                'contentRating[]': ['safe', 'suggestive', 'erotica', 'pornographic']
+                'contentRating[]': ['safe', 'suggestive', 'erotica', 'pornographic'],
             })
             if r.status_code == 204:
                 break
@@ -299,6 +303,7 @@ class Mangadex(Server):
 
             if len(results) < CHAPTERS_PER_REQUEST:
                 break
+
             offset += CHAPTERS_PER_REQUEST
 
         return chapters
@@ -307,7 +312,7 @@ class Mangadex(Server):
         params = {
             'limit': SEARCH_RESULTS_LIMIT,
             'contentRating[]': ratings,
-            'availableTranslatedLanguage[]': [self.lang_code]
+            'availableTranslatedLanguage[]': [self.lang_code],
         }
         if term:
             params['title'] = term
@@ -318,16 +323,15 @@ class Mangadex(Server):
 
         results = []
         for result in r.json()['data']:
-            name = self._manga_title_from_attributes(result['attributes'])
+            name = self.__get_manga_title(result['attributes'])
 
             if name:
                 results.append(dict(
                     slug=result['id'],
-                    # FIXME: lang_code
                     name=name,
                 ))
             else:
-                logger.warning("ignoring result {}, missing name".format(result['id']))
+                logger.warning("Ignoring result {}, missing name".format(result['id']))
 
         return results
 
