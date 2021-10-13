@@ -71,6 +71,14 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.35.1" date="2021-10-14">
+            <description>
+                <ul>
+                    <li>[Servers] MangaDex: Search now takes language into account</li>
+                    <li>[Servers] Under Flatpak, fixed problem with the HTML parser</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.35.0" date="2021-10-12">
             <description>
                 <ul>
