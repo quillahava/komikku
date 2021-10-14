@@ -286,6 +286,9 @@ class Mangadex(Server):
             for chapter in results:
                 attributes = chapter['attributes']
 
+                if 'externalUrl' in attributes and attributes['externalUrl']:
+                    continue
+
                 title = f'#{attributes["chapter"]}'
                 if attributes['title']:
                     title = f'{title} - {attributes["title"]}'
