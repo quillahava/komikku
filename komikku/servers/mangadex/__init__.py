@@ -298,7 +298,6 @@ class Mangadex(Server):
                 data = dict(
                     slug=chapter['id'],
                     title=title,
-                    pages=[dict(slug=attributes['hash'] + '/' + page, image=None) for page in attributes['data']],
                     date=convert_date_string(attributes['publishAt'].split('T')[0], format='%Y-%m-%d'),
                     scanlators=scanlators,
                 )
