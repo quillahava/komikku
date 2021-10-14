@@ -4,6 +4,10 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+#
+# API doc: https://api.mangadex.org
+#
+
 from gettext import gettext as _
 from functools import lru_cache
 import html
@@ -109,6 +113,7 @@ class Mangadex(Server):
             return attributes['title']['en']
 
         # Search in alternative titles
+        # NOTE: Some weird stuff can happen here. For ex., French translations that are in German!
         for alt_title in attributes['altTitles']:
             if self.lang_code in alt_title:
                 return alt_title[self.lang_code]
@@ -163,7 +168,6 @@ class Mangadex(Server):
 
         attributes = resp_json['data']['attributes']
 
-        # FIXME: Should probably be lang_code, but the API returns weird stuff
         _name = self.__get_manga_title(attributes)
         data['name'] = html.unescape(_name)
         assert data['name'] is not None
@@ -174,7 +178,7 @@ class Mangadex(Server):
             elif relationship['type'] == 'cover_art':
                 data['cover'] = self.cover_url.format(slug, relationship['attributes']['fileName'])
 
-        # FIXME: Same lang_code weirdness
+        # NOTE: not suitable translations for genres
         data['genres'] = [tag['attributes']['name']['en'] for tag in attributes['tags']]
 
         if attributes['status'] == 'ongoing':
@@ -287,6 +291,7 @@ class Mangadex(Server):
                 attributes = chapter['attributes']
 
                 if not attributes['hash'] and not attributes['data'] and not attributes['dataSaver'] and attributes['externalUrl']:
+                    # Skip chapters that links to an external source
                     continue
 
                 title = f'#{attributes["chapter"]}'
