@@ -2,7 +2,7 @@
 <component type="desktop-application">
     <id>info.febvre.Komikku</id>
     <translation type="gettext">info.febvre.Komikku</translation>
-    <project_license>GPL-3.0</project_license>
+    <project_license>GPL-3.0-or-later</project_license>
     <metadata_license>CC-BY-4.0</metadata_license>
     <content_rating type="oars-1.1" />
 
