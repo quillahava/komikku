@@ -4,11 +4,11 @@
 [![Please do not theme this app](https://stopthemingmy.app/badge.svg)](https://stopthemingmy.app)
 [![Donate using Liberapay](https://img.shields.io/liberapay/receives/valos.svg?logo=liberapay)](https://en.liberapay.com/valos/donate)
 
-Komikku is a manga, comic and BD reader for [GNOME](https://www.gnome.org). It focuses on providing a clean, intuitive and responsive interface.
+__Komikku__ is a manga reader for [GNOME](https://www.gnome.org). It focuses on providing a clean, intuitive and adaptive interface.
 
 ## License
 
-Komikku is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.html).
+__Komikku__ is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.html).
 
 ## Keys features
 
@@ -29,12 +29,7 @@ Komikku is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.html
 
 ## Screenshots
 
-<img src="screenshots/main-window.png" width="290">
-<img src="screenshots/add-servers.png" width="290">
-<img src="screenshots/preferences.png" width="290">
-<img src="screenshots/card-info.png" width="290">
-<img src="screenshots/card-chapters.png" width="290">
-<img src="screenshots/reader.png" width="290">
+<img src="screenshots/library-dark.png" width="912">
 
 ## Installation
 
@@ -44,7 +39,7 @@ Komikku is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.html
 
 ### Native package
 
-Komikku is available as native package in the repositories of the following distributions:
+__Komikku__ is available as native package in the repositories of the following distributions:
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/komikku.svg)](https://repology.org/project/komikku/versions)
 
@@ -86,7 +81,7 @@ Dependencies:
 * `python-pure-protobuf`
 * `python-unidecode`
 
-This is the best practice to test Komikku without installing using meson and ninja.
+This is the best practice to test __Komikku__ without installing using meson and ninja.
 
 #### First time
 
@@ -130,11 +125,13 @@ All communications in project spaces are expected to follow it.
 
 ## Translations
 
-Helping to translate Komikku or add support to a new language is very welcome.
+Helping to translate __Komikku__ or add support to a new language is very welcome.
 
 ## Sponsor this project
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X06EM3L) [![lp Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/valos/donate)
+You can help me to keep developing __Komikku__ through donations. Any amount will be greatly appreciated :-)
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X06EM3L) [![lp Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/valos/donate) [![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?business=GSRGEQ78V97PU&no_recurring=0&item_name=You+can+help+me+to+keep+developing+apps+through+donations.&currency_code=EUR)
 
 ## Disclaimer
 
