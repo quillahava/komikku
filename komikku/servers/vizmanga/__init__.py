@@ -17,9 +17,8 @@ class Vizmanga(Server):
     has_login = True
 
     base_url = 'https://www.viz.com'
-    login_url = base_url + '/manga/try_manga_login'
-    refresh_login_url = base_url + '/account/refresh_login_links'
     login_url = base_url + '/account/try_login'
+    refresh_login_url = base_url + '/account/refresh_login_links'
     api_series_url = base_url + '/shonenjump'
     api_chapters_url = base_url + '/shonenjump/chapters/{}'
     api_chapter_data_url = base_url + '/manga/get_manga_url?device_id=3&manga_id={}&page={}'

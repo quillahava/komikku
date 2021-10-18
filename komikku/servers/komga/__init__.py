@@ -245,7 +245,6 @@ class Komga(Server):
             return None
 
         results = []
-        term = term.lower()
         for item in r.json()['content']:
             results.append(dict(
                 name=item['name'],

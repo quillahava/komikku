@@ -268,7 +268,6 @@ class Mangadex(Server):
     def resolve_chapters(self, manga_slug):
         chapters = []
         offset = 0
-        scanlators = set()
 
         while True:
             r = self.session_get(self.api_chapter_base, params={
