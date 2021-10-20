@@ -331,7 +331,7 @@ class PreferencesServersSettingsSubpage:
                 expander_row.set_title(server_data['name'])
                 expander_row.set_enable_expansion(server_enabled)
                 expander_row.connect('notify::enable-expansion', self.on_server_activated, server_main_id)
-                expander_row.add(vbox)
+                expander_row.add_row(vbox)
 
                 self.parent.servers_settings_subpage_group.add(expander_row)
 

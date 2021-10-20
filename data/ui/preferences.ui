@@ -310,7 +310,6 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
         </child>
         <child>
           <object class="AdwViewSwitcherBar">
-            <property name="policy">auto</property>
             <property name="stack">pages_stack</property>
             <property name="reveal">True</property>
           </object>

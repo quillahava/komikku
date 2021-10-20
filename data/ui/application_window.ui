@@ -844,7 +844,6 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                         </child>
                         <child>
                           <object class="AdwViewSwitcherBar" id="card_viewswitcherbar">
-                            <property name="policy">auto</property>
                             <property name="stack">card_stack</property>
                           </object>
                         </child>
