@@ -13,7 +13,7 @@ import time
 from gi.repository import GLib
 # from gi.repository import WebKit2
 
-from komikku.servers import headless_browser
+# from komikku.servers import headless_browser
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
 from komikku.servers.utils import get_buffer_mime_type

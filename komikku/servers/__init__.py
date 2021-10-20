@@ -146,11 +146,7 @@ class HeadlessBrowser(Gtk.Window):
         return True
 
 
-<<<<<<< HEAD
 # headless_browser = HeadlessBrowser()
-=======
-headless_browser = HeadlessBrowser(debug=False)
->>>>>>> 9c68257 ([Servers] Refine 0ac2a19d)
 
 
 class Server:
