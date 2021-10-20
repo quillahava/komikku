@@ -32,7 +32,7 @@ from komikku.models import backup_db
 from komikku.models import Settings
 from komikku.preferences import Preferences
 from komikku.reader import Reader
-from komikku.servers import get_allowed_servers_list
+from komikku.servers.utils import get_allowed_servers_list
 from komikku.updater import Updater
 
 CREDITS = dict(

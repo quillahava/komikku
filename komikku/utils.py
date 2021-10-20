@@ -129,7 +129,7 @@ def get_data_dir():
         os.mkdir(data_dir_path)
 
         # Until version 0.11.0, data files (chapters, database) were stored in a wrong place
-        from komikku.servers import get_servers_list
+        from komikku.servers.utils import get_servers_list
 
         must_be_moved = ['komikku.db', 'komikku_backup.db', ]
         for server in get_servers_list(include_disabled=True):

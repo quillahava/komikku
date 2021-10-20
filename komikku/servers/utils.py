@@ -5,11 +5,23 @@
 from bs4 import NavigableString
 import dateparser
 import datetime
+from functools import lru_cache
 from functools import wraps
+import importlib
+import inspect
 from io import BytesIO
+import logging
 import magic
+from operator import itemgetter
+import os
 from PIL import Image
+from pkgutil import iter_modules
 import struct
+import sys
+
+from komikku.servers.loader import server_finder
+
+logger = logging.getLogger('komikku.servers')
 
 
 def convert_date_string(date, format=None):
@@ -32,9 +44,9 @@ def convert_image(image, format='jpeg', ret_type='image'):
     :param ret_type: image (PIL.Image.Image) or bytes (bytes object)
     """
     if not isinstance(image, Image.Image):
-        image = Image.open(io.BytesIO(image))
+        image = Image.open(BytesIO(image))
 
-    io_buffer = io.BytesIO()
+    io_buffer = BytesIO()
     image.convert('RGB').save(io_buffer, format)
     if ret_type == 'bytes':
         return io_buffer.getbuffer()
@@ -87,6 +99,27 @@ def do_login(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+
+def get_allowed_servers_list(settings):
+    servers_settings = settings.servers_settings
+    servers_languages = settings.servers_languages
+
+    servers = []
+    for server_data in get_servers_list():
+        if servers_languages and server_data['lang'] not in servers_languages:
+            continue
+
+        server_settings = servers_settings.get(get_server_main_id_by_id(server_data['id']))
+        if server_settings is not None and (not server_settings['enabled'] or server_settings['langs'].get(server_data['lang']) is False):
+            continue
+
+        if settings.nsfw_content is False and server_data['is_nsfw']:
+            continue
+
+        servers.append(server_data)
+
+    return servers
 
 
 def get_buffer_mime_type(buffer):
@@ -147,6 +180,71 @@ def get_server_main_id_by_id(id):
 
 def get_server_module_name_by_id(id):
     return id.split(':')[-1].split('_')[0]
+
+
+@lru_cache(maxsize=None)
+def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
+    def iter_namespace(ns_pkg):
+        # Specifying the second argument (prefix) to iter_modules makes the
+        # returned name an absolute name instead of a relative one. This allows
+        # import_module to work without having to do additional modification to
+        # the name.
+        return iter_modules(ns_pkg.__path__, ns_pkg.__name__ + '.')
+
+    modules = []
+    if server_finder in sys.meta_path:
+        # Load servers from external folders defined in KOMIKKU_SERVERS_PATH environment variable
+        for servers_path in server_finder.paths:
+            if not os.path.exists(servers_path):
+                continue
+
+            count = 0
+            for path, _dirs, _files in os.walk(servers_path):
+                relpath = path[len(servers_path):]
+                if not relpath:
+                    continue
+
+                relname = relpath.replace(os.path.sep, '.')
+                if relname == '.multi':
+                    continue
+
+                modules.append(importlib.import_module(relname, package='komikku.servers'))
+                count += 1
+
+            logger.info('Load {0} servers from external folder: {1}'.format(count, servers_path))
+    else:
+        # fallback to local exploration
+        import komikku.servers
+
+        for _finder, name, _ispkg in iter_namespace(komikku.servers):
+            modules.append(importlib.import_module(name))
+
+    servers = []
+    for module in modules:
+        for _name, obj in dict(inspect.getmembers(module)).items():
+            if not hasattr(obj, 'id') or not hasattr(obj, 'name') or not hasattr(obj, 'lang'):
+                continue
+            if NotImplemented in (obj.id, obj.name, obj.lang):
+                continue
+
+            if not include_disabled and obj.status == 'disabled':
+                continue
+
+            if inspect.isclass(obj):
+                logo_path = os.path.join(os.path.dirname(os.path.abspath(module.__file__)), get_server_main_id_by_id(obj.id) + '.ico')
+
+                servers.append(dict(
+                    id=obj.id,
+                    name=obj.name,
+                    lang=obj.lang,
+                    has_login=obj.has_login,
+                    is_nsfw=obj.is_nsfw,
+                    class_name=get_server_class_name_by_id(obj.id),
+                    logo_path=logo_path if os.path.exists(logo_path) else None,
+                    module=module,
+                ))
+
+    return sorted(servers, key=itemgetter(*order_by))
 
 
 def get_soup_element_inner_text(outer):

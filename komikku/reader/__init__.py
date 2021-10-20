@@ -14,7 +14,7 @@ from komikku.models import Settings
 from komikku.reader.controls import Controls
 from komikku.reader.pager import Pager
 from komikku.reader.pager.webtoon import WebtoonPager
-from komikku.servers import get_file_mime_type
+from komikku.servers.utils import get_file_mime_type
 from komikku.utils import is_flatpak
 
 

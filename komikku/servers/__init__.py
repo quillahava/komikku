@@ -2,21 +2,15 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from .utils import *
-from .loader import server_finder, get_servers_list
-
 from bs4 import BeautifulSoup
 from functools import cached_property
 import gi
 import inspect
 import logging
-from operator import itemgetter
 import os
 import pickle
-from PIL import Image
 import requests
 from requests.adapters import TimeoutSauce
-import struct
 
 gi.require_version('Gtk', '4.0')
 # gi.require_version('WebKit2', '4.0')
@@ -25,6 +19,8 @@ from gi.repository import GLib
 from gi.repository import Gtk
 # from gi.repository import WebKit2
 
+from komikku.servers.loader import server_finder
+from komikku.servers.utils import *
 from komikku.utils import get_cache_dir
 from komikku.utils import KeyringHelper
 
@@ -365,27 +361,6 @@ class Server:
 
     def update_chapter_read_progress(self, data, manga_slug, manga_name, chapter_slug, chapter_url):
         return False
-
-
-def get_allowed_servers_list(settings):
-    servers_settings = settings.servers_settings
-    servers_languages = settings.servers_languages
-
-    servers = []
-    for server_data in get_servers_list():
-        if servers_languages and server_data['lang'] not in servers_languages:
-            continue
-
-        server_settings = servers_settings.get(get_server_main_id_by_id(server_data['id']))
-        if server_settings is not None and (not server_settings['enabled'] or server_settings['langs'].get(server_data['lang']) is False):
-            continue
-
-        if settings.nsfw_content is False and server_data['is_nsfw']:
-            continue
-
-        servers.append(server_data)
-
-    return servers
 
 
 def search_duckduckgo(site, term):
