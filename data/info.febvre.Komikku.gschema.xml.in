@@ -105,6 +105,11 @@
             <summary>Borders Crop</summary>
             <description>Crop white borders of images</description>
         </key>
+        <key type="b" name="page-numbering">
+            <default>true</default>
+            <summary>Page Numbering</summary>
+            <description>Show the page numbering at the bottom of the screen while reading</description>
+        </key>
         <key enum="@appid@.ReadingMode" name="reading-direction">
             <default>"right-to-left"</default>
             <summary>Reading Direction</summary>

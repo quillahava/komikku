@@ -65,6 +65,13 @@ class Reader:
         return Settings.get_default().borders_crop
 
     @property
+    def page_numbering(self):
+        if self.manga.page_numbering in (0, 1):
+            return bool(self.manga.page_numbering)
+
+        return Settings.get_default().page_numbering
+
+    @property
     def reading_mode(self):
         return self.manga.reading_mode or Settings.get_default().reading_mode
 
@@ -111,6 +118,11 @@ class Reader:
         self.borders_crop_action.connect('change-state', self.on_borders_crop_changed)
         self.window.application.add_action(self.borders_crop_action)
 
+        # Page numbering
+        self.page_numbering_action = Gio.SimpleAction.new_stateful('reader.page-numbering', None, GLib.Variant('b', False))
+        self.page_numbering_action.connect('change-state', self.on_page_numbering_changed)
+        self.window.application.add_action(self.page_numbering_action)
+
         # Save page
         self.save_page_action = Gio.SimpleAction.new('reader.save-page', None)
         self.save_page_action.connect('activate', self.save_page)
@@ -127,6 +139,7 @@ class Reader:
         self.set_action_reading_mode()
         self.set_action_scaling()
         self.set_action_borders_crop()
+        self.set_action_page_numbering()
 
         # Init pager
         self.init_pager(chapter)
@@ -160,6 +173,15 @@ class Reader:
         self.manga.update(dict(borders_crop=variant.get_boolean()))
         self.set_action_borders_crop()
         self.pager.crop_pages_borders()
+
+    def on_page_numbering_changed(self, action, variant):
+        value = not variant.get_boolean()
+        self.manga.update(dict(page_numbering=value))
+        self.set_action_page_numbering()
+        if value and not self.controls.is_visible:
+            self.page_number_label.show()
+        else:
+            self.page_number_label.hide()
 
     def on_reading_mode_changed(self, action, variant):
         value = variant.get_string()
@@ -254,6 +276,9 @@ class Reader:
     def set_action_borders_crop(self):
         self.borders_crop_action.set_state(GLib.Variant('b', self.borders_crop))
 
+    def set_action_page_numbering(self):
+        self.page_numbering_action.set_state(GLib.Variant('b', not self.page_numbering))
+
     def set_action_reading_mode(self):
         self.reading_mode_action.set_state(GLib.Variant('s', self.reading_mode))
 
@@ -296,7 +321,8 @@ class Reader:
     def toggle_controls(self):
         if self.controls.is_visible:
             self.controls.hide()
-            self.page_number_label.show()
+            if self.page_numbering:
+                self.page_number_label.show()
         else:
             self.controls.show()
             self.page_number_label.hide()
@@ -305,7 +331,7 @@ class Reader:
         if total is not None:
             self.page_number_label.set_text('{0}/{1}'.format(number, total))
 
-        if not self.controls.is_visible and total is not None:
+        if self.page_numbering and not self.controls.is_visible and total is not None:
             self.page_number_label.show()
         else:
             self.page_number_label.hide()

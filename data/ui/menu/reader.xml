@@ -81,6 +81,10 @@
                 <attribute name="label" translatable="yes">Crop Borders</attribute>
                 <attribute name="action">app.reader.borders-crop</attribute>
             </item>
+            <item>
+                <attribute name="label" translatable="yes">Hide Page Numbering</attribute>
+                <attribute name="action">app.reader.page-numbering</attribute>
+            </item>
         </section>
 
        <section>

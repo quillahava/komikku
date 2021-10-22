@@ -122,6 +122,7 @@ def init_db():
         status text,
         background_color text,
         borders_crop integer,
+        page_numbering integer,
         reading_mode text,
         scaling text,
         sort_order text,

@@ -143,6 +143,14 @@ class Settings(Gio.Settings):
     def nsfw_content(self, state):
         self.set_boolean('nsfw-content', state)
 
+    @property
+    def page_numbering(self):
+        return self.get_boolean('page-numbering')
+
+    @page_numbering.setter
+    def page_numbering(self, state):
+        self.set_boolean('page-numbering', state)
+
     def add_pinned_server(self, id):
         ids = self.pinned_servers
         if id not in ids:

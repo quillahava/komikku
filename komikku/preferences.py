@@ -42,6 +42,7 @@ class Preferences(Adw.Leaflet):
     scaling_row = Gtk.Template.Child('scaling_row')
     background_color_row = Gtk.Template.Child('background_color_row')
     borders_crop_switch = Gtk.Template.Child('borders_crop_switch')
+    page_numbering_switch = Gtk.Template.Child('page_numbering_switch')
     fullscreen_switch = Gtk.Template.Child('fullscreen_switch')
 
     credentials_storage_plaintext_fallback_switch = Gtk.Template.Child('credentials_storage_plaintext_fallback_switch')
@@ -113,6 +114,9 @@ class Preferences(Adw.Leaflet):
             self.subtitle_label.show()
         else:
             self.subtitle_label.hide()
+
+    def on_page_numbering_changed(self, switch_button, _gparam):
+        self.settings.page_numbering = not switch_button.get_active()
 
     def on_reading_mode_changed(self, row, param):
         index = row.get_selected()
@@ -221,6 +225,10 @@ class Preferences(Adw.Leaflet):
         # Borders crop
         self.borders_crop_switch.set_active(self.settings.borders_crop)
         self.borders_crop_switch.connect('notify::active', self.on_borders_crop_changed)
+
+        # Page numbering
+        self.page_numbering_switch.set_active(not self.settings.page_numbering)
+        self.page_numbering_switch.connect('notify::active', self.on_page_numbering_changed)
 
         # Full screen
         self.fullscreen_switch.set_active(self.settings.fullscreen)

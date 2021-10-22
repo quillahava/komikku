@@ -256,6 +256,20 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                         </child>
                         <child>
                           <object class="AdwActionRow">
+                            <property name="title" translatable="yes">Page Numbering</property>
+                            <property name="activatable_widget">page_numbering_switch</property>
+                            <property name="subtitle" translatable="yes">Hide the page numbering at the bottom of the screen while reading</property>
+                            <child>
+                              <object class="GtkSwitch" id="page_numbering_switch">
+                                <property name="halign">center</property>
+                                <property name="valign">center</property>
+                                <property name="hexpand">0</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
                             <property name="title" translatable="yes">Fullscreen</property>
                             <property name="activatable_widget">fullscreen_switch</property>
                             <property name="subtitle" translatable="yes">Automatically enter fullscreen mode</property>
