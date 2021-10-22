@@ -199,9 +199,9 @@ class Explorer(Gtk.Stack):
             def toggle(button, _param):
                 self.search_filters[filter['key']] = button.get_active()
 
-            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12, visible=True)
+            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
-            check_button = Gtk.CheckButton(label=filter['name'], active=filter['default'], tooltip_text=filter['description'], visible=True)
+            check_button = Gtk.CheckButton(label=filter['name'], active=filter['default'], tooltip_text=filter['description'])
             check_button.connect('notify::active', toggle)
             vbox.add(check_button)
 
@@ -213,7 +213,7 @@ class Explorer(Gtk.Stack):
             def on_text_changed(buf, _param):
                 self.search_filters[filter['key']] = buf.get_text()
 
-            entry = Gtk.Entry(text=filter['default'], placeholder_text=filter['name'], tooltip_text=filter['description'], visible=True)
+            entry = Gtk.Entry(text=filter['default'], placeholder_text=filter['name'], tooltip_text=filter['description'])
             entry.get_buffer().connect('notify::text', on_text_changed)
 
             return entry
@@ -225,16 +225,16 @@ class Explorer(Gtk.Stack):
                 if button.get_active():
                     self.search_filters[filter['key']] = key
 
-            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12, visible=True)
+            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
             last = None
             for option in filter['options']:
                 is_active = option['key'] == filter['default']
-                radio_button = Gtk.RadioButton(label=option['name'], visible=True)
-                radio_button.join_group(last)
+                radio_button = Gtk.CheckButton(label=option['name'])
+                radio_button.set_group(last)
                 radio_button.set_active(is_active)
                 radio_button.connect('notify::active', toggle_option, option['key'])
-                vbox.add(radio_button)
+                vbox.append(radio_button)
                 last = radio_button
 
             return vbox
@@ -248,17 +248,17 @@ class Explorer(Gtk.Stack):
                 else:
                     self.search_filters[filter['key']].remove(key)
 
-            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12, visible=True)
+            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
             for option in filter['options']:
-                check_button = Gtk.CheckButton(label=option['name'], active=option['default'], visible=True)
+                check_button = Gtk.CheckButton(label=option['name'], active=option['default'])
                 check_button.connect('notify::active', toggle_option, option['key'])
-                vbox.add(check_button)
+                vbox.append(check_button)
 
             return vbox
 
         popover = Gtk.Popover()
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, margin=6, spacing=12, visible=True)
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
         last = None
         for filter in self.server.filters:
@@ -274,18 +274,18 @@ class Explorer(Gtk.Stack):
                 else:
                     raise NotImplementedError('Invalid select value_type')
 
-                label = Gtk.Label(label=filter['name'], tooltip_text=filter['description'], visible=True, sensitive=False)
+                label = Gtk.Label(label=filter['name'], tooltip_text=filter['description'], sensitive=False)
                 if last:
-                    sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL, visible=True)
-                    vbox.add(sep)
-                vbox.add(label)
+                    sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+                    vbox.append(sep)
+                vbox.append(label)
             else:
                 raise NotImplementedError('Invalid filter type')
 
-            vbox.add(filter_widget)
+            vbox.append(filter_widget)
             last = filter_widget
 
-        popover.add(vbox)
+        popover.set_child(vbox)
 
         self.search_page_filter_menu_button.set_popover(popover)
 
@@ -365,7 +365,7 @@ class Explorer(Gtk.Stack):
 
     def on_search_page_server_website_button_clicked(self, _button):
         if self.server.base_url:
-            Gtk.show_uri_on_window(None, self.server.base_url, time.time())
+            Gtk.show_uri(None, self.server.base_url, time.time())
         else:
             self.window.show_notification(_('Oops, server website URL is unknown.'), 2)
 

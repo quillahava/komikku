@@ -158,7 +158,7 @@ class Card:
 
     def on_open_in_browser_menu_clicked(self, action, param):
         if url := self.manga.server.get_manga_url(self.manga.slug, self.manga.url):
-            Gtk.show_uri_on_window(None, url, time.time())
+            Gtk.show_uri(None, url, time.time())
         else:
             self.window.show_notification(_('Failed to get manga URL'))
 
