@@ -16,7 +16,7 @@
             <li>Offline reading of downloaded comics</li>
             <li>Categories to organize your library</li>
             <li>RTL, LTR, Vertical and Webtoon reading modes</li>
-            <li>Support several types of navigation: keyboard arrows, right and left navigation layout via mouse click or tapping (touchpad/touch screen), mouse wheel, 2-fingers swipe gesture (touchpad), swipe gesture (touch screen)</li>
+            <li>Support several types of navigation: keyboard arrow keys, right and left navigation layout via mouse click or tapping (touchpad/touch screen), mouse wheel, 2-fingers swipe gesture (touchpad), swipe gesture (touch screen)</li>
             <li>Automatic update of comics</li>
             <li>Automatic download of new chapters</li>
             <li>Reading history</li>
@@ -24,6 +24,13 @@
         </ul>
         <p>It focuses on providing a clean, intuitive and adaptive interface.</p>
     </description>
+
+    <categories>
+        <category>Graphics</category>
+        <category>Viewer</category>
+        <category>GTK</category>
+        <category>GNOME</category>
+    </categories>
 
     <requires>
         <display_length compare="ge">360</display_length>
@@ -42,13 +49,19 @@
 
     <screenshots>
         <screenshot type="default">
-            <image>https://gitlab.com/valos/Komikku/raw/master/screenshots/main-window.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/master/screenshots/library.png</image>
         </screenshot>
         <screenshot>
-            <image>https://gitlab.com/valos/Komikku/raw/master/screenshots/add-servers.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/master/screenshots/library-with-categories.png</image>
         </screenshot>
         <screenshot>
             <image>https://gitlab.com/valos/Komikku/raw/master/screenshots/preferences.png</image>
+        </screenshot>
+        <screenshot>
+            <image>https://gitlab.com/valos/Komikku/raw/master/screenshots/explorer.png</image>
+        </screenshot>
+        <screenshot>
+            <image>https://gitlab.com/valos/Komikku/raw/master/screenshots/categories-editor.png</image>
         </screenshot>
         <screenshot>
             <image>https://gitlab.com/valos/Komikku/raw/master/screenshots/card-info.png</image>
