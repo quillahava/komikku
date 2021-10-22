@@ -27,6 +27,7 @@ from komikku.categories_editor import CategoriesEditor
 from komikku.downloader import Downloader
 from komikku.downloader import DownloadManager
 from komikku.explorer import Explorer
+from komikku.history import History
 from komikku.library import Library
 from komikku.models import backup_db
 from komikku.models import Settings
@@ -195,6 +196,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
     explorer_search_page_server_website_button = Gtk.Template.Child('explorer_search_page_server_website_button')
     explorer_card_page_add_read_button = Gtk.Template.Child('explorer_card_page_add_read_button')
 
+    history_search_button = Gtk.Template.Child('history_search_button')
+
     preferences_subtitle_label = Gtk.Template.Child('preferences_subtitle_label')
 
     notification_label = Gtk.Template.Child('notification_label')
@@ -308,6 +311,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.categories_editor = CategoriesEditor(self)
         self.download_manager = DownloadManager(self)
         self.explorer = Explorer(self)
+        self.history = History(self)
         self.preferences = Preferences(self)
 
         # Custom CSS
@@ -358,6 +362,15 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.notification_revealer.set_reveal_child(False)
 
     def init_theme(self):
+        def set_color_scheme(force_dark):
+            if force_dark:
+                color_scheme = Adw.ColorScheme.FORCE_DARK
+            elif Adw.StyleManager.get_default().get_system_supports_color_schemes():
+                color_scheme = Adw.StyleManager.get_default().get_color_scheme()
+            else:
+                color_scheme = Adw.ColorScheme.DEFAULT
+            Adw.StyleManager.get_default().set_color_scheme(color_scheme)
+
         if Settings.get_default().night_light and not self._night_light_proxy:
             # Watch night light changes
             self._night_light_proxy = Gio.DBusProxy.new_sync(
@@ -372,22 +385,20 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
             def property_changed(proxy, changed_properties, invalidated_properties):
                 properties = changed_properties.unpack()
-                if 'NightLightActive' in properties.keys():
-                    Gtk.Settings.get_default().set_property('gtk-application-prefer-dark-theme', properties['NightLightActive'])
+
+                if 'NightLightActive' in properties:
+                    set_color_scheme(properties['NightLightActive'])
 
             self._night_light_handler_id = self._night_light_proxy.connect('g-properties-changed', property_changed)
 
-            Gtk.Settings.get_default().set_property(
-                'gtk-application-prefer-dark-theme',
-                self._night_light_proxy.get_cached_property('NightLightActive')
-            )
+            set_color_scheme(self._night_light_proxy.get_cached_property('NightLightActive'))
         else:
             if self._night_light_proxy and self._night_light_handler_id > 0:
                 self._night_light_proxy.disconnect(self._night_light_handler_id)
                 self._night_light_proxy = None
                 self._night_light_handler_id = 0
 
-            Gtk.Settings.get_default().set_property('gtk-application-prefer-dark-theme', Settings.get_default().dark_theme)
+            set_color_scheme(Settings.get_default().dark_theme)
 
     def on_about_menu_clicked(self, action, param):
         builder = Gtk.Builder.new_from_resource('/info/febvre/Komikku/about_dialog.ui')
@@ -448,11 +459,15 @@ class ApplicationWindow(Adw.ApplicationWindow):
         """
         Go back navigation with <Escape> key:
         - Library <- Manga <- Reader
+        - Library <- History <- Reader
+        - Library <- History <- Card <- Reader
+
         - Explorer: Library <- Servers <- Search <- Card
         - Preferences: Library <- Page <- Subpage
         - Categories Editor: Library <-
+
         - Exit selection mode: Library, Card chapters, Download Manager
-        - Exit search mode: Library, Explorer 'servers' and 'search' pages
+        - Exit search mode: Library, Explorer 'servers' and 'search' pages, History
         """
         if keyval == Gdk.KEY_Escape:
             self.on_left_button_clicked()
@@ -481,16 +496,23 @@ class ApplicationWindow(Adw.ApplicationWindow):
                 self.card.leave_selection_mode()
             else:
                 self.card.stop_populate()
-                self.library.show(invalidate_sort=True)
+
+                if self.card.came_from in ('library', 'explorer'):
+                    self.library.show(invalidate_sort=True)
+                elif self.card.came_from == 'history':
+                    self.history.show()
 
         elif self.page == 'reader':
             self.reader.remove_pager()
             self.set_unfullscreen()
 
-            # Refresh to update all previously chapters consulted (last page read may have changed)
-            # and update info like disk usage
-            self.card.refresh(self.reader.chapters_consulted)
-            self.card.show()
+            if self.reader.came_from == 'card':
+                # Refresh to update all previously chapters consulted (last page read may have changed)
+                # and update info like disk usage
+                self.card.refresh(self.reader.chapters_consulted)
+                self.card.show()
+            elif self.reader.came_from == 'history':
+                self.history.show()
 
         elif self.page == 'categories_editor':
             self.library.show()
@@ -503,6 +525,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         elif self.page == 'explorer':
             self.explorer.navigate_back(source)
+
+        elif self.page == 'history':
+            self.history.navigate_back(source)
 
         elif self.page == 'preferences':
             self.preferences.navigate_back(source)
@@ -589,10 +614,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         if not transition:
             transition_type = Gtk.StackTransitionType.NONE
-        elif name in ('categories_editor', 'download_manager', 'explorer', 'preferences'):
+        elif name in ('categories_editor', 'download_manager', 'explorer', 'history', 'preferences'):
             transition_type = Gtk.StackTransitionType.SLIDE_RIGHT
         else:
-            if self.page in ('categories_editor', 'download_manager', 'explorer', 'preferences'):
+            if self.page in ('categories_editor', 'download_manager', 'explorer', 'history', 'preferences'):
                 transition_type = Gtk.StackTransitionType.SLIDE_LEFT
             else:
                 transition_type = self.stack.get_transition_type()

@@ -197,6 +197,19 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                         </property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">history</property>
+                        <property name="child">
+                          <object class="GtkLabel" id="history_title_label">
+                            <property name="label" translatable="yes">History</property>
+                            <style>
+                              <class name="title"/>
+                            </style>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
                   </object>
                 </child>
                 <child>
@@ -294,6 +307,17 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="name">explorer.servers</property>
                         <property name="child">
                           <object class="GtkToggleButton" id="explorer_servers_page_search_button">
+                            <property name="receives_default">1</property>
+                            <property name="icon-name">edit-find-symbolic</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">history</property>
+                        <property name="child">
+                          <object class="GtkToggleButton" id="history_search_button">
                             <property name="receives_default">1</property>
                             <property name="icon-name">edit-find-symbolic</property>
                           </object>

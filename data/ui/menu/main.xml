@@ -15,6 +15,10 @@
                 <attribute name="label" translatable="yes">Categories</attribute>
                 <attribute name="action">app.library.categories-editor</attribute>
             </item>
+            <item>
+                <attribute name="label" translatable="yes">History</attribute>
+                <attribute name="action">app.library.history</attribute>
+            </item>
         </section>
         <section>
             <item>

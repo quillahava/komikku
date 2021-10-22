@@ -47,9 +47,12 @@ class BasePager:
     def clear(self):
         self.disable_keyboard_and_mouse_click_navigation()
 
-        for page in self.pages:
+        page = self.get_first_child()
+        while page:
+            next_page = page.get_next_sibling()
             page.clean()
             self.remove(page)
+            page = next_page
 
     def crop_pages_borders(self):
         for page in self.pages:
@@ -263,6 +266,7 @@ class BasePager:
         chapter.update(dict(
             pages=chapter.pages,
             last_page_read_index=page.index,
+            last_read=datetime.datetime.utcnow(),
             read=chapter_is_read,
             recent=0,
         ))
@@ -490,7 +494,7 @@ class Pager(Adw.Carousel, BasePager):
                 if dx:
                     self.scroll_to_direction('left' if dx < 0 else 'right')
                 else:
-                    self.scroll_to_direction('left' if dy > 0 else 'right')
+                    self.scroll_to_direction('right' if dy > 0 else 'left')
                 GLib.timeout_add(500, scroll_timeout_cb)
 
         elif self.reader.reading_mode == 'vertical':

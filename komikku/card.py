@@ -28,6 +28,7 @@ from komikku.utils import html_escape
 
 
 class Card:
+    came_from = None
     manga = None
     selection_mode = False
 
@@ -80,6 +81,8 @@ class Card:
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-card-selection-mode'))
 
     def init(self, manga, transition=True):
+        self.came_from = self.window.page
+
         # Default page is `Info` page except when we come from Explorer
         self.stack.set_visible_child_name('chapters' if self.window.page == 'explorer' else 'info')
 

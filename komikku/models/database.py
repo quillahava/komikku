@@ -145,6 +145,7 @@ def init_db():
         recent integer NOT NULL,
         read integer NOT NULL,
         last_page_read_index integer,
+        last_read timestamp,
         UNIQUE (slug, manga_id)
     );"""
 
@@ -838,6 +839,7 @@ class Chapter:
             pages=None,
             downloaded=0,
             read=0,
+            last_read=None,
             last_page_read_index=None,
         ))
 

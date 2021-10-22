@@ -9,6 +9,7 @@
         <file compressed="true" preprocess="xml-stripblanks">ui/card_chapters_list_row.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/download_manager.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/explorer.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks">ui/history.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/preferences.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/shortcuts_overview.ui</file>
 

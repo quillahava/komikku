@@ -95,7 +95,7 @@
                 {
                     "type": "git",
                     "url": "https://gitlab.gnome.org/GNOME/pygobject",
-                    "commit": "b15e81fc1ed78ef9c4dc2ac890e1ff99c62e9ed0"
+                    "tag": "3.42.0"
                 }
             ]
         },
@@ -110,7 +110,7 @@
                 {
                     "type": "git",
                     "url": "https://gitlab.gnome.org/GNOME/libadwaita.git",
-                    "tag": "1.0.0-alpha.2"
+                    "tag": "1.0.0-alpha.3"
                 }
             ]
         },

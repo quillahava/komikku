@@ -19,6 +19,7 @@ from komikku.utils import is_flatpak
 
 
 class Reader:
+    came_from = None
     manga = None
     chapters_consulted = None
     pager = None
@@ -116,6 +117,7 @@ class Reader:
         self.window.application.add_action(self.save_page_action)
 
     def init(self, manga, chapter):
+        self.came_from = self.window.page
         self.manga = manga
 
         # Reset list of chapters consulted
@@ -132,7 +134,7 @@ class Reader:
 
         self.show()
 
-    def init_pager(self, chapter, reverse_pages=False):
+    def init_pager(self, chapter):
         self.remove_pager()
 
         if self.reading_mode == 'webtoon':

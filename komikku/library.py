@@ -179,6 +179,10 @@ class Library:
         categories_editor_action.connect('activate', self.open_categories_editor)
         self.window.application.add_action(categories_editor_action)
 
+        history_action = Gio.SimpleAction.new('library.history', None)
+        history_action.connect('activate', self.open_history)
+        self.window.application.add_action(history_action)
+
         # Search menu actions
         search_downloaded_action = Gio.SimpleAction.new_stateful('library.search.downloaded', None, GLib.Variant('b', False))
         search_downloaded_action.connect('change-state', self.on_search_menu_action_changed)
@@ -470,6 +474,9 @@ class Library:
 
     def open_download_manager(self, action, param):
         self.window.download_manager.show()
+
+    def open_history(self, action, param):
+        self.window.history.show()
 
     def populate(self):
         db_conn = create_db_connection()
