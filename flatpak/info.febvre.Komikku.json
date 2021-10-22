@@ -1,7 +1,7 @@
 {
     "app-id" : "info.febvre.Komikku",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "master",
+    "runtime-version" : "41",
     "sdk" : "org.gnome.Sdk",
     "command" : "komikku",
     "finish-args" : [
@@ -30,27 +30,87 @@
         "python3-brotli.json",
         "python3-cloudscraper.json",
         {
-            "name" : "libhandy",
-            "buildsystem" : "meson",
-            "config-opts" : [
-                "--buildtype=release",
-                "-Dprofiling=false",
-                "-Dintrospection=enabled",
-                "-Dtests=false",
-                "-Dexamples=false",
-                "-Dgtk_doc=false",
-                "-Dvapi=false",
-                "-Dglade_catalog=disabled"
+            "name": "sassc",
+            "cleanup": [
+                "*"
             ],
-            "cleanup" : [
-                "/include",
-                "/lib/pkgconfig"
-            ],
-            "sources" : [
+            "sources": [
                 {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/libhandy.git",
-                    "tag" : "1.4.0"
+                    "type": "git",
+                    "url": "https://github.com/sass/sassc.git",
+                    "tag": "3.6.1"
+                },
+                {
+                    "type": "script",
+                    "dest-filename": "autogen.sh",
+                    "commands": [
+                        "autoreconf -si"
+                    ]
+                }
+            ],
+            "modules": [
+                {
+                    "name": "libsass",
+                    "cleanup": [
+                        "*"
+                    ],
+                    "sources": [
+                        {
+                            "type": "git",
+                            "url": "https://github.com/sass/libsass.git",
+                            "tag": "3.6.4"
+                        },
+                        {
+                            "type": "script",
+                            "dest-filename": "autogen.sh",
+                            "commands": [
+                                "autoreconf -si"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "gtk",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dtests=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/gtk",
+                    "tag": "4.4.0"
+                }
+            ]
+        },
+        {
+            "name": "pygobject",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dtests=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/pygobject",
+                    "tag": "3.42.0"
+                }
+            ]
+        },
+        {
+            "name": "libadwaita",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dexamples=false",
+                "-Dtests=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/libadwaita.git",
+                    "tag": "1.0.0-alpha.3"
                 }
             ]
         },
@@ -59,7 +119,7 @@
             "buildsystem" : "meson",
             "builddir" : true,
             "config-opts" : [
-                "-Dprofile=default"
+                "-Dprofile=development"
             ],
             "sources" : [
                 {

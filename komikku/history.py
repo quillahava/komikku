@@ -33,7 +33,7 @@ class History(Gtk.Box):
     searchentry = Gtk.Template.Child('searchentry')
 
     def __init__(self, window):
-        Gtk.ScrolledWindow.__init__(self)
+        Gtk.Box.__init__(self)
 
         self.window = window
         self.builder = window.builder
@@ -86,7 +86,7 @@ class History(Gtk.Box):
         if not self.searchbar.get_search_mode():
             return
 
-        row = self.dates_box.get_children()[0].get_children()[-1].get_row_at_y(0)
+        row = self.dates_box.get_first_child().get_last_child().get_row_at_y(0)
         if row:
             self.window.reader.init(row.chapter.manga, row.chapter)
 

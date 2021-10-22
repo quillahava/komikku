@@ -279,10 +279,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.download_manager.add_actions()
 
     def assemble_window(self):
-        # Default size
-        window_size = Settings.get_default().window_size
-        self.set_default_size(window_size[0], window_size[1])
-
         # Titlebar
         self.left_button.connect('clicked', self.on_left_button_clicked)
 
@@ -579,10 +575,15 @@ class ApplicationWindow(Adw.ApplicationWindow):
         shortcuts_overview.set_transient_for(self)
         shortcuts_overview.present()
 
+    def present(self):
+        super().present()
+
+        # Set window size: default or saved size
+        self.set_default_size(*Settings.get_default().window_size)
+
     def save_window_size(self):
         if not self.is_maximized() and not self.is_fullscreen():
-            alloc = self.get_allocation()
-            Settings.get_default().window_size = [alloc.width, alloc.height]
+            Settings.get_default().window_size = [self.get_width(), self.get_height()]
 
     def select_all(self, action, param):
         if self.page == 'library':

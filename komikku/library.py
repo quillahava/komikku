@@ -234,7 +234,7 @@ class Library:
         default_height = Thumbnail.default_height
         padding = Thumbnail.padding
 
-        container_width = self.window.get_size(Gtk.Orientation.HORIZONTAL)
+        container_width = self.window.get_width()
         if container_width == 0:
             container_width = Settings.get_default().window_size[0]
 

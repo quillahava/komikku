@@ -11,6 +11,7 @@ from komikku.models import Settings
 from komikku.servers import LANGUAGES
 from komikku.servers.utils import get_server_main_id_by_id
 from komikku.servers.utils import get_servers_list
+from komikku.utils import html_escape
 from komikku.utils import KeyringHelper
 
 
@@ -328,7 +329,7 @@ class PreferencesServersSettingsSubpage:
                 )
 
                 expander_row = Adw.ExpanderRow()
-                expander_row.set_title(server_data['name'])
+                expander_row.set_title(html_escape(server_data['name']))
                 expander_row.set_enable_expansion(server_enabled)
                 expander_row.connect('notify::enable-expansion', self.on_server_activated, server_main_id)
                 expander_row.add_row(vbox)
@@ -420,7 +421,7 @@ class PreferencesServersSettingsSubpage:
                         password_entry.set_text(credential.password)
             else:
                 action_row = Adw.ActionRow()
-                action_row.set_title(server_data['name'])
+                action_row.set_title(html_escape(server_data['name']))
 
                 switch = Gtk.Switch.new()
                 switch.set_active(server_enabled)
