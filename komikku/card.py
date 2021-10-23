@@ -865,7 +865,7 @@ class InfoGrid:
         self.last_update_value_label.set_markup(
             '<span size="small">{0}</span>'.format(manga.last_update.strftime('%m/%d/%Y')) if manga.last_update else '-')
 
-        self.synopsis_value_label.set_text(manga.synopsis or '-')
+        self.synopsis_value_label.set_markup(html_escape(manga.synopsis) if manga.synopsis else '-')
 
         self.set_disk_usage()
 

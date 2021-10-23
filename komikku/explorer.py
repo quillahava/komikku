@@ -447,7 +447,9 @@ class Explorer(Gtk.Stack):
                 self.manga_data['chapters'][-1]['title'] if self.manga_data['chapters'] else '-'
             )
 
-            self.card_page_synopsis_value_label.set_text(self.manga_data['synopsis'] or '-')
+            self.card_page_synopsis_value_label.set_markup(
+                html_escape(self.manga_data['synopsis']) if self.manga_data['synopsis'] else '-'
+            )
 
             self.window.activity_indicator.stop()
             self.show_page('card')
