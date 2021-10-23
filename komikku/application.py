@@ -633,8 +633,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
     def toggle_fullscreen(self, *args):
         if self.is_fullscreen():
             self.set_unfullscreen()
+            self.reader.fullscreen_button.set_icon_name('view-fullscreen-symbolic')
         else:
             self.set_fullscreen()
+            self.reader.fullscreen_button.set_icon_name('view-restore-symbolic')
 
 
 if __name__ == '__main__':
