@@ -56,10 +56,8 @@ class Controls:
 
     def on_scale_value_changed(self, scale, scroll_type, value):
         value = round(value)
-        if scroll_type != Gtk.ScrollType.JUMP or self.scale.get_value() == value:
-            return Gdk.EVENT_STOP
-
-        self.reader.pager.goto_page(value - 1)
+        if scroll_type == Gtk.ScrollType.JUMP and value > 0 and self.scale.get_value() != value:
+            self.reader.pager.goto_page(value - 1)
 
     def on_unfullscreen(self):
         self.window.headerbar_revealer.set_reveal_child(True)
