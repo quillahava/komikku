@@ -27,13 +27,13 @@ def is_ready(func):
         server = args[0]
         if server.base_url is not None and server.logged_in:
             return func(*args, **kwargs)
-        else:
-            if server.base_url is None:
-                logger.warning('Server base_url is not defined. Please check server address in Settings')
-            else:
-                logger.warning('Server is not logged in. Please check credential in Settings')
 
-            return None
+        if server.base_url is None:
+            logger.warning('Server base_url is not defined. Please check server address in Settings')
+        else:
+            logger.warning('Server is not logged in. Please check credential in Settings')
+
+        return None
 
     return wrapper
 

@@ -138,7 +138,7 @@ class HeadlessBrowser(Gtk.Window):
 
         self.lock = True
 
-        logger.debug('WebKit2 | Load page %s' % uri)
+        logger.debug('WebKit2 | Load page %s', uri)
 
         self.show_all()
         GLib.idle_add(self.webview.load_uri, uri)
@@ -254,7 +254,7 @@ class Server:
             os.unlink(file_path)
 
         if all:
-            for id in Server.__sessions:
+            for id in Server.__sessions.copy():
                 if id.startswith(main_id):
                     del Server.__sessions[id]
         elif self.id in Server.__sessions:

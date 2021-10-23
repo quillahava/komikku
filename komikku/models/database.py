@@ -275,17 +275,17 @@ def init_db():
 
 def delete_rows(db_conn, table, ids):
     seq = []
-    if type(ids[0]) == dict:
+    if type(ids[0]) is dict:
         # Several keys (secondary) are used to delete a row
         sql = 'DELETE FROM {0} WHERE {1}'.format(table, ' AND '.join(f'{skey} = ?' for skey in ids[0].keys()))
 
-        for i in range(len(ids)):
-            seq.append(tuple(ids[i].values()))
+        for item in ids:
+            seq.append(tuple(item.values()))
     else:
         sql = 'DELETE FROM {0} WHERE id = ?'.format(table)
 
-        for i in range(len(ids)):
-            seq.append((ids[i], ))
+        for id in ids:
+            seq.append((id, ))
 
     try:
         db_conn.executemany(sql, seq)
@@ -311,8 +311,8 @@ def insert_rows(db_conn, table, data):
     sql = 'INSERT INTO {0} ({1}) VALUES ({2})'.format(table, ', '.join(data[0].keys()), ', '.join(['?'] * len(data[0])))
 
     seq = []
-    for i in range(len(data)):
-        seq.append(tuple(data[i].values()))
+    for item in data:
+        seq.append(tuple(item.values()))
 
     try:
         db_conn.executemany(sql, seq)
@@ -338,8 +338,8 @@ def update_rows(db_conn, table, ids, data):
     sql = 'UPDATE {0} SET {1} WHERE id = ?'.format(table, ', '.join(k + ' = ?' for k in data[0]))
 
     seq = []
-    for i in range(len(ids)):
-        seq.append(tuple(data[i].values()) + (ids[i], ))
+    for index, id in enumerate(ids):
+        seq.append(tuple(data[index].values()) + (id, ))
 
     try:
         db_conn.executemany(sql, seq)

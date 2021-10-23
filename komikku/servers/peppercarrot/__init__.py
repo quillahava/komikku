@@ -131,7 +131,7 @@ class Peppercarrot(Server):
         # Sort pages
         pages = dict(sorted(pages.items(), key=lambda x: int(x[0])))
 
-        for key, page_name in pages.items():
+        for _key, page_name in pages.items():
             data['pages'].append(dict(
                 slug=page_name,
                 image=None,
