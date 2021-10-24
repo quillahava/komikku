@@ -224,6 +224,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToggleButton" id="library_flap_reveal_button">
                         <property name="receives_default">1</property>
                         <property name="icon-name">user-bookmarks-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Toggle category sidebar</property>
                       </object>
                     </child>
                   </object>
@@ -232,6 +233,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkMenuButton" id="menu_button">
                     <property name="receives_default">1</property>
                     <property name="icon-name">open-menu-symbolic</property>
+                    <property name="tooltip-text" translatable="yes">Menu</property>
                   </object>
                 </child>
                 <child type="end">
@@ -243,6 +245,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkToggleButton" id="library_search_button">
                             <property name="receives_default">1</property>
                             <property name="icon-name">edit-find-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Search</property>
                           </object>
                         </property>
                       </object>
@@ -254,6 +257,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkButton" id="card_resume_read_button">
                             <property name="receives_default">1</property>
                             <property name="icon-name">media-playback-start-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Resume read</property>
                           </object>
                         </property>
                       </object>
@@ -265,6 +269,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkButton" id="reader_fullscreen_button">
                             <property name="receives_default">1</property>
                             <property name="icon-name">view-fullscreen-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Toggle fullscreen mode</property>
                           </object>
                         </property>
                       </object>
@@ -276,6 +281,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkButton" id="download_manager_start_stop_button">
                             <property name="receives_default">1</property>
                             <property name="icon-name">media-playback-start-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Start/Stop download</property>
                           </object>
                         </property>
                       </object>
@@ -287,6 +293,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkToggleButton" id="explorer_search_page_server_website_button">
                             <property name="receives_default">1</property>
                             <property name="icon-name">web-browser-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Open in Browser</property>
                           </object>
                         </property>
                       </object>
@@ -309,6 +316,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkToggleButton" id="explorer_servers_page_search_button">
                             <property name="receives_default">1</property>
                             <property name="icon-name">edit-find-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Search</property>
                           </object>
                         </property>
                       </object>
@@ -320,6 +328,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkToggleButton" id="history_search_button">
                             <property name="receives_default">1</property>
                             <property name="icon-name">edit-find-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Search</property>
                           </object>
                         </property>
                       </object>

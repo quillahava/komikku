@@ -243,6 +243,7 @@ class Preferences(Adw.Leaflet):
         self.credentials_storage_plaintext_fallback_switch.connect('notify::active', self.on_credentials_storage_plaintext_fallback_changed)
 
     def show(self, transition=True):
+        self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.library_flap_reveal_button.hide()
 
