@@ -126,6 +126,13 @@ class Bilibili(Server):
         if not mime_type.startswith('image'):
             return None
 
+        expected_content_length = int(r.headers['content-length'])
+        if len(r.content) != expected_content_length:
+            logger.warning(
+                'Mismatched content length, expected {0}, got {1}'.format(len(r.content), expected_content_length)
+            )
+            return None
+
         return dict(
             buffer=r.content,
             mime_type=mime_type,
