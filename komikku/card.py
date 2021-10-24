@@ -228,7 +228,6 @@ class CategoriesList:
 
         self.stack = self.window.card_categories_stack
         self.listbox = self.window.card_categories_listbox
-        self.listbox.add_css_class('list-bordered')
 
     def clear(self):
         row = self.listbox.get_first_child()
