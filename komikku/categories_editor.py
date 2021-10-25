@@ -14,7 +14,7 @@ from komikku.models import Settings
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/categories_editor.ui')
-class CategoriesEditor(Adw.Clamp):
+class CategoriesEditor(Gtk.ScrolledWindow):
     __gtype_name__ = 'CategoriesEditor'
 
     window = NotImplemented
@@ -27,7 +27,7 @@ class CategoriesEditor(Adw.Clamp):
     listbox = Gtk.Template.Child('listbox')
 
     def __init__(self, window):
-        Adw.Clamp.__init__(self)
+        Gtk.ScrolledWindow.__init__(self)
 
         self.window = window
 
