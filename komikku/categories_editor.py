@@ -60,7 +60,7 @@ class CategoriesEditor(Adw.Clamp):
             deleted_is_current = Settings.get_default().selected_category == row.category.id
 
             row.category.delete()
-            row.destroy()
+            self.listbox.remove(row)
 
             if not self.listbox.get_first_child():
                 # No more categories
@@ -152,9 +152,11 @@ class CategoryRow(Gtk.ListBoxRow):
     category = None
 
     def __init__(self, category):
-        Gtk.ListBoxRow.__init__(self, visible=True)
+        Gtk.ListBoxRow.__init__(self, activatable=False)
 
-        self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12, margin_start=6, margin_end=6)
+        self.box = Gtk.Box(
+            orientation=Gtk.Orientation.HORIZONTAL, spacing=12, margin_top=8, margin_start=12, margin_bottom=8, margin_end=12
+        )
 
         self.category = category
 
@@ -165,28 +167,29 @@ class CategoryRow(Gtk.ListBoxRow):
         self.label.set_halign(Gtk.Align.START)
         self.box.append(self.label)
 
-        self.edit_entry = Gtk.Entry(visible=False)
+        self.edit_entry = Gtk.Entry(visible=False, hexpand=True)
         self.edit_entry.set_valign(Gtk.Align.CENTER)
+        self.edit_entry.set_halign(Gtk.Align.FILL)
         self.box.append(self.edit_entry)
 
         self.edit_button = Gtk.Button.new_from_icon_name('document-edit-symbolic')
         self.edit_button.set_valign(Gtk.Align.CENTER)
-        self.edit_button.show()
         self.edit_button.connect('clicked', self.set_edit_mode, True)
         self.box.append(self.edit_button)
 
         self.delete_button = Gtk.Button.new_from_icon_name('user-trash-symbolic')
         self.delete_button.set_valign(Gtk.Align.CENTER)
-        self.delete_button.show()
         self.box.append(self.delete_button)
 
         self.cancel_button = Gtk.Button.new_from_icon_name('edit-undo-symbolic')
         self.cancel_button.set_valign(Gtk.Align.CENTER)
+        self.cancel_button.hide()
         self.cancel_button.connect('clicked', self.set_edit_mode, False)
         self.box.append(self.cancel_button)
 
         self.save_button = Gtk.Button.new_from_icon_name('document-save-symbolic')
         self.save_button.set_valign(Gtk.Align.CENTER)
+        self.save_button.hide()
         self.box.append(self.save_button)
 
         self.set_child(self.box)
