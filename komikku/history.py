@@ -132,12 +132,12 @@ class History(Gtk.Box):
                     else:
                         label = current_date.strftime(_('%Y-%m-%d'))
                     label = Gtk.Label(label=label, xalign=0)
-                    label.get_style_context().add_class('title-4')
-                    label.get_style_context().add_class('dim-label')
+                    label.add_css_class('title-4')
+                    label.add_css_class('dim-label')
                     box.append(label)
 
                     listbox = Gtk.ListBox()
-                    listbox.get_style_context().add_class('content')
+                    listbox.add_css_class('content')
                     listbox.set_filter_func(self.filter)
                     box.append(listbox)
 
@@ -148,7 +148,9 @@ class History(Gtk.Box):
                 action_row.chapter = chapter
 
                 action_row.set_title(chapter.manga.name)
+                action_row.set_title_lines(1)
                 action_row.set_subtitle(chapter.title)
+                action_row.set_subtitle_lines(1)
 
                 # Cover
                 if chapter.manga.cover_fs_path is None:
@@ -167,14 +169,11 @@ class History(Gtk.Box):
                         pixbuf = Pixbuf.new_from_resource_at_scale(
                             '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT, False)
 
-                bin = Adw.Bin(margin_top=4, margin_bottom=4)
-                bin.set_child(Gtk.Picture.new_for_pixbuf(pixbuf))
-                # action_row.add_prefix(Gtk.Picture.new_for_pixbuf(pixbuf))
-                action_row.add_prefix(bin)
+                action_row.add_prefix(Gtk.Picture.new_for_pixbuf(pixbuf))
 
                 # Time
                 label = Gtk.Label(label=last_read.strftime('%H:%M'))
-                label.get_style_context().add_class('subtitle')
+                label.add_css_class('subtitle')
                 action_row.add_suffix(label)
 
                 # Play button
