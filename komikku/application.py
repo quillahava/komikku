@@ -76,6 +76,9 @@ class Application(Adw.Application):
 
         self.window = None
 
+        GLib.set_application_name(_('Komikku'))
+        GLib.set_prgname(self.application_id)
+
         logging.basicConfig(
             format='%(asctime)s | %(levelname)s | %(name)s | %(message)s', datefmt='%d-%m-%y %H:%M:%S',
             level=logging.DEBUG if self.development_mode else logging.INFO
@@ -121,9 +124,6 @@ class Application(Adw.Application):
 
     def do_startup(self):
         Adw.Application.do_startup(self)
-
-        GLib.set_application_name(_('Komikku'))
-        GLib.set_prgname(self.application_id)
 
         Notify.init(_('Komikku'))
 
@@ -172,18 +172,18 @@ class ApplicationWindow(Adw.ApplicationWindow):
     card_categories_stack = Gtk.Template.Child('card_categories_stack')
     card_categories_listbox = Gtk.Template.Child('card_categories_listbox')
     card_chapters_listbox = Gtk.Template.Child('card_chapters_listbox')
-    card_info_box = Gtk.Template.Child('card_info_box')
-    card_info_grid = Gtk.Template.Child('card_info_grid')
     card_name_label = Gtk.Template.Child('card_name_label')
     card_cover_image = Gtk.Template.Child('card_cover_image')
+    card_cover_box = Gtk.Template.Child('card_cover_box')
     card_authors_value_label = Gtk.Template.Child('card_authors_value_label')
     card_genres_value_label = Gtk.Template.Child('card_genres_value_label')
     card_status_value_label = Gtk.Template.Child('card_status_value_label')
     card_scanlators_value_label = Gtk.Template.Child('card_scanlators_value_label')
     card_server_value_label = Gtk.Template.Child('card_server_value_label')
+    card_chapters_value_label = Gtk.Template.Child('card_chapters_value_label')
     card_last_update_value_label = Gtk.Template.Child('card_last_update_value_label')
     card_synopsis_value_label = Gtk.Template.Child('card_synopsis_value_label')
-    card_more_label = Gtk.Template.Child('card_more_label')
+    card_size_on_disk_value_label = Gtk.Template.Child('card_size_on_disk_value_label')
 
     reader_fullscreen_button = Gtk.Template.Child('reader_fullscreen_button')
     reader_overlay = Gtk.Template.Child('reader_overlay')
@@ -284,9 +284,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Titlebar
         self.left_button.connect('clicked', self.on_left_button_clicked)
 
-        # Fisrt start grid
-        pix = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/logo.png', 256, 256, True)
-        self.app_logo.set_from_pixbuf(pix)
+        # Fisrt start page
+        pixbuf = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/logo.png', 256, 256, True)
+        self.app_logo.set_from_pixbuf(pixbuf)
 
         # Window
         self.connect('notify::default-width', self.on_resize)
@@ -550,20 +550,22 @@ class ApplicationWindow(Adw.ApplicationWindow):
                 self.downloader.stop()
 
     def on_resize(self, _window, allocation):
-        size = dict(
-            width=self.get_size(Gtk.Orientation.HORIZONTAL),
-            height=self.get_size(Gtk.Orientation.VERTICAL)
-        )
-        if self.size and self.size['width'] == size['width'] and self.size['height'] == size['height']:
+        width = self.props.default_width
+        height = self.props.default_height
+
+        if self.size and self.size['width'] == width and self.size['height'] == height:
             return
 
-        self.size = size
+        self.size = dict(
+            width=width,
+            height=height
+        )
+        self.mobile_width = width <= 720
 
         self.library.on_resize()
+        self.card.on_resize()
         if self.page == 'reader':
             self.reader.on_resize()
-
-        self.mobile_width = size['width'] <= 800
 
     def on_preferences_menu_clicked(self, action, param):
         self.preferences.show()

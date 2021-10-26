@@ -42,7 +42,7 @@ class Card:
         self.resume_read_button = self.window.card_resume_read_button
 
         self.stack = self.window.card_stack
-        self.info_grid = InfoGrid(self)
+        self.info_box = InfoBox(self)
         self.categories_list = CategoriesList(self)
         self.chapters_list = ChaptersList(self)
 
@@ -154,7 +154,7 @@ class Card:
             if nb_recent_chapters > 0 or nb_deleted_chapters > 0 or synced:
                 self.chapters_list.populate()
 
-            self.info_grid.populate()
+            self.info_box.populate()
 
     def on_open_in_browser_menu_clicked(self, action, param):
         if url := self.manga.server.get_manga_url(self.manga.slug, self.manga.url):
@@ -165,6 +165,9 @@ class Card:
     def on_page_changed(self, _stack, _param):
         if self.selection_mode and self.stack.get_visible_child_name() != 'chapters':
             self.leave_selection_mode()
+
+    def on_resize(self):
+        self.info_box.on_resize()
 
     def on_resume_read_button_clicked(self, widget):
         chapters = [row.chapter for row in self.chapters_list.listbox]
@@ -189,7 +192,7 @@ class Card:
     def populate(self):
         self.chapters_list.set_sort_order(invalidate=False)
         self.chapters_list.populate()
-        self.info_grid.populate()
+        self.info_box.populate()
         self.categories_list.populate()
 
     def set_actions_enabled(self, enabled):
@@ -217,7 +220,7 @@ class Card:
         self.chapters_list.populate_generator_stop_flag = True
 
     def refresh(self, chapters):
-        self.info_grid.refresh()
+        self.info_box.refresh()
         self.chapters_list.refresh(chapters)
 
 
@@ -809,14 +812,12 @@ class ChaptersList:
                 break
 
 
-class InfoGrid:
+class InfoBox:
     def __init__(self, card):
         self.card = card
         self.window = card.window
 
-        self.window.card_info_box.add_css_class('card-info-box')
-        self.window.card_info_box.add_css_class('list-bordered')
-
+        self.cover_box = self.window.card_cover_box
         self.name_label = self.window.card_name_label
         self.cover_image = self.window.card_cover_image
         self.authors_value_label = self.window.card_authors_value_label
@@ -824,9 +825,10 @@ class InfoGrid:
         self.status_value_label = self.window.card_status_value_label
         self.scanlators_value_label = self.window.card_scanlators_value_label
         self.server_value_label = self.window.card_server_value_label
+        self.chapters_value_label = self.window.card_chapters_value_label
         self.last_update_value_label = self.window.card_last_update_value_label
         self.synopsis_value_label = self.window.card_synopsis_value_label
-        self.more_label = self.window.card_more_label
+        self.size_on_disk_value_label = self.window.card_size_on_disk_value_label
 
     def populate(self):
         cover_width = 170
@@ -841,36 +843,50 @@ class InfoGrid:
             if paintable is None:
                 paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', cover_width, -1)
 
-        self.cover_image.clear()
-        self.cover_image.set_from_paintable(paintable)
+        self.cover_image.set_paintable(paintable)
 
-        authors = html_escape(', '.join(manga.authors)) if manga.authors else '-'
-        self.authors_value_label.set_markup('<span size="small">{0}</span>'.format(authors))
+        if manga.authors:
+            authors = html_escape(', '.join(manga.authors))
+            self.authors_value_label.set_markup(authors)
+            self.authors_value_label.show()
+        else:
+            self.authors_value_label.hide()
 
         genres = html_escape(', '.join(manga.genres)) if manga.genres else '-'
-        self.genres_value_label.set_markup('<span size="small">{0}</span>'.format(genres))
+        self.genres_value_label.set_markup(genres)
 
         status = _(manga.STATUSES[manga.status]) if manga.status else '-'
-        self.status_value_label.set_markup('<span size="small">{0}</span>'.format(status))
+        self.status_value_label.set_markup(status)
 
         scanlators = html_escape(', '.join(manga.scanlators)) if manga.scanlators else '-'
-        self.scanlators_value_label.set_markup('<span size="small">{0}</span>'.format(scanlators))
+        self.scanlators_value_label.set_markup(scanlators)
 
         self.server_value_label.set_markup(
-            '<span size="small">{0} [{1}] - {2} chapters</span>'.format(
-                html_escape(manga.server.name), manga.server.lang.upper(), len(manga.chapters)
+            '<a href="{0}">{1}</a> [{2}]'.format(
+                manga.server.get_manga_url(manga.slug, manga.url),
+                html_escape(manga.server.name),
+                manga.server.lang.upper(),
             )
         )
 
-        self.last_update_value_label.set_markup(
-            '<span size="small">{0}</span>'.format(manga.last_update.strftime('%m/%d/%Y')) if manga.last_update else '-')
+        self.chapters_value_label.set_markup(str(len(manga.chapters)))
+
+        self.last_update_value_label.set_markup(manga.last_update.strftime(_('%m/%d/%Y')) if manga.last_update else '-')
 
         self.synopsis_value_label.set_markup(html_escape(manga.synopsis) if manga.synopsis else '-')
 
         self.set_disk_usage()
 
+    def on_resize(self):
+        if self.window.mobile_width:
+            self.cover_box.set_orientation(Gtk.Orientation.VERTICAL)
+            self.cover_box.props.spacing = 12
+        else:
+            self.cover_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+            self.cover_box.props.spacing = 24
+
     def refresh(self):
         self.set_disk_usage()
 
     def set_disk_usage(self):
-        self.more_label.set_markup('<i>{0}</i>'.format(_('Disk space used: {0}').format(folder_size(self.card.manga.path))))
+        self.size_on_disk_value_label.set_text(folder_size(self.card.manga.path) or '-')
