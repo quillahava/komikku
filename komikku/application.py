@@ -566,6 +566,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.card.on_resize()
         if self.page == 'reader':
             self.reader.on_resize()
+        self.explorer.on_resize()
 
     def on_preferences_menu_clicked(self, action, param):
         self.preferences.show()
