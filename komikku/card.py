@@ -62,7 +62,7 @@ class Card:
 
         variant = GLib.Variant.new_string('desc')
         self.sort_order_action = Gio.SimpleAction.new_stateful('card.sort-order', variant.get_type(), variant)
-        self.sort_order_action.connect('change-state', self.chapters_list.on_sort_order_changed)
+        self.sort_order_action.connect('activate', self.chapters_list.on_sort_order_changed)
         self.window.application.add_action(self.sort_order_action)
 
         open_in_browser_action = Gio.SimpleAction.new('card.open-in-browser', None)

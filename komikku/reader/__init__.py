@@ -98,19 +98,19 @@ class Reader:
         # Reading mode
         variant = GLib.Variant.new_string('right-to-left')
         self.reading_mode_action = Gio.SimpleAction.new_stateful('reader.reading-mode', variant.get_type(), variant)
-        self.reading_mode_action.connect('change-state', self.on_reading_mode_changed)
+        self.reading_mode_action.connect('activate', self.on_reading_mode_changed)
         self.window.application.add_action(self.reading_mode_action)
 
         # Scaling
         variant = GLib.Variant.new_string('screen')
         self.scaling_action = Gio.SimpleAction.new_stateful('reader.scaling', variant.get_type(), variant)
-        self.scaling_action.connect('change-state', self.on_scaling_changed)
+        self.scaling_action.connect('activate', self.on_scaling_changed)
         self.window.application.add_action(self.scaling_action)
 
         # Background color
         variant = GLib.Variant.new_string('white')
         self.background_color_action = Gio.SimpleAction.new_stateful('reader.background-color', variant.get_type(), variant)
-        self.background_color_action.connect('change-state', self.on_background_color_changed)
+        self.background_color_action.connect('activate', self.on_background_color_changed)
         self.window.application.add_action(self.background_color_action)
 
         # Borders crop
