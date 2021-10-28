@@ -543,8 +543,17 @@ class Pager(Adw.Carousel, BasePager):
             self.scroll_to_direction('left' if position == Gtk.PositionType.TOP else 'right')
 
     def reverse_pages(self):
-        self.reorder(self.pages[0], -1)
-        self.reorder(self.pages[0], 1)
+        left_page = self.get_nth_page(0)
+        right_page = self.get_nth_page(2)
+
+        # Adw.Carousel.reorder() is broken
+        # Warkaround: use remove + prepend/append
+        self.remove(left_page)
+        self.remove(right_page)
+        self.prepend(right_page)
+        self.append(left_page)
+        # self.reorder(left_page, 2)
+        # self.reorder(right_page, 0)
 
     def scroll_to_direction(self, direction):
         print('Scroll to', direction)
