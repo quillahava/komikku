@@ -556,7 +556,6 @@ class Pager(Adw.Carousel, BasePager):
         # self.reorder(right_page, 0)
 
     def scroll_to_direction(self, direction):
-        print('Scroll to', direction)
         if direction == 'left':
             page = self.get_nth_page(0)
         elif direction == 'right':

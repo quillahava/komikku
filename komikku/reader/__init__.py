@@ -44,7 +44,8 @@ class Reader:
         self.overlay.add_overlay(self.page_number_label)
 
         self.gesture_click = Gtk.GestureClick.new()
-        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
+        self.gesture_click.set_exclusive(True)
         self.gesture_click.set_button(1)
         self.overlay.add_controller(self.gesture_click)
 
