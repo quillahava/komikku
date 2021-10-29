@@ -84,6 +84,18 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.35.2" date="2021-10-29">
+            <description>
+                <ul>
+                    <li>[Library] Faster rendering on category changes</li>
+                    <li>[Servers] Argos Scan: Disable</li>
+                    <li>[Servers] Bilibili: Detection of partially loaded pages</li>
+                    <li>[Servers] MangaDex: Update</li>
+                    <li>[Servers] Phoenix Fansub: Update</li>
+                    <li>[Servers] Read Manga: Update</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.35.1" date="2021-10-14">
             <description>
                 <ul>
