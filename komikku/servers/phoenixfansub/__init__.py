@@ -16,3 +16,8 @@ class Phoenixfansub(MangaStream):
     search_url = base_url + '/manga/'
     manga_url = base_url + '/manga/{0}/'
     chapter_url = base_url + '/{0}-capitulo-{1}/'
+
+    info_selector = '.seriestucon'
+    details_selector = '.infotable tr'
+    genres_selector = '.seriestugenre'
+    status_selector = None

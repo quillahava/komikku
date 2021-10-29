@@ -35,6 +35,7 @@ class MangaStream(Server):
 
     info_selector = '.bixbox.animefull'
     details_selector = '.wd-full, .fmed'
+    genres_selector = None
     status_selector = '.imptdt:first-child i'
     synopsis_selector = 'div[itemprop="description"]'
 
@@ -101,25 +102,29 @@ class MangaStream(Server):
         data['cover'] = thumb_element.img.get('src')
 
         # Details
-        status_element = info_element.select_one(self.status_selector)
-        if status_element.b:
-            status_element.b.extract()
-        status = status_element.text.strip().lower()
-        if status in ('ongoing', 'devam ediyor'):
-            data['status'] = 'ongoing'
-        elif status in ('completed', 'tamamlandı'):
-            data['status'] = 'complete'
-        elif status in ('hiatus', 'bırakıldı'):
-            data['status'] = 'hiatus'
-        elif status in ('dropped', 'durduruldu'):
-            data['status'] = 'suspended'
+        def compute_status(label):
+            label = label.strip().lower()
+
+            if label in ('ongoing', 'devam ediyor'):
+                return 'ongoing'
+            if label in ('completed', 'tamamlandı'):
+                return 'complete'
+            if label in ('hiatus', 'bırakıldı'):
+                return 'hiatus'
+            elif label in ('dropped', 'durduruldu'):
+                return 'suspended'
+
+            return None
 
         for element in info_element.select(self.details_selector):
-            if not element.b:
+            if element.b:
+                label = element.b.text.strip()
+                element.b.extract()
+            elif element.name == 'tr':
+                label = element.find_all('td')[0].text.strip()
+                element = element.find_all('td')[1]
+            else:
                 continue
-
-            label = element.b.text.strip()
-            element.b.extract()
 
             if label.startswith(('Author', 'Artist', 'Yazar')):
                 for author in element.text.strip().split(','):
@@ -129,8 +134,20 @@ class MangaStream(Server):
 
             elif label.startswith(('Genres', 'Serinin Bulunduğu Kategoriler')):
                 for a_element in element.find_all('a'):
-                    genre = a_element.text.strip()
-                    data['genres'].append(genre)
+                    data['genres'].append(a_element.text.strip())
+
+            elif label.startswith(('Status',)):
+                data['status'] = compute_status(element.text)
+
+        if self.status_selector:
+            status_element = info_element.select_one(self.status_selector)
+            if status_element:
+                data['status'] = compute_status(status_element.text)
+
+        if self.genres_selector:
+            genres_element = info_element.select_one(self.genres_selector)
+            for a_element in genres_element:
+                data['genres'].append(a_element.text.strip())
 
         synopsis_element = info_element.select_one(self.synopsis_selector)
         if synopsis_element:
