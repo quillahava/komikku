@@ -6,10 +6,14 @@
 
 from komikku.servers.multi.madara import Madara
 
+# BEWARE: Argosscan server is disabled
+# Don't use Madara multi-server anymore
+
 
 class Argosscan(Madara):
     id = 'argosscan'
     name = 'Argos Scan'
     lang = 'pt'
+    status = 'disabled'
 
     base_url = 'https://argosscan.com'
