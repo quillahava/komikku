@@ -103,10 +103,10 @@ def test_edelgardescans(edelgardescans_server):
     yield
 
 
-@test_steps('get_most_popular', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_hatigarmscans(hatigarmscans_server):
-    # Get most popular
-    print('Get most popular')
+    # Get most populars
+    print('Get most populars')
     try:
         response = hatigarmscans_server.get_most_populars()
     except Exception as e:
@@ -119,7 +119,8 @@ def test_hatigarmscans(hatigarmscans_server):
     # Search
     print('Search')
     try:
-        response = hatigarmscans_server.search('tales of demons and gods')
+        # Use first result of get_most_populars
+        response = hatigarmscans_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
