@@ -33,9 +33,6 @@ from gi.repository.GdkPixbuf import InterpType
 from gi.repository.GdkPixbuf import Pixbuf
 from gi.repository.GdkPixbuf import PixbufAnimation
 
-from komikku.servers.exceptions import ServerException
-
-
 keyring.core.init_backend()
 
 logger = logging.getLogger('komikku')
