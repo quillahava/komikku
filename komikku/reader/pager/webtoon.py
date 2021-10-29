@@ -12,7 +12,7 @@ from komikku.reader.pager import BasePager
 from komikku.reader.pager.page import Page
 
 
-class WebtoonPager(Gtk.Box, BasePager):
+class WebtoonPager(Gtk.ScrolledWindow, BasePager):
     """Vertical smooth/continuous scrolling (a.k.a. infinite canvas) pager"""
 
     current_chapter_id = None
@@ -29,17 +29,30 @@ class WebtoonPager(Gtk.Box, BasePager):
     dont_ignore_scroll_adjustment = False
 
     def __init__(self, reader):
-        Gtk.Box.__init__(self, visible=True)
+        Gtk.ScrolledWindow.__init__(self)
         BasePager.__init__(self, reader)
 
-        self.set_orientation(Gtk.Orientation.VERTICAL)
-        self.vadj = self.scrolledwindow.get_vadjustment()
+        self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.set_child(self.box)
+        self.vadj = self.get_vadjustment()
 
-        self.scroll_handler_id = self.scrolledwindow.connect('scroll-event', self.on_scroll)
+        self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.VERTICAL)
+        self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.add_controller(self.controller_scroll)
+        self.controller_scroll.connect('scroll', self.on_scroll)
+
         self.scroll_changed_handler_id = self.vadj.connect('notify::upper', self.on_scroll_changed)
         self.scroll_value_changed_handler_id = self.vadj.connect('value-changed', self.on_scroll_value_changed)
 
         self.zoom['active'] = False
+
+    @property
+    def pages(self):
+        children = []
+        for page in self.box:
+            children.append(page)
+
+        return children
 
     @property
     def pages_offsets(self):
@@ -98,7 +111,17 @@ class WebtoonPager(Gtk.Box, BasePager):
 
         GLib.source_remove(self.render_pages_timeout_id)
 
-        BasePager.clear(self)
+        self.clear_pages()
+
+    def clear_pages(self):
+        self.disable_keyboard_and_mouse_click_navigation()
+
+        page = self.box.get_first_child()
+        while page:
+            next_page = page.get_next_sibling()
+            page.clean()
+            self.remove(page)
+            page = next_page
 
     def get_page_offset(self, page):
         pages = self.pages
@@ -127,7 +150,7 @@ class WebtoonPager(Gtk.Box, BasePager):
         self.init(self.current_page.chapter, index)
 
     def init(self, chapter, page_index=None):
-        BasePager.clear(self)
+        self.clear_pages()
 
         if page_index is None:
             if chapter.read:
@@ -141,7 +164,7 @@ class WebtoonPager(Gtk.Box, BasePager):
             page = Page(self, chapter, page_index + i)
             page.status_changed_handler_id = page.connect('notify::status', self.on_page_status_changed)
             page.connect('rendered', self.on_page_rendered)
-            self.add(page)
+            self.box.append(page)
             if i == 0:
                 self.current_page = page
                 page.render()
@@ -195,21 +218,12 @@ class WebtoonPager(Gtk.Box, BasePager):
 
         self.render_pages_counter += 1
 
-    def on_scroll(self, _scrolledwindow, event):
+    def on_scroll(self, _controller, _dx, dy):
         if self.scroll_lock:
             # Disable scrolling
             return Gdk.EVENT_STOP
 
-        ret, scroll_direction = event.get_scroll_direction()
-        if ret:
-            self.scroll_direction = scroll_direction
-        else:
-            ret, _delta_x, delta_y = event.get_scroll_deltas()
-            if ret:
-                self.scroll_direction = Gtk.DirectionType.UP if delta_y < 0 else Gtk.DirectionType.DOWN
-            else:
-                self.scroll_direction = None
-                return Gdk.EVENT_PROPAGATE
+        self.scroll_direction = Gtk.DirectionType.UP if dy < 0 else Gtk.DirectionType.DOWN
 
         return Gdk.EVENT_PROPAGATE
 
@@ -218,7 +232,7 @@ class WebtoonPager(Gtk.Box, BasePager):
         self.adjust_scroll()
 
     def on_scroll_value_changed(self, _vadj):
-        ret, _state = Gtk.get_current_event_state()
+        ret = self.controller_scroll.get_current_event_state()
         if not ret and not self.dont_ignore_scroll_adjustment:
             # Scrolling value changed but not by user interaction
             self.add_page_lock = False
@@ -310,6 +324,9 @@ class WebtoonPager(Gtk.Box, BasePager):
             self.enable_keyboard_and_mouse_click_navigation()
         else:
             self.disable_keyboard_and_mouse_click_navigation()
+
+    def set_orientation(self, _orientation):
+        return
 
     def update(self, page, _index=None):
         if page not in self.pages:
