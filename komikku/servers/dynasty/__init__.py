@@ -23,6 +23,7 @@ class Dynasty(Server):
     lang = 'en'
     id = 'dynasty'
     name = 'Dynasty Reader'
+    long_strip_genres = ['Long strip', ]
 
     base_url = 'https://dynasty-scans.com'
     manga_url = base_url + '/{0}'
