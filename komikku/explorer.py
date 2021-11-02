@@ -190,6 +190,7 @@ class Explorer(Gtk.Stack):
         self.search_filters = {}
 
         if getattr(self.server, 'filters', None) is None:
+            self.search_page_filter_menu_button.set_popover(None)
             return
 
         def build_checkbox(filter):
