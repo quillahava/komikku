@@ -456,13 +456,6 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                             </child>
                           </object>
                         </child>
-                        <child type="separator">
-                          <object class="GtkSeparator">
-                            <style>
-                              <class name="sidebar"/>
-                            </style>
-                          </object>
-                        </child>
                         <child type="flap">
                           <object class="GtkBox">
                             <property name="width_request">200</property>
@@ -883,7 +876,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                                 </object>
                                                               </child>
                                                               <style>
-                                                                <class name="content"/>
+                                                                <class name="boxed-list"/>
                                                               </style>
                                                             </object>
                                                           </child>
@@ -929,7 +922,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                                 </object>
                                                               </child>
                                                               <style>
-                                                                <class name="content"/>
+                                                                <class name="boxed-list"/>
                                                               </style>
                                                             </object>
                                                           </child>
@@ -989,7 +982,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                                 </object>
                                                               </child>
                                                               <style>
-                                                                <class name="content"/>
+                                                                <class name="boxed-list"/>
                                                               </style>
                                                             </object>
                                                           </child>
@@ -1058,7 +1051,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                         <property name="margin-bottom">12</property>
                                                         <property name="margin-start">12</property>
                                                         <style>
-                                                          <class name="content"/>
+                                                          <class name="boxed-list"/>
                                                         </style>
                                                       </object>
                                                     </property>

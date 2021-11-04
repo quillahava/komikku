@@ -66,7 +66,7 @@ along with Komikku. If not, see <http://www.gnu.org/licenses/>.
                             <property name="selection_mode">none</property>
                             <property name="valign">start</property>
                             <style>
-                              <class name="content"/>
+                              <class name="boxed-list"/>
                             </style>
                           </object>
                         </property>

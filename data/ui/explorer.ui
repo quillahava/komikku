@@ -103,11 +103,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkMenuButton" id="search_page_filter_menu_button">
                             <property name="focus_on_click">0</property>
                             <property name="receives_default">1</property>
-                            <child>
-                              <object class="GtkImage">
-                                <property name="icon_name">view-more-symbolic</property>
-                              </object>
-                            </child>
+                            <property name="icon-name">view-more-symbolic</property>
                           </object>
                         </child>
                         <style>
@@ -467,7 +463,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                         </object>
                                       </child>
                                       <style>
-                                        <class name="content"/>
+                                        <class name="boxed-list"/>
                                       </style>
                                     </object>
                                   </child>
@@ -513,7 +509,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                         </object>
                                       </child>
                                       <style>
-                                        <class name="content"/>
+                                        <class name="boxed-list"/>
                                       </style>
                                     </object>
                                   </child>
