@@ -15,6 +15,7 @@
 # Argos Scan [PT]
 # Atikrost [TR]
 # Best Manga [RU]
+# Colored Manga [EN]
 # Reaperscans [EN]
 # Reaperscans [PT]
 # Wakascan [FR]

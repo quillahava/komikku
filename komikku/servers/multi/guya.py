@@ -5,7 +5,6 @@
 # Author: Mariusz Kurek <mariuszkurek@pm.me>
 
 # Supported servers:
-# Colored Council [EN]
 # Danke fürs Lesen [EN]
 # Hachirumi [EN]
 # Magical Translators [EN/PL]
