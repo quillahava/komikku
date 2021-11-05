@@ -159,26 +159,33 @@ class CategoryRow(Gtk.ListBoxRow):
 
         self.category = category
 
-        label = category.label
-        if nb_mangas := len(category.mangas):
-            label = f'{label} ({nb_mangas})'
-        self.label = Gtk.Label(label=label, hexpand=True)
+        self.label_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6, hexpand=True)
+        self.label = Gtk.Label(label=category.label, xalign=0, wrap=True)
         self.label.set_halign(Gtk.Align.START)
-        self.box.append(self.label)
+        self.label_box.append(self.label)
+        if nb_mangas := len(category.mangas):
+            # Add badge to display number of associated manga
+            label = Gtk.Label()
+            label.set_markup(f'<small>{nb_mangas}</small>')
+            label.set_valign(Gtk.Align.CENTER)
+            label.add_css_class('badge')
+            self.label_box.append(label)
+        self.box.append(self.label_box)
 
         self.edit_entry = Gtk.Entry(visible=False, hexpand=True)
         self.edit_entry.set_valign(Gtk.Align.CENTER)
         self.edit_entry.set_halign(Gtk.Align.FILL)
         self.box.append(self.edit_entry)
 
+        self.delete_button = Gtk.Button.new_from_icon_name('user-trash-symbolic')
+        self.delete_button.set_valign(Gtk.Align.CENTER)
+        self.delete_button.add_css_class('destructive-action')
+        self.box.append(self.delete_button)
+
         self.edit_button = Gtk.Button.new_from_icon_name('document-edit-symbolic')
         self.edit_button.set_valign(Gtk.Align.CENTER)
         self.edit_button.connect('clicked', self.set_edit_mode, True)
         self.box.append(self.edit_button)
-
-        self.delete_button = Gtk.Button.new_from_icon_name('user-trash-symbolic')
-        self.delete_button.set_valign(Gtk.Align.CENTER)
-        self.box.append(self.delete_button)
 
         self.cancel_button = Gtk.Button.new_from_icon_name('edit-undo-symbolic')
         self.cancel_button.set_valign(Gtk.Align.CENTER)
@@ -195,7 +202,7 @@ class CategoryRow(Gtk.ListBoxRow):
 
     def set_edit_mode(self, _button=None, active=False):
         if active:
-            self.label.hide()
+            self.label_box.hide()
             self.edit_entry.set_text(self.category.label)
             self.edit_entry.show()
             self.delete_button.hide()
@@ -203,7 +210,7 @@ class CategoryRow(Gtk.ListBoxRow):
             self.cancel_button.show()
             self.save_button.show()
         else:
-            self.label.show()
+            self.label_box.show()
             self.edit_entry.set_text('')
             self.edit_entry.hide()
             self.delete_button.show()
