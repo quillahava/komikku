@@ -455,7 +455,7 @@ class Explorer(Gtk.Stack):
             self.card_page_chapters_value_label.set_markup(str(len(self.manga_data['chapters'])))
 
             self.card_page_last_chapter_value_label.set_markup(
-                self.manga_data['chapters'][-1]['title'] if self.manga_data['chapters'] else '-'
+                html_escape(self.manga_data['chapters'][-1]['title']) if self.manga_data['chapters'] else '-'
             )
 
             self.card_page_synopsis_value_label.set_markup(
