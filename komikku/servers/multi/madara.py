@@ -12,10 +12,10 @@
 # Aloalivn [EN] (disabled)
 # Apoll Comics [ES]
 # ArazNovel [TR]
-# Argos Scan [PT]
+# Argos Scan [PT] (disabled)
 # Atikrost [TR]
 # Best Manga [RU]
-# Colored Manga [EN]
+# Colored Council [EN]
 # Reaperscans [EN]
 # Reaperscans [PT]
 # Wakascan [FR]
@@ -32,6 +32,9 @@ from komikku.servers.utils import get_soup_element_inner_text
 
 
 class Madara(Server):
+    base_url: str = None
+    chapters_url: str = None
+
     series_name: str = 'manga'
     date_format: str = '%B %d, %Y'
 
@@ -121,13 +124,21 @@ class Madara(Server):
         chapters_container = soup.find('div', id='manga-chapters-holder')
         if chapters_container:
             # Chapters list is empty and is loaded via an Ajax call
-            manga_id = chapters_container.get('data-id')
-            if manga_id:
+            if self.chapters_url:
+                r = self.session_post(
+                    self.chapters_url.format(data['slug']),
+                    headers={
+                        'origin': self.base_url,
+                        'referer': self.manga_url.format(data['slug']),
+                        'x-requested-with': 'XMLHttpRequest',
+                    }
+                )
+            else:
                 r = self.session_post(
                     self.api_url,
                     data=dict(
                         action='manga_get_chapters',
-                        manga=manga_id,
+                        manga=chapters_container.get('data-id'),
                     ),
                     headers={
                         'origin': self.base_url,
@@ -136,7 +147,7 @@ class Madara(Server):
                     }
                 )
 
-                soup = BeautifulSoup(r.text, 'html.parser')
+            soup = BeautifulSoup(r.text, 'html.parser')
 
         elements = soup.find_all('li', class_='wp-manga-chapter')
         for element in reversed(elements):

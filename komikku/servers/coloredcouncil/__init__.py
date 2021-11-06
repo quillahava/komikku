@@ -9,7 +9,8 @@ from komikku.servers.multi.madara import Madara
 
 class Coloredcouncil(Madara):
     id = 'coloredcouncil'
-    name = 'Colored Manga'
+    name = 'Colored Council'
     lang = 'en'
 
     base_url = 'https://coloredmanga.com/'
+    chapters_url = base_url + '/manga/{0}/ajax/chapters/'
