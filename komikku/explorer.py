@@ -68,12 +68,12 @@ class Explorer(Gtk.Stack):
 
         # Servers page
         self.servers_page_search_button = self.window.explorer_servers_page_search_button
-        self.servers_page_search_button.connect('clicked', self.toggle_servers_search)
 
         self.servers_page_searchbar.bind_property(
             'search-mode-enabled', self.servers_page_search_button, 'active', GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self.servers_page_searchbar.connect_entry(self.servers_page_searchentry)
+        self.servers_page_searchbar.connect('notify::search-mode-enabled', self.on_servers_page_search_mode_toggled)
         self.servers_page_searchbar.set_key_capture_widget(self.window)
         self.servers_page_searchentry.connect('activate', self.on_servers_page_searchentry_activated)
         self.servers_page_searchentry.connect('search-changed', self.search_servers)
@@ -135,12 +135,10 @@ class Explorer(Gtk.Stack):
         row.set_child(box)
 
         # Server logo
-        logo = Gtk.Picture()
-        logo.set_size_request(24, 24)
+        logo = Gtk.Image()
+        logo.set_size_request(28, 28)
         if data['logo_path']:
-            # pixbuf = Pixbuf.new_from_file_at_scale(data['logo_path'], 24, 24, True)
-            logo.set_filename(data['logo_path'])
-        # else:
+            logo.set_from_file(data['logo_path'])
         box.append(logo)
 
         # Server title & language
@@ -385,6 +383,12 @@ class Explorer(Gtk.Stack):
         else:
             self.show_page('search')
 
+    def on_servers_page_search_mode_toggled(self, _searchbar, _gparam):
+        if self.servers_page_searchbar.get_search_mode():
+            self.servers_page_pinned_listbox.hide()
+        else:
+            self.servers_page_pinned_listbox.show()
+
     def on_servers_page_searchentry_activated(self, _entry):
         if not self.servers_page_searchbar.get_search_mode():
             return
@@ -488,8 +492,9 @@ class Explorer(Gtk.Stack):
     def populate_pinned_servers(self):
         row = self.servers_page_pinned_listbox.get_first_child()
         while row:
+            next_row = row.get_next_sibling()
             self.servers_page_pinned_listbox.remove(row)
-            row = row.get_next_sibling()
+            row = next_row
 
         pinned_servers = Settings.get_default().pinned_servers
         if len(pinned_servers) == 0:
@@ -521,8 +526,9 @@ class Explorer(Gtk.Stack):
 
         row = self.servers_page_listbox.get_first_child()
         while row:
+            next_row = row.get_next_sibling()
             self.servers_page_listbox.remove(row)
-            row = row.get_next_sibling()
+            row = next_row
 
         last_lang = None
         for server_data in self.servers:
@@ -712,11 +718,3 @@ class Explorer(Gtk.Stack):
                     break
 
         self.populate_pinned_servers()
-
-    def toggle_servers_search(self, button):
-        self.servers_page_searchbar.set_search_mode(button.get_active())
-
-        if button.get_active():
-            self.servers_page_pinned_listbox.hide()
-        else:
-            self.servers_page_pinned_listbox.show()
