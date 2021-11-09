@@ -388,6 +388,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                         <property name="hscrollbar_policy">never</property>
                                         <child>
                                           <object class="GtkViewport">
+                                            <property name="scroll-to-focus">True</property>
                                             <child>
                                               <object class="GtkFlowBox" id="library_flowbox">
                                                 <property name="homogeneous">1</property>
@@ -487,6 +488,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                         <property name="hscrollbar_policy">never</property>
                                         <property name="child">
                                           <object class="GtkViewport">
+                                            <property name="scroll-to-focus">True</property>
                                             <property name="child">
                                               <object class="GtkListBox" id="library_categories_listbox">
                                               </object>
@@ -569,428 +571,429 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                             <property name="margin-bottom">12</property>
                                             <property name="margin-start">12</property>
                                             <child>
-                                                <object class="GtkBox">
-                                                  <property name="orientation">vertical</property>
-                                                  <property name="spacing">12</property>
-                                                  <child>
-                                                    <object class="GtkBox" id="card_cover_box">
-                                                      <property name="spacing">24</property>
-                                                      <child>
-                                                        <object class="GtkFrame">
-                                                          <property name="halign">center</property>
-                                                          <child>
-                                                            <object class="GtkPicture" id="card_cover_image">
-                                                              <property name="can-shrink">0</property>
-                                                              <property name="keep-aspect-ratio">0</property>
-                                                              <property name="halign">center</property>
-                                                              <property name="valign">center</property>
-                                                              <style>
-                                                                <class name="rounded"/>
-                                                              </style>
-                                                            </object>
-                                                          </child>
-                                                        </object>
-                                                      </child>
-                                                      <child>
-                                                        <object class="GtkBox">
-                                                          <property name="valign">center</property>
-                                                          <property name="hexpand">1</property>
-                                                          <property name="orientation">vertical</property>
-                                                          <child>
-                                                            <object class="GtkLabel" id="card_name_label">
-                                                              <property name="halign">start</property>
-                                                              <property name="valign">fill</property>
-                                                              <property name="hexpand">1</property>
-                                                              <property name="label">name</property>
-                                                              <property name="wrap">1</property>
-                                                              <property name="xalign">0</property>
-                                                              <style>
-                                                                <class name="title-1"/>
-                                                              </style>
-                                                            </object>
-                                                          </child>
-                                                          <child>
-                                                            <object class="GtkLabel" id="card_authors_value_label">
-                                                              <property name="halign">start</property>
-                                                              <property name="valign">fill</property>
-                                                              <property name="label">authors value</property>
-                                                              <property name="wrap">1</property>
-                                                              <property name="max-width-chars">100</property>
-                                                              <property name="xalign">0</property>
-                                                              <style>
-                                                                <class name="dim-label"/>
-                                                                <class name="title-2"/>
-                                                              </style>
-                                                            </object>
-                                                          </child>
-                                                        </object>
-                                                      </child>
-                                                    </object>
-                                                  </child>
-                                                  <child>
-                                                    <object class="GtkBox">
-                                                      <property name="hexpand">1</property>
-                                                      <property name="orientation">vertical</property>
-                                                      <property name="spacing">12</property>
-                                                      <child>
-                                                        <object class="GtkBox">
-                                                          <property name="orientation">vertical</property>
-                                                          <property name="spacing">12</property>
-                                                          <child>
-                                                            <object class="GtkLabel">
-                                                              <property name="halign">start</property>
-                                                              <property name="label" translatable="yes">Details</property>
-                                                              <style>
-                                                                <class name="title-4"/>
-                                                              </style>
-                                                            </object>
-                                                          </child>
-                                                          <child>
-                                                            <object class="GtkListBox">
-                                                              <child>
-                                                                <object class="GtkListBoxRow">
-                                                                  <property name="activatable">0</property>
-                                                                  <property name="selectable">0</property>
-                                                                  <child>
-                                                                    <object class="GtkBox">
-                                                                      <property name="spacing">12</property>
-                                                                      <property name="margin-top">12</property>
-                                                                      <property name="margin-end">12</property>
-                                                                      <property name="margin-bottom">12</property>
-                                                                      <property name="margin-start">12</property>
-                                                                      <child>
-                                                                        <object class="GtkImage">
-                                                                          <property name="halign">start</property>
-                                                                          <property name="icon-name">view-dual-symbolic</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel">
-                                                                          <property name="halign">start</property>
-                                                                          <property name="label" translatable="yes">Genres</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel" id="card_genres_value_label">
-                                                                          <property name="halign">end</property>
-                                                                          <property name="hexpand">1</property>
-                                                                          <property name="label">genres value</property>
-                                                                          <property name="justify">right</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                          <property name="xalign">1</property>
-                                                                        </object>
-                                                                      </child>
-                                                                    </object>
-                                                                  </child>
-                                                                </object>
-                                                              </child>
-                                                              <child>
-                                                                <object class="GtkListBoxRow">
-                                                                  <property name="activatable">0</property>
-                                                                  <property name="selectable">0</property>
-                                                                  <child>
-                                                                    <object class="GtkBox">
-                                                                      <property name="spacing">12</property>
-                                                                      <property name="margin-top">12</property>
-                                                                      <property name="margin-end">12</property>
-                                                                      <property name="margin-bottom">12</property>
-                                                                      <property name="margin-start">12</property>
-                                                                      <child>
-                                                                        <object class="GtkImage">
-                                                                          <property name="halign">start</property>
-                                                                          <property name="icon-name">document-edit-symbolic</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel">
-                                                                          <property name="label" translatable="yes">Scanlators</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel" id="card_scanlators_value_label">
-                                                                          <property name="halign">end</property>
-                                                                          <property name="hexpand">1</property>
-                                                                          <property name="label">scanlators value</property>
-                                                                          <property name="justify">right</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                        </object>
-                                                                      </child>
-                                                                    </object>
-                                                                  </child>
-                                                                </object>
-                                                              </child>
-                                                              <child>
-                                                                <object class="GtkListBoxRow">
-                                                                  <property name="activatable">0</property>
-                                                                  <property name="selectable">0</property>
-                                                                  <child>
-                                                                    <object class="GtkBox">
-                                                                      <property name="spacing">12</property>
-                                                                      <property name="margin-top">12</property>
-                                                                      <property name="margin-end">12</property>
-                                                                      <property name="margin-bottom">12</property>
-                                                                      <property name="margin-start">12</property>
-                                                                      <child>
-                                                                        <object class="GtkImage">
-                                                                          <property name="halign">start</property>
-                                                                          <property name="icon-name">content-loading-symbolic</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel">
-                                                                          <property name="label" translatable="yes">Status</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel" id="card_status_value_label">
-                                                                          <property name="halign">end</property>
-                                                                          <property name="hexpand">1</property>
-                                                                          <property name="label">status value</property>
-                                                                          <property name="justify">right</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                        </object>
-                                                                      </child>
-                                                                    </object>
-                                                                  </child>
-                                                                </object>
-                                                              </child>
-                                                              <child>
-                                                                <object class="GtkListBoxRow">
-                                                                  <property name="activatable">0</property>
-                                                                  <property name="selectable">0</property>
-                                                                  <child>
-                                                                    <object class="GtkBox">
-                                                                      <property name="spacing">12</property>
-                                                                      <property name="margin-top">12</property>
-                                                                      <property name="margin-end">12</property>
-                                                                      <property name="margin-bottom">12</property>
-                                                                      <property name="margin-start">12</property>
-                                                                      <child>
-                                                                        <object class="GtkImage">
-                                                                          <property name="halign">start</property>
-                                                                          <property name="icon-name">view-list-bullet-symbolic</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel">
-                                                                          <property name="label" translatable="yes">Chapters</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel" id="card_chapters_value_label">
-                                                                          <property name="halign">end</property>
-                                                                          <property name="hexpand">1</property>
-                                                                          <property name="label">chapter value</property>
-                                                                          <property name="justify">right</property>
-                                                                          <property name="single-line-mode">1</property>
-                                                                        </object>
-                                                                      </child>
-                                                                    </object>
-                                                                  </child>
-                                                                </object>
-                                                              </child>
-                                                              <child>
-                                                                <object class="GtkListBoxRow">
-                                                                  <property name="activatable">0</property>
-                                                                  <property name="selectable">0</property>
-                                                                  <child>
-                                                                    <object class="GtkBox">
-                                                                      <property name="spacing">12</property>
-                                                                      <property name="margin-top">12</property>
-                                                                      <property name="margin-end">12</property>
-                                                                      <property name="margin-bottom">12</property>
-                                                                      <property name="margin-start">12</property>
-                                                                      <child>
-                                                                        <object class="GtkImage">
-                                                                          <property name="halign">start</property>
-                                                                          <property name="icon-name">document-open-recent-symbolic</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel">
-                                                                          <property name="label" translatable="yes">Last Update</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel" id="card_last_update_value_label">
-                                                                          <property name="halign">end</property>
-                                                                          <property name="hexpand">1</property>
-                                                                          <property name="label">last update value</property>
-                                                                          <property name="justify">right</property>
-                                                                          <property name="single-line-mode">1</property>
-                                                                        </object>
-                                                                      </child>
-                                                                    </object>
-                                                                  </child>
-                                                                </object>
-                                                              </child>
-                                                              <child>
-                                                                <object class="GtkListBoxRow">
-                                                                  <property name="activatable">0</property>
-                                                                  <property name="selectable">0</property>
-                                                                  <child>
-                                                                    <object class="GtkBox">
-                                                                      <property name="spacing">12</property>
-                                                                      <property name="margin-top">12</property>
-                                                                      <property name="margin-end">12</property>
-                                                                      <property name="margin-bottom">12</property>
-                                                                      <property name="margin-start">12</property>
-                                                                      <child>
-                                                                        <object class="GtkImage">
-                                                                          <property name="halign">start</property>
-                                                                          <property name="icon-name">web-browser-symbolic</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel">
-                                                                          <property name="label" translatable="yes">Server</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel" id="card_server_value_label">
-                                                                          <property name="halign">end</property>
-                                                                          <property name="hexpand">1</property>
-                                                                          <property name="label">server value</property>
-                                                                          <property name="justify">right</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                        </object>
-                                                                      </child>
-                                                                    </object>
-                                                                  </child>
-                                                                </object>
-                                                              </child>
-                                                              <style>
-                                                                <class name="boxed-list"/>
-                                                              </style>
-                                                            </object>
-                                                          </child>
-                                                        </object>
-                                                      </child>
-                                                      <child>
-                                                        <object class="GtkBox">
-                                                          <property name="orientation">vertical</property>
-                                                          <property name="spacing">12</property>
-                                                          <child>
-                                                            <object class="GtkLabel">
-                                                              <property name="halign">start</property>
-                                                              <property name="label" translatable="yes">Synopsis</property>
-                                                              <style>
-                                                                <class name="title-4"/>
-                                                              </style>
-                                                            </object>
-                                                          </child>
-                                                          <child>
-                                                            <object class="GtkListBox">
-                                                              <child>
-                                                                <object class="GtkListBoxRow">
-                                                                  <property name="activatable">0</property>
-                                                                  <property name="selectable">0</property>
-                                                                  <child>
-                                                                    <object class="GtkBox">
-                                                                      <property name="spacing">12</property>
-                                                                      <property name="margin-top">12</property>
-                                                                      <property name="margin-end">12</property>
-                                                                      <property name="margin-bottom">12</property>
-                                                                      <property name="margin-start">12</property>
-                                                                      <child>
-                                                                        <object class="GtkLabel" id="card_synopsis_value_label">
-                                                                          <property name="hexpand">1</property>
-                                                                          <property name="label">synopsis value</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                          <property name="xalign">0</property>
-                                                                        </object>
-                                                                      </child>
-                                                                    </object>
-                                                                  </child>
-                                                                </object>
-                                                              </child>
-                                                              <style>
-                                                                <class name="boxed-list"/>
-                                                              </style>
-                                                            </object>
-                                                          </child>
-                                                        </object>
-                                                      </child>
-                                                      <child>
-                                                        <object class="GtkBox">
-                                                          <property name="orientation">vertical</property>
-                                                          <property name="spacing">12</property>
-                                                          <child>
-                                                            <object class="GtkLabel">
-                                                              <property name="halign">start</property>
-                                                              <property name="label" translatable="yes">More</property>
-                                                              <style>
-                                                                <class name="title-4"/>
-                                                              </style>
-                                                            </object>
-                                                          </child>
-                                                          <child>
-                                                            <object class="GtkListBox">
-                                                              <child>
-                                                                <object class="GtkListBoxRow">
-                                                                  <property name="activatable">0</property>
-                                                                  <property name="selectable">0</property>
-                                                                  <child>
-                                                                    <object class="GtkBox">
-                                                                      <property name="spacing">12</property>
-                                                                      <property name="margin-top">12</property>
-                                                                      <property name="margin-end">12</property>
-                                                                      <property name="margin-bottom">12</property>
-                                                                      <property name="margin-start">12</property>
-                                                                      <child>
-                                                                        <object class="GtkImage">
-                                                                          <property name="halign">start</property>
-                                                                          <property name="icon-name">drive-harddisk-symbolic</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel">
-                                                                          <property name="halign">start</property>
-                                                                          <property name="label" translatable="yes">Size on Disk</property>
-                                                                          <property name="wrap">1</property>
-                                                                          <property name="wrap-mode">word-char</property>
-                                                                        </object>
-                                                                      </child>
-                                                                      <child>
-                                                                        <object class="GtkLabel" id="card_size_on_disk_value_label">
-                                                                          <property name="halign">end</property>
-                                                                          <property name="hexpand">1</property>
-                                                                          <property name="label">size on disk value</property>
-                                                                          <property name="justify">right</property>
-                                                                          <property name="single-line-mode">1</property>
-                                                                        </object>
-                                                                      </child>
-                                                                    </object>
-                                                                  </child>
-                                                                </object>
-                                                              </child>
-                                                              <style>
-                                                                <class name="boxed-list"/>
-                                                              </style>
-                                                            </object>
-                                                          </child>
-                                                        </object>
-                                                      </child>
-                                                    </object>
-                                                  </child>
-                                                </object>
+                                              <object class="GtkBox">
+                                                <property name="orientation">vertical</property>
+                                                <property name="can-focus">false</property>
+                                                <property name="spacing">12</property>
+                                                <child>
+                                                  <object class="GtkBox" id="card_cover_box">
+                                                    <property name="spacing">24</property>
+                                                    <child>
+                                                      <object class="GtkFrame">
+                                                        <property name="halign">center</property>
+                                                        <child>
+                                                          <object class="GtkPicture" id="card_cover_image">
+                                                            <property name="can-shrink">0</property>
+                                                            <property name="keep-aspect-ratio">0</property>
+                                                            <property name="halign">center</property>
+                                                            <property name="valign">center</property>
+                                                            <style>
+                                                              <class name="rounded"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox">
+                                                        <property name="valign">center</property>
+                                                        <property name="hexpand">1</property>
+                                                        <property name="orientation">vertical</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="card_name_label">
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">fill</property>
+                                                            <property name="hexpand">1</property>
+                                                            <property name="label">name</property>
+                                                            <property name="wrap">1</property>
+                                                            <property name="xalign">0</property>
+                                                            <style>
+                                                              <class name="title-1"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkLabel" id="card_authors_value_label">
+                                                            <property name="halign">start</property>
+                                                            <property name="valign">fill</property>
+                                                            <property name="label">authors value</property>
+                                                            <property name="wrap">1</property>
+                                                            <property name="max-width-chars">100</property>
+                                                            <property name="xalign">0</property>
+                                                            <style>
+                                                              <class name="dim-label"/>
+                                                              <class name="title-2"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox">
+                                                    <property name="hexpand">1</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <property name="spacing">12</property>
+                                                    <child>
+                                                      <object class="GtkBox">
+                                                        <property name="orientation">vertical</property>
+                                                        <property name="spacing">12</property>
+                                                        <child>
+                                                          <object class="GtkLabel">
+                                                            <property name="halign">start</property>
+                                                            <property name="label" translatable="yes">Details</property>
+                                                            <style>
+                                                              <class name="title-4"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkListBox">
+                                                            <child>
+                                                              <object class="GtkListBoxRow">
+                                                                <property name="activatable">0</property>
+                                                                <property name="selectable">0</property>
+                                                                <child>
+                                                                  <object class="GtkBox">
+                                                                    <property name="spacing">12</property>
+                                                                    <property name="margin-top">12</property>
+                                                                    <property name="margin-end">12</property>
+                                                                    <property name="margin-bottom">12</property>
+                                                                    <property name="margin-start">12</property>
+                                                                    <child>
+                                                                      <object class="GtkImage">
+                                                                        <property name="halign">start</property>
+                                                                        <property name="icon-name">view-dual-symbolic</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel">
+                                                                        <property name="halign">start</property>
+                                                                        <property name="label" translatable="yes">Genres</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel" id="card_genres_value_label">
+                                                                        <property name="halign">end</property>
+                                                                        <property name="hexpand">1</property>
+                                                                        <property name="label">genres value</property>
+                                                                        <property name="justify">right</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                        <property name="xalign">1</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </child>
+                                                            <child>
+                                                              <object class="GtkListBoxRow">
+                                                                <property name="activatable">0</property>
+                                                                <property name="selectable">0</property>
+                                                                <child>
+                                                                  <object class="GtkBox">
+                                                                    <property name="spacing">12</property>
+                                                                    <property name="margin-top">12</property>
+                                                                    <property name="margin-end">12</property>
+                                                                    <property name="margin-bottom">12</property>
+                                                                    <property name="margin-start">12</property>
+                                                                    <child>
+                                                                      <object class="GtkImage">
+                                                                        <property name="halign">start</property>
+                                                                        <property name="icon-name">document-edit-symbolic</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel">
+                                                                        <property name="label" translatable="yes">Scanlators</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel" id="card_scanlators_value_label">
+                                                                        <property name="halign">end</property>
+                                                                        <property name="hexpand">1</property>
+                                                                        <property name="label">scanlators value</property>
+                                                                        <property name="justify">right</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </child>
+                                                            <child>
+                                                              <object class="GtkListBoxRow">
+                                                                <property name="activatable">0</property>
+                                                                <property name="selectable">0</property>
+                                                                <child>
+                                                                  <object class="GtkBox">
+                                                                    <property name="spacing">12</property>
+                                                                    <property name="margin-top">12</property>
+                                                                    <property name="margin-end">12</property>
+                                                                    <property name="margin-bottom">12</property>
+                                                                    <property name="margin-start">12</property>
+                                                                    <child>
+                                                                      <object class="GtkImage">
+                                                                        <property name="halign">start</property>
+                                                                        <property name="icon-name">content-loading-symbolic</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel">
+                                                                        <property name="label" translatable="yes">Status</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel" id="card_status_value_label">
+                                                                        <property name="halign">end</property>
+                                                                        <property name="hexpand">1</property>
+                                                                        <property name="label">status value</property>
+                                                                        <property name="justify">right</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </child>
+                                                            <child>
+                                                              <object class="GtkListBoxRow">
+                                                                <property name="activatable">0</property>
+                                                                <property name="selectable">0</property>
+                                                                <child>
+                                                                  <object class="GtkBox">
+                                                                    <property name="spacing">12</property>
+                                                                    <property name="margin-top">12</property>
+                                                                    <property name="margin-end">12</property>
+                                                                    <property name="margin-bottom">12</property>
+                                                                    <property name="margin-start">12</property>
+                                                                    <child>
+                                                                      <object class="GtkImage">
+                                                                        <property name="halign">start</property>
+                                                                        <property name="icon-name">view-list-bullet-symbolic</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel">
+                                                                        <property name="label" translatable="yes">Chapters</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel" id="card_chapters_value_label">
+                                                                        <property name="halign">end</property>
+                                                                        <property name="hexpand">1</property>
+                                                                        <property name="label">chapter value</property>
+                                                                        <property name="justify">right</property>
+                                                                        <property name="single-line-mode">1</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </child>
+                                                            <child>
+                                                              <object class="GtkListBoxRow">
+                                                                <property name="activatable">0</property>
+                                                                <property name="selectable">0</property>
+                                                                <child>
+                                                                  <object class="GtkBox">
+                                                                    <property name="spacing">12</property>
+                                                                    <property name="margin-top">12</property>
+                                                                    <property name="margin-end">12</property>
+                                                                    <property name="margin-bottom">12</property>
+                                                                    <property name="margin-start">12</property>
+                                                                    <child>
+                                                                      <object class="GtkImage">
+                                                                        <property name="halign">start</property>
+                                                                        <property name="icon-name">document-open-recent-symbolic</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel">
+                                                                        <property name="label" translatable="yes">Last Update</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel" id="card_last_update_value_label">
+                                                                        <property name="halign">end</property>
+                                                                        <property name="hexpand">1</property>
+                                                                        <property name="label">last update value</property>
+                                                                        <property name="justify">right</property>
+                                                                        <property name="single-line-mode">1</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </child>
+                                                            <child>
+                                                              <object class="GtkListBoxRow">
+                                                                <property name="activatable">0</property>
+                                                                <property name="selectable">0</property>
+                                                                <child>
+                                                                  <object class="GtkBox">
+                                                                    <property name="spacing">12</property>
+                                                                    <property name="margin-top">12</property>
+                                                                    <property name="margin-end">12</property>
+                                                                    <property name="margin-bottom">12</property>
+                                                                    <property name="margin-start">12</property>
+                                                                    <child>
+                                                                      <object class="GtkImage">
+                                                                        <property name="halign">start</property>
+                                                                        <property name="icon-name">web-browser-symbolic</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel">
+                                                                        <property name="label" translatable="yes">Server</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel" id="card_server_value_label">
+                                                                        <property name="halign">end</property>
+                                                                        <property name="hexpand">1</property>
+                                                                        <property name="label">server value</property>
+                                                                        <property name="justify">right</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </child>
+                                                            <style>
+                                                              <class name="boxed-list"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox">
+                                                        <property name="orientation">vertical</property>
+                                                        <property name="spacing">12</property>
+                                                        <child>
+                                                          <object class="GtkLabel">
+                                                            <property name="halign">start</property>
+                                                            <property name="label" translatable="yes">Synopsis</property>
+                                                            <style>
+                                                              <class name="title-4"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkListBox">
+                                                            <child>
+                                                              <object class="GtkListBoxRow">
+                                                                <property name="activatable">0</property>
+                                                                <property name="selectable">0</property>
+                                                                <child>
+                                                                  <object class="GtkBox">
+                                                                    <property name="spacing">12</property>
+                                                                    <property name="margin-top">12</property>
+                                                                    <property name="margin-end">12</property>
+                                                                    <property name="margin-bottom">12</property>
+                                                                    <property name="margin-start">12</property>
+                                                                    <child>
+                                                                      <object class="GtkLabel" id="card_synopsis_value_label">
+                                                                        <property name="hexpand">1</property>
+                                                                        <property name="label">synopsis value</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                        <property name="xalign">0</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </child>
+                                                            <style>
+                                                              <class name="boxed-list"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox">
+                                                        <property name="orientation">vertical</property>
+                                                        <property name="spacing">12</property>
+                                                        <child>
+                                                          <object class="GtkLabel">
+                                                            <property name="halign">start</property>
+                                                            <property name="label" translatable="yes">More</property>
+                                                            <style>
+                                                              <class name="title-4"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkListBox">
+                                                            <child>
+                                                              <object class="GtkListBoxRow">
+                                                                <property name="activatable">0</property>
+                                                                <property name="selectable">0</property>
+                                                                <child>
+                                                                  <object class="GtkBox">
+                                                                    <property name="spacing">12</property>
+                                                                    <property name="margin-top">12</property>
+                                                                    <property name="margin-end">12</property>
+                                                                    <property name="margin-bottom">12</property>
+                                                                    <property name="margin-start">12</property>
+                                                                    <child>
+                                                                      <object class="GtkImage">
+                                                                        <property name="halign">start</property>
+                                                                        <property name="icon-name">drive-harddisk-symbolic</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel">
+                                                                        <property name="halign">start</property>
+                                                                        <property name="label" translatable="yes">Size on Disk</property>
+                                                                        <property name="wrap">1</property>
+                                                                        <property name="wrap-mode">word-char</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel" id="card_size_on_disk_value_label">
+                                                                        <property name="halign">end</property>
+                                                                        <property name="hexpand">1</property>
+                                                                        <property name="label">size on disk value</property>
+                                                                        <property name="justify">right</property>
+                                                                        <property name="single-line-mode">1</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </child>
+                                                            <style>
+                                                              <class name="boxed-list"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                              </object>
                                             </child>
                                           </object>
                                         </child>
@@ -1009,6 +1012,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                   <object class="GtkScrolledWindow">
                                     <property name="child">
                                       <object class="GtkViewport">
+                                        <property name="scroll-to-focus">True</property>
                                         <child>
                                           <object class="AdwClamp">
                                             <property name="maximum_size">800</property>
@@ -1034,6 +1038,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                   <object class="GtkScrolledWindow">
                                     <property name="child">
                                       <object class="GtkViewport">
+                                        <property name="scroll-to-focus">True</property>
                                         <child>
                                           <object class="AdwClamp">
                                             <property name="maximum_size">800</property>

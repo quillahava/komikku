@@ -24,6 +24,7 @@ along with Komikku. If not, see <http://www.gnu.org/licenses/>.
     <property name="hscrollbar_policy">never</property>
     <property name="child">
       <object class="GtkViewport">
+        <property name="scroll-to-focus">True</property>
         <property name="child">
           <object class="AdwClamp">
             <property name="maximum-size">800</property>

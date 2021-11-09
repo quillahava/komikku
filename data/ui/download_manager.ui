@@ -23,6 +23,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
   <template class="DownloadManager" parent="GtkScrolledWindow">
     <property name="child">
       <object class="GtkViewport">
+        <property name="scroll-to-focus">true</property>
         <child>
           <object class="AdwClamp">
             <property name="maximum_size">800</property>

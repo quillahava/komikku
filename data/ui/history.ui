@@ -44,6 +44,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
         <property name="focusable">1</property>
         <property name="child">
           <object class="GtkViewport">
+            <property name="scroll-to-focus">true</property>
             <child>
               <object class="AdwClamp">
                 <property name="maximum-size">800</property>
