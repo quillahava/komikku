@@ -49,8 +49,6 @@ class Reader:
         self.gesture_click.set_button(1)
         self.overlay.add_controller(self.gesture_click)
 
-        self.controller_motion = Gtk.EventControllerMotion.new()
-
         # Controls
         self.controls = Controls(self)
 

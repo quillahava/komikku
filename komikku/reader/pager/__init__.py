@@ -29,7 +29,10 @@ class BasePager:
         self.reader = reader
         self.window = reader.window
 
-        self.reader.controller_motion.connect('motion', self.on_pointer_motion)
+        # Controller to track pointer motion: used to hide pointer during keyboard navigation
+        self.controller_motion = Gtk.EventControllerMotion.new()
+        self.controller_motion.connect('motion', self.on_pointer_motion)
+        self.add_controller(self.controller_motion)
 
     @property
     @abstractmethod
@@ -185,6 +188,7 @@ class BasePager:
 
     def on_pointer_motion(self, _controller, x, y):
         if int(x) == x and int(y) == y:
+            # Hack? Ignore events triggered by Gtk.Carousel during page changes
             return Gdk.EVENT_PROPAGATE
 
         if self.get_cursor():
