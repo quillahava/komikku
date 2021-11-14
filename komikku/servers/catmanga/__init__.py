@@ -15,11 +15,17 @@ from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 
+#
+# BEWARE: CatManga server is disabled
+# Dead since 12/11/2021
+#
+
 
 class Catmanga(Server):
     id = 'catmanga'
     name = 'CatManga'
     lang = 'en'
+    status = 'disabled'
 
     base_url = 'https://catmanga.org'
     search_url = base_url + '/search'
