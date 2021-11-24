@@ -44,7 +44,8 @@ class Card:
         self.stack = self.window.card_stack
         self.info_box = InfoBox(self)
         self.categories_list = CategoriesList(self)
-        self.chapters_list = ChaptersList(self)
+        # self.chapters_list = ChaptersList(self)
+        self.chapters_list = ChaptersList2(self)
 
         self.viewswitchertitle.bind_property('title-visible', self.window.card_viewswitcherbar, 'reveal', GObject.BindingFlags.SYNC_CREATE)
         self.resume_read_button.connect('clicked', self.on_resume_read_button_clicked)
@@ -277,6 +278,362 @@ class CategoriesList:
         # Update Library if the current selected category is the activated category or the 'Uncategorized' category
         if Settings.get_default().selected_category in (-1, category_id):
             self.window.library.populate()
+
+
+class ChapterItemWrapper(GObject.Object):
+    __gsignals__ = {
+        'changed': (
+            GObject.SignalFlags.RUN_FIRST, None, (str,)
+        )
+    }
+
+    def __init__(self, chapter):
+        super().__init__()
+        self.chapter = chapter
+        self.download = None
+
+    def emit_changed(self):
+        self.emit('changed', '')
+
+
+class ChaptersListModel(Gtk.SortListModel):
+    def __init__(self, sort_func):
+        self.sorter = Gtk.CustomSorter()
+        self.sort_func = sort_func
+        self.sorter.set_sort_func(self.sort_func)
+        self.list_store = Gio.ListStore(item_type=ChapterItemWrapper)
+
+        super().__init__(model=self.list_store, sorter=self.sorter)
+
+    def clear(self):
+        self.list_store.remove_all()
+
+    def invalidate_sort(self):
+        self.sorter.set_sort_func(self.sort_func)
+
+    def populate(self, chapters):
+        self.clear()
+
+        for chapter in chapters:
+            self.list_store.append(ChapterItemWrapper(chapter))
+
+
+class ChaptersList2:
+    def __init__(self, card):
+        self.card = card
+
+        # listview and factory
+        self.factory = Gtk.SignalListItemFactory()
+        self.factory.connect('setup', self.on_factory_setup)
+        self.factory.connect('bind', self.on_factory_bind)
+
+        self.list_model = ChaptersListModel(self.sort_func)
+        self.model = Gtk.MultiSelection.new(self.list_model)
+
+        self.listview = self.card.window.card_chapters_listview
+        # self.listview.add_css_class('rich-list')
+        # self.listview.add_css_class('data-table')
+        # self.listview.set_enable_rubberband(True)
+        self.listview.set_factory(self.factory)
+        self.listview.set_model(self.model)
+        self.listview.set_show_separators(True)
+
+        # self.listview.set_single_click_activate(True)
+        # self.listview.connect('activate', self.on_activate)
+        self.model.connect('selected-item', self.on_item_selected)
+
+    @property
+    def sort_order(self):
+        return self.card.manga.sort_order or 'desc'
+
+    def on_activate(self, _listview, position):
+        chapter = self.list_model.get_item(position).chapter
+        self.card.window.reader.init(self.card.manga, chapter)
+
+    def on_item_selected(self, *args):
+        print(args)
+
+    def add_actions(self, *args):
+        # # Menu actions in selection mode
+        # download_selected_chapters_action = Gio.SimpleAction.new('card.download-selected-chapters', None)
+        # download_selected_chapters_action.connect('activate', self.download_selected_chapters)
+        # self.window.application.add_action(download_selected_chapters_action)
+        #
+        # mark_selected_chapters_as_read_action = Gio.SimpleAction.new('card.mark-selected-chapters-read', None)
+        # mark_selected_chapters_as_read_action.connect('activate', self.toggle_selected_chapters_read_status, 1)
+        # self.window.application.add_action(mark_selected_chapters_as_read_action)
+        #
+        # mark_selected_chapters_as_unread_action = Gio.SimpleAction.new('card.mark-selected-chapters-unread', None)
+        # mark_selected_chapters_as_unread_action.connect('activate', self.toggle_selected_chapters_read_status, 0)
+        # self.window.application.add_action(mark_selected_chapters_as_unread_action)
+        #
+        # reset_selected_chapters_action = Gio.SimpleAction.new('card.reset-selected-chapters', None)
+        # reset_selected_chapters_action.connect('activate', self.reset_selected_chapters)
+        # self.window.application.add_action(reset_selected_chapters_action)
+        #
+        # select_all_chapters_action = Gio.SimpleAction.new('card.select-all-chapters', None)
+        # select_all_chapters_action.connect('activate', self.select_all)
+        # self.window.application.add_action(select_all_chapters_action)
+
+        # Chapters menu actions
+        download_chapter_action = Gio.SimpleAction.new('card.download-chapter', None)
+        download_chapter_action.connect('activate', self.download_chapter)
+        self.card.window.application.add_action(download_chapter_action)
+
+        mark_chapter_as_read_action = Gio.SimpleAction.new('card.mark-chapter-read', None)
+        mark_chapter_as_read_action.connect('activate', self.toggle_chapter_read_status, 1)
+        self.card.window.application.add_action(mark_chapter_as_read_action)
+
+        mark_chapter_as_unread_action = Gio.SimpleAction.new('card.mark-chapter-unread', None)
+        mark_chapter_as_unread_action.connect('activate', self.toggle_chapter_read_status, 0)
+        self.card.window.application.add_action(mark_chapter_as_unread_action)
+
+        # reset_chapter_action = Gio.SimpleAction.new('card.reset-chapter', None)
+        # reset_chapter_action.connect('activate', self.reset_chapter)
+        # self.window.application.add_action(reset_chapter_action)
+        pass
+
+    def download_chapter(self, action, param):
+        # Add chapter in download queue
+        self.card.window.downloader.add([self.action_row.chapter, ], emit_signal=True)
+        self.card.window.downloader.start()
+
+    def populate(self):
+        self.list_model.populate(self.card.manga.chapters)
+
+    def on_sort_order_changed(self, _action, variant):
+        value = variant.get_string()
+        if value == self.card.manga.sort_order:
+            return
+
+        self.card.manga.update(dict(sort_order=value))
+        self.set_sort_order()
+
+    def on_factory_setup(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
+        list_item.set_child(ChaptersListRow2())
+
+    def on_factory_bind(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
+        list_item.get_child().populate(list_item)
+
+    def refresh(self, chapters):
+        for chapter in chapters:
+            self.update_chapter_row(chapter=chapter)
+
+    def set_sort_order(self, invalidate=True):
+        self.card.sort_order_action.set_state(GLib.Variant('s', self.sort_order))
+        if invalidate:
+            self.list_model.invalidate_sort()
+
+    def sort_func(self, item1: ChapterItemWrapper, item2: ChapterItemWrapper, *args) -> int:
+        """
+        This function gets two children and has to return:
+        - a negative integer if the firstone should come before the second one
+        - zero if they are equal
+        - a positive integer if the second one should come before the firstone
+        """
+        if self.sort_order in ('asc', 'desc'):
+            if item1.chapter.rank > item2.chapter.rank:
+                return -1 if self.sort_order == 'desc' else 1
+
+            if item1.chapter.rank < item2.chapter.rank:
+                return 1 if self.sort_order == 'desc' else -1
+
+        elif self.sort_order in ('date-asc', 'date-desc') and item1.chapter.date and item2.chapter.date:
+            if item1.chapter.date > item2.chapter.date and item1.chapter.id > item2.chapter.id:
+                return -1 if self.sort_order == 'date-desc' else 1
+
+            if item1.chapter.date < item2.chapter.date and item1.chapter.id < item2.chapter.id:
+                return 1 if self.sort_order == 'date-desc' else -1
+
+        elif self.sort_order in ('natural-asc', 'natural-desc'):
+            lst = natsort.natsorted([item1.chapter.title, item2.chapter.title], alg=natsort.ns.INT | natsort.ns.IC)
+            if lst[0] == item1.chapter.title:
+                return 1 if self.sort_order == 'natural-desc' else -1
+
+            return -1 if self.sort_order == 'natural-desc' else 1
+
+        return 0
+
+    def toggle_chapter_read_status(self, action, param, read):
+        selection = self.model.get_selection()
+        size = selection.get_size()
+        position = selection.get_nth(0)
+        chapter = self.list_model.get_item(position).chapter
+        print(chapter.title)
+
+        if chapter.pages:
+            for chapter_page in chapter.pages:
+                chapter_page['read'] = read
+
+        data = dict(
+            last_page_read_index=None,
+            pages=chapter.pages,
+            read=read,
+            recent=False,
+        )
+
+        chapter.update(data)
+
+    def update_chapter_row(self, downloader=None, download=None, chapter=None):
+        """
+        Update a specific chapter row
+        - used when download status change (via signal from Downloader)
+        - used when we come back from reader to update last page read
+        """
+        if chapter is None:
+            chapter = download.chapter
+
+        if self.card.window.page not in ('card', 'reader') or self.card.manga.id != chapter.manga_id:
+            return
+
+        position = -1
+        for item in self.list_model.list_store:
+            position += 1
+            if item.chapter.id == chapter.id:
+                item.chapter = chapter
+                item.download = download
+                break
+
+
+class ChaptersListRow2(Gtk.Box):
+    chapter = None
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6, margin_top=6, margin_end=6, margin_bottom=6, margin_start=6)
+
+        #
+        # Title, scanlators, action button
+        #
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.append(hbox)
+
+        # Vertical box for title and scanlators
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, hexpand=1)
+        hbox.append(vbox)
+
+        # Title
+        self.title_label = Gtk.Label(xalign=0)
+        self.title_label.set_valign(Gtk.Align.CENTER)
+        self.title_label.add_css_class('card-chapter-label')
+        self.title_label.set_wrap(True)
+        vbox.append(self.title_label)
+
+        # Scanlators
+        self.scanlators_label = Gtk.Label(xalign=0, visible=False)
+        self.scanlators_label.set_valign(Gtk.Align.CENTER)
+        self.scanlators_label.add_css_class('dim-label')
+        self.scanlators_label.add_css_class('card-chapter-sublabel')
+        self.scanlators_label.set_wrap(True)
+        vbox.append(self.scanlators_label)
+
+        # Menu button
+        menu_button = Gtk.MenuButton()
+        menu_button.set_icon_name('view-more-symbolic')
+        popover = Gtk.PopoverMenu(margin_start=6, margin_end=6, margin_top=6, margin_bottom=6)
+        popover.connect('show', self.show_menu)
+        menu_button.set_popover(popover)
+        hbox.append(menu_button)
+
+        #
+        # Recent badge, date, download status, page counter
+        #
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12, hexpand=1)
+
+        # Recent badge
+        self.badge_label = Gtk.Label(xalign=0, yalign=1, visible=False)
+        self.badge_label.set_valign(Gtk.Align.CENTER)
+        self.badge_label.add_css_class('card-chapter-sublabel')
+        self.badge_label.add_css_class('badge')
+        self.badge_label.set_text(_('New'))
+        hbox.append(self.badge_label)
+
+        # Date + Download status (text or progress bar)
+        self.subtitle_label = Gtk.Label(xalign=0, yalign=1, hexpand=1)
+        self.subtitle_label.set_halign(Gtk.Align.START)
+        self.subtitle_label.add_css_class('card-chapter-sublabel')
+        hbox.append(self.subtitle_label)
+
+        # Download progress
+        progressbar = Gtk.ProgressBar(hexpand=1, visible=False)
+        progressbar.set_halign(Gtk.Align.FILL)
+        progressbar.set_valign(Gtk.Align.CENTER)
+        hbox.append(progressbar)
+
+        stop_button = Gtk.Button.new_from_icon_name('media-playback-stop-symbolic')
+        stop_button.hide()
+        stop_button.set_focusable(True)
+        stop_button.set_receives_default(True)
+        # stop_button.connect('clicked', lambda button, chapter: self.window.downloader.remove(chapter), chapter)
+        hbox.append(stop_button)
+
+        # Counter: nb read / nb pages
+        self.read_progress_label = Gtk.Label(xalign=0.5, yalign=1)
+        self.read_progress_label.set_halign(Gtk.Align.CENTER)
+        self.read_progress_label.add_css_class('card-chapter-sublabel')
+        hbox.append(self.read_progress_label)
+
+        self.append(hbox)
+
+    def populate(self, list_item):
+        self.chapter = list_item.get_item().chapter
+
+        self.title_label.set_label(self.chapter.title)
+        self.title_label.remove_css_class('dim-label')
+        self.title_label.remove_css_class('card-chapter-label-started')
+        if self.chapter.read:
+            # Chapter reading ended
+            self.title_label.add_css_class('dim-label')
+        elif self.chapter.last_page_read_index is not None:
+            # Chapter reading started
+            self.title_label.add_css_class('card-chapter-label-started')
+
+        if self.chapter.scanlators:
+            self.scanlators_label.set_markup(html_escape(', '.join(self.chapter.scanlators)))
+            self.scanlators_label.show()
+        else:
+            self.scanlators_label.set_text('')
+            self.scanlators_label.hide()
+
+        if self.chapter.recent == 1:
+            self.badge_label.show()
+        else:
+            self.badge_label.hide()
+
+        # Date + Download status (text or progress bar)
+        download_status = None
+        if self.chapter.downloaded:
+            download_status = 'downloaded'
+        else:
+            if list_item.get_item().download is None:
+                list_item.get_item().download = Download.get_by_chapter_id(self.chapter.id)
+            if list_item.get_item().download:
+                download_status = list_item.get_item().download.status
+
+        text = self.chapter.date.strftime(_('%m/%d/%Y')) if self.chapter.date else ''
+        if download_status is not None and download_status != 'downloading':
+            text = f'{text} - {_(Download.STATUSES[download_status]).upper()}'
+        self.subtitle_label.set_text(text)
+
+        if download_status == 'downloading':
+            pass
+        else:
+            # Counter: nb read / nb pages
+            if not self.chapter.read and self.chapter.last_page_read_index is not None:
+                nb_pages = len(self.chapter.pages) if self.chapter.pages else '?'
+                self.read_progress_label.set_text(f'{self.chapter.last_page_read_index + 1}/{nb_pages}')
+
+    def show_menu(self, popover):
+        menu = Gio.Menu()
+        if self.chapter.pages:
+            menu.append(_('Reset'), 'app.card.reset-chapter')
+        if not self.chapter.downloaded:
+            menu.append(_('Download'), 'app.card.download-chapter')
+        if not self.chapter.read:
+            menu.append(_('Mark as Read'), 'app.card.mark-chapter-read')
+        if self.chapter.read or self.chapter.last_page_read_index is not None:
+            menu.append(_('Mark as Unread'), 'app.card.mark-chapter-unread')
+
+        popover.set_menu_model(menu)
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/card_chapters_list_row.ui')

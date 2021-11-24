@@ -1010,21 +1010,18 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                 <property name="icon_name">view-list-bullet</property>
                                 <property name="child">
                                   <object class="GtkScrolledWindow">
-                                    <property name="child">
-                                      <object class="GtkViewport">
-                                        <property name="scroll-to-focus">True</property>
+                                    <child>
+                                        <!-- <object class="AdwClamp"> -->
+                                        <object class="AdwClampScrollable">
+                                        <property name="maximum_size">800</property>
                                         <child>
-                                          <object class="AdwClamp">
-                                            <property name="maximum_size">800</property>
-                                            <child>
-                                              <object class="GtkListBox" id="card_chapters_listbox">
-                                                <property name="selection_mode">none</property>
-                                              </object>
-                                            </child>
+                                          <!-- <object class="GtkListBox" id="card_chapters_listbox">
+                                            <property name="selection_mode">none</property> -->
+                                          <object class="GtkListView" id="card_chapters_listview">
                                           </object>
                                         </child>
                                       </object>
-                                    </property>
+                                    </child>
                                   </object>
                                 </property>
                               </object>
