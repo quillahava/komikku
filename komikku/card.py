@@ -331,16 +331,13 @@ class ChaptersList2:
         self.model = Gtk.MultiSelection.new(self.list_model)
 
         self.listview = self.card.window.card_chapters_listview
-        # self.listview.add_css_class('rich-list')
-        # self.listview.add_css_class('data-table')
         # self.listview.set_enable_rubberband(True)
         self.listview.set_factory(self.factory)
         self.listview.set_model(self.model)
         self.listview.set_show_separators(True)
 
-        # self.listview.set_single_click_activate(True)
-        # self.listview.connect('activate', self.on_activate)
-        self.model.connect('selected-item', self.on_item_selected)
+        self.listview.set_single_click_activate(True)
+        self.listview.connect('activate', self.on_activate)
 
     @property
     def sort_order(self):
@@ -349,9 +346,6 @@ class ChaptersList2:
     def on_activate(self, _listview, position):
         chapter = self.list_model.get_item(position).chapter
         self.card.window.reader.init(self.card.manga, chapter)
-
-    def on_item_selected(self, *args):
-        print(args)
 
     def add_actions(self, *args):
         # # Menu actions in selection mode
@@ -391,7 +385,6 @@ class ChaptersList2:
         # reset_chapter_action = Gio.SimpleAction.new('card.reset-chapter', None)
         # reset_chapter_action.connect('activate', self.reset_chapter)
         # self.window.application.add_action(reset_chapter_action)
-        pass
 
     def download_chapter(self, action, param):
         # Add chapter in download queue
@@ -456,10 +449,9 @@ class ChaptersList2:
 
     def toggle_chapter_read_status(self, action, param, read):
         selection = self.model.get_selection()
-        size = selection.get_size()
+        # size = selection.get_size()
         position = selection.get_nth(0)
         chapter = self.list_model.get_item(position).chapter
-        print(chapter.title)
 
         if chapter.pages:
             for chapter_page in chapter.pages:
