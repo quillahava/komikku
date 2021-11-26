@@ -226,6 +226,8 @@ class MangaStream(Server):
             else:
                 for img_element in reader_element.find_all('img'):
                     image = img_element.get('src')
+                    if image.startswith('data:image'):
+                        continue
                     if image.split('/')[-1] in self.ignored_pages:
                         continue
 
