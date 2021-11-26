@@ -6,11 +6,17 @@
 
 from komikku.servers.multi.my_manga_reader_cms import MyMangaReaderCMS
 
+#
+# BEWARE: Lelscan-VF is disabled
+# Site not redirect to frscan.cc: 27/11/2021
+#
+
 
 class Lelscanvf(MyMangaReaderCMS):
     id = 'lelscanvf'
     name = 'Lelscan-VF'
     lang = 'fr'
+    status = 'disabled'
 
     base_url = 'https://lelscan-vf.co'
     search_url = base_url + '/search'

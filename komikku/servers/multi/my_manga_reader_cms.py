@@ -9,7 +9,7 @@
 # Supported servers:
 # FR Scan [FR]
 # Jpmangas [FR]
-# Lelscan-VF [FR]
+# Lelscan-VF [FR] (disabled)
 # Leomanga [ES] (v1)
 # Mangadoor [ES]
 # Mangasin [ES]
