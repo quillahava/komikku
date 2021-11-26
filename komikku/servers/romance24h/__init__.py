@@ -13,3 +13,4 @@ class Romance24h(Madara):
     lang = 'en'
 
     base_url = 'https://24hromance.com'
+    chapters_url = base_url + '/manga/{0}/ajax/chapters/'
