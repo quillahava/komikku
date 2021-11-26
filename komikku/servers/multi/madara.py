@@ -238,24 +238,33 @@ class Madara(Server):
             'action': 'madara_load_more',
             'page': 0,
             'template': 'madara-core/content/content-archive' if populars else 'madara-core/content/content-search',
-            'vars[paged]': 1,
             'vars[orderby]': 'meta_value_num' if populars else '',
+            'vars[paged]': 0,
             'vars[template]': 'archive' if populars else 'search',
-            'vars[sidebar]': 'right' if populars else 'full',
             'vars[post_type]': 'wp-manga',
             'vars[post_status]': 'publish',
-            'vars[meta_query][relation]': 'OR',
-            'vars[manga_archives_item_layout]': 'big_thumbnail',
+            'vars[manga_archives_item_layout]': 'default',
+
+            'vars[meta_query][0][orderby]': '',
+            'vars[meta_query][0][paged]': '0',
+            'vars[meta_query][0][template]': 'archive' if populars else 'search',
+            'vars[meta_query][0][meta_query][relation]': 'AND',
+            'vars[meta_query][0][post_type]': 'wp-manga',
+            'vars[meta_query][0][post_status]': 'publish',
+            'vars[meta_query][relation]': 'AND'
         }
         if populars:
             data['vars[order]'] = 'desc'
             data['vars[posts_per_page]'] = 100
             data['vars[meta_key]'] = '_wp_manga_views'
         else:
+            data['vars[meta_query][0][s]'] = term
             data['vars[s]'] = term
-            data['vars[meta_query][0][relation]'] = 'AND'
 
-        r = self.session_post(self.api_url, data=data)
+        r = self.session_post(self.api_url, data=data, headers={
+            'X-Requested-With': 'XMLHttpRequest',
+            'Referer': self.base_url
+        })
         if r.status_code != 200:
             return None
 
