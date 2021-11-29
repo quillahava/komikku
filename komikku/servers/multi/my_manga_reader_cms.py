@@ -17,7 +17,6 @@
 # Scan FR [FR]
 # Scan OP [FR]
 # ScanOnePiece [FR]
-# Submanga [ES]
 
 from bs4 import BeautifulSoup
 import re

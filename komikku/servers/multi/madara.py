@@ -18,6 +18,7 @@
 # Colored Council [EN]
 # Reaperscans [EN]
 # Reaperscans [PT]
+# Submanga [ES]
 # Wakascan [FR]
 
 from bs4 import BeautifulSoup
