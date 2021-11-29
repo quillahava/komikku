@@ -33,7 +33,7 @@ def convert_date_string(date, format=None):
     else:
         d = dateparser.parse(date)
 
-    return d.date()
+    return d.date() if d else None
 
 
 def convert_image(image, format='jpeg', ret_type='image'):
