@@ -11,19 +11,21 @@
 # Asura Scans [TR]
 # Phoenix Fansub [ES]
 # Rawkuma [JA]
-# Raw Manga [JA] (v1)
+# Raw Manga [JA]
 # Reaper Scans [FR]
 
 from bs4 import BeautifulSoup
 from gettext import gettext as _
 import json
 import os
+import re
 import requests
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
+from komikku.servers.utils import get_soup_element_inner_text
 
 
 class MangaStream(Server):
@@ -33,11 +35,13 @@ class MangaStream(Server):
     chapter_url: str
     page_url: str
 
-    info_selector = '.bixbox.animefull'
-    details_selector = '.wd-full, .fmed'
-    genres_selector = None
-    status_selector = '.imptdt:first-child i'
-    synopsis_selector = 'div[itemprop="description"]'
+    name_selector: str
+    thumbnail_selector: str
+    authors_selector: str
+    genres_selector: str
+    scanlators_selector: str
+    status_selector: str
+    synopsis_selector: str
 
     filters = [
         {
@@ -63,7 +67,7 @@ class MangaStream(Server):
     def __init__(self):
         if self.session is None:
             self.session = requests.Session()
-            self.session.headers.update({'user-agent': USER_AGENT})
+            self.session.headers.update({'User-Agent': USER_AGENT})
 
     def get_manga_data(self, initial_data):
         """
@@ -94,64 +98,36 @@ class MangaStream(Server):
             server_id=self.id,
         ))
 
-        info_element = soup.select_one(self.info_selector)
-
-        # Name & cover
-        thumb_element = info_element.find('div', class_='thumb')
-        data['name'] = thumb_element.img.get('alt').strip()
-        data['cover'] = thumb_element.img.get('src')
-
-        # Details
         def compute_status(label):
-            label = label.strip().lower()
+            if not label:
+                return None
 
-            if label in ('ongoing', 'devam ediyor'):
+            label = label.strip()
+
+            if any(re.findall(r'ongoing|devam ediyor', label, re.IGNORECASE)):
                 return 'ongoing'
-            if label in ('completed', 'tamamlandı'):
+            elif any(re.findall(r'completed|tamamlandı', label, re.IGNORECASE)):
                 return 'complete'
-            if label in ('hiatus', 'bırakıldı'):
+            elif any(re.findall(r'hiatus|bırakıldı', label, re.IGNORECASE)):
                 return 'hiatus'
-            elif label in ('dropped', 'durduruldu'):
+            elif any(re.findall(r'dropped|durduruldu', label, re.IGNORECASE)):
                 return 'suspended'
 
             return None
 
-        for element in info_element.select(self.details_selector):
-            if element.b:
-                label = element.b.text.strip()
-                element.b.extract()
-            elif element.name == 'tr':
-                label = element.find_all('td')[0].text.strip()
-                element = element.find_all('td')[1]
-            else:
-                continue
+        # Name & cover
+        data['name'] = soup.select_one(self.name_selector).text.strip()
+        data['cover'] = soup.select_one(self.thumbnail_selector).get('data-src')
+        if not data['cover']:
+            data['cover'] = soup.select_one(self.thumbnail_selector).get('src')
 
-            if label.startswith(('Author', 'Artist', 'Yazar')):
-                for author in element.text.strip().split(','):
-                    author = author.strip()
-                    if author != '-' and author not in data['authors']:
-                        data['authors'].append(author)
-
-            elif label.startswith(('Genres', 'Serinin Bulunduğu Kategoriler')):
-                for a_element in element.find_all('a'):
-                    data['genres'].append(a_element.text.strip())
-
-            elif label.startswith(('Status',)):
-                data['status'] = compute_status(element.text)
-
-        if self.status_selector:
-            status_element = info_element.select_one(self.status_selector)
-            if status_element:
-                data['status'] = compute_status(status_element.text)
-
-        if self.genres_selector:
-            genres_element = info_element.select_one(self.genres_selector)
-            for a_element in genres_element:
-                data['genres'].append(a_element.text.strip())
-
-        synopsis_element = info_element.select_one(self.synopsis_selector)
-        if synopsis_element:
-            data['synopsis'] = synopsis_element.text.strip()
+        # Details
+        data['authors'] = list({get_soup_element_inner_text(element) for element in soup.select(self.authors_selector)})
+        data['genres'] = [element.text.strip() for element in soup.select(self.genres_selector)]
+        if self.scanlators_selector:
+            data['scanlators'] = [get_soup_element_inner_text(soup.select_one(self.scanlators_selector)), ]
+        data['status'] = compute_status(get_soup_element_inner_text(soup.select_one(self.status_selector)))
+        data['synopsis'] = soup.select_one(self.synopsis_selector).text.strip()
 
         # Chapters
         if container_element := soup.find('div', id='chapterlist'):
@@ -171,7 +147,6 @@ class MangaStream(Server):
                     date=date,
                 ))
         else:
-            # Specific to MangaStream_v1
             for item in reversed(soup.select('.bixbox li')):
                 a_element = item.find('a')
 
@@ -189,7 +164,11 @@ class MangaStream(Server):
 
         Currently, only pages are expected.
         """
-        r = self.session_get(self.chapter_url.format(manga_slug, chapter_slug))
+        r = self.session_get(
+            self.chapter_url.format(manga_slug, chapter_slug),
+            headers={
+                'Referer': self.manga_url.format(manga_slug)
+            })
         if r.status_code != 200:
             return None
 
@@ -224,10 +203,10 @@ class MangaStream(Server):
                                     image=image,
                                 ))
             else:
-                for img_element in reader_element.find_all('img'):
-                    image = img_element.get('src')
-                    if image.startswith('data:image'):
-                        continue
+                for p_element in reader_element.find_all('p'):
+                    image = p_element.img.get('data-src')
+                    if not image:
+                        image = p_element.img.get('src')
                     if image.split('/')[-1] in self.ignored_pages:
                         continue
 
@@ -237,7 +216,6 @@ class MangaStream(Server):
                     ))
 
         elif reader_element := soup.find('div', class_='reader'):
-            # Specific to MangaStream_v1
             for option_element in soup.find_all('select', {'name': 'page'})[0].find_all('option'):
                 data['pages'].append(dict(
                     slug=option_element.get('value'),
@@ -315,12 +293,20 @@ class MangaStream(Server):
 
             for element in soup.find_all('div', class_='bsx'):
                 a_element = element.a
+                slug = a_element.get('href').split('/')[-2]
+
+                # Hack for asurascans (EN)
+                # Some slugs contain additional digits (ex. 11) at start
+                # Delete them if they are not present in manga title
+                title = a_element.get('title').lower()
+                if slug[0] != title[0]:
+                    slug = '-'.join(slug.split('-')[1:])
+
                 results.append(dict(
-                    slug=a_element.get('href').split('/')[-2],
+                    slug=slug,
                     name=a_element.get('title').strip(),
                 ))
         elif mime_type == 'text/plain':
-            # Specific to MangaStream_v1
             for item in r.json():
                 results.append(dict(
                     slug=item['slug'],
@@ -328,11 +314,3 @@ class MangaStream(Server):
                 ))
 
         return results
-
-
-class MangaStream_v1(MangaStream):
-    details_selector = 'span'
-    status_selector = 'span:contains("Status:")'
-    synopsis_selector = 'div[itemprop="articleBody"]'
-
-    search_query_param = 'q'

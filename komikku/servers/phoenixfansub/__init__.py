@@ -17,7 +17,10 @@ class Phoenixfansub(MangaStream):
     manga_url = base_url + '/manga/{0}/'
     chapter_url = base_url + '/{0}-capitulo-{1}/'
 
-    info_selector = '.seriestucon'
-    details_selector = '.infotable tr'
-    genres_selector = '.seriestugenre'
-    status_selector = None
+    name_selector = '.entry-title'
+    thumbnail_selector = '.thumb img'
+    authors_selector = '.tsinfo.bixbox .imptdt:contains("Artist") i, .tsinfo.bixbox .imptdt:contains("Author") i'
+    genres_selector = '.info-right .mgen a'
+    scanlators_selector = '.tsinfo.bixbox .imptdt:contains("Serialization") i'
+    status_selector = '.tsinfo.bixbox .imptdt:contains("Status") i'
+    synopsis_selector = '[itemprop="description"] p'
