@@ -12,7 +12,7 @@
 # Phoenix Fansub [ES]
 # Rawkuma [JA]
 # Raw Manga [JA]
-# Reaper Scans [FR]
+# Reaper Scans [FR] (disabled)
 
 from bs4 import BeautifulSoup
 from gettext import gettext as _
@@ -106,11 +106,11 @@ class MangaStream(Server):
 
             if any(re.findall(r'ongoing|devam ediyor', label, re.IGNORECASE)):
                 return 'ongoing'
-            elif any(re.findall(r'completed|tamamlandı', label, re.IGNORECASE)):
+            if any(re.findall(r'completed|tamamlandı', label, re.IGNORECASE)):
                 return 'complete'
-            elif any(re.findall(r'hiatus|bırakıldı', label, re.IGNORECASE)):
+            if any(re.findall(r'hiatus|bırakıldı', label, re.IGNORECASE)):
                 return 'hiatus'
-            elif any(re.findall(r'dropped|durduruldu', label, re.IGNORECASE)):
+            if any(re.findall(r'dropped|durduruldu', label, re.IGNORECASE)):
                 return 'suspended'
 
             return None
