@@ -27,7 +27,7 @@ class Readmanga(Server):
     def __init__(self):
         if self.session is None:
             self.session = requests.Session()
-            self.session.headers.update({'user-agent': 'readmangafun'})
+            self.session.headers.update({'User-Agent': 'arora'})
 
     def get_manga_data(self, initial_data):
         """
