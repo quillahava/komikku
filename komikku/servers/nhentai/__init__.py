@@ -112,7 +112,7 @@ class Nhentai(Server):
             if not script or not script.strip().startswith('window._gallery'):
                 continue
 
-            info = json.loads(script.strip().split('\n')[0][30:-3].replace('\\u0022', '"'))
+            info = json.loads(script.strip().split('\n')[0][30:-3].replace('\\u0022', '"').replace('\\u005C','\\'))
             if not info.get('images') or not info['images'].get('pages'):
                 break
 
