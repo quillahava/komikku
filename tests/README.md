@@ -17,15 +17,17 @@
     ```bash
     pip install --upgrade pip setuptools wheel
     pip install PyGObject
-    pip install lxml
+    pip install natsort
+    pip install pillow
     pip install beautifulsoup4
+    pip install lxml
+    pip install cloudscraper
     pip install dateparser
     pip install python-magic
-    pip install pillow
-    pip install cloudscraper
-    pip install pure-protobuf
-    pip install unidecode
     pip install keyring
+    pip install unidecode
+    pip install pure-protobuf
+
     pip install pytest
     pip install pytest-steps
     ```
