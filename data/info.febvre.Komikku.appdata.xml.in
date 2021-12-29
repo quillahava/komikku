@@ -84,6 +84,24 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.36.0" date="2021-12-21">
+            <description>
+                <ul>
+                    <li>[Card] Add keyboard navigation outside of selection mode</li>
+                    <li>[Servers] CatManga: Disable</li>
+                    <li>[Servers] ReaperScansFR: Disable</li>
+                    <li>[Servers] 24hRomance: Update</li>
+                    <li>[Servers] Asura Scans [EN/TR]: Update</li>
+                    <li>[Servers] Colored Manga (Colored Council): Update</li>
+                    <li>[Servers] Lelscan-VF: Disable</li>
+                    <li>[Servers] Phoenix Fansub [ES]: Update</li>
+                    <li>[Servers] Raw Manga [JA]: Update</li>
+                    <li>[Servers] Rawkuma [JA]: Update</li>
+                    <li>[Servers] Submanga: Update</li>
+                    <li>[L10n] Update French and Spanish translations</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.35.2" date="2021-10-29">
             <description>
                 <ul>
