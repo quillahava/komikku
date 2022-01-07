@@ -16,12 +16,13 @@ from komikku.utils import KeyringHelper
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/preferences.ui')
-class Preferences(Adw.Leaflet):
+class Preferences(Adw.Bin):
     __gtype_name__ = 'Preferences'
 
     window = NotImplemented
     settings = NotImplemented
 
+    leaflet = Gtk.Template.Child('leaflet')
     pages_stack = Gtk.Template.Child('pages_stack')
     subpages_stack = Gtk.Template.Child('subpages_stack')
 
@@ -61,8 +62,8 @@ class Preferences(Adw.Leaflet):
         self.connect('notify::visible-child', self.on_page_changed)
 
     def navigate_back(self, source):
-        if self.get_visible_child_name() == 'subpages':
-            self.navigate(Adw.NavigationDirection.BACK)
+        if self.leaflet.get_visible_child_name() == 'subpages':
+            self.leaflet.navigate(Adw.NavigationDirection.BACK)
         else:
             self.window.library.show()
 
@@ -289,7 +290,7 @@ class PreferencesServersLanguagesSubpage:
     def present(self, _widget):
         self.parent.subtitle_label.set_text(_('Servers Languages'))
         self.parent.subpages_stack.set_visible_child_name('servers_languages')
-        self.parent.set_visible_child_name('subpages')
+        self.parent.leaflet.set_visible_child_name('subpages')
 
 
 class PreferencesServersSettingsSubpage:
@@ -454,7 +455,7 @@ class PreferencesServersSettingsSubpage:
     def present(self, _widget):
         self.parent.subtitle_label.set_text(_('Servers Settings'))
         self.parent.subpages_stack.set_visible_child_name('servers_settings')
-        self.parent.set_visible_child_name('subpages')
+        self.parent.leaflet.set_visible_child_name('subpages')
 
     def save_credential(self, button, server_main_id, server_class, username_entry, password_entry, address_entry, plaintext_checkbutton):
         username = username_entry.get_text()

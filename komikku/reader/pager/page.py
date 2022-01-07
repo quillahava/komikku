@@ -43,6 +43,7 @@ class Page(Gtk.ScrolledWindow):
 
         self.overlay = Gtk.Overlay()
         self.props.can_target = True
+        self.overlay.props.can_target = True
         self.props.hexpand = True
         self.props.vexpand = True
         self.set_child(self.overlay)
@@ -55,6 +56,8 @@ class Page(Gtk.ScrolledWindow):
         # Activity indicator
         self.activity_indicator = ActivityIndicator()
         self.overlay.add_overlay(self.activity_indicator)
+
+        # self.connect('edge-overshot', self.on_edge_overshotted)
 
     @GObject.Property(type=str)
     def status(self):
@@ -83,6 +86,18 @@ class Page(Gtk.ScrolledWindow):
     def on_button_retry_clicked(self, button):
         self.overlay.remove_overlay(button)
         self.render(retry=True)
+
+    def on_edge_overshotted(self, _page, position):
+        self.props.can_target = False
+        print('Edge overshot: CAN TARGET', self.props.can_target)
+
+    def setup(self):
+        # print(paintable.get_intrinsic_width(), self.reader.size.width)
+        if self.image.get_paintable().get_intrinsic_width() > self.reader.size.width or self.image.get_paintable().get_intrinsic_height() > self.reader.size.height:
+            self.props.can_target = True
+        else:
+            self.props.can_target = False
+        print('CAN TARGET', self.props.can_target)
 
     def render(self, retry=False):
         def complete(error_code, error_message):
@@ -231,6 +246,8 @@ class Page(Gtk.ScrolledWindow):
         if self.paintable is None:
             self.paintable = paintable
             self.image.set_paintable(paintable)
+
+        self.setup()
 
     def show_retry_button(self):
         btn = Gtk.Button()
