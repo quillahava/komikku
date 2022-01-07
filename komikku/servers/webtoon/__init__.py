@@ -180,8 +180,9 @@ class Webtoon(Server):
         data = dict(
             pages=[],
         )
-        for img in imgs:
+        for index, img in enumerate(imgs):
             data['pages'].append(dict(
+                index=index + 1,
                 slug=None,  # slug can't be used to forge image URL
                 image=img.get('data-url').strip(),
             ))
@@ -219,7 +220,7 @@ class Webtoon(Server):
             url_split = urlsplit(li_element.a.get('href'))
 
             data.append(dict(
-                slug=url_split.query,
+                slug=url_split.path.split('/')[-2],
                 title=li_element.find('p', class_='sub_title').find('span', class_='ellipsis').text.strip(),
                 date=convert_date_string(date_element.text.strip(), format='%b %d, %Y'),
                 url='{0}?{1}'.format(url_split.path, url_split.query),
@@ -242,7 +243,7 @@ class Webtoon(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=urlsplit(page['image']).path.split('/')[-1],
+            name='{0:03d}.{1}'.format(page['index'], mime_type.split('/')[-1]),
         )
 
     def get_manga_url(self, slug, url):
