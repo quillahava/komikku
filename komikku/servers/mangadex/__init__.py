@@ -48,7 +48,7 @@ class Mangadex(Server):
     api_cover_url = api_base_url + '/cover/{0}'
     api_scanlator_base = api_base_url + '/group'
     api_server_url = api_base_url + '/at-home/server/{0}'
-    api_page_url = '{0}/data/{1}'
+    api_page_url = '{0}/data/{1}/{2}'
 
     manga_url = base_url + '/title/{0}'
     cover_url = 'https://uploads.mangadex.org/covers/{0}/{1}'
@@ -128,12 +128,12 @@ class Mangadex(Server):
         return None
 
     @lru_cache(maxsize=1)
-    def __get_server_url(self, chapter_slug):
+    def __get_chapter_json(self, chapter_slug):
         r = self.session_get(self.api_server_url.format(chapter_slug))
         if r.status_code != 200:
             return None
 
-        return r.json()['baseUrl']
+        return r.json()
 
     def get_manga_data(self, initial_data):
         """
@@ -225,7 +225,7 @@ class Mangadex(Server):
         data = dict(
             slug=chapter_slug,
             title=title,
-            pages=[dict(slug=attributes['hash'] + '/' + page, image=None) for page in attributes['data']],
+            pages=[dict(index=page, image=None) for page in range(0, attributes['pages'])],
             date=convert_date_string(attributes['publishAt'].split('T')[0], format='%Y-%m-%d'),
             scanlators=scanlators,
         )
@@ -236,14 +236,22 @@ class Mangadex(Server):
         """
         Returns chapter page scan (image) content
         """
-        server_url = self.__get_server_url(chapter_slug)
-        if server_url is None:
-            self.__get_server_url.cache_clear()
+        chapter_json = self.__get_chapter_json(chapter_slug)
+        if chapter_json is None:
+            self.__get_chapter_json.cache_clear()
             return None
 
-        r = self.session_get(self.api_page_url.format(server_url, page['slug']))
+        server_url = chapter_json['baseUrl']
+        chapter_hash = chapter_json['chapter']['hash']
+        slug = None
+        if 'data' in chapter_json['chapter']:
+            slug = chapter_json['chapter']['data'][page['index']]
+        else:
+            slug = chapter_json['chapter']['dataSaver'][page['index']]
+
+        r = self.session_get(self.api_page_url.format(server_url, chapter_hash, slug))
         if r.status_code != 200:
-            self.__get_server_url.cache_clear()
+            self.__get_chapter_json.cache_clear()
             return None
 
         mime_type = get_buffer_mime_type(r.content)
@@ -253,7 +261,7 @@ class Mangadex(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=page['slug'].split('/')[1],
+            name=slug,
         )
 
     def get_manga_url(self, slug, url):
@@ -288,10 +296,6 @@ class Mangadex(Server):
 
             for chapter in results:
                 attributes = chapter['attributes']
-
-                if not attributes['hash'] and not attributes['data'] and not attributes['dataSaver'] and attributes['externalUrl']:
-                    # Skip chapters that links to an external source
-                    continue
 
                 title = f'#{attributes["chapter"]}'
                 if attributes['title']:
