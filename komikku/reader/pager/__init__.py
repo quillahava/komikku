@@ -322,7 +322,6 @@ class BasePager:
 class Pager(Adw.Bin, BasePager):
     """Classic page by page pager (LTR, RTL, vertical)"""
 
-    can_scroll = True
     current_chapter_id = None
     init_flag = False
 
@@ -332,19 +331,14 @@ class Pager(Adw.Bin, BasePager):
         BasePager.__init__(self, reader)
 
         self.carousel = Adw.Carousel()
-        print('Long swipes', self.carousel.get_allow_long_swipes())
+        self.carousel.set_scroll_params(Adw.SpringParams.new(
+            0.1,
+            0.05,
+            1
+        ))
 
-        # self.carousel.set_allow_mouse_drag(False)
-        # Disable scroll wheel events handling to allow scrolling within pages
-        # In return, we must manage page changes (mouse, 2-fingers swiping with touchpad)
-        self.carousel.set_allow_scroll_wheel(True)
         self.carousel.set_allow_long_swipes(False)
         self.set_child(self.carousel)
-
-        # self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.BOTH_AXES)
-        # self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
-        # self.controller_scroll.connect('scroll', self.on_mouse_scroll)
-        # self.add_controller(self.controller_scroll)
 
         self.carousel.connect('notify::orientation', self.resize_pages)
         self.carousel.connect('page-changed', self.on_page_changed)
@@ -355,56 +349,29 @@ class Pager(Adw.Bin, BasePager):
 
     @property
     def pages(self):
-        child = self.carousel.get_first_child()
-        while child:
-            if child := child.get_next_sibling():
-                yield child
-
-    def add_page_old(self, position):
-        if position == 'start':
-            self.pages[2].clean()
-            self.pages[2].destroy()  # will remove it from carousel
-
-            page = self.pages[0]
-            direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
-            new_page = Page(self, page.chapter, page.index + direction)
-            self.prepend(new_page)
-        else:
-            self.pages[0].clean()
-            self.pages[0].destroy()  # will remove it from carousel
-
-            page = self.pages[-1]
-            direction = -1 if self.reader.reading_mode == 'right-to-left' else 1
-            new_page = Page(self, page.chapter, page.index + direction)
-            self.insert(new_page, 2)
-
-        new_page.connect('rendered', self.on_page_rendered)
-        new_page.render()
+        for index in range(self.carousel.get_n_pages()):
+            yield self.carousel.get_nth_page(index)
 
     def add_page(self, position):
         if position == 'start':
-            # self.carousel.get_nth_page(0).clean()
-            # self.carousel.remove(self.carousel.get_nth_page(0))
+            self.carousel.get_nth_page(2).clean()
+            self.carousel.remove(self.carousel.get_nth_page(2))
 
             page = self.carousel.get_nth_page(0)
             direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
             new_page = Page(self, page.chapter, page.index + direction)
             self.carousel.prepend(new_page)
         else:
-            # self.carousel.get_nth_page(0).clean()
-            # self.carousel.remove(self.carousel.get_nth_page(0))
+            self.carousel.get_nth_page(0).clean()
+            self.carousel.remove(self.carousel.get_nth_page(0))
 
             page = self.carousel.get_nth_page(self.carousel.get_n_pages() - 1)
             direction = -1 if self.reader.reading_mode == 'right-to-left' else 1
             new_page = Page(self, page.chapter, page.index + direction)
-            # self.carousel.append(new_page)
-            self.carousel.insert(new_page, 2)
+            self.carousel.append(new_page)
 
-            # self.carousel.get_nth_page(0).clean()
-            # GLib.idle_add(self.carousel.remove, self.carousel.get_nth_page(0))
-
-        # new_page.connect('rendered', self.on_page_rendered)
-        # new_page.connect('edge-overshot', self.on_page_edge_overshotted)
+        new_page.connect('rendered', self.on_page_rendered)
+        new_page.connect('edge-overshot', self.on_page_edge_overshotted)
         new_page.render()
 
     def clear(self):
@@ -529,12 +496,6 @@ class Pager(Adw.Bin, BasePager):
         return Gdk.EVENT_PROPAGATE
 
     def on_page_changed(self, _carousel, index):
-        center_page = self.carousel.get_nth_page(1)
-        center_page.setup()
-        if center_page.cropped:
-            # Previous page's image has been cropped to allow 2-fingers swipe gesture, it must be restored
-            center_page.set_image()
-
         if index == 1 and not self.init_flag:
             # Partial swipe gesture
             return
@@ -557,38 +518,10 @@ class Pager(Adw.Bin, BasePager):
         self.disable_keyboard_and_mouse_click_navigation()
         self.carousel.set_interactive(False)
 
-        GLib.idle_add(self.update, page, index)
+        self.update(page, index)
         GLib.idle_add(self.save_progress, page)
 
-    def on_mouse_scroll(self, _controller, dx, dy):
-        if not self.can_scroll:
-            return Gdk.EVENT_PROPAGATE
-
-        page = self.current_page
-
-        def scroll_timeout_cb():
-            self.can_scroll = True
-
-        if self.reader.reading_mode in ('right-to-left', 'left-to-right'):
-            if (dy and page.get_height() == page.image.get_height()) or (dx and page.get_width() == page.image.get_width()):
-                self.can_scroll = False
-                if dx:
-                    self.scroll_to_direction('left' if dx < 0 else 'right')
-                else:
-                    self.scroll_to_direction('right' if dy > 0 else 'left')
-                GLib.timeout_add(500, scroll_timeout_cb)
-
-        elif self.reader.reading_mode == 'vertical':
-            if dy and not dx and page.get_height() == page.image.get_height():
-                self.can_scroll = False
-                self.scroll_to_direction('left' if dy < 0 else 'right')
-                GLib.timeout_add(500, scroll_timeout_cb)
-
-        return Gdk.EVENT_PROPAGATE
-
     def on_page_edge_overshotted(self, _page, position):
-        _page.props.can_target = False
-        return
         if self.reader.reading_mode in ('right-to-left', 'left-to-right'):
             if position in (Gtk.PositionType.TOP, Gtk.PositionType.BOTTOM):
                 return
