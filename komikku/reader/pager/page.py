@@ -40,6 +40,8 @@ class Page(Gtk.ScrolledWindow):
 
         policy_type = Gtk.PolicyType.AUTOMATIC if self.reader.reading_mode != 'webtoon' else Gtk.PolicyType.NEVER
         self.set_policy(policy_type, policy_type)
+        self.set_kinetic_scrolling(True)
+        self.set_overlay_scrolling(True)
 
         self.overlay = Gtk.Overlay()
         self.props.hexpand = True
@@ -48,6 +50,7 @@ class Page(Gtk.ScrolledWindow):
 
         self.image = Gtk.Picture()
         self.image.set_can_shrink(False)
+        self.image.set_keep_aspect_ratio(True)
         self.paintable = None
         self.overlay.set_child(self.image)
 

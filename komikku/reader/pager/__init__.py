@@ -10,6 +10,7 @@ import threading
 from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository.GdkPixbuf import InterpType
 
@@ -51,8 +52,6 @@ class BasePager:
 
     @abstractmethod
     def clear(self):
-        self.disable_keyboard_and_mouse_click_navigation()
-
         page = self.get_first_child()
         while page:
             next_page = page.get_next_sibling()
@@ -65,26 +64,6 @@ class BasePager:
             if page.status == 'rendered' and page.error is None:
                 page.set_image()
 
-    def disable_keyboard_and_mouse_click_navigation(self):
-        # Keyboard
-        if self.key_press_handler_id:
-            self.window.controller_key.disconnect(self.key_press_handler_id)
-            self.key_press_handler_id = None
-
-        # Mouse click
-        if self.btn_press_handler_id:
-            self.reader.gesture_click.disconnect(self.btn_press_handler_id)
-            self.btn_press_handler_id = None
-
-    def enable_keyboard_and_mouse_click_navigation(self):
-        # Keyboard
-        if self.key_press_handler_id is None:
-            self.key_press_handler_id = self.window.controller_key.connect('key-pressed', self.on_key_pressed)
-
-        # # Mouse click
-        if self.btn_press_handler_id is None:
-            self.btn_press_handler_id = self.reader.gesture_click.connect('released', self.on_btn_press)
-
     @abstractmethod
     def goto_page(self, page_index):
         raise NotImplementedError()
@@ -96,7 +75,248 @@ class BasePager:
     def init(self):
         raise NotImplementedError()
 
+    def on_pointer_motion(self, _controller, x, y):
+        if int(x) == x and int(y) == y:
+            # Hack? Ignore events triggered by Gtk.Carousel during page changes
+            return Gdk.EVENT_PROPAGATE
+
+        if self.get_cursor():
+            # Cursor is hidden during keyboard navigation
+            # Make cursor visible again when mouse is moved
+            self.set_cursor(None)
+
+        return Gdk.EVENT_PROPAGATE
+
+    def on_page_rendered(self, page, retry):
+        if not retry:
+            return
+
+        GLib.idle_add(self.update, page, 1)
+        GLib.idle_add(self.save_progress, page)
+
+    def rescale_pages(self):
+        self.zoom['active'] = False
+
+        for page in self.pages:
+            page.rescale()
+
+    def resize_pages(self, _pager=None, _orientation=None):
+        self.zoom['active'] = False
+
+        for page in self.pages:
+            page.resize()
+
+    def save_progress(self, page):
+        """Save reading progress"""
+
+        if page not in self.pages:
+            return GLib.SOURCE_REMOVE
+
+        # Loop as long as the page rendering is not ended
+        if page.status == 'rendering':
+            return GLib.SOURCE_CONTINUE
+
+        if page.status != 'rendered' or page.error is not None:
+            return GLib.SOURCE_REMOVE
+
+        chapter = page.chapter
+
+        # Update manga last read time
+        self.reader.manga.update(dict(last_read=datetime.datetime.utcnow()))
+
+        # Mark page as read
+        chapter.pages[page.index]['read'] = True
+
+        # Check if chapter has been fully read
+        chapter_is_read = True
+        for chapter_page in reversed(chapter.pages):
+            if not chapter_page.get('read'):
+                chapter_is_read = False
+                break
+
+        # Update chapter
+        chapter.update(dict(
+            pages=chapter.pages,
+            last_page_read_index=page.index,
+            last_read=datetime.datetime.utcnow(),
+            read=chapter_is_read,
+            recent=0,
+        ))
+
+        self.sync_progress_with_server(page, chapter_is_read)
+
+        return GLib.SOURCE_REMOVE
+
+    @abstractmethod
+    def scroll_to_direction(self, direction):
+        raise NotImplementedError()
+
+    def sync_progress_with_server(self, page, chapter_is_read):
+        # Sync reading progress with server if function is supported
+        chapter = page.chapter
+
+        def run():
+            try:
+                res = chapter.manga.server.update_chapter_read_progress(
+                    dict(
+                        page=page.index + 1,
+                        completed=chapter_is_read,
+                    ),
+                    self.reader.manga.slug, self.reader.manga.name, chapter.slug, chapter.url
+                )
+                if res != NotImplemented and not res:
+                    # Failed to save progress
+                    on_error('server')
+            except Exception as e:
+                on_error('connection', log_error_traceback(e))
+
+        def on_error(_kind, message=None):
+            if message is not None:
+                self.window.show_notification(_(f'Failed to sync read progress with server:\n{message}'), 2)
+            else:
+                self.window.show_notification(_('Failed to sync read progress with server'), 2)
+
+        thread = threading.Thread(target=run)
+        thread.daemon = True
+        thread.start()
+
+
+class Pager(Adw.Bin, BasePager):
+    """Classic page by page pager (LTR, RTL, vertical)"""
+
+    _interactive = True
+    current_chapter_id = None
+    init_flag = False
+
+    def __init__(self, reader):
+
+        Adw.Bin.__init__(self, focusable=True)
+        BasePager.__init__(self, reader)
+
+        self.carousel = Adw.Carousel()
+        self.carousel.set_scroll_params(Adw.SpringParams.new(0.1, 0.05, 1))  # guesstimate
+
+        self.carousel.set_allow_long_swipes(False)
+        self.set_child(self.carousel)
+
+        self.carousel.connect('notify::orientation', self.resize_pages)
+        self.carousel.connect('page-changed', self.on_page_changed)
+
+        # Keyboard navigation
+        self.controller_key = Gtk.EventControllerKey.new()
+        self.add_controller(self.controller_key)
+        self.controller_key.connect('key-pressed', self.on_key_pressed)
+
+        # Navigation when a page is scrollable (vertically or horizontally)
+        # This can occur when page scaling is `adapt-to-height` or 'adapt-to-width'.
+        # In this cases, scroll events are consumed and we must manage page changes in place of Adw.Carousel.
+        self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.BOTH_AXES)
+        self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.add_controller(self.controller_scroll)
+        self.controller_scroll.connect('scroll', self.on_scroll)
+
+        # Mouse click layout navigation
+        self.reader.gesture_click.connect('released', self.on_btn_press)
+
+    @property
+    def current_page(self):
+        return self.carousel.get_nth_page(self.carousel.get_position())
+
+    @GObject.Property(type=bool, default=True)
+    def interactive(self):
+        return self._interactive
+
+    @interactive.setter
+    def interactive(self, value):
+        self._interactive = value
+        self.carousel.set_interactive(value)
+
+    @property
+    def pages(self):
+        for index in range(self.carousel.get_n_pages()):
+            yield self.carousel.get_nth_page(index)
+
+    def add_page(self, position):
+        if position == 'start':
+            self.carousel.get_nth_page(2).clean()
+            self.carousel.remove(self.carousel.get_nth_page(2))
+
+            page = self.carousel.get_nth_page(0)
+            direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
+            new_page = Page(self, page.chapter, page.index + direction)
+            self.carousel.prepend(new_page)
+        else:
+            self.carousel.get_nth_page(0).clean()
+            self.carousel.remove(self.carousel.get_nth_page(0))
+
+            page = self.carousel.get_nth_page(self.carousel.get_n_pages() - 1)
+            direction = -1 if self.reader.reading_mode == 'right-to-left' else 1
+            new_page = Page(self, page.chapter, page.index + direction)
+            self.carousel.append(new_page)
+
+        new_page.connect('rendered', self.on_page_rendered)
+        new_page.connect('edge-overshot', self.on_page_edge_overshotted)
+        new_page.render()
+
+    def clear(self):
+        for index in reversed(range(self.carousel.get_n_pages())):
+            page = self.carousel.get_nth_page(index)
+            page.clean()
+            self.carousel.remove(page)
+
+    def goto_page(self, index):
+        if self.carousel.get_nth_page(0).index == index and self.carousel.get_nth_page(0).chapter == self.current_page.chapter:
+            self.scroll_to_direction('left')
+        elif self.carousel.get_nth_page(2).index == index and self.carousel.get_nth_page(2).chapter == self.current_page.chapter:
+            self.scroll_to_direction('right')
+        else:
+            self.init(self.current_page.chapter, index)
+
+    def init(self, chapter, page_index=None):
+        self.init_flag = True
+        self.zoom['active'] = False
+
+        self.reader.update_title(chapter)
+        self.clear()
+
+        if page_index is None:
+            if chapter.read:
+                page_index = 0
+            elif chapter.last_page_read_index is not None:
+                page_index = chapter.last_page_read_index
+            else:
+                page_index = 0
+
+        direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
+
+        # Left page
+        left_page = Page(self, chapter, page_index + direction)
+        left_page.connect('rendered', self.on_page_rendered)
+        left_page.connect('edge-overshot', self.on_page_edge_overshotted)
+        self.carousel.append(left_page)
+
+        # Center page
+        center_page = Page(self, chapter, page_index)
+        center_page.connect('rendered', self.on_page_rendered)
+        center_page.connect('edge-overshot', self.on_page_edge_overshotted)
+        self.carousel.append(center_page)
+        center_page.render()
+
+        # Right page
+        right_page = Page(self, chapter, page_index - direction)
+        right_page.connect('rendered', self.on_page_rendered)
+        right_page.connect('edge-overshot', self.on_page_edge_overshotted)
+        self.carousel.append(right_page)
+
+        left_page.render()
+        right_page.render()
+
+        GLib.idle_add(self.carousel.scroll_to, center_page, False)
+
     def on_btn_press(self, _gesture, _n_press, x, y):
+        if not self.interactive:
+            return
+
         if self.btn_press_timeout_id is None:  # and event.type == Gdk.EventType.BUTTON_PRESS:
             # Schedule single click event to be able to detect double click
             self.btn_press_timeout_id = GLib.timeout_add(self.default_double_click_time + 100, self.on_single_click, x, y)
@@ -183,258 +403,8 @@ class BasePager:
 
             self.zoom['active'] = False
 
-    @abstractmethod
-    def on_key_pressed(self, _widget, event):
-        raise NotImplementedError()
-
-    def on_pointer_motion(self, _controller, x, y):
-        if int(x) == x and int(y) == y:
-            # Hack? Ignore events triggered by Gtk.Carousel during page changes
-            return Gdk.EVENT_PROPAGATE
-
-        if self.get_cursor():
-            # Cursor is hidden during keyboard navigation
-            # Make cursor visible again when mouse is moved
-            self.set_cursor(None)
-
-        return Gdk.EVENT_PROPAGATE
-
-    def on_page_rendered(self, page, retry):
-        if not retry:
-            return
-
-        GLib.idle_add(self.update, page, 1)
-        GLib.idle_add(self.save_progress, page)
-
-    def on_single_click(self, x, _y):
-        self.btn_press_timeout_id = None
-
-        if x < self.reader.size.width / 3:
-            # 1st third of the page
-            if self.zoom['active']:
-                return False
-
-            self.scroll_to_direction('left')
-        elif x > 2 * self.reader.size.width / 3:
-            # Last third of the page
-            if self.zoom['active']:
-                return False
-
-            self.scroll_to_direction('right')
-        else:
-            # Center part of the page: toggle controls
-            self.reader.toggle_controls()
-
-        return False
-
-    def rescale_pages(self):
-        self.zoom['active'] = False
-
-        for page in self.pages:
-            page.rescale()
-
-    def resize_pages(self, _pager=None, _orientation=None):
-        self.zoom['active'] = False
-
-        for page in self.pages:
-            page.resize()
-
-        # page = self.get_first_child()
-        # while page:
-        #     page.resize()
-        #     page = page.get_next_sibling()
-
-    def save_progress(self, page):
-        """Save reading progress"""
-
-        if page not in self.pages:
-            return GLib.SOURCE_REMOVE
-
-        # Loop as long as the page rendering is not ended
-        if page.status == 'rendering':
-            return GLib.SOURCE_CONTINUE
-
-        if page.status != 'rendered' or page.error is not None:
-            return GLib.SOURCE_REMOVE
-
-        chapter = page.chapter
-
-        # Update manga last read time
-        self.reader.manga.update(dict(last_read=datetime.datetime.utcnow()))
-
-        # Mark page as read
-        chapter.pages[page.index]['read'] = True
-
-        # Check if chapter has been fully read
-        chapter_is_read = True
-        for chapter_page in reversed(chapter.pages):
-            if not chapter_page.get('read'):
-                chapter_is_read = False
-                break
-
-        # Update chapter
-        chapter.update(dict(
-            pages=chapter.pages,
-            last_page_read_index=page.index,
-            last_read=datetime.datetime.utcnow(),
-            read=chapter_is_read,
-            recent=0,
-        ))
-
-        self.sync_progress_with_server(page, chapter_is_read)
-
-        return GLib.SOURCE_REMOVE
-
-    @abstractmethod
-    def scroll_to_direction(self, direction):
-        raise NotImplementedError()
-
-    def sync_progress_with_server(self, page, chapter_is_read):
-        # Sync reading progress with server if function is supported
-        chapter = page.chapter
-
-        def run():
-            try:
-                res = chapter.manga.server.update_chapter_read_progress(
-                    dict(
-                        page=page.index + 1,
-                        completed=chapter_is_read,
-                    ),
-                    self.reader.manga.slug, self.reader.manga.name, chapter.slug, chapter.url
-                )
-                if res != NotImplemented and not res:
-                    # Failed to save progress
-                    on_error('server')
-            except Exception as e:
-                on_error('connection', log_error_traceback(e))
-
-        def on_error(_kind, message=None):
-            if message is not None:
-                self.window.show_notification(_(f'Failed to sync read progress with server:\n{message}'), 2)
-            else:
-                self.window.show_notification(_('Failed to sync read progress with server'), 2)
-
-        thread = threading.Thread(target=run)
-        thread.daemon = True
-        thread.start()
-
-
-class Pager(Adw.Bin, BasePager):
-    """Classic page by page pager (LTR, RTL, vertical)"""
-
-    current_chapter_id = None
-    init_flag = False
-
-    def __init__(self, reader):
-
-        Adw.Bin.__init__(self)
-        BasePager.__init__(self, reader)
-
-        self.carousel = Adw.Carousel()
-        self.carousel.set_scroll_params(Adw.SpringParams.new(
-            0.1,
-            0.05,
-            1
-        ))
-
-        self.carousel.set_allow_long_swipes(False)
-        self.set_child(self.carousel)
-
-        self.carousel.connect('notify::orientation', self.resize_pages)
-        self.carousel.connect('page-changed', self.on_page_changed)
-
-    @property
-    def current_page(self):
-        return self.carousel.get_nth_page(self.carousel.get_position())
-
-    @property
-    def pages(self):
-        for index in range(self.carousel.get_n_pages()):
-            yield self.carousel.get_nth_page(index)
-
-    def add_page(self, position):
-        if position == 'start':
-            self.carousel.get_nth_page(2).clean()
-            self.carousel.remove(self.carousel.get_nth_page(2))
-
-            page = self.carousel.get_nth_page(0)
-            direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
-            new_page = Page(self, page.chapter, page.index + direction)
-            self.carousel.prepend(new_page)
-        else:
-            self.carousel.get_nth_page(0).clean()
-            self.carousel.remove(self.carousel.get_nth_page(0))
-
-            page = self.carousel.get_nth_page(self.carousel.get_n_pages() - 1)
-            direction = -1 if self.reader.reading_mode == 'right-to-left' else 1
-            new_page = Page(self, page.chapter, page.index + direction)
-            self.carousel.append(new_page)
-
-        new_page.connect('rendered', self.on_page_rendered)
-        new_page.connect('edge-overshot', self.on_page_edge_overshotted)
-        new_page.render()
-
-    def clear(self):
-        self.disable_keyboard_and_mouse_click_navigation()
-
-        page = self.carousel.get_first_child()
-        while page:
-            next_page = page.get_next_sibling()
-            page.clean()
-            self.carousel.remove(page)
-            page = next_page
-
-    def goto_page(self, index):
-        if self.pages[0].index == index and self.pages[0].chapter == self.current_page.chapter:
-            self.scroll_to_direction('left')
-        elif self.pages[2].index == index and self.pages[2].chapter == self.current_page.chapter:
-            self.scroll_to_direction('right')
-        else:
-            self.init(self.current_page.chapter, index)
-
-    def init(self, chapter, page_index=None):
-        self.init_flag = True
-        self.zoom['active'] = False
-
-        self.reader.update_title(chapter)
-        self.clear()
-
-        if page_index is None:
-            if chapter.read:
-                page_index = 0
-            elif chapter.last_page_read_index is not None:
-                page_index = chapter.last_page_read_index
-            else:
-                page_index = 0
-
-        direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
-
-        # Left page
-        left_page = Page(self, chapter, page_index + direction)
-        left_page.connect('rendered', self.on_page_rendered)
-        left_page.connect('edge-overshot', self.on_page_edge_overshotted)
-        self.carousel.append(left_page)
-
-        # Center page
-        center_page = Page(self, chapter, page_index)
-        center_page.connect('rendered', self.on_page_rendered)
-        center_page.connect('edge-overshot', self.on_page_edge_overshotted)
-        self.carousel.append(center_page)
-        center_page.render()
-
-        # Right page
-        right_page = Page(self, chapter, page_index - direction)
-        right_page.connect('rendered', self.on_page_rendered)
-        right_page.connect('edge-overshot', self.on_page_edge_overshotted)
-        self.carousel.append(right_page)
-
-        left_page.render()
-        right_page.render()
-
-        GLib.idle_add(self.carousel.scroll_to, center_page, True)
-
     def on_key_pressed(self, _controller, keyval, _keycode, state):
-        if self.window.page != 'reader':
+        if self.window.page != 'reader' or not self.interactive:
             return Gdk.EVENT_PROPAGATE
 
         modifiers = Gtk.accelerator_get_default_mod_mask()
@@ -497,7 +467,7 @@ class Pager(Adw.Bin, BasePager):
 
     def on_page_changed(self, _carousel, index):
         if index == 1 and not self.init_flag:
-            # Partial swipe gesture
+            # Partial/incomplete mouse drag
             return
 
         self.init_flag = False
@@ -515,13 +485,20 @@ class Pager(Adw.Bin, BasePager):
             return
 
         # Disable navigation: will be re-enabled if page is loadable
-        self.disable_keyboard_and_mouse_click_navigation()
-        self.carousel.set_interactive(False)
+        self.interactive = False
 
         self.update(page, index)
         GLib.idle_add(self.save_progress, page)
 
     def on_page_edge_overshotted(self, _page, position):
+        # When page is scrollable, scroll events are consumed, so we must manage page changes in place of Adw.Carousel.
+        # Use cases:
+        # 1. Reading mode is `RTL` or `LTR`, page can be scrolled horizontally (page scaling is adapted to height) but not vertically
+        # 2. Reading mode is `vertical`, page can be scrolled vertically (page scaling is adapted to width) but not horizontally
+
+        if not self.interactive:
+            return
+
         if self.reader.reading_mode in ('right-to-left', 'left-to-right'):
             if position in (Gtk.PositionType.TOP, Gtk.PositionType.BOTTOM):
                 return
@@ -533,6 +510,44 @@ class Pager(Adw.Bin, BasePager):
                 return
 
             self.scroll_to_direction('left' if position == Gtk.PositionType.TOP else 'right')
+
+    def on_scroll(self, _controller, dx, dy):
+        # When page is scrollable, scroll events are consumed, so we must manage page changes in place of Adw.Carousel.
+        #
+        # Use cases:
+        # 1. Reading mode is `RTL` or `LTR`, page can be scrolled vertically (page scaling is adapted to width) but not horizontally
+        # 2. Reading mode is `vertical` and page can be scrolled horizontally (page scaling is adapted to height) but not vertically
+        # In both cases, we can't rely on `edge-overshot` event.
+
+        if not self.current_page.props.can_target or not self.interactive:
+            return
+
+        if self.reader.reading_mode in ('right-to-left', 'left-to-right') and self.reader.scaling == 'width' and dx:
+            self.scroll_to_direction('left' if dx < 0 else 'right')
+
+        elif self.reader.reading_mode == 'vertical' and self.reader.scaling == 'height' and dy:
+            self.scroll_to_direction('left' if dy < 0 else 'right')
+
+    def on_single_click(self, x, _y):
+        self.btn_press_timeout_id = None
+
+        if x < self.reader.size.width / 3:
+            # 1st third of the page
+            if self.zoom['active']:
+                return False
+
+            self.scroll_to_direction('left')
+        elif x > 2 * self.reader.size.width / 3:
+            # Last third of the page
+            if self.zoom['active']:
+                return False
+
+            self.scroll_to_direction('right')
+        else:
+            # Center part of the page: toggle controls
+            self.reader.toggle_controls()
+
+        return False
 
     def reverse_pages(self):
         left_page = self.carousel.get_nth_page(0)
@@ -562,7 +577,7 @@ class Pager(Adw.Bin, BasePager):
             return
 
         # Disable keyboard and mouse navigation: will be re-enabled if page is loadable
-        self.disable_keyboard_and_mouse_click_navigation()
+        self.interactive = False
 
         self.carousel.scroll_to(page, True)
 
@@ -575,8 +590,7 @@ class Pager(Adw.Bin, BasePager):
             return GLib.SOURCE_CONTINUE
 
         if page.loadable:
-            self.enable_keyboard_and_mouse_click_navigation()
-            self.carousel.set_interactive(True)
+            self.interactive = True
 
             if index != 1:
                 # Add next page depending of navigation direction
