@@ -6,10 +6,16 @@
 
 from komikku.servers.multi.madara import Madara
 
+#
+# BEWARE: Wakascan server is disabled
+# Replaced by an anim site since 01/17/2021
+#
+
 
 class Wakascan(Madara):
     id = 'wakascan'
     name = 'Wakascan'
     lang = 'fr'
+    status = 'disabled'
 
     base_url = 'https://wakascan.com'
