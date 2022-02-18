@@ -788,14 +788,16 @@ class Chapter:
             os.makedirs(self.path, exist_ok=True)
 
         image = data['buffer']
-        page_path = os.path.join(self.path, data['name'])
 
         if data['mime_type'] == 'image/webp' or self.scrambled:
             if data['mime_type'] == 'image/webp':
+                data['name'] = os.path.splitext(data['name'])[0]+'.jpg'
                 image = convert_image(image)
 
             if self.scrambled:
                 image = unscramble_image(image)
+
+        page_path = os.path.join(self.path, data['name'])
 
         if isinstance(image, Image.Image):
             image.save(page_path)
@@ -804,7 +806,7 @@ class Chapter:
                 fp.write(image)
 
         updated_data = {}
-        if self.pages[page_index]['image'] is None:
+        if self.pages[page_index]['image'] is None or data['mime_type'] == 'image/webp':
             self.pages[page_index]['image'] = data['name']
             updated_data['pages'] = self.pages
 
