@@ -525,11 +525,11 @@ class ChaptersListRow2(Gtk.Box):
         vbox.append(self.scanlators_label)
 
         # Menu button
+        self.menu_model = Gio.Menu()
         menu_button = Gtk.MenuButton()
         menu_button.set_icon_name('view-more-symbolic')
-        popover = Gtk.PopoverMenu(margin_start=6, margin_end=6, margin_top=6, margin_bottom=6)
-        popover.connect('show', self.show_menu)
-        menu_button.set_popover(popover)
+        menu_button.set_menu_model(self.menu_model)
+        menu_button.get_popover().connect('show', self.update_menu)
         hbox.append(menu_button)
 
         #
@@ -620,18 +620,17 @@ class ChaptersListRow2(Gtk.Box):
                 nb_pages = len(self.chapter.pages) if self.chapter.pages else '?'
                 self.read_progress_label.set_text(f'{self.chapter.last_page_read_index + 1}/{nb_pages}')
 
-    def show_menu(self, popover):
-        menu = Gio.Menu()
-        if self.chapter.pages:
-            menu.append(_('Reset'), 'app.card.reset-chapter')
-        if not self.chapter.downloaded:
-            menu.append(_('Download'), 'app.card.download-chapter')
-        if not self.chapter.read:
-            menu.append(_('Mark as Read'), 'app.card.mark-chapter-read')
-        if self.chapter.read or self.chapter.last_page_read_index is not None:
-            menu.append(_('Mark as Unread'), 'app.card.mark-chapter-unread')
+    def update_menu(self, _popover):
+        self.menu_model.remove_all()
 
-        popover.set_menu_model(menu)
+        if self.chapter.pages:
+            self.menu_model.append(_('Reset'), 'app.card.reset-chapter')
+        if not self.chapter.downloaded:
+            self.menu_model.append(_('Download'), 'app.card.download-chapter')
+        if not self.chapter.read:
+            self.menu_model.append(_('Mark as Read'), 'app.card.mark-chapter-read')
+        if self.chapter.read or self.chapter.last_page_read_index is not None:
+            self.menu_model.append(_('Mark as Unread'), 'app.card.mark-chapter-unread')
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/card_chapters_list_row.ui')

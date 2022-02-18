@@ -773,8 +773,6 @@ class CategoriesList:
                 row = Adw.ActionRow(activatable=True)
                 row.category = category
                 row.set_title(label)
-                row.set_title_lines(2)
-                row.set_hexpand(False)
 
                 if (isinstance(category, Category) and Settings.get_default().selected_category == category.id) or \
                         (isinstance(category, int) and Settings.get_default().selected_category == category):
