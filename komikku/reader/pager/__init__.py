@@ -75,6 +75,10 @@ class BasePager:
     def init(self):
         raise NotImplementedError()
 
+    @abstractmethod
+    def on_key_pressed(self, _widget, event):
+        raise NotImplementedError()
+
     def on_pointer_motion(self, _controller, x, y):
         if int(x) == x and int(y) == y:
             # Hack? Ignore events triggered by Gtk.Carousel during page changes

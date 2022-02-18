@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -38,8 +38,12 @@ class Page(Gtk.ScrolledWindow):
         self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
         self.cropped = False
 
-        policy_type = Gtk.PolicyType.AUTOMATIC if self.reader.reading_mode != 'webtoon' else Gtk.PolicyType.NEVER
-        self.set_policy(policy_type, policy_type)
+        if self.reader.reading_mode == 'webtoon':
+            self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
+            # Page should not be smaller than the reader
+            self.set_size_request(self.reader.size.width, self.reader.size.height)
+        else:
+            self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         self.set_kinetic_scrolling(True)
         self.set_overlay_scrolling(True)
 
@@ -218,8 +222,8 @@ class Page(Gtk.ScrolledWindow):
         scaling = self.reader.scaling if self.reader.reading_mode != 'webtoon' else 'width'
         if self.reader.scaling != 'original':
             if isinstance(paintable, PaintablePixbuf):
-                adapt_to_width_height = paintable.orig_height / (paintable.orig_width / self.reader.size.width)
-                adapt_to_height_width = paintable.orig_width / (paintable.orig_height / self.reader.size.height)
+                adapt_to_width_height = paintable.orig_height // (paintable.orig_width / self.reader.size.width)
+                adapt_to_height_width = paintable.orig_width // (paintable.orig_height / self.reader.size.height)
 
                 if scaling == 'width' or (scaling == 'screen' and adapt_to_width_height <= self.reader.size.height):
                     # Adapt image to width
@@ -234,10 +238,10 @@ class Page(Gtk.ScrolledWindow):
             self.paintable = paintable
             self.image.set_paintable(paintable)
 
-        self.update_can_target()
-
-    def update_can_target(self):
-        if self.image.get_paintable().get_intrinsic_width() > self.reader.size.width or self.image.get_paintable().get_intrinsic_height() > self.reader.size.height:
+        # Determine if page can receive pointer events
+        if self.reader.reading_mode == 'webtoon':
+            self.props.can_target = False
+        elif paintable.width > self.reader.size.width or paintable.height > self.reader.size.height:
             self.props.can_target = True
         else:
             self.props.can_target = False

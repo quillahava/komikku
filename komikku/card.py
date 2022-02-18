@@ -96,9 +96,8 @@ class Card:
                 _('NOTICE\n{0} server is not longer supported.\nPlease switch to another server.').format(manga.server.name)
             )
 
+        GLib.idle_add(self.populate)
         self.show(transition)
-
-        self.populate()
 
     def leave_selection_mode(self, _param=None):
         self.selection_mode = False
@@ -382,9 +381,9 @@ class ChaptersList2:
         mark_chapter_as_unread_action.connect('activate', self.toggle_chapter_read_status, 0)
         self.card.window.application.add_action(mark_chapter_as_unread_action)
 
-        # reset_chapter_action = Gio.SimpleAction.new('card.reset-chapter', None)
-        # reset_chapter_action.connect('activate', self.reset_chapter)
-        # self.window.application.add_action(reset_chapter_action)
+        reset_chapter_action = Gio.SimpleAction.new('card.reset-chapter', None)
+        reset_chapter_action.connect('activate', self.reset_chapter)
+        self.card.window.application.add_action(reset_chapter_action)
 
     def download_chapter(self, action, param):
         # Add chapter in download queue
@@ -411,6 +410,13 @@ class ChaptersList2:
     def refresh(self, chapters):
         for chapter in chapters:
             self.update_chapter_row(chapter=chapter)
+
+    def reset_chapter(self, action, param):
+        selection = self.model.get_selection()
+        position = selection.get_nth(0)
+        chapter = self.list_model.get_item(position).chapter
+
+        chapter.reset()
 
     def set_sort_order(self, invalidate=True):
         self.card.sort_order_action.set_state(GLib.Variant('s', self.sort_order))
