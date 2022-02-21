@@ -96,8 +96,8 @@ class Card:
                 _('NOTICE\n{0} server is not longer supported.\nPlease switch to another server.').format(manga.server.name)
             )
 
-        GLib.idle_add(self.populate)
-        self.show(transition)
+        self.show()
+        GLib.timeout_add(self.window.stack.props.transition_duration * 2, self.populate)
 
     def leave_selection_mode(self, _param=None):
         self.selection_mode = False
@@ -192,7 +192,6 @@ class Card:
     def populate(self):
         self.chapters_list.set_sort_order(invalidate=False)
         self.chapters_list.populate()
-        self.info_box.populate()
         self.categories_list.populate()
 
     def set_actions_enabled(self, enabled):
@@ -212,6 +211,7 @@ class Card:
         self.window.menu_button.set_icon_name('view-more-symbolic')
         self.window.menu_button.show()
 
+        self.info_box.populate()
         self.window.show_page('card', transition=transition)
 
     def stop_populate(self):
@@ -655,9 +655,9 @@ class ChaptersListRow(Gtk.ListBoxRow):
         self._selected = False
 
         # Menu button
-        popover = Gtk.PopoverMenu(margin_start=6, margin_end=6, margin_top=6, margin_bottom=6)
-        popover.connect('show', self.show_menu)
-        self.menu_button.set_popover(popover)
+        self.menu_model = Gio.Menu()
+        self.menu_button.set_menu_model(self.menu_model)
+        self.menu_button.get_popover().connect('show', self.update_menu)
 
         # Download Stop button
         self.download_stop_button.connect('clicked', self.stop_download)
@@ -726,23 +726,21 @@ class ChaptersListRow(Gtk.ListBoxRow):
             else:
                 self.read_progress_label.hide()
 
-    def show_menu(self, popover):
-        self.card.chapters_list.action_row = self
-
-        menu = Gio.Menu()
-        if self.chapter.pages:
-            menu.append(_('Reset'), 'app.card.reset-chapter')
-        if not self.chapter.downloaded:
-            menu.append(_('Download'), 'app.card.download-chapter')
-        if not self.chapter.read:
-            menu.append(_('Mark as Read'), 'app.card.mark-chapter-read')
-        if self.chapter.read or self.chapter.last_page_read_index is not None:
-            menu.append(_('Mark as Unread'), 'app.card.mark-chapter-unread')
-
-        popover.set_menu_model(menu)
-
     def stop_download(self, _button):
         self.card.window.downloader.remove(self.chapter)
+
+    def update_menu(self, popover):
+        self.card.chapters_list.action_row = self
+
+        self.menu_model.remove_all()
+        if self.chapter.pages:
+            self.menu_model.append(_('Reset'), 'app.card.reset-chapter')
+        if not self.chapter.downloaded:
+            self.menu_model.append(_('Download'), 'app.card.download-chapter')
+        if not self.chapter.read:
+            self.menu_model.append(_('Mark as Read'), 'app.card.mark-chapter-read')
+        if self.chapter.read or self.chapter.last_page_read_index is not None:
+            self.menu_model.append(_('Mark as Unread'), 'app.card.mark-chapter-unread')
 
 
 class ChaptersList:

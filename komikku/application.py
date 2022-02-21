@@ -301,7 +301,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.controller_key.connect('key-pressed', self.on_key_pressed)
 
         self.connect('close-request', self.on_application_quit)
-        self.headerbar_revealer.connect('notify::child-revealed', self.on_headerbar_toggle)
+        self.headerbar_revealer.connect('notify::child-revealed', self.on_headerbar_toggled)
 
         # Init stack pages
         self.library = Library(self)
@@ -450,7 +450,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         do_quit()
 
-    def on_headerbar_toggle(self, *args):
+    def on_headerbar_toggled(self, *args):
         if self.page == 'reader' and self.reader.pager:
             self.reader.pager.resize_pages()
 

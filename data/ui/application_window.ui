@@ -26,7 +26,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkRevealer" id="headerbar_revealer">
-            <property name="transition_type">none</property>
+            <property name="transition_duration">0</property>
             <property name="reveal_child">1</property>
             <child>
               <object class="AdwHeaderBar" id="headerbar">
