@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -171,7 +171,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
     card_stack = Gtk.Template.Child('card_stack')
     card_categories_stack = Gtk.Template.Child('card_categories_stack')
     card_categories_listbox = Gtk.Template.Child('card_categories_listbox')
-    # card_chapters_listbox = Gtk.Template.Child('card_chapters_listbox')
     card_chapters_listview = Gtk.Template.Child('card_chapters_listview')
     card_name_label = Gtk.Template.Child('card_name_label')
     card_cover_image = Gtk.Template.Child('card_cover_image')
@@ -494,8 +493,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
             if self.card.selection_mode:
                 self.card.leave_selection_mode()
             else:
-                self.card.stop_populate()
-
                 if self.card.came_from in ('library', 'explorer'):
                     self.library.show(invalidate_sort=True)
                 elif self.card.came_from == 'history':

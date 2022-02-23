@@ -81,7 +81,7 @@
                 {
                     "type": "git",
                     "url": "https://gitlab.gnome.org/GNOME/gtk",
-                    "tag": "4.6.1"
+                    "tag": "4.6.0"
                 }
             ]
         },
