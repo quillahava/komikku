@@ -199,7 +199,6 @@ class Pager(Adw.Bin, BasePager):
 
         self.carousel = Adw.Carousel()
         self.carousel.set_scroll_params(Adw.SpringParams.new(0.1, 0.05, 1))  # guesstimate
-
         self.carousel.set_allow_long_swipes(False)
         self.set_child(self.carousel)
 
@@ -491,7 +490,8 @@ class Pager(Adw.Bin, BasePager):
         # Disable navigation: will be re-enabled if page is loadable
         self.interactive = False
 
-        self.update(page, index)
+        # Bug here: see https://gitlab.gnome.org/GNOME/libadwaita/-/issues/430
+        GLib.idle_add(self.update, page, index)
         GLib.idle_add(self.save_progress, page)
 
     def on_page_edge_overshotted(self, _page, position):
@@ -589,6 +589,9 @@ class Pager(Adw.Bin, BasePager):
         self.carousel.set_orientation(orientation)
 
     def update(self, page, index):
+        if self.window.page != 'reader':
+            return GLib.SOURCE_REMOVE
+
         if not page.loadable and page.error is None:
             # Loop until page is loadable or page is on error
             return GLib.SOURCE_CONTINUE
