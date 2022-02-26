@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -43,12 +43,8 @@ class Ninemanga(Server):
             self.session = requests.Session()
             self.session.headers = headers
 
-            retry = Retry(total=3,
-                          backoff_factor=1,
-                          respect_retry_after_header=False,
-                          status_forcelist=Retry.RETRY_AFTER_STATUS_CODES)
+            retry = Retry(total=3, backoff_factor=1, respect_retry_after_header=False, status_forcelist=Retry.RETRY_AFTER_STATUS_CODES)
             self.session.mount(self.base_url, HTTPAdapter(max_retries=retry))
-
 
     @classmethod
     def get_manga_initial_data_from_url(cls, url):
