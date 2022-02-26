@@ -7,6 +7,8 @@
 from collections import OrderedDict
 from bs4 import BeautifulSoup
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
 from urllib.parse import unquote_plus
 
 from komikku.servers import Server
@@ -40,6 +42,13 @@ class Ninemanga(Server):
         if self.session is None:
             self.session = requests.Session()
             self.session.headers = headers
+
+            retry = Retry(total=3,
+                          backoff_factor=1,
+                          respect_retry_after_header=False,
+                          status_forcelist=Retry.RETRY_AFTER_STATUS_CODES)
+            self.session.mount(self.base_url, HTTPAdapter(max_retries=retry))
+
 
     @classmethod
     def get_manga_initial_data_from_url(cls, url):
@@ -164,7 +173,8 @@ class Ninemanga(Server):
         url = soup.find('img', id='manga_pic_1').get('src')
 
         # Get scan image
-        r = self.session_get(url)
+        r = self.session_get(url, timeout=30)
+
         if r is None or r.status_code != 200:
             return None
 
