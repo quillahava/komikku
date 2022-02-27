@@ -194,7 +194,7 @@ class Madara(Server):
 
             data['pages'].append(dict(
                 slug=None,
-                image=img_url,
+                image=img_url.strip(),
             ))
 
         return data
