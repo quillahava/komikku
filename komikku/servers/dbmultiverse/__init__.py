@@ -59,7 +59,7 @@ class Dbmultiverse(Server):
         ))
 
         # Chapters
-        for div_element in soup.find_all('div', class_='chapters'):
+        for div_element in soup.find_all('div', class_='chapter'):
             slug = div_element.get('ch')
             if not slug:
                 continue
@@ -101,7 +101,7 @@ class Dbmultiverse(Server):
         data = dict(
             pages=[],
         )
-        for a_element in soup.find('div', class_='chapters', ch=chapter_slug).p.find_all('a'):
+        for a_element in soup.find('div', class_='chapter', ch=chapter_slug).p.find_all('a'):
             data['pages'].append(dict(
                 slug=a_element.get('href')[:-5].split('-')[-1],
                 image=None,
