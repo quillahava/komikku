@@ -775,12 +775,14 @@ class Chapter:
         if os.path.exists(self.path):
             shutil.rmtree(self.path)
 
-    def get_page(self, page_index):
-        page_path = self.get_page_path(page_index)
+    def get_page(self, index):
+        page_path = self.get_page_path(index)
         if page_path:
             return page_path
 
-        data = self.manga.server.get_manga_chapter_page_image(self.manga.slug, self.manga.name, self.slug, self.pages[page_index])
+        page = self.pages[index]
+
+        data = self.manga.server.get_manga_chapter_page_image(self.manga.slug, self.manga.name, self.slug, page)
         if data is None:
             return None
 
@@ -791,8 +793,8 @@ class Chapter:
 
         if data['mime_type'] == 'image/webp' or self.scrambled:
             if data['mime_type'] == 'image/webp':
-                data['name'] = os.path.splitext(data['name'])[0]+'.jpg'
-                image = convert_image(image)
+                data['name'] = os.path.splitext(data['name'])[0] + '.jpg'
+                image = convert_image(image, 'jpeg')
 
             if self.scrambled:
                 image = unscramble_image(image)
@@ -806,8 +808,15 @@ class Chapter:
                 fp.write(image)
 
         updated_data = {}
-        if self.pages[page_index]['image'] is None or data['mime_type'] == 'image/webp':
-            self.pages[page_index]['image'] = data['name']
+
+        # If page name can't be retrieved from `image` or `slug`, we store its name
+        retrievable = False
+        if page.get('image') and data['name'] == page['image'].split('?')[0].split('/')[-1]:
+            retrievable = True
+        elif page.get('slug') and data['name'] == page['slug'].split('/')[-1]:
+            retrievable = True
+        if not retrievable:
+            self.pages[index]['name'] = data['name']
             updated_data['pages'] = self.pages
 
         downloaded = len(next(os.walk(self.path))[2]) == len(self.pages)
@@ -819,20 +828,31 @@ class Chapter:
 
         return page_path
 
-    def get_page_path(self, page_index):
-        if self.pages and self.pages[page_index]['image'] is not None:
-            # self.pages[page_index]['image'] can be an image name or an image url (path + eventually a query string)
+    def get_page_path(self, index):
+        if not self.pages:
+            return None
 
+        page = self.pages[index]
+
+        if page.get('name'):
+            name = page['name']
+
+        elif page.get('image'):
             # Extract filename
-            imagename = self.pages[page_index]['image'].split('/')[-1]
+            name = page['image'].split('/')[-1]
             # Remove query string
-            imagename = imagename.split('?')[0]
+            name = name.split('?')[0]
 
-            path = os.path.join(self.path, imagename)
+        elif page.get('slug'):
+            # Extract filename
+            name = page['slug'].split('/')[-1]
 
-            return path if os.path.exists(path) else None
+        else:
+            return None
 
-        return None
+        path = os.path.join(self.path, name)
+
+        return path if os.path.exists(path) else None
 
     def reset(self):
         if os.path.exists(self.path):
