@@ -1,21 +1,16 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from komikku.servers.multi.my_manga_reader_cms import MyMangaReaderCMSv1
+from komikku.servers.multi.madara import Madara
 
 
-class Leomanga(MyMangaReaderCMSv1):
+class Leomanga(Madara):
     id = 'leomanga'
     name = 'Leomanga'
     lang = 'es'
 
     base_url = 'https://leomanga.me'
-    search_url = base_url + '/search'
-    most_populars_url = base_url + '/filterList?page=1&sortBy=views&asc=false'
-    manga_url = base_url + '/manga/{0}'
-    chapter_url = base_url + '/manga/{0}/{1}'
-    image_url = 'https://img1.leomanga.me/uploads/manga/{0}/chapters/{1}/{2}'
-    cover_url = 'https://img1.leomanga.me/uploads/manga/{0}/cover/cover_250x350.jpg'
+    chapters_url = base_url + '/manga/{0}/ajax/chapters/'

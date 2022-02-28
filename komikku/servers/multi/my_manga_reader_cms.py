@@ -10,7 +10,6 @@
 # FR Scan [FR]
 # Jpmangas [FR]
 # Lelscan-VF [FR] (disabled)
-# Leomanga [ES] (v1)
 # Mangadoor [ES]
 # Mangasin [ES]
 # Read Comics Online [RU]

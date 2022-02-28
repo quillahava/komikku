@@ -16,6 +16,7 @@
 # Atikrost [TR]
 # Best Manga [RU]
 # Colored Council [EN]
+# Leomanga [ES]
 # Reaperscans [EN]
 # Reaperscans [PT]
 # Submanga [ES]
