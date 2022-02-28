@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -24,7 +24,6 @@ re_chapter_date = re.compile(r'\d{4}.\d{2}.\d{2}')
 # Jaimini's Box [EN] (disabled)
 # Kirei Cake [EN]
 # Le Cercle du Scan [FR]
-# Lupi Team [IT]
 # Tutto Anime Manga [IT] (disabled)
 
 

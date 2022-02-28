@@ -82,10 +82,10 @@ class PizzaReader(Server):
         data = dict(
             pages=[],
         )
-        for page in r.json()['chapter']['pages']:
+        for url in r.json()['chapter']['pages']:
             data['pages'].append(dict(
                 slug=None,
-                image=page,
+                image=url,
             ))
 
         return data
