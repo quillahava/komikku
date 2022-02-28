@@ -84,6 +84,23 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.37.0" date="2022-02-28">
+            <description>
+                <ul>
+                    <li>Add `Quit` shortcut action (Ctrl+Q)</li>
+                    <li>[Servers] Fixed loading of images in `webp` format</li>
+                    <li>[Servers] Add GTO TGS [IT]</li>
+                    <li>[Servers] Add Phoenix Scans [IT]</li>
+                    <li>[Servers] Dragon Ball Multiverse: Update</li>
+                    <li>[Servers] Edelgarde Scans: Disabled</li>
+                    <li>[Servers] Hatigarm Scans: Disabled</li>
+                    <li>[Servers] Leomanga: Update</li>
+                    <li>[Servers] LupiTeam: Update</li>
+                    <li>[Servers] Nine Manga: Improved images loading</li>
+                    <li>[Servers] Wakascan: Disabled</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.36.1" date="2022-01-14">
             <description>
                 <ul>
