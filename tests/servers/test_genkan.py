@@ -8,20 +8,6 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 @pytest.fixture
-def edelgardescans_server():
-    from komikku.servers.edelgardescans import Edelgardescans
-
-    return Edelgardescans()
-
-
-@pytest.fixture
-def hatigarmscans_server():
-    from komikku.servers.hatigarmscans import Hatigarmscans
-
-    return Hatigarmscans()
-
-
-@pytest.fixture
 def hunlightscans_server():
     from komikku.servers.hunlightscans import Hunlightscans
 
@@ -43,129 +29,6 @@ def zeroscans_server():
 
 
 @test_steps('get_most_popular', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
-def test_edelgardescans(edelgardescans_server):
-    # Get most popular
-    print('Get most popular')
-    try:
-        response = edelgardescans_server.get_most_populars()
-    except Exception as e:
-        response = None
-        log_error_traceback(e)
-
-    assert response is not None
-    yield
-
-    # Search
-    print('Search')
-    try:
-        response = edelgardescans_server.search('the gateway of revolution')
-        slug = response[0]['slug']
-    except Exception as e:
-        slug = None
-        log_error_traceback(e)
-
-    assert slug is not None
-    yield
-
-    # Get manga data
-    print('Get manga data')
-    try:
-        response = edelgardescans_server.get_manga_data(dict(slug=slug))
-        chapter_slug = response['chapters'][0]['slug']
-    except Exception as e:
-        chapter_slug = None
-        log_error_traceback(e)
-
-    assert chapter_slug is not None
-    yield
-
-    # Get chapter data
-    print("Get chapter data")
-    try:
-        response = edelgardescans_server.get_manga_chapter_data(slug, None, chapter_slug, None)
-        page = response['pages'][0]
-    except Exception as e:
-        page = None
-        log_error_traceback(e)
-
-    assert page is not None
-    yield
-
-    # Get page image
-    print('Get page image')
-    try:
-        response = edelgardescans_server.get_manga_chapter_page_image(None, None, None, page)
-    except Exception as e:
-        response = None
-        log_error_traceback(e)
-
-    assert response is not None
-    yield
-
-
-@test_steps('get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
-def test_hatigarmscans(hatigarmscans_server):
-    # Get most populars
-    print('Get most populars')
-    try:
-        response = hatigarmscans_server.get_most_populars()
-    except Exception as e:
-        response = None
-        log_error_traceback(e)
-
-    assert response is not None
-    yield
-
-    # Search
-    print('Search')
-    try:
-        # Use first result of get_most_populars
-        response = hatigarmscans_server.search(response[0]['name'])
-        slug = response[0]['slug']
-    except Exception as e:
-        slug = None
-        log_error_traceback(e)
-
-    assert slug is not None
-    yield
-
-    # Get manga data
-    print('Get manga data')
-    try:
-        response = hatigarmscans_server.get_manga_data(dict(slug=slug))
-        chapter_slug = response['chapters'][0]['slug']
-    except Exception as e:
-        chapter_slug = None
-        log_error_traceback(e)
-
-    assert chapter_slug is not None
-    yield
-
-    # Get chapter data
-    print("Get chapter data")
-    try:
-        response = hatigarmscans_server.get_manga_chapter_data(slug, None, chapter_slug, None)
-        page = response['pages'][0]
-    except Exception as e:
-        page = None
-        log_error_traceback(e)
-
-    assert page is not None
-    yield
-
-    # Get page image
-    print('Get page image')
-    try:
-        response = hatigarmscans_server.get_manga_chapter_page_image(None, None, None, page)
-    except Exception as e:
-        response = None
-        log_error_traceback(e)
-
-    assert response is not None
-    yield
-
-
-@test_steps('get_most_popular', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_hunlightscans(hunlightscans_server):
     # Get most popular
     print('Get most popular')
@@ -181,7 +44,7 @@ def test_hunlightscans(hunlightscans_server):
     # Search
     print('Search')
     try:
-        response = hunlightscans_server.search('ossan boukensha kane no zenkou')
+        response = hunlightscans_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
@@ -242,7 +105,7 @@ def test_thenonamesscans(thenonamesscans_server):
     # Search
     print('Search')
     try:
-        response = thenonamesscans_server.search('player reborn')
+        response = thenonamesscans_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
@@ -303,7 +166,7 @@ def test_zeroscans(zeroscans_server):
     # Search
     print('Search')
     try:
-        response = zeroscans_server.search('second life ranker')
+        response = zeroscans_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None

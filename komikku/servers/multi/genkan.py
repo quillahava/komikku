@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 # Genkan CMS
 
 # Supported servers
-# Edelgarde Scans [EN]
-# Hatigarm Scans [EN]
+# Edelgarde Scans [EN] (disabled)
+# Hatigarm Scans [EN] (disabled)
 # Hunlight Scans [EN]
 # Leviatan Scans [EN/ES] (disabled)
 # One Shot Scans [EN] (disabled)
