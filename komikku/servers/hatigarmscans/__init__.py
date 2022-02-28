@@ -16,6 +16,7 @@ class Hatigarmscans(GenkanInitial):
     id = 'hatigarmscans'
     name = 'Hatigarm Scans'
     lang = 'en'
+    status = 'disabled'
 
     base_url = 'https://hatigarmscanz.net'
     search_url = base_url + '/comics'
