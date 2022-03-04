@@ -42,9 +42,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         self.set_child(self.box)
 
         # Keyboard navigation
-        self.controller_key = Gtk.EventControllerKey.new()
-        self.add_controller(self.controller_key)
-        self.controller_key.connect('key-pressed', self.on_key_pressed)
+        self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
         self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.VERTICAL)
         self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)

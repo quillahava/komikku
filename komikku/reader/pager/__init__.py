@@ -206,9 +206,7 @@ class Pager(Adw.Bin, BasePager):
         self.carousel.connect('page-changed', self.on_page_changed)
 
         # Keyboard navigation
-        self.controller_key = Gtk.EventControllerKey.new()
-        self.add_controller(self.controller_key)
-        self.controller_key.connect('key-pressed', self.on_key_pressed)
+        self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
         # Navigation when a page is scrollable (vertically or horizontally)
         # This can occur when page scaling is `adapt-to-height` or 'adapt-to-width'.

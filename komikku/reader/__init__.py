@@ -81,9 +81,6 @@ class Reader:
     @property
     def size(self):
         size = self.window.get_allocation()
-        # size = Gtk.Requisition.new()
-        # size.width = self.window.get_size(Gtk.Orientation.HORIZONTAL)
-        # size.height = self.window.get_size(Gtk.Orientation.VERTICAL)
 
         if self.window.headerbar_revealer.get_child_revealed():
             size.height -= self.window.headerbar.get_preferred_size()[1].height
@@ -299,15 +296,10 @@ class Reader:
         self.pager.set_orientation(orientation)
 
     def show(self):
-        def on_menu_popover_closed(menu_button):
-            self.pager.grab_focus()
-
         self.window.right_button_stack.set_visible_child_name('reader')
 
         self.window.menu_button.set_menu_model(self.builder.get_object('menu-reader'))
         self.window.menu_button.set_icon_name('view-more-symbolic')
-        # Watch when menu is closed to be able to restore focus to pager
-        self.window.menu_button.get_popover().connect('closed', on_menu_popover_closed)
 
         self.page_number_label.hide()
         self.controls.hide()
