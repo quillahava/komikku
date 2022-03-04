@@ -57,7 +57,7 @@ def create_cairo_surface_from_pixbuf(pixbuf, hidpi_scale):
     return surface
 
 
-def create_picture_from_file(path, width=None, height=None, static_animation=False, subdivided=False):
+def create_picture_from_file(path, static_animation=False, subdivided=False):
     format, _width, _height = Pixbuf.get_file_info(path)
     if format is None:
         return None
@@ -70,8 +70,8 @@ def create_picture_from_file(path, width=None, height=None, static_animation=Fal
         return Picture.new_from_file(path)
 
 
-def create_picture_from_resource(path, width=None, height=None):
-    return Picture.new_from_resource(path, width, height)
+def create_picture_from_resource(path):
+    return Picture.new_from_resource(path)
 
 
 def create_paintable_from_data(data, width=None, height=None, static_animation=False):

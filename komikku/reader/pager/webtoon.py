@@ -175,7 +175,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
                 page.render()
 
         self.render_pages_timeout_id = GLib.timeout_add(100, self.render_pages)
-        self.update(self.current_page)
+        GLib.idle_add(self.update, self.current_page)
 
         self.set_interactive(True)
 
