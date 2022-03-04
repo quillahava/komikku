@@ -323,7 +323,6 @@ class ChaptersList:
         self.model.connect('selection-changed', self.on_selection_changed)
 
         self.listview = self.card.window.card_chapters_listview
-        self.listview.add_css_class('rounded')
         self.listview.set_factory(self.factory)
         self.listview.set_model(self.model)
         self.listview.set_show_separators(True)

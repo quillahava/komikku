@@ -10,10 +10,9 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 from komikku.activity_indicator import ActivityIndicator
-from komikku.utils import create_paintable_from_file
-from komikku.utils import create_paintable_from_resource
+from komikku.utils import create_picture_from_file
+from komikku.utils import create_picture_from_resource
 from komikku.utils import log_error_traceback
-from komikku.utils import PaintablePixbuf
 from komikku.utils import PaintablePixbufAnimation
 
 
@@ -23,7 +22,7 @@ class Page(Gtk.ScrolledWindow):
     }
 
     def __init__(self, pager, chapter, index):
-        super().__init__()
+        super().__init__(hexpand=True, vexpand=True)
 
         self.pager = pager
         self.reader = pager.reader
@@ -36,27 +35,18 @@ class Page(Gtk.ScrolledWindow):
         self._status = None    # rendering, render, rendered, offlimit, cleaned
         self.error = None      # connection error, server error or corrupt file error
         self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
-        self.cropped = False
 
         if self.reader.reading_mode == 'webtoon':
             self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
-            # Page should not be smaller than the reader
-            self.set_size_request(self.reader.size.width, self.reader.size.height)
         else:
             self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-        self.set_kinetic_scrolling(True)
-        self.set_overlay_scrolling(True)
+            self.set_kinetic_scrolling(True)
+            self.set_overlay_scrolling(True)
 
         self.overlay = Gtk.Overlay()
-        self.props.hexpand = True
-        self.props.vexpand = True
         self.set_child(self.overlay)
 
-        self.image = Gtk.Picture()
-        self.image.set_can_shrink(False)
-        self.image.set_keep_aspect_ratio(True)
-        self.paintable = None
-        self.overlay.set_child(self.image)
+        self.picture = None
 
         # Activity indicator
         self.activity_indicator = ActivityIndicator()
@@ -72,7 +62,7 @@ class Page(Gtk.ScrolledWindow):
 
     @property
     def animated(self):
-        return isinstance(self.paintable, PaintablePixbufAnimation)
+        return isinstance(self.picture.get_paintable(), PaintablePixbufAnimation)
 
     @property
     def loaded(self):
@@ -84,7 +74,6 @@ class Page(Gtk.ScrolledWindow):
 
         self.status = 'cleaned'
         self.loadable = False
-        self.paintable = None
 
     def on_button_retry_clicked(self, button):
         self.overlay.remove_overlay(button)
@@ -184,7 +173,6 @@ class Page(Gtk.ScrolledWindow):
         if self.status is not None and self.error is None:
             return
 
-        self.paintable = None
         self.status = 'rendering'
         self.error = None
 
@@ -203,45 +191,49 @@ class Page(Gtk.ScrolledWindow):
             self.set_image()
 
     def set_image(self):
-        if self.paintable is None:
+        if self.picture is None:
             if self.path is None:
-                paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png')
+                picture = create_picture_from_resource('/info/febvre/Komikku/images/missing_file.png')
             else:
-                paintable = create_paintable_from_file(self.path)
-                if paintable is None:
+                picture = create_picture_from_file(self.path, subdivided=self.reader.reading_mode == 'webtoon')
+                if picture is None:
                     GLib.unlink(self.path)
 
                     self.show_retry_button()
                     self.window.show_notification(_('Failed to load image'), 2)
 
                     self.error = 'corrupt_file'
-                    paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png')
+                    picture = create_picture_from_resource('/info/febvre/Komikku/images/missing_file.png')
         else:
-            paintable = self.paintable
+            picture = self.picture
 
         scaling = self.reader.scaling if self.reader.reading_mode != 'webtoon' else 'width'
         if self.reader.scaling != 'original':
-            if isinstance(paintable, PaintablePixbuf):
-                adapt_to_width_height = paintable.orig_height // (paintable.orig_width / self.reader.size.width)
-                adapt_to_height_width = paintable.orig_width // (paintable.orig_height / self.reader.size.height)
+            max_width = self.reader.size.width
+            if self.reader.reading_mode == 'webtoon':
+                max_width = min(max_width, self.reader.pager.clamp_size)
+            max_height = self.reader.size.height
 
-                if scaling == 'width' or (scaling == 'screen' and adapt_to_width_height <= self.reader.size.height):
-                    # Adapt image to width
-                    paintable.resize(self.reader.size.width, adapt_to_width_height, self.reader.manga.borders_crop)
-                elif scaling == 'height' or (scaling == 'screen' and adapt_to_height_width <= self.reader.size.width):
-                    # Adapt image to height
-                    paintable.resize(adapt_to_height_width, self.reader.size.height, self.reader.manga.borders_crop)
+            adapt_to_width_height = picture.orig_height // (picture.orig_width / max_width)
+            adapt_to_height_width = picture.orig_width // (picture.orig_height / max_height)
+
+            if scaling == 'width' or (scaling == 'screen' and adapt_to_width_height <= max_height):
+                # Adapt image to width
+                picture.resize(max_width, adapt_to_width_height, self.reader.manga.borders_crop)
+            elif scaling == 'height' or (scaling == 'screen' and adapt_to_height_width <= max_width):
+                # Adapt image to height
+                picture.resize(adapt_to_height_width, max_height, self.reader.manga.borders_crop)
         else:
-            paintable.resize(cropped=self.reader.manga.borders_crop)
+            picture.resize(picture.orig_width, picture.orig_height, cropped=self.reader.manga.borders_crop)
 
-        if self.paintable is None:
-            self.paintable = paintable
-            self.image.set_paintable(paintable)
+        if self.picture is None:
+            self.picture = picture
+            self.overlay.set_child(picture)
 
         # Determine if page can receive pointer events
         if self.reader.reading_mode == 'webtoon':
             self.props.can_target = False
-        elif paintable.width > self.reader.size.width or paintable.height > self.reader.size.height:
+        elif picture.width > self.reader.size.width or picture.height > self.reader.size.height:
             self.props.can_target = True
         else:
             self.props.can_target = False

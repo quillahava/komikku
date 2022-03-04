@@ -14,6 +14,7 @@ import json
 import keyring
 from keyring.credentials import Credential
 import logging
+import math
 import os
 from PIL import Image
 from PIL import ImageChops
@@ -28,6 +29,7 @@ from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
+from gi.repository import Gtk
 from gi.repository.GdkPixbuf import Colorspace
 from gi.repository.GdkPixbuf import InterpType
 from gi.repository.GdkPixbuf import Pixbuf
@@ -55,6 +57,23 @@ def create_cairo_surface_from_pixbuf(pixbuf, hidpi_scale):
     return surface
 
 
+def create_picture_from_file(path, width=None, height=None, static_animation=False, subdivided=False):
+    format, _width, _height = Pixbuf.get_file_info(path)
+    if format is None:
+        return None
+
+    if 'image/gif' in format.get_mime_types() and not static_animation:
+        return PictureAnimation.new_from_file(path)
+    elif subdivided:
+        return PictureSubdivided.new_from_file(path)
+    else:
+        return Picture.new_from_file(path)
+
+
+def create_picture_from_resource(path, width=None, height=None):
+    return Picture.new_from_resource(path, width, height)
+
+
 def create_paintable_from_data(data, width=None, height=None, static_animation=False):
     mime_type, _result_uncertain = Gio.content_type_guess(None, data)
     if not mime_type:
@@ -72,7 +91,7 @@ def create_paintable_from_file(path, width=None, height=None, static_animation=F
         return None
 
     if 'image/gif' in format.get_mime_types() and not static_animation:
-        return PaintablePixbufAnimation.new_from_file(path)
+        return PaintablePixbufAnimation.new_from_file(path, width, height)
     else:
         return PaintablePixbuf.new_from_file(path, width, height)
 
@@ -184,6 +203,24 @@ def skip_past(haystack, needle):
     return None
 
 
+def subdivide_pixbuf(pixbuf, part_height):
+    """Sub-divide a long vertical GdkPixbuf.Pixbuf into multiple GdkPixbuf.Pixbuf"""
+    parts = []
+
+    width = pixbuf.get_width()
+    full_height = pixbuf.get_height()
+
+    for index in range(math.ceil(full_height / part_height)):
+        y = index * part_height
+        height = part_height if y + part_height <= full_height else full_height - y
+
+        part_pixbuf = Pixbuf.new(Colorspace.RGB, pixbuf.get_has_alpha(), 8, width, height)
+        pixbuf.copy_area(0, y, width, height, part_pixbuf, 0, 0)
+        parts.append(part_pixbuf)
+
+    return parts
+
+
 class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
     def __init__(self, path, pixbuf):
         super().__init__()
@@ -254,6 +291,12 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
         return cls(path, pixbuf)
 
     @classmethod
+    def new_from_pixbuf(cls, pixbuf, width=None, height=None):
+        if width and height:
+            pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
+        return cls(None, pixbuf)
+
+    @classmethod
     def new_from_resource(cls, path, width=None, height=None):
         try:
             if not width and not height:
@@ -304,21 +347,35 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
         texture = Gdk.Texture.new_for_pixbuf(pixbuf)
         texture.snapshot(snapshot, width, height)
 
-    def resize(self, width=None, height=None, cropped=False):
-        self.width = width or self.orig_width
-        self.height = height or self.orig_height
+    def resize(self, width, height, cropped=False):
+        self.width = width
+        self.height = height
         self.cropped = cropped
 
         self.invalidate_size()
 
 
 class PaintablePixbufAnimation(GObject.GObject, Gdk.Paintable):
-    def __init__(self, path, anim):
+    def __init__(self, path, anim, width, height):
         super().__init__()
 
         self.anim = anim
         self.iter = self.anim.get_iter(None)
         self.path = path
+
+        self.orig_width = self.anim.get_width()
+        self.orig_height = self.anim.get_height()
+        if width == -1:
+            ratio = self.orig_height / height
+            self.width = self.orig_width / ratio
+            self.height = height
+        elif height == -1:
+            ratio = self.orig_width / width
+            self.height = self.orig_height / ratio
+            self.width = width
+        else:
+            self.width = width
+            self.height = height
 
         self.__delay_cb()
 
@@ -331,10 +388,10 @@ class PaintablePixbufAnimation(GObject.GObject, Gdk.Paintable):
         return cls(None, anim)
 
     @classmethod
-    def new_from_file(cls, path):
+    def new_from_file(cls, path, width=None, height=None):
         anim = PixbufAnimation.new_from_file(path)
 
-        return cls(path, anim)
+        return cls(path, anim, width, height)
 
     def __delay_cb(self):
         delay = self.iter.get_delay_time()
@@ -345,17 +402,140 @@ class PaintablePixbufAnimation(GObject.GObject, Gdk.Paintable):
         self.invalidate_contents()
 
     def do_get_intrinsic_height(self):
-        return self.anim.get_height()
+        return self.height
 
     def do_get_intrinsic_width(self):
-        return self.anim.get_width()
+        return self.width
 
     def do_snapshot(self, snapshot, width, height):
         _res, timeval = GLib.TimeVal.from_iso8601(datetime.datetime.utcnow().isoformat())
         self.iter.advance(timeval)
         pixbuf = self.iter.get_pixbuf()
+        pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
         texture = Gdk.Texture.new_for_pixbuf(pixbuf)
         texture.snapshot(snapshot, width, height)
+
+    def resize(self, width, height):
+        self.width = width
+        self.height = width
+
+        self.invalidate_size()
+
+
+class Picture(Gtk.Picture):
+    def __init__(self, pixbuf):
+        super().__init__()
+
+        self.set_can_shrink(False)
+        self.set_keep_aspect_ratio(True)
+
+        self.set_paintable(pixbuf)
+
+    @classmethod
+    def new_from_data(cls, data):
+        return cls(PaintablePixbuf.new_from_data(data))
+
+    @classmethod
+    def new_from_file(cls, path):
+        return cls(PaintablePixbuf.new_from_file(path))
+
+    @classmethod
+    def new_from_pixbuf(cls, pixbuf):
+        return cls(PaintablePixbuf.new_from_pixbuf(None))
+
+    @classmethod
+    def new_from_resource(cls, path):
+        return cls(PaintablePixbuf.new_from_resource(path))
+
+    @property
+    def height(self):
+        return self.props.paintable.height
+
+    @property
+    def orig_height(self):
+        return self.props.paintable.orig_height
+
+    @property
+    def orig_width(self):
+        return self.props.paintable.orig_width
+
+    @property
+    def width(self):
+        return self.props.paintable.width
+
+    def resize(self, width, height, cropped=False):
+        self.props.paintable.resize(width, height, cropped)
+
+
+class PictureAnimation(Gtk.Picture):
+    def __init__(self, pixbuf):
+        super().__init__()
+
+        self.set_can_shrink(False)
+        self.set_keep_aspect_ratio(True)
+
+        self.set_paintable(pixbuf)
+
+    @classmethod
+    def new_from_data(cls, data):
+        return cls(PaintablePixbufAnimation.new_from_data(data))
+
+    @classmethod
+    def new_from_file(cls, path):
+        return cls(PaintablePixbufAnimation.new_from_file(path))
+
+    @property
+    def height(self):
+        return self.props.paintable.height
+
+    @property
+    def orig_height(self):
+        return self.props.paintable.orig_height
+
+    @property
+    def orig_width(self):
+        return self.props.paintable.orig_width
+
+    @property
+    def width(self):
+        return self.props.paintable.width
+
+    def resize(self, width, height, _cropped=False):
+        self.props.paintable.resize(width, height)
+
+
+class PictureSubdivided(Gtk.Box):
+    """
+    A Gtk.Box containing an image subdivided into multiple Gtk.Picture.
+
+    Useful to display long vertical images commonly used in Webtoons
+    because images height are limited by GL_MAX_TEXTURE_SIZE.
+    """
+
+    def __init__(self, path, pixbuf):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL)
+
+        self.props.hexpand = False
+        self.props.halign = Gtk.Align.CENTER
+
+        self.path = path
+
+        # TODO: find a way to replace 4096 by GL_MAX_TEXTURE_SIZE value
+        for pixbuf_tile in subdivide_pixbuf(pixbuf, 4096):
+            picture = Gtk.Picture()
+            picture.set_pixbuf(pixbuf_tile)
+            picture.set_can_shrink(True)
+            self.append(picture)
+
+        self.orig_width = pixbuf.get_width()
+        self.orig_height = pixbuf.get_height()
+
+    @classmethod
+    def new_from_file(cls, path):
+        return cls(path, Pixbuf.new_from_file(path))
+
+    def resize(self, width, height, _cropped=False):
+        self.set_size_request(width, height)
 
 
 class CustomCredential(Credential):

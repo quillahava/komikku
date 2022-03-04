@@ -21,6 +21,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
     interactive = False
     nb_preloaded_pages = 1  # Number of preloaded pages before and after the center/visible page
     scroll_direction = None
+    clamp_size = 800
 
     render_pages_counter = 10
     render_pages_timeout_id = 0
@@ -35,9 +36,10 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         self.get_vscrollbar().hide()
         self.set_kinetic_scrolling(False)
 
+        self.vadj = self.get_vadjustment()
+
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.START)
         self.set_child(self.box)
-        self.vadj = self.get_vadjustment()
 
         # Keyboard navigation
         self.controller_key = Gtk.EventControllerKey.new()
