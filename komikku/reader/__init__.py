@@ -297,8 +297,6 @@ class Reader:
 
     def show(self):
         self.window.right_button_stack.set_visible_child_name('reader')
-
-        self.window.menu_button.set_menu_model(self.builder.get_object('menu-reader'))
         self.window.menu_button.set_icon_name('view-more-symbolic')
 
         self.page_number_label.hide()

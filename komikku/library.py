@@ -304,7 +304,6 @@ class Library:
         self.window.headerbar.add_css_class('selection-mode')
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.menu_button.set_menu_model(self.builder.get_object('menu-library-selection-mode'))
 
     def leave_selection_mode(self, param=None):
         self.selection_mode = False
@@ -324,7 +323,6 @@ class Library:
         self.window.headerbar.remove_css_class('selection-mode')
         self.window.left_button.set_tooltip_text(_('Add new comic'))
         self.window.left_button.set_icon_name('list-add-symbolic')
-        self.window.menu_button.set_menu_model(self.builder.get_object('menu'))
 
     def on_flap_revealed(self, _flap, _param):
         with self.flap_reveal_button.handler_block(self.flap_reveal_button_toggled_handler_id):
@@ -539,7 +537,6 @@ class Library:
 
         self.update_headerbar_buttons()
 
-        self.window.menu_button.set_menu_model(self.builder.get_object('menu'))
         self.window.menu_button.set_icon_name('open-menu-symbolic')
         self.window.menu_button.show()
 

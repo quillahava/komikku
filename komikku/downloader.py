@@ -321,7 +321,6 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.listbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
 
         self.window.headerbar.add_css_class('selection-mode')
-        self.window.menu_button.set_menu_model(self.builder.get_object('menu-download-manager-selection-mode'))
 
     def leave_selection_mode(self):
         self.selection_mode = False
@@ -331,7 +330,6 @@ class DownloadManager(Gtk.ScrolledWindow):
             row._selected = False
 
         self.window.headerbar.remove_css_class('selection-mode')
-        self.window.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
 
     def on_download_row_activated(self, _listbox, row):
         row.grab_focus()
@@ -497,7 +495,6 @@ class DownloadManager(Gtk.ScrolledWindow):
 
         self.window.right_button_stack.set_visible_child_name('download_manager')
 
-        self.window.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
         self.window.menu_button.set_icon_name('view-more-symbolic')
 
         self.window.show_page('download_manager', transition=transition)

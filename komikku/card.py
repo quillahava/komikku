@@ -76,7 +76,6 @@ class Card:
 
         self.window.headerbar.add_css_class('selection-mode')
         self.viewswitchertitle.set_view_switcher_enabled(False)
-        self.window.menu_button.set_menu_model(self.builder.get_object('menu-card-selection-mode'))
 
     def init(self, manga, transition=True):
         self.came_from = self.window.page
@@ -103,7 +102,6 @@ class Card:
 
         self.window.headerbar.remove_css_class('selection-mode')
         self.viewswitchertitle.set_view_switcher_enabled(True)
-        self.window.menu_button.set_menu_model(self.builder.get_object('menu-card'))
 
     def on_delete_menu_clicked(self, action, param):
         def confirm_callback():
@@ -204,7 +202,6 @@ class Card:
         self.window.library_flap_reveal_button.hide()
         self.window.right_button_stack.set_visible_child_name('card')
 
-        self.window.menu_button.set_menu_model(self.builder.get_object('menu-card'))
         self.window.menu_button.set_icon_name('view-more-symbolic')
         self.window.menu_button.show()
 

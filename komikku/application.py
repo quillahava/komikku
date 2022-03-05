@@ -283,6 +283,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
     def assemble_window(self):
         # Titlebar
         self.left_button.connect('clicked', self.on_left_button_clicked)
+        self.menu_button.set_create_popup_func(self.on_primary_menu_shown)
 
         # Fisrt start page
         pixbuf = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/logo.png', 256, 256, True)
@@ -546,6 +547,28 @@ class ApplicationWindow(Adw.ApplicationWindow):
             # Stop Downloader
             if Settings.get_default().downloader_state:
                 self.downloader.stop()
+
+    def on_primary_menu_shown(self, _menu_button):
+        if self.page == 'library':
+            if self.library.selection_mode:
+                self.menu_button.set_menu_model(self.builder.get_object('menu-library-selection-mode'))
+            else:
+                self.menu_button.set_menu_model(self.builder.get_object('menu'))
+
+        elif self.page == 'card':
+            if self.card.selection_mode:
+                self.menu_button.set_menu_model(self.builder.get_object('menu-card-selection-mode'))
+            else:
+                self.menu_button.set_menu_model(self.builder.get_object('menu-card'))
+
+        elif self.page == 'reader':
+            self.menu_button.set_menu_model(self.builder.get_object('menu-reader'))
+
+        elif self.page == 'download_manager':
+            if self.download_manager.selection_mode:
+                self.menu_button.set_menu_model(self.builder.get_object('menu-download-manager-selection-mode'))
+            else:
+                self.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
 
     def on_resize(self, _window, allocation):
         width = self.props.default_width
