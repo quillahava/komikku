@@ -243,6 +243,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.application.set_accels_for_action('app.select-all', ['<Primary>a'])
         self.application.set_accels_for_action('app.preferences', ['<Primary>p'])
         self.application.set_accels_for_action('app.shortcuts', ['<Primary>question'])
+        self.application.set_accels_for_action('app.quit', ['<Primary>q'])
 
         self.reader.add_accelerators()
 
@@ -275,6 +276,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
         shortcuts_action.connect('activate', self.on_shortcuts_menu_clicked)
         self.application.add_action(shortcuts_action)
 
+        quit_action = Gio.SimpleAction.new('quit', None)
+        quit_action.connect('activate', self.quit)
+        self.application.add_action(quit_action)
+
         self.library.add_actions()
         self.card.add_actions()
         self.reader.add_actions()
@@ -300,7 +305,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.add_controller(self.controller_key)
         self.controller_key.connect('key-pressed', self.on_key_pressed)
 
-        self.connect('close-request', self.on_application_quit)
+        self.connect('close-request', self.quit)
         self.headerbar_revealer.connect('notify::child-revealed', self.on_headerbar_toggled)
 
         # Init stack pages
@@ -413,42 +418,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         dialog.set_modal(True)
         dialog.set_transient_for(self)
         dialog.present()
-
-    def on_application_quit(self, _window):
-        def do_quit():
-            self.save_window_size()
-            backup_db()
-
-            self.application.quit()
-
-        if self.downloader.running or self.updater.running:
-            def confirm_callback():
-                self.downloader.stop()
-                self.updater.stop()
-
-                while self.downloader.running or self.updater.running:
-                    time.sleep(0.1)
-                    continue
-
-                do_quit()
-
-            message = [
-                _('Are you sure you want to quit?'),
-            ]
-            if self.downloader.running:
-                message.append(_('Some chapters are currently being downloaded.'))
-            if self.updater.running:
-                message.append(_('Some mangas are currently being updated.'))
-
-            self.confirm(
-                _('Quit?'),
-                '\n'.join(message),
-                confirm_callback
-            )
-
-            return
-
-        do_quit()
 
     def on_headerbar_toggled(self, *args):
         if self.page == 'reader' and self.reader.pager:
