@@ -576,6 +576,42 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Set window size: default or saved size
         self.set_default_size(*Settings.get_default().window_size)
 
+    def quit(self, *args):
+        def do_quit():
+            self.save_window_size()
+            backup_db()
+
+            self.application.quit()
+
+        if self.downloader.running or self.updater.running:
+            def confirm_callback():
+                self.downloader.stop()
+                self.updater.stop()
+
+                while self.downloader.running or self.updater.running:
+                    time.sleep(0.1)
+                    continue
+
+                do_quit()
+
+            message = [
+                _('Are you sure you want to quit?'),
+            ]
+            if self.downloader.running:
+                message.append(_('Some chapters are currently being downloaded.'))
+            if self.updater.running:
+                message.append(_('Some mangas are currently being updated.'))
+
+            self.confirm(
+                _('Quit?'),
+                '\n'.join(message),
+                confirm_callback
+            )
+
+            return
+
+        do_quit()
+
     def save_window_size(self):
         if not self.is_maximized() and not self.is_fullscreen():
             Settings.get_default().window_size = [self.get_width(), self.get_height()]
