@@ -70,11 +70,13 @@ class Card:
         self.chapters_list.add_actions()
 
     def enter_selection_mode(self, *args):
+        self.window.left_button.set_label(_('Cancel'))
+        self.window.left_button.set_tooltip_text(_('Cancel'))
+
         self.selection_mode = True
 
         self.chapters_list.enter_selection_mode()
 
-        self.window.headerbar.add_css_class('selection-mode')
         self.viewswitchertitle.set_view_switcher_enabled(False)
 
     def init(self, manga, transition=True):
@@ -96,11 +98,13 @@ class Card:
         GLib.timeout_add(self.window.stack.props.transition_duration * 2, self.populate)
 
     def leave_selection_mode(self, _param=None):
+        self.window.left_button.set_icon_name('go-previous-symbolic')
+        self.window.left_button.set_tooltip_text(_('Back'))
+
         self.selection_mode = False
 
         self.chapters_list.leave_selection_mode()
 
-        self.window.headerbar.remove_css_class('selection-mode')
         self.viewswitchertitle.set_view_switcher_enabled(True)
 
     def on_delete_menu_clicked(self, action, param):

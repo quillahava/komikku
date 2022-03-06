@@ -316,20 +316,22 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.window.application.add_action(delete_selected_action)
 
     def enter_selection_mode(self):
+        self.window.left_button.set_label(_('Cancel'))
+        self.window.left_button.set_tooltip_text(_('Cancel'))
+
         self.selection_mode = True
 
         self.listbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
 
-        self.window.headerbar.add_css_class('selection-mode')
-
     def leave_selection_mode(self):
+        self.window.left_button.set_icon_name('go-previous-symbolic')
+        self.window.left_button.set_tooltip_text(_('Back'))
+
         self.selection_mode = False
 
         self.listbox.set_selection_mode(Gtk.SelectionMode.NONE)
         for row in self.listbox:
             row._selected = False
-
-        self.window.headerbar.remove_css_class('selection-mode')
 
     def on_download_row_activated(self, _listbox, row):
         row.grab_focus()

@@ -294,6 +294,8 @@ class Library:
         self.categories_list.enter_edit_mode()
 
     def enter_selection_mode(self, x=None, y=None, selected_thumbnail=None):
+        self.window.left_button.set_label(_('Cancel'))
+        self.window.left_button.set_tooltip_text(_('Cancel'))
         # Hide search button: disable search
         self.window.right_button_stack.hide()
 
@@ -301,16 +303,14 @@ class Library:
 
         self.flowbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
 
-        self.window.headerbar.add_css_class('selection-mode')
-        self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.left_button.set_icon_name('go-previous-symbolic')
-
     def leave_selection_mode(self, param=None):
-        self.selection_mode = False
-
+        self.window.left_button.set_tooltip_text(_('Add new comic'))
+        self.window.left_button.set_icon_name('list-add-symbolic')
         if self.page == 'flowbox':
             # Show search button: re-enable search
             self.window.right_button_stack.show()
+
+        self.selection_mode = False
 
         self.flowbox.set_selection_mode(Gtk.SelectionMode.NONE)
         for thumbnail in self.flowbox:
@@ -319,10 +319,6 @@ class Library:
         if self.categories_list.edit_mode:
             refresh_library = param == 'refresh_library'
             self.categories_list.leave_edit_mode(refresh_library=refresh_library)
-
-        self.window.headerbar.remove_css_class('selection-mode')
-        self.window.left_button.set_tooltip_text(_('Add new comic'))
-        self.window.left_button.set_icon_name('list-add-symbolic')
 
     def on_flap_revealed(self, _flap, _param):
         with self.flap_reveal_button.handler_block(self.flap_reveal_button_toggled_handler_id):
