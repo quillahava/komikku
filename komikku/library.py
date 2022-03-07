@@ -459,9 +459,9 @@ class Library:
 
         self.search_menu_filters[action.props.name.split('.')[-1]] = value
         if sum(self.search_menu_filters.values()):
-            self.search_menu_button.add_css_class('button-warning')
+            self.search_menu_button.add_css_class('accent')
         else:
-            self.search_menu_button.remove_css_class('button-warning')
+            self.search_menu_button.remove_css_class('accent')
 
         self.flowbox.invalidate_filter()
 

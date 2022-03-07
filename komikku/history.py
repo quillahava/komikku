@@ -136,7 +136,7 @@ class History(Gtk.Box):
                     box.append(label)
 
                     listbox = Gtk.ListBox()
-                    listbox.add_css_class('content')
+                    listbox.add_css_class('boxed-list')
                     listbox.set_filter_func(self.filter)
                     box.append(listbox)
 

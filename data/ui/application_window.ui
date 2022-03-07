@@ -492,6 +492,9 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                             <property name="scroll-to-focus">True</property>
                                             <property name="child">
                                               <object class="GtkListBox" id="library_categories_listbox">
+                                                <style>
+                                                  <class name="navigation-sidebar"/>
+                                                </style>
                                               </object>
                                             </property>
                                           </object>
@@ -507,6 +510,9 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                       <object class="AdwStatusPage">
                                         <property name="icon_name">user-bookmarks-symbolic</property>
                                         <property name="title">No categories</property>
+                                        <style>
+                                          <class name="compact"/>
+                                        </style>
                                       </object>
                                     </property>
                                   </object>
@@ -1016,6 +1022,13 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                         <property name="maximum_size">800</property>
                                         <child>
                                           <object class="GtkListView" id="card_chapters_listview">
+                                            <property name="margin-top">12</property>
+                                            <property name="margin-end">12</property>
+                                            <property name="margin-bottom">12</property>
+                                            <property name="margin-start">12</property>
+                                            <style>
+                                              <class name="card"/>
+                                            </style>
                                           </object>
                                         </child>
                                       </object>

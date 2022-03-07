@@ -562,7 +562,7 @@ class DownloadRow(Gtk.ListBoxRow):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         # Manga
         label = Gtk.Label(xalign=0)
-        label.add_css_class('download-manager-download-label')
+        label.add_css_class('body')
         label.set_valign(Gtk.Align.CENTER)
         label.set_wrap(True)
         label.set_text(download.chapter.manga.name)
@@ -570,7 +570,7 @@ class DownloadRow(Gtk.ListBoxRow):
 
         # Progress label
         self.progress_label = Gtk.Label(xalign=0)
-        self.progress_label.add_css_class('download-manager-download-sublabel')
+        self.progress_label.add_css_class('caption')
         self.progress_label.set_valign(Gtk.Align.CENTER)
         self.progress_label.set_wrap(True)
         text = _(Download.STATUSES[self.download.status]).upper() if self.download.status == 'error' else ''
@@ -584,7 +584,7 @@ class DownloadRow(Gtk.ListBoxRow):
 
         # Chapter
         label = Gtk.Label(xalign=0)
-        label.add_css_class('download-manager-download-sublabel')
+        label.add_css_class('caption')
         label.set_valign(Gtk.Align.CENTER)
         label.set_wrap(True)
         label.set_text(download.chapter.title)

@@ -603,7 +603,7 @@ class ChaptersListRow(Gtk.Box):
         # Title
         self.title_label = Gtk.Label(xalign=0)
         self.title_label.set_valign(Gtk.Align.CENTER)
-        self.title_label.add_css_class('card-chapter-label')
+        self.title_label.add_css_class('body')
         self.title_label.set_wrap(True)
         vbox.append(self.title_label)
 
@@ -611,7 +611,7 @@ class ChaptersListRow(Gtk.Box):
         self.scanlators_label = Gtk.Label(xalign=0, visible=False)
         self.scanlators_label.set_valign(Gtk.Align.CENTER)
         self.scanlators_label.add_css_class('dim-label')
-        self.scanlators_label.add_css_class('card-chapter-sublabel')
+        self.scanlators_label.add_css_class('caption')
         self.scanlators_label.set_wrap(True)
         vbox.append(self.scanlators_label)
 
@@ -631,7 +631,7 @@ class ChaptersListRow(Gtk.Box):
         # Recent badge
         self.badge_label = Gtk.Label(xalign=0, yalign=1, visible=False)
         self.badge_label.set_valign(Gtk.Align.CENTER)
-        self.badge_label.add_css_class('card-chapter-sublabel')
+        self.badge_label.add_css_class('caption')
         self.badge_label.add_css_class('badge')
         self.badge_label.set_text(_('New'))
         hbox.append(self.badge_label)
@@ -640,7 +640,7 @@ class ChaptersListRow(Gtk.Box):
         self.subtitle_label = Gtk.Label(xalign=0, yalign=1, hexpand=1)
         self.subtitle_label.set_halign(Gtk.Align.START)
         self.subtitle_label.set_valign(Gtk.Align.CENTER)
-        self.subtitle_label.add_css_class('card-chapter-sublabel')
+        self.subtitle_label.add_css_class('caption')
         hbox.append(self.subtitle_label)
 
         # Download progress
@@ -658,7 +658,7 @@ class ChaptersListRow(Gtk.Box):
         # Read progress: nb read / nb pages
         self.read_progress_label = Gtk.Label(xalign=0.5, yalign=1)
         self.read_progress_label.set_halign(Gtk.Align.CENTER)
-        self.read_progress_label.add_css_class('card-chapter-sublabel')
+        self.read_progress_label.add_css_class('caption')
         hbox.append(self.read_progress_label)
 
         self.append(hbox)
@@ -673,13 +673,13 @@ class ChaptersListRow(Gtk.Box):
 
         self.title_label.set_label(self.chapter.title)
         self.title_label.remove_css_class('dim-label')
-        self.title_label.remove_css_class('card-chapter-label-started')
+        self.title_label.remove_css_class('warning')
         if self.chapter.read:
             # Chapter reading ended
             self.title_label.add_css_class('dim-label')
         elif self.chapter.last_page_read_index is not None:
             # Chapter reading started
-            self.title_label.add_css_class('card-chapter-label-started')
+            self.title_label.add_css_class('warning')
 
         if self.chapter.scanlators:
             self.scanlators_label.set_markup(html_escape(', '.join(self.chapter.scanlators)))

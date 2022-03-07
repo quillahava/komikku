@@ -2,15 +2,6 @@ spinner {
     color: #EE4035;
 }
 
-.list-bordered {
-    border-right: 1px solid @borders;
-    border-left: 1px solid @borders;
-}
-
-.button-warning {
-    color: @warning_color;
-}
-
 /* Library page */
 .search-box entry {
     border-width: 1px 0 1px 1px;
@@ -37,23 +28,8 @@ flowbox flowboxchild {
 }
 
 /* Manga card page */
-.card-info-box {
-    background-color: @theme_base_color;
-}
-
-.card-chapter-listboxrow {
-    border-bottom: 1px solid @borders;
-    padding: 6px 6px 12px 6px;
-}
-.card-chapter-label {
-    font-size: 14px;
-}
-.card-chapter-label-started {
-    color: @warning_color;
-}
-
-.card-chapter-sublabel {
-    font-size: 10px;
+listview :last-child {
+    border-bottom: none;
 }
 
 .badge {
@@ -64,11 +40,6 @@ flowbox flowboxchild {
 }
 
 /* Reader page */
-.reader-controls-bottom-box {
-    background: rgba(0, 0, 0, .75);
-    color: #fff;
-}
-
 .reader-page-number-indicator-label {
     color: #fff;
     letter-spacing: 1px;
@@ -85,6 +56,11 @@ flowbox flowboxchild {
 }
 
 /* Explorer - servers page */
+.list-bordered {
+    border-right: 1px solid @borders;
+    border-left: 1px solid @borders;
+}
+
 .explorer-dialog-server-listboxrow {
     padding: 16px 12px;
 }
@@ -107,10 +83,4 @@ flowbox flowboxchild {
 .download-manager-download-listboxrow {
     border-bottom: 1px solid @borders;
     padding: 6px 6px 12px 6px;
-}
-.download-manager-download-label {
-    font-size: 14px;
-}
-.download-manager-download-sublabel {
-    font-size: 10px;
 }
