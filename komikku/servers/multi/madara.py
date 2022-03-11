@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -20,7 +20,7 @@
 # Reaperscans [EN]
 # Reaperscans [PT]
 # Submanga [ES]
-# Wakascan [FR]
+# Wakascan [FR] (disabled)
 
 from bs4 import BeautifulSoup
 import datetime
@@ -183,12 +183,12 @@ class Madara(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         data = dict(
             pages=[],
         )
-        for img_element in soup.find_all('img', class_='wp-manga-chapter-img'):
+        for img_element in soup.find(class_='reading-content').find_all('img'):
             img_url = img_element.get('data-src')
             if img_url is None:
                 img_url = img_element.get('src')
@@ -207,7 +207,7 @@ class Madara(Server):
         r = self.session_get(
             page['image'],
             headers={
-                'referer': self.chapter_url.format(manga_slug, chapter_slug),
+                'Referer': self.chapter_url.format(manga_slug, chapter_slug),
             }
         )
         if r.status_code != 200:
