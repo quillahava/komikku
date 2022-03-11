@@ -43,12 +43,6 @@ class Reader:
         self.page_number_label.set_valign(Gtk.Align.END)
         self.overlay.add_overlay(self.page_number_label)
 
-        self.gesture_click = Gtk.GestureClick.new()
-        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
-        self.gesture_click.set_exclusive(True)
-        self.gesture_click.set_button(1)
-        self.overlay.add_controller(self.gesture_click)
-
         # Controls
         self.controls = Controls(self)
 
@@ -211,7 +205,7 @@ class Reader:
 
     def remove_pager(self):
         if self.pager:
-            self.pager.clear()
+            self.pager.dispose()
             self.pager = None
 
     def save_page(self, action, param):

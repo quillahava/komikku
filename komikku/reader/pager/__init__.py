@@ -20,9 +20,6 @@ from komikku.utils import log_error_traceback
 
 
 class BasePager:
-    btn_press_handler_id = None
-    btn_press_timeout_id = None
-    key_press_handler_id = None
     default_double_click_time = Gtk.Settings.get_default().get_property('gtk-double-click-time')
     zoom = dict(active=False)
 
@@ -30,21 +27,18 @@ class BasePager:
         self.reader = reader
         self.window = reader.window
 
+        # Keyboard navigation
+        self.key_pressed_handler_id = self.window.controller_key.connect('key-pressed', self.on_key_pressed)
+
         # Controller to track pointer motion: used to hide pointer during keyboard navigation
         self.controller_motion = Gtk.EventControllerMotion.new()
-        self.controller_motion.connect('motion', self.on_pointer_motion)
         self.add_controller(self.controller_motion)
+        self.controller_motion.connect('motion', self.on_pointer_motion)
 
     @property
     @abstractmethod
     def pages(self):
-        children = []
-        child = self.get_first_child()
-        while child:
-            children.append(child)
-            child = child.get_next_sibling()
-
-        return children
+        raise NotImplementedError()
 
     @abstractmethod
     def add_page(self, position):
@@ -52,17 +46,15 @@ class BasePager:
 
     @abstractmethod
     def clear(self):
-        page = self.get_first_child()
-        while page:
-            next_page = page.get_next_sibling()
-            page.clean()
-            self.remove(page)
-            page = next_page
+        raise NotImplementedError()
 
     def crop_pages_borders(self):
         for page in self.pages:
             if page.status == 'rendered' and page.error is None:
                 page.set_image()
+
+    def dispose(self):
+        self.window.controller_key.disconnect(self.key_pressed_handler_id)
 
     @abstractmethod
     def goto_page(self, page_index):
@@ -192,8 +184,9 @@ class Pager(Adw.Bin, BasePager):
     current_chapter_id = None
     init_flag = False
 
-    def __init__(self, reader):
+    btn_press_timeout_id = None
 
+    def __init__(self, reader):
         Adw.Bin.__init__(self, focusable=True)
         BasePager.__init__(self, reader)
 
@@ -205,9 +198,6 @@ class Pager(Adw.Bin, BasePager):
         self.carousel.connect('notify::orientation', self.resize_pages)
         self.carousel.connect('page-changed', self.on_page_changed)
 
-        # Keyboard navigation
-        self.window.controller_key.connect('key-pressed', self.on_key_pressed)
-
         # Navigation when a page is scrollable (vertically or horizontally)
         # This can occur when page scaling is `adapt-to-height` or 'adapt-to-width'.
         # In this cases, scroll events are consumed and we must manage page changes in place of Adw.Carousel.
@@ -217,7 +207,12 @@ class Pager(Adw.Bin, BasePager):
         self.controller_scroll.connect('scroll', self.on_scroll)
 
         # Mouse click layout navigation
-        self.reader.gesture_click.connect('released', self.on_btn_press)
+        self.gesture_click = Gtk.GestureClick.new()
+        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
+        self.gesture_click.set_exclusive(True)
+        self.gesture_click.set_button(1)
+        self.add_controller(self.gesture_click)
+        self.gesture_click.connect('released', self.on_btn_press)
 
     @property
     def current_page(self):
@@ -260,10 +255,16 @@ class Pager(Adw.Bin, BasePager):
         new_page.render()
 
     def clear(self):
-        for index in reversed(range(self.carousel.get_n_pages())):
-            page = self.carousel.get_nth_page(index)
+        page = self.carousel.get_first_child()
+        while page:
+            next_page = page.get_next_sibling()
             page.clean()
             self.carousel.remove(page)
+            page = next_page
+
+    def dispose(self):
+        BasePager.dispose(self)
+        self.clear()
 
     def goto_page(self, index):
         if self.carousel.get_nth_page(0).index == index and self.carousel.get_nth_page(0).chapter == self.current_page.chapter:

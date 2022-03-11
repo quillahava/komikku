@@ -41,9 +41,6 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.START)
         self.set_child(self.box)
 
-        # Keyboard navigation
-        self.window.controller_key.connect('key-pressed', self.on_key_pressed)
-
         self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.VERTICAL)
         self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.add_controller(self.controller_scroll)
@@ -110,15 +107,6 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
                 self.vadj.set_value(value)
 
     def clear(self):
-        self.vadj.set_value(0)
-        self.vadj.disconnect(self.scroll_changed_handler_id)
-        self.vadj.disconnect(self.scroll_value_changed_handler_id)
-
-        GLib.source_remove(self.render_pages_timeout_id)
-
-        self.clear_pages()
-
-    def clear_pages(self):
         # self.disable_keyboard_and_mouse_click_navigation()
 
         page = self.box.get_first_child()
@@ -127,6 +115,11 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
             page.clean()
             self.box.remove(page)
             page = next_page
+
+    def dispose(self):
+        BasePager.dispose(self)
+        GLib.source_remove(self.render_pages_timeout_id)
+        self.clear()
 
     def get_page_offset(self, page):
         offset = 0
@@ -153,7 +146,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         self.init(self.current_page.chapter, index)
 
     def init(self, chapter, page_index=None):
-        self.clear_pages()
+        self.clear()
 
         if page_index is None:
             if chapter.read:
