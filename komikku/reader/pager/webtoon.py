@@ -264,7 +264,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
                         message = _('It was the last chapter.')
                     else:
                         message = _('There is no previous chapter.')
-                    self.window.show_notification(message, interval=2)
+                    self.window.show_notification(message, 2)
 
                 return
 

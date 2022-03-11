@@ -481,7 +481,7 @@ class Pager(Adw.Bin, BasePager):
                 message = _('There is no previous chapter.')
             else:
                 message = _('It was the last chapter.')
-            self.window.show_notification(message, interval=2)
+            self.window.show_notification(message, 2)
 
             return
 
@@ -570,7 +570,7 @@ class Pager(Adw.Bin, BasePager):
                 message = _('It was the last chapter.')
             elif direction == 'right':
                 message = _('There is no previous chapter.')
-            self.window.show_notification(message, interval=2)
+            self.window.show_notification(message, 2)
 
             return
 
@@ -600,15 +600,16 @@ class Pager(Adw.Bin, BasePager):
             if index != 1:
                 # Add next page depending of navigation direction
                 self.add_page('start' if index == 0 else 'end')
-        elif page.index == 0:
-            self.window.show_notification(_('This chapter is inaccessible.'), 2)
 
         # Update title, initialize controls and notify user if chapter changed
         if self.current_chapter_id != page.chapter.id:
             self.current_chapter_id = page.chapter.id
             self.reader.update_title(page.chapter)
-            self.window.show_notification(page.chapter.title, 2)
+            self.window.show_notification(page.chapter.title, 2, reuse=True)
             self.reader.controls.init(page.chapter)
+
+        if page.error:
+            self.window.show_notification(_('This chapter is inaccessible.'), 2)
 
         # Update page number and controls page slider
         self.reader.update_page_number(page.index + 1, len(page.chapter.pages) if page.loadable else None)

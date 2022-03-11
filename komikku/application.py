@@ -6,7 +6,6 @@ from gettext import gettext as _
 import gi
 import logging
 import sys
-from threading import Timer
 import time
 
 gi.require_version('Gtk', '4.0')
@@ -132,12 +131,15 @@ class Application(Adw.Application):
 class ApplicationWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ApplicationWindow'
 
+    current_toast = None
     hidpi_scale = 1
     mobile_width = False
     network_available = False
     page = None
 
     size = None
+
+    toast_overlay = Gtk.Template.Child('toast_overlay')
 
     headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
     headerbar = Gtk.Template.Child('headerbar')
@@ -201,9 +203,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
     history_search_button = Gtk.Template.Child('history_search_button')
 
     preferences_subtitle_label = Gtk.Template.Child('preferences_subtitle_label')
-
-    notification_label = Gtk.Template.Child('notification_label')
-    notification_revealer = Gtk.Template.Child('notification_revealer')
 
     app_logo = Gtk.Template.Child('app_logo')
 
@@ -361,9 +360,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
     def enter_search_mode(self, action, param):
         if self.page == 'library':
             self.library.toggle_search_mode()
-
-    def hide_notification(self):
-        self.notification_revealer.set_reveal_child(False)
 
     def init_theme(self):
         def set_color_scheme(force_dark):
@@ -634,12 +630,31 @@ class ApplicationWindow(Adw.ApplicationWindow):
             self.reader.controls.on_unfullscreen()
             self.unfullscreen()
 
-    def show_notification(self, message, interval=5):
-        self.notification_label.set_text(message)
-        self.notification_revealer.set_reveal_child(True)
+    def show_notification(self, message, timeout=5, priority=Adw.ToastPriority.NORMAL, reuse=False):
+        """
+        Display an in-app notification using a Adw.Toast
 
-        revealer_timer = Timer(interval, GLib.idle_add, args=[self.hide_notification])
-        revealer_timer.start()
+        Only one notification can be shown at a time:
+        - if priority is Adw.ToastPriority.NORMAL, notification is queued
+        - if priority is Adw.ToastPriority.HIGH, notification is displayed immediately, pushing previous notification into the queue
+        - if reuse is True, previous notification is recycled to immediately display the notification
+
+        Pending bug: https://gitlab.gnome.org/GNOME/libadwaita/-/issues/440
+        """
+
+        if reuse and self.current_toast:
+            self.current_toast.set_title(message)
+        else:
+            toast = Adw.Toast.new(message)
+            toast.set_timeout(timeout)
+            toast.set_priority(priority)
+
+            def on_dismissed(*args):
+                self.current_toast = None
+            toast.connect('dismissed', on_dismissed)
+
+            self.toast_overlay.add_toast(toast)
+            self.current_toast = toast
 
     def show_page(self, name, transition=True):
         self.activity_indicator.stop()
