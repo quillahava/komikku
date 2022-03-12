@@ -170,6 +170,14 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
 
         self.set_interactive(True)
 
+    def on_btn_press(self, _gesture, _n_press, x, y):
+        if not self.interactive:
+            return
+
+        self.on_single_click(x, y)
+
+        return Gdk.EVENT_STOP
+
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.window.page != 'reader':
             return Gdk.EVENT_PROPAGATE
@@ -273,6 +281,11 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
             self.add_page(Gtk.PositionType.TOP if self.scroll_direction == Gtk.DirectionType.UP else Gtk.PositionType.BOTTOM)
         else:
             self.current_page_scroll_value = scroll_value - self.get_page_offset(page)
+
+    def on_single_click(self, x, _y):
+        if x >= self.reader.size.width / 3 or x <= 2 * self.reader.size.width / 3:
+            # Center part of the page: toggle controls
+            self.reader.toggle_controls()
 
     def render_pages(self):
         if self.render_pages_counter == 0:

@@ -35,6 +35,14 @@ class BasePager:
         self.add_controller(self.controller_motion)
         self.controller_motion.connect('motion', self.on_pointer_motion)
 
+        # Mouse click layout navigation
+        self.gesture_click = Gtk.GestureClick.new()
+        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
+        self.gesture_click.set_exclusive(True)
+        self.gesture_click.set_button(1)
+        self.add_controller(self.gesture_click)
+        self.gesture_click.connect('released', self.on_btn_press)
+
     @property
     @abstractmethod
     def pages(self):
@@ -68,6 +76,10 @@ class BasePager:
         raise NotImplementedError()
 
     @abstractmethod
+    def on_btn_pressed(self, _widget, event):
+        raise NotImplementedError()
+
+    @abstractmethod
     def on_key_pressed(self, _widget, event):
         raise NotImplementedError()
 
@@ -89,6 +101,10 @@ class BasePager:
 
         GLib.idle_add(self.update, page, 1)
         GLib.idle_add(self.save_progress, page)
+
+    @abstractmethod
+    def on_single_click(self, x, _y):
+        raise NotImplementedError()
 
     def rescale_pages(self):
         self.zoom['active'] = False
@@ -205,14 +221,6 @@ class Pager(Adw.Bin, BasePager):
         self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.add_controller(self.controller_scroll)
         self.controller_scroll.connect('scroll', self.on_scroll)
-
-        # Mouse click layout navigation
-        self.gesture_click = Gtk.GestureClick.new()
-        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
-        self.gesture_click.set_exclusive(True)
-        self.gesture_click.set_button(1)
-        self.add_controller(self.gesture_click)
-        self.gesture_click.connect('released', self.on_btn_press)
 
     @property
     def current_page(self):
