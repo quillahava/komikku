@@ -323,29 +323,23 @@ class Pager(Adw.Bin, BasePager):
 
         GLib.idle_add(self.carousel.scroll_to, center_page, False)
 
-    def on_btn_press(self, _gesture, _n_press, x, y):
-        if not self.interactive:
-            return
-
-        if self.btn_press_timeout_id is None:  # and event.type == Gdk.EventType.BUTTON_PRESS:
+    def on_btn_press(self, _gesture, n_press, x, y):
+        if n_press == 1 and self.btn_press_timeout_id is None:
             # Schedule single click event to be able to detect double click
             self.btn_press_timeout_id = GLib.timeout_add(self.default_double_click_time + 100, self.on_single_click, x, y)
 
-        # elif event.type == Gdk.EventType._2BUTTON_PRESS:
-        #     # Remove scheduled single click event
-        #     if self.btn_press_timeout_id:
-        #         GLib.source_remove(self.btn_press_timeout_id)
-        #         self.btn_press_timeout_id = None
-        #
-        #     GLib.idle_add(self.on_double_click, event.copy())
+        elif n_press == 2:
+            # Remove scheduled single click event
+            if self.btn_press_timeout_id:
+                GLib.source_remove(self.btn_press_timeout_id)
+                self.btn_press_timeout_id = None
+
+            GLib.idle_add(self.on_double_click, x, y)
 
         return Gdk.EVENT_STOP
 
     def on_double_click(self, x, y):
         # Zoom/unzoom
-        if self.reader.reading_mode == 'webtoon':
-            return
-
         def on_adjustment_change(hadj, vadj, h_value, v_value):
             hadj.disconnect(handler_id)
 
@@ -360,13 +354,11 @@ class Pager(Adw.Bin, BasePager):
         if page.status != 'rendered' or page.error is not None or page.animated:
             return
 
-        hadj = page.scrolledwindow.get_hadjustment()
-        vadj = page.scrolledwindow.get_vadjustment()
+        hadj = page.get_hadjustment()
+        vadj = page.get_vadjustment()
 
         if self.zoom['active'] is False:
-            self.set_interactive(False)
-
-            pixbuf = page.imagebuf.get_pixbuf()
+            self.interactive = False
 
             # Record hadjustment and vadjustment values
             self.zoom['orig_hadj_value'] = hadj.get_value()
@@ -374,8 +366,8 @@ class Pager(Adw.Bin, BasePager):
 
             # Adjust image's width to 2x window's width
             factor = 2
-            orig_width = page.image.get_pixbuf().get_width() / self.window.hidpi_scale
-            orig_height = page.image.get_pixbuf().get_height() / self.window.hidpi_scale
+            orig_width = page.picture.width
+            orig_height = page.picture.height
             zoom_width = self.reader.size.width * factor
             zoom_height = orig_height * (zoom_width / orig_width)
             ratio = zoom_width / orig_width
@@ -394,17 +386,12 @@ class Pager(Adw.Bin, BasePager):
 
             handler_id = hadj.connect('changed', on_adjustment_change, vadj, h_value, v_value)
 
-            scaled_pixbuf = pixbuf.scale_simple(
-                zoom_width * self.window.hidpi_scale, zoom_height * self.window.hidpi_scale, InterpType.BILINEAR)
-
-            if self.window.hidpi_scale != 1:
-                page.image.set_from_surface(create_cairo_surface_from_pixbuf(scaled_pixbuf, self.window.hidpi_scale))
-            else:
-                page.image.set_from_pixbuf(scaled_pixbuf)
+            page.picture.resize(zoom_width, zoom_height)
+            page.props.can_target = True
 
             self.zoom['active'] = True
         else:
-            self.set_interactive(True)
+            self.interactive = True
 
             handler_id = hadj.connect(
                 'changed', on_adjustment_change, vadj, self.zoom['orig_hadj_value'], self.zoom['orig_vadj_value'])
