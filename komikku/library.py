@@ -249,7 +249,7 @@ class Library:
 
         self.thumbnails_size = (width, height)
 
-    def delete_selected(self, _action, _param):
+    def delete_mangas(self, mangas):
         def confirm_callback():
             # Stop Downloader & Updater
             self.window.downloader.stop()
@@ -260,23 +260,34 @@ class Library:
                 continue
 
             # Safely delete mangas in DB
-            for thumbnail in self.flowbox.get_selected_children():
-                thumbnail.manga.delete()
+            for manga in mangas:
+                manga.delete()
 
             # Restart Downloader & Updater
             self.window.downloader.start()
             self.window.updater.start()
 
             # Finally, update library
-            self.populate()
+            if not self.flowbox.get_first_child():
+                # Library is now empty
+                self.populate()
+            else:
+                for manga in mangas:
+                    self.on_manga_deleted(manga)
 
-            self.leave_selection_mode()
+            if self.window.page == 'card':
+                self.show()
+            else:
+                self.leave_selection_mode()
 
-        self.window.confirm(
-            _('Delete?'),
-            _('Are you sure you want to delete selected mangas?'),
-            confirm_callback
-        )
+        if self.window.page == 'card':
+            message = _('Are you sure you want to delete this manga?')
+        else:
+            message = _('Are you sure you want to delete selected mangas?')
+        self.window.confirm(_('Delete?'), message, confirm_callback)
+
+    def delete_selected(self, _action, _param):
+        self.delete_mangas([thumbnail.manga for thumbnail in self.flowbox.get_selected_children()])
 
     def download_selected(self, _action, _param):
         chapters = []
@@ -814,6 +825,8 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.set_child(self.overlay)
 
         self.__draw_name()
+
+        self.resize(width, height)
 
     def __draw_name(self):
         self.name_label.set_text(self.manga.name)

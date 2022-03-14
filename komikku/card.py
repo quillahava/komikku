@@ -108,40 +108,7 @@ class Card:
         self.viewswitchertitle.set_view_switcher_enabled(True)
 
     def on_delete_menu_clicked(self, action, param):
-        def confirm_callback():
-            # Stop Downloader & Updater
-            self.window.downloader.stop()
-            self.window.updater.stop()
-
-            while self.window.downloader.running or self.window.updater.running:
-                time.sleep(0.1)
-                continue
-
-            # Safely delete manga in DB
-            self.manga.delete()
-
-            # Restart Downloader & Updater
-            self.window.downloader.start()
-            self.window.updater.start()
-
-            # Finally, update and show library
-            db_conn = create_db_connection()
-            nb_mangas = db_conn.execute('SELECT count(*) FROM mangas').fetchone()[0]
-            db_conn.close()
-
-            if nb_mangas == 0:
-                # Library is now empty
-                self.window.library.populate()
-            else:
-                self.window.library.on_manga_deleted(self.manga)
-
-            self.window.library.show()
-
-        self.window.confirm(
-            _('Delete?'),
-            _('Are you sure you want to delete this manga?'),
-            confirm_callback
-        )
+        self.window.library.delete_mangas([self.manga, ])
 
     def on_manga_updated(self, updater, manga, nb_recent_chapters, nb_deleted_chapters, synced):
         if self.window.page == 'card' and self.manga.id == manga.id:
