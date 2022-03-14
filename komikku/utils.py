@@ -225,9 +225,11 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
     def __init__(self, path, pixbuf):
         super().__init__()
 
-        self.pixbuf = pixbuf
-        self.path = path
         self.cropped = False
+        self.path = path
+        self.pixbuf = pixbuf
+        self.texture = Gdk.Texture.new_for_pixbuf(pixbuf)
+        self.texture_cropped = None
 
         self.orig_width = self.pixbuf.get_width()
         self.orig_height = self.pixbuf.get_height()
@@ -341,11 +343,13 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
 
             return self.pixbuf
 
-        pixbuf = crop_borders() if self.cropped else self.pixbuf
+        if self.cropped and self.texture_cropped is None:
+            self.texture_cropped = Gdk.Texture.new_for_pixbuf(crop_borders())
 
-        pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
-        texture = Gdk.Texture.new_for_pixbuf(pixbuf)
-        texture.snapshot(snapshot, width, height)
+        if self.cropped:
+            self.texture_cropped.snapshot(snapshot, width, height)
+        else:
+            self.texture.snapshot(snapshot, width, height)
 
     def resize(self, width, height, cropped=False):
         self.width = width
