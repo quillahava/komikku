@@ -618,8 +618,6 @@ class ChaptersListRow(Gtk.Box):
 
         self.download_stop_button = Gtk.Button.new_from_icon_name('media-playback-stop-symbolic')
         self.download_stop_button.hide()
-        self.download_stop_button.set_focusable(True)
-        self.download_stop_button.set_receives_default(True)
         hbox.append(self.download_stop_button)
 
         # Read progress: nb read / nb pages

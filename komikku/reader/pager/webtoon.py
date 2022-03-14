@@ -170,7 +170,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
 
         self.set_interactive(True)
 
-    def on_btn_press(self, _gesture, _n_press, x, y):
+    def on_btn_clicked(self, _gesture, _n_press, x, y):
         if not self.interactive:
             return
 

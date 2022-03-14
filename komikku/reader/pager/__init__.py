@@ -12,10 +12,8 @@ from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository.GdkPixbuf import InterpType
 
 from komikku.reader.pager.page import Page
-from komikku.utils import create_cairo_surface_from_pixbuf
 from komikku.utils import log_error_traceback
 
 
@@ -41,7 +39,7 @@ class BasePager:
         self.gesture_click.set_exclusive(True)
         self.gesture_click.set_button(1)
         self.add_controller(self.gesture_click)
-        self.gesture_click.connect('released', self.on_btn_press)
+        self.gesture_click.connect('released', self.on_btn_clicked)
 
     @property
     @abstractmethod
@@ -76,7 +74,7 @@ class BasePager:
         raise NotImplementedError()
 
     @abstractmethod
-    def on_btn_pressed(self, _widget, event):
+    def on_btn_clicked(self, _widget, event):
         raise NotImplementedError()
 
     @abstractmethod
@@ -200,7 +198,7 @@ class Pager(Adw.Bin, BasePager):
     current_chapter_id = None
     init_flag = False
 
-    btn_press_timeout_id = None
+    btn_clicked_timeout_id = None
 
     def __init__(self, reader):
         Adw.Bin.__init__(self, focusable=True)
@@ -323,16 +321,16 @@ class Pager(Adw.Bin, BasePager):
 
         GLib.idle_add(self.carousel.scroll_to, center_page, False)
 
-    def on_btn_press(self, _gesture, n_press, x, y):
-        if n_press == 1 and self.btn_press_timeout_id is None:
+    def on_btn_clicked(self, _gesture, n_press, x, y):
+        if n_press == 1 and self.btn_clicked_timeout_id is None:
             # Schedule single click event to be able to detect double click
-            self.btn_press_timeout_id = GLib.timeout_add(self.default_double_click_time + 100, self.on_single_click, x, y)
+            self.btn_clicked_timeout_id = GLib.timeout_add(self.default_double_click_time, self.on_single_click, x, y)
 
         elif n_press == 2:
             # Remove scheduled single click event
-            if self.btn_press_timeout_id:
-                GLib.source_remove(self.btn_press_timeout_id)
-                self.btn_press_timeout_id = None
+            if self.btn_clicked_timeout_id:
+                GLib.source_remove(self.btn_clicked_timeout_id)
+                self.btn_clicked_timeout_id = None
 
             GLib.idle_add(self.on_double_click, x, y)
 
@@ -527,7 +525,7 @@ class Pager(Adw.Bin, BasePager):
             self.scroll_to_direction('left' if dy < 0 else 'right')
 
     def on_single_click(self, x, _y):
-        self.btn_press_timeout_id = None
+        self.btn_clicked_timeout_id = None
 
         if x < self.reader.size.width / 3:
             # 1st third of the page
