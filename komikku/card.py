@@ -70,11 +70,13 @@ class Card:
         self.chapters_list.add_actions()
 
     def enter_selection_mode(self, *args):
+        if self.selection_mode:
+            return
+
         self.window.left_button.set_label(_('Cancel'))
         self.window.left_button.set_tooltip_text(_('Cancel'))
 
         self.selection_mode = True
-
         self.chapters_list.enter_selection_mode()
 
         self.viewswitchertitle.set_view_switcher_enabled(False)
@@ -101,9 +103,8 @@ class Card:
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.left_button.set_tooltip_text(_('Back'))
 
-        self.selection_mode = False
-
         self.chapters_list.leave_selection_mode()
+        self.selection_mode = False
 
         self.viewswitchertitle.set_view_switcher_enabled(True)
 
@@ -282,6 +283,9 @@ class ChaptersList:
     def __init__(self, card):
         self.card = card
 
+        self.selection_positions = []
+        self.selection_single_click_position = None
+
         self.factory = Gtk.SignalListItemFactory()
         self.factory.connect('setup', self.on_factory_setup)
         self.factory.connect('bind', self.on_factory_bind)
@@ -295,13 +299,14 @@ class ChaptersList:
         self.listview.set_model(self.model)
         self.listview.set_show_separators(True)
         self.listview.set_single_click_activate(True)
-        self.listview.connect('activate', self.on_activate)
+        # self.listview.set_enable_rubberband(True)
+        self.listview.connect('activate', self.on_row_activate)
 
+        # Gesture to detect long press on mouse button 1 and enter in selection mode
         self.gesture_long_press = Gtk.GestureLongPress.new()
-        self.gesture_long_press.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.gesture_long_press.set_touch_only(False)
-        self.gesture_long_press.connect('pressed', self.card.enter_selection_mode)
         self.listview.add_controller(self.gesture_long_press)
+        self.gesture_long_press.connect('pressed', self.card.enter_selection_mode)
 
         self.card.window.downloader.connect('download-changed', self.update_chapter_item)
 
@@ -358,8 +363,11 @@ class ChaptersList:
 
         self.card.leave_selection_mode()
 
-    def enter_selection_mode(self, *args):
+    def enter_selection_mode(self):
         self.listview.set_single_click_activate(False)
+
+        # Init selection with clicked row (stored in self.selection_single_click_position)
+        self.on_selection_changed(None, None, None)
 
     def get_selected_chapters(self):
         chapters = []
@@ -373,17 +381,44 @@ class ChaptersList:
 
     def leave_selection_mode(self):
         self.model.unselect_all()
+        self.selection_positions = []
         self.listview.set_single_click_activate(True)
 
     def populate(self):
         self.list_model.populate(self.card.manga.chapters)
 
-    def on_activate(self, _listview, position):
-        chapter = self.list_model.get_item(position).chapter
-        self.card.window.reader.init(self.card.manga, chapter)
+    def on_selection_changed(self, _model, _position, _n_items):
+        if not self.card.selection_mode:
+            return
 
-    def on_selection_changed(self, _model, position, n_items):
-        number = self.model.get_selection().get_size()
+        # Here we try to allow multiple selection by clicking on a row.
+        # When a row is clicled, selection is lost so it must have been saved previously.
+        # We build the new selection from the previous one +/- the clicked row.
+        if self.selection_single_click_position is not None:
+            click_position = self.selection_single_click_position
+            self.selection_single_click_position = None
+
+            selected = Gtk.Bitset.new_empty()
+            mask = Gtk.Bitset.new_empty()
+
+            mask.add(click_position)
+            if click_position not in self.selection_positions:
+                self.selection_positions.append(click_position)
+            else:
+                self.selection_positions.remove(click_position)
+
+            for position in self.selection_positions:
+                mask.add(position)
+                selected.add(position)
+
+            self.model.set_selection(selected, mask)
+
+        self.selection_positions = []
+        bitsec = self.model.get_selection()
+        for index in range(bitsec.get_size()):
+            self.selection_positions.append(bitsec.get_nth(index))
+
+        number = len(self.selection_positions)
         if number:
             self.card.viewswitchertitle.set_subtitle(n_('{0} selected', '{0} selected', number).format(number))
         else:
@@ -402,6 +437,14 @@ class ChaptersList:
 
     def on_factory_bind(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
         list_item.get_child().populate(list_item.get_item())
+
+    def on_row_activate(self, _listview, position):
+        if self.card.selection_mode:
+            # Prevent double-click row activation in selection mode
+            return
+
+        chapter = self.list_model.get_item(position).chapter
+        self.card.window.reader.init(self.card.manga, chapter)
 
     def refresh(self, chapters):
         for chapter in chapters:
@@ -552,7 +595,7 @@ class ChaptersList:
 
 class ChaptersListRow(Gtk.Box):
     def __init__(self, card):
-        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6, margin_top=6, margin_end=6, margin_bottom=6, margin_start=6)
+        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         self.card = card
         self.chapter = None
@@ -560,7 +603,7 @@ class ChaptersListRow(Gtk.Box):
         #
         # Title, scanlators, action button
         #
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin_top=6, margin_end=6, margin_bottom=0, margin_start=6)
         self.append(hbox)
 
         # Vertical box for title and scanlators
@@ -593,7 +636,10 @@ class ChaptersListRow(Gtk.Box):
         #
         # Recent badge, date, download status, page counter
         #
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12, hexpand=1)
+        hbox = Gtk.Box(
+            orientation=Gtk.Orientation.HORIZONTAL, spacing=12,
+            hexpand=1, margin_top=0, margin_end=6, margin_bottom=6, margin_start=6
+        )
 
         # Recent badge
         self.badge_label = Gtk.Label(xalign=0, yalign=1, visible=False)
@@ -627,6 +673,38 @@ class ChaptersListRow(Gtk.Box):
         hbox.append(self.read_progress_label)
 
         self.append(hbox)
+
+        # Gesture to detect click on mouse button 3 and enter in selection mode
+        self.gesture_right_click = Gtk.GestureClick.new()
+        self.gesture_right_click.set_button(3)
+        self.add_controller(self.gesture_right_click)
+        self.gesture_right_click.connect('released', self.on_right_button_clicked)
+
+        # Gesture to detect mouse button 1 click event and store row position
+        self.gesture_left_click = Gtk.GestureClick.new()
+        self.gesture_left_click.set_button(1)
+        self.add_controller(self.gesture_left_click)
+        self.gesture_left_click.connect('pressed', self.on_left_button_clicked)
+
+    @property
+    def position(self):
+        position = -1
+        for item in self.card.chapters_list.list_model:
+            position += 1
+            if item.chapter.id == self.chapter.id:
+                break
+
+        return position
+
+    def on_left_button_clicked(self, _gesture, n_press, _x, _y):
+        self.card.chapters_list.selection_single_click_position = self.position
+
+    def on_right_button_clicked(self, _gesture, _n_press, _x, _y):
+        if self.card.selection_mode:
+            return
+
+        self.card.chapters_list.selection_single_click_position = self.position
+        self.card.enter_selection_mode()
 
     def populate(self, item: ChapterItemWrapper, update=False):
         self.chapter = item.chapter
