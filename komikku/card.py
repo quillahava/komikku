@@ -384,8 +384,19 @@ class ChaptersList:
         self.selection_positions = []
         self.listview.set_single_click_activate(True)
 
-    def populate(self):
-        self.list_model.populate(self.card.manga.chapters)
+    def on_factory_bind(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
+        list_item.get_child().populate(list_item.get_item())
+
+    def on_factory_setup(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
+        list_item.set_child(ChaptersListRow(self.card))
+
+    def on_row_activate(self, _listview, position):
+        if self.card.selection_mode:
+            # Prevent double-click row activation in selection mode
+            return
+
+        chapter = self.list_model.get_item(position).chapter
+        self.card.window.reader.init(self.card.manga, chapter)
 
     def on_selection_changed(self, _model, _position, _n_items):
         if not self.card.selection_mode:
@@ -432,19 +443,8 @@ class ChaptersList:
         self.card.manga.update(dict(sort_order=value))
         self.set_sort_order()
 
-    def on_factory_setup(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
-        list_item.set_child(ChaptersListRow(self.card))
-
-    def on_factory_bind(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
-        list_item.get_child().populate(list_item.get_item())
-
-    def on_row_activate(self, _listview, position):
-        if self.card.selection_mode:
-            # Prevent double-click row activation in selection mode
-            return
-
-        chapter = self.list_model.get_item(position).chapter
-        self.card.window.reader.init(self.card.manga, chapter)
+    def populate(self):
+        self.list_model.populate(self.card.manga.chapters)
 
     def refresh(self, chapters):
         for chapter in chapters:

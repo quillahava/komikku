@@ -396,7 +396,7 @@ class DownloadManager(Gtk.ScrolledWindow):
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         """Allow to enter in selection mode with <SHIFT>+Arrow key"""
-        if self.selection_mode:
+        if self.selection_mode or self.window.page != 'downloader':
             return Gdk.EVENT_PROPAGATE
 
         modifiers = state & Gtk.accelerator_get_default_mod_mask()

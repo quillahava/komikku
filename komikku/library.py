@@ -304,7 +304,7 @@ class Library:
         # Edit categories of selected mangas
         self.categories_list.enter_edit_mode()
 
-    def enter_selection_mode(self, x=None, y=None, selected_thumbnail=None):
+    def enter_selection_mode(self):
         self.window.left_button.set_label(_('Cancel'))
         self.window.left_button.set_tooltip_text(_('Cancel'))
         # Hide search button: disable search
@@ -352,7 +352,7 @@ class Library:
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         """Allow to enter in selection mode with <SHIFT>+Arrow key"""
-        if self.selection_mode:
+        if self.selection_mode or self.window.page != 'library':
             return Gdk.EVENT_PROPAGATE
 
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
@@ -365,7 +365,7 @@ class Library:
         if modifiers != Gdk.ModifierType.SHIFT_MASK or keyval not in arrow_keys:
             return Gdk.EVENT_PROPAGATE
 
-        thumbnail = self.flowbox.get_focus_child()
+        thumbnail = self.flowbox.get_focus_child() or self.flowbox.get_first_child()
         if thumbnail is not None:
             self.enter_selection_mode()
             self.on_manga_thumbnail_activated(None, thumbnail)
@@ -385,8 +385,6 @@ class Library:
             self.add_manga(manga, position=0)
 
     def on_manga_thumbnail_activated(self, _flowbox, thumbnail):
-        thumbnail.grab_focus()
-
         if self.selection_mode:
             if self.selection_mode_range and self.selection_mode_last_thumbnail_index is not None:
                 # Range selection mode: select all mangas between last selected manga and clicked manga
