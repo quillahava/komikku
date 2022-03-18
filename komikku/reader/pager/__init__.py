@@ -201,7 +201,7 @@ class Pager(Adw.Bin, BasePager):
     btn_clicked_timeout_id = None
 
     def __init__(self, reader):
-        Adw.Bin.__init__(self, focusable=True)
+        Adw.Bin.__init__(self)
         BasePager.__init__(self, reader)
 
         self.carousel = Adw.Carousel()

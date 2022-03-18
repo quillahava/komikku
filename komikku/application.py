@@ -535,6 +535,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
             else:
                 self.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
 
+        # Focus is lost after showing popover submenu (bug?)
+        self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())
+
     def on_resize(self, _window, allocation):
         width = self.props.default_width
         height = self.props.default_height
