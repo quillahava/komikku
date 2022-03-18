@@ -521,6 +521,9 @@ class PictureSubdivided(Gtk.Box):
 
         self.props.hexpand = False
         self.props.halign = Gtk.Align.CENTER
+        # Pages of Webtoon pager have a minimum size (equal to reader view size)
+        # In rare cases where an image is smaller than page, it must be centered vertically
+        self.props.valign = Gtk.Align.CENTER
 
         self.path = path
 

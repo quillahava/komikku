@@ -38,6 +38,8 @@ class Page(Gtk.ScrolledWindow):
 
         if self.reader.reading_mode == 'webtoon':
             self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
+            # Page must not be smaller than reader
+            self.set_size_request(-1, self.reader.size.height)
         else:
             self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
             self.set_kinetic_scrolling(True)
@@ -187,6 +189,10 @@ class Page(Gtk.ScrolledWindow):
             self.set_image()
 
     def resize(self):
+        if self.reader.reading_mode == 'webtoon':
+            # Page must not be smaller than reader
+            self.set_size_request(-1, self.reader.size.height)
+
         if self.status == 'rendered':
             self.set_image()
 
