@@ -412,9 +412,13 @@ class DownloadManager(Gtk.ScrolledWindow):
 
     def on_menu_delete_all_clicked(self, _action, _param):
         chapters = []
-        for row in self.listbox:
+
+        row = self.listbox.get_first_child()
+        while row:
+            next_row = row.get_next_sibling()
             chapters.append(row.download.chapter)
             self.listbox.remove(row)
+            row = next_row
 
         self.downloader.remove(chapters)
 
@@ -424,10 +428,14 @@ class DownloadManager(Gtk.ScrolledWindow):
 
     def on_menu_delete_selected_clicked(self, _action, _param):
         chapters = []
-        for row in self.listbox:
+
+        row = self.listbox.get_first_child()
+        while row:
+            next_row = row.get_next_sibling()
             if row._selected:
                 chapters.append(row.download.chapter)
                 self.listbox.remove(row)
+            row = next_row
 
         self.downloader.remove(chapters)
 
