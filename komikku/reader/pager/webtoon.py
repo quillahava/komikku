@@ -6,6 +6,7 @@ from gettext import gettext as _
 
 from gi.repository import Gdk
 from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository import Gtk
 
 from komikku.reader.pager import BasePager
@@ -15,16 +16,13 @@ from komikku.reader.pager.page import Page
 class WebtoonPager(Gtk.ScrolledWindow, BasePager):
     """Vertical smooth/continuous scrolling (a.k.a. infinite canvas) pager"""
 
+    _interactive = True
     current_chapter_id = None
     current_page = None
     current_page_scroll_value = 0
-    interactive = False
     nb_preloaded_pages = 1  # Number of preloaded pages before and after the center/visible page
     scroll_direction = None
     clamp_size = 800
-
-    render_pages_counter = 10
-    render_pages_timeout_id = 0
 
     ignore_scroll_value_changes = False
 
@@ -50,6 +48,14 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         self.scroll_value_changed_handler_id = self.vadj.connect('value-changed', self.on_scroll_value_changed)
 
         self.zoom['active'] = False
+
+    @GObject.Property(type=bool, default=True)
+    def interactive(self):
+        return self._interactive
+
+    @interactive.setter
+    def interactive(self, value):
+        self._interactive = value
 
     @property
     def pages(self):
@@ -93,6 +99,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
 
         new_page.status_changed_handler_id = new_page.connect('notify::status', self.on_page_status_changed)
         new_page.connect('rendered', self.on_page_rendered)
+        new_page.render()
 
     def adjust_scroll(self, value=None, emit_signal=True):
         if value is None:
@@ -107,8 +114,6 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
                 self.vadj.set_value(value)
 
     def clear(self):
-        # self.disable_keyboard_and_mouse_click_navigation()
-
         page = self.box.get_first_child()
         while page:
             next_page = page.get_next_sibling()
@@ -118,7 +123,6 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
 
     def dispose(self):
         BasePager.dispose(self)
-        GLib.source_remove(self.render_pages_timeout_id)
         self.clear()
 
     def get_page_offset(self, page):
@@ -165,10 +169,25 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
                 self.current_page = page
                 page.render()
 
-        self.render_pages_timeout_id = GLib.timeout_add(100, self.render_pages)
+        def render_pages():
+            pages = self.pages
+            n_pages = len(pages)
+            if self.scroll_direction == Gtk.DirectionType.DOWN:
+                pages = reversed(pages)
+
+            done = 0
+            for page in pages:
+                if page.status is None:
+                    page.render()
+                else:
+                    done += 1
+
+            return True if done < n_pages else False
+
+        GLib.timeout_add(1000, render_pages)
         GLib.idle_add(self.update, self.current_page)
 
-        self.set_interactive(True)
+        self.interactive = True
 
     def on_btn_clicked(self, _gesture, _n_press, x, y):
         if not self.interactive:
@@ -179,7 +198,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         return Gdk.EVENT_STOP
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
-        if self.window.page != 'reader':
+        if self.window.page != 'reader' or not self.interactive:
             return Gdk.EVENT_PROPAGATE
 
         modifiers = Gtk.accelerator_get_default_mod_mask()
@@ -220,8 +239,6 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
             return
 
         self.adjust_scroll()
-
-        self.render_pages_counter += 1
 
     def on_scroll(self, _controller, _dx, dy):
         if not self.interactive:
@@ -265,7 +282,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
                         message = _('It was the last chapter.')
                     else:
                         message = _('There is no previous chapter.')
-                    self.window.show_notification(message, 2)
+                    self.window.show_notification(message, 2, reuse=True)
 
                 return
 
@@ -273,7 +290,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
             self.current_page_scroll_value = scroll_value - self.get_page_offset(page)
 
             # Disable navigation: it will be re-enabled if page is loadable
-            self.set_interactive(False)
+            self.interactive = False
 
             GLib.idle_add(self.update, page)
             GLib.idle_add(self.save_progress, page)
@@ -286,23 +303,6 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         if x >= self.reader.size.width / 3 or x <= 2 * self.reader.size.width / 3:
             # Center part of the page: toggle controls
             self.reader.toggle_controls()
-
-    def render_pages(self):
-        if self.render_pages_counter == 0:
-            return GLib.SOURCE_CONTINUE
-
-        pages = self.pages
-        if self.scroll_direction == Gtk.DirectionType.DOWN:
-            pages = reversed(pages)
-
-        for page in pages:
-            if page.status is None:
-                page.render()
-                self.render_pages_counter -= 1
-            if self.render_pages_counter == 0:
-                break
-
-        return GLib.SOURCE_CONTINUE
 
     def scroll_to_direction(self, direction):
         value = self.vadj.get_value()
@@ -317,9 +317,6 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         self.ignore_scroll_value_changes = False
         self.vadj.set_value(value)
 
-    def set_interactive(self, interactive):
-        self.interactive = interactive
-
     def set_orientation(self, _orientation):
         return
 
@@ -332,13 +329,13 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
             return GLib.SOURCE_CONTINUE
 
         if page.loadable:
-            self.set_interactive(True)
+            self.interactive = True
 
         # Update title, initialize controls and notify user if chapter changed
         if self.current_chapter_id != page.chapter.id:
             self.current_chapter_id = page.chapter.id
             self.reader.update_title(page.chapter)
-            self.window.show_notification(page.chapter.title, 2)
+            self.window.show_notification(page.chapter.title, 2, reuse=True)
             self.reader.controls.init(page.chapter)
 
         # Update page number and controls page slider

@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -475,7 +475,7 @@ class Pager(Adw.Bin, BasePager):
                 message = _('There is no previous chapter.')
             else:
                 message = _('It was the last chapter.')
-            self.window.show_notification(message, 2)
+            self.window.show_notification(message, 2, reuse=True)
 
             return
 
@@ -564,7 +564,7 @@ class Pager(Adw.Bin, BasePager):
                 message = _('It was the last chapter.')
             elif direction == 'right':
                 message = _('There is no previous chapter.')
-            self.window.show_notification(message, 2)
+            self.window.show_notification(message, 2, reuse=True)
 
             return
 
@@ -603,7 +603,7 @@ class Pager(Adw.Bin, BasePager):
             self.reader.controls.init(page.chapter)
 
         if page.error:
-            self.window.show_notification(_('This chapter is inaccessible.'), 2)
+            self.window.show_notification(_('This chapter is inaccessible.'), 2, reuse=True)
 
         # Update page number and controls page slider
         self.reader.update_page_number(page.index + 1, len(page.chapter.pages) if page.loadable else None)
