@@ -680,8 +680,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                                           <object class="GtkLabel">
                                                                             <property name="halign">start</property>
                                                                             <property name="label" translatable="yes">Genres</property>
-                                                                            <property name="wrap">1</property>
-                                                                            <property name="wrap-mode">word-char</property>
+                                                                            <property name="wrap">0</property>
                                                                           </object>
                                                                         </child>
                                                                         <child>
@@ -719,8 +718,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                                         <child>
                                                                           <object class="GtkLabel">
                                                                             <property name="label" translatable="yes">Scanlators</property>
-                                                                            <property name="wrap">1</property>
-                                                                            <property name="wrap-mode">word-char</property>
+                                                                            <property name="wrap">0</property>
                                                                           </object>
                                                                         </child>
                                                                         <child>
@@ -757,8 +755,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                                         <child>
                                                                           <object class="GtkLabel">
                                                                             <property name="label" translatable="yes">Status</property>
-                                                                            <property name="wrap">1</property>
-                                                                            <property name="wrap-mode">word-char</property>
+                                                                            <property name="wrap">0</property>
                                                                           </object>
                                                                         </child>
                                                                         <child>
@@ -795,8 +792,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                                         <child>
                                                                           <object class="GtkLabel">
                                                                             <property name="label" translatable="yes">Chapters</property>
-                                                                            <property name="wrap">1</property>
-                                                                            <property name="wrap-mode">word-char</property>
+                                                                            <property name="wrap">0</property>
                                                                           </object>
                                                                         </child>
                                                                         <child>
@@ -832,8 +828,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                                         <child>
                                                                           <object class="GtkLabel">
                                                                             <property name="label" translatable="yes">Last Update</property>
-                                                                            <property name="wrap">1</property>
-                                                                            <property name="wrap-mode">word-char</property>
+                                                                            <property name="wrap">0</property>
                                                                           </object>
                                                                         </child>
                                                                         <child>
@@ -869,8 +864,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                                         <child>
                                                                           <object class="GtkLabel">
                                                                             <property name="label" translatable="yes">Server</property>
-                                                                            <property name="wrap">1</property>
-                                                                            <property name="wrap-mode">word-char</property>
+                                                                            <property name="wrap">0</property>
                                                                           </object>
                                                                         </child>
                                                                         <child>
