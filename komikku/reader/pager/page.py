@@ -32,7 +32,7 @@ class Page(Gtk.ScrolledWindow):
         self.index = index
         self.path = None
 
-        self._status = None    # rendering, render, rendered, offlimit, cleaned
+        self._status = None    # rendering, rendered, offlimit, cleaned
         self.error = None      # connection error, server error or corrupt file error
         self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
 
@@ -79,6 +79,7 @@ class Page(Gtk.ScrolledWindow):
 
     def on_button_retry_clicked(self, button):
         self.overlay.remove_overlay(button)
+        self.picture = None
         self.render(retry=True)
 
     def render(self, retry=False):
@@ -97,7 +98,6 @@ class Page(Gtk.ScrolledWindow):
                 # Page has been removed from pager
                 return False
 
-            self.status = 'render'
             self.set_image()
             self.status = 'rendered'
             self.emit('rendered', retry)
@@ -237,15 +237,21 @@ class Page(Gtk.ScrolledWindow):
             self.overlay.set_child(picture)
 
         # Determine if page can receive pointer events
-        if self.reader.reading_mode == 'webtoon':
-            self.props.can_target = False
-        elif picture.width > self.reader.size.width or picture.height > self.reader.size.height:
-            self.props.can_target = True
+        if not self.error:
+            if self.reader.reading_mode == 'webtoon':
+                self.props.can_target = False
+            elif picture.width > self.reader.size.width or picture.height > self.reader.size.height:
+                # Allows page to be scrollable
+                self.props.can_target = True
+            else:
+                self.props.can_target = False
         else:
-            self.props.can_target = False
+            # Allows `Retry` button to be clickable
+            self.props.can_target = True
 
     def show_retry_button(self):
         btn = Gtk.Button()
+        btn.add_css_class('suggested-action')
         btn.set_valign(Gtk.Align.CENTER)
         btn.set_halign(Gtk.Align.CENTER)
         btn.connect('clicked', self.on_button_retry_clicked)

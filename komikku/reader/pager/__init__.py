@@ -97,6 +97,7 @@ class BasePager:
         if not retry:
             return
 
+        # After a retry, update the page and save the progress (if relevant)
         GLib.idle_add(self.update, page, 1)
         GLib.idle_add(self.save_progress, page)
 
