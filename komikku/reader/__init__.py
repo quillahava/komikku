@@ -19,8 +19,8 @@ from komikku.utils import is_flatpak
 
 
 class Reader:
-    came_from = None
     manga = None
+    init_chapter = None
     chapters_consulted = None
     pager = None
 
@@ -42,6 +42,8 @@ class Reader:
         self.page_number_label.add_css_class('reader-page-number-indicator-label')
         self.page_number_label.set_valign(Gtk.Align.END)
         self.overlay.add_overlay(self.page_number_label)
+
+        self.window.connect('notify::page', self.on_shown)
 
         # Controls
         self.controls = Controls(self)
@@ -119,8 +121,8 @@ class Reader:
         self.window.application.add_action(self.save_page_action)
 
     def init(self, manga, chapter):
-        self.came_from = self.window.page
         self.manga = manga
+        self.init_chapter = chapter
 
         # Reset list of chapters consulted
         self.chapters_consulted = set()
@@ -130,9 +132,6 @@ class Reader:
         self.set_action_scaling()
         self.set_action_borders_crop()
         self.set_action_page_numbering()
-
-        # Init pager
-        self.init_pager(chapter)
 
         self.show()
 
@@ -202,6 +201,15 @@ class Reader:
         self.set_action_scaling()
 
         self.pager.rescale_pages()
+
+    def on_shown(self, _window, _page):
+        # Reader can only be shown from card or history
+        if self.window.page != 'reader' or self.window.previous_page not in ('card', 'history'):
+            return
+
+        # Wait page is shown (transition is ended) to init pager
+        # Operation is resource intensive and could disrupt page transition
+        self.init_pager(self.init_chapter)
 
     def remove_pager(self):
         if self.pager:

@@ -16,6 +16,7 @@ from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Notify
 from gi.repository.GdkPixbuf import Pixbuf
@@ -135,7 +136,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
     hidpi_scale = 1
     mobile_width = False
     network_available = False
-    page = None
+    _page = 'library'
+    previous_page = None
 
     size = None
 
@@ -235,6 +237,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.add_accelerators()
         self.add_actions()
 
+    @GObject.Property(type=str)
+    def page(self):
+        return self._page
+
+    @page.setter
+    def page(self, value):
+        self._page = value
+
     def add_accelerators(self):
         self.application.set_accels_for_action('app.add', ['<Primary>plus'])
         self.application.set_accels_for_action('app.enter-search-mode', ['<Primary>f'])
@@ -306,6 +316,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         self.connect('close-request', self.quit)
         self.headerbar_revealer.connect('notify::child-revealed', self.on_headerbar_toggled)
+
+        self.stack.connect('notify::transition-running', self.on_page_shown)
 
         # Init stack pages
         self.library = Library(self)
@@ -459,21 +471,21 @@ class ApplicationWindow(Adw.ApplicationWindow):
             if self.card.selection_mode:
                 self.card.leave_selection_mode()
             else:
-                if self.card.came_from in ('library', 'explorer'):
+                if self.previous_page in ('library', 'reader', 'explorer'):
                     self.library.show(invalidate_sort=True)
-                elif self.card.came_from == 'history':
+                elif self.previous_page == 'history':
                     self.history.show()
 
         elif self.page == 'reader':
             self.reader.remove_pager()
             self.set_unfullscreen()
 
-            if self.reader.came_from == 'card':
+            if self.previous_page == 'card':
                 # Refresh to update all previously chapters consulted (last page read may have changed)
                 # and update info like disk usage
                 self.card.refresh(self.reader.chapters_consulted)
                 self.card.show()
-            elif self.reader.came_from == 'history':
+            elif self.previous_page == 'history':
                 self.history.show()
 
         elif self.page == 'categories_editor':
@@ -512,6 +524,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
             # Stop Downloader
             if Settings.get_default().downloader_state:
                 self.downloader.stop()
+
+    def on_page_shown(self, *args):
+        # Detect pages transition end and store current page and previous page
+        if not self.stack.props.transition_running:
+            self.previous_page = self.page
+            self.page = self.stack.get_visible_child_name()
 
     def on_primary_menu_shown(self, _menu_button):
         if self.page == 'library':
@@ -684,8 +702,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         self.stack.set_visible_child_full(name, transition_type)
         self.title_stack.set_visible_child_full(name, transition_type)
-
-        self.page = name
 
     def toggle_fullscreen(self, *args):
         if self.is_fullscreen():

@@ -26,7 +26,6 @@ from komikku.utils import html_escape
 
 
 class Card:
-    came_from = None
     manga = None
     selection_mode = False
 
@@ -48,6 +47,7 @@ class Card:
         self.resume_read_button.connect('clicked', self.on_resume_read_button_clicked)
         self.stack.connect('notify::visible-child', self.on_page_changed)
         self.window.updater.connect('manga-updated', self.on_manga_updated)
+        self.window.connect('notify::page', self.on_shown)
 
     def add_actions(self):
         self.delete_action = Gio.SimpleAction.new('card.delete', None)
@@ -82,8 +82,6 @@ class Card:
         self.viewswitchertitle.set_view_switcher_enabled(False)
 
     def init(self, manga, transition=True):
-        self.came_from = self.window.page
-
         # Default page is `Info` page except when we come from Explorer
         self.stack.set_visible_child_name('chapters' if self.window.page == 'explorer' else 'info')
 
@@ -97,7 +95,6 @@ class Card:
             )
 
         self.show()
-        GLib.timeout_add(self.window.stack.props.transition_duration * 2, self.populate)
 
     def leave_selection_mode(self, _param=None):
         self.window.left_button.set_icon_name('go-previous-symbolic')
@@ -151,6 +148,15 @@ class Card:
             chapter = chapters[0]
 
         self.window.reader.init(self.manga, chapter)
+
+    def on_shown(self, _window, _page):
+        # Card can only be shown from library, explorer or history
+        if self.window.page != 'card' or self.window.previous_page not in ('library', 'explorer', 'history'):
+            return
+
+        # Wait page is shown (transition is ended) to populate
+        # Operation is resource intensive and could disrupt page transition
+        self.populate()
 
     def on_update_menu_clicked(self, action, param):
         self.window.updater.add(self.manga)
