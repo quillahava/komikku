@@ -16,7 +16,7 @@ from komikku.utils import log_error_traceback
 from komikku.utils import PaintablePixbufAnimation
 
 
-class Page(Gtk.ScrolledWindow):
+class Page(Gtk.Overlay):
     __gsignals__ = {
         'rendered': (GObject.SIGNAL_RUN_FIRST, None, (bool, )),
     }
@@ -28,31 +28,48 @@ class Page(Gtk.ScrolledWindow):
         self.reader = pager.reader
         self.window = self.reader.window
 
-        self.chapter = chapter
-        self.index = index
+        self.chapter = self.init_chapter = chapter
+        self.index = self.init_index = index
         self.path = None
 
-        self._status = None    # rendering, rendered, offlimit, cleaned
-        self.error = None      # connection error, server error or corrupt file error
-        self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
+        self._status = None     # rendering, rendered, offlimit, cleaned
+        self._error = None      # connection error, server error or corrupt file error
+        self._loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
+
+        self.scrolledwindow = Gtk.ScrolledWindow()
 
         if self.reader.reading_mode == 'webtoon':
-            self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
+            self.scrolledwindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
             # Page must not be smaller than reader
             self.set_size_request(-1, self.reader.size.height)
         else:
-            self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-            self.set_kinetic_scrolling(True)
-            self.set_overlay_scrolling(True)
+            self.scrolledwindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+            self.scrolledwindow.set_kinetic_scrolling(True)
+            self.scrolledwindow.set_overlay_scrolling(True)
 
-        self.overlay = Gtk.Overlay()
-        self.set_child(self.overlay)
+        self.set_child(self.scrolledwindow)
 
         self.picture = None
 
         # Activity indicator
         self.activity_indicator = ActivityIndicator()
-        self.overlay.add_overlay(self.activity_indicator)
+        self.add_overlay(self.activity_indicator)
+
+    @GObject.Property(type=str)
+    def error(self):
+        return self._error
+
+    @error.setter
+    def error(self, value):
+        self._error = value
+
+    @GObject.Property(type=bool, default=False)
+    def loadable(self):
+        return self._loadable
+
+    @loadable.setter
+    def loadable(self, value):
+        self._loadable = value
 
     @GObject.Property(type=str)
     def status(self):
@@ -66,10 +83,6 @@ class Page(Gtk.ScrolledWindow):
     def animated(self):
         return isinstance(self.picture.get_paintable(), PaintablePixbufAnimation)
 
-    @property
-    def loaded(self):
-        return self.pixbuf is not None
-
     def clean(self):
         if self.status is None:
             return
@@ -78,8 +91,12 @@ class Page(Gtk.ScrolledWindow):
         self.loadable = False
 
     def on_button_retry_clicked(self, button):
-        self.overlay.remove_overlay(button)
+        self.remove_overlay(button)
+
+        self.chapter = self.init_chapter
+        self.index = self.init_index
         self.picture = None
+
         self.render(retry=True)
 
     def render(self, retry=False):
@@ -234,20 +251,24 @@ class Page(Gtk.ScrolledWindow):
 
         if self.picture is None:
             self.picture = picture
-            self.overlay.set_child(picture)
+            self.scrolledwindow.set_child(picture)
 
         # Determine if page can receive pointer events
         if not self.error:
             if self.reader.reading_mode == 'webtoon':
+                self.scrolledwindow.props.can_target = False
                 self.props.can_target = False
             elif picture.width > self.reader.size.width or picture.height > self.reader.size.height:
                 # Allows page to be scrollable
+                self.scrolledwindow.props.can_target = True
                 self.props.can_target = True
             else:
+                self.scrolledwindow.props.can_target = False
                 self.props.can_target = False
         else:
             # Allows `Retry` button to be clickable
             self.props.can_target = True
+            self.scrolledwindow.props.can_target = False
 
     def show_retry_button(self):
         btn = Gtk.Button()
@@ -263,4 +284,4 @@ class Page(Gtk.ScrolledWindow):
         vbox.append(Gtk.Label(label=_('Retry')))
         btn.set_child(vbox)
 
-        self.overlay.add_overlay(btn)
+        self.add_overlay(btn)
