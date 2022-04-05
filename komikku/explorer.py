@@ -52,6 +52,7 @@ class Explorer(Gtk.Stack):
     card_page_name_label = Gtk.Template.Child('card_page_name_label')
     card_page_authors_label = Gtk.Template.Child('card_page_authors_label')
     card_page_status_server_label = Gtk.Template.Child('card_page_status_server_label')
+    card_page_add_read_button = Gtk.Template.Child('card_page_add_read_button')
     card_page_genres_label = Gtk.Template.Child('card_page_genres_label')
     card_page_scanlators_label = Gtk.Template.Child('card_page_scanlators_label')
     card_page_chapters_label = Gtk.Template.Child('card_page_chapters_label')
@@ -114,7 +115,6 @@ class Explorer(Gtk.Stack):
         self.search_page_listbox.connect('row-activated', self.on_manga_clicked)
 
         # Card page
-        self.card_page_add_read_button = self.window.explorer_card_page_add_read_button
         self.card_page_add_read_button.connect('clicked', self.on_card_page_add_read_button_clicked)
 
         self.window.stack.add_named(self, 'explorer')
@@ -332,8 +332,8 @@ class Explorer(Gtk.Stack):
             self.window.library.on_manga_added(self.manga)
 
             self.card_page_add_read_button.set_sensitive(True)
-            self.card_page_add_read_button.set_tooltip_text(_('Read'))
-            self.card_page_add_read_button.set_icon_name('media-playback-start-symbolic')
+            self.card_page_add_read_button.get_child().get_first_child().set_from_icon_name('media-playback-start-symbolic')
+            self.card_page_add_read_button.get_child().get_last_child().set_text(_('Read'))
             self.window.activity_indicator.stop()
 
             return False
@@ -697,13 +697,18 @@ class Explorer(Gtk.Stack):
             if row:
                 self.manga = Manga.get(row['id'], self.server)
 
-                self.card_page_add_read_button.set_tooltip_text(_('Read'))
-                self.card_page_add_read_button.set_icon_name('media-playback-start-symbolic')
+                self.card_page_add_read_button.get_child().get_first_child().set_from_icon_name('media-playback-start-symbolic')
+                self.card_page_add_read_button.get_child().get_last_child().set_text(_('Read'))
             else:
-                self.card_page_add_read_button.set_tooltip_text(_('Add to library'))
-                self.card_page_add_read_button.set_icon_name('list-add-symbolic')
+                self.card_page_add_read_button.get_child().get_first_child().set_from_icon_name('list-add-symbolic')
+                self.card_page_add_read_button.get_child().get_last_child().set_text(_('Add to Library'))
 
-        self.window.right_button_stack.set_visible_child_name('explorer.' + name)
+        if name in ('servers', 'search'):
+            self.window.right_button_stack.set_visible_child_name('explorer.' + name)
+            self.window.right_button_stack.show()
+        else:
+            # `Card` stack doesn't have a right button in headerbar
+            self.window.right_button_stack.hide()
         self.set_visible_child_name(name)
 
         self.page = name

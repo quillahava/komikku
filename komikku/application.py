@@ -199,7 +199,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
     explorer_title_label = Gtk.Template.Child('explorer_title_label')
     explorer_servers_page_search_button = Gtk.Template.Child('explorer_servers_page_search_button')
     explorer_search_page_server_website_button = Gtk.Template.Child('explorer_search_page_server_website_button')
-    explorer_card_page_add_read_button = Gtk.Template.Child('explorer_card_page_add_read_button')
 
     history_search_button = Gtk.Template.Child('history_search_button')
 

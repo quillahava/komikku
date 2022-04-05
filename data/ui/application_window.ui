@@ -303,17 +303,6 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                         </child>
                         <child>
                           <object class="GtkStackPage">
-                            <property name="name">explorer.card</property>
-                            <property name="child">
-                              <object class="GtkButton" id="explorer_card_page_add_read_button">
-                                <property name="receives_default">1</property>
-                                <property name="icon-name">list-add-symbolic</property>
-                              </object>
-                            </property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkStackPage">
                             <property name="name">explorer.servers</property>
                             <property name="child">
                               <object class="GtkToggleButton" id="explorer_servers_page_search_button">

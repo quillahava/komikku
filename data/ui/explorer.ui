@@ -254,6 +254,31 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                       </style>
                                      </object>
                                   </child>
+                                  <child>
+                                    <object class="GtkButton" id="card_page_add_read_button">
+                                      <property name="halign">start</property>
+                                      <child>
+                                        <object class="GtkBox">
+                                          <property name="spacing">6</property>
+                                          <child>
+                                            <object class="GtkImage" id="card_page_add_read_button_image">
+                                              <property name="halign">start</property>
+                                            </object>
+                                          </child>
+                                          <child>
+                                            <object class="GtkLabel" id="card_page_add_read_button_label">
+                                              <property name="label">Add to Library or Start</property>
+                                              <property name="xalign">0</property>
+                                            </object>
+                                          </child>
+                                        </object>
+                                      </child>
+                                      <style>
+                                        <class name="pill"/>
+                                        <class name="suggested-action"/>
+                                      </style>
+                                    </object>
+                                  </child>
                                 </object>
                               </child>
                             </object>
