@@ -55,27 +55,14 @@ listview :last-child {
     background-color: rgba(255, 255, 255, 1);
 }
 
-/* Explorer - servers page */
-.list-bordered {
-    border-right: 1px solid @borders;
-    border-left: 1px solid @borders;
-}
-
-.explorer-dialog-server-listboxrow {
+/* Explorer page */
+.explorer-listboxrow {
     padding: 16px 12px;
 }
 
-.explorer-dialog-server-header-listboxrow {
+.explorer-section-listboxrow {
     padding: 12px;
-    font-size: 14pt;
     font-weight: bold;
-    background: @insensitive_bg_color;
-}
-
-/* Explorer - search page */
-.explorer-dialog-search-section-listboxrow {
-    font-weight: bold;
-    color: @insensitive_fg_color;
     background: @insensitive_bg_color;
 }
 
