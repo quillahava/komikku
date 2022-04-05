@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -50,14 +50,13 @@ class Explorer(Gtk.Stack):
     card_page_cover_box = Gtk.Template.Child('card_page_cover_box')
     card_page_cover_image = Gtk.Template.Child('card_page_cover_image')
     card_page_name_label = Gtk.Template.Child('card_page_name_label')
-    card_page_authors_value_label = Gtk.Template.Child('card_page_authors_value_label')
-    card_page_genres_value_label = Gtk.Template.Child('card_page_genres_value_label')
-    card_page_status_value_label = Gtk.Template.Child('card_page_status_value_label')
-    card_page_scanlators_value_label = Gtk.Template.Child('card_page_scanlators_value_label')
-    card_page_chapters_value_label = Gtk.Template.Child('card_page_chapters_value_label')
-    card_page_last_chapter_value_label = Gtk.Template.Child('card_page_last_chapter_value_label')
-    card_page_server_value_label = Gtk.Template.Child('card_page_server_value_label')
-    card_page_synopsis_value_label = Gtk.Template.Child('card_page_synopsis_value_label')
+    card_page_authors_label = Gtk.Template.Child('card_page_authors_label')
+    card_page_status_server_label = Gtk.Template.Child('card_page_status_server_label')
+    card_page_genres_label = Gtk.Template.Child('card_page_genres_label')
+    card_page_scanlators_label = Gtk.Template.Child('card_page_scanlators_label')
+    card_page_chapters_label = Gtk.Template.Child('card_page_chapters_label')
+    card_page_last_chapter_label = Gtk.Template.Child('card_page_last_chapter_label')
+    card_page_synopsis_label = Gtk.Template.Child('card_page_synopsis_label')
 
     def __init__(self, window):
         Gtk.Stack.__init__(self)
@@ -436,32 +435,30 @@ class Explorer(Gtk.Stack):
             self.card_page_name_label.set_label(manga_data['name'])
 
             authors = html_escape(', '.join(self.manga_data['authors'])) if self.manga_data['authors'] else '-'
-            self.card_page_authors_value_label.set_markup(authors)
+            self.card_page_authors_label.set_markup(authors)
 
-            genres = html_escape(', '.join(self.manga_data['genres'])) if self.manga_data['genres'] else '-'
-            self.card_page_genres_value_label.set_markup(genres)
-
-            status = _(Manga.STATUSES[self.manga_data['status']]) if self.manga_data['status'] else '-'
-            self.card_page_status_value_label.set_markup(status)
-
-            scanlators = html_escape(', '.join(self.manga_data['scanlators'])) if self.manga_data['scanlators'] else '-'
-            self.card_page_scanlators_value_label.set_markup(scanlators)
-
-            self.card_page_server_value_label.set_markup(
-                '<a href="{0}">{1}</a> [{2}]'.format(
+            self.card_page_status_server_label.set_markup(
+                '{0} · <a href="{1}">{2}</a> ({3})'.format(
+                    _(Manga.STATUSES[self.manga_data['status']]) if self.manga_data['status'] else '-',
                     self.server.get_manga_url(self.manga_data['slug'], self.manga_data.get('url')),
                     html_escape(self.server.name),
-                    self.server.lang.upper(),
+                    self.server.lang.upper()
                 )
             )
 
-            self.card_page_chapters_value_label.set_markup(str(len(self.manga_data['chapters'])))
+            genres = html_escape(', '.join(self.manga_data['genres'])) if self.manga_data['genres'] else '-'
+            self.card_page_genres_label.set_markup(genres)
 
-            self.card_page_last_chapter_value_label.set_markup(
+            scanlators = html_escape(', '.join(self.manga_data['scanlators'])) if self.manga_data['scanlators'] else '-'
+            self.card_page_scanlators_label.set_markup(scanlators)
+
+            self.card_page_chapters_label.set_markup(str(len(self.manga_data['chapters'])))
+
+            self.card_page_last_chapter_label.set_markup(
                 html_escape(self.manga_data['chapters'][-1]['title']) if self.manga_data['chapters'] else '-'
             )
 
-            self.card_page_synopsis_value_label.set_markup(
+            self.card_page_synopsis_label.set_markup(
                 html_escape(self.manga_data['synopsis']) if self.manga_data['synopsis'] else '-'
             )
 

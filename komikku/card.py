@@ -803,15 +803,14 @@ class InfoBox:
         self.cover_box = self.window.card_cover_box
         self.name_label = self.window.card_name_label
         self.cover_image = self.window.card_cover_image
-        self.authors_value_label = self.window.card_authors_value_label
-        self.genres_value_label = self.window.card_genres_value_label
-        self.status_value_label = self.window.card_status_value_label
-        self.scanlators_value_label = self.window.card_scanlators_value_label
-        self.server_value_label = self.window.card_server_value_label
-        self.chapters_value_label = self.window.card_chapters_value_label
-        self.last_update_value_label = self.window.card_last_update_value_label
-        self.synopsis_value_label = self.window.card_synopsis_value_label
-        self.size_on_disk_value_label = self.window.card_size_on_disk_value_label
+        self.authors_label = self.window.card_authors_label
+        self.status_server_label = self.window.card_status_server_label
+        self.genres_label = self.window.card_genres_label
+        self.scanlators_label = self.window.card_scanlators_label
+        self.chapters_label = self.window.card_chapters_label
+        self.last_update_label = self.window.card_last_update_label
+        self.synopsis_label = self.window.card_synopsis_label
+        self.size_on_disk_label = self.window.card_size_on_disk_label
 
     def populate(self):
         cover_width = 170
@@ -830,33 +829,31 @@ class InfoBox:
 
         if manga.authors:
             authors = html_escape(', '.join(manga.authors))
-            self.authors_value_label.set_markup(authors)
-            self.authors_value_label.show()
+            self.authors_label.set_markup(authors)
+            self.authors_label.show()
         else:
-            self.authors_value_label.hide()
+            self.authors_label.hide()
 
-        genres = html_escape(', '.join(manga.genres)) if manga.genres else '-'
-        self.genres_value_label.set_markup(genres)
-
-        status = _(manga.STATUSES[manga.status]) if manga.status else '-'
-        self.status_value_label.set_markup(status)
-
-        scanlators = html_escape(', '.join(manga.scanlators)) if manga.scanlators else '-'
-        self.scanlators_value_label.set_markup(scanlators)
-
-        self.server_value_label.set_markup(
-            '<a href="{0}">{1}</a> [{2}]'.format(
+        self.status_server_label.set_markup(
+            '{0} · <a href="{1}">{2}</a> ({3})'.format(
+                _(manga.STATUSES[manga.status]) if manga.status else '-',
                 manga.server.get_manga_url(manga.slug, manga.url),
                 html_escape(manga.server.name),
                 manga.server.lang.upper(),
             )
         )
 
-        self.chapters_value_label.set_markup(str(len(manga.chapters)))
+        genres = html_escape(', '.join(manga.genres)) if manga.genres else '-'
+        self.genres_label.set_markup(genres)
 
-        self.last_update_value_label.set_markup(manga.last_update.strftime(_('%m/%d/%Y')) if manga.last_update else '-')
+        scanlators = html_escape(', '.join(manga.scanlators)) if manga.scanlators else '-'
+        self.scanlators_label.set_markup(scanlators)
 
-        self.synopsis_value_label.set_markup(html_escape(manga.synopsis) if manga.synopsis else '-')
+        self.chapters_label.set_markup(str(len(manga.chapters)))
+
+        self.last_update_label.set_markup(manga.last_update.strftime(_('%m/%d/%Y')) if manga.last_update else '-')
+
+        self.synopsis_label.set_markup(html_escape(manga.synopsis) if manga.synopsis else '-')
 
         self.set_disk_usage()
 
@@ -872,4 +869,4 @@ class InfoBox:
         self.set_disk_usage()
 
     def set_disk_usage(self):
-        self.size_on_disk_value_label.set_text(folder_size(self.card.manga.path) or '-')
+        self.size_on_disk_label.set_text(folder_size(self.card.manga.path) or '-')
