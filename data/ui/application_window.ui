@@ -257,10 +257,10 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkStackPage">
                             <property name="name">card</property>
                             <property name="child">
-                              <object class="GtkButton" id="card_resume_read_button">
+                              <object class="GtkButton" id="card_resume_button">
                                 <property name="receives_default">1</property>
                                 <property name="icon-name">media-playback-start-symbolic</property>
-                                <property name="tooltip-text" translatable="yes">Resume read</property>
+                                <property name="tooltip-text" translatable="yes">Resume reading</property>
                               </object>
                             </property>
                           </object>
@@ -436,6 +436,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                             <property name="action-name">app.add</property>
                                             <style>
                                               <class name="suggested-action"/>
+                                              <class name="pill"/>
                                             </style>
                                           </object>
                                         </child>
@@ -636,6 +637,30 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                                 <style>
                                                                   <class name="dim-label"/>
                                                                   <class name="title-4"/>
+                                                                </style>
+                                                              </object>
+                                                            </child>
+                                                            <child>
+                                                              <object class="GtkButton" id="card_resume2_button">
+                                                                <property name="halign">start</property>
+                                                                <child>
+                                                                  <object class="GtkBox">
+                                                                    <property name="spacing">6</property>
+                                                                    <child>
+                                                                      <object class="GtkImage">
+                                                                        <property name="icon-name">media-playback-start-symbolic</property>
+                                                                      </object>
+                                                                    </child>
+                                                                    <child>
+                                                                      <object class="GtkLabel">
+                                                                        <property name="label" translatable="yes">Resume</property>
+                                                                      </object>
+                                                                    </child>
+                                                                  </object>
+                                                                </child>
+                                                                <style>
+                                                                  <class name="pill"/>
+                                                                  <class name="suggested-action"/>
                                                                 </style>
                                                               </object>
                                                             </child>

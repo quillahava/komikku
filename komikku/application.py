@@ -169,7 +169,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
     library_categories_edit_mode_ok_button = Gtk.Template.Child('library_categories_edit_mode_ok_button')
     library_flowbox = Gtk.Template.Child('library_flowbox')
 
-    card_resume_read_button = Gtk.Template.Child('card_resume_read_button')
+    card_resume_button = Gtk.Template.Child('card_resume_button')
+    card_resume2_button = Gtk.Template.Child('card_resume2_button')
     card_viewswitchertitle = Gtk.Template.Child('card_viewswitchertitle')
     card_viewswitcherbar = Gtk.Template.Child('card_viewswitcherbar')
     card_stack = Gtk.Template.Child('card_stack')

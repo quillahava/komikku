@@ -36,7 +36,6 @@ class Card:
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/card_selection_mode.xml')
 
         self.viewswitchertitle = self.window.card_viewswitchertitle
-        self.resume_read_button = self.window.card_resume_read_button
 
         self.stack = self.window.card_stack
         self.info_box = InfoBox(self)
@@ -44,7 +43,8 @@ class Card:
         self.chapters_list = ChaptersList(self)
 
         self.viewswitchertitle.bind_property('title-visible', self.window.card_viewswitcherbar, 'reveal', GObject.BindingFlags.SYNC_CREATE)
-        self.resume_read_button.connect('clicked', self.on_resume_read_button_clicked)
+        self.window.card_resume_button.connect('clicked', self.on_resume_button_clicked)
+        self.window.card_resume2_button.connect('clicked', self.on_resume_button_clicked)
         self.stack.connect('notify::visible-child', self.on_page_changed)
         self.window.updater.connect('manga-updated', self.on_manga_updated)
         self.window.connect('notify::page', self.on_shown)
@@ -133,7 +133,7 @@ class Card:
     def on_resize(self):
         self.info_box.on_resize()
 
-    def on_resume_read_button_clicked(self, widget):
+    def on_resume_button_clicked(self, widget):
         chapters = []
         for i in range(self.chapters_list.list_model.get_n_items()):
             chapters.append(self.chapters_list.list_model.get_item(i).chapter)
