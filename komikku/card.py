@@ -134,7 +134,10 @@ class Card:
         self.info_box.on_resize()
 
     def on_resume_read_button_clicked(self, widget):
-        chapters = [row.chapter for row in self.chapters_list.listbox]
+        chapters = []
+        for i in range(self.chapters_list.list_model.get_n_items()):
+            chapters.append(self.chapters_list.list_model.get_item(i).chapter)
+
         if self.chapters_list.sort_order.endswith('desc'):
             chapters.reverse()
 
