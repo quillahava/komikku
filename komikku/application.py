@@ -373,16 +373,19 @@ class ApplicationWindow(Adw.ApplicationWindow):
             self.library.toggle_search_mode()
 
     def init_theme(self):
-        def set_color_scheme(force_dark):
-            if force_dark:
+        def set_color_scheme():
+            if not Adw.StyleManager.get_default().get_system_supports_color_schemes():
+                return
+
+            if (self._night_light_proxy.get_cached_property('NightLightActive') and Settings.get_default().night_light) \
+                    or Settings.get_default().dark_theme:
                 color_scheme = Adw.ColorScheme.FORCE_DARK
-            elif Adw.StyleManager.get_default().get_system_supports_color_schemes():
-                color_scheme = Adw.StyleManager.get_default().get_color_scheme()
             else:
                 color_scheme = Adw.ColorScheme.DEFAULT
+
             Adw.StyleManager.get_default().set_color_scheme(color_scheme)
 
-        if Settings.get_default().night_light and not self._night_light_proxy:
+        if not self._night_light_proxy:
             # Watch night light changes
             self._night_light_proxy = Gio.DBusProxy.new_sync(
                 Gio.bus_get_sync(Gio.BusType.SESSION, None),
@@ -394,22 +397,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
                 None
             )
 
-            def property_changed(proxy, changed_properties, invalidated_properties):
+            def property_changed(_proxy, changed_properties, _invalidated_properties):
                 properties = changed_properties.unpack()
-
                 if 'NightLightActive' in properties:
-                    set_color_scheme(properties['NightLightActive'])
+                    set_color_scheme()
 
             self._night_light_handler_id = self._night_light_proxy.connect('g-properties-changed', property_changed)
 
-            set_color_scheme(self._night_light_proxy.get_cached_property('NightLightActive'))
-        else:
-            if self._night_light_proxy and self._night_light_handler_id > 0:
-                self._night_light_proxy.disconnect(self._night_light_handler_id)
-                self._night_light_proxy = None
-                self._night_light_handler_id = 0
-
-            set_color_scheme(Settings.get_default().dark_theme)
+        set_color_scheme()
 
     def on_about_menu_clicked(self, action, param):
         builder = Gtk.Builder.new_from_resource('/info/febvre/Komikku/about_dialog.ui')
