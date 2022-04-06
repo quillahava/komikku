@@ -422,10 +422,14 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                         <child>
                                           <object class="GtkLabel">
                                             <property name="label" translatable="yes" comments="The umbrella sentence of the application on the first start screen">Welcome to Komikku</property>
+                                            <property name="wrap">1</property>
+                                            <property name="justify">center</property>
                                             <attributes>
                                               <attribute name="weight" value="bold"></attribute>
-                                              <attribute name="size" value="21000"></attribute>
                                             </attributes>
+                                            <style>
+                                              <class name="large-title"/>
+                                            </style>
                                           </object>
                                         </child>
                                         <child>

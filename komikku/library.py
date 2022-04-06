@@ -130,8 +130,6 @@ class Library:
                     ret = manga.nb_downloaded_chapters > 0
                 if ret and self.search_menu_filters.get('unread'):
                     ret = manga.nb_unread_chapters > 0
-                if ret and self.search_menu_filters.get('recents'):
-                    ret = manga.nb_recent_chapters > 0
 
             if not ret and thumbnail._selected:
                 # Unselect thumbnail if it's selected
@@ -855,7 +853,6 @@ class ThumbnailWidget(Gtk.Widget):
         self.manga = manga
 
         self.nb_unread_chapters = self.manga.nb_unread_chapters
-        self.nb_recent_chapters = self.manga.nb_recent_chapters
         self.nb_downloaded_chapters = self.manga.nb_downloaded_chapters
 
         self.cover_texture = None
@@ -925,23 +922,32 @@ class ThumbnailWidget(Gtk.Widget):
 
             text = str(nb)
             text_extents = context.text_extents(text)
-            badge_width = text_extents.x_advance + 2 * 3 + 1
-            badge_height = text_extents.height + 2 * 5
+            w = text_extents.x_advance + 2 * 3 + 1
+            h = text_extents.height + 2 * 5
 
             # Draw rectangle
-            x = x - spacing - badge_width
+            x = x - spacing - w
+            y = spacing
+            r = 10
             context.set_source_rgb(color_r, color_g, color_b)
-            context.rectangle(x, spacing, badge_width, badge_height)
+            context.move_to(x + r, y)                                       # Move to A
+            context.line_to(x + w - r, y)                                   # Straight line to B
+            context.curve_to(x + w, y, x + w, y, x + w, y + r)              # Curve to C, Control points are both at Q
+            context.line_to(x + w, y + h - r)                               # Move to D
+            context.curve_to(x + w, y + h, x + w, y + h, x + w - r, y + h)  # Curve to E
+            context.line_to(x + r, y + h)                                   # Line to F
+            context.curve_to(x, y + h, x, y + h, x, y + h - r)              # Curve to G
+            context.line_to(x, y + r)                                       # Line to H
+            context.curve_to(x, y, x, y, x + r, y)                          # Curve to A
             context.fill()
 
             # Draw number
-            context.set_source_rgb(1, 1, 1)
-            context.move_to(x + 3, badge_height)
+            context.set_source_rgb(0, 0, 0)
+            context.move_to(x + 3, h)
             context.show_text(text)
 
-        draw_badge(self.nb_unread_chapters, 0.2, 0.5, 0)        # #338000
-        draw_badge(self.nb_recent_chapters, 0.2, 0.6, 1)        # #3399FF
-        draw_badge(self.nb_downloaded_chapters, 1, 0.266, 0.2)  # #FF4433
+        draw_badge(self.nb_unread_chapters, 0.678, 0.776, 1)          # #ADC6FF
+        draw_badge(self.nb_downloaded_chapters, 0.561, 0.941, 0.643)  # #8FF0A4
 
         # Drow server logo (top left corner)
         if self.server_logo_texture:
@@ -952,7 +958,6 @@ class ThumbnailWidget(Gtk.Widget):
         self.manga = manga
 
         self.nb_unread_chapters = self.manga.nb_unread_chapters
-        self.nb_recent_chapters = self.manga.nb_recent_chapters
         self.nb_downloaded_chapters = self.manga.nb_downloaded_chapters
 
         self.cover_texture = None
