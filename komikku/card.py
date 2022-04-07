@@ -104,6 +104,7 @@ class Card:
         self.selection_mode = False
 
         self.viewswitchertitle.set_view_switcher_enabled(True)
+        self.viewswitchertitle.set_subtitle('')
 
     def on_delete_menu_clicked(self, action, param):
         self.window.library.delete_mangas([self.manga, ])

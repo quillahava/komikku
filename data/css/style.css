@@ -3,27 +3,21 @@ spinner {
 }
 
 /* Library page */
-.search-box entry {
-    border-width: 1px 0 1px 1px;
-    border-radius: 3.5px 0 0 3.5px;
-}
-.search-box button {
-    border-width: 1px 1px 1px 0;
-    border-radius: 0 3.5px 3.5px 0;
-}
-
 flowbox flowboxchild {
     padding: 6px; /* default is 4px */
+}
+flowbox flowboxchild:selected {
+	background-color: @accent_bg_color;
 }
 
 .library-thumbnail-name-label {
     font-size: 12px;
     font-weight: bold;
     color: #fff;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    text-shadow: -1px 1px 0 #444, 1px 1px 0 #444, 1px -1px 0 #444, -1px -1px 0 #444;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, .5), rgba(0, 0, 0, 0));
     padding: 20px 8px 4px 8px;
 }
 
@@ -34,9 +28,10 @@ listview :last-child {
 
 .badge {
     color: #fff;
-    background-color: #3399ff;
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
     padding: 0 .4em;
-    border-radius: .25rem;
+    border-radius: 6px;
 }
 
 /* Reader page */
@@ -63,7 +58,8 @@ listview :last-child {
 .explorer-section-listboxrow {
     padding: 12px;
     font-weight: bold;
-    background: @insensitive_bg_color;
+    background: @headerbar_bg_color;
+    color: @headerbar_fg_color;
 }
 
 /* Download manager dialog */

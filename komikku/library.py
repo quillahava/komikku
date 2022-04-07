@@ -840,7 +840,7 @@ class Thumbnail(Gtk.FlowBoxChild):
 class ThumbnailWidget(Gtk.Widget):
     __gtype_name__ = 'ThumbnailWidget'
 
-    corners_radius = 6
+    corners_radius = 10
     font_size = 13
     min_width = Thumbnail.default_width / 2 - Thumbnail.padding * 2
     min_height = Thumbnail.default_height / 2 - Thumbnail.padding * 2
@@ -928,7 +928,7 @@ class ThumbnailWidget(Gtk.Widget):
             # Draw rectangle
             x = x - spacing - w
             y = spacing
-            r = 10
+            r = self.corners_radius
             context.set_source_rgb(color_r, color_g, color_b)
             context.move_to(x + r, y)                                       # Move to A
             context.line_to(x + w - r, y)                                   # Straight line to B
@@ -946,8 +946,8 @@ class ThumbnailWidget(Gtk.Widget):
             context.move_to(x + 3, h)
             context.show_text(text)
 
-        draw_badge(self.nb_unread_chapters, 0.678, 0.776, 1)          # #ADC6FF
-        draw_badge(self.nb_downloaded_chapters, 0.561, 0.941, 0.643)  # #8FF0A4
+        draw_badge(self.nb_unread_chapters, 0.6, 0.757, 0.945)        # #99c1f1 @blue_1
+        draw_badge(self.nb_downloaded_chapters, 0.561, 0.941, 0.643)  # #8FF0A4 @green_1
 
         # Drow server logo (top left corner)
         if self.server_logo_texture:

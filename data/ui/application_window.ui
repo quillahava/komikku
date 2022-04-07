@@ -366,7 +366,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                               </object>
                                             </child>
                                             <style>
-                                              <class name="search-box"/>
+                                              <class name="linked"/>
                                             </style>
                                           </object>
                                         </child>
