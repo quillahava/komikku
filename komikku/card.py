@@ -618,6 +618,7 @@ class ChaptersListRow(Gtk.Box):
 
         # Vertical box for title and scanlators
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, hexpand=1)
+        vbox.set_valign(Gtk.Align.CENTER)
         hbox.append(vbox)
 
         # Title
