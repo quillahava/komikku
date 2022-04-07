@@ -44,7 +44,6 @@ class Card:
 
         self.viewswitchertitle.bind_property('title-visible', self.window.card_viewswitcherbar, 'reveal', GObject.BindingFlags.SYNC_CREATE)
         self.window.card_resume_button.connect('clicked', self.on_resume_button_clicked)
-        self.window.card_resume2_button.connect('clicked', self.on_resume_button_clicked)
         self.stack.connect('notify::visible-child', self.on_page_changed)
         self.window.updater.connect('manga-updated', self.on_manga_updated)
         self.window.connect('notify::page', self.on_shown)
@@ -618,7 +617,7 @@ class ChaptersListRow(Gtk.Box):
 
         # Vertical box for title and scanlators
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, hexpand=1)
-        vbox.set_valign(Gtk.Align.CENTER)
+        vbox.set_valign(Gtk.Align.CENTER)  # Allows title to be vertically centered if scanlators are missing
         hbox.append(vbox)
 
         # Title
@@ -817,6 +816,8 @@ class InfoBox:
         self.synopsis_label = self.window.card_synopsis_label
         self.size_on_disk_label = self.window.card_size_on_disk_label
 
+        self.window.card_resume2_button.connect('clicked', self.card.on_resume_button_clicked)
+
     def populate(self):
         cover_width = 170
         manga = self.card.manga
@@ -844,7 +845,7 @@ class InfoBox:
                 _(manga.STATUSES[manga.status]) if manga.status else '-',
                 manga.server.get_manga_url(manga.slug, manga.url),
                 html_escape(manga.server.name),
-                manga.server.lang.upper(),
+                manga.server.lang.upper()
             )
         )
 

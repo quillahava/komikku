@@ -62,7 +62,7 @@ listview :last-child {
     color: @headerbar_fg_color;
 }
 
-/* Download manager dialog */
+/* Download manager page */
 .download-manager-download-listboxrow {
     border-bottom: 1px solid @borders;
     padding: 6px 6px 12px 6px;

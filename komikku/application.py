@@ -133,12 +133,10 @@ class Application(Adw.Application):
 class ApplicationWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ApplicationWindow'
 
-    hidpi_scale = 1
-    mobile_width = False
-    network_available = False
     _page = 'library'
     previous_page = None
-
+    mobile_width = False
+    network_available = False
     size = None
 
     headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
