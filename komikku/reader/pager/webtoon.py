@@ -276,9 +276,9 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
                         message = _('It was the last chapter.')
                     else:
                         message = _('There is no previous chapter.')
-                    self.window.show_notification(message, 2, reuse=True)
+                    self.window.show_notification(message, 2)
                 else:
-                    self.window.show_notification(_('This chapter is inaccessible.'), 2, reuse=True)
+                    self.window.show_notification(_('This chapter is inaccessible.'), 2)
 
                 return
 
@@ -331,7 +331,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         if self.current_chapter_id != page.chapter.id:
             self.current_chapter_id = page.chapter.id
             self.reader.update_title(page.chapter)
-            self.window.show_notification(page.chapter.title, 2, reuse=True)
+            self.window.show_notification(page.chapter.title, 2)
             self.reader.controls.init(page.chapter)
 
         # Update page number and controls page slider

@@ -115,7 +115,7 @@ class Updater(GObject.GObject):
                     total_errors
                 )
 
-            show_notification(summary, message, True)
+            GLib.timeout_add(2000, show_notification, summary, message, True)
 
         def complete(manga, recent_chapters_ids, nb_deleted_chapters, synced):
             nb_recent_chapters = len(recent_chapters_ids)
