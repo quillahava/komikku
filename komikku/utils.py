@@ -501,13 +501,10 @@ class PictureSubdivided(Gtk.Box):
     def __init__(self, path, pixbuf):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
 
-        self.props.hexpand = False
-        self.props.halign = Gtk.Align.CENTER
+        self.path = path
         # Pages of Webtoon pager have a minimum size (equal to reader view size)
         # In rare cases where an image is smaller than page, it must be centered vertically
         self.props.valign = Gtk.Align.CENTER
-
-        self.path = path
 
         # TODO: find a way to replace 4096 by GL_MAX_TEXTURE_SIZE value
         for pixbuf_tile in subdivide_pixbuf(pixbuf, 4096):
