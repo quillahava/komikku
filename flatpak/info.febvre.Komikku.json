@@ -1,9 +1,9 @@
 {
     "app-id" : "info.febvre.Komikku",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "42",
+    "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",
-    "sdk-version": "42",
+    "sdk-version": "master",
     "command" : "komikku",
     "finish-args" : [
         "--share=ipc",
