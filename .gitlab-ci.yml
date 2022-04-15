@@ -1,10 +1,6 @@
 include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 # include: 'https://gitlab.gnome.org/GNOME/citemplates/-/raw/70996b9c3985709ab8700f7948be9ac620e1943e/flatpak/flatpak_ci_initiative.yml'
 
-stages:
-    - test
-    - deploy
-
 variables:
     BUNDLE: "info.febvre.Komikku.flatpak"
 
@@ -19,12 +15,12 @@ flatpak:
         APP_ID: "info.febvre.Komikku"
     extends: .flatpak
 
-# review:
-#     stage: deploy
-#     dependencies:
-#         - 'flatpak'
-#     extends: '.review'
+review:
+    stage: deploy
+    dependencies:
+        - 'flatpak'
+    extends: '.review'
 
-# stop_review:
-#     stage: deploy
-#     extends: '.stop_review'
+stop_review:
+    stage: deploy
+    extends: '.stop_review'
