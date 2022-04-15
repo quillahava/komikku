@@ -2,7 +2,7 @@ include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_
 # include: 'https://gitlab.gnome.org/GNOME/citemplates/-/raw/70996b9c3985709ab8700f7948be9ac620e1943e/flatpak/flatpak_ci_initiative.yml'
 
 stages:
-    - build
+    - test
     - deploy
 
 variables:
@@ -10,7 +10,7 @@ variables:
 
 flatpak:
     image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
-    stage: build
+    stage: test
     variables:
         MANIFEST_PATH: "flatpak/info.febvre.Komikku.json"
         MESON_ARGS: "-Dprofile=development"
