@@ -1,47 +1,26 @@
-include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
-
-stages:
-    - check
-    - build
-    - deploy
+include: 'https://gitlab.gnome.org/GNOME/citemplates/-/raw/70996b9c3985709ab8700f7948be9ac620e1943e/flatpak/flatpak_ci_initiative.yml'
+# include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 
 variables:
     BUNDLE: "info.febvre.Komikku.flatpak"
-    MANIFEST_PATH: "flatpak/info.febvre.Komikku.json"
-    FLATPAK_MODULE: "komikku"
 
-.flatpak_cache_template: &flatpak_cache
-    cache:
-        key: "flatpak"
-        paths:
-          - .flatpak-builder/cache/
-          - _build/target/
-
-.flatpak_aarch64:
-  extends: .flatpak
-  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/aarch64:gnome-nightly'
-  tags:
-    - flatpak-aarch64
-
-flatpak_x86_64:
+flatpak:
+    image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
+    stage: 'test'
+    variables:
+        MANIFEST_PATH: "flatpak/info.febvre.Komikku.json"
+        MESON_ARGS: "-Dprofile=development"
+        FLATPAK_MODULE: "komikku"
+        RUNTIME_REPO: "https://flathub.org/repo/flathub.flatpakrepo"
+        APP_ID: "info.febvre.Komikku"
     extends: .flatpak
-    stage: build
-    variables:
-        APP_ID: info.febvre.Komikku.flatpak
-        RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-        MESON_ARGS: "-Dprofile=development"
 
-flatpak_aarch64:
-    extends: .flatpak_aarch64
-    stage: build
-    variables:
-        APP_ID: info.febvre.Komikku.flatpak
-        RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-        MESON_ARGS: "-Dprofile=development"
+review:
+    stage: deploy
+    dependencies:
+        - 'flatpak'
+    extends: '.review'
 
-flake8:
-    stage: check
-    image: python:3.9
-    script:
-        - pip install flake8
-        - flake8 --max-line-length=160 --ignore=F821,E231,E402,E501,W504 --show-source komikku
+stop_review:
+    stage: deploy
+    extends: '.stop_review'
