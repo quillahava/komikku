@@ -63,6 +63,11 @@ class Page(Gtk.Overlay):
     def error(self, value):
         self._error = value
 
+    @GObject.Property(type=float)
+    def height(self):
+        _minimal, natural = self.get_preferred_size()
+        return natural.height
+
     @GObject.Property(type=bool, default=False)
     def loadable(self):
         return self._loadable
