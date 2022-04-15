@@ -40,7 +40,8 @@ flatpak_aarch64:
         MESON_ARGS: "-Dprofile=development"
 
 flake8:
-  stage: check
-  script:
-    - dnf install -y python3-flake8
-    - flake8 --max-line-length=160 --ignore=F821,E231,E402,E501,W504 --show-source komikku
+    stage: check
+    image: python:3.9
+    script:
+        - pip install flake8
+        - flake8 --max-line-length=160 --ignore=F821,E231,E402,E501,W504 --show-source komikku
