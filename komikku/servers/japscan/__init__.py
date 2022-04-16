@@ -12,9 +12,9 @@ import requests
 import time
 
 from gi.repository import GLib
-# from gi.repository import WebKit2
+from gi.repository import WebKit2
 
-# from komikku.servers import headless_browser
+from komikku.servers import headless_browser
 from komikku.servers import search_duckduckgo
 from komikku.servers import Server
 from komikku.servers import USER_AGENT

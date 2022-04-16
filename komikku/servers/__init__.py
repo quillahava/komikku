@@ -13,11 +13,11 @@ import requests
 from requests.adapters import TimeoutSauce
 
 gi.require_version('Gtk', '4.0')
-# gi.require_version('WebKit2', '4.0')
+gi.require_version('WebKit2', '5.0')
 
 from gi.repository import GLib
 from gi.repository import Gtk
-# from gi.repository import WebKit2
+from gi.repository import WebKit2
 
 from komikku.servers.loader import server_finder
 from komikku.servers.utils import convert_image
@@ -92,7 +92,7 @@ class HeadlessBrowser(Gtk.Window):
         self.set_child(self.scrolledwindow)
 
         self.webview = WebKit2.WebView()
-        self.viewport.add(self.webview)
+        self.viewport.set_child(self.webview)
 
         self.settings = self.webview.get_settings()
         self.settings.set_enable_dns_prefetching(True)
@@ -104,9 +104,7 @@ class HeadlessBrowser(Gtk.Window):
 
         # Make window almost invisible
         self.set_decorated(False)
-        self.set_focus_on_map(False)
-        self.set_keep_below(True)
-        self.resize(1, 1)
+        self.set_default_size(1, 1)
 
     def close(self, blank=True):
         logger.debug('WebKit2 | Closed')
@@ -140,13 +138,14 @@ class HeadlessBrowser(Gtk.Window):
 
         logger.debug('WebKit2 | Load page %s', uri)
 
-        self.show_all()
+        self.show()
+        self.get_surface().lower()
         GLib.idle_add(self.webview.load_uri, uri)
 
         return True
 
 
-# headless_browser = HeadlessBrowser()
+headless_browser = HeadlessBrowser()
 
 
 class Server:
