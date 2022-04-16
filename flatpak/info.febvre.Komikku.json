@@ -3,7 +3,6 @@
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",
-    "sdk-version": "master",
     "command" : "komikku",
     "finish-args" : [
         "--share=ipc",
