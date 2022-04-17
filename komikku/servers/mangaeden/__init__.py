@@ -28,6 +28,7 @@ class Mangaeden(Server):
     id = 'mangaeden'
     name = SERVER_NAME
     lang = 'en'
+    status = 'disabled'
 
     base_url = 'https://www.mangaeden.com'
     search_url = base_url + '/en/en-directory/'
@@ -240,6 +241,7 @@ class Mangaeden_it(Mangaeden):
     id = 'mangaeden_it'
     name = SERVER_NAME
     lang = 'it'
+    status = 'disabled'
 
     base_url = 'http://www.mangaeden.com'
     search_url = base_url + '/it/it-directory/'
