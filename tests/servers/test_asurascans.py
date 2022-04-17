@@ -1,6 +1,7 @@
 import logging
 import pytest
 from pytest_steps import test_steps
+import urllib
 
 from komikku.utils import log_error_traceback
 
@@ -38,7 +39,7 @@ def test_asurascans(asurascans_server):
     print('Search')
     try:
         # Use first result of get_most_populars
-        response = asurascans_server.search(response[0]['name'], 'all')
+        response = asurascans_server.search(response[0]['name'].replace('’', "'"), 'all')
         slug = response[0]['slug']
     except Exception as e:
         slug = None

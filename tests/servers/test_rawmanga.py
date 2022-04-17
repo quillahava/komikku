@@ -31,7 +31,7 @@ def test_rawmanga(rawmanga_server):
     print('Search')
     try:
         # Use first result of get_most_populars
-        response = rawmanga_server.search(response[0]['name'], 'all')
+        response = rawmanga_server.search('kingdom', 'all')
         slug = response[0]['slug']
     except Exception as e:
         slug = None
@@ -44,7 +44,7 @@ def test_rawmanga(rawmanga_server):
     print('Get manga data')
     try:
         response = rawmanga_server.get_manga_data(dict(slug=slug))
-        chapter_slug = response['chapters'][0]['slug']
+        chapter_slug = response['chapters'][-1]['slug']
     except Exception as e:
         chapter_slug = None
         log_error_traceback(e)

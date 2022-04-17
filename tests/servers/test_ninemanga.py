@@ -30,7 +30,7 @@ def test_ninemanga(ninemanga_server):
     # Search
     print('Search')
     try:
-        response = ninemanga_server.search('tales of demons and gods')
+        response = ninemanga_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
@@ -43,7 +43,7 @@ def test_ninemanga(ninemanga_server):
     print('Get manga data')
     try:
         response = ninemanga_server.get_manga_data(dict(slug=slug))
-        chapter_slug = response['chapters'][0]['slug']
+        chapter_slug = response['chapters'][-1]['slug']
     except Exception as e:
         chapter_slug = None
         log_error_traceback(e)

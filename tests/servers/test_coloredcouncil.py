@@ -31,7 +31,7 @@ def test_coloredcouncil(coloredcouncil_server):
     print('Search')
     try:
         # Use second result of get_most_populars
-        term = response[0]['name'].split('–')[0]
+        term = response[1]['name'].split('–')[0]
         response = coloredcouncil_server.search(term)
         slug = response[0]['slug']
     except Exception as e:
