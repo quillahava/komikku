@@ -80,6 +80,9 @@ class Bilibili(Server):
                     date=convert_date_string(ep['pub_time'].split('T')[0], format='%Y-%m-%d'),
                 )
                 for ep in sorted(json_data['ep_list'], key=itemgetter('ord'))
+                # We don't support user authentication, much less payment,
+                # so we can only offer freely available chapters.
+                if ep['pay_mode'] == 0
             ],
             server_id=self.id,
         ))
