@@ -92,12 +92,13 @@ def bypass_cloudflare(func):
             server.session.headers.update({'User-Agent': USER_AGENT})
 
             for cookie in cookie_manager.get_cookies_finish(result):
+                print(cookie.get_expires().to_local(), cookie.get_expires().to_unix(), cookie.get_expires().to_utc())
                 rcookie = requests.cookies.create_cookie(
-                    name=cookie.name,
-                    value=cookie.value,
-                    domain=cookie.domain,
-                    path=cookie.path,
-                    expires=cookie.expires.to_time_t() if cookie.expires else None,
+                    name=cookie.get_name(),
+                    value=cookie.get_value(),
+                    domain=cookie.get_domain(),
+                    path=cookie.get_path(),
+                    expires=cookie.get_expires().to_unix() if cookie.get_expires() else None,
                 )
                 server.session.cookies.set_cookie(rcookie)
 
@@ -123,7 +124,7 @@ class Mangafreak(Server):
     name = SERVER_NAME
     lang = 'en'
 
-    base_url = 'https://w12.mangafreak.net'
+    base_url = 'https://w13.mangafreak.net'
     search_url = base_url + '/Search/{0}'
     most_populars_url = base_url
     manga_url = base_url + '/Manga/{0}'
