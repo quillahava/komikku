@@ -123,7 +123,7 @@ class Mangafreak(Server):
     name = SERVER_NAME
     lang = 'en'
 
-    base_url = 'https://w12.mangafreak.net'
+    base_url = 'https://w13.mangafreak.net'
     search_url = base_url + '/Search/{0}'
     most_populars_url = base_url
     manga_url = base_url + '/Manga/{0}'
