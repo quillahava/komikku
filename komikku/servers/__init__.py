@@ -79,10 +79,9 @@ class HeadlessBrowser(Gtk.Window):
     lock = False
 
     def __init__(self, *args, **kwargs):
-        self.__handlers_ids = []
-        self.debug = kwargs.pop('debug', False)
-
         super().__init__(*args, **kwargs)
+
+        self.__handlers_ids = []
 
         self.scrolledwindow = Gtk.ScrolledWindow()
         self.scrolledwindow.get_hscrollbar().hide()
@@ -102,12 +101,10 @@ class HeadlessBrowser(Gtk.Window):
         self.web_context = self.webview.get_context()
         self.web_context.set_cache_model(WebKit2.CacheModel.DOCUMENT_VIEWER)
         self.web_context.set_tls_errors_policy(WebKit2.TLSErrorsPolicy.IGNORE)
-        # self.settings.props.enable_developer_extras = True
 
-        if not self.debug:
-            # Make window almost invisible
-            self.set_decorated(False)
-            self.set_default_size(1, 1)
+        # Make window almost invisible
+        self.set_decorated(False)
+        self.set_default_size(1, 1)
 
     def close(self, blank=True):
         logger.debug('WebKit2 | Closed')
@@ -141,22 +138,14 @@ class HeadlessBrowser(Gtk.Window):
 
         logger.debug('WebKit2 | Load page %s', uri)
 
-        def do_load():
-            self.show()
-
-            if not self.debug:
-                # Make window almost invisible (part 2)
-                self.get_surface().lower()
-                self.minimize()
-
-            self.webview.load_uri(uri)
-
-        GLib.idle_add(do_load)
+        self.show()
+        self.get_surface().lower()
+        GLib.idle_add(self.webview.load_uri, uri)
 
         return True
 
 
-headless_browser = HeadlessBrowser(debug=False)
+headless_browser = HeadlessBrowser()
 
 
 class Server:

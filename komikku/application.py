@@ -590,16 +590,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Set window size: default or saved size
         self.set_default_size(*Settings.get_default().window_size)
 
-        def debug_tree_widget(widget=None, depth=0):
-            for child in widget or self:
-                if isinstance(child, Gtk.Label):
-                    print(' ' * depth, child, child.props.label)
-                # name = child.props.label if isinstance(child, Gtk.Label) else None
-                # print('\t'*depth, child, name)
-                self.debug_tree_widget(child, depth + 1)
-
-        # self.debug_tree_widget()
-
     def quit(self, *args):
         def do_quit():
             self.save_window_size()

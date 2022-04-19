@@ -260,45 +260,10 @@ class Mangahub(Server):
         return self.manga_url.format(slug)
 
     def get_most_populars(self):
-        return self.search('', populars=True)
-
-    def get_most_populars2(self):
         """
         Returns most popular manga list
         """
-        query = {
-            # 'query': '{latestPopular(x:m01){id,title,slug,image,latestChapter,unauthFile}}'
-            'query': "{latestPopular(x:m01){id,title,slug,image,latestChapter,unauthFile}search(x:m01,mod:POPULAR,count:true,offset:0){rows{id,rank,title,slug,status,author,genres,image,latestChapter,unauthFile,createdDate},count}}"
-        }
-        r = self.session_post(
-            self.api_url,
-            json=query,
-            headers={
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                # 'Accept-Encoding': 'gzip, deflate, br',
-                # 'Accept-Language': 'fr-FR,en-US;q=0.7,en;q=0.3',
-                # 'Host': 'api.mghubcdn.com',
-                # 'Origin': 'https://mangahub.io',
-                'Referer': 'https://mangahub.io/',
-                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0',
-            }
-        )
-
-        results = []
-        if r.status_code == 200:
-            try:
-                for item in json.loads(r.json()['latestPopular']):
-                    results.append(dict(
-                        slug=item['slug'],
-                        name=item['title'],
-                    ))
-            except Exception:
-                logger.warning('Failed to get popular mangas')
-
-                return None
-
-        return results
+        return self.search('', populars=True)
 
     def search(self, term, populars=False):
         params = dict(
