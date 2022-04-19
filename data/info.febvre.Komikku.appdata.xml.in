@@ -84,6 +84,17 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.38.0" date="2022-04-19">
+            <description>
+                <ul>
+                    <li>[Servers] Add Manhuaus [EN]</li>
+                    <li>[Servers] Apoll Comics: Update</li>
+                    <li>[Servers] Bilibili: Filter paywalled chapters</li>
+                    <li>[Servers] Read Comic Online: Update</li>
+                    <li>[Servers] Manga Eden: Disable</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.37.0" date="2022-02-28">
             <description>
                 <ul>
