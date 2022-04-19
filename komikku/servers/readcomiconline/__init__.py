@@ -92,11 +92,11 @@ def bypass_cloudflare(func):
 
             for cookie in cookie_manager.get_cookies_finish(result):
                 rcookie = requests.cookies.create_cookie(
-                    name=cookie.name,
-                    value=cookie.value,
-                    domain=cookie.domain,
-                    path=cookie.path,
-                    expires=cookie.expires.to_time_t() if cookie.expires else None,
+                    name=cookie.get_name(),
+                    value=cookie.get_value(),
+                    domain=cookie.get_domain(),
+                    path=cookie.get_path(),
+                    expires=cookie.get_expires().to_time_t() if cookie.get_expires() else None,
                 )
                 server.session.cookies.set_cookie(rcookie)
 
