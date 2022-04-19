@@ -5,17 +5,183 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from bs4 import BeautifulSoup
+import functools
+import logging
 import requests
+import time
 
+from gi.repository import GLib
+from gi.repository import WebKit2
+
+from komikku.servers import headless_browser
 from komikku.servers import Server
-from komikku.servers import USER_AGENT
-from komikku.servers.utils import convert_date_string
+from komikku.servers import USER_AGENT_MOBILE
+from komikku.servers.exceptions import CloudflareBypassError
 from komikku.servers.utils import get_buffer_mime_type
 
 headers = {
-    'User-Agent': USER_AGENT,
+    'User-Agent': USER_AGENT_MOBILE,
     'Origin': 'https://readcomiconline.li',
 }
+
+logger = logging.getLogger('komikku.servers.readcomiconline')
+
+
+def bypass_cloudflare(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        server = args[0]
+        if server.session:
+            return func(*args, **kwargs)
+
+        cf_reload_count = -1
+        done = False
+        error = None
+
+        def load_page():
+            if not headless_browser.open(server.base_url, user_agent=USER_AGENT_MOBILE):
+                return True
+
+            headless_browser.connect_signal('load-changed', on_load_changed)
+            headless_browser.connect_signal('load-failed', on_load_failed)
+            headless_browser.connect_signal('notify::title', on_title_changed)
+
+        def on_load_changed(webview, event):
+            nonlocal cf_reload_count
+            nonlocal error
+
+            if event != WebKit2.LoadEvent.COMMITTED:
+                return
+
+            cf_reload_count += 1
+            if cf_reload_count > 20:
+                error = 'Max Cloudflare reload exceeded'
+                headless_browser.close()
+                return
+
+            # Detect end of Cloudflare challenge via JavaScript
+            js = """
+                const checkCF = setInterval(() => {
+                    if (!document.getElementById('cf-content')) {
+                        clearInterval(checkCF);
+                        document.title = 'ready';
+                    }
+                }, 100);
+            """
+            headless_browser.webview.run_javascript(js, None, None)
+
+        def on_load_failed(_webview, _event, _uri, gerror):
+            nonlocal error
+
+            error = f'Failed to load homepage: {server.base_url}'
+
+            headless_browser.close()
+
+        def on_title_changed(webview, title):
+            if headless_browser.webview.props.title != 'ready':
+                return
+
+            cookie_manager = headless_browser.web_context.get_cookie_manager()
+            cookie_manager.get_cookies(server.base_url, None, on_get_cookies_finish, None)
+
+        def on_get_cookies_finish(cookie_manager, result, user_data):
+            nonlocal done
+
+            server.session = requests.Session()
+            server.session.headers.update({'User-Agent': USER_AGENT_MOBILE})
+
+            for cookie in cookie_manager.get_cookies_finish(result):
+                rcookie = requests.cookies.create_cookie(
+                    name=cookie.name,
+                    value=cookie.value,
+                    domain=cookie.domain,
+                    path=cookie.path,
+                    expires=cookie.expires.to_time_t() if cookie.expires else None,
+                )
+                server.session.cookies.set_cookie(rcookie)
+
+            done = True
+            headless_browser.close()
+
+        GLib.timeout_add(100, load_page)
+
+        while not done and error is None:
+            time.sleep(.1)
+
+        if error:
+            logger.warning(error)
+            raise CloudflareBypassError
+
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+def get_chapter_page_html(url):
+    error = None
+    html = None
+
+    def load_page():
+        if not headless_browser.open(url, user_agent=USER_AGENT_MOBILE):
+            return True
+
+        headless_browser.connect_signal('load-changed', on_load_changed)
+        headless_browser.connect_signal('load-failed', on_load_failed)
+        headless_browser.connect_signal('notify::title', on_title_changed)
+
+    def on_get_html_finish(webview, result, user_data=None):
+        nonlocal error
+        nonlocal html
+
+        js_result = webview.run_javascript_finish(result)
+        if js_result:
+            js_value = js_result.get_js_value()
+            if js_value:
+                html = js_value.to_string()
+
+        if html is None:
+            error = f'Failed to get chapter page html: {url}'
+
+        headless_browser.close()
+
+    def on_load_changed(_webview, event):
+        if event != WebKit2.LoadEvent.FINISHED:
+            return
+
+        # Wait until all images URLs are inserted in DOM
+        js = """
+            const checkReady = setInterval(() => {
+                if (document.querySelectorAll('#divImage img[src^="http"]').length === document.querySelectorAll('#divImage img').length) {
+                    clearInterval(checkReady);
+                    document.title = 'ready';
+                }
+            }, 100);
+        """
+
+        headless_browser.webview.run_javascript(js, None, None, None)
+
+    def on_load_failed(_webview, _event, _uri, gerror):
+        nonlocal error
+
+        error = f'Failed to load chapter page: {url}'
+
+        headless_browser.close()
+
+    def on_title_changed(_webview, _title):
+        if headless_browser.webview.props.title == 'ready':
+            # All images have been inserted in DOM, we can retrieve page HTML
+            headless_browser.webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
+
+    GLib.timeout_add(100, load_page)
+
+    while html is None and error is None:
+        time.sleep(.1)
+
+    if error:
+        logger.warning(error)
+        raise requests.exceptions.RequestException()
+
+    return html
 
 
 class Readcomiconline(Server):
@@ -30,10 +196,9 @@ class Readcomiconline(Server):
     chapter_url = base_url + '/Comic/{0}/{1}'
 
     def __init__(self):
-        if self.session is None:
-            self.session = requests.Session()
-            self.session.headers = headers
+        self.session = None
 
+    @bypass_cloudflare
     def get_manga_data(self, initial_data):
         """
         Returns comic data by scraping manga HTML page content
@@ -64,16 +229,16 @@ class Readcomiconline(Server):
 
         soup = BeautifulSoup(r.content, 'html.parser')
 
-        info_elements = soup.find_all('div', class_='barContent')
+        info_elements = soup.select_one('div.col.info')
 
-        data['name'] = info_elements[0].div.a.text.strip()
-        cover_path = info_elements[3].find('img').get('src')
+        data['name'] = soup.select('.heading h3')[0].text.strip()
+        cover_path = soup.select_one('div.col.cover img').get('src')
         if cover_path.startswith('http'):
             data['cover'] = cover_path
         else:
             data['cover'] = '{0}{1}'.format(self.base_url, cover_path)
 
-        for p_element in info_elements[0].find_all('p'):
+        for p_element in info_elements.find_all('p'):
             if not p_element.span:
                 continue
 
@@ -96,59 +261,41 @@ class Readcomiconline(Server):
                 elif 'Ongoing' in value:
                     data['status'] = 'ongoing'
 
-            elif label.startswith('Summary'):
-                data['synopsis'] = p_element.text.strip()
+        data['synopsis'] = soup.select_one('div.main > div > div:nth-child(4) > div:nth-child(3)').text.strip()
 
         # Chapters (Issues)
-        for tr_element in reversed(soup.find('table', class_='listing').find_all('tr')[2:]):
-            td_elements = tr_element.find_all('td')
-
+        for li_element in reversed(soup.find('ul', class_='list').find_all('li')):
             data['chapters'].append(dict(
-                slug=td_elements[0].a.get('href').split('?')[0].split('/')[-1],
-                title=td_elements[0].a.text.strip(),
-                date=convert_date_string(td_elements[1].text.strip(), '%m/%d/%Y'),
+                slug=li_element.a.get('href').split('?')[0].split('/')[-1],
+                title=li_element.a.text.strip(),
+                date=None,  # Not available in mobile version
             ))
 
         return data
 
+    @bypass_cloudflare
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
         Returns comic chapter data
 
         Currently, only pages are expected.
         """
-        r = self.session_get(self.chapter_url.format(manga_slug, chapter_slug))
-        if r.status_code != 200:
-            return None
+        html = get_chapter_page_html(self.chapter_url.format(manga_slug, chapter_slug))
 
-        mime_type = get_buffer_mime_type(r.content)
-        if mime_type != 'text/html':
-            return None
-
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(html, 'html.parser')
 
         data = dict(
             pages=[],
         )
-        for script_element in soup.find_all('script'):
-            script = script_element.string
-            if not script or not script.strip().startswith('function isNumber'):
-                continue
-
-            for line in script.split('\n'):
-                line = line.strip()
-                if not line.startswith('lstImages.push'):
-                    continue
-
-                data['pages'].append(dict(
-                    slug=None,
-                    image=line[16:-3],
-                ))
-
-            break
+        for img_element in soup.select('#divImage img'):
+            data['pages'].append(dict(
+                image=img_element.get('src'),
+                slug=None,
+            ))
 
         return data
 
+    @bypass_cloudflare
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
         Returns chapter page scan (image) content
@@ -173,6 +320,7 @@ class Readcomiconline(Server):
         """
         return self.manga_url.format(slug)
 
+    @bypass_cloudflare
     def get_most_populars(self):
         """
         Returns most popular comics list
@@ -189,15 +337,8 @@ class Readcomiconline(Server):
 
         soup = BeautifulSoup(r.content, 'html.parser')
 
-        for tr_element in soup.find('table', class_='listing').find_all('tr'):
-            if tr_element.get('class') and 'head' in tr_element.get('class'):
-                continue
-
-            td_elements = tr_element.find_all('td')
-            if not td_elements:
-                continue
-
-            a_element = td_elements[0].a
+        for element in soup.find('div', class_='item-list').find_all(class_='info'):
+            a_element = element.p.a
             results.append(dict(
                 name=a_element.text.strip(),
                 slug=a_element.get('href').split('/')[-1],
@@ -205,6 +346,7 @@ class Readcomiconline(Server):
 
         return results
 
+    @bypass_cloudflare
     def search(self, term):
         results = []
         term = term.lower()
