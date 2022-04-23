@@ -5,6 +5,7 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from bs4 import BeautifulSoup
+from gettext import gettext as _
 import requests
 
 from komikku.servers import Server
@@ -22,6 +23,27 @@ class Mangapill(Server):
     search_url = base_url + '/search'
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/chapters/{0}'
+
+    filters = [
+        {
+            'key': 'type',
+            'type': 'select',
+            'name': _('Type'),
+            'description': _('Type of comics to search for'),
+            'value_type': 'single',
+            'default': 'all',
+            'options': [
+                {'key': 'all', 'name': _('All')},
+                {'key': 'manga', 'name': _('Manga')},
+                {'key': 'novel', 'name': _('Novel')},
+                {'key': 'one-shot', 'name': _('One shot')},
+                {'key': 'doujinshi', 'name': _('Doujinshi')},
+                {'key': 'manhwa', 'name': _('Manhwa')},
+                {'key': 'manhua', 'name': _('Manhua')},
+                {'key': 'oel', 'name': _('OEL')},
+            ],
+        },
+    ]
 
     def __init__(self):
         if self.session is None:
@@ -147,7 +169,7 @@ class Mangapill(Server):
         """
         return self.manga_url.format(url)
 
-    def get_most_populars(self):
+    def get_most_populars(self, type):
         """
         Returns Trending mangas
         """
@@ -171,12 +193,12 @@ class Mangapill(Server):
 
         return results
 
-    def search(self, term):
+    def search(self, term, type):
         r = self.session_get(
             self.search_url,
             params=dict(
                 q=term,
-                type=None,
+                type=type if type != 'all' else None,
                 status=None,
             )
         )
