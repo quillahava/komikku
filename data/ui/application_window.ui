@@ -979,6 +979,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                         <property name="margin-start">12</property>
                                         <child>
                                           <object class="GtkListView" id="card_chapters_listview">
+                                            <property name="valign">start</property>
                                             <style>
                                               <class name="card"/>
                                             </style>

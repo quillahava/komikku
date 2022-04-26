@@ -528,6 +528,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
             self.previous_page = self.page
             self.page = self.stack.get_visible_child_name()
 
+    def on_preferences_menu_clicked(self, action, param):
+        self.preferences.show()
+
     def on_primary_menu_shown(self, _menu_button):
         if self.page == 'library':
             if self.library.selection_mode:
@@ -571,9 +574,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         if self.page == 'reader':
             self.reader.on_resize()
         self.explorer.on_resize()
-
-    def on_preferences_menu_clicked(self, action, param):
-        self.preferences.show()
 
     def on_shortcuts_menu_clicked(self, action, param):
         builder = Gtk.Builder()

@@ -313,6 +313,7 @@ class ChaptersList:
 
         # Gesture to detect long press on mouse button 1 and enter in selection mode
         self.gesture_long_press = Gtk.GestureLongPress.new()
+        self.gesture_long_press.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.gesture_long_press.set_touch_only(False)
         self.listview.add_controller(self.gesture_long_press)
         self.gesture_long_press.connect('pressed', self.card.enter_selection_mode)
