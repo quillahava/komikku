@@ -17,6 +17,10 @@
         <value nick="height" value="2" />
         <value nick="original" value="3" />
     </enum>
+    <enum id="@appid@.LibraryDisplayMode">
+        <value nick="grid" value="0" />
+        <value nick="grid-compact" value="1" />
+    </enum>
     <schema path="/@apppath@/" id="@appid@" gettext-domain="@projectname@">
         <key type="ai" name="window-size">
             <default>[768, 600]</default>
@@ -63,6 +67,11 @@
         </key>
 
         <!-- Preferences: Library -->
+        <key enum="@appid@.LibraryDisplayMode" name="library-display-mode">
+            <default>"grid"</default>
+            <summary>Library Display Mode</summary>
+            <description>Display mode of comics in Library</description>
+        </key>
         <key type="b" name="update-at-startup">
             <default>false</default>
             <summary>Update at Startup</summary>

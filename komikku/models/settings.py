@@ -112,6 +112,34 @@ class Settings(Gio.Settings):
         self.set_boolean('fullscreen', state)
 
     @property
+    def library_display_mode(self):
+        """Return the library's display mode"""
+        value = self.library_display_mode_value
+
+        if value == 0:
+            return 'grid'
+        if value == 1:
+            return 'grid-compact'
+
+    @property
+    def library_display_mode_value(self):
+        """Return the library's display mode value"""
+        return self.get_enum('library-display-mode')
+
+    @library_display_mode.setter
+    def library_display_mode(self, mode):
+        """
+        Set the library's display mode
+
+        :param mode: library's display mode
+        :type mode: string
+        """
+        if mode == 'grid':
+            self.set_enum('library-display-mode', 0)
+        elif mode == 'grid-compact':
+            self.set_enum('library-display-mode', 1)
+
+    @property
     def long_strip_detection(self):
         return self.get_boolean('long-strip-detection')
 

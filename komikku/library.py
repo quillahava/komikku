@@ -16,6 +16,7 @@ from gi.repository import GObject
 from gi.repository import Graphene
 from gi.repository import Gsk
 from gi.repository import Gtk
+from gi.repository import Pango
 from gi.repository.GdkPixbuf import Pixbuf
 from gi.repository.GdkPixbuf import PixbufAnimation
 
@@ -230,20 +231,22 @@ class Library:
     def compute_thumbnails_size(self):
         default_width = Thumbnail.default_width
         default_height = Thumbnail.default_height
-        padding = Thumbnail.padding
 
         container_width = self.window.props.default_width
         if container_width == 0:
             container_width = Settings.get_default().window_size[0]
 
-        child_width = default_width + padding * 2
+        child_width = default_width + Thumbnail.padding * 2 + Thumbnail.margin * 2
         if container_width / child_width != container_width // child_width:
             nb = container_width // child_width + 1
         else:
             nb = container_width // child_width
 
-        width = container_width // nb - (padding * 2)
+        width = container_width // nb - (Thumbnail.padding * 2 + Thumbnail.margin * 2)
         height = default_height // (default_width / width)
+
+        self.flowbox.set_min_children_per_line(nb)
+        self.flowbox.set_max_children_per_line(nb)
 
         self.thumbnails_size = (width, height)
 
@@ -800,9 +803,10 @@ class Thumbnail(Gtk.FlowBoxChild):
     default_width = 180
     default_height = 250
     padding = 6  # flowbox child padding is set via CSS
+    margin = 2
 
     def __init__(self, parent, manga, width, height):
-        super().__init__()
+        super().__init__(margin_top=self.margin, margin_start=self.margin, margin_bottom=self.margin, margin_end=self.margin)
 
         self.parent = parent
         self.manga = manga
@@ -812,13 +816,27 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.overlay = Gtk.Overlay()
         self.overlay.set_child(ThumbnailWidget(manga))
 
-        self.name_label = Gtk.Label(xalign=0, hexpand=True)
-        self.name_label.add_css_class('library-thumbnail-name-label')
-        self.name_label.set_valign(Gtk.Align.END)
-        self.name_label.set_wrap(True)
-        self.overlay.add_overlay(self.name_label)
+        if Settings.get_default().library_display_mode == 'grid-compact':
+            self.name_label = Gtk.Label(xalign=0, hexpand=True)
+            self.name_label.add_css_class('library-thumbnail-name-label')
+            self.name_label.set_valign(Gtk.Align.END)
+            self.name_label.set_wrap(True)
+            self.overlay.add_overlay(self.name_label)
 
-        self.set_child(self.overlay)
+            self.set_child(self.overlay)
+        else:
+            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            box.append(self.overlay)
+
+            self.name_label = Gtk.Label(hexpand=True)
+            self.name_label.set_justify(Gtk.Justification.CENTER)
+            self.name_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+            self.name_label.add_css_class('caption')
+            self.name_label.set_lines(2)
+            self.name_label.set_wrap(True)
+            box.append(self.name_label)
+
+            self.set_child(box)
 
         self.__draw_name()
 
@@ -827,8 +845,8 @@ class Thumbnail(Gtk.FlowBoxChild):
     def __draw_name(self):
         self.name_label.set_text(self.manga.name)
 
-    def resize(self, width, height):
-        self.set_size_request(width, height)
+    def resize(self, _width, height):
+        self.overlay.get_child().set_size_request(-1, height)
 
     def update(self, manga):
         self.manga = manga
@@ -842,8 +860,8 @@ class ThumbnailWidget(Gtk.Widget):
 
     corners_radius = 10
     font_size = 13
-    min_width = Thumbnail.default_width / 2 - Thumbnail.padding * 2
-    min_height = Thumbnail.default_height / 2 - Thumbnail.padding * 2
+    min_width = Thumbnail.default_width / 2 - Thumbnail.padding * 2 - Thumbnail.margin * 2
+    min_height = Thumbnail.default_height / 2 - Thumbnail.padding * 2 - Thumbnail.margin * 2
     ratio = Thumbnail.default_width / Thumbnail.default_height
     server_logo_size = 20
 

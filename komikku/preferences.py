@@ -30,6 +30,7 @@ class Preferences(Adw.Bin):
     night_light_switch = Gtk.Template.Child('night_light_switch')
     desktop_notifications_switch = Gtk.Template.Child('desktop_notifications_switch')
 
+    library_display_mode_row = Gtk.Template.Child('library_display_mode_row')
     update_at_startup_switch = Gtk.Template.Child('update_at_startup_switch')
     new_chapters_auto_download_switch = Gtk.Template.Child('new_chapters_auto_download_switch')
     nsfw_content_switch = Gtk.Template.Child('nsfw_content_switch')
@@ -61,13 +62,13 @@ class Preferences(Adw.Bin):
         self.window.stack.add_named(self, 'preferences')
         self.connect('notify::visible-child', self.on_page_changed)
 
-    def navigate_back(self, source):
+    def navigate_back(self, _source):
         if self.leaflet.get_visible_child_name() == 'subpages':
             self.leaflet.navigate(Adw.NavigationDirection.BACK)
         else:
             self.window.library.show()
 
-    def on_background_color_changed(self, row, param):
+    def on_background_color_changed(self, row, _gparam):
         index = row.get_selected()
 
         if index == 0:
@@ -89,6 +90,16 @@ class Preferences(Adw.Bin):
 
     def on_fullscreen_changed(self, switch_button, _gparam):
         self.settings.fullscreen = switch_button.get_active()
+
+    def on_library_display_mode_changed(self, row, _gparam):
+        index = row.get_selected()
+
+        if index == 0:
+            self.settings.library_display_mode = 'grid'
+        elif index == 1:
+            self.settings.library_display_mode = 'grid-compact'
+
+        self.window.library.populate()
 
     def on_long_strip_detection_changed(self, switch_button, _gparam):
         self.settings.long_strip_detection = switch_button.get_active()
@@ -119,7 +130,7 @@ class Preferences(Adw.Bin):
     def on_page_numbering_changed(self, switch_button, _gparam):
         self.settings.page_numbering = not switch_button.get_active()
 
-    def on_reading_mode_changed(self, row, param):
+    def on_reading_mode_changed(self, row, _gparam):
         index = row.get_selected()
 
         if index == 0:
@@ -131,7 +142,7 @@ class Preferences(Adw.Bin):
         elif index == 3:
             self.settings.reading_mode = 'webtoon'
 
-    def on_scaling_changed(self, row, param):
+    def on_scaling_changed(self, row, _gparam):
         index = row.get_selected()
 
         if index == 0:
@@ -180,6 +191,10 @@ class Preferences(Adw.Bin):
         #
         # Library
         #
+
+        # Display mode
+        self.library_display_mode_row.set_selected(self.settings.library_display_mode_value)
+        self.library_display_mode_row.connect('notify::selected', self.on_library_display_mode_changed)
 
         # Update manga at startup
         self.update_at_startup_switch.set_active(self.settings.update_at_startup)

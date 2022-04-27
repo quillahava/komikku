@@ -98,6 +98,25 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="title" translatable="yes">Library</property>
                         <child>
                           <object class="AdwPreferencesGroup">
+                            <property name="title" translatable="yes">Display</property>
+                            <child>
+                              <object class="AdwComboRow" id="library_display_mode_row">
+                                <property name="title" translatable="yes">Display Mode</property>
+                                <property name="model">
+                                  <object class="GtkStringList">
+                                    <items>
+                                      <item translatable="yes">Grid</item>
+                                      <item translatable="yes">Compact Grid</item>
+                                    </items>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwPreferencesGroup">
+                            <property name="title" translatable="yes">Update</property>
                             <child>
                               <object class="AdwActionRow">
                                 <property name="title" translatable="yes">Update at Startup</property>
