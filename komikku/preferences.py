@@ -31,6 +31,7 @@ class Preferences(Adw.Bin):
     desktop_notifications_switch = Gtk.Template.Child('desktop_notifications_switch')
 
     library_display_mode_row = Gtk.Template.Child('library_display_mode_row')
+    library_servers_logo_switch = Gtk.Template.Child('library_servers_logo_switch')
     update_at_startup_switch = Gtk.Template.Child('update_at_startup_switch')
     new_chapters_auto_download_switch = Gtk.Template.Child('new_chapters_auto_download_switch')
     nsfw_content_switch = Gtk.Template.Child('nsfw_content_switch')
@@ -98,6 +99,14 @@ class Preferences(Adw.Bin):
             self.settings.library_display_mode = 'grid'
         elif index == 1:
             self.settings.library_display_mode = 'grid-compact'
+
+        self.window.library.populate()
+
+    def on_library_servers_logo_changed(self, switch_button, _gparam):
+        if switch_button.get_active():
+            self.settings.library_servers_logo = True
+        else:
+            self.settings.library_servers_logo = False
 
         self.window.library.populate()
 
@@ -195,6 +204,10 @@ class Preferences(Adw.Bin):
         # Display mode
         self.library_display_mode_row.set_selected(self.settings.library_display_mode_value)
         self.library_display_mode_row.connect('notify::selected', self.on_library_display_mode_changed)
+
+        # Servers logo
+        self.library_servers_logo_switch.set_active(self.settings.library_servers_logo)
+        self.library_servers_logo_switch.connect('notify::active', self.on_library_servers_logo_changed)
 
         # Update manga at startup
         self.update_at_startup_switch.set_active(self.settings.update_at_startup)

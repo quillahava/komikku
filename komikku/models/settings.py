@@ -140,6 +140,14 @@ class Settings(Gio.Settings):
             self.set_enum('library-display-mode', 1)
 
     @property
+    def library_servers_logo(self):
+        return self.get_boolean('library-servers-logo')
+
+    @library_servers_logo.setter
+    def library_servers_logo(self, state):
+        self.set_boolean('library-servers-logo', state)
+
+    @property
     def long_strip_detection(self):
         return self.get_boolean('long-strip-detection')
 

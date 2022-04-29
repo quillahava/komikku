@@ -881,7 +881,8 @@ class ThumbnailWidget(Gtk.Widget):
         self.rounded_rect_size.init(self.corners_radius, self.corners_radius)
 
         self.__create_cover_texture()
-        self.__create_server_logo_texture()
+        if Settings.get_default().library_servers_logo:
+            self.__create_server_logo_texture()
 
     def __create_cover_texture(self):
         if self.manga.cover_fs_path is None:

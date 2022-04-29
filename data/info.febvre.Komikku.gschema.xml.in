@@ -72,6 +72,11 @@
             <summary>Library Display Mode</summary>
             <description>Display mode of comics in Library</description>
         </key>
+        <key type="b" name="library-servers-logo">
+            <default>false</default>
+            <summary>Servers logo</summary>
+            <description>Show servers logo</description>
+        </key>
         <key type="b" name="update-at-startup">
             <default>false</default>
             <summary>Update at Startup</summary>

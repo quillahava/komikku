@@ -112,6 +112,19 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                 </property>
                               </object>
                             </child>
+                            <child>
+                              <object class="AdwActionRow">
+                                <property name="title" translatable="yes">Servers Logo</property>
+                                <property name="activatable_widget">library_servers_logo_switch</property>
+                                <property name="subtitle" translatable="yes">Display servers logo</property>
+                                <child>
+                                  <object class="GtkSwitch" id="library_servers_logo_switch">
+                                    <property name="halign">center</property>
+                                    <property name="valign">center</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
                           </object>
                         </child>
                         <child>
