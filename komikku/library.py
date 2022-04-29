@@ -228,11 +228,14 @@ class Library:
         thumbnail = Thumbnail(self, manga, *self.thumbnails_size)
         self.flowbox.insert(thumbnail, position)
 
-    def compute_thumbnails_size(self):
+    def compute_thumbnails_size(self, maximized_or_fullscreen=False):
         default_width = Thumbnail.default_width
         default_height = Thumbnail.default_height
 
-        container_width = self.window.props.default_width
+        if maximized_or_fullscreen:
+            container_width = self.window.get_width()
+        else:
+            container_width = self.window.props.default_width
         if container_width == 0:
             container_width = Settings.get_default().window_size[0]
 
@@ -449,11 +452,11 @@ class Library:
             thumbnail.update(manga)
             break
 
-    def on_resize(self):
+    def on_resize(self, maximized_or_fullscreen):
         if self.page == 'start_page':
             return
 
-        self.compute_thumbnails_size()
+        self.compute_thumbnails_size(maximized_or_fullscreen)
         for thumbnail in self.flowbox:
             thumbnail.resize(*self.thumbnails_size)
 

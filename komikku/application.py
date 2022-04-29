@@ -304,9 +304,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         # Window
         self.connect('notify::default-width', self.on_resize)
-        self.connect('notify::default-height', self.on_resize)
-        self.connect('notify::fullscreened', self.on_resize)
-        self.connect('notify::maximized', self.on_resize)
 
         self.controller_key = Gtk.EventControllerKey.new()
         self.controller_key.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
@@ -556,24 +553,28 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Focus is lost after showing popover submenu (bug?)
         self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())
 
-    def on_resize(self, _window, allocation):
-        width = self.props.default_width
-        height = self.props.default_height
-
-        if self.size and self.size['width'] == width and self.size['height'] == height:
+    def on_resize(self, _window, _allocation, maximized_or_fullscreen=False):
+        if not self.get_mapped():
             return
 
-        self.size = dict(
-            width=width,
-            height=height
-        )
+        if not maximized_or_fullscreen:
+            width = self.props.default_width
+            height = self.props.default_height
+
+            self.size = dict(
+                width=width,
+                height=height
+            )
+        else:
+            width = self.get_width()
+
         self.mobile_width = width <= 720
 
-        self.library.on_resize()
+        self.library.on_resize(maximized_or_fullscreen)
         self.card.on_resize()
+        self.explorer.on_resize()
         if self.page == 'reader':
             self.reader.on_resize()
-        self.explorer.on_resize()
 
     def on_shortcuts_menu_clicked(self, action, param):
         builder = Gtk.Builder()
@@ -584,8 +585,28 @@ class ApplicationWindow(Adw.ApplicationWindow):
         shortcuts_overview.set_transient_for(self)
         shortcuts_overview.present()
 
+    def on_state_changed(self, _toplevel, state):
+        # Track window state changes to detect when it's fullscreen/unfullscreen or maximized/unmoximized
+        state = self.get_surface().get_state()
+        if state & Gdk.ToplevelState.MAXIMIZED or state & Gdk.ToplevelState.FULLSCREEN:
+            def wait_resize():
+                if self.get_width() == self.props.default_width:
+                    return True
+
+                self.on_resize(None, None, True)
+        else:
+            def wait_resize():
+                if self.get_width() != self.props.default_width:
+                    return True
+
+                self.on_resize(None, None, False)
+
+        GLib.idle_add(wait_resize)
+
     def present(self):
         super().present()
+
+        self.get_surface().connect('notify::state', self.on_state_changed)
 
         # Set window size: default or saved size
         self.set_default_size(*Settings.get_default().window_size)
@@ -640,11 +661,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
     def set_fullscreen(self):
         if not self.is_fullscreen():
+            self.reader.fullscreen_button.set_icon_name('view-restore-symbolic')
             self.reader.controls.on_fullscreen()
             self.fullscreen()
 
     def set_unfullscreen(self):
         if self.is_fullscreen():
+            self.reader.fullscreen_button.set_icon_name('view-fullscreen-symbolic')
             self.reader.controls.on_unfullscreen()
             self.unfullscreen()
 
@@ -675,12 +698,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.title_stack.set_visible_child_full(name, transition_type)
 
     def toggle_fullscreen(self, *args):
+        if self.page != 'reader':
+            return
+
         if self.is_fullscreen():
             self.set_unfullscreen()
-            self.reader.fullscreen_button.set_icon_name('view-fullscreen-symbolic')
         else:
             self.set_fullscreen()
-            self.reader.fullscreen_button.set_icon_name('view-restore-symbolic')
 
 
 if __name__ == '__main__':
