@@ -15,7 +15,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
+along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <interface>
   <requires lib="gtk" version="4.0"/>
@@ -645,6 +645,7 @@ along with HydraPaper.  If not, see <http://www.gnu.org/licenses/>.
                                                         <child>
                                                           <object class="GtkButton" id="card_resume2_button">
                                                             <property name="halign">start</property>
+                                                            <property name="margin-top">8</property>
                                                             <child>
                                                               <object class="GtkBox">
                                                                 <property name="spacing">6</property>

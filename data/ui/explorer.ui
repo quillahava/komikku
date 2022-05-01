@@ -254,6 +254,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                   <child>
                                     <object class="GtkButton" id="card_page_add_read_button">
                                       <property name="halign">start</property>
+                                      <property name="margin-top">8</property>
                                       <child>
                                         <object class="GtkBox">
                                           <property name="spacing">6</property>

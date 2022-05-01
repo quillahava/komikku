@@ -384,7 +384,7 @@ class Explorer(Gtk.Stack):
     def on_servers_page_search_mode_toggled(self, _searchbar, _gparam):
         if self.servers_page_searchbar.get_search_mode():
             self.servers_page_pinned_listbox.hide()
-        else:
+        elif len(Settings.get_default().pinned_servers):
             self.servers_page_pinned_listbox.show()
 
     def on_servers_page_searchentry_activated(self, _entry):
