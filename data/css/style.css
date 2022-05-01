@@ -21,6 +21,16 @@ flowbox flowboxchild:selected {
     padding: 20px 8px 4px 8px;
 }
 
+.library-thumbnail-badge-unread-chapters {
+    background-color: @blue_3;   /* #3584e4 */
+}
+.library-thumbnail-badge-downloaded-chapters {
+    background-color: @purple_3; /* #9141ac */
+}
+.library-thumbnail-badge-recent-chapters {
+    background-color: @green_4;  /* #2ec27e */
+}
+
 /* Manga card page */
 listview :last-child {
     border-bottom: none;

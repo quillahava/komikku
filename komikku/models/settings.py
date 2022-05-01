@@ -112,6 +112,15 @@ class Settings(Gio.Settings):
         self.set_boolean('fullscreen', state)
 
     @property
+    def library_badges(self):
+        return list(self.get_value('library-badges'))
+
+    @library_badges.setter
+    def library_badges(self, badges):
+        badges = GLib.Variant('as', badges)
+        self.set_value('library-badges', badges)
+
+    @property
     def library_display_mode(self):
         """Return the library's display mode"""
         value = self.library_display_mode_value

@@ -75,7 +75,12 @@
         <key type="b" name="library-servers-logo">
             <default>false</default>
             <summary>Servers logo</summary>
-            <description>Show servers logo</description>
+            <description>Display servers logo</description>
+        </key>
+        <key type="as" name="library-badges">
+            <default>['unread-chapters']</default>
+            <summary>Badges</summary>
+            <description>Displayed badges</description>
         </key>
         <key type="b" name="update-at-startup">
             <default>false</default>

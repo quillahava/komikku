@@ -32,6 +32,9 @@ class Preferences(Adw.Bin):
 
     library_display_mode_row = Gtk.Template.Child('library_display_mode_row')
     library_servers_logo_switch = Gtk.Template.Child('library_servers_logo_switch')
+    library_badge_unread_chapters_switch = Gtk.Template.Child('library_badge_unread_chapters_switch')
+    library_badge_downloaded_chapters_switch = Gtk.Template.Child('library_badge_downloaded_chapters_switch')
+    library_badge_recent_chapters_switch = Gtk.Template.Child('library_badge_recent_chapters_switch')
     update_at_startup_switch = Gtk.Template.Child('update_at_startup_switch')
     new_chapters_auto_download_switch = Gtk.Template.Child('new_chapters_auto_download_switch')
     nsfw_content_switch = Gtk.Template.Child('nsfw_content_switch')
@@ -91,6 +94,18 @@ class Preferences(Adw.Bin):
 
     def on_fullscreen_changed(self, switch_button, _gparam):
         self.settings.fullscreen = switch_button.get_active()
+
+    def on_library_badge_changed(self, switch_button, _gparam):
+        badges = self.settings.library_badges
+        if switch_button.get_active():
+            if switch_button._value not in badges:
+                badges.append(switch_button._value)
+        else:
+            if switch_button._value in badges:
+                badges.remove(switch_button._value)
+        self.settings.library_badges = badges
+
+        self.window.library.populate()
 
     def on_library_display_mode_changed(self, row, _gparam):
         index = row.get_selected()
@@ -208,6 +223,17 @@ class Preferences(Adw.Bin):
         # Servers logo
         self.library_servers_logo_switch.set_active(self.settings.library_servers_logo)
         self.library_servers_logo_switch.connect('notify::active', self.on_library_servers_logo_changed)
+
+        # Badges
+        self.library_badge_unread_chapters_switch.set_active('unread-chapters' in self.settings.library_badges)
+        self.library_badge_unread_chapters_switch._value = 'unread-chapters'
+        self.library_badge_unread_chapters_switch.connect('notify::active', self.on_library_badge_changed)
+        self.library_badge_downloaded_chapters_switch.set_active('downloaded-chapters' in self.settings.library_badges)
+        self.library_badge_downloaded_chapters_switch._value = 'downloaded-chapters'
+        self.library_badge_downloaded_chapters_switch.connect('notify::active', self.on_library_badge_changed)
+        self.library_badge_recent_chapters_switch.set_active('recent-chapters' in self.settings.library_badges)
+        self.library_badge_recent_chapters_switch._value = 'recent-chapters'
+        self.library_badge_recent_chapters_switch.connect('notify::active', self.on_library_badge_changed)
 
         # Update manga at startup
         self.update_at_startup_switch.set_active(self.settings.update_at_startup)

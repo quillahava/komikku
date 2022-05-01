@@ -131,6 +131,8 @@ class Library:
                     ret = manga.nb_downloaded_chapters > 0
                 if ret and self.search_menu_filters.get('unread'):
                     ret = manga.nb_unread_chapters > 0
+                if ret and self.search_menu_filters.get('recents'):
+                    ret = manga.nb_recent_chapters > 0
 
             if not ret and thumbnail._selected:
                 # Unselect thumbnail if it's selected
@@ -820,6 +822,7 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.overlay.set_child(ThumbnailWidget(manga))
 
         if Settings.get_default().library_display_mode == 'grid-compact':
+            # Compact grid
             self.name_label = Gtk.Label(xalign=0, hexpand=True)
             self.name_label.add_css_class('library-thumbnail-name-label')
             self.name_label.set_valign(Gtk.Align.END)
@@ -828,16 +831,35 @@ class Thumbnail(Gtk.FlowBoxChild):
 
             self.set_child(self.overlay)
         else:
-            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            # Expanded grid
+            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
             box.append(self.overlay)
 
             self.name_label = Gtk.Label(hexpand=True)
-            self.name_label.set_justify(Gtk.Justification.CENTER)
             self.name_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
             self.name_label.add_css_class('caption')
             self.name_label.set_lines(2)
             self.name_label.set_wrap(True)
-            box.append(self.name_label)
+
+            if Settings.get_default().library_servers_logo:
+                caption_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+                caption_box.props.vexpand = True
+
+                self.name_label.props.xalign = 0
+                self.name_label.props.valign = Gtk.Align.CENTER
+                caption_box.append(self.name_label)
+
+                if self.manga.server.logo_path:
+                    logo_image = Gtk.Image.new_from_file(self.manga.server.logo_path)
+                    logo_image.set_pixel_size(24)
+                    logo_image.props.valign = Gtk.Align.CENTER
+                    caption_box.append(logo_image)
+
+                box.append(caption_box)
+            else:
+                box.props.spacing = 4
+                self.name_label.set_justify(Gtk.Justification.CENTER)
+                box.append(self.name_label)
 
             self.set_child(box)
 
@@ -873,8 +895,10 @@ class ThumbnailWidget(Gtk.Widget):
 
         self.manga = manga
 
-        self.nb_unread_chapters = self.manga.nb_unread_chapters
-        self.nb_downloaded_chapters = self.manga.nb_downloaded_chapters
+        badges = Settings.get_default().library_badges
+        self.nb_unread_chapters = self.manga.nb_unread_chapters if 'unread-chapters' in badges else None
+        self.nb_downloaded_chapters = self.manga.nb_downloaded_chapters if 'downloaded-chapters' in badges else None
+        self.nb_recent_chapters = self.manga.nb_recent_chapters if 'recent-chapters' in badges else None
 
         self.cover_texture = None
         self.server_logo_texture = None
@@ -884,7 +908,7 @@ class ThumbnailWidget(Gtk.Widget):
         self.rounded_rect_size.init(self.corners_radius, self.corners_radius)
 
         self.__create_cover_texture()
-        if Settings.get_default().library_servers_logo:
+        if Settings.get_default().library_servers_logo and Settings.get_default().library_display_mode == 'grid-compact':
             self.__create_server_logo_texture()
 
     def __create_cover_texture(self):
@@ -939,7 +963,7 @@ class ThumbnailWidget(Gtk.Widget):
         def draw_badge(nb, color_r, color_g, color_b):
             nonlocal x
 
-            if nb == 0:
+            if not nb:
                 return
 
             text = str(nb)
@@ -950,7 +974,7 @@ class ThumbnailWidget(Gtk.Widget):
             # Draw rectangle
             x = x - spacing - w
             y = spacing
-            r = self.corners_radius
+            r = self.corners_radius + 4
             context.set_source_rgb(color_r, color_g, color_b)
             context.move_to(x + r, y)                                       # Move to A
             context.line_to(x + w - r, y)                                   # Straight line to B
@@ -964,12 +988,13 @@ class ThumbnailWidget(Gtk.Widget):
             context.fill()
 
             # Draw number
-            context.set_source_rgb(0, 0, 0)
+            context.set_source_rgb(1, 1, 1)
             context.move_to(x + 3, h)
             context.show_text(text)
 
-        draw_badge(self.nb_unread_chapters, 0.6, 0.757, 0.945)        # #99c1f1 @blue_1
-        draw_badge(self.nb_downloaded_chapters, 0.561, 0.941, 0.643)  # #8FF0A4 @green_1
+        draw_badge(self.nb_unread_chapters, 0.208, 0.518, 0.894)      # #3584e4 @blue_3
+        draw_badge(self.nb_downloaded_chapters, 0.569, 0.255, 0.675)  # #9141ac @purple_3
+        draw_badge(self.nb_recent_chapters, 0.18, 0.761, 0.494)       # #2ec27e @green_4
 
         # Drow server logo (top left corner)
         if self.server_logo_texture:
@@ -985,7 +1010,6 @@ class ThumbnailWidget(Gtk.Widget):
         self.cover_texture = None
         self.server_logo__texture = None
         self.__create_cover_texture()
-        self.__create_server_logo_texture()
 
         # Schedule a redraw to update
         self.queue_draw()
