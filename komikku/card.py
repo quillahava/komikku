@@ -640,6 +640,7 @@ class ChaptersListRow(Gtk.Box):
         self.menu_model = Gio.Menu()
         menu_button = Gtk.MenuButton()
         menu_button.set_icon_name('view-more-symbolic')
+        menu_button.add_css_class('flat')
         menu_button.set_menu_model(self.menu_model)
         menu_button.get_popover().connect('show', self.update_menu)
         hbox.append(menu_button)
