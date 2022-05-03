@@ -346,23 +346,34 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
             dialog.destroy()
 
+        # NOTE: it would be easier to use a Gtk.MessageDialog
         dialog = Gtk.Dialog.new()
         dialog.set_transient_for(self)
         dialog.set_modal(True)
-        dialog.add_css_class('solid-csd')
+        dialog.set_decorated(False)
+        dialog.add_css_class('csd')
+        dialog.add_css_class('message')
         dialog.connect('response', on_response)
-        dialog.set_title(title)
         dialog.add_buttons(_('Yes'), Gtk.ResponseType.YES, _('Cancel'), Gtk.ResponseType.CANCEL)
-        dialog.set_default_response(Gtk.ResponseType.YES)
+        dialog.set_default_response(Gtk.ResponseType.CANCEL)
+        # Hack: these 2 props must be adjusted (GTK 4.5.1)
+        dialog.get_first_child().get_last_child().get_first_child().props.homogeneous = True
+        dialog.get_first_child().get_last_child().get_first_child().props.halign = Gtk.Align.FILL
 
-        label = Gtk.Label(vexpand=True, margin_start=16, margin_top=16, margin_end=16, margin_bottom=16)
-        label.set_text(message)
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+
+        label = Gtk.Label(label=title, margin_top=16, margin_start=32, margin_end=32)
         label.set_wrap(True)
-        label.set_vexpand(True)
-        label.set_valign(Gtk.Align.CENTER)
-        label.set_halign(Gtk.Align.CENTER)
         label.set_justify(Gtk.Justification.CENTER)
-        dialog.get_content_area().append(label)
+        label.add_css_class('title-2')
+        box.append(label)
+
+        label = Gtk.Label(label=message, margin_start=32, margin_end=32)
+        label.set_wrap(True)
+        label.set_justify(Gtk.Justification.CENTER)
+        box.append(label)
+
+        dialog.get_content_area().append(box)
         dialog.present()
 
     def enter_search_mode(self, action, param):
