@@ -304,6 +304,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         # Window
         self.connect('notify::default-width', self.on_resize)
+        self.connect('notify::fullscreened', self.on_resize)
+        self.connect('notify::maximized', self.on_resize)
 
         self.controller_key = Gtk.EventControllerKey.new()
         self.controller_key.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
@@ -564,24 +566,20 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Focus is lost after showing popover submenu (bug?)
         self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())
 
-    def on_resize(self, _window, _allocation, maximized_or_fullscreen=False):
+    def on_resize(self, _window, _allocation):
         if not self.get_mapped():
             return
 
-        if not maximized_or_fullscreen:
-            width = self.props.default_width
-            height = self.props.default_height
+        width = self.props.default_width
+        height = self.props.default_height
 
-            self.size = dict(
-                width=width,
-                height=height
-            )
-        else:
-            width = self.get_width()
-
+        self.size = dict(
+            width=width,
+            height=height
+        )
         self.mobile_width = width <= 720
 
-        self.library.on_resize(maximized_or_fullscreen)
+        self.library.on_resize()
         self.card.on_resize()
         self.explorer.on_resize()
         if self.page == 'reader':
@@ -596,28 +594,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
         shortcuts_overview.set_transient_for(self)
         shortcuts_overview.present()
 
-    def on_state_changed(self, _toplevel, state):
-        # Track window state changes to detect when it's fullscreen/unfullscreen or maximized/unmoximized
-        state = self.get_surface().get_state()
-        if state & Gdk.ToplevelState.MAXIMIZED or state & Gdk.ToplevelState.FULLSCREEN:
-            def wait_resize():
-                if self.get_width() == self.props.default_width:
-                    return True
-
-                self.on_resize(None, None, True)
-        else:
-            def wait_resize():
-                if self.get_width() != self.props.default_width:
-                    return True
-
-                self.on_resize(None, None, False)
-
-        GLib.idle_add(wait_resize)
-
     def present(self):
         super().present()
-
-        self.get_surface().connect('notify::state', self.on_state_changed)
 
         # Set window size: default or saved size
         self.set_default_size(*Settings.get_default().window_size)

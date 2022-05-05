@@ -230,16 +230,15 @@ class Library:
         thumbnail = Thumbnail(self, manga, *self.thumbnails_size)
         self.flowbox.insert(thumbnail, position)
 
-    def compute_thumbnails_size(self, maximized_or_fullscreen=False):
+    def compute_thumbnails_size(self):
         default_width = Thumbnail.default_width
         default_height = Thumbnail.default_height
 
-        if maximized_or_fullscreen:
-            container_width = self.window.get_width()
-        else:
-            container_width = self.window.props.default_width
+        container_width = self.window.props.default_width
         if container_width == 0:
             container_width = Settings.get_default().window_size[0]
+        # Substract flowbox horizontal margins (2 * 4px)
+        container_width -= 8
 
         child_width = default_width + Thumbnail.padding * 2 + Thumbnail.margin * 2
         if container_width / child_width != container_width // child_width:
@@ -249,9 +248,6 @@ class Library:
 
         width = container_width // nb - (Thumbnail.padding * 2 + Thumbnail.margin * 2)
         height = default_height // (default_width / width)
-
-        self.flowbox.set_min_children_per_line(nb)
-        self.flowbox.set_max_children_per_line(nb)
 
         self.thumbnails_size = (width, height)
 
@@ -454,11 +450,11 @@ class Library:
             thumbnail.update(manga)
             break
 
-    def on_resize(self, maximized_or_fullscreen):
+    def on_resize(self):
         if self.page == 'start_page':
             return
 
-        self.compute_thumbnails_size(maximized_or_fullscreen)
+        self.compute_thumbnails_size()
         for thumbnail in self.flowbox:
             thumbnail.resize(*self.thumbnails_size)
 
@@ -807,11 +803,11 @@ class Thumbnail(Gtk.FlowBoxChild):
 
     default_width = 180
     default_height = 250
-    padding = 6  # flowbox child padding is set via CSS
-    margin = 2
+    padding = 6  # padding is overriding via CSS
+    margin = 2   # flowbox column spacing / 2
 
     def __init__(self, parent, manga, width, height):
-        super().__init__(margin_top=self.margin, margin_start=self.margin, margin_bottom=self.margin, margin_end=self.margin)
+        super().__init__()
 
         self.parent = parent
         self.manga = manga
@@ -819,11 +815,15 @@ class Thumbnail(Gtk.FlowBoxChild):
         self._selected = False
 
         self.overlay = Gtk.Overlay()
-        self.overlay.set_child(ThumbnailWidget(manga))
+
+        self.picture = Gtk.Picture()
+        self.picture.set_can_shrink(False)
+        self.picture.set_paintable(ThumbnailWidget(manga))
+        self.overlay.set_child(self.picture)
 
         if Settings.get_default().library_display_mode == 'grid-compact':
             # Compact grid
-            self.name_label = Gtk.Label(xalign=0, hexpand=True)
+            self.name_label = Gtk.Label(xalign=0)
             self.name_label.add_css_class('library-thumbnail-name-label')
             self.name_label.set_valign(Gtk.Align.END)
             self.name_label.set_wrap(True)
@@ -840,13 +840,13 @@ class Thumbnail(Gtk.FlowBoxChild):
             self.name_label.add_css_class('caption')
             self.name_label.set_lines(2)
             self.name_label.set_wrap(True)
+            self.name_label.props.max_width_chars = 12
 
             if Settings.get_default().library_servers_logo:
                 caption_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
                 caption_box.props.vexpand = True
 
                 self.name_label.props.xalign = 0
-                self.name_label.props.valign = Gtk.Align.CENTER
                 caption_box.append(self.name_label)
 
                 if self.manga.server.logo_path:
@@ -870,23 +870,23 @@ class Thumbnail(Gtk.FlowBoxChild):
     def __draw_name(self):
         self.name_label.set_text(self.manga.name)
 
-    def resize(self, _width, height):
-        self.overlay.get_child().set_size_request(-1, height)
+    def resize(self, width, height):
+        self.picture.get_paintable().resize(width, height)
 
     def update(self, manga):
         self.manga = manga
 
         self.__draw_name()
-        self.overlay.get_child().update(manga)
+        self.picture.get_paintable().update(manga)
 
 
-class ThumbnailWidget(Gtk.Widget):
+class ThumbnailWidget(GObject.GObject, Gdk.Paintable):
     __gtype_name__ = 'ThumbnailWidget'
 
     corners_radius = 10
-    font_size = 13
-    min_width = Thumbnail.default_width / 2 - Thumbnail.padding * 2 - Thumbnail.margin * 2
-    min_height = Thumbnail.default_height / 2 - Thumbnail.padding * 2 - Thumbnail.margin * 2
+    cover_font_size = 13
+    width = None
+    height = None
     ratio = Thumbnail.default_width / Thumbnail.default_height
     server_logo_size = 20
 
@@ -935,17 +935,13 @@ class ThumbnailWidget(Gtk.Widget):
 
         self.server_logo_texture = Gdk.Texture.new_for_pixbuf(pixbuf)
 
-    def do_measure(self, orientation, for_size):
-        baseline = -1
-        if orientation == Gtk.Orientation.HORIZONTAL:
-            return self.min_width, for_size * self.ratio if for_size != -1 else self.min_width, baseline, baseline
-        else:
-            return self.min_height, for_size / self.ratio if for_size != -1 else self.min_height, baseline, baseline
+    def do_get_intrinsic_height(self):
+        return self.height
 
-    def do_snapshot(self, snapshot):
-        width = self.get_width()
-        height = self.get_height()
+    def do_get_intrinsic_width(self):
+        return self.width
 
+    def do_snapshot(self, snapshot, width, height):
         self.rect.init(0, 0, width, height)
 
         # Drow cover (rounded)
@@ -956,7 +952,7 @@ class ThumbnailWidget(Gtk.Widget):
 
         # Draw badges (top right corner)
         context = snapshot.append_cairo(self.rect)
-        context.set_font_size(self.font_size)
+        context.set_font_size(self.cover_font_size)
         spacing = 5  # with top border, right border and between badges
         x = width
 
@@ -974,12 +970,12 @@ class ThumbnailWidget(Gtk.Widget):
             # Draw rectangle
             x = x - spacing - w
             y = spacing
-            r = self.corners_radius + 4
+            r = 18
             context.set_source_rgb(color_r, color_g, color_b)
             context.move_to(x + r, y)                                       # Move to A
-            context.line_to(x + w - r, y)                                   # Straight line to B
-            context.curve_to(x + w, y, x + w, y, x + w, y + r)              # Curve to C, Control points are both at Q
-            context.line_to(x + w, y + h - r)                               # Move to D
+            context.line_to(x + w - r, y)                                   # Line to B
+            context.curve_to(x + w, y, x + w, y, x + w, y + r)              # Curve to C
+            context.line_to(x + w, y + h - r)                               # Line to D
             context.curve_to(x + w, y + h, x + w, y + h, x + w - r, y + h)  # Curve to E
             context.line_to(x + r, y + h)                                   # Line to F
             context.curve_to(x, y + h, x, y + h, x, y + h - r)              # Curve to G
@@ -1000,6 +996,12 @@ class ThumbnailWidget(Gtk.Widget):
         if self.server_logo_texture:
             self.rect.init(4, 4, self.server_logo_size, self.server_logo_size)
             snapshot.append_texture(self.server_logo_texture, self.rect)
+
+    def resize(self, width, height):
+        self.width = width
+        self.height = height
+
+        self.invalidate_size()
 
     def update(self, manga):
         self.manga = manga

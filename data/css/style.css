@@ -5,6 +5,7 @@ spinner {
 /* Library page */
 flowbox flowboxchild {
     padding: 6px; /* default is 4px */
+    border-radius: 10px;
 }
 flowbox flowboxchild:selected {
 	background-color: @accent_bg_color;
