@@ -137,7 +137,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
     previous_page = None
     mobile_width = False
     network_available = False
-    size = None
 
     headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
     headerbar = Gtk.Template.Child('headerbar')
@@ -480,6 +479,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
             else:
                 if self.previous_page in ('library', 'reader', 'explorer'):
                     self.library.show(invalidate_sort=True)
+                    self.library.update_thumbnail(self.card.manga)
                 elif self.previous_page == 'history':
                     self.history.show()
 
@@ -570,20 +570,20 @@ class ApplicationWindow(Adw.ApplicationWindow):
         if not self.get_mapped():
             return
 
-        width = self.props.default_width
-        height = self.props.default_height
-
-        self.size = dict(
-            width=width,
-            height=height
-        )
+        if not self.is_maximized() and not self.is_fullscreen():
+            width = self.props.default_width
+        else:
+            width = self.get_width()
         self.mobile_width = width <= 720
 
-        self.library.on_resize()
-        self.card.on_resize()
-        self.explorer.on_resize()
-        if self.page == 'reader':
-            self.reader.on_resize()
+        def do_resize():
+            self.library.on_resize()
+            self.card.on_resize()
+            self.explorer.on_resize()
+            if self.page == 'reader':
+                self.reader.on_resize()
+
+        GLib.timeout_add(250, do_resize)
 
     def on_shortcuts_menu_clicked(self, action, param):
         builder = Gtk.Builder()
@@ -599,6 +599,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         # Set window size: default or saved size
         self.set_default_size(*Settings.get_default().window_size)
+
+        self.library.populate()
 
     def quit(self, *args):
         def do_quit():
@@ -638,7 +640,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
     def save_window_size(self):
         if not self.is_maximized() and not self.is_fullscreen():
-            Settings.get_default().window_size = [self.get_width(), self.get_height()]
+            size = self.get_default_size()
+            Settings.get_default().window_size = [size.width, size.height]
 
     def select_all(self, action, param):
         if self.page == 'library':

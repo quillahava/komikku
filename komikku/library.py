@@ -161,8 +161,6 @@ class Library:
 
             return 0
 
-        self.populate()
-
         self.flowbox.set_filter_func(_filter)
         self.flowbox.set_sort_func(_sort)
 
@@ -234,7 +232,7 @@ class Library:
         default_width = Thumbnail.default_width
         default_height = Thumbnail.default_height
 
-        container_width = self.window.props.default_width
+        container_width = self.window.props.default_width if not self.window.is_maximized() else self.window.get_width()
         if container_width == 0:
             container_width = Settings.get_default().window_size[0]
         # Substract flowbox horizontal margins (2 * 4px)
@@ -270,12 +268,12 @@ class Library:
             self.window.updater.start()
 
             # Finally, update library
+            for manga in mangas:
+                self.remove_thumbnail(manga)
+
             if not self.flowbox.get_first_child():
                 # Library is now empty
                 self.populate()
-            else:
-                for manga in mangas:
-                    self.on_manga_deleted(manga)
 
             if self.window.page == 'card':
                 self.show()
@@ -433,22 +431,8 @@ class Library:
 
         return Gdk.EVENT_PROPAGATE
 
-    def on_manga_deleted(self, manga):
-        # Remove manga thumbnail in flowbox
-        thumbnail = self.flowbox.get_first_child()
-        while thumbnail:
-            if thumbnail.manga.id == manga.id:
-                self.flowbox.remove(thumbnail)
-                break
-            thumbnail = thumbnail.get_next_sibling()
-
     def on_manga_updated(self, _updater, manga, _nb_recent_chapters, _nb_deleted_chapters, _synced):
-        for thumbnail in self.flowbox:
-            if thumbnail.manga.id != manga.id:
-                continue
-
-            thumbnail.update(manga)
-            break
+        self.update_thumbnail(manga)
 
     def on_resize(self):
         if self.page == 'start_page':
@@ -513,6 +497,15 @@ class Library:
             self.add_manga(Manga.get(row['id'], db_conn=db_conn))
 
         db_conn.close()
+
+    def remove_thumbnail(self, manga):
+        # Remove manga thumbnail in flowbox
+        thumbnail = self.flowbox.get_first_child()
+        while thumbnail:
+            if thumbnail.manga.id == manga.id:
+                self.flowbox.remove(thumbnail)
+                break
+            thumbnail = thumbnail.get_next_sibling()
 
     def search(self, _search_entry):
         self.flowbox.invalidate_filter()
@@ -628,6 +621,12 @@ class Library:
                     subtitle = f'{subtitle} / {Category.get(category_id, db_conn).label}'
 
         self.subtitle_label.set_label(subtitle)
+
+    def update_thumbnail(self, manga):
+        for thumbnail in self.flowbox:
+            if thumbnail.manga.id == manga.id:
+                thumbnail.update(manga)
+                break
 
 
 class CategoriesList:
@@ -802,7 +801,7 @@ class Thumbnail(Gtk.FlowBoxChild):
     __gtype_name__ = 'Thumbnail'
 
     default_width = 180
-    default_height = 250
+    default_height = 256
     padding = 6  # padding is overriding via CSS
     margin = 2   # flowbox column spacing / 2
 
@@ -818,7 +817,8 @@ class Thumbnail(Gtk.FlowBoxChild):
 
         self.picture = Gtk.Picture()
         self.picture.set_can_shrink(False)
-        self.picture.set_paintable(ThumbnailWidget(manga))
+        self.picture.set_keep_aspect_ratio(False)
+        self.picture.set_paintable(ThumbnailCover(manga))
         self.overlay.set_child(self.picture)
 
         if Settings.get_default().library_display_mode == 'grid-compact':
@@ -832,34 +832,32 @@ class Thumbnail(Gtk.FlowBoxChild):
             self.set_child(self.overlay)
         else:
             # Expanded grid
-            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-            box.append(self.overlay)
+            box = Gtk.Grid(row_spacing=4)
+            box.attach(self.overlay, 0, 0, 2, 1)
 
             self.name_label = Gtk.Label(hexpand=True)
             self.name_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
             self.name_label.add_css_class('caption')
-            self.name_label.set_lines(2)
+            self.name_label.set_lines(1)
             self.name_label.set_wrap(True)
-            self.name_label.props.max_width_chars = 12
+            self.name_label.set_max_width_chars(0)
 
             if Settings.get_default().library_servers_logo:
-                caption_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-                caption_box.props.vexpand = True
-
                 self.name_label.props.xalign = 0
-                caption_box.append(self.name_label)
+                box.attach(self.name_label, 0, 1, 1, 1)
 
                 if self.manga.server.logo_path:
                     logo_image = Gtk.Image.new_from_file(self.manga.server.logo_path)
-                    logo_image.set_pixel_size(24)
+                    logo_image.props.halign = Gtk.Align.END
                     logo_image.props.valign = Gtk.Align.CENTER
-                    caption_box.append(logo_image)
+                else:
+                    logo_image = Gtk.Image()
+                logo_image.set_pixel_size(24)
 
-                box.append(caption_box)
+                box.attach(logo_image, 1, 1, 1, 1)
             else:
-                box.props.spacing = 4
                 self.name_label.set_justify(Gtk.Justification.CENTER)
-                box.append(self.name_label)
+                box.attach(self.name_label, 0, 1, 2, 1)
 
             self.set_child(box)
 
@@ -868,7 +866,7 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.resize(width, height)
 
     def __draw_name(self):
-        self.name_label.set_text(self.manga.name)
+        self.name_label.set_text(self.manga.name + ' ')
 
     def resize(self, width, height):
         self.picture.get_paintable().resize(width, height)
@@ -880,8 +878,8 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.picture.get_paintable().update(manga)
 
 
-class ThumbnailWidget(GObject.GObject, Gdk.Paintable):
-    __gtype_name__ = 'ThumbnailWidget'
+class ThumbnailCover(GObject.GObject, Gdk.Paintable):
+    __gtype_name__ = 'ThumbnailCover'
 
     corners_radius = 10
     cover_font_size = 13
@@ -895,11 +893,6 @@ class ThumbnailWidget(GObject.GObject, Gdk.Paintable):
 
         self.manga = manga
 
-        badges = Settings.get_default().library_badges
-        self.nb_unread_chapters = self.manga.nb_unread_chapters if 'unread-chapters' in badges else None
-        self.nb_downloaded_chapters = self.manga.nb_downloaded_chapters if 'downloaded-chapters' in badges else None
-        self.nb_recent_chapters = self.manga.nb_recent_chapters if 'recent-chapters' in badges else None
-
         self.cover_texture = None
         self.server_logo_texture = None
         self.rect = Graphene.Rect().alloc()
@@ -907,6 +900,7 @@ class ThumbnailWidget(GObject.GObject, Gdk.Paintable):
         self.rounded_rect_size = Graphene.Size().alloc()
         self.rounded_rect_size.init(self.corners_radius, self.corners_radius)
 
+        self.__get_badges_values()
         self.__create_cover_texture()
         if Settings.get_default().library_servers_logo and Settings.get_default().library_display_mode == 'grid-compact':
             self.__create_server_logo_texture()
@@ -935,6 +929,12 @@ class ThumbnailWidget(GObject.GObject, Gdk.Paintable):
 
         self.server_logo_texture = Gdk.Texture.new_for_pixbuf(pixbuf)
 
+    def __get_badges_values(self):
+        badges = Settings.get_default().library_badges
+        self.nb_unread_chapters = self.manga.nb_unread_chapters if 'unread-chapters' in badges else None
+        self.nb_downloaded_chapters = self.manga.nb_downloaded_chapters if 'downloaded-chapters' in badges else None
+        self.nb_recent_chapters = self.manga.nb_recent_chapters if 'recent-chapters' in badges else None
+
     def do_get_intrinsic_height(self):
         return self.height
 
@@ -956,13 +956,13 @@ class ThumbnailWidget(GObject.GObject, Gdk.Paintable):
         spacing = 5  # with top border, right border and between badges
         x = width
 
-        def draw_badge(nb, color_r, color_g, color_b):
+        def draw_badge(value, color_r, color_g, color_b):
             nonlocal x
 
-            if not nb:
+            if not value:
                 return
 
-            text = str(nb)
+            text = str(value)
             text_extents = context.text_extents(text)
             w = text_extents.x_advance + 2 * 3 + 1
             h = text_extents.height + 2 * 5
@@ -970,7 +970,7 @@ class ThumbnailWidget(GObject.GObject, Gdk.Paintable):
             # Draw rectangle
             x = x - spacing - w
             y = spacing
-            r = 18
+            r = 15
             context.set_source_rgb(color_r, color_g, color_b)
             context.move_to(x + r, y)                                       # Move to A
             context.line_to(x + w - r, y)                                   # Line to B
@@ -1006,12 +1006,10 @@ class ThumbnailWidget(GObject.GObject, Gdk.Paintable):
     def update(self, manga):
         self.manga = manga
 
-        self.nb_unread_chapters = self.manga.nb_unread_chapters
-        self.nb_downloaded_chapters = self.manga.nb_downloaded_chapters
+        self.__get_badges_values()
 
         self.cover_texture = None
         self.server_logo__texture = None
         self.__create_cover_texture()
 
-        # Schedule a redraw to update
-        self.queue_draw()
+        self.invalidate_contents()
