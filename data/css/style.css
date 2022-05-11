@@ -82,3 +82,8 @@ listview :last-child {
     border-bottom: 1px solid @borders;
     padding: 6px 6px 12px 6px;
 }
+
+/* History page */
+.history-rounded-cover-frame {
+    border-radius: 6px;
+}

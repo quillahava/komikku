@@ -129,7 +129,8 @@ class History(Gtk.Box):
                     elif current_date == yesterday:
                         label = _('Yesterday')
                     else:
-                        label = current_date.strftime(_('%Y-%m-%d'))
+                        g_datetime = GLib.DateTime.new_from_iso8601(last_read.isoformat())
+                        label = g_datetime.format(_('%A, %B %e'))
                     label = Gtk.Label(label=label, xalign=0)
                     label.add_css_class('heading')
                     box.append(label)
@@ -167,7 +168,10 @@ class History(Gtk.Box):
                         pixbuf = Pixbuf.new_from_resource_at_scale(
                             '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT, False)
 
-                action_row.add_prefix(Gtk.Picture.new_for_pixbuf(pixbuf))
+                cover_frame = Gtk.Frame()
+                cover_frame.add_css_class('history-rounded-cover-frame')
+                cover_frame.set_child(Gtk.Picture.new_for_pixbuf(pixbuf))
+                action_row.add_prefix(cover_frame)
 
                 # Time
                 label = Gtk.Label(label=last_read.strftime('%H:%M'))
