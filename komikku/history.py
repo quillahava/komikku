@@ -122,7 +122,7 @@ class History(Gtk.Box):
                 # Create new Box (Label + ListBox) when date change
                 if date_changed:
                     current_date = last_read.date()
-                    box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+                    box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
                     if current_date == today:
                         label = _('Today')
@@ -131,8 +131,7 @@ class History(Gtk.Box):
                     else:
                         label = current_date.strftime(_('%Y-%m-%d'))
                     label = Gtk.Label(label=label, xalign=0)
-                    label.add_css_class('title-4')
-                    label.add_css_class('dim-label')
+                    label.add_css_class('heading')
                     box.append(label)
 
                     listbox = Gtk.ListBox()

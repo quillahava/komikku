@@ -601,6 +601,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.set_default_size(*Settings.get_default().window_size)
 
         self.library.populate()
+        self.library.show()
 
     def quit(self, *args):
         def do_quit():
