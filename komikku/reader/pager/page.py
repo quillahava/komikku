@@ -218,7 +218,7 @@ class Page(Gtk.Overlay):
         if self.status == 'rendered':
             self.set_image()
 
-    def set_image(self):
+    def set_image(self, size=None):
         if self.picture is None:
             if self.path is None:
                 picture = create_picture_from_resource('/info/febvre/Komikku/images/missing_file.png')
@@ -235,24 +235,27 @@ class Page(Gtk.Overlay):
         else:
             picture = self.picture
 
-        scaling = self.reader.scaling if self.reader.reading_mode != 'webtoon' else 'width'
-        if self.reader.scaling != 'original':
-            max_width = self.reader.size.width
-            if self.reader.reading_mode == 'webtoon':
-                max_width = min(max_width, self.reader.pager.clamp_size)
-            max_height = self.reader.size.height
+        if size is None:
+            scaling = self.reader.scaling if self.reader.reading_mode != 'webtoon' else 'width'
+            if self.reader.scaling != 'original':
+                max_width = self.reader.size.width
+                if self.reader.reading_mode == 'webtoon':
+                    max_width = min(max_width, self.reader.pager.clamp_size)
+                max_height = self.reader.size.height
 
-            adapt_to_width_height = picture.orig_height // (picture.orig_width / max_width)
-            adapt_to_height_width = picture.orig_width // (picture.orig_height / max_height)
+                adapt_to_width_height = picture.orig_height // (picture.orig_width / max_width)
+                adapt_to_height_width = picture.orig_width // (picture.orig_height / max_height)
 
-            if scaling == 'width' or (scaling == 'screen' and adapt_to_width_height <= max_height):
-                # Adapt image to width
-                picture.resize(max_width, adapt_to_width_height, self.reader.manga.borders_crop)
-            elif scaling == 'height' or (scaling == 'screen' and adapt_to_height_width <= max_width):
-                # Adapt image to height
-                picture.resize(adapt_to_height_width, max_height, self.reader.manga.borders_crop)
+                if scaling == 'width' or (scaling == 'screen' and adapt_to_width_height <= max_height):
+                    # Adapt image to width
+                    picture.resize(max_width, adapt_to_width_height, self.reader.manga.borders_crop)
+                elif scaling == 'height' or (scaling == 'screen' and adapt_to_height_width <= max_width):
+                    # Adapt image to height
+                    picture.resize(adapt_to_height_width, max_height, self.reader.manga.borders_crop)
+            else:
+                picture.resize(picture.orig_width, picture.orig_height, cropped=self.reader.manga.borders_crop)
         else:
-            picture.resize(picture.orig_width, picture.orig_height, cropped=self.reader.manga.borders_crop)
+            picture.resize(size[0], size[1], cropped=self.reader.manga.borders_crop)
 
         if self.picture is None:
             self.picture = picture

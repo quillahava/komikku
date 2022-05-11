@@ -405,8 +405,7 @@ class Pager(Adw.Bin, BasePager):
 
             handler_id = hadj.connect('changed', on_adjustment_change, vadj, h_value, v_value)
 
-            page.picture.resize(zoom_width, zoom_height)
-            page.props.can_target = True
+            page.set_image([zoom_width, zoom_height])
 
             self.zoom['active'] = True
         else:
