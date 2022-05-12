@@ -851,15 +851,25 @@ class InfoBox:
             )
         )
 
-        genres = html_escape(', '.join(manga.genres)) if manga.genres else '-'
-        self.genres_label.set_markup(genres)
+        if manga.genres:
+            self.genres_label.set_markup(html_escape(', '.join(manga.genres)))
+            self.genres_label.get_parent().get_parent().show()
+        else:
+            self.genres_label.get_parent().get_parent().hide()
 
-        scanlators = html_escape(', '.join(manga.scanlators)) if manga.scanlators else '-'
-        self.scanlators_label.set_markup(scanlators)
+        if manga.scanlators:
+            self.scanlators_label.set_markup(html_escape(', '.join(manga.scanlators)))
+            self.scanlators_label.get_parent().get_parent().show()
+        else:
+            self.scanlators_label.get_parent().get_parent().hide()
 
         self.chapters_label.set_markup(str(len(manga.chapters)))
 
-        self.last_update_label.set_markup(manga.last_update.strftime(_('%m/%d/%Y')) if manga.last_update else '-')
+        if manga.last_update:
+            self.last_update_label.set_markup(manga.last_update.strftime(_('%m/%d/%Y')))
+            self.last_update_label.get_parent().get_parent().show()
+        else:
+            self.last_update_label.get_parent().get_parent().hide()
 
         self.synopsis_label.set_markup(html_escape(manga.synopsis) if manga.synopsis else '-')
 

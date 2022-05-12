@@ -446,17 +446,25 @@ class Explorer(Gtk.Stack):
                 )
             )
 
-            genres = html_escape(', '.join(self.manga_data['genres'])) if self.manga_data['genres'] else '-'
-            self.card_page_genres_label.set_markup(genres)
+            if self.manga_data['genres']:
+                self.card_page_genres_label.set_markup(html_escape(', '.join(self.manga_data['genres'])))
+                self.card_page_genres_label.get_parent().get_parent().show()
+            else:
+                self.card_page_genres_label.get_parent().get_parent().hide()
 
-            scanlators = html_escape(', '.join(self.manga_data['scanlators'])) if self.manga_data['scanlators'] else '-'
-            self.card_page_scanlators_label.set_markup(scanlators)
+            if self.manga_data['scanlators']:
+                self.card_page_scanlators_label.set_markup(html_escape(', '.join(self.manga_data['scanlators'])))
+                self.card_page_scanlators_label.get_parent().get_parent().show()
+            else:
+                self.card_page_scanlators_label.get_parent().get_parent().hide()
 
             self.card_page_chapters_label.set_markup(str(len(self.manga_data['chapters'])))
 
-            self.card_page_last_chapter_label.set_markup(
-                html_escape(self.manga_data['chapters'][-1]['title']) if self.manga_data['chapters'] else '-'
-            )
+            if self.manga_data['chapters']:
+                self.card_page_last_chapter_label.set_markup(html_escape(self.manga_data['chapters'][-1]['title']))
+                self.card_page_last_chapter_label.get_parent().get_parent().show()
+            else:
+                self.card_page_last_chapter_label.get_parent().get_parent().hide()
 
             self.card_page_synopsis_label.set_markup(
                 html_escape(self.manga_data['synopsis']) if self.manga_data['synopsis'] else '-'

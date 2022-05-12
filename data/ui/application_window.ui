@@ -587,6 +587,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                                     <child>
                                                       <object class="GtkFrame">
                                                         <property name="halign">center</property>
+                                                        <property name="valign">center</property>
                                                         <child>
                                                           <object class="GtkPicture" id="card_cover_image">
                                                             <property name="can-shrink">0</property>
@@ -872,9 +873,9 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                                             <child>
                                                               <object class="GtkBox">
                                                                 <property name="spacing">12</property>
-                                                                <property name="margin-top">12</property>
+                                                                <property name="margin-top">16</property>
                                                                 <property name="margin-end">12</property>
-                                                                <property name="margin-bottom">12</property>
+                                                                <property name="margin-bottom">16</property>
                                                                 <property name="margin-start">12</property>
                                                                 <child>
                                                                   <object class="GtkLabel" id="card_synopsis_label">
