@@ -248,7 +248,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.application.set_accels_for_action('app.enter-search-mode', ['<Primary>f'])
         self.application.set_accels_for_action('app.fullscreen', ['F11'])
         self.application.set_accels_for_action('app.select-all', ['<Primary>a'])
-        self.application.set_accels_for_action('app.preferences', ['<Primary>p'])
+        self.application.set_accels_for_action('app.preferences', ['<Primary>comma'])
         self.application.set_accels_for_action('app.shortcuts', ['<Primary>question'])
         self.application.set_accels_for_action('app.quit', ['<Primary>q'])
 
@@ -477,23 +477,17 @@ class ApplicationWindow(Adw.ApplicationWindow):
             if self.card.selection_mode:
                 self.card.leave_selection_mode()
             else:
-                if self.previous_page in ('library', 'reader', 'explorer'):
-                    self.library.show(invalidate_sort=True)
-                    self.library.update_thumbnail(self.card.manga)
-                elif self.previous_page == 'history':
-                    self.history.show()
+                self.library.show(invalidate_sort=True)
+                self.library.update_thumbnail(self.card.manga)
 
         elif self.page == 'reader':
             self.reader.remove_pager()
             self.set_unfullscreen()
 
-            if self.previous_page == 'card':
-                # Refresh to update all previously chapters consulted (last page read may have changed)
-                # and update info like disk usage
-                self.card.refresh(self.reader.chapters_consulted)
-                self.card.show()
-            elif self.previous_page == 'history':
-                self.history.show()
+            # Refresh to update all previously chapters consulted (last page read may have changed)
+            # and update info like disk usage
+            self.card.refresh(self.reader.chapters_consulted)
+            self.card.show()
 
         elif self.page == 'categories_editor':
             self.library.show()

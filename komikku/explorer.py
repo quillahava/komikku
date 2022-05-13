@@ -26,7 +26,7 @@ from komikku.utils import create_paintable_from_resource
 class Explorer(Gtk.Stack):
     __gtype_name__ = 'Explorer'
 
-    page = None
+    page = 'servers'
     preselection = False
     search_filters = None
     search_lock = False
@@ -567,7 +567,7 @@ class Explorer(Gtk.Stack):
             self.server = getattr(row.server_data['module'], row.server_data['class_name'])()
             self.populate_card(row.manga_data)
         else:
-            self.show_page('servers')
+            self.show_page(self.page)
 
     def search(self, entry=None):
         if self.search_lock:
@@ -664,13 +664,11 @@ class Explorer(Gtk.Stack):
         self.servers_page_listbox.invalidate_filter()
 
     def show(self, transition=True, servers=None):
-        self.page = None
-
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.library_flap_reveal_button.hide()
-        self.window.right_button_stack.show()
         self.window.right_button_stack.set_visible_child_name('explorer.servers')
+        self.window.right_button_stack.show()
 
         self.window.menu_button.hide()
 

@@ -70,7 +70,7 @@ class Preferences(Adw.Bin):
         if self.leaflet.get_visible_child_name() == 'subpages':
             self.leaflet.navigate(Adw.NavigationDirection.BACK)
         else:
-            self.window.library.show()
+            getattr(self.window, self.window.previous_page).show()
 
     def on_background_color_changed(self, row, _gparam):
         index = row.get_selected()

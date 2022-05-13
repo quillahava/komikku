@@ -211,6 +211,7 @@ class History(Gtk.Box):
         self.window.library_flap_reveal_button.hide()
 
         self.window.right_button_stack.set_visible_child_name('history')
+        self.window.right_button_stack.show()
 
         self.window.menu_button.hide()
 

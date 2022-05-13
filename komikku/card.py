@@ -182,6 +182,7 @@ class Card:
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.library_flap_reveal_button.hide()
         self.window.right_button_stack.set_visible_child_name('card')
+        self.window.right_button_stack.show()
 
         self.window.menu_button.set_icon_name('view-more-symbolic')
         self.window.menu_button.show()

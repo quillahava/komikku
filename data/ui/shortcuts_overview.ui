@@ -31,7 +31,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="Shortcut window description">Open preferences</property>
-                <property name="accelerator">&lt;Primary&gt;P</property>
+                <property name="accelerator">&lt;Primary&gt;comma</property>
               </object>
             </child>
             <child>
