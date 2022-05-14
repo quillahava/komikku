@@ -305,11 +305,12 @@ class ChaptersList:
         self.model.connect('selection-changed', self.on_selection_changed)
 
         self.listview = self.card.window.card_chapters_listview
+        # Remove unwanted style class 'view' which changes background color in dark appearance!
+        self.listview.remove_css_class('view')
         self.listview.set_factory(self.factory)
         self.listview.set_model(self.model)
         self.listview.set_show_separators(True)
         self.listview.set_single_click_activate(True)
-        # self.listview.set_enable_rubberband(True)
         self.listview.connect('activate', self.on_row_activate)
 
         # Gesture to detect long press on mouse button 1 and enter in selection mode
