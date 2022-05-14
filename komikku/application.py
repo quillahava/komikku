@@ -684,6 +684,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.stack.set_visible_child_full(name, transition_type)
         self.title_stack.set_visible_child_full(name, transition_type)
 
+        if not Gtk.Settings.get_default().props.gtk_enable_animations:
+            self.previous_page = self.page
+            self.page = name
+
     def toggle_fullscreen(self, *args):
         if self.page != 'reader':
             return
