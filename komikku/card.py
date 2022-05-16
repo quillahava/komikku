@@ -327,7 +327,7 @@ class ChaptersList:
         return self.card.manga.sort_order or 'desc'
 
     def add_actions(self, *args):
-        # # Menu actions in selection mode
+        # Menu actions in selection mode
         download_selected_chapters_action = Gio.SimpleAction.new('card.download-selected-chapters', None)
         download_selected_chapters_action.connect('activate', self.download_selected_chapters)
         self.card.window.application.add_action(download_selected_chapters_action)
@@ -349,25 +349,27 @@ class ChaptersList:
         self.card.window.application.add_action(select_all_chapters_action)
 
         # Chapters menu actions
-        download_chapter_action = Gio.SimpleAction.new('card.download-chapter', None)
+        download_chapter_action = Gio.SimpleAction.new('card.download-chapter', GLib.VariantType.new('q'))
         download_chapter_action.connect('activate', self.download_chapter)
         self.card.window.application.add_action(download_chapter_action)
 
-        mark_chapter_as_read_action = Gio.SimpleAction.new('card.mark-chapter-read', None)
+        mark_chapter_as_read_action = Gio.SimpleAction.new('card.mark-chapter-read', GLib.VariantType.new('q'))
         mark_chapter_as_read_action.connect('activate', self.toggle_chapter_read_status, 1)
         self.card.window.application.add_action(mark_chapter_as_read_action)
 
-        mark_chapter_as_unread_action = Gio.SimpleAction.new('card.mark-chapter-unread', None)
+        mark_chapter_as_unread_action = Gio.SimpleAction.new('card.mark-chapter-unread', GLib.VariantType.new('q'))
         mark_chapter_as_unread_action.connect('activate', self.toggle_chapter_read_status, 0)
         self.card.window.application.add_action(mark_chapter_as_unread_action)
 
-        reset_chapter_action = Gio.SimpleAction.new('card.reset-chapter', None)
+        reset_chapter_action = Gio.SimpleAction.new('card.reset-chapter', GLib.VariantType.new('q'))
         reset_chapter_action.connect('activate', self.reset_chapter)
         self.card.window.application.add_action(reset_chapter_action)
 
-    def download_chapter(self, action, param):
-        self.card.window.downloader.add(self.get_selected_chapters(), emit_signal=True)
+    def download_chapter(self, action, position):
+        item = self.list_model.get_item(position.get_uint16())
+        self.card.window.downloader.add([item.chapter], emit_signal=True)
         self.card.window.downloader.start()
+        item.emit_changed()
 
     def download_selected_chapters(self, action, param):
         self.card.window.downloader.add(self.get_selected_chapters(), emit_signal=True)
@@ -468,8 +470,10 @@ class ChaptersList:
 
         self.card.leave_selection_mode()
 
-    def reset_chapter(self, _action, _param):
-        self.get_selected_chapters()[0].reset()
+    def reset_chapter(self, _action, position):
+        item = self.list_model.get_item(position.get_uint16())
+        item.chapter.reset()
+        item.emit_changed()
 
     def select_all(self, *args):
         self.model.select_all()
@@ -509,10 +513,9 @@ class ChaptersList:
 
         return 0
 
-    def toggle_chapter_read_status(self, action, param, read):
-        bitsec = self.model.get_selection()
-        position = bitsec.get_nth(0)
-        chapter = self.list_model.get_item(position).chapter
+    def toggle_chapter_read_status(self, action, position, read):
+        item = self.list_model.get_item(position.get_uint16())
+        chapter = item.chapter
 
         if chapter.pages:
             for chapter_page in chapter.pages:
@@ -526,6 +529,7 @@ class ChaptersList:
         )
 
         chapter.update(data)
+        item.emit_changed()
 
     def toggle_selected_chapters_read_status(self, action, param, read):
         chapters_ids = []
@@ -607,7 +611,7 @@ class ChaptersList:
 
 class ChaptersListRow(Gtk.Box):
     def __init__(self, card):
-        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        super().__init__(orientation=Gtk.Orientation.VERTICAL)
 
         self.card = card
         self.chapter = None
@@ -615,13 +619,13 @@ class ChaptersListRow(Gtk.Box):
         #
         # Title, scanlators, action button
         #
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin_top=6, margin_end=6, margin_bottom=0, margin_start=6)
-        self.append(hbox)
+        self.primary_hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin_top=6, margin_end=6, margin_bottom=0, margin_start=6)
+        self.append(self.primary_hbox)
 
         # Vertical box for title and scanlators
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, hexpand=1)
         vbox.set_valign(Gtk.Align.CENTER)  # Allows title to be vertically centered if scanlators are missing
-        hbox.append(vbox)
+        self.primary_hbox.append(vbox)
 
         # Title
         self.title_label = Gtk.Label(xalign=0)
@@ -645,12 +649,12 @@ class ChaptersListRow(Gtk.Box):
         menu_button.add_css_class('flat')
         menu_button.set_menu_model(self.menu_model)
         menu_button.get_popover().connect('show', self.update_menu)
-        hbox.append(menu_button)
+        self.primary_hbox.append(menu_button)
 
         #
         # Recent badge, date, download status, page counter
         #
-        hbox = Gtk.Box(
+        self.secondary_hbox = Gtk.Box(
             orientation=Gtk.Orientation.HORIZONTAL, spacing=12,
             hexpand=1, margin_top=0, margin_end=6, margin_bottom=6, margin_start=6
         )
@@ -661,32 +665,32 @@ class ChaptersListRow(Gtk.Box):
         self.badge_label.add_css_class('caption')
         self.badge_label.add_css_class('badge')
         self.badge_label.set_text(_('New'))
-        hbox.append(self.badge_label)
+        self.secondary_hbox.append(self.badge_label)
 
         # Date + Download status (text or progress bar)
         self.subtitle_label = Gtk.Label(xalign=0, yalign=1, hexpand=1)
         self.subtitle_label.set_halign(Gtk.Align.START)
         self.subtitle_label.set_valign(Gtk.Align.CENTER)
         self.subtitle_label.add_css_class('caption')
-        hbox.append(self.subtitle_label)
+        self.secondary_hbox.append(self.subtitle_label)
 
         # Download progress
         self.download_progress_progressbar = Gtk.ProgressBar(hexpand=1, visible=False)
         self.download_progress_progressbar.set_halign(Gtk.Align.FILL)
         self.download_progress_progressbar.set_valign(Gtk.Align.CENTER)
-        hbox.append(self.download_progress_progressbar)
+        self.secondary_hbox.append(self.download_progress_progressbar)
 
         self.download_stop_button = Gtk.Button.new_from_icon_name('media-playback-stop-symbolic')
         self.download_stop_button.hide()
-        hbox.append(self.download_stop_button)
+        self.secondary_hbox.append(self.download_stop_button)
 
         # Read progress: nb read / nb pages
         self.read_progress_label = Gtk.Label(xalign=0.5, yalign=1)
         self.read_progress_label.set_halign(Gtk.Align.CENTER)
         self.read_progress_label.add_css_class('caption')
-        hbox.append(self.read_progress_label)
+        self.secondary_hbox.append(self.read_progress_label)
 
-        self.append(hbox)
+        self.append(self.secondary_hbox)
 
         # Gesture to detect click on mouse button 3 and enter in selection mode
         self.gesture_right_click = Gtk.GestureClick.new()
@@ -760,16 +764,20 @@ class ChaptersListRow(Gtk.Box):
             if item.download:
                 download_status = item.download.status
 
-        text = self.chapter.date.strftime(_('%m/%d/%Y')) if self.chapter.date else ''
+        text = [self.chapter.date.strftime(_('%m/%d/%Y'))] if self.chapter.date else []
         if download_status is not None and download_status != 'downloading':
-            text = f'{text} - {_(Download.STATUSES[download_status]).upper()}'
-        self.subtitle_label.set_text(text)
+            text.append(_(Download.STATUSES[download_status]).upper())
+
+        self.subtitle_label.set_text(' · '.join(text))
 
         if download_status == 'downloading':
             self.subtitle_label.set_hexpand(False)
             self.download_progress_progressbar.show()
             self.download_stop_button.show()
             self.read_progress_label.hide()
+            self.primary_hbox.props.margin_top = 6
+            self.primary_hbox.props.margin_bottom = 6
+            self.secondary_hbox.show()
 
             # Set download progress
             self.download_progress_progressbar.set_fraction(item.download.percent / 100)
@@ -785,22 +793,48 @@ class ChaptersListRow(Gtk.Box):
                     nb_pages = len(self.chapter.pages) if self.chapter.pages else '?'
                     self.read_progress_label.set_text(f'{self.chapter.last_page_read_index + 1}/{nb_pages}')
                     self.read_progress_label.show()
-                else:
+                    self.primary_hbox.props.margin_top = 6
+                    self.primary_hbox.props.margin_bottom = 6
+                    self.secondary_hbox.show()
+                elif text:
                     self.read_progress_label.hide()
-            else:
+                    self.primary_hbox.props.margin_top = 6
+                    self.primary_hbox.props.margin_bottom = 6
+                    self.secondary_hbox.show()
+                else:
+                    self.primary_hbox.props.margin_top = 17
+                    self.primary_hbox.props.margin_bottom = 17
+                    self.secondary_hbox.hide()
+            elif text:
                 self.read_progress_label.hide()
+                self.primary_hbox.props.margin_top = 6
+                self.primary_hbox.props.margin_bottom = 6
+                self.secondary_hbox.show()
+            else:
+                self.primary_hbox.props.margin_top = 17
+                self.primary_hbox.props.margin_bottom = 17
+                self.secondary_hbox.hide()
 
     def update_menu(self, _popover):
+        position = self.position
         self.menu_model.remove_all()
 
         if self.chapter.pages:
-            self.menu_model.append(_('Reset'), 'app.card.reset-chapter')
+            menu_item = Gio.MenuItem.new(_('Reset'))
+            menu_item.set_action_and_target_value('app.card.reset-chapter', GLib.Variant.new_uint16(position))
+            self.menu_model.append_item(menu_item)
         if not self.chapter.downloaded:
-            self.menu_model.append(_('Download'), 'app.card.download-chapter')
+            menu_item = Gio.MenuItem.new(_('Download'))
+            menu_item.set_action_and_target_value('app.card.download-chapter', GLib.Variant.new_uint16(position))
+            self.menu_model.append_item(menu_item)
         if not self.chapter.read:
-            self.menu_model.append(_('Mark as Read'), 'app.card.mark-chapter-read')
+            menu_item = Gio.MenuItem.new(_('Mark as Read'))
+            menu_item.set_action_and_target_value('app.card.mark-chapter-read', GLib.Variant.new_uint16(position))
+            self.menu_model.append_item(menu_item)
         if self.chapter.read or self.chapter.last_page_read_index is not None:
-            self.menu_model.append(_('Mark as Unread'), 'app.card.mark-chapter-unread')
+            menu_item = Gio.MenuItem.new(_('Mark as Unread'))
+            menu_item.set_action_and_target_value('app.card.mark-chapter-unread', GLib.Variant.new_uint16(position))
+            self.menu_model.append_item(menu_item)
 
 
 class InfoBox:
