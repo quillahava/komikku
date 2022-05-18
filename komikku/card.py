@@ -619,7 +619,7 @@ class ChaptersListRow(Gtk.Box):
         #
         # Title, scanlators, action button
         #
-        self.primary_hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin_top=6, margin_end=6, margin_bottom=0, margin_start=6)
+        self.primary_hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin_top=6, margin_end=6, margin_bottom=0, margin_start=12)
         self.append(self.primary_hbox)
 
         # Vertical box for title and scanlators
@@ -655,8 +655,8 @@ class ChaptersListRow(Gtk.Box):
         # Recent badge, date, download status, page counter
         #
         self.secondary_hbox = Gtk.Box(
-            orientation=Gtk.Orientation.HORIZONTAL, spacing=12,
-            hexpand=1, margin_top=0, margin_end=6, margin_bottom=6, margin_start=6
+            orientation=Gtk.Orientation.HORIZONTAL, spacing=12, hexpand=1,
+            margin_top=0, margin_end=6, margin_bottom=6, margin_start=12
         )
 
         # Recent badge
