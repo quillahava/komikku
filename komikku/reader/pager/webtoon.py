@@ -22,7 +22,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
     clamp_size = 800
 
     def __init__(self, reader):
-        Gtk.ScrolledWindow.__init__(self)
+        super().__init__()
         BasePager.__init__(self, reader)
 
         self.get_hscrollbar().hide()
@@ -36,11 +36,21 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.START)
         self.clamp.set_child(self.box)
 
-        self.controller_scroll = Gtk.EventControllerScroll.new(
-            Gtk.EventControllerScrollFlags.VERTICAL | Gtk.EventControllerScrollFlags.KINETIC)
+        self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.VERTICAL)
         self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.add_controller(self.controller_scroll)
         self.controller_scroll.connect('scroll', self.on_scroll)
+
+        # Scrolling detection on touch screen
+        self.gesture_drag = Gtk.GestureDrag.new()
+        # self.gesture_drag.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
+        self.gesture_drag_offset = None
+        self.gesture_drag.connect('drag-begin', self.on_gesture_drag_begin)
+        self.gesture_drag.connect('drag-update', self.on_gesture_drag_update)
+        self.gesture_drag.connect('drag-end', self.on_gesture_drag_end)
+        self.gesture_drag.connect('cancel', self.on_gesture_drag_cancel)
+        self.gesture_drag.set_touch_only(True)
+        self.add_controller(self.gesture_drag)
 
         self.vadj = self.get_vadjustment()
 
@@ -160,6 +170,32 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         self.on_single_click(x, y)
 
         return Gdk.EVENT_STOP
+
+    def on_gesture_drag_begin(self, controller, start_x, start_y):
+        self.gesture_drag_offset = 0
+
+    def on_gesture_drag_cancel(self, controller, *args):
+        controller.set_state(Gtk.EventSequenceState.DENIED)
+
+    def on_gesture_drag_end(self, controller, _offset_x, _offset_y):
+        controller.set_state(Gtk.EventSequenceState.DENIED)
+
+    def on_gesture_drag_update(self, controller, offset_x, offset_y):
+        controller.set_state(Gtk.EventSequenceState.CLAIMED)
+
+        if abs(offset_y) <= abs(offset_x):
+            # Ignore horizontal drag
+            return
+
+        offset = round(offset_y - self.gesture_drag_offset)
+        if not offset:
+            # Ignore null drag
+            return
+
+        self.vadj.props.value -= offset
+        self.on_scroll(None, None, -offset)
+
+        self.gesture_drag_offset = offset_y
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.window.page != 'reader':
