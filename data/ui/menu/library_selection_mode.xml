@@ -4,20 +4,12 @@
     <menu id="menu-library-selection-mode">
         <section>
             <item>
-                <attribute name="label" translatable="yes">Update</attribute>
-                <attribute name="action">app.library.update-selected</attribute>
-            </item>
-            <item>
-                <attribute name="label" translatable="yes">Delete</attribute>
-                <attribute name="action">app.library.delete-selected</attribute>
+                <attribute name="label" translatable="yes">Edit Categories</attribute>
+                <attribute name="action">app.library.edit-categories-selected</attribute>
             </item>
         </section>
 
         <section>
-            <item>
-                <attribute name="label" translatable="yes">Download</attribute>
-                <attribute name="action">app.library.download-selected</attribute>
-            </item>
             <item>
                 <attribute name="label" translatable="yes">Mark as Read</attribute>
                 <attribute name="action">app.library.mark-selected-read</attribute>
@@ -25,10 +17,6 @@
             <item>
                 <attribute name="label" translatable="yes">Mark as Unread</attribute>
                 <attribute name="action">app.library.mark-selected-unread</attribute>
-            </item>
-            <item>
-                <attribute name="label" translatable="yes">Edit Categories</attribute>
-                <attribute name="action">app.library.edit-categories-selected</attribute>
             </item>
         </section>
 

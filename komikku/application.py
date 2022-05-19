@@ -163,6 +163,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
     library_categories_edit_mode_cancel_button = Gtk.Template.Child('library_categories_edit_mode_cancel_button')
     library_categories_edit_mode_ok_button = Gtk.Template.Child('library_categories_edit_mode_ok_button')
     library_flowbox = Gtk.Template.Child('library_flowbox')
+    library_selection_mode_actionbar = Gtk.Template.Child('library_selection_mode_actionbar')
+    library_selection_mode_menubutton = Gtk.Template.Child('library_selection_mode_menubutton')
 
     card_resume_button = Gtk.Template.Child('card_resume_button')
     card_resume2_button = Gtk.Template.Child('card_resume2_button')
@@ -537,10 +539,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
     def on_primary_menu_shown(self, _menu_button):
         if self.page == 'library':
-            if self.library.selection_mode:
-                self.menu_button.set_menu_model(self.builder.get_object('menu-library-selection-mode'))
-            else:
-                self.menu_button.set_menu_model(self.builder.get_object('menu'))
+            self.menu_button.set_menu_model(self.builder.get_object('menu'))
 
         elif self.page == 'card':
             if self.card.selection_mode:

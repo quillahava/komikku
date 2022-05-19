@@ -70,17 +70,22 @@ class Library:
         self.flap.props.swipe_to_open = True
         self.flap.connect('notify::reveal-flap', self.on_flap_revealed)
         self.flap_reveal_button = self.window.library_flap_reveal_button
-        self.flap_reveal_button_toggled_handler_id = self.flap_reveal_button.connect('toggled', self.toggle_flap)
+        self.flap.bind_property(
+            'reveal-flap', self.flap_reveal_button, 'active', GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        )
 
         self.categories_list = CategoriesList(self)
-        self.categories_list.populate()
 
-        # Mangas Flowbox
+        # Thumbnails Flowbox
         self.flowbox = self.window.library_flowbox
         self.flowbox.set_valign(Gtk.Align.START)
         self.flowbox.connect('child-activated', self.on_manga_thumbnail_activated)
         self.flowbox.connect('selected-children-changed', self.update_subtitle)
         self.flowbox.connect('unselect-all', self.leave_selection_mode)
+
+        # Selection mode ActionBar
+        self.selection_mode_actionbar = self.window.library_selection_mode_actionbar
+        self.window.library_selection_mode_menubutton.set_menu_model(self.builder.get_object('menu-library-selection-mode'))
 
         # Gestures for multi-selection mode
         self.window.controller_key.connect('key-pressed', self.on_key_pressed)
@@ -195,7 +200,7 @@ class Library:
         search_recents_action.connect('change-state', self.on_search_menu_action_changed)
         self.window.application.add_action(search_recents_action)
 
-        # Menu actions in selection mode
+        # ActionBar actions in selection mode
         update_selected_action = Gio.SimpleAction.new('library.update-selected', None)
         update_selected_action.connect('activate', self.update_selected)
         self.window.application.add_action(update_selected_action)
@@ -302,24 +307,31 @@ class Library:
 
     def edit_categories_selected(self, _action, _param):
         # Edit categories of selected mangas
-        self.categories_list.enter_edit_mode()
+        self.categories_list.set_edit_mode(True)
+        self.flap.set_reveal_flap(True)
 
     def enter_selection_mode(self):
+        self.selection_mode_actionbar.set_revealed(True)
+
         self.window.left_button.set_label(_('Cancel'))
         self.window.left_button.set_tooltip_text(_('Cancel'))
         # Hide search button: disable search
         self.window.right_button_stack.hide()
 
+        self.window.menu_button.hide()
+
         self.selection_mode = True
 
         self.flowbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
 
-    def leave_selection_mode(self, param=None):
+    def leave_selection_mode(self, _param=None):
         self.window.left_button.set_tooltip_text(_('Add new comic'))
         self.window.left_button.set_icon_name('list-add-symbolic')
         if self.page == 'flowbox':
             # Show search button: re-enable search
             self.window.right_button_stack.show()
+
+        self.window.menu_button.show()
 
         self.selection_mode = False
 
@@ -327,16 +339,14 @@ class Library:
         for thumbnail in self.flowbox:
             thumbnail._selected = False
 
-        if self.categories_list.edit_mode:
-            refresh_library = param == 'refresh_library'
-            self.categories_list.leave_edit_mode(refresh_library=refresh_library)
+        self.selection_mode_actionbar.set_revealed(False)
+        self.flap.set_reveal_flap(False)
 
     def on_flap_revealed(self, _flap, _param):
-        with self.flap_reveal_button.handler_block(self.flap_reveal_button_toggled_handler_id):
-            self.flap_reveal_button.props.active = self.flap.get_reveal_flap()
-
-        if self.categories_list.edit_mode and not self.flap.get_reveal_flap():
-            self.categories_list.leave_edit_mode()
+        if self.flap.get_reveal_flap():
+            self.categories_list.populate()
+        else:
+            self.categories_list.set_edit_mode(False)
 
     def on_gesture_long_press_activated(self, _gesture, x, y):
         """Allow to enter in selection mode with a long press on a thumbnail"""
@@ -551,9 +561,6 @@ class Library:
 
         self.page = name
 
-    def toggle_flap(self, _button):
-        self.flap.set_reveal_flap(not self.flap.get_reveal_flap())
-
     def toggle_search_mode(self):
         self.searchbar.set_search_mode(not self.searchbar.get_search_mode())
 
@@ -649,18 +656,6 @@ class CategoriesList:
             self.listbox.remove(row)
             row = next_row
 
-    def enter_edit_mode(self):
-        self.populate(edit_mode=True)
-
-        self.library.flap.set_modal(False)
-        self.library.flap.set_reveal_flap(True)
-        self.library.flap.set_modal(True)
-
-    def leave_edit_mode(self, refresh_library=False):
-        self.library.flap.set_reveal_flap(False)
-
-        self.populate(refresh_library=refresh_library)
-
     def on_category_activated(self, _listbox, row):
         if self.edit_mode:
             return
@@ -722,8 +717,10 @@ class CategoriesList:
 
         def complete():
             self.library.window.activity_indicator.stop()
-            # Leave library section mode, leave edit mode and refresh library
-            self.library.leave_selection_mode('refresh_library')
+
+            # Leave library section mode and refresh library
+            self.library.leave_selection_mode()
+            self.library.populate()
 
         self.library.window.activity_indicator.start()
 
@@ -731,22 +728,20 @@ class CategoriesList:
         thread.daemon = True
         thread.start()
 
-    def populate(self, edit_mode=False, refresh_library=False):
+    def populate(self):
         db_conn = create_db_connection()
         categories = db_conn.execute('SELECT * FROM categories ORDER BY label ASC').fetchall()
         nb_categorized = db_conn.execute('SELECT count(*) FROM categories_mangas_association').fetchone()[0]
         db_conn.close()
 
-        if not categories and edit_mode:
+        if not categories and self.edit_mode:
             return
 
         self.clear()
 
-        if edit_mode:
-            self.edit_mode = True
+        if self.edit_mode:
             self.edit_mode_buttonbox.show()
         else:
-            self.edit_mode = False
             self.edit_mode_buttonbox.hide()
 
         if categories:
@@ -758,13 +753,13 @@ class CategoriesList:
 
             for item in items:
                 if item == 'all':
-                    if edit_mode:
+                    if self.edit_mode:
                         continue
 
                     category = 0
                     label = _('All')
                 elif item == 'uncategorized':
-                    if edit_mode:
+                    if self.edit_mode:
                         continue
 
                     category = -1
@@ -781,7 +776,7 @@ class CategoriesList:
                         (isinstance(category, int) and Settings.get_default().selected_category == category):
                     self.listbox.select_row(row)
 
-                if edit_mode:
+                if self.edit_mode:
                     switch = Gtk.Switch()
                     switch.set_active(Settings.get_default().selected_category == category.id)
                     switch.set_valign(Gtk.Align.CENTER)
@@ -793,8 +788,8 @@ class CategoriesList:
             Settings.get_default().selected_category = 0
             self.stack.set_visible_child_name('empty')
 
-        if refresh_library:
-            self.library.populate()
+    def set_edit_mode(self, edit_mode):
+        self.edit_mode = edit_mode
 
 
 class Thumbnail(Gtk.FlowBoxChild):
