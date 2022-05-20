@@ -550,10 +550,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
             self.menu_button.set_menu_model(self.builder.get_object('menu-reader'))
 
         elif self.page == 'download_manager':
-            if self.download_manager.selection_mode:
-                self.menu_button.set_menu_model(self.builder.get_object('menu-download-manager-selection-mode'))
-            else:
-                self.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
+            self.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
 
         # Focus is lost after showing popover submenu (bug?)
         self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())

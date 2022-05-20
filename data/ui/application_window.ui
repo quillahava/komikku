@@ -1043,12 +1043,9 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                         </child>
                                         <child type="start">
                                           <object class="GtkButton">
-                                              <property name="icon-name">user-trash-symbolic</property>
+                                            <property name="icon-name">user-trash-symbolic</property>
                                             <property name="tooltip-text" translatable="yes">Clear and Reset</property>
                                             <property name="action-name">app.card.reset-selected-chapters</property>
-                                                <style>
-                                                    <class name="flat"/>
-                                                </style>
                                           </object>
                                         </child>
                                         <child type="end">

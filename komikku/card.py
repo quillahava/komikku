@@ -326,7 +326,8 @@ class ChaptersList:
         self.listview.set_single_click_activate(True)
         self.listview.connect('activate', self.on_row_activate)
 
-        self.selection_mode_actionbar = self.card.window.card_chapters_selection_mode_actionbar
+        # Chapters selection mode ActionBar
+        self.chapters_selection_mode_actionbar = self.card.window.card_chapters_selection_mode_actionbar
         self.card.window.card_chapters_selection_mode_menubutton.set_menu_model(self.card.builder.get_object('menu-card-selection-mode'))
 
         # Gesture to detect long press on mouse button 1 and enter in selection mode
@@ -394,7 +395,7 @@ class ChaptersList:
         self.card.leave_selection_mode()
 
     def enter_selection_mode(self):
-        self.selection_mode_actionbar.set_revealed(True)
+        self.chapters_selection_mode_actionbar.set_revealed(True)
         self.listview.set_single_click_activate(False)
 
         # Init selection with clicked row (stored in self.selection_single_click_position)
@@ -414,7 +415,7 @@ class ChaptersList:
         self.model.unselect_all()
         self.selection_positions = []
         self.listview.set_single_click_activate(True)
-        self.selection_mode_actionbar.set_revealed(False)
+        self.chapters_selection_mode_actionbar.set_revealed(False)
 
     def on_factory_bind(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
         list_item.get_child().populate(list_item.get_item())

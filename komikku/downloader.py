@@ -254,7 +254,7 @@ class Downloader(GObject.GObject):
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/download_manager.ui')
-class DownloadManager(Gtk.ScrolledWindow):
+class DownloadManager(Gtk.Box):
     __gtype_name__ = 'DownloadManager'
     __gsignals_handlers_ids__ = None
 
@@ -264,16 +264,16 @@ class DownloadManager(Gtk.ScrolledWindow):
 
     stack = Gtk.Template.Child('stack')
     listbox = Gtk.Template.Child('listbox')
+    selection_mode_actionbar = Gtk.Template.Child('selection_mode_actionbar')
 
     def __init__(self, window):
-        Gtk.ScrolledWindow.__init__(self)
+        Gtk.Box.__init__(self)
 
         self.window = window
         self.downloader = self.window.downloader
 
         self.builder = window.builder
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/download_manager.xml')
-        self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/download_manager_selection_mode.xml')
 
         self.subtitle_label = self.window.download_manager_subtitle_label
         self.start_stop_button = self.window.download_manager_start_stop_button
@@ -318,20 +318,26 @@ class DownloadManager(Gtk.ScrolledWindow):
     def enter_selection_mode(self):
         self.window.left_button.set_label(_('Cancel'))
         self.window.left_button.set_tooltip_text(_('Cancel'))
+        self.window.right_button_stack.hide()
+        self.window.menu_button.hide()
 
         self.selection_mode = True
 
         self.listbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
+        self.selection_mode_actionbar.set_revealed(True)
 
     def leave_selection_mode(self):
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.left_button.set_tooltip_text(_('Back'))
+        self.window.right_button_stack.show()
+        self.window.menu_button.show()
 
         self.selection_mode = False
 
         self.listbox.set_selection_mode(Gtk.SelectionMode.NONE)
         for row in self.listbox:
             row._selected = False
+        self.selection_mode_actionbar.set_revealed(False)
 
     def on_download_row_activated(self, _listbox, row):
         row.grab_focus()
@@ -504,7 +510,6 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.window.library_flap_reveal_button.hide()
 
         self.window.right_button_stack.set_visible_child_name('download_manager')
-        self.window.right_button_stack.show()
 
         self.window.menu_button.set_icon_name('view-more-symbolic')
 
@@ -513,9 +518,6 @@ class DownloadManager(Gtk.ScrolledWindow):
         self.update_headerbar()
 
     def update_headerbar(self, *args):
-        if self.window.page != 'download_manager':
-            return
-
         if self.listbox.get_first_child() is not None:
             self.window.right_button_stack.show()
             if self.downloader.running:
