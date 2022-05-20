@@ -174,6 +174,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
     card_categories_stack = Gtk.Template.Child('card_categories_stack')
     card_categories_listbox = Gtk.Template.Child('card_categories_listbox')
     card_chapters_listview = Gtk.Template.Child('card_chapters_listview')
+    card_chapters_selection_mode_actionbar = Gtk.Template.Child('card_chapters_selection_mode_actionbar')
+    card_chapters_selection_mode_menubutton = Gtk.Template.Child('card_chapters_selection_mode_menubutton')
     card_name_label = Gtk.Template.Child('card_name_label')
     card_cover_image = Gtk.Template.Child('card_cover_image')
     card_cover_box = Gtk.Template.Child('card_cover_box')
@@ -542,10 +544,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
             self.menu_button.set_menu_model(self.builder.get_object('menu'))
 
         elif self.page == 'card':
-            if self.card.selection_mode:
-                self.menu_button.set_menu_model(self.builder.get_object('menu-card-selection-mode'))
-            else:
-                self.menu_button.set_menu_model(self.builder.get_object('menu-card'))
+            self.menu_button.set_menu_model(self.builder.get_object('menu-card'))
 
         elif self.page == 'reader':
             self.menu_button.set_menu_model(self.builder.get_object('menu-reader'))

@@ -4,14 +4,6 @@
     <menu id="menu-card-selection-mode">
         <section>
             <item>
-                <attribute name="label" translatable="yes">Download</attribute>
-                <attribute name="action">app.card.download-selected-chapters</attribute>
-            </item>
-            <item>
-                <attribute name="label" translatable="yes">Reset</attribute>
-                <attribute name="action">app.card.reset-selected-chapters</attribute>
-            </item>
-            <item>
                 <attribute name="label" translatable="yes">Mark as Read</attribute>
                 <attribute name="action">app.card.mark-selected-chapters-read</attribute>
             </item>

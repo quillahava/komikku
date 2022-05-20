@@ -36,13 +36,14 @@ class Card:
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/card_selection_mode.xml')
 
         self.viewswitchertitle = self.window.card_viewswitchertitle
+        self.viewswitcherbar = self.window.card_viewswitcherbar
 
         self.stack = self.window.card_stack
         self.info_box = InfoBox(self)
         self.categories_list = CategoriesList(self)
         self.chapters_list = ChaptersList(self)
 
-        self.viewswitchertitle.bind_property('title-visible', self.window.card_viewswitcherbar, 'reveal', GObject.BindingFlags.SYNC_CREATE)
+        self.viewswitchertitle.connect('notify::title-visible', self.on_viewswitchertitle_title_visible)
         self.window.card_resume_button.connect('clicked', self.on_resume_button_clicked)
         self.stack.connect('notify::visible-child', self.on_page_changed)
         self.window.updater.connect('manga-updated', self.on_manga_updated)
@@ -74,11 +75,14 @@ class Card:
 
         self.window.left_button.set_label(_('Cancel'))
         self.window.left_button.set_tooltip_text(_('Cancel'))
+        self.window.right_button_stack.hide()
+        self.window.menu_button.hide()
 
         self.selection_mode = True
         self.chapters_list.enter_selection_mode()
 
         self.viewswitchertitle.set_view_switcher_enabled(False)
+        self.viewswitcherbar.set_reveal(False)
 
     def init(self, manga, transition=True):
         # Default page is `Info` page except when we come from Explorer
@@ -98,11 +102,14 @@ class Card:
     def leave_selection_mode(self, _param=None):
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.left_button.set_tooltip_text(_('Back'))
+        self.window.right_button_stack.show()
+        self.window.menu_button.show()
 
         self.chapters_list.leave_selection_mode()
         self.selection_mode = False
 
         self.viewswitchertitle.set_view_switcher_enabled(True)
+        self.viewswitcherbar.set_reveal(True)
         self.viewswitchertitle.set_subtitle('')
 
     def on_delete_menu_clicked(self, action, param):
@@ -161,9 +168,15 @@ class Card:
         # Operation is resource intensive and could disrupt page transition
         self.populate()
 
-    def on_update_menu_clicked(self, action, param):
+    def on_update_menu_clicked(self, _action, _param):
         self.window.updater.add(self.manga)
         self.window.updater.start()
+
+    def on_viewswitchertitle_title_visible(self, _viewswitchertitle, _param):
+        if self.viewswitchertitle.get_title_visible() and not self.selection_mode:
+            self.viewswitcherbar.set_reveal(True)
+        else:
+            self.viewswitcherbar.set_reveal(False)
 
     def populate(self):
         self.chapters_list.set_sort_order(invalidate=False)
@@ -313,6 +326,9 @@ class ChaptersList:
         self.listview.set_single_click_activate(True)
         self.listview.connect('activate', self.on_row_activate)
 
+        self.selection_mode_actionbar = self.card.window.card_chapters_selection_mode_actionbar
+        self.card.window.card_chapters_selection_mode_menubutton.set_menu_model(self.card.builder.get_object('menu-card-selection-mode'))
+
         # Gesture to detect long press on mouse button 1 and enter in selection mode
         self.gesture_long_press = Gtk.GestureLongPress.new()
         self.gesture_long_press.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
@@ -378,6 +394,7 @@ class ChaptersList:
         self.card.leave_selection_mode()
 
     def enter_selection_mode(self):
+        self.selection_mode_actionbar.set_revealed(True)
         self.listview.set_single_click_activate(False)
 
         # Init selection with clicked row (stored in self.selection_single_click_position)
@@ -397,6 +414,7 @@ class ChaptersList:
         self.model.unselect_all()
         self.selection_positions = []
         self.listview.set_single_click_activate(True)
+        self.selection_mode_actionbar.set_revealed(False)
 
     def on_factory_bind(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
         list_item.get_child().populate(list_item.get_item())
@@ -465,12 +483,14 @@ class ChaptersList:
             self.update_chapter_item(chapter=chapter)
 
     def reset_selected_chapters(self, _action, _param):
+        # Clear and reset selected chapters
         for chapter in self.get_selected_chapters():
             chapter.reset()
 
         self.card.leave_selection_mode()
 
     def reset_chapter(self, _action, position):
+        # Clear and reset chapter
         item = self.list_model.get_item(position.get_uint16())
         item.chapter.reset()
         item.emit_changed()
@@ -819,22 +839,29 @@ class ChaptersListRow(Gtk.Box):
         position = self.position
         self.menu_model.remove_all()
 
-        if self.chapter.pages:
-            menu_item = Gio.MenuItem.new(_('Reset'))
-            menu_item.set_action_and_target_value('app.card.reset-chapter', GLib.Variant.new_uint16(position))
-            self.menu_model.append_item(menu_item)
+        section_menu_model = Gio.Menu()
+        section = Gio.MenuItem.new_section(None, section_menu_model)
+        self.menu_model.append_item(section)
         if not self.chapter.downloaded:
             menu_item = Gio.MenuItem.new(_('Download'))
             menu_item.set_action_and_target_value('app.card.download-chapter', GLib.Variant.new_uint16(position))
-            self.menu_model.append_item(menu_item)
+            section_menu_model.append_item(menu_item)
+        if self.chapter.pages:
+            menu_item = Gio.MenuItem.new(_('Clear and Reset'))
+            menu_item.set_action_and_target_value('app.card.reset-chapter', GLib.Variant.new_uint16(position))
+            section_menu_model.append_item(menu_item)
+
+        section_menu_model = Gio.Menu()
+        section = Gio.MenuItem.new_section(None, section_menu_model)
+        self.menu_model.append_item(section)
         if not self.chapter.read:
             menu_item = Gio.MenuItem.new(_('Mark as Read'))
             menu_item.set_action_and_target_value('app.card.mark-chapter-read', GLib.Variant.new_uint16(position))
-            self.menu_model.append_item(menu_item)
+            section_menu_model.append_item(menu_item)
         if self.chapter.read or self.chapter.last_page_read_index is not None:
             menu_item = Gio.MenuItem.new(_('Mark as Unread'))
             menu_item.set_action_and_target_value('app.card.mark-chapter-unread', GLib.Variant.new_uint16(position))
-            self.menu_model.append_item(menu_item)
+            section_menu_model.append_item(menu_item)
 
 
 class InfoBox:
