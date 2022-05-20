@@ -22,7 +22,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
   <object class="GtkAboutDialog" id="about_dialog">
     <property name="program_name">@prettyname@</property>
     <property name="version">@VERSION@</property>
-    <property name="copyright">© 2019-2021 @authorfullname@</property>
+    <property name="copyright">© 2019-2022 @authorfullname@</property>
     <property name="comments" translatable="yes">A manga reader for GNOME
 
 Never forget, you can support the authors
