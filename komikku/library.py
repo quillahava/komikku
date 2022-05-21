@@ -295,15 +295,19 @@ class Library:
         self.delete_mangas([thumbnail.manga for thumbnail in self.flowbox.get_selected_children()])
 
     def download_selected(self, _action, _param):
-        chapters = []
-        for thumbnail in self.flowbox.get_selected_children():
-            for chapter in thumbnail.manga.chapters:
-                chapters.append(chapter)
+        def confirm_callback():
+            chapters = []
+            for thumbnail in self.flowbox.get_selected_children():
+                for chapter in thumbnail.manga.chapters:
+                    chapters.append(chapter)
 
-        self.leave_selection_mode()
+            self.leave_selection_mode()
 
-        self.window.downloader.add(chapters)
-        self.window.downloader.start()
+            self.window.downloader.add(chapters)
+            self.window.downloader.start()
+
+        message = _('Are you sure you want to download all chapters of selected mangas?')
+        self.window.confirm(_('Download?'), message, confirm_callback)
 
     def edit_categories_selected(self, _action, _param):
         # Edit categories of selected mangas
