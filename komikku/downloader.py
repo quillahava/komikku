@@ -515,9 +515,12 @@ class DownloadManager(Gtk.Box):
 
         self.window.show_page('download_manager', transition=transition)
 
-        self.update_headerbar()
+        self.update_headerbar(forced=True)
 
-    def update_headerbar(self, *args):
+    def update_headerbar(self, *args, forced=False):
+        if self.window.page != 'download_manager' and not forced:
+            return
+
         if self.listbox.get_first_child() is not None:
             self.window.right_button_stack.show()
             if self.downloader.running:
