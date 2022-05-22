@@ -880,7 +880,7 @@ class Thumbnail(Gtk.FlowBoxChild):
 class ThumbnailCover(GObject.GObject, Gdk.Paintable):
     __gtype_name__ = 'ThumbnailCover'
 
-    corners_radius = 10
+    corners_radius = 8
     cover_font_size = 13
     width = None
     height = None
