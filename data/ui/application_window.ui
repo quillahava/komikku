@@ -874,59 +874,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                                             </child>
                                                           </object>
                                                         </child>
-                                                        <style>
-                                                          <class name="boxed-list"/>
-                                                        </style>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkBox">
-                                                    <property name="orientation">vertical</property>
-                                                    <property name="spacing">12</property>
-                                                    <child>
-                                                      <object class="GtkLabel">
-                                                        <property name="label" translatable="yes">Synopsis</property>
-                                                        <property name="xalign">0</property>
-                                                        <property name="halign">fill</property>
-                                                        <property name="ellipsize">end</property>
-                                                        <style>
-                                                          <class name="heading"/>
-                                                        </style>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkLabel" id="card_synopsis_label">
-                                                        <property name="hexpand">1</property>
-                                                        <property name="label">synopsis</property>
-                                                        <property name="wrap">1</property>
-                                                        <property name="wrap-mode">word-char</property>
-                                                        <property name="xalign">0</property>
-                                                        <style>
-                                                          <class name="synopsis-label"/>
-                                                        </style>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkBox">
-                                                    <property name="orientation">vertical</property>
-                                                    <property name="spacing">12</property>
-                                                    <child>
-                                                      <object class="GtkLabel">
-                                                        <property name="label" translatable="yes">More</property>
-                                                        <property name="xalign">0</property>
-                                                        <property name="halign">fill</property>
-                                                        <property name="ellipsize">end</property>
-                                                        <style>
-                                                          <class name="heading"/>
-                                                        </style>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkListBox">
                                                         <child>
                                                           <object class="GtkListBoxRow">
                                                             <property name="activatable">0</property>
@@ -967,6 +914,35 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                                         </child>
                                                         <style>
                                                           <class name="boxed-list"/>
+                                                        </style>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">vertical</property>
+                                                    <property name="spacing">12</property>
+                                                    <child>
+                                                      <object class="GtkLabel">
+                                                        <property name="label" translatable="yes">Synopsis</property>
+                                                        <property name="xalign">0</property>
+                                                        <property name="halign">fill</property>
+                                                        <property name="ellipsize">end</property>
+                                                        <style>
+                                                          <class name="heading"/>
+                                                        </style>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkLabel" id="card_synopsis_label">
+                                                        <property name="hexpand">1</property>
+                                                        <property name="label">synopsis</property>
+                                                        <property name="wrap">1</property>
+                                                        <property name="wrap-mode">word-char</property>
+                                                        <property name="xalign">0</property>
+                                                        <style>
+                                                          <class name="synopsis-label"/>
                                                         </style>
                                                       </object>
                                                     </child>

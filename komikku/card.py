@@ -935,9 +935,9 @@ class InfoBox:
         else:
             self.last_update_label.get_parent().get_parent().hide()
 
-        self.synopsis_label.set_markup(html_escape(manga.synopsis) if manga.synopsis else '-')
-
         self.set_disk_usage()
+
+        self.synopsis_label.set_markup(html_escape(manga.synopsis) if manga.synopsis else '-')
 
     def on_resize(self):
         if self.window.mobile_width:
