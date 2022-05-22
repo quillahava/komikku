@@ -49,6 +49,10 @@ listview :last-child {
     border-radius: 6px;
 }
 
+.synopsis-label {
+    line-height: 1.4;
+}
+
 /* Reader page */
 .reader-page-number-indicator-label {
     color: #fff;
