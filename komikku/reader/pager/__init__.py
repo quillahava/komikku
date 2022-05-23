@@ -222,10 +222,6 @@ class Pager(Adw.Bin, BasePager):
         self.add_controller(self.controller_scroll)
         self.controller_scroll.connect('scroll', self.on_scroll)
 
-    @property
-    def current_page(self):
-        return self.carousel.get_nth_page(self.carousel.get_position())
-
     @GObject.Property(type=bool, default=True)
     def interactive(self):
         return self._interactive
@@ -260,10 +256,11 @@ class Pager(Adw.Bin, BasePager):
                 if self.carousel.get_position() != 1:
                     return
 
+                self.carousel.disconnect(position_handler_id)
+
                 direction = -1 if self.reader.reading_mode == 'right-to-left' else 1
                 new_page = Page(self, page.chapter, page.index + direction)
                 self.carousel.append(new_page)
-                self.carousel.disconnect(position_handler_id)
 
                 new_page.connect('rendered', self.on_page_rendered)
                 new_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
@@ -320,6 +317,7 @@ class Pager(Adw.Bin, BasePager):
             center_page.connect('rendered', self.on_page_rendered)
             center_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
             center_page.render()
+            self.current_page = center_page
 
             # Left page
             left_page = Page(self, chapter, page_index + direction)
@@ -340,6 +338,7 @@ class Pager(Adw.Bin, BasePager):
 
         # Hack: use a `GLib.timeout_add` to add first pages in carousel
         # Without it, the `scroll_to` (with velocity=0) doesn't work!
+        # Cf. issue https://gitlab.gnome.org/GNOME/libadwaita/-/issues/457
         GLib.timeout_add(150, init_pages)
 
     def on_btn_clicked(self, _gesture, n_press, x, y):
@@ -422,15 +421,20 @@ class Pager(Adw.Bin, BasePager):
         if self.window.page != 'reader' or not self.interactive:
             return Gdk.EVENT_PROPAGATE
 
+        position = self.carousel.get_position()
+        if position != 1:
+            # A transition is in progress
+            return Gdk.EVENT_PROPAGATE
+
         modifiers = Gtk.accelerator_get_default_mod_mask()
         if (state & modifiers) != 0:
             return Gdk.EVENT_PROPAGATE
 
+        page = self.current_page
         if keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left, Gdk.KEY_Right, Gdk.KEY_KP_Right):
             # Hide mouse cursor when using keyboard navigation
             self.hide_cursor()
 
-            page = self.current_page
             hadj = page.scrolledwindow.get_hadjustment()
 
             if keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left):
@@ -452,7 +456,6 @@ class Pager(Adw.Bin, BasePager):
             # Hide mouse cursor when using keyboard navigation
             self.hide_cursor()
 
-            page = self.current_page
             vadj = page.scrolledwindow.get_vadjustment()
 
             if keyval in (Gdk.KEY_Down, Gdk.KEY_KP_Down):
@@ -466,11 +469,12 @@ class Pager(Adw.Bin, BasePager):
                 return Gdk.EVENT_STOP
 
             if self.reader.reading_mode == 'vertical' and vadj.get_value() == 0:
-                self.scroll_to_direction('left')
+                prev_page = self.scroll_to_direction('left')
 
                 # After switching pages, go to the end of the page that is now the current page
-                vadj = self.current_page.get_vadjustment()
+                vadj = prev_page.scrolledwindow.get_vadjustment()
                 vadj.set_value(vadj.get_upper() - self.reader.size.height)
+
                 return Gdk.EVENT_STOP
 
             # If image height is greater than viewport height, arrow keys should scroll page up
@@ -481,12 +485,17 @@ class Pager(Adw.Bin, BasePager):
         return Gdk.EVENT_PROPAGATE
 
     def on_page_changed(self, _carousel, index):
-        if index == 1 and not self.init_flag:
-            # Return to center page in case of inaccessible chapter or partial/incomplete mouse drag
-            return
-        self.init_flag = False
-
         page = self.carousel.get_nth_page(index)
+        self.current_page = page
+
+        if index == 1 and not self.init_flag:
+            # Return to center page:
+            # - inaccessible chapter
+            # - partial/incomplete mouse drag
+            # - back from offlimit
+            return
+
+        self.init_flag = False
 
         if page.status == 'offlimit':
             GLib.idle_add(self.carousel.scroll_to, self.carousel.get_nth_page(1), True)
@@ -536,9 +545,8 @@ class Pager(Adw.Bin, BasePager):
         # 1. Reading mode is `RTL` or `LTR`, page can be scrolled vertically (page scaling is adapted to width) but not horizontally
         # 2. Reading mode is `vertical` and page can be scrolled horizontally (page scaling is adapted to height) but not vertically
         # In both cases, we can't rely on `edge-overshot` event.
-        current_page = self.current_page
 
-        if current_page and not current_page.scrolledwindow.props.can_target or not self.interactive:
+        if self.current_page and not self.current_page.scrolledwindow.props.can_target or not self.interactive:
             return
 
         if self.reader.reading_mode in ('right-to-left', 'left-to-right') and self.reader.scaling == 'width' and dx:
@@ -581,11 +589,9 @@ class Pager(Adw.Bin, BasePager):
         elif direction == 'right':
             page = self.carousel.get_nth_page(self.carousel.get_n_pages() - 1)
 
-        if page == self.current_page:
-            # Can occur during a quick keyboard navigation (when holding down an arrow key)
-            return
-
         self.carousel.scroll_to(page, 1)
+
+        return page
 
     def set_orientation(self, orientation):
         self.carousel.set_orientation(orientation)
