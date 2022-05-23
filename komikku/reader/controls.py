@@ -8,6 +8,7 @@ from gi.repository import Gtk
 class Controls:
     active = False
     is_visible = False
+    pages_count = 0
     reader = None
 
     def __init__(self, reader):
@@ -23,11 +24,12 @@ class Controls:
         self.bottom_box.set_valign(Gtk.Align.END)
 
         # Number of pages
-        self.pages_count_label = Gtk.Label()
-        self.pages_count_label.props.margin_start = 6
-        self.pages_count_label.props.margin_end = 6
-        self.pages_count_label.set_halign(Gtk.Align.START)
-        self.bottom_box.append(self.pages_count_label)
+        self.label = Gtk.Label()
+        self.label.add_css_class('monospace')
+        self.label.props.margin_start = 6
+        self.label.props.margin_end = 6
+        self.label.set_halign(Gtk.Align.START)
+        self.bottom_box.append(self.label)
 
         # Chapter's pages slider: current / nb
         self.scale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 1, 2, 1)
@@ -49,18 +51,18 @@ class Controls:
         if not self.active:
             return
 
+        self.pages_count = len(chapter.pages)
+
         # Set slider range
         with self.scale.handler_block(self.scale_handler_id):
-            self.scale.set_range(1, len(chapter.pages))
-
-        self.pages_count_label.set_text(str(len(chapter.pages)))
+            self.scale.set_range(1, self.pages_count)
 
     def on_fullscreen(self):
         self.window.headerbar_revealer.set_reveal_child(self.is_visible)
 
     def on_scale_value_changed(self, scale, scroll_type, value):
         value = round(value)
-        if scroll_type == Gtk.ScrollType.JUMP and value > 0 and self.scale.get_value() != value:
+        if scroll_type == Gtk.ScrollType.JUMP and value > 0 and round(self.scale.get_value()) != value:
             self.reader.pager.goto_page(value - 1)
 
     def on_unfullscreen(self):
@@ -71,18 +73,16 @@ class Controls:
             return
 
         with self.scale.handler_block(self.scale_handler_id):
-            if self.scale.get_value() == index:
-                self.scale.emit('value-changed')
-            else:
-                self.scale.set_value(index)
+            self.scale.set_value(index)
+            self.label.set_text(f'{index}/{self.pages_count}')
 
     def set_scale_direction(self, inverted):
         self.scale.set_inverted(inverted)
         self.scale.set_value_pos(Gtk.PositionType.RIGHT if inverted else Gtk.PositionType.LEFT)
         if inverted:
-            self.bottom_box.reorder_child_after(self.pages_count_label, self.scale)
+            self.bottom_box.reorder_child_after(self.scale, self.label)
         else:
-            self.bottom_box.reorder_child_after(self.scale, self.pages_count_label)
+            self.bottom_box.reorder_child_after(self.label, self.scale)
 
     def show(self):
         if not self.active:
