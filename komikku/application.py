@@ -77,7 +77,7 @@ class Application(Adw.Application):
 
         self.window = None
 
-        GLib.set_application_name(_('Komikku'))
+        GLib.set_application_name('Komikku')
         GLib.set_prgname(self.application_id)
 
         logging.basicConfig(
@@ -126,7 +126,7 @@ class Application(Adw.Application):
     def do_startup(self):
         Adw.Application.do_startup(self)
 
-        Notify.init(_('Komikku'))
+        Notify.init('Komikku')
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/application_window.ui')
@@ -150,7 +150,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
     stack = Gtk.Template.Child('stack')
 
     library_flap_reveal_button = Gtk.Template.Child('library_flap_reveal_button')
-    library_subtitle_label = Gtk.Template.Child('library_subtitle_label')
+    library_title_label = Gtk.Template.Child('library_title_label')
     library_search_button = Gtk.Template.Child('library_search_button')
     library_searchbar = Gtk.Template.Child('library_searchbar')
     library_search_menu_button = Gtk.Template.Child('library_search_menu_button')

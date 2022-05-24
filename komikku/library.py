@@ -44,7 +44,7 @@ class Library:
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/library_search.xml')
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/library_selection_mode.xml')
 
-        self.subtitle_label = self.window.library_subtitle_label
+        self.title_label = self.window.library_title_label
         self.stack = self.window.library_stack
 
         # Search
@@ -622,16 +622,17 @@ class Library:
     def update_subtitle(self, *args, db_conn=None):
         nb_selected = len(self.flowbox.get_selected_children()) if self.selection_mode else 0
         if nb_selected > 0:
-            subtitle = n_('{0} selected', '{0} selected', nb_selected).format(nb_selected)
+            title = n_('{0} selected', '{0} selected', nb_selected).format(nb_selected)
         else:
-            subtitle = _('Library')
             if (category_id := Settings.get_default().selected_category) != 0:
                 if category_id == -1:
-                    subtitle = '{0} / {1}'.format(subtitle, _('Uncategorized'))
+                    title = _('Uncategorized')
                 else:
-                    subtitle = f'{subtitle} / {Category.get(category_id, db_conn).label}'
+                    title = Category.get(category_id, db_conn).label
+            else:
+                title = 'Komikku'
 
-        self.subtitle_label.set_label(subtitle)
+        self.title_label.set_label(title)
 
     def update_thumbnail(self, manga):
         for thumbnail in self.flowbox:
