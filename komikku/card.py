@@ -306,8 +306,10 @@ class ChaptersList:
     def __init__(self, card):
         self.card = card
 
+        self.selection_last_selected_position = None
+        self.selection_mode_range = False
         self.selection_positions = []
-        self.selection_single_click_position = None
+        self.selection_click_position = None
 
         self.factory = Gtk.SignalListItemFactory()
         self.factory.connect('setup', self.on_factory_setup)
@@ -315,7 +317,7 @@ class ChaptersList:
 
         self.list_model = ChaptersListModel(self.sort_func)
         self.model = Gtk.MultiSelection.new(self.list_model)
-        self.model.connect('selection-changed', self.on_selection_changed)
+        self.selection_changed_handler_id = self.model.connect('selection-changed', self.on_selection_changed)
 
         self.listview = self.card.window.card_chapters_listview
         # Remove unwanted style class 'view' which changes background color in dark appearance!
@@ -335,7 +337,7 @@ class ChaptersList:
         self.gesture_long_press.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.gesture_long_press.set_touch_only(False)
         self.listview.add_controller(self.gesture_long_press)
-        self.gesture_long_press.connect('pressed', self.card.enter_selection_mode)
+        self.gesture_long_press.connect('pressed', self.on_long_press)
 
         self.card.window.downloader.connect('download-changed', self.update_chapter_item)
 
@@ -398,7 +400,7 @@ class ChaptersList:
         self.chapters_selection_mode_actionbar.set_revealed(True)
         self.listview.set_single_click_activate(False)
 
-        # Init selection with clicked row (stored in self.selection_single_click_position)
+        # Init selection with clicked row (stored in self.selection_click_position)
         self.on_selection_changed(None, None, None)
 
     def get_selected_chapters(self):
@@ -413,7 +415,11 @@ class ChaptersList:
 
     def leave_selection_mode(self):
         self.model.unselect_all()
+
+        self.selection_last_selected_position = None
+        self.selection_mode_range = False
         self.selection_positions = []
+
         self.listview.set_single_click_activate(True)
         self.chapters_selection_mode_actionbar.set_revealed(False)
 
@@ -423,6 +429,13 @@ class ChaptersList:
     def on_factory_setup(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
         list_item.set_child(ChaptersListRow(self.card))
 
+    def on_long_press(self, _controller, x, y):
+        if not self.card.selection_mode:
+            self.card.enter_selection_mode()
+        elif not self.selection_mode_range:
+            self.selection_mode_range = True
+            self.on_selection_changed(None, None, None)
+
     def on_row_activate(self, _listview, position):
         if self.card.selection_mode:
             # Prevent double-click row activation in selection mode
@@ -431,31 +444,60 @@ class ChaptersList:
         chapter = self.list_model.get_item(position).chapter
         self.card.window.reader.init(self.card.manga, chapter)
 
-    def on_selection_changed(self, _model, _position, _n_items):
+    def on_selection_changed(self, model, _position, _n_items):
         if not self.card.selection_mode:
             return
 
-        # Here we try to allow multiple selection by clicking on a row.
-        # When a row is clicled, selection is lost so it must have been saved previously.
-        # We build the new selection from the previous one +/- the clicked row.
-        if self.selection_single_click_position is not None:
-            click_position = self.selection_single_click_position
-            self.selection_single_click_position = None
+        # Here we try to allow multiple selection.
+        # A short click selects or unselects a row.
+        # A long press selects a range of rows (selection_last_selected_position => selection_click_position).
+        # When a row is clicked, selection is lost so it must have been saved previously.
+        # We build the new selection from the previous one +/- the clicked row or the previous one + a range of rows.
+        if self.selection_click_position is not None:
+            click_position = self.selection_click_position
 
             selected = Gtk.Bitset.new_empty()
             mask = Gtk.Bitset.new_empty()
 
-            mask.add(click_position)
-            if click_position not in self.selection_positions:
-                self.selection_positions.append(click_position)
+            if not self.selection_mode_range:
+                # Single row selection/unselection
+                self.selection_click_position = None
+
+                mask.add(click_position)
+                if click_position not in self.selection_positions:
+                    self.selection_positions.append(click_position)
+                    self.selection_last_selected_position = click_position
+                else:
+                    self.selection_positions.remove(click_position)
+
+                for position in self.selection_positions:
+                    mask.add(position)
+                    selected.add(position)
             else:
-                self.selection_positions.remove(click_position)
+                # Range selection
+                for position in self.selection_positions:
+                    mask.add(position)
 
-            for position in self.selection_positions:
-                mask.add(position)
-                selected.add(position)
+                if self.selection_last_selected_position < click_position:
+                    for position in range(self.selection_last_selected_position, click_position + 1):
+                        mask.add(position)
+                else:
+                    for position in range(click_position, self.selection_last_selected_position + 1):
+                        mask.add(position)
 
-            self.model.set_selection(selected, mask)
+                selected = mask
+
+                # In selection mode range, event are emitted twice:
+                # - First is a fake event `emitted` in on_long_press method
+                # - Second is emitted when left click is released (in this case, model is not None)
+                # State must be maintained until the second one because selection must be replayed
+                if model:
+                    self.selection_click_position = None
+                    self.selection_last_selected_position = click_position
+                    self.selection_mode_range = False
+
+            with self.model.handler_block(self.selection_changed_handler_id):
+                self.model.set_selection(selected, mask)
 
         self.selection_positions = []
         bitsec = self.model.get_selection()
@@ -736,13 +778,13 @@ class ChaptersListRow(Gtk.Box):
         return position
 
     def on_left_button_clicked(self, _gesture, n_press, _x, _y):
-        self.card.chapters_list.selection_single_click_position = self.position
+        self.card.chapters_list.selection_click_position = self.position
 
     def on_right_button_clicked(self, _gesture, _n_press, _x, _y):
         if self.card.selection_mode:
             return
 
-        self.card.chapters_list.selection_single_click_position = self.position
+        self.card.chapters_list.selection_click_position = self.position
         self.card.enter_selection_mode()
 
     def populate(self, item: ChapterItemWrapper, update=False):
