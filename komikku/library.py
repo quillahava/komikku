@@ -813,16 +813,16 @@ class Thumbnail(Gtk.FlowBoxChild):
         self._filtered = False
         self._selected = False
 
-        self.overlay = Gtk.Overlay()
-
         self.picture = Gtk.Picture()
         self.picture.set_can_shrink(False)
         self.picture.set_keep_aspect_ratio(False)
         self.picture.set_paintable(ThumbnailCover(manga))
-        self.overlay.set_child(self.picture)
 
         if Settings.get_default().library_display_mode == 'grid-compact':
             # Compact grid
+            self.overlay = Gtk.Overlay()
+            self.overlay.set_child(self.picture)
+
             self.name_label = Gtk.Label(xalign=0)
             self.name_label.add_css_class('library-thumbnail-name-label')
             self.name_label.set_valign(Gtk.Align.END)
@@ -833,7 +833,7 @@ class Thumbnail(Gtk.FlowBoxChild):
         else:
             # Expanded grid
             box = Gtk.Grid(row_spacing=4)
-            box.attach(self.overlay, 0, 0, 2, 1)
+            box.attach(self.picture, 0, 0, 2, 1)
 
             self.name_label = Gtk.Label(hexpand=True)
             self.name_label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
