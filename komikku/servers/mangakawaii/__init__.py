@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -37,14 +37,14 @@ class Mangakawaii(Server):
     lang = 'fr'
     long_strip_genres = ['Webtoon', ]
 
-    base_url = 'https://www.mangakawaii.net'
+    base_url = 'https://www.mangakawaii.io'
     search_url = base_url + '/recherche-manga'
     most_populars_url = base_url + '/filterMangaList?page=1&cat=&alpha=&sortBy=views&asc=false&author='
     most_populars_referer_url = base_url + '/liste-manga'
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/{1}/{2}/1'
     chapters_url = base_url + '/loadChapter?page={0}'
-    cdn_base_url = 'https://cdn.mangakawaii.net'
+    cdn_base_url = 'https://cdn.mangakawaii.pics'
     image_url = cdn_base_url + '/uploads/manga/{0}/chapters_{1}/{2}/{3}?{4}'
     cover_url = cdn_base_url + '/uploads/manga/{0}/cover/cover_250x350.jpg'
 
@@ -149,11 +149,13 @@ class Mangakawaii(Server):
 
         # Next, we retrieve fisrt chapters available in page's HTML
         for tr_element in soup.find('table', class_='table--manga').find_all('tr'):
-            a_element = tr_element.find('td', class_='table__chapter').a
+            td_element = tr_element.find('td', class_='table__chapter')
+            if not td_element:
+                continue
             date = get_soup_element_inner_text(tr_element.find('td', class_='table__date'))
             data['chapters'].append(dict(
-                slug=a_element.get('href').strip().split('/')[-1],
-                title=a_element.text.strip().replace('\n', ' '),
+                slug=td_element.a.get('href').strip().split('/')[-1],
+                title=' '.join(td_element.a.span.text.strip().split()),
                 date=convert_date_string(date, format='%d.%m.%Y'),
             ))
 
