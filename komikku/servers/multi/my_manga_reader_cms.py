@@ -18,6 +18,7 @@
 # ScanOnePiece [FR]
 
 from bs4 import BeautifulSoup
+from bs4 import Comment
 import re
 import requests
 from urllib.parse import urljoin
@@ -122,23 +123,21 @@ class MyMangaReaderCMS(Server):
             if not h5:
                 continue
 
-            if h5.eee:
+            if h5.daka:
                 # Difference encountered on `mangasin` server
-                slug = h5.eee.a.get('href').split('/')[-1]
-                title = h5.eee.a.text.strip()
-                date = element.div.div.text.strip().split()[0]
-                date_format = '%Y-%m-%d'
+                slug = h5.daka.a.get('href').split('/')[-1]
+                title = '#{0} - {1}'.format(h5.a.get('data-number'), h5.daka.a.text.strip())
+                date = element.div.find(text=lambda text: isinstance(text, Comment))  # Date is located in a comment
             else:
                 slug = h5.a.get('href').split('/')[-1]
                 title = h5.a.text.strip()
                 if h5.em and h5.em.text.strip():
                     title = '{0}: {1}'.format(title, h5.em.text.strip())
                 date = element.div.div.text.strip()
-                date_format = '%d %b. %Y'
 
             data['chapters'].append(dict(
                 slug=slug,
-                date=convert_date_string(date, format=date_format),
+                date=convert_date_string(date, format='%d %b. %Y'),
                 title=title
             ))
 
