@@ -30,7 +30,7 @@ def test_mangakawaii(mangakawaii_server):
     # Search
     print('Search')
     try:
-        response = mangakawaii_server.search('tales of demons and gods')
+        response = mangakawaii_server.search('martial peak')  # must not be licensed
         slug = response[0]['slug']
     except Exception as e:
         slug = None

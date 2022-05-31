@@ -234,11 +234,13 @@ class Mangakawaii(Server):
 
         chapters = []
         for tr_element in soup.find_all('tr'):
-            a_element = tr_element.find('td', class_='table__chapter').a
+            td_element = tr_element.find('td', class_='table__chapter')
+            if not td_element:
+                continue
             date = get_soup_element_inner_text(tr_element.find('td', class_='table__date'))
             chapters.append(dict(
-                slug=a_element.get('href').strip().split('/')[-1],
-                title=a_element.text.strip().replace('\n', ' '),
+                slug=td_element.a.get('href').strip().split('/')[-1],
+                title=' '.join(td_element.a.span.text.strip().split()),
                 date=convert_date_string(date, format='%d.%m.%Y'),
             ))
 
