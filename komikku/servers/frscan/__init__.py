@@ -12,7 +12,7 @@ class Frscan(MyMangaReaderCMS):
     name = 'FR Scan'
     lang = 'fr'
 
-    base_url = 'https://frscan.cc'
+    base_url = 'https://frscan.ws'
     search_url = base_url + '/search'
     most_populars_url = base_url + '/filterList?page=1&sortBy=views&asc=false'
     manga_url = base_url + '/manga/{0}'

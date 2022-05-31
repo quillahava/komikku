@@ -191,10 +191,13 @@ class MyMangaReaderCMS(Server):
         """
         Returns chapter page scan (image) content
         """
+        headers = {
+            'Referer': self.chapter_url.format(manga_slug, chapter_slug),
+        }
         if page['slug']:
-            r = self.session_get(self.image_url.format(manga_slug, chapter_slug, page['slug']))
+            r = self.session_get(self.image_url.format(manga_slug, chapter_slug, page['slug']), headers=headers)
         else:
-            r = self.session_get(page['image'])
+            r = self.session_get(page['image'], headers=headers)
         if r is None or r.status_code != 200:
             return None
 
