@@ -169,7 +169,7 @@ class Mangapill(Server):
         """
         return self.manga_url.format(url)
 
-    def get_most_populars(self, type):
+    def get_most_populars(self, type=None):
         """
         Returns Trending mangas
         """
@@ -193,7 +193,7 @@ class Mangapill(Server):
 
         return results
 
-    def search(self, term, type):
+    def search(self, term, type=None):
         r = self.session_get(
             self.search_url,
             params=dict(
