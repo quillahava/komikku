@@ -12,7 +12,7 @@ class Jpmangas(MyMangaReaderCMS):
     name = 'Jpmangas'
     lang = 'fr'
 
-    base_url = 'https://jpmangas.co'
+    base_url = 'https://jpmangas.cc'
     search_url = base_url + '/search'
     most_populars_url = base_url + '/filterList?page=1&sortBy=views&asc=false'
     manga_url = base_url + '/lecture-en-ligne/{0}'
