@@ -14,7 +14,7 @@ def japscan_server():
     return Japscan()
 
 
-@test_steps('get_most_popular', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_most_popular', 'search', 'get_manga_data', 'get_chapter_data')  # , 'get_page_image')
 def test_japscan(japscan_server):
     # Get most popular
     print('Get most popular')
@@ -70,6 +70,6 @@ def test_japscan(japscan_server):
     # except Exception as e:
     #     response = None
     #     log_error_traceback(e)
-    # 
+    #
     # assert response is not None
     # yield
