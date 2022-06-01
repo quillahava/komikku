@@ -917,6 +917,7 @@ class InfoBox:
         self.cover_image = self.window.card_cover_image
         self.authors_label = self.window.card_authors_label
         self.status_server_label = self.window.card_status_server_label
+        self.resume2_button = self.window.card_resume2_button
         self.genres_label = self.window.card_genres_label
         self.scanlators_label = self.window.card_scanlators_label
         self.chapters_label = self.window.card_chapters_label
@@ -924,7 +925,37 @@ class InfoBox:
         self.synopsis_label = self.window.card_synopsis_label
         self.size_on_disk_label = self.window.card_size_on_disk_label
 
-        self.window.card_resume2_button.connect('clicked', self.card.on_resume_button_clicked)
+        self.resume2_button.connect('clicked', self.card.on_resume_button_clicked)
+
+    def on_resize(self):
+        if self.window.mobile_width:
+            self.cover_box.set_orientation(Gtk.Orientation.VERTICAL)
+            self.cover_box.props.spacing = 12
+
+            self.name_label.props.halign = Gtk.Align.CENTER
+            self.name_label.props.justify = Gtk.Justification.CENTER
+
+            self.status_server_label.props.halign = Gtk.Align.CENTER
+            self.status_server_label.props.justify = Gtk.Justification.CENTER
+
+            self.authors_label.props.halign = Gtk.Align.CENTER
+            self.authors_label.props.justify = Gtk.Justification.CENTER
+
+            self.resume2_button.props.halign = Gtk.Align.CENTER
+        else:
+            self.cover_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+            self.cover_box.props.spacing = 24
+
+            self.name_label.props.halign = Gtk.Align.START
+            self.name_label.props.justify = Gtk.Justification.LEFT
+
+            self.status_server_label.props.halign = Gtk.Align.START
+            self.status_server_label.props.justify = Gtk.Justification.LEFT
+
+            self.authors_label.props.halign = Gtk.Align.START
+            self.authors_label.props.justify = Gtk.Justification.LEFT
+
+            self.resume2_button.props.halign = Gtk.Align.START
 
     def populate(self):
         cover_width = 170
@@ -941,12 +972,8 @@ class InfoBox:
 
         self.cover_image.set_paintable(paintable)
 
-        if manga.authors:
-            authors = html_escape(', '.join(manga.authors))
-            self.authors_label.set_markup(authors)
-            self.authors_label.show()
-        else:
-            self.authors_label.hide()
+        authors = html_escape(', '.join(manga.authors)) if manga.authors else _('Unknown author')
+        self.authors_label.set_markup(authors)
 
         self.status_server_label.set_markup(
             '{0} · <a href="{1}">{2}</a> ({3})'.format(
@@ -980,14 +1007,6 @@ class InfoBox:
         self.set_disk_usage()
 
         self.synopsis_label.set_markup(html_escape(manga.synopsis) if manga.synopsis else '-')
-
-    def on_resize(self):
-        if self.window.mobile_width:
-            self.cover_box.set_orientation(Gtk.Orientation.VERTICAL)
-            self.cover_box.props.spacing = 12
-        else:
-            self.cover_box.set_orientation(Gtk.Orientation.HORIZONTAL)
-            self.cover_box.props.spacing = 24
 
     def refresh(self):
         self.set_disk_usage()

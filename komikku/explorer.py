@@ -364,9 +364,31 @@ class Explorer(Gtk.Stack):
         if self.window.mobile_width:
             self.card_page_cover_box.set_orientation(Gtk.Orientation.VERTICAL)
             self.card_page_cover_box.props.spacing = 12
+
+            self.card_page_name_label.props.halign = Gtk.Align.CENTER
+            self.card_page_name_label.props.justify = Gtk.Justification.CENTER
+
+            self.card_page_status_server_label.props.halign = Gtk.Align.CENTER
+            self.card_page_status_server_label.props.justify = Gtk.Justification.CENTER
+
+            self.card_page_authors_label.props.halign = Gtk.Align.CENTER
+            self.card_page_authors_label.props.justify = Gtk.Justification.CENTER
+
+            self.card_page_add_read_button.props.halign = Gtk.Align.CENTER
         else:
             self.card_page_cover_box.set_orientation(Gtk.Orientation.HORIZONTAL)
             self.card_page_cover_box.props.spacing = 24
+
+            self.card_page_name_label.props.halign = Gtk.Align.START
+            self.card_page_name_label.props.justify = Gtk.Justification.LEFT
+
+            self.card_page_status_server_label.props.halign = Gtk.Align.START
+            self.card_page_status_server_label.props.justify = Gtk.Justification.LEFT
+
+            self.card_page_authors_label.props.halign = Gtk.Align.START
+            self.card_page_authors_label.props.justify = Gtk.Justification.LEFT
+
+            self.card_page_add_read_button.props.halign = Gtk.Align.START
 
     def on_search_page_server_website_button_clicked(self, _button):
         if self.server.base_url:
@@ -434,7 +456,7 @@ class Explorer(Gtk.Stack):
 
             self.card_page_name_label.set_label(manga_data['name'])
 
-            authors = html_escape(', '.join(self.manga_data['authors'])) if self.manga_data['authors'] else '-'
+            authors = html_escape(', '.join(self.manga_data['authors'])) if self.manga_data['authors'] else _('Unknown author')
             self.card_page_authors_label.set_markup(authors)
 
             self.card_page_status_server_label.set_markup(

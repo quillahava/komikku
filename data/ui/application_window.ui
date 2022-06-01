@@ -576,7 +576,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                               <object class="AdwViewStackPage">
                                 <property name="name">info</property>
                                 <property name="title" translatable="yes">Info</property>
-                                <property name="icon_name">preferences-system-details</property>
+                                <property name="icon_name">help-about-symbolic</property>
                                 <property name="child">
                                   <object class="GtkScrolledWindow">
                                     <property name="hscrollbar_policy">never</property>
