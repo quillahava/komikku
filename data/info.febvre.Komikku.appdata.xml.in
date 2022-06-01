@@ -84,6 +84,20 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.39.0" date="2022-06-01">
+            <description>
+                <ul>
+                    <li>[Servers] Add Mangapill [EN]</li>
+                    <li>[Servers] FR Scan: Update</li>
+                    <li>[Servers] Jpmangas: Update</li>
+                    <li>[Servers] MangaFreak: Update</li>
+                    <li>[Servers] MangaKawaii: Update</li>
+                    <li>[Servers] Mangas.in: Update</li>
+                    <li>[Servers] Scan Manga: Update</li>
+                    <li>[Servers] NHentai: Disable</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.38.0" date="2022-04-19">
             <description>
                 <ul>
