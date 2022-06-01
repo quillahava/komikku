@@ -247,6 +247,7 @@ class Madara(Server):
             'vars[post_status]': 'publish',
             'vars[manga_archives_item_layout]': 'default',
 
+            'vars[meta_query][0][0][value]': 'manga',  # allows to ignore novels
             'vars[meta_query][0][orderby]': '',
             'vars[meta_query][0][paged]': '0',
             'vars[meta_query][0][template]': 'archive' if populars else 'search',
