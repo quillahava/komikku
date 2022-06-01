@@ -5,8 +5,8 @@
 # Author: Liliana Prikler <liliana.prikler@gmail.com>
 
 from bs4 import BeautifulSoup
+import cloudscraper
 import json
-import requests
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
@@ -23,6 +23,7 @@ class Nhentai(Server):
     lang = 'en'
     lang_code = 'english'
     is_nsfw = True
+    status = 'disabled'  # Use Cloudflare with version 2 challenge
 
     base_url = 'https://nhentai.net'
     search_url = base_url + '/search'
@@ -31,7 +32,7 @@ class Nhentai(Server):
 
     def __init__(self):
         if self.session is None:
-            self.session = requests.Session()
+            self.session = cloudscraper.create_scraper()
             self.session.headers.update({'user-agent': USER_AGENT})
 
     def get_manga_data(self, initial_data):
@@ -112,7 +113,7 @@ class Nhentai(Server):
             if not script or not script.strip().startswith('window._gallery'):
                 continue
 
-            info = json.loads(script.strip().split('\n')[0][30:-3].replace('\\u0022', '"').replace('\\u005C','\\'))
+            info = json.loads(script.strip().split('\n')[0][30:-3].replace('\\u0022', '"').replace('\\u005C', '\\'))
             if not info.get('images') or not info['images'].get('pages'):
                 break
 
