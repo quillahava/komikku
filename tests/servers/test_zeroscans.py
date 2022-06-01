@@ -8,18 +8,18 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 @pytest.fixture
-def nhentai_server():
-    from komikku.servers.nhentai import Nhentai
+def zeroscans_server():
+    from komikku.servers.zeroscans import Zeroscans
 
-    return Nhentai()
+    return Zeroscans()
 
 
-@test_steps('most_popular', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
-def test_nhentai(nhentai_server):
-    # Get most popular
-    print('Get most popular')
+@test_steps('get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+def test_zeroscans(zeroscans_server):
+    # Get most populars
+    print('Get most populars')
     try:
-        response = nhentai_server.get_most_populars()
+        response = zeroscans_server.get_most_populars()
     except Exception as e:
         response = None
         log_error_traceback(e)
@@ -30,7 +30,8 @@ def test_nhentai(nhentai_server):
     # Search
     print('Search')
     try:
-        response = nhentai_server.search('test')
+        # Use first result of get_most_populars
+        response = zeroscans_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
@@ -42,8 +43,7 @@ def test_nhentai(nhentai_server):
     # Get manga data
     print('Get manga data')
     try:
-        response = nhentai_server.get_manga_data(dict(slug=slug))
-        print(response)
+        response = zeroscans_server.get_manga_data(dict(slug=slug))
         chapter_slug = response['chapters'][0]['slug']
     except Exception as e:
         chapter_slug = None
@@ -55,7 +55,7 @@ def test_nhentai(nhentai_server):
     # Get chapter data
     print("Get chapter data")
     try:
-        response = nhentai_server.get_manga_chapter_data(slug, None, chapter_slug, None)
+        response = zeroscans_server.get_manga_chapter_data(slug, None, chapter_slug, None)
         page = response['pages'][0]
     except Exception as e:
         page = None
@@ -67,7 +67,7 @@ def test_nhentai(nhentai_server):
     # Get page image
     print('Get page image')
     try:
-        response = nhentai_server.get_manga_chapter_page_image(None, None, chapter_slug, page)
+        response = zeroscans_server.get_manga_chapter_page_image(None, None, None, page)
     except Exception as e:
         response = None
         log_error_traceback(e)
