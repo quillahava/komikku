@@ -22,7 +22,7 @@ class Scanmanga(Server):
 
     base_url = 'https://www.scan-manga.com'
     search_url = base_url + '/qsearch.json'
-    most_populars_url = base_url + '/Tout-le-TOP.html'
+    most_populars_url = base_url + '/TOP-Manga-Webtoon-7.html'
     manga_url = base_url + '{0}'
     chapter_url = base_url + '/lecture-en-ligne/{0}{1}.html'
     cover_url = base_url + '/img{0}'

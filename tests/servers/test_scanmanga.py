@@ -30,7 +30,7 @@ def test_scanmanga(scanmanga_server):
     # Search
     print('Search')
     try:
-        response = scanmanga_server.search('combat continent')
+        response = scanmanga_server.search(response[1]['name'])
         url = response[0]['url']
         slug = response[0]['slug']
     except Exception as e:
@@ -82,7 +82,7 @@ def test_scanmanga_2(scanmanga_server):
     # Search
     print('Search 2')
     try:
-        response = scanmanga_server.search('solo leveling')
+        response = scanmanga_server.search('The Hero Returns')
         url = response[0]['url']
         slug = response[0]['slug']
     except Exception as e:
