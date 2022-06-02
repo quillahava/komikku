@@ -332,8 +332,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         # Custom CSS
         css_provider = Gtk.CssProvider()
-        css_provider_resource = Gio.File.new_for_uri('resource:///info/febvre/Komikku/css/style.css')
-        css_provider.load_from_file(css_provider_resource)
+        css_provider.load_from_resource('/info/febvre/Komikku/css/style.css')
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         if Gio.Application.get_default().development_mode is True:
@@ -361,7 +360,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         dialog.connect('response', on_response)
         dialog.add_buttons(_('Yes'), Gtk.ResponseType.YES, _('Cancel'), Gtk.ResponseType.CANCEL)
         dialog.set_default_response(Gtk.ResponseType.CANCEL)
-        # Hack: these 2 props must be adjusted (GTK 4.5.1)
+        # Hack: these 2 props must be adjusted (GTK 4.7.0)
         dialog.get_first_child().get_last_child().get_first_child().props.homogeneous = True
         dialog.get_first_child().get_last_child().get_first_child().props.halign = Gtk.Align.FILL
 
