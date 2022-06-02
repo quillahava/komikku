@@ -63,8 +63,15 @@ if __name__ == '__main__':
 
     install_excepthook()
 
-    locale.textdomain('@projectname@')
-    locale.bindtextdomain('@projectname@', '@localedir@')
+    # Why both locale and gettext are needed?
+    # gettext works for the python part but not for XML UI files!
+    try:
+        locale.textdomain('@projectname@')
+        locale.bindtextdomain('@projectname@', '@localedir@')
+    except AttributeError as e:
+        # Python built without gettext support doesn't have bindtextdomain() and textdomain()
+        print('Could not bind the gettext translation domain. Some translations will not work.')
+        print('Error: {}'.format(e))
     gettext.textdomain('@projectname@')
     gettext.bindtextdomain('@projectname@', '@localedir@')
 
