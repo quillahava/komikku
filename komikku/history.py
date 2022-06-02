@@ -16,6 +16,7 @@ from gi.repository.GdkPixbuf import PixbufAnimation
 from komikku.models import Chapter
 from komikku.models import create_db_connection
 from komikku.servers.utils import get_file_mime_type
+from komikku.utils import html_escape
 
 THUMB_WIDTH = 45
 THUMB_HEIGHT = 62
@@ -131,9 +132,9 @@ class History(Gtk.Box):
                     else:
                         g_datetime = GLib.DateTime.new_from_iso8601(last_read.isoformat())
                         label = g_datetime.format(_('%A, %B %e'))
-                    label = Gtk.Label(label=label, xalign=0)
-                    label.add_css_class('heading')
-                    box.append(label)
+                    date_label = Gtk.Label(label=label, xalign=0)
+                    date_label.add_css_class('heading')
+                    box.append(date_label)
 
                     listbox = Gtk.ListBox()
                     listbox.add_css_class('boxed-list')
@@ -146,7 +147,7 @@ class History(Gtk.Box):
                 action_row.connect('activated', self.on_row_activated)
                 action_row.chapter = chapter
 
-                action_row.set_title(chapter.manga.name)
+                action_row.set_title(html_escape(chapter.manga.name))
                 action_row.set_title_lines(1)
                 action_row.set_subtitle(chapter.title)
                 action_row.set_subtitle_lines(1)
