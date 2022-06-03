@@ -61,6 +61,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="child">
                           <object class="GtkBox" id="dates_box">
                             <property name="orientation">vertical</property>
+                            <property name="spacing">24</property>
                           </object>
                         </property>
                       </object>

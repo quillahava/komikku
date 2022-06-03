@@ -62,7 +62,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <child>
                           <object class="GtkBox">
                             <property name="orientation">vertical</property>
-                            <property name="spacing">12</property>
+                            <property name="spacing">32</property>
                             <child>
                               <object class="GtkListBox" id="servers_page_pinned_listbox">
                                 <property name="name">pinned_servers</property>
@@ -184,6 +184,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <object class="GtkBox">
                           <property name="orientation">vertical</property>
                           <property name="can-focus">false</property>
+                          <property name="spacing">32</property>
                           <child>
                             <object class="GtkBox" id="card_page_cover_box">
                               <property name="spacing">24</property>

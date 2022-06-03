@@ -2,10 +2,6 @@ spinner {
     color: #EE4035;
 }
 
-clamp > box, clamp > stack > box {
-    border-spacing: 24px;
-}
-
 /* Library page */
 flowbox flowboxchild {
     padding: 6px; /* default is 4px */
