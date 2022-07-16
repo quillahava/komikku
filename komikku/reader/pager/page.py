@@ -30,6 +30,7 @@ class Page(Gtk.Overlay):
 
         self.chapter = self.init_chapter = chapter
         self.index = self.init_index = index
+        self.init_height = None
         self.path = None
 
         self._status = None     # rendering, rendered, offlimit, cleaned
@@ -40,8 +41,8 @@ class Page(Gtk.Overlay):
 
         if self.reader.reading_mode == 'webtoon':
             self.scrolledwindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
-            # Page must not be smaller than reader
-            self.set_size_request(-1, self.reader.size.height)
+            self.init_height = self.reader.size.height
+            self.set_size_request(-1, self.init_height)
         else:
             self.scrolledwindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
             self.scrolledwindow.set_kinetic_scrolling(True)
@@ -119,6 +120,10 @@ class Page(Gtk.Overlay):
             if self.status == 'cleaned' or self.get_parent() is None:
                 # Page has been removed from pager
                 return False
+
+            if self.reader.reading_mode == 'webtoon' and not self.error:
+                # Removed minimum size restriction except in case of error
+                self.set_size_request(-1, -1)
 
             self.set_image()
             self.status = 'rendered'
@@ -211,10 +216,6 @@ class Page(Gtk.Overlay):
             self.set_image()
 
     def resize(self):
-        if self.reader.reading_mode == 'webtoon':
-            # Page must not be smaller than reader
-            self.set_size_request(-1, self.reader.size.height)
-
         if self.status == 'rendered':
             self.set_image()
 
