@@ -9,7 +9,7 @@
 # Supported servers:
 # FR Scan [FR]
 # Jpmangas [FR]
-# Lelscan-VF [FR] (disabled)
+# Lelscan-VF [FR]
 # Mangadoor [ES]
 # Mangasin [ES]
 # Read Comics Online [RU]
