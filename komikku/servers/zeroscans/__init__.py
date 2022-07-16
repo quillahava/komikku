@@ -42,9 +42,9 @@ class Zeroscans(Server):
 
         resp_data = r.json()['data']
 
-        data = dict(
+        data = initial_data.copy()
+        data.update(dict(
             name=resp_data['name'],
-            slug=resp_data['slug'],
             authors=[],     # Not available
             scanlators=[],  # Not available
             genres=[genre['name'] for genre in resp_data['genres']],
@@ -53,7 +53,7 @@ class Zeroscans(Server):
             chapters=[],
             server_id=self.id,
             cover=resp_data['cover']['full'],
-        )
+        ))
 
         # Status
         status = resp_data['statuses'][0]['slug']
@@ -85,7 +85,7 @@ class Zeroscans(Server):
             resp_data = resp_data['data']
             for chapter in resp_data['data']:
                 chapters.append(dict(
-                    slug=chapter['id'],
+                    slug=str(chapter['id']),
                     title=f'#{chapter["name"]}',
                     date=convert_date_string(chapter['created_at']),
                 ))
@@ -169,8 +169,8 @@ class Zeroscans(Server):
             result.append(dict(
                 name=item['name'],
                 slug=item['slug'],
-                id=item['id'],
-                view_count=item['view_count'],
+                # id=item['id'],
+                # view_count=item['view_count'],
                 # rating=item['rating'],
             ))
 

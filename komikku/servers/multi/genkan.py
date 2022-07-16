@@ -14,7 +14,6 @@
 # One Shot Scans [EN] (disabled)
 # Reaper Scans [EN] (disabled)
 # The Nonames Scans [EN]
-# Zero Scans [EN]
 
 from bs4 import BeautifulSoup
 import json
