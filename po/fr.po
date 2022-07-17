@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in:10
 msgid "Read your favorite manga online or offline"
@@ -572,12 +572,6 @@ msgstr ""
 msgid "[Servers] Add MangaFreak (EN)"
 msgstr "[Serveurs] Ajout de MangaFreak (EN)"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in:63
-#: ../data/info.febvre.Komikku.appdata.xml.in:150
-#: ../data/info.febvre.Komikku.appdata.xml.in:236
-msgid "[Servers] MangaSee: Update"
-msgstr ""
-
 #: ../data/info.febvre.Komikku.appdata.xml.in:64
 msgid "[Servers] Pepper&amp;Carrot: Fix pages order"
 msgstr "[Serveurs] Pepper &amp; Carrot : Correction de l’ordre des pages"
@@ -627,26 +621,12 @@ msgstr ""
 "[Serveurs] JapScan : Correction partielle (les chapitres Webtoons dans une "
 "même page ne sont paps gérés)"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in:79
-msgid "[Servers] MangaDex: Update"
-msgstr ""
-
-#: ../data/info.febvre.Komikku.appdata.xml.in:80
-#: ../data/info.febvre.Komikku.appdata.xml.in:106
-#: ../data/info.febvre.Komikku.appdata.xml.in:180
-msgid "[Servers] MangaKawaii: Update"
-msgstr ""
-
 #: ../data/info.febvre.Komikku.appdata.xml.in:81
 msgid ""
 "[Servers] MangaSee: Fix page download for chapters with decimals in name"
 msgstr ""
 "[Serveurs] MangaSee : Correction de la page de téléchargement pour les "
 "chapitres avec des décimales dans le nom"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in:82
-msgid "[Servers] Reaper Scans: Update"
-msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in:83
 msgid "[Servers] Scan Manga: Skip chapters coming from external servers"
@@ -707,10 +687,6 @@ msgstr "[Serveurs] Ajout de View Comics (EN)"
 msgid "[Servers] NineManga: Update"
 msgstr "[Serveurs] NineManga : Mise à jour"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in:108
-msgid "[Servers] Scan Manga: Update"
-msgstr ""
-
 #: ../data/info.febvre.Komikku.appdata.xml.in:115
 msgid "Fixing manga addition"
 msgstr "Correction de l’ajout de mangas"
@@ -752,14 +728,6 @@ msgstr "[Carte] Amélioration de la sélection multiple de chapitres"
 msgid "[Servers] Add Read Comic Online (EN)"
 msgstr "[Serveurs] Ajout de Read Comic Online (EN)"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in:136
-msgid "[Servers] Webtoon: Update"
-msgstr ""
-
-#: ../data/info.febvre.Komikku.appdata.xml.in:137
-msgid "[Servers] Submanga: Update"
-msgstr ""
-
 #: ../data/info.febvre.Komikku.appdata.xml.in:138
 msgid "[Servers] Hunlight Scans: Add logo"
 msgstr "[Serveurs] Hunlight Scans : Ajout d’un logo"
@@ -789,10 +757,6 @@ msgstr "[Serveurs] Ajout de Xoxocomics (EN)"
 #: ../data/info.febvre.Komikku.appdata.xml.in:151
 msgid "[Servers] MangaDex: Update to API v2 (more stable)"
 msgstr "[Serveurs] MangaDex : Mise à jour vers API v2 (+ stable)"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in:152
-msgid "[Servers] Read Manga: Update"
-msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in:153
 msgid "[Servers] ScanOnePiece: Update"
@@ -882,10 +846,6 @@ msgstr "[Serveurs] MangaNelo : Mise à jour"
 #: ../data/info.febvre.Komikku.appdata.xml.in:182
 msgid "[Servers] Dynasty: Improvements"
 msgstr "[Serveurs] Dynasty : Améliorations"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in:183
-msgid "[L10n] Update French and German translations"
-msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in:190
 msgid "[Library] Several bugs fixes"
