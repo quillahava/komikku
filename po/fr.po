@@ -10,33 +10,17 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-<<<<<<< HEAD
-"X-Generator: Poedit 2.4.2\n"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in:9
-msgid "A manga, comic and BD reader for GNOME"
-msgstr "Un lecteur de manga, comics et BDs pour GNOME"
-=======
 "X-Generator: Poedit 3.1\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in:10
 msgid "Read your favorite manga online or offline"
 msgstr "Lisez vos mangas préférés en ligne ou hors ligne"
->>>>>>> 79977b8 (Updated fr.po)
 
 #: ../data/info.febvre.Komikku.appdata.xml.in:11
 msgid ""
 "Komikku is a manga, comic and BD reader for GNOME. It focuses on providing a "
 "clean, intuitive and responsive interface."
 msgstr ""
-<<<<<<< HEAD
-"Komikku est un lecteur de manga, comics et BDs pour GNOME. Il s'attache à "
-"fournir une interface propre, intuitive et réactive."
-
-#: ../data/info.febvre.Komikku.appdata.xml.in:40
-msgid "Valéry Febvre"
-msgstr "Valéry Febvre"
-=======
 "Komikku est un lecteur de manga, manhwa, manhua, webtoons, webcomics et "
 "comics."
 
@@ -527,7 +511,6 @@ msgstr "[Serveurs] Mangahub : Mise à jour"
 #: ../data/info.febvre.Komikku.appdata.xml.in:272
 msgid "[L10n] Update French and German translation"
 msgstr "[L10n] Mise à jour des traductions allemande et française"
->>>>>>> 79977b8 (Updated fr.po)
 
 #: ../data/info.febvre.Komikku.appdata.xml.in:51
 msgid "Several UI changes to improve scaling on small devices screens"
@@ -2296,8 +2279,6 @@ msgstr "Sans les mots clés"
 msgid "Tags to exclude from search"
 msgstr "Mots clés à exclure de la recherche"
 
-<<<<<<< HEAD
-=======
 #: ../komikku/servers/exceptions.py:10
 msgid "Error: {}"
 msgstr "Erreur: {}"
@@ -2359,7 +2340,6 @@ msgstr "Manhua"
 msgid "Comic"
 msgstr "BD"
 
->>>>>>> 79977b8 (Updated fr.po)
 #: ../komikku/servers/readmanhwa/__init__.py:44
 msgid "NSFW Content"
 msgstr "Contenu NSFW"
