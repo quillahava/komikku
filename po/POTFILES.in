@@ -1,13 +1,13 @@
 data/info.febvre.Komikku.appdata.xml.in
 data/info.febvre.Komikku.desktop.in
-data/ui/about_dialog.ui.in
+data/ui/about_window.ui.in
 data/ui/application_window.ui
 data/ui/categories_editor.ui
 data/ui/download_manager.ui
 data/ui/explorer.ui
+data/ui/history.ui
 data/ui/menu/card_selection_mode.xml
 data/ui/menu/card.xml
-data/ui/menu/download_manager_selection_mode.xml
 data/ui/menu/download_manager.xml
 data/ui/menu/library_search.xml
 data/ui/menu/library_selection_mode.xml
@@ -20,6 +20,7 @@ komikku/card.py
 komikku/categories_editor.py
 komikku/downloader.py
 komikku/explorer.py
+komikku/history.py
 komikku/library.py
 komikku/models/database.py
 komikku/preferences.py
@@ -28,6 +29,10 @@ komikku/reader/pager/__init__.py
 komikku/reader/pager/page.py
 komikku/reader/pager/webtoon.py
 komikku/servers/dynasty/__init__.py
+komikku/servers/exceptions.py
+komikku/servers/mangadex/__init__.py
+komikku/servers/mangapill/__init__.py
+komikku/servers/multi/manga_stream.py
 komikku/servers/readmanhwa/__init__.py
 komikku/updater.py
 komikku/utils.py
