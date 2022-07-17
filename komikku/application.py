@@ -38,30 +38,38 @@ from komikku.servers.utils import get_allowed_servers_list
 from komikku.updater import Updater
 
 CREDITS = dict(
-    developers=('Valéry Febvre (valos)', ),
-    contributors=(
+    artists=(
+        'Valéry Febvre (valos)',
+    ),
+    designers=(
+        'Tobias Bernard 🌱 (bertob)',
+        'Valéry Febvre (valos)',
+    ),
+    developers=(
         'Mufeed Ali (fushinari)',
         'Gerben Droogers (Tijder)',
-        'GrownNed',
+        'Valéry Febvre (valos)',
         'Aurélien Hamy (aunetx)',
-        'ISO-morphism',
-        'jaskaranSM',
         'Amelia Joison (amnetrine)',
         'David Keller (BlobCodes)',
         'Mariusz Kurek',
         'Liliana Prikler',
         'Romain Vaudois',
         'Arthur Williams (TAAPArthur)',
+        'GrownNed',
+        'ISO-morphism',
+        'jaskaranSM',
     ),
     translators=(
         'Ege Çelikçi (Turkish)',
         'Valéry Febvre (French)',
-        'GrownNed (Russian)',
         'Mariusz Kurek (Polish)',
-        'Mek101 (Italian)',
-        'Óscar (Spanish)',
         'Liliana Prikler (German)',
         'Heimen Stoffels (Dutch)',
+        'Irénée Thirion (French)',
+        'GrownNed (Russian)',
+        'Mek101 (Italian)',
+        'Óscar (Spanish)',
         'VaGNaroK (Brazilian Portuguese)',
     ),
 )
@@ -422,19 +430,33 @@ class ApplicationWindow(Adw.ApplicationWindow):
         set_color_scheme()
 
     def on_about_menu_clicked(self, action, param):
-        builder = Gtk.Builder.new_from_resource('/info/febvre/Komikku/about_dialog.ui')
-        dialog = builder.get_object('about_dialog')
-        dialog.set_authors([
-            *CREDITS['developers'],
-            '',
-            _('Contributors: Code, Patches, Debugging:'),
-            '',
-            *CREDITS['contributors']
-        ])
-        dialog.set_translator_credits('\n'.join(CREDITS['translators']))
-        dialog.set_modal(True)
-        dialog.set_transient_for(self)
-        dialog.present()
+        builder = Gtk.Builder.new_from_resource('/info/febvre/Komikku/about_window.ui')
+        window = builder.get_object('about_window')
+
+        window.set_artists(CREDITS['artists'])
+        window.set_designers(CREDITS['designers'])
+        window.set_developers(CREDITS['developers'])
+        window.set_translator_credits('\n'.join(CREDITS['translators']))
+
+        window.set_release_notes("""
+            <ul>
+                <li>[Servers] Add Mangapill [EN]</li>
+                <li>[Servers] FR Scan: Update</li>
+                <li>[Servers] Jpmangas: Update</li>
+                <li>[Servers] MangaFreak: Update</li>
+                <li>[Servers] MangaKawaii: Update</li>
+                <li>[Servers] Mangas.in: Update</li>
+                <li>[Servers] Scan Manga: Update</li>
+                <li>[Servers] NHentai: Disable</li>
+            </ul>
+        """)
+
+        window.add_link(_('Sponsor via Ko-fi'), 'https://ko-fi.com/X8X06EM3L')
+        window.add_link(_('Sponsor via Liberapay'), 'https://liberapay.com/valos/donate')
+        window.add_link(_('Sponsor via Paypal'), 'https://www.paypal.com/donate?business=GSRGEQ78V97PU&no_recurring=0&item_name=You+can+help+me+to+keep+developing+apps+through+donations.&currency_code=EUR')
+
+        window.set_transient_for(self)
+        window.present()
 
     def on_headerbar_toggled(self, *args):
         if self.page == 'reader' and self.reader.pager:

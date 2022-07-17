@@ -3,6 +3,7 @@ glade_conf = configuration_data()
 glade_conf.set('APPID', app_id)
 glade_conf.set('PACKAGE_URL', website)
 glade_conf.set('DATA_DIR', pkgdatadir)
+glade_conf.set('gitrepo', gitrepo)
 
 # This is for development version
 #glade_conf.set('VERSION', ''.join([run_command(['git', 'describe', '--long', '--tags']).stdout(), get_option('profile')]))
