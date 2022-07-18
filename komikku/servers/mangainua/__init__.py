@@ -19,7 +19,7 @@ logger = logging.getLogger('komikku.servers.mangainua')
 class Mangainua(Server):
     id = 'mangainua'
     name = 'Manga/in/ua'
-    lang = 'ua'
+    lang = 'uk'
 
     base_url = 'https://manga.in.ua'
     search_url = base_url + '/mangas/'
