@@ -4,23 +4,21 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: CakesTwix <oleg.kiryazov@gmail.com>
 
-from datetime import datetime
+from bs4 import BeautifulSoup
+import logging
 import requests
-from bs4 import BeautifulSoup as bs
+
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
+from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 
-
-
-headers = {
-    'User-Agent': USER_AGENT,
-}
+logger = logging.getLogger('komikku.servers.mangainua')
 
 
 class Mangainua(Server):
     id = 'mangainua'
-    name = 'Manga.in.ua'
+    name = 'Manga/in/ua'
     lang = 'ua'
 
     base_url = 'https://manga.in.ua'
@@ -29,22 +27,23 @@ class Mangainua(Server):
     def __init__(self):
         if self.session is None:
             self.session = requests.Session()
-            self.session.headers = headers
+            self.session.headers = {
+                'User-Agent': USER_AGENT,
+            }
 
     def get_manga_data(self, initial_data):
         """
-        Returns manga data from API
+        Returns manga data by scraping manga HTML page content
 
-        Initial data should contain at least manga's slug (provided by search)
+        Initial data should contain at least manga's URL (provided by search)
         """
-        assert 'slug' in initial_data, 'Slug is missing in initial data'
+        assert 'url' in initial_data, 'url is missing in initial data'
 
-        r = self.session.get(initial_data['slug'])
+        r = self.session.get(initial_data['url'])
         if r.status_code != 200:
             return None
 
-
-        soup = bs(r.text, features="lxml")
+        soup = BeautifulSoup(r.text, features='lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -57,24 +56,24 @@ class Mangainua(Server):
             server_id=self.id,
         ))
 
-        data['name'] = soup.find('span', class_='UAname').get_text()
-        data['url'] = initial_data['slug']
+        data['name'] = soup.find('span', class_='UAname').text
         data['cover'] = self.base_url + soup.find('figure').find('img')['src']
 
         for sidebar_header in soup.find_all('div', class_='item__full-sideba--header'):
             if sidebar_header.find('div', class_='item__full-sidebar--sub'):
-                souped = sidebar_header.find('div', class_='item__full-sidebar--sub').get_text()
+                souped = sidebar_header.find('div', class_='item__full-sidebar--sub').text
             else:
                 break
 
             if souped == 'Жанри:':
                 # Genres
-                data['genres'] = sidebar_header.find('span').get_text().split()
+                data['genres'] = sidebar_header.find('span').text.split()
             elif souped == 'Переклад:':
-                # Translators
-                data['scanlators'] = sidebar_header.find('span').get_text().split() 
+                # Scanlators
+                data['scanlators'] = sidebar_header.find('span').text.split()
             elif souped == 'Статус перекладу:':
-                status = sidebar_header.find('span').get_text()
+                # Status
+                status = sidebar_header.find('span').text
                 if status == 'Закінчений':
                     data['status'] = 'complete'
                 elif status == 'Триває':
@@ -83,32 +82,35 @@ class Mangainua(Server):
                 break
 
         # Description
-        data['synopsis'] = soup.find('div', class_='item__full-description').get_text()
+        data['synopsis'] = soup.find('div', class_='item__full-description').text
 
         # Chapters
         for chapter in soup.find('div', class_='linkstocomicsblock').find_all('div', class_='ltcitems'):
-            if not chapter.find('a').get("class"):
+            if not chapter.find('a').get('class'):
+                url = chapter.find('a')['href']
+                slug = url.split('/')[-1].split('.')[0]
 
                 data['chapters'].append(dict(
-                    slug=chapter.find('a')['href'],
-                    title=chapter.find('a').get_text().replace('НОВЕ', '')[1:],
-                    date=datetime.strptime(chapter.find('div', class_='ltcright').get_text(), "%d.%m.%Y").date(),
+                    url=url,
+                    slug=slug,
+                    title=chapter.find('a').text.replace('НОВЕ', '')[1:],
+                    date=convert_date_string(chapter.find('div', class_='ltcright').text, '%d.%m.%Y'),
                 ))
 
         return data
 
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
-        Returns manga chapter data from API
+        Returns manga chapter data by scraping chapter HTML page content
 
         Currently, only pages are expected.
         """
 
-        r = self.session_get(chapter_slug)
+        r = self.session_get(chapter_url)
         if r.status_code != 200:
             return None
 
-        soup = bs(r.text, features="lxml")
+        soup = BeautifulSoup(r.text, features='lxml')
 
         pages = soup.find('div', class_='comics')
         image_paths = [tag['data-src'] for tag in pages.find_all('img')]
@@ -143,7 +145,7 @@ class Mangainua(Server):
         )
 
     @staticmethod
-    def get_manga_url(_, url):
+    def get_manga_url(_slug, url):
         """
         Returns manga absolute URL
         """
@@ -157,14 +159,35 @@ class Mangainua(Server):
         if r.status_code != 200:
             return None
 
-        soup = bs(r.text, features="lxml")
-        return [dict(slug=item.find('a').get('href'), name=item.find('a')['title']) for item in soup.find_all('div', class_='card card--big')]
+        soup = BeautifulSoup(r.text, features='lxml')
+
+        results = []
+        for item in soup.find_all('div', class_='card card--big'):
+            url = item.find('a').get('href')
+            slug = url.split('/')[-1].split('.')[0]
+            results.append(dict(
+                url=url,
+                slug=slug,  # unused
+                name=item.find('a').get('title'),
+            ))
+
+        return results
 
     def search(self, term):
         r = self.session.post(self.search_url, data={'do': 'search', 'subaction': 'search', 'titleonly': '3', 'story': term})
         if r.status_code != 200:
             return None
 
-        soup = bs(r.text, features="lxml")
+        soup = BeautifulSoup(r.text, features='lxml')
 
-        return [dict(slug=item.find('a').get('href'), name=item.find('a').get('title')) for item in soup.find_all('h3', class_='card__title')]
+        results = []
+        for item in soup.find_all('h3', class_='card__title'):
+            url = item.find('a').get('href')
+            slug = url.split('/')[-1].split('.')[0]
+            results.append(dict(
+                url=url,
+                slug=slug,  # unused
+                name=item.find('a').get('title'),
+            ))
+
+        return results
