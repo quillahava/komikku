@@ -109,7 +109,7 @@ class Readmanga(Server):
             data['chapters'].append(dict(
                 slug=slug,
                 title=title,
-                date=convert_date_string(date, format='%d.%m.%Y'),
+                date=convert_date_string(date, format='%d.%m.%y'),
             ))
 
         return data
