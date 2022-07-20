@@ -9,8 +9,8 @@ from komikku.servers.multi.madara import Madara
 
 class Leomanga(Madara):
     id = 'leomanga'
-    name = 'Leomanga'
+    name = 'Lector Manga (Leomanga)'
     lang = 'es'
 
-    base_url = 'https://leomanga.me'
+    base_url = 'https://lectormanga.online/'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
