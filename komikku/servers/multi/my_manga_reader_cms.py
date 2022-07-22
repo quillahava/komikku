@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -221,7 +221,13 @@ class MyMangaReaderCMS(Server):
         """
         Returns list of most viewed manga
         """
-        r = self.session_get(self.most_populars_url)
+        r = self.session_get(
+            self.most_populars_url,
+            headers={
+                'Referer': self.base_url + '/manga-list',
+                'x-requested-with': 'XMLHttpRequest'
+            }
+        )
         if r is None:
             return None
 
@@ -234,8 +240,11 @@ class MyMangaReaderCMS(Server):
 
         results = []
         for a_element in soup.find_all('a', class_='chart-title'):
+            name = a_element.get('title')
+            if not name:
+                name = a_element.text
             results.append(dict(
-                name=a_element.text.strip(),
+                name=name.strip(),
                 slug=a_element.get('href').split('/')[-1],
             ))
 
@@ -244,7 +253,10 @@ class MyMangaReaderCMS(Server):
     def search(self, term):
         params = {}
         params[self.search_query_param] = term
-        r = self.session_get(self.search_url, params=params)
+        r = self.session_get(
+            self.search_url,
+            params=params
+        )
         if r is None:
             return None
 

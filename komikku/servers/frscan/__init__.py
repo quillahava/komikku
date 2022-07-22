@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -14,7 +14,7 @@ class Frscan(MyMangaReaderCMS):
 
     base_url = 'https://frscan.ws'
     search_url = base_url + '/search'
-    most_populars_url = base_url + '/filterList?page=1&sortBy=views&asc=false'
+    most_populars_url = base_url + '/filterList?page=1&cat=&alpha=&sortBy=views&asc=true&author=&tag=&artist='
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/{1}'
     image_url = None  # For some manga chapters, chapter slug can be used to compute images URLs

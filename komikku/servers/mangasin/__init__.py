@@ -16,7 +16,7 @@ class Mangasin(MyMangaReaderCMS):
 
     base_url = 'https://mangas.in'
     search_url = base_url + '/search'
-    most_populars_url = base_url + '/filterList?page=1&sortBy=views&asc=false'
+    most_populars_url = base_url + '/filterList?page=1&cat=&alpha=&sortBy=views&asc=true&author=&tag=&artist='
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/{1}'
     image_url = None  # Images URLs can't be computed with manga/chapter/image slugs
