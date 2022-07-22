@@ -19,7 +19,7 @@
 # Leomanga [ES]
 # Reaperscans [EN]
 # Reaperscans [PT]
-# Submanga [ES]
+# Submanga [ES] (disabled)
 # Wakascan [FR] (disabled)
 
 from bs4 import BeautifulSoup
