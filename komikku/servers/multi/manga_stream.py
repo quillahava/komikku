@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -167,7 +167,7 @@ class MangaStream(Server):
         r = self.session_get(
             self.chapter_url.format(manga_slug, chapter_slug),
             headers={
-                'Referer': self.manga_url.format(manga_slug)
+                'Referer': self.manga_url.format(manga_slug),
             })
         if r.status_code != 200:
             return None
@@ -183,7 +183,7 @@ class MangaStream(Server):
         )
 
         if reader_element := soup.find('div', id='readerarea'):
-            if reader_element.text == '':
+            if not reader_element.content:
                 # Pages images are loaded via javascript
                 for script_element in soup.find_all('script'):
                     script = script_element.string
@@ -203,10 +203,10 @@ class MangaStream(Server):
                                     image=image,
                                 ))
             else:
-                for p_element in reader_element.find_all('p'):
-                    image = p_element.img.get('data-src')
+                for img_element in reader_element.find_all('img'):
+                    image = img_element.get('data-src')
                     if not image:
-                        image = p_element.img.get('src')
+                        image = img_element.get('src')
                     if image.split('/')[-1] in self.ignored_pages:
                         continue
 
