@@ -183,7 +183,7 @@ class MangaStream(Server):
         )
 
         if reader_element := soup.find('div', id='readerarea'):
-            if not reader_element.content:
+            if reader_element.is_empty_element:
                 # Pages images are loaded via javascript
                 for script_element in soup.find_all('script'):
                     script = script_element.string
