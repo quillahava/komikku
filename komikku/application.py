@@ -52,6 +52,7 @@ CREDITS = dict(
         'Aurélien Hamy (aunetx)',
         'Amelia Joison (amnetrine)',
         'David Keller (BlobCodes)',
+        'Oleg Kiryazov (CakesTwix)',
         'Mariusz Kurek',
         'Liliana Prikler',
         'Romain Vaudois',
@@ -63,13 +64,13 @@ CREDITS = dict(
     translators=(
         'Ege Çelikçi (Turkish)',
         'Valéry Febvre (French)',
+        'Óscar Fernández Díaz (Spanish)',
         'Mariusz Kurek (Polish)',
         'Liliana Prikler (German)',
         'Heimen Stoffels (Dutch)',
         'Irénée Thirion (French)',
         'GrownNed (Russian)',
         'Mek101 (Italian)',
-        'Óscar (Spanish)',
         'VaGNaroK (Brazilian Portuguese)',
     ),
 )

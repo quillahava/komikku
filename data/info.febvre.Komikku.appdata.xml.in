@@ -84,6 +84,25 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="0.40.0" date="2022-07-25">
+            <description>
+                <ul>
+                    <li>[Servers] Add Remanga [RU]</li>
+                    <li>[Servers] Add Manga.in.ua [UA]</li>
+                    <li>[Servers] FR Scan: Update</li>
+                    <li>[Servers] Lelscan-VF: Reenabled</li>
+                    <li>[Servers] Leomanga: Update</li>
+                    <li>[Servers] Madara (multi): Added filter in search to ignore novels</li>
+                    <li>[Servers] Mangas.in: Update</li>
+                    <li>[Servers] MangaSee: Update</li>
+                    <li>[Servers] Rawkuma: Update</li>
+                    <li>[Servers] Read Manga: Update</li>
+                    <li>[Servers] Scan FR: Update</li>
+                    <li>[Servers] Submanga: Disabled</li>
+                    <li>[L10n] Update French translation</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.39.0" date="2022-06-01">
             <description>
                 <ul>
