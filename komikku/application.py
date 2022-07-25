@@ -352,41 +352,25 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         self.library.show()
 
-    def confirm(self, title, message, callback):
+    def confirm(self, title, message, callback, response_appearance=None):
         def on_response(dialog, response_id):
-            if response_id == Gtk.ResponseType.YES:
+            if response_id == 'yes':
                 callback()
 
             dialog.destroy()
 
-        # NOTE: it would be easier to use a Gtk.MessageDialog
-        dialog = Gtk.Dialog.new()
-        dialog.set_transient_for(self)
-        dialog.set_modal(True)
-        dialog.set_decorated(False)
-        dialog.add_css_class('csd')
-        dialog.add_css_class('message')
+        dialog = Adw.MessageDialog.new(self, title)
+        dialog.set_body(message)
+
+        dialog.add_response('cancel', _('Cancel'))
+        dialog.add_response('yes', _('Yes'))
+
+        dialog.set_close_response('cancel')
+        dialog.set_default_response('cancel')
+        if response_appearance is not None:
+            dialog.set_response_appearance('yes', response_appearance)
+
         dialog.connect('response', on_response)
-        dialog.add_buttons(_('Yes'), Gtk.ResponseType.YES, _('Cancel'), Gtk.ResponseType.CANCEL)
-        dialog.set_default_response(Gtk.ResponseType.CANCEL)
-        # Hack: these 2 props must be adjusted (GTK 4.7.0)
-        dialog.get_first_child().get_last_child().get_first_child().props.homogeneous = True
-        dialog.get_first_child().get_last_child().get_first_child().props.halign = Gtk.Align.FILL
-
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
-
-        label = Gtk.Label(label=title, margin_top=16, margin_start=32, margin_end=32)
-        label.set_wrap(True)
-        label.set_justify(Gtk.Justification.CENTER)
-        label.add_css_class('title-2')
-        box.append(label)
-
-        label = Gtk.Label(label=message, margin_start=32, margin_end=32)
-        label.set_wrap(True)
-        label.set_justify(Gtk.Justification.CENTER)
-        box.append(label)
-
-        dialog.get_content_area().append(box)
         dialog.present()
 
     def enter_search_mode(self, action, param):

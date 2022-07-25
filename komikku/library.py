@@ -289,7 +289,7 @@ class Library:
             message = _('Are you sure you want to delete this manga?')
         else:
             message = _('Are you sure you want to delete selected mangas?')
-        self.window.confirm(_('Delete?'), message, confirm_callback)
+        self.window.confirm(_('Delete?'), message, confirm_callback, Adw.ResponseAppearance.DESTRUCTIVE)
 
     def delete_selected(self, _action, _param):
         self.delete_mangas([thumbnail.manga for thumbnail in self.flowbox.get_selected_children()])
@@ -307,7 +307,7 @@ class Library:
             self.window.downloader.start()
 
         message = _('Are you sure you want to download all chapters of selected mangas?')
-        self.window.confirm(_('Download?'), message, confirm_callback)
+        self.window.confirm(_('Download?'), message, confirm_callback, Adw.ResponseAppearance.SUGGESTED)
 
     def edit_categories_selected(self, _action, _param):
         # Edit categories of selected mangas
