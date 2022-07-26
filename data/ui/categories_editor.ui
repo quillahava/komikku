@@ -35,9 +35,9 @@ along with Komikku. If not, see <http://www.gnu.org/licenses/>.
             <child>
               <object class="GtkBox">
                 <property name="orientation">vertical</property>
+                <property name="spacing">24</property>
                 <child>
                   <object class="GtkBox">
-                    <property name="spacing">12</property>
                     <child>
                       <object class="GtkEntry" id="add_entry">
                         <property name="hexpand">1</property>
@@ -53,6 +53,9 @@ along with Komikku. If not, see <http://www.gnu.org/licenses/>.
                         </child>
                       </object>
                     </child>
+                    <style>
+                      <class name="linked"/>
+                    </style>
                   </object>
                 </child>
                 <child>
