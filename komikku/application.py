@@ -25,6 +25,7 @@ from gi.repository.GdkPixbuf import Pixbuf
 from komikku.activity_indicator import ActivityIndicator
 from komikku.card import Card
 from komikku.categories_editor import CategoriesEditor
+from komikku.debug_info import DebugInfo
 from komikku.downloader import Downloader
 from komikku.downloader import DownloadManager
 from komikku.explorer import Explorer
@@ -77,9 +78,10 @@ CREDITS = dict(
 
 
 class Application(Adw.Application):
-    application_id = 'info.febvre.Komikku'
+    application_id = None
     development_mode = False
     logger = None
+    version = None
 
     def __init__(self):
         super().__init__(application_id=self.application_id, flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
@@ -422,6 +424,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_designers(CREDITS['designers'])
         window.set_developers(CREDITS['developers'])
         window.set_translator_credits('\n'.join(CREDITS['translators']))
+
+        debug_info = DebugInfo(self.application.version)
+        window.set_debug_info_filename('Komikku-debug-info.txt')
+        window.set_debug_info(debug_info.generate())
 
         window.set_release_notes("""
             <ul>
