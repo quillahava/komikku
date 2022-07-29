@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -11,21 +11,19 @@ from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 
-SERVER_NAME = 'Union Mangás'
-
 
 class Unionmangas(Server):
     id = 'unionmangas'
-    name = SERVER_NAME
+    name = 'Union Mangás'
     lang = 'pt'
     long_strip_genres = ['Webtoon', ]
 
-    base_url = 'https://unionmangas.top'
-    api_search_url = base_url + '/assets/busca.php?q={0}'
+    base_url = 'https://unionleitor.top'
+    api_search_url = base_url + '/assets/busca.php?nomeManga={0}'
     most_populars_url = base_url + '/lista-mangas/visualizacoes'
     manga_url = base_url + '/perfil-manga/{0}'
     chapter_url = base_url + '/leitor/{0}/{1}'
-    image_url = base_url + '/leitor/mangas/{0}/{1}/{2}'
+    image_url = 'https://umangas.club/leitor/mangas/{0}/{1}/{2}'
 
     def __init__(self):
         if self.session is None:
@@ -37,12 +35,11 @@ class Unionmangas(Server):
         Returns manga data by scraping manga HTML page content
         """
         r = self.session_get(self.manga_url.format(initial_data['slug']))
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'text/html':
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -59,7 +56,7 @@ class Unionmangas(Server):
             cover=None,
         ))
 
-        container_element = soup.find('div', class_='tamanho-bloco-perfil')
+        container_element = soup.find('div', class_='perfil-manga')
 
         data['name'] = container_element.find('h2').text.strip()
         data['cover'] = container_element.find('img', class_='img-thumbnail').get('src')
@@ -88,7 +85,7 @@ class Unionmangas(Server):
         data['synopsis'] = container_element.find('div', class_='panel-body').text.strip()
 
         # Chapters
-        for div_element in reversed(container_element.find_all('div', class_='row lancamento-linha')):
+        for div_element in reversed(container_element.find_all('div', class_='row capitulos')):
             a_element = div_element.div.a
             span_element = div_element.div.find_all('span', recursive=False)[1]
 
@@ -107,15 +104,15 @@ class Unionmangas(Server):
         manga_slug = manga_name.replace(' ', '_')
 
         r = self.session_get(self.chapter_url.format(manga_slug, chapter_slug))
-        if r is None:
+        if r.status_code != 200:
             return None
-
-        mime_type = get_buffer_mime_type(r.content)
 
         if 'leitor' not in r.url:
             # Chapter page doesn't exist, we have been redirected to manga page
             return None
-        if r.status_code != 200 or mime_type != 'text/html':
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -123,16 +120,20 @@ class Unionmangas(Server):
         data = dict(
             pages=[],
         )
-
         for img_element in soup.find_all('img', class_='img-manga'):
             url = img_element.get('src')
-            if f'{manga_name}/{chapter_slug}' not in url:
-                continue
+            slug = url.split('/')[-1]
 
-            data['pages'].append(dict(
-                slug=None,
-                image=url.split('/')[-1],
-            ))
+            if slug not in ('banner_scan.png', 'banner_forum.png'):
+                data['pages'].append(dict(
+                    slug=slug,
+                    image=None,
+                ))
+            else:
+                data['pages'].append(dict(
+                    slug=None,
+                    image=url,
+                ))
 
         return data
 
@@ -140,8 +141,11 @@ class Unionmangas(Server):
         """
         Returns chapter page scan (image) content
         """
-        r = self.session_get(self.image_url.format(manga_name, chapter_slug, page['image']))
-        if r is None or r.status_code != 200:
+        if page['slug']:
+            r = self.session_get(self.image_url.format(manga_name, chapter_slug, page['slug']))
+        else:
+            r = self.session_get(page['image'])
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
@@ -151,7 +155,7 @@ class Unionmangas(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=page['image'],
+            name=page['slug'] or page['image'].split('/')[-1],
         )
 
     def get_manga_url(self, slug, url):
@@ -162,18 +166,17 @@ class Unionmangas(Server):
 
     def get_most_populars(self):
         r = self.session_get(self.most_populars_url)
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'text/html':
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
-        for div_element in soup.find_all('div', class_='bloco-manga'):
+        for div_element in soup.find_all('div', class_='lista-mangas-novos'):
             a_element = div_element.find_all('a', recursive=False)[1]
 
             results.append(dict(
@@ -185,7 +188,7 @@ class Unionmangas(Server):
 
     def search(self, term=None):
         r = self.session_post(self.api_search_url.format(term))
-        if r is None or r.status_code != 200:
+        if r.status_code != 200:
             return None
 
         try:
