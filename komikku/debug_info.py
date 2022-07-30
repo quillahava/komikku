@@ -40,8 +40,6 @@ class DebugInfo:
         for group, key in data:
             info[key] = keyfile.get_string(group, key)
 
-        keyfile.free()
-
         return info
 
     def get_gtk_info(self):
