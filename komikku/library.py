@@ -36,7 +36,7 @@ class Library:
     selection_mode = False
     selection_mode_range = False
     selection_mode_last_thumbnail_index = None
-    thumbnails_size = None
+    thumbnails_cover_size = None
 
     def __init__(self, window):
         self.window = window
@@ -230,29 +230,29 @@ class Library:
         self.window.application.add_action(select_all_action)
 
     def add_manga(self, manga, position=-1):
-        thumbnail = Thumbnail(self, manga, *self.thumbnails_size)
+        thumbnail = Thumbnail(self, manga, *self.thumbnails_cover_size)
         self.flowbox.insert(thumbnail, position)
 
-    def compute_thumbnails_size(self):
+    def compute_thumbnails_cover_size(self):
         default_width = Thumbnail.default_width
         default_height = Thumbnail.default_height
 
         container_width = self.window.props.default_width if not self.window.is_maximized() else self.window.get_width()
         if container_width == 0:
             container_width = Settings.get_default().window_size[0]
-        # Substract flowbox horizontal margins (2 * 4px)
-        container_width -= 8
+        # Substract flowbox horizontal margins
+        container_width -= self.flowbox.props.margin_start + self.flowbox.props.margin_end
 
-        child_width = default_width + Thumbnail.padding * 2 + Thumbnail.margin * 2
-        if container_width / child_width != container_width // child_width:
-            nb = container_width // child_width + 1
+        if container_width / default_width != container_width // default_width:
+            nb = container_width // default_width + 1
+            width = container_width // nb
         else:
-            nb = container_width // child_width
+            width = default_width
+        width -= Thumbnail.padding * 2 + Thumbnail.margin * 2
 
-        width = container_width // nb - (Thumbnail.padding * 2 + Thumbnail.margin * 2)
-        height = default_height // (default_width / width)
+        height = width * default_height // default_width
 
-        self.thumbnails_size = (width, height)
+        self.thumbnails_cover_size = (width, height)
 
     def delete_mangas(self, mangas):
         def confirm_callback():
@@ -452,9 +452,9 @@ class Library:
         if self.page == 'start_page':
             return
 
-        self.compute_thumbnails_size()
+        self.compute_thumbnails_cover_size()
         for thumbnail in self.flowbox:
-            thumbnail.resize(*self.thumbnails_size)
+            thumbnail.resize(*self.thumbnails_cover_size)
 
     def on_search_entry_activated(self, _entry):
         """Open first manga in search when <Enter> is pressed"""
@@ -506,7 +506,7 @@ class Library:
             thumbnail = next_thumbnail
 
         # Populate flowbox with mangas
-        self.compute_thumbnails_size()
+        self.compute_thumbnails_cover_size()
         for row in mangas_rows:
             self.add_manga(Manga.get(row['id'], db_conn=db_conn))
 
@@ -869,7 +869,11 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.name_label.set_text(self.manga.name + ' ')
 
     def resize(self, width, height):
-        self.picture.get_paintable().resize(width, height)
+        cover = self.picture.get_paintable()
+        if cover.width == width:
+            return
+
+        cover.resize(width, height)
 
     def update(self, manga):
         self.manga = manga

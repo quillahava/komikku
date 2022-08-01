@@ -577,14 +577,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
             width = self.get_width()
         self.mobile_width = width <= 720
 
-        def do_resize():
-            self.library.on_resize()
-            self.card.on_resize()
-            self.explorer.on_resize()
-            if self.page == 'reader':
-                self.reader.on_resize()
-
-        GLib.timeout_add(250, do_resize)
+        self.library.on_resize()
+        self.card.on_resize()
+        self.explorer.on_resize()
+        if self.page == 'reader':
+            self.reader.on_resize()
 
     def on_shortcuts_menu_clicked(self, action, param):
         builder = Gtk.Builder()
