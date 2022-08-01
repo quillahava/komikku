@@ -141,6 +141,7 @@ class Explorer(Gtk.Stack):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
 
         label = Gtk.Label(xalign=0, hexpand=True)
+        label.set_ellipsize(Pango.EllipsizeMode.END)
         title = data['name']
         if data['is_nsfw']:
             title += ' (NSFW)'
