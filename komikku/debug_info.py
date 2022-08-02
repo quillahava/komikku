@@ -4,6 +4,7 @@
 
 import gi
 import os
+import platform
 
 gi.require_version('Adw', '1')
 gi.require_version('Gtk', '4.0')
@@ -113,6 +114,11 @@ class DebugInfo:
         info += 'GTK:\n'
         info += f"- GDK backend: {gtk_info['backend']}\n"
         info += f"- GSK renderer: {gtk_info['renderer']}\n"
+        info += '\n'
+
+        info += 'Python:\n'
+        info += f"- Version: {platform.python_version()}\n"
+        info += f"- PyGObject: {'.'.join(str(v) for v in gi.version_info)}\n"
         info += '\n'
 
         info += 'Environment:\n'
