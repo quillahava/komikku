@@ -430,16 +430,15 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_debug_info(debug_info.generate())
 
         window.set_release_notes("""
+            <p>After several months of effort, Komikku's port to GTK4 and libadwaita is coming to an end.</p>
+            <p>The highlights of this new major version:</p>
             <ul>
-                <li>[Servers] Add Mangapill [EN]</li>
-                <li>[Servers] FR Scan: Update</li>
-                <li>[Servers] Jpmangas: Update</li>
-                <li>[Servers] MangaFreak: Update</li>
-                <li>[Servers] MangaKawaii: Update</li>
-                <li>[Servers] Mangas.in: Update</li>
-                <li>[Servers] Scan Manga: Update</li>
-                <li>[Servers] NHentai: Disable</li>
+                <li>Library has now two display modes: Grid and Compact grid</li>
+                <li>Faster display of the chapter list, whether there are few or many chapters</li>
+                <li>Full rewriting of the Webtoon reading mode</li>
             </ul>
+            <p>We hope you will enjoy the new look of this first beta as much as we do.
+            All your feedbacks/issues/suggestions are welcome.</p>
         """)
 
         window.add_link(_('Sponsor via Ko-fi'), 'https://ko-fi.com/X8X06EM3L')

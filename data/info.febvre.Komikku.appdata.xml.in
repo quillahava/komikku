@@ -49,31 +49,31 @@
 
     <screenshots>
         <screenshot type="default">
-            <image>https://gitlab.com/valos/Komikku/raw/gtk4/screenshots/library.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/main/screenshots/library.png</image>
         </screenshot>
         <screenshot>
-            <image>https://gitlab.com/valos/Komikku/raw/gtk4/screenshots/library-with-categories.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/main/screenshots/library-with-categories.png</image>
         </screenshot>
         <screenshot>
-            <image>https://gitlab.com/valos/Komikku/raw/gtk4/screenshots/preferences.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/main/screenshots/preferences.png</image>
         </screenshot>
         <screenshot>
-            <image>https://gitlab.com/valos/Komikku/raw/gtk4/screenshots/explorer.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/main/screenshots/explorer.png</image>
         </screenshot>
         <screenshot>
-            <image>https://gitlab.com/valos/Komikku/raw/gtk4/screenshots/card-info.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/main/screenshots/card-info.png</image>
         </screenshot>
         <screenshot>
-            <image>https://gitlab.com/valos/Komikku/raw/gtk4/screenshots/card-chapters.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/main/screenshots/card-chapters.png</image>
         </screenshot>
         <screenshot>
-            <image>https://gitlab.com/valos/Komikku/raw/gtk4/screenshots/reader.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/main/screenshots/reader.png</image>
         </screenshot>
         <screenshot>
-            <image>https://gitlab.com/valos/Komikku/raw/gtk4/screenshots/categories-editor.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/main/screenshots/categories-editor.png</image>
         </screenshot>
         <screenshot>
-            <image>https://gitlab.com/valos/Komikku/raw/gtk4/screenshots/history.png</image>
+            <image>https://gitlab.com/valos/Komikku/raw/main/screenshots/history.png</image>
         </screenshot>
     </screenshots>
 
@@ -87,6 +87,19 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
+        <release version="1.0.beta1" date="2022-08-03">
+            <description>
+                <p>After several months of effort, Komikku's port to GTK4 and libadwaita is coming to an end.</p>
+                <p>The highlights of this new major version:</p>
+                <ul>
+                    <li>Library has now two display modes: Grid and Compact grid</li>
+                    <li>Faster display of the chapter list, whether there are few or many chapters</li>
+                    <li>Full rewriting of the Webtoon reading mode</li>
+                </ul>
+                <p>We hope you will enjoy the new look of this first beta as much as we do.
+                All your feedbacks/issues/suggestions are welcome.</p>
+            </description>
+        </release>
         <release version="0.40.0" date="2022-07-25">
             <description>
                 <ul>
