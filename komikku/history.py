@@ -10,12 +10,11 @@ from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Adw
-from gi.repository.GdkPixbuf import Pixbuf
-from gi.repository.GdkPixbuf import PixbufAnimation
 
 from komikku.models import Chapter
 from komikku.models import create_db_connection
-from komikku.servers.utils import get_file_mime_type
+from komikku.utils import create_paintable_from_file
+from komikku.utils import create_paintable_from_resource
 from komikku.utils import html_escape
 
 THUMB_WIDTH = 45
@@ -154,24 +153,17 @@ class History(Gtk.Box):
 
                 # Cover
                 if chapter.manga.cover_fs_path is None:
-                    pixbuf = Pixbuf.new_from_resource_at_scale(
+                    paintable = create_paintable_from_resource(
                         '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT, False)
                 else:
-                    try:
-                        if get_file_mime_type(chapter.manga.cover_fs_path) != 'image/gif':
-                            pixbuf = Pixbuf.new_from_file_at_scale(chapter.manga.cover_fs_path, THUMB_WIDTH, THUMB_HEIGHT, False)
-                        else:
-                            animation_pixbuf = PixbufAnimation.new_from_file_at_scale(
-                                self.manga.cover_fs_path, THUMB_WIDTH, THUMB_HEIGHT, False)
-                            pixbuf = animation_pixbuf.get_static_image()
-                    except Exception:
-                        # Invalid image, corrupted image, unsupported image format,...
-                        pixbuf = Pixbuf.new_from_resource_at_scale(
+                    paintable = create_paintable_from_file(chapter.manga.cover_fs_path, THUMB_WIDTH, THUMB_HEIGHT, True, False)
+                    if paintable is None:
+                        paintable = create_paintable_from_resource(
                             '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT, False)
 
                 cover_frame = Gtk.Frame()
                 cover_frame.add_css_class('history-rounded-cover-frame')
-                cover_frame.set_child(Gtk.Picture.new_for_pixbuf(pixbuf))
+                cover_frame.set_child(Gtk.Picture.new_for_paintable(paintable))
                 action_row.add_prefix(cover_frame)
 
                 # Time

@@ -17,8 +17,6 @@ from gi.repository import Graphene
 from gi.repository import Gsk
 from gi.repository import Gtk
 from gi.repository import Pango
-from gi.repository.GdkPixbuf import Pixbuf
-from gi.repository.GdkPixbuf import PixbufAnimation
 
 from komikku.models import Category
 from komikku.models import CategoryVirtual
@@ -28,7 +26,8 @@ from komikku.models import insert_rows
 from komikku.models import Manga
 from komikku.models import Settings
 from komikku.models import update_rows
-from komikku.servers.utils import get_file_mime_type
+from komikku.utils import create_paintable_from_file
+from komikku.utils import create_paintable_from_resource
 
 
 class Library:
@@ -912,27 +911,22 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
 
     def __create_cover_texture(self):
         if self.manga.cover_fs_path is None:
-            pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+            paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png')
         else:
-            try:
-                if get_file_mime_type(self.manga.cover_fs_path) != 'image/gif':
-                    pixbuf = Pixbuf.new_from_file_at_scale(self.manga.cover_fs_path, 180, -1, True)
-                else:
-                    pixbuf = PixbufAnimation.new_from_file(self.manga.cover_fs_path).get_static_image()
-            except Exception:
-                # Invalid image, corrupted image, unsupported image format,...
-                pixbuf = Pixbuf.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+            paintable = create_paintable_from_file(self.manga.cover_fs_path, 180, -1, True)
+            if paintable is None:
+                paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png')
 
-        self.cover_texture = Gdk.Texture.new_for_pixbuf(pixbuf)
+        self.cover_texture = Gdk.Texture.new_for_pixbuf(paintable.pixbuf)
 
     def __create_server_logo_texture(self):
         logo_path = self.manga.server.logo_path
         if logo_path is None:
             return
 
-        pixbuf = Pixbuf.new_from_file_at_scale(logo_path, self.server_logo_size, self.server_logo_size, True)
+        paintable = create_paintable_from_file(logo_path, self.server_logo_size, self.server_logo_size)
 
-        self.server_logo_texture = Gdk.Texture.new_for_pixbuf(pixbuf)
+        self.server_logo_texture = Gdk.Texture.new_for_pixbuf(paintable.pixbuf)
 
     def __get_badges_values(self):
         badges = Settings.get_default().library_badges
