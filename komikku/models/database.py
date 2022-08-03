@@ -3,6 +3,7 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 import datetime
+from enum import IntEnum
 from functools import lru_cache
 from gettext import gettext as _
 import importlib
@@ -979,6 +980,11 @@ class Category:
         db_conn.close()
 
         return ret
+
+
+class CategoryVirtual(IntEnum):
+    ALL = 0
+    UNCATEGORIZED = -1
 
 
 class Download:

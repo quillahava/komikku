@@ -21,6 +21,7 @@ from gi.repository.GdkPixbuf import Pixbuf
 from gi.repository.GdkPixbuf import PixbufAnimation
 
 from komikku.models import Category
+from komikku.models import CategoryVirtual
 from komikku.models import create_db_connection
 from komikku.models import delete_rows
 from komikku.models import insert_rows
@@ -108,9 +109,9 @@ class Library:
             manga = thumbnail.manga
             selected_category = Settings.get_default().selected_category
 
-            if selected_category != 0:
-                if selected_category == -1:
-                    # Uncategorized
+            if selected_category != CategoryVirtual.ALL:
+                if selected_category == CategoryVirtual.UNCATEGORIZED:
+                    # Virtual category 'Uncategorized' is selected
                     ret = not manga.categories
                 else:
                     # Categorized
@@ -387,7 +388,7 @@ class Library:
         return Gdk.EVENT_PROPAGATE
 
     def on_manga_added(self, manga):
-        """Called from 'Add dialog' when user clicks on [+] button"""
+        """Called from 'Explorer' when user clicks on [+] button"""
         db_conn = create_db_connection()
         nb_mangas = db_conn.execute('SELECT count(*) FROM mangas').fetchone()[0]
         db_conn.close()
@@ -624,8 +625,8 @@ class Library:
         if nb_selected > 0:
             title = n_('{0} selected', '{0} selected', nb_selected).format(nb_selected)
         else:
-            if (category_id := Settings.get_default().selected_category) != 0:
-                if category_id == -1:
+            if (category_id := Settings.get_default().selected_category) != CategoryVirtual.ALL:
+                if category_id == CategoryVirtual.UNCATEGORIZED:
                     title = _('Uncategorized')
                 else:
                     title = Category.get(category_id, db_conn).label
@@ -790,7 +791,7 @@ class CategoriesList:
 
                 self.listbox.append(row)
         else:
-            Settings.get_default().selected_category = 0
+            Settings.get_default().selected_category = CategoryVirtual.ALL
             self.stack.set_visible_child_name('empty')
 
     def set_edit_mode(self, edit_mode):

@@ -9,6 +9,7 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 from komikku.models import Category
+from komikku.models import CategoryVirtual
 from komikku.models import create_db_connection
 from komikku.models import Settings
 
@@ -68,9 +69,10 @@ class CategoriesEditor(Gtk.ScrolledWindow):
 
             # If category is current selected category in Library, reset selected category
             if deleted_is_current:
-                Settings.get_default().selected_category = 0
+                Settings.get_default().selected_category = CategoryVirtual.ALL
+                self.window.library.flowbox.invalidate_filter()
 
-            self.window.library.categories_list.populate(refresh_library=deleted_is_current)
+            self.window.library.categories_list.populate()
 
         self.window.confirm(
             _('Delete?'),
