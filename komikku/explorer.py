@@ -200,7 +200,7 @@ class Explorer(Gtk.Stack):
 
             check_button = Gtk.CheckButton(label=filter['name'], active=filter['default'], tooltip_text=filter['description'])
             check_button.connect('notify::active', toggle)
-            vbox.add(check_button)
+            vbox.append(check_button)
 
             return vbox
 
