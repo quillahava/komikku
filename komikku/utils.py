@@ -56,7 +56,7 @@ def create_picture_from_resource(path):
     return Picture.new_from_resource(path)
 
 
-def create_paintable_from_data(data, width=None, height=None, static_animation=False):
+def create_paintable_from_data(data, width=None, height=None, static_animation=False, preserve_aspect_ratio=True):
     mime_type, _result_uncertain = Gio.content_type_guess(None, data)
     if not mime_type:
         return None
@@ -64,10 +64,10 @@ def create_paintable_from_data(data, width=None, height=None, static_animation=F
     if mime_type == 'image/gif' and not static_animation:
         return PaintablePixbufAnimation.new_from_data(data)
     else:
-        return PaintablePixbuf.new_from_data(data, width, height)
+        return PaintablePixbuf.new_from_data(data, width, height, preserve_aspect_ratio)
 
 
-def create_paintable_from_file(path, width=None, height=None, static_animation=False):
+def create_paintable_from_file(path, width=None, height=None, static_animation=False, preserve_aspect_ratio=True):
     format, _width, _height = Pixbuf.get_file_info(path)
     if format is None:
         return None
@@ -75,11 +75,11 @@ def create_paintable_from_file(path, width=None, height=None, static_animation=F
     if 'image/gif' in format.get_mime_types() and not static_animation:
         return PaintablePixbufAnimation.new_from_file(path, width, height)
     else:
-        return PaintablePixbuf.new_from_file(path, width, height)
+        return PaintablePixbuf.new_from_file(path, width, height, preserve_aspect_ratio)
 
 
-def create_paintable_from_resource(path, width=None, height=None):
-    return PaintablePixbuf.new_from_resource(path, width, height)
+def create_paintable_from_resource(path, width=None, height=None, preserve_aspect_ratio=True):
+    return PaintablePixbuf.new_from_resource(path, width, height, preserve_aspect_ratio)
 
 
 def crop_pixbuf(pixbuf, src_x, src_y, width, height):
@@ -219,7 +219,7 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
         self.height = self.orig_height
 
     @classmethod
-    def new_from_data(cls, data, width=None, height=None):
+    def new_from_data(cls, data, width=None, height=None, preserve_aspect_ratio=True):
         mime_type, _result_uncertain = Gio.content_type_guess(None, data)
         if not mime_type:
             return None
@@ -239,7 +239,7 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
 
                     pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
             else:
-                pixbuf = Pixbuf.new_from_stream_at_scale(stream, width, height, True)
+                pixbuf = Pixbuf.new_from_stream_at_scale(stream, width, height, preserve_aspect_ratio)
 
             stream.close()
         except Exception:
@@ -249,7 +249,7 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
         return cls(None, pixbuf)
 
     @classmethod
-    def new_from_file(cls, path, width=None, height=None):
+    def new_from_file(cls, path, width=None, height=None, preserve_aspect_ratio=True):
         format, orig_width, orig_height = Pixbuf.get_file_info(path)
         if format is None:
             return None
@@ -267,7 +267,7 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
 
                     pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
             else:
-                pixbuf = Pixbuf.new_from_file_at_scale(path, width, height, True)
+                pixbuf = Pixbuf.new_from_file_at_scale(path, width, height, preserve_aspect_ratio)
         except Exception:
             # Invalid image, corrupted image, unsupported image format,...
             return None
@@ -281,12 +281,12 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
         return cls(None, pixbuf)
 
     @classmethod
-    def new_from_resource(cls, path, width=None, height=None):
+    def new_from_resource(cls, path, width=None, height=None, preserve_aspect_ratio=True):
         try:
             if not width and not height:
                 pixbuf = Pixbuf.new_from_resource(path)
             else:
-                pixbuf = Pixbuf.new_from_resource_at_scale(path, width, height, True)
+                pixbuf = Pixbuf.new_from_resource_at_scale(path, width, height, preserve_aspect_ratio)
         except Exception:
             # Invalid image, corrupted image, unsupported image format,...
             return None
@@ -427,7 +427,7 @@ class Picture(Gtk.Picture):
 
     @classmethod
     def new_from_pixbuf(cls, pixbuf):
-        return cls(PaintablePixbuf.new_from_pixbuf(None))
+        return cls(PaintablePixbuf.new_from_pixbuf(pixbuf))
 
     @classmethod
     def new_from_resource(cls, path):
