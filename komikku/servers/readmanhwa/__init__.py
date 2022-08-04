@@ -10,6 +10,7 @@ import requests
 from komikku.models import Settings
 from komikku.servers import USER_AGENT
 from komikku.servers import Server
+from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 
 SERVER_NAME = 'ReadManhwa'
@@ -33,9 +34,9 @@ class Readmanhwa(Server):
     api_base_url = base_url + '/api/'
     api_search_url = api_base_url + 'comics?q={0}&per_page=20&nsfw={1}'
     api_most_populars_url = api_base_url + 'comics?page=1&q=&sort=popularity&order=desc&duration=year&nsfw={0}'
-    api_manga_url = api_base_url + 'comics/{0}?nsfw=true'
-    api_manga_chapters_url = api_base_url + 'comics/{0}/chapters?nsfw=true'
-    api_manga_chapter_images_url = api_base_url + 'comics/{0}/{1}/images?nsfw=true'
+    api_manga_url = api_base_url + 'comics/{0}?lang=en&nsfw=false'
+    api_manga_chapters_url = api_base_url + 'comics/{0}/chapters?lang=en&nsfw=false'
+    api_manga_chapter_images_url = api_base_url + 'comics/{0}/{1}/images?lang=en&nsfw=false'
 
     filters = [
         {
@@ -97,7 +98,7 @@ class Readmanhwa(Server):
 
         # Name & cover
         data['name'] = manga['title']
-        data['cover'] = self.base_url + manga['thumb_url']
+        data['cover'] = manga['thumb_url']
 
         # Authors & Artists
         for author in manga['authors']:
@@ -125,6 +126,7 @@ class Readmanhwa(Server):
             data['chapters'].append(dict(
                 slug=chapter['slug'],
                 title=chapter['name'],
+                date=convert_date_string(chapter['added_at'], '%Y-%m-%d'),
             ))
 
         return data
