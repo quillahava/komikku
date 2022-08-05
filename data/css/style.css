@@ -39,10 +39,9 @@ listview :last-child {
 }
 
 .badge {
-    color: #fff;
     background-color: @accent_bg_color;
     color: @accent_fg_color;
-    padding: 0 .4em;
+    padding: 0 1em;
     border-radius: 6px;
 }
 
