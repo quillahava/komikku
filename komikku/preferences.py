@@ -64,7 +64,7 @@ class Preferences(Adw.Bin):
         self.set_config_values()
 
         self.window.stack.add_named(self, 'preferences')
-        self.connect('notify::visible-child', self.on_page_changed)
+        self.leaflet.connect('notify::visible-child', self.on_page_changed)
 
     def navigate_back(self, _source):
         if self.leaflet.get_visible_child_name() == 'subpages':
@@ -146,7 +146,7 @@ class Preferences(Adw.Bin):
             self.settings.nsfw_content = False
 
     def on_page_changed(self, _deck, _child):
-        if self.get_visible_child_name() == 'subpages':
+        if self.leaflet.get_visible_child_name() == 'subpages':
             self.subtitle_label.show()
         else:
             self.subtitle_label.hide()
