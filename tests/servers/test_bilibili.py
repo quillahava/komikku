@@ -31,7 +31,7 @@ def test_bilibili(bilibili_server):
     # Search
     print('Search')
     try:
-        response = bilibili_server.search('working overtime to destroy the world') # or maybe don't, because bilibili only matches "the"
+        response = bilibili_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None

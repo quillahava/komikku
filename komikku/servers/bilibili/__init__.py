@@ -17,7 +17,7 @@ from komikku.servers.utils import get_buffer_mime_type
 
 logger = logging.getLogger('komikku.servers.bilibili')
 
-SEARCH_RESULTS_LIMIT = 10
+SEARCH_RESULTS_LIMIT = 9
 
 
 class Bilibili(Server):
@@ -28,7 +28,7 @@ class Bilibili(Server):
     base_url = 'https://www.bilibilicomics.com'
     manga_url = base_url + '/detail/mc{}'
 
-    query_params = "?device=pc&platform=web"
+    query_params = '?device=pc&platform=web&lang={lang}&sys_lang={lang}'
 
     api_base_url = base_url + '/twirp/comic.v1.Comic'
     api_most_populars_url = api_base_url + '/ClassPage' + query_params
@@ -42,7 +42,9 @@ class Bilibili(Server):
             self.session = requests.Session()
             self.session.headers.update({
                 'User-Agent': USER_AGENT,
-                'Referer': self.base_url,
+                'Referer': f'{self.base_url}/',
+                'Accept': 'application/json; text/plain; */*',
+                'Content-Type': 'application/json;charset=UTF-8',
             })
 
     def get_manga_data(self, initial_data):
@@ -143,30 +145,7 @@ class Bilibili(Server):
         )
 
     def get_most_populars(self):
-        r = self.session_post(
-            self.api_most_populars_url,
-            json=dict(
-                area_id=-1,
-                is_finish=-1,
-                is_free=1,
-                order=0,
-                page_num=1,
-                page_size=2 * SEARCH_RESULTS_LIMIT,
-                style_id=-1,
-                style_prefer='[]',
-            )
-        )
-        if r.status_code != 200:
-            return None
-
-        results = []
-        for manga in r.json()['data']:
-            results.append(dict(
-                slug=manga['season_id'],
-                name=manga['title'],
-            ))
-
-        return results
+        return self.search(None, True)
 
     def get_manga_url(self, slug, url):
         """
@@ -177,29 +156,46 @@ class Bilibili(Server):
     def is_long_strip(self, _manga_data):
         return True
 
-    def search(self, term):
+    def search(self, term, popular=False):
+        payload = dict(
+            area_id=-1,
+            is_finish=-1,
+            is_free=-1,  # All: -1, Free: 1, Paid: 2
+            page_num=1,
+            style_id=-1,
+            style_prefer='[]',
+        )
+        if popular:
+            payload['order'] = 1
+            payload['page_size'] = SEARCH_RESULTS_LIMIT * 2
+        else:
+            payload['order'] = 0
+            payload['page_size'] = SEARCH_RESULTS_LIMIT
+            payload['need_shield_prefer'] = True
+            payload['key_word'] = term
+
         r = self.session_post(
-            self.api_search_url,
-            json=dict(
-                area_id=-1,
-                is_finish=-1,
-                is_free=1,
-                order=0,
-                page_num=1,
-                page_size=SEARCH_RESULTS_LIMIT,
-                style_id=-1,
-                style_prefer='[]',
-                key_word=term,
-            )
+            self.api_most_populars_url if popular else self.api_search_url,
+            json=payload
         )
         if r.status_code != 200:
             return None
 
+        data = r.json()['data']
+        if not popular:
+            data = data['list']
+
         results = []
-        for manga in r.json()['data']['list']:
-            results.append(dict(
-                slug=(manga['id']),
-                name=BeautifulSoup(manga['title'], 'lxml').text,
-            ))
+        for manga in data:
+            if popular:
+                results.append(dict(
+                    slug=str(manga['season_id']),
+                    name=manga['title'],
+                ))
+            else:
+                results.append(dict(
+                    slug=str(manga['id']),
+                    name=BeautifulSoup(manga['title'], 'lxml').text,
+                ))
 
         return results
