@@ -247,8 +247,17 @@ def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
     return sorted(servers, key=itemgetter(*order_by))
 
 
-def get_soup_element_inner_text(outer):
-    return ''.join([el for el in outer if isinstance(el, NavigableString)]).strip()
+def get_soup_element_inner_text(outer, text=None):
+    if text is None:
+        text = []
+
+    for el in outer:
+        if isinstance(el, NavigableString):
+            text.append(el)
+        else:
+            get_soup_element_inner_text(el, text)
+
+    return ''.join(text).strip()
 
 
 # https://github.com/Harkame/JapScanDownloader
