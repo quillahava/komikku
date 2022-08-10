@@ -425,7 +425,7 @@ def bypass_cloudflare_invisible_challenge(func):
                     value=cookie.get_value(),
                     domain=cookie.get_domain(),
                     path=cookie.get_path(),
-                    expires=cookie.get_expires().to_time_t() if cookie.get_expires() else None,
+                    expires=cookie.get_expires().to_unix() if cookie.get_expires() else None,
                 )
                 server.session.cookies.set_cookie(rcookie)
 
