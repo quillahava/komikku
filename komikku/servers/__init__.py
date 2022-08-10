@@ -4,6 +4,7 @@
 
 from bs4 import BeautifulSoup
 from functools import cached_property
+from functools import wraps
 import gi
 import inspect
 import logging
@@ -11,6 +12,7 @@ import os
 import pickle
 import requests
 from requests.adapters import TimeoutSauce
+import time
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('WebKit2', '5.0')
@@ -19,6 +21,7 @@ from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import WebKit2
 
+from komikku.servers.exceptions import CloudflareBypassError
 from komikku.servers.loader import server_finder
 from komikku.servers.utils import convert_image
 from komikku.servers.utils import get_buffer_mime_type
@@ -165,6 +168,7 @@ class Server:
     name: str
     lang: str
 
+    has_cloudflare_invisible_challenge = False
     has_login = False
     headers = None
     is_nsfw = False
@@ -370,6 +374,76 @@ class Server:
 
     def update_chapter_read_progress(self, data, manga_slug, manga_name, chapter_slug, chapter_url):
         return NotImplemented
+
+
+def bypass_cloudflare_invisible_challenge(func):
+    """Allow to bypass Cloudflare invisible challenge using headless browser"""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        """Decorator Wrapper function"""
+
+        server = args[0]
+        if server.session or not server.has_cloudflare_invisible_challenge:
+            return func(*args, **kwargs)
+
+        done = False
+        error = None
+
+        def load_page():
+            settings = dict(
+                auto_load_images=False,
+            )
+            if not headless_browser.open(server.base_url, user_agent=USER_AGENT, settings=settings):
+                return True
+
+            headless_browser.connect_signal('load-changed', on_load_changed)
+            headless_browser.connect_signal('load-failed', on_load_failed)
+
+        def on_load_changed(webview, event):
+            if event != WebKit2.LoadEvent.FINISHED:
+                return
+
+            cookie_manager = headless_browser.web_context.get_cookie_manager()
+            cookie_manager.get_cookies(server.base_url, None, on_get_cookies_finish, None)
+
+        def on_load_failed(_webview, _event, _uri, gerror):
+            nonlocal error
+
+            error = f'Failed to load homepage: {server.base_url}'
+            headless_browser.close()
+
+        def on_get_cookies_finish(cookie_manager, result, user_data):
+            nonlocal done
+
+            server.session = requests.Session()
+            server.session.headers.update({'User-Agent': USER_AGENT})
+
+            for cookie in cookie_manager.get_cookies_finish(result):
+                rcookie = requests.cookies.create_cookie(
+                    name=cookie.get_name(),
+                    value=cookie.get_value(),
+                    domain=cookie.get_domain(),
+                    path=cookie.get_path(),
+                    expires=cookie.get_expires().to_time_t() if cookie.get_expires() else None,
+                )
+                server.session.cookies.set_cookie(rcookie)
+
+            done = True
+            headless_browser.close()
+
+        GLib.timeout_add(100, load_page)
+
+        while not done and error is None:
+            time.sleep(.1)
+
+        if error:
+            logger.warning(error)
+            raise CloudflareBypassError
+
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 def search_duckduckgo(site, term):
