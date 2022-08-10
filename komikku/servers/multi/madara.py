@@ -17,6 +17,8 @@
 # Best Manga [RU]
 # Colored Council [EN]
 # Leomanga [ES]
+# Manga-Scantrad [FR]
+# Mangas Origines [FR]
 # Reaperscans [EN]
 # Reaperscans [PT]
 # Submanga [ES] (disabled)
@@ -96,36 +98,43 @@ class Madara(Server):
 
         # Details
         for element in soup.find('div', class_='summary_content').find_all('div', class_='post-content_item'):
-            label = element.find('div', class_='summary-heading').text.strip()
-            content_element = element.find('div', class_='summary-content')
+            label_element = element.find('div', class_='summary-heading')
+            if label_element:
+                label = get_soup_element_inner_text(label_element)
+            else:
+                continue
+
+            label = label.encode('ascii', 'ignore').decode('utf-8').strip()  # remove none-ASCII characters
+            content = element.find('div', class_='summary-content').text.strip()
 
             if label.startswith(('Author', 'Artist', 'Auteur', 'Autor', 'Artista', 'Yazar', 'Sanatçı', 'Çizer', 'الرسام', 'المؤلف', 'Автор', 'Художник')):
-                for author in content_element.text.strip().split(','):
+                for author in content.split(','):
                     author = author.strip()
                     if author in ('', 'Updating'):
                         continue
                     if author not in data['authors']:
                         data['authors'].append(author)
-            elif label.startswith(('Tradutor', 'Revisor')):
-                for scanlator in content_element.text.strip().split(','):
+            elif label.startswith(('Team', 'Tradutor', 'Revisor')):
+                for scanlator in content.split(','):
                     scanlator = scanlator.strip()
                     if scanlator == '' or scanlator in data['scanlators']:
                         continue
                     data['scanlators'].append(scanlator)
             elif label.startswith(('Genre', 'Gênero', 'Tür', 'Kategoriler', 'التصنيف', 'Жанр')):
-                for genre in content_element.text.strip().split(','):
+                for genre in content.split(','):
                     genre = genre.strip()
                     if genre == '':
                         continue
                     data['genres'].append(genre)
-            elif label.startswith(('Status', 'État', 'Durum', 'الحالة', 'Статус')):
-                status = content_element.text.strip()
+            elif label.startswith(('Status', 'État', 'STATUS', 'Durum', 'الحالة', 'Статус')):
+                status = content.encode('ascii', 'ignore').decode('utf-8').strip()
+
                 if status in ('Completed', 'Terminé', 'Completo', 'Concluído', 'Tamamlandı', 'مكتملة', 'Закончена'):
                     data['status'] = 'complete'
-                elif status in ('OnGoing', 'En Cours', 'Updating', 'Devam Ediyor', 'Em Lançamento', 'Em andamento', 'مستمرة', 'Продолжается', 'Выпускается'):
+                elif status in ('OnGoing', 'En Cours', 'En cours', 'Updating', 'Devam Ediyor', 'Em Lançamento', 'Em andamento', 'مستمرة', 'Продолжается', 'Выпускается'):
                     data['status'] = 'ongoing'
 
-        summary_container = soup.find('div', class_='summary__content')
+        summary_container = soup.find('div', class_=['summary__content', 'manga-excerpt'])
         if summary_container:
             if p_elements := summary_container.find_all('p'):
                 data['synopsis'] = '\n\n'.join([p_element.text.strip() for p_element in p_elements])
