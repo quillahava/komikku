@@ -24,13 +24,19 @@
 
 from bs4 import BeautifulSoup
 import datetime
+from gettext import gettext as _
+import logging
 import requests
 
+from komikku.models import Settings
+from komikku.servers import bypass_cloudflare_invisible_challenge
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_soup_element_inner_text
+
+logger = logging.getLogger('komikku.servers.madara')
 
 
 class Madara(Server):
@@ -45,10 +51,14 @@ class Madara(Server):
         self.manga_url = self.base_url + '/' + self.series_name + '/{0}/'
         self.chapter_url = self.base_url + '/' + self.series_name + '/{0}/{1}/?style=list'
 
-        if self.session is None:
-            self.session = requests.Session()
-            self.session.headers.update({'user-agent': USER_AGENT})
+        if not self.has_cloudflare_invisible_challenge:
+            if self.session is None:
+                self.session = requests.Session()
+                self.session.headers.update({'User-Agent': USER_AGENT})
+        else:
+            self.session = None
 
+    @bypass_cloudflare_invisible_challenge
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -89,7 +99,7 @@ class Madara(Server):
             label = element.find('div', class_='summary-heading').text.strip()
             content_element = element.find('div', class_='summary-content')
 
-            if label.startswith(('Author', 'Artist', 'Autor', 'Artista', 'Yazar', 'Sanatçı', 'Çizer', 'الرسام', 'المؤلف', 'Автор', 'Художник')):
+            if label.startswith(('Author', 'Artist', 'Auteur', 'Autor', 'Artista', 'Yazar', 'Sanatçı', 'Çizer', 'الرسام', 'المؤلف', 'Автор', 'Художник')):
                 for author in content_element.text.strip().split(','):
                     author = author.strip()
                     if author in ('', 'Updating'):
@@ -108,11 +118,11 @@ class Madara(Server):
                     if genre == '':
                         continue
                     data['genres'].append(genre)
-            elif label.startswith(('Status', 'Durum', 'الحالة', 'Статус')):
+            elif label.startswith(('Status', 'État', 'Durum', 'الحالة', 'Статус')):
                 status = content_element.text.strip()
-                if status in ('Completed', 'Completo', 'Concluído', 'Tamamlandı', 'مكتملة', 'Закончена'):
+                if status in ('Completed', 'Terminé', 'Completo', 'Concluído', 'Tamamlandı', 'مكتملة', 'Закончена'):
                     data['status'] = 'complete'
-                elif status in ('OnGoing', 'Updating', 'Devam Ediyor', 'Em Lançamento', 'Em andamento', 'مستمرة', 'Продолжается', 'Выпускается'):
+                elif status in ('OnGoing', 'En Cours', 'Updating', 'Devam Ediyor', 'Em Lançamento', 'Em andamento', 'مستمرة', 'Продолжается', 'Выпускается'):
                     data['status'] = 'ongoing'
 
         summary_container = soup.find('div', class_='summary__content')
@@ -130,9 +140,9 @@ class Madara(Server):
                 r = self.session_post(
                     self.chapters_url.format(data['slug']),
                     headers={
-                        'origin': self.base_url,
-                        'referer': self.manga_url.format(data['slug']),
-                        'x-requested-with': 'XMLHttpRequest',
+                        'Origin': self.base_url,
+                        'Referer': self.manga_url.format(data['slug']),
+                        'X-Requested-With': 'XMLHttpRequest',
                     }
                 )
             else:
@@ -143,9 +153,9 @@ class Madara(Server):
                         manga=chapters_container.get('data-id'),
                     ),
                     headers={
-                        'origin': self.base_url,
-                        'referer': self.manga_url.format(data['slug']),
-                        'x-requested-with': 'XMLHttpRequest',
+                        'Origin': self.base_url,
+                        'Referer': self.manga_url.format(data['slug']),
+                        'X-rRquested-With': 'XMLHttpRequest',
                     }
                 )
 
@@ -169,6 +179,7 @@ class Madara(Server):
 
         return data
 
+    @bypass_cloudflare_invisible_challenge
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
         Returns manga chapter data by scraping chapter HTML page content
@@ -200,6 +211,7 @@ class Madara(Server):
 
         return data
 
+    @bypass_cloudflare_invisible_challenge
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
         Returns chapter page scan (image) content
@@ -235,6 +247,7 @@ class Madara(Server):
         """
         return self.search('', True)
 
+    @bypass_cloudflare_invisible_challenge
     def search(self, term, populars=False):
         data = {
             'action': 'madara_load_more',
@@ -279,6 +292,88 @@ class Madara(Server):
             results.append(dict(
                 slug=a_element.get('href').split('/')[-2],
                 name=a_element.text.strip(),
+            ))
+
+        return results
+
+
+class Madara2(Madara):
+    filters = [
+        {
+            'key': 'nsfw',
+            'type': 'checkbox',
+            'name': _('NSFW Content'),
+            'description': _('Whether to show manga containing NSFW content'),
+            'default': False,
+        },
+    ]
+
+    def __init__(self):
+        super().__init__()
+
+        # Update NSFW filter default value according to current settings
+        if Settings.instance:
+            self.filters[0]['default'] = Settings.get_default().nsfw_content
+
+    @bypass_cloudflare_invisible_challenge
+    def get_most_populars(self, nsfw):
+        """
+        Returns list of most viewed manga
+        """
+        r = self.session_get(f'{self.base_url}/', params=dict(
+            s='',
+            post_type='wp-manga',
+            op='',
+            author='',
+            artist='',
+            release='',
+            adult='' if nsfw else 0
+        ))
+        if r.status_code != 200:
+            return None
+
+        soup = BeautifulSoup(r.text, 'lxml')
+
+        results = []
+        for element in soup.find_all('div', class_='post-title'):
+            a_element = element.h3.a
+            results.append(dict(
+                slug=a_element.get('href').split('/')[-2],
+                name=a_element.text.strip(),
+            ))
+
+        return results
+
+    @bypass_cloudflare_invisible_challenge
+    def search(self, term, nsfw):
+        r = self.session_post(
+            self.api_url,
+            data={
+                'action': 'wp-manga-search-manga',
+                'title': term,
+            },
+            headers={
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Referer': self.base_url,
+            }
+        )
+        if r.status_code != 200:
+            return None
+
+        data = r.json()
+
+        if not data['success']:
+            return None
+
+        results = []
+        for item in data['data']:
+            if item['type'] != 'manga':
+                continue
+
+            results.append(dict(
+                slug=item['url'].split('/')[-2],
+                name=item['title'],
             ))
 
         return results
