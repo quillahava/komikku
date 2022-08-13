@@ -539,6 +539,9 @@ class ChaptersList:
         item.emit_changed()
 
     def select_all(self, *args):
+        if not self.card.selection_mode:
+            self.card.enter_selection_mode()
+
         self.model.select_all()
 
     def set_sort_order(self, invalidate=True):

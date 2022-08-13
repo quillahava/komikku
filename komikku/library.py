@@ -530,8 +530,6 @@ class Library:
 
         if not self.selection_mode:
             self.enter_selection_mode()
-        if not self.selection_mode:
-            return
 
         for thumbnail in self.flowbox:
             if not thumbnail._selected and not thumbnail._filtered:
