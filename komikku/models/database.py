@@ -145,6 +145,7 @@ def init_db():
         rank integer NOT NULL,
         downloaded integer NOT NULL,
         recent integer NOT NULL,
+        read_progress text,
         read integer NOT NULL,
         last_page_read_index integer,
         last_read timestamp,
@@ -268,6 +269,34 @@ def init_db():
 
             if execute_sql(db_conn, 'ALTER TABLE chapters ADD COLUMN last_read timestamp;'):
                 db_conn.execute('PRAGMA user_version = {0}'.format(10))
+
+        if 0 < db_version <= 10:
+            # Version 1.0.0
+            execute_sql(db_conn, 'ALTER TABLE chapters ADD COLUMN read_progress text;')
+
+            # Chapters: move reading status of pages in a new 'read_progress' field
+            ids = []
+            data = []
+            manga_rows = db_conn.execute('SELECT id FROM mangas').fetchall()
+            with db_conn:
+                for manga_row in manga_rows:
+                    chapter_rows = db_conn.execute('SELECT * FROM chapters WHERE manga_id = ?', (manga_row['id'],)).fetchall()
+                    for chapter_row in chapter_rows:
+                        if not chapter_row['pages']:
+                            continue
+
+                        read_progress = ''
+                        for page in chapter_row['pages']:
+                            read = page.pop('read', False)
+                            read_progress += str(int(read))
+                        if '1' in read_progress and '0' in read_progress:
+                            ids.append(chapter_row['id'])
+                            data.append({'pages': chapter_row['pages'], 'read_progress': read_progress})
+
+                if ids:
+                    update_rows(db_conn, 'chapters', ids, data)
+
+                db_conn.execute('PRAGMA user_version = {0}'.format(11))
 
         print('DB version', db_conn.execute('PRAGMA user_version').fetchone()[0])
 
@@ -862,6 +891,7 @@ class Chapter:
         self.update(dict(
             pages=None,
             downloaded=0,
+            read_progress=None,
             read=0,
             last_read=None,
             last_page_read_index=None,

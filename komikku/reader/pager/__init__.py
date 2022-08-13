@@ -135,21 +135,22 @@ class BasePager:
         # Update manga last read time
         self.reader.manga.update(dict(last_read=datetime.datetime.utcnow()))
 
-        # Mark page as read
-        chapter.pages[page.index]['read'] = True
-
-        # Check if chapter has been fully read
-        chapter_is_read = True
-        for chapter_page in reversed(chapter.pages):
-            if not chapter_page.get('read'):
-                chapter_is_read = False
-                break
+        # Chapter read progress
+        read_progress = chapter.read_progress
+        if read_progress is None:
+            # Init and fill with '0'
+            read_progress = '0' * len(chapter.pages)
+        # Mark current page as read
+        read_progress = read_progress[:page.index] + '1' + read_progress[page.index+1:]
+        chapter_is_read = '0' not in read_progress
+        if chapter_is_read:
+            read_progress = None
 
         # Update chapter
         chapter.update(dict(
-            pages=chapter.pages,
-            last_page_read_index=page.index,
+            last_page_read_index=page.index if not chapter_is_read else None,
             last_read=datetime.datetime.utcnow(),
+            read_progress=read_progress,
             read=chapter_is_read,
             recent=0,
         ))

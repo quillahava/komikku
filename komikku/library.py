@@ -574,30 +574,23 @@ class Library:
 
         for thumbnail in self.flowbox.get_selected_children():
             for chapter in thumbnail.manga.chapters:
-                last_page_read_index = None
-                if chapter.pages:
-                    pages = deepcopy(chapter.pages)
-                    for page in pages:
-                        page['read'] = read
-                else:
-                    pages = None
-                    last_page_read_index = None if chapter.read == read == 0 else chapter.last_page_read_index
-
                 chapters_ids.append(chapter.id)
                 chapters_data.append(dict(
-                    pages=pages,
+                    last_page_read_index=None,
+                    read_progress=None,
                     read=read,
                     recent=False,
-                    last_page_read_index=last_page_read_index,
                 ))
 
         db_conn = create_db_connection()
         with db_conn:
-            update_rows(db_conn, 'chapters', chapters_ids, chapters_data)
+            res = update_rows(db_conn, 'chapters', chapters_ids, chapters_data)
         db_conn.close()
 
         self.window.activity_indicator.stop()
         self.leave_selection_mode()
+        if not res:
+            self.window.show_notification(_('Failed to update reading status'))
 
     def update_all(self, _action, _param):
         self.window.updater.update_library()

@@ -583,18 +583,14 @@ class ChaptersList:
         item = self.list_model.get_item(position.get_uint16())
         chapter = item.chapter
 
-        if chapter.pages:
-            for chapter_page in chapter.pages:
-                chapter_page['read'] = read
-
         data = dict(
             last_page_read_index=None,
-            pages=chapter.pages,
+            read_progress=None,
             read=read,
             recent=False,
         )
-
         chapter.update(data)
+
         item.emit_changed()
 
     def toggle_selected_chapters_read_status(self, action, param, read):
@@ -605,17 +601,10 @@ class ChaptersList:
 
         # First, update DB
         for chapter in self.get_selected_chapters():
-            if chapter.pages:
-                pages = deepcopy(chapter.pages)
-                for page in pages:
-                    page['read'] = read
-            else:
-                pages = None
-
             chapters_ids.append(chapter.id)
             chapters_data.append(dict(
                 last_page_read_index=None,
-                pages=pages,
+                read_progress=None,
                 read=read,
                 recent=False,
             ))
@@ -631,10 +620,6 @@ class ChaptersList:
             # Then, if DB update succeeded, update chapters rows
             def update_chapters_rows():
                 for chapter in self.get_selected_chapters():
-                    if chapter.pages:
-                        for chapter_page in chapter.pages:
-                            chapter_page['read'] = read
-
                     chapter.last_page_read_index = None
                     chapter.read = read
                     chapter.recent = False
@@ -652,6 +637,7 @@ class ChaptersList:
         else:
             self.card.window.activity_indicator.stop()
             self.card.leave_selection_mode()
+            self.card.window.show_notification(_('Failed to update chapters reading status'))
 
     def update_chapter_item(self, downloader=None, download=None, chapter=None):
         """
