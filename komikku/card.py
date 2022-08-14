@@ -372,6 +372,10 @@ class ChaptersList:
         download_chapter_action.connect('activate', self.download_chapter)
         self.card.window.application.add_action(download_chapter_action)
 
+        reset_chapter_action = Gio.SimpleAction.new('card.reset-chapter', GLib.VariantType.new('q'))
+        reset_chapter_action.connect('activate', self.reset_chapter)
+        self.card.window.application.add_action(reset_chapter_action)
+
         mark_chapter_as_read_action = Gio.SimpleAction.new('card.mark-chapter-read', GLib.VariantType.new('q'))
         mark_chapter_as_read_action.connect('activate', self.toggle_chapter_read_status, 1)
         self.card.window.application.add_action(mark_chapter_as_read_action)
@@ -380,9 +384,9 @@ class ChaptersList:
         mark_chapter_as_unread_action.connect('activate', self.toggle_chapter_read_status, 0)
         self.card.window.application.add_action(mark_chapter_as_unread_action)
 
-        reset_chapter_action = Gio.SimpleAction.new('card.reset-chapter', GLib.VariantType.new('q'))
-        reset_chapter_action.connect('activate', self.reset_chapter)
-        self.card.window.application.add_action(reset_chapter_action)
+        mark_previous_chapters_as_read_action = Gio.SimpleAction.new('card.mark-previous-chapters-read', GLib.VariantType.new('q'))
+        mark_previous_chapters_as_read_action.connect('activate', self.set_previous_chapters_as_read)
+        self.card.window.application.add_action(mark_previous_chapters_as_read_action)
 
     def download_chapter(self, action, position):
         item = self.list_model.get_item(position.get_uint16())
@@ -543,6 +547,54 @@ class ChaptersList:
             self.card.enter_selection_mode()
 
         self.model.select_all()
+
+    def set_previous_chapters_as_read(self, action, position):
+        chapters_ids = []
+        chapters_data = []
+
+        self.card.window.activity_indicator.start()
+
+        item = self.list_model.get_item(position.get_uint16())
+        rank = item.chapter.rank
+
+        # First, update DB
+        for item in self.list_model:
+            chapter = item.chapter
+            if chapter.rank >= rank:
+                continue
+
+            chapters_ids.append(chapter.id)
+            chapters_data.append(dict(
+                last_page_read_index=None,
+                read_progress=None,
+                read=True,
+                recent=False,
+            ))
+
+        db_conn = create_db_connection()
+
+        with db_conn:
+            res = update_rows(db_conn, 'chapters', chapters_ids, chapters_data)
+
+        db_conn.close()
+
+        if res:
+            # Then, if DB update succeeded, update chapters rows
+            for item in self.list_model:
+                chapter = item.chapter
+                if chapter.rank >= rank:
+                    continue
+
+                chapter.last_page_read_index = None
+                chapter.read = True
+                chapter.recent = False
+
+                item.emit_changed()
+
+            self.card.window.activity_indicator.stop()
+        else:
+            self.card.window.activity_indicator.stop()
+            self.card.window.show_notification(_('Failed to update chapters reading status'))
 
     def set_sort_order(self, invalidate=True):
         self.card.sort_order_action.set_state(GLib.Variant('s', self.sort_order))
@@ -867,7 +919,12 @@ class ChaptersListRow(Gtk.Box):
                 self.primary_hbox.props.margin_bottom = 17
                 self.secondary_hbox.hide()
 
-    def update_menu(self, _popover):
+    def update_menu(self, popover):
+        if self.card.selection_mode:
+            # Prevent popover to pop up in selection mode
+            popover.popdown()
+            return
+
         position = self.position
         self.menu_model.remove_all()
 
@@ -894,6 +951,10 @@ class ChaptersListRow(Gtk.Box):
             menu_item = Gio.MenuItem.new(_('Mark as Unread'))
             menu_item.set_action_and_target_value('app.card.mark-chapter-unread', GLib.Variant.new_uint16(position))
             section_menu_model.append_item(menu_item)
+
+        menu_item = Gio.MenuItem.new(_('Mark Previous Chapters as Read'))
+        menu_item.set_action_and_target_value('app.card.mark-previous-chapters-read', GLib.Variant.new_uint16(position))
+        section_menu_model.append_item(menu_item)
 
 
 class InfoBox:
