@@ -61,8 +61,11 @@ listview :last-child {
 .background-black {
     background-color: rgba(0, 0, 0, 1);
 }
+.background-gray {
+    background-color: rgba(36, 36, 36, 1);
+}
 .background-white {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(250, 250, 250, 1);
 }
 
 /* Explorer page */

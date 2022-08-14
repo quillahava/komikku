@@ -267,12 +267,16 @@ class Reader:
 
     def set_action_background_color(self):
         self.background_color_action.set_state(GLib.Variant('s', self.background_color))
+
         if self.background_color == 'white':
-            self.pager.remove_css_class('background-black')
-            self.pager.add_css_class('background-white')
+            self.pager.set_css_classes(['background-white'])
+        elif self.background_color == 'gray':
+            self.pager.set_css_classes(['background-gray'])
+        elif self.background_color == 'black':
+            self.pager.set_css_classes(['background-black'])
         else:
-            self.pager.remove_css_class('background-white')
-            self.pager.add_css_class('background-black')
+            # System style
+            self.pager.set_css_classes([])
 
     def set_action_borders_crop(self):
         self.borders_crop_action.set_state(GLib.Variant('b', self.borders_crop))
@@ -304,6 +308,7 @@ class Reader:
         self.window.right_button_stack.set_visible_child_name('reader')
         self.window.right_button_stack.show()
         self.window.menu_button.set_icon_name('view-more-symbolic')
+        self.window.menu_button.show()
 
         self.page_number_label.hide()
         self.controls.hide()

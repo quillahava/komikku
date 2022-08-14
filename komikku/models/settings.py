@@ -44,6 +44,10 @@ class Settings(Gio.Settings):
             return 'white'
         if value == 1:
             return 'black'
+        if value == 2:
+            return 'gray'
+        if value == 3:
+            return 'system-style'
 
     @property
     def background_color_value(self):
@@ -62,6 +66,10 @@ class Settings(Gio.Settings):
             self.set_enum('background-color', 0)
         elif color == 'black':
             self.set_enum('background-color', 1)
+        elif color == 'gray':
+            self.set_enum('background-color', 2)
+        elif color == 'system-style':
+            self.set_enum('background-color', 3)
 
     @property
     def borders_crop(self):

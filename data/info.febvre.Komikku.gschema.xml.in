@@ -3,6 +3,8 @@
     <enum id="@appid@.BackgroundColor">
         <value nick="white" value="0" />
         <value nick="black" value="1" />
+        <value nick="gray" value="2" />
+        <value nick="system-style" value="3" />
     </enum>
     <enum id="@appid@.ReadingMode">
         <value nick="--" value="-1" />

@@ -79,6 +79,10 @@ class Preferences(Adw.Bin):
             self.settings.background_color = 'white'
         elif index == 1:
             self.settings.background_color = 'black'
+        elif index == 2:
+            self.settings.background_color = 'gray'
+        elif index == 3:
+            self.settings.background_color = 'system-style'
 
     def on_borders_crop_changed(self, switch_button, _gparam):
         self.settings.borders_crop = switch_button.get_active()

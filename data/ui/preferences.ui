@@ -336,7 +336,9 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                   <object class="GtkStringList">
                                     <items>
                                       <item translatable="yes">White</item>
+                                      <item translatable="yes">Gray</item>
                                       <item translatable="yes">Black</item>
+                                      <item translatable="yes">System Style</item>
                                     </items>
                                   </object>
                                 </property>

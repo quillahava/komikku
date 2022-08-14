@@ -70,9 +70,19 @@
                         <attribute name="target">white</attribute>
                     </item>
                     <item>
+                        <attribute name="label" translatable="yes">Gray</attribute>
+                        <attribute name="action">app.reader.background-color</attribute>
+                        <attribute name="target">gray</attribute>
+                    </item>
+                    <item>
                         <attribute name="label" translatable="yes">Black</attribute>
                         <attribute name="action">app.reader.background-color</attribute>
                         <attribute name="target">black</attribute>
+                    </item>
+                    <item>
+                        <attribute name="label" translatable="yes">System Style</attribute>
+                        <attribute name="action">app.reader.background-color</attribute>
+                        <attribute name="target">system-style</attribute>
                     </item>
                 </section>
             </submenu>
