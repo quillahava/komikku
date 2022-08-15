@@ -79,7 +79,7 @@ CREDITS = dict(
 
 class Application(Adw.Application):
     application_id = None
-    development_mode = False
+    profile = None
     logger = None
     version = None
 
@@ -93,7 +93,7 @@ class Application(Adw.Application):
 
         logging.basicConfig(
             format='%(asctime)s | %(levelname)s | %(name)s | %(message)s', datefmt='%d-%m-%y %H:%M:%S',
-            level=logging.DEBUG if self.development_mode else logging.INFO
+            level=logging.DEBUG if self.profile == 'development' else logging.INFO
         )
         self.logger = logging.getLogger('komikku')
 
@@ -346,7 +346,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         css_provider.load_from_resource('/info/febvre/Komikku/css/style.css')
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-        if Gio.Application.get_default().development_mode is True:
+        if self.application.profile in ('beta', 'development'):
             self.add_css_class('devel')
 
         # Theme (light or dark)

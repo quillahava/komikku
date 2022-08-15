@@ -83,7 +83,7 @@ if __name__ == '__main__':
     init_db()
 
     Application.application_id = '@appid@'
-    Application.development_mode = @PROFILE@ == 'development'
+    Application.profile = @PROFILE@
     Application.version = '@VERSION@'
     app = Application()
 
