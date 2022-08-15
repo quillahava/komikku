@@ -434,10 +434,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
             <p>The highlights of this new major version:</p>
             <ul>
                 <li>Library has now two display modes: Grid and Compact grid</li>
-                <li>Faster display of the chapter list, whether there are few or many chapters</li>
+                <li>Faster display of the chapters list, whether there are few or many chapters</li>
                 <li>Full rewriting of the Webtoon reading mode</li>
+                <li>Modern ‘About’ window</li>
             </ul>
-            <p>We hope you will enjoy the new look of this first beta as much as we do.
+            <p>We hope you will enjoy the new look as much as we do.
             All your feedbacks/issues/suggestions are welcome.</p>
         """)
 

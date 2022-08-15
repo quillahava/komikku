@@ -87,16 +87,17 @@
 
     <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
-        <release version="1.0.beta1" date="2022-08-03">
+        <release version="1.0.beta2" date="2022-08-15">
             <description>
                 <p>After several months of effort, Komikku's port to GTK4 and libadwaita is coming to an end.</p>
                 <p>The highlights of this new major version:</p>
                 <ul>
                     <li>Library has now two display modes: Grid and Compact grid</li>
-                    <li>Faster display of the chapter list, whether there are few or many chapters</li>
+                    <li>Faster display of the chapters list, whether there are few or many chapters</li>
                     <li>Full rewriting of the Webtoon reading mode</li>
+                    <li>Modern ‘About’ window</li>
                 </ul>
-                <p>We hope you will enjoy the new look of this first beta as much as we do.
+                <p>We hope you will enjoy the new look as much as we do.
                 All your feedbacks/issues/suggestions are welcome.</p>
             </description>
         </release>

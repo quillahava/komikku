@@ -44,9 +44,9 @@ endif
 # Dependencies
 #
 dependency('glib-2.0')
-dependency('gobject-introspection-1.0', version: '>=1.71.0')
-dependency('gtk4', version: '>=4.5.1')
-dependency('libadwaita-1', version: '>=1.2.alpha')
+dependency('gobject-introspection-1.0', version: '>=1.72.0')
+dependency('gtk4', version: '>=4.7.2')
+dependency('libadwaita-1', version: '>=1.2.beta')
 
 #
 # gschema XML file
