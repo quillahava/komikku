@@ -40,7 +40,10 @@ class DebugInfo:
         keyfile = GLib.KeyFile.new()
         keyfile.load_from_file(path, 0)
         for group, key in data:
-            info[key] = keyfile.get_string(group, key)
+            try:
+                info[key] = keyfile.get_string(group, key)
+            except Exception:
+                info[key] = 'N/A'
 
         return info
 
