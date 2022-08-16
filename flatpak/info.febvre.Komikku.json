@@ -19,9 +19,8 @@
         "--talk-name=org.gnome.SettingsDaemon.Color"
     ],
     "modules" : [
-        "python3-wheel.json",
-        "python3-cffi.json",
         "python3-setuptools_rust.json",
+        "python3-cffi.json",
         "python3-keyring.json",
         "python3-dateparser.json",
         "python3-file-magic.json",
