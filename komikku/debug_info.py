@@ -19,8 +19,9 @@ from komikku.models.database import VERSION as DB_VERSION
 
 
 class DebugInfo:
-    def __init__(self, version):
-        self.version = version
+    def __init__(self, app):
+        self.version = app.version
+        self.profile = app.profile
 
     def get_flatpak_info(self):
         path = os.path.join(GLib.get_user_runtime_dir(), 'flatpak-info')
@@ -81,6 +82,7 @@ class DebugInfo:
     def generate(self):
         info = 'Komikku:\n'
         info += f'- Version: {self.version}\n'
+        info += f'- Profile: {self.profile}\n'
         info += f'- DB version: {DB_VERSION}\n'
         info += '\n'
 

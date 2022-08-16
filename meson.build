@@ -27,7 +27,7 @@ else
 endif
 
 prefix = get_option('prefix') # should be /usr
-profile = get_option('profile') # should be default or development
+profile = get_option('profile') # should be default, development or beta
 bindir = get_option('bindir') # should be /bin
 datadir = get_option('datadir') # should be /usr/share
 pkgdatadir = join_paths(prefix, datadir, meson.project_name())

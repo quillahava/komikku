@@ -425,7 +425,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_developers(CREDITS['developers'])
         window.set_translator_credits('\n'.join(CREDITS['translators']))
 
-        debug_info = DebugInfo(self.application.version)
+        debug_info = DebugInfo(self.application)
         window.set_debug_info_filename('Komikku-debug-info.txt')
         window.set_debug_info(debug_info.generate())
 
