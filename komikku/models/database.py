@@ -23,7 +23,7 @@ from komikku.utils import get_data_dir
 
 logger = logging.getLogger('komikku')
 
-VERSION = 10
+VERSION = 11
 
 
 def adapt_json(data):
