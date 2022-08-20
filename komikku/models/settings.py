@@ -23,7 +23,7 @@ class Settings(Gio.Settings):
     @staticmethod
     def new():
         """Create a new Settings object"""
-        g_settings = Gio.Settings.new('info.febvre.Komikku')
+        g_settings = Gio.Settings.new(Gio.Application.get_default().application_id)
         g_settings.__class__ = Settings
         return g_settings
 
