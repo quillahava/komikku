@@ -196,8 +196,9 @@ class History(Gtk.Box):
             # Hide date_box, will be shown if a least one row of listbox is not filtered
             date_box.hide()
 
-    def show(self, transition=True):
-        self.populate()
+    def show(self, transition=True, reset=True):
+        if reset:
+            self.populate()
 
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')

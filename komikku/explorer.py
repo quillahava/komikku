@@ -686,7 +686,12 @@ class Explorer(Gtk.Stack):
     def search_servers(self, _entry):
         self.servers_page_listbox.invalidate_filter()
 
-    def show(self, transition=True, servers=None):
+    def show(self, transition=True, servers=None, reset=True):
+        if reset:
+            self.servers_page_searchbar.set_search_mode(False)
+            self.populate_servers(servers)
+            self.show_page('servers')
+
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.library_flap_reveal_button.hide()
@@ -695,7 +700,6 @@ class Explorer(Gtk.Stack):
 
         self.window.menu_button.hide()
 
-        self.populate_servers(servers)
         self.window.show_page('explorer', transition=transition)
 
     def show_page(self, name):

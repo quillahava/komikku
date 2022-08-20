@@ -188,8 +188,10 @@ class Card:
         self.update_action.set_enabled(enabled)
         self.sort_order_action.set_enabled(enabled)
 
-    def show(self, transition=True):
-        self.viewswitchertitle.set_title(self.manga.name)
+    def show(self, transition=True, reset=True):
+        if reset:
+            self.viewswitchertitle.set_title(self.manga.name)
+            self.info_box.populate()
 
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
@@ -200,7 +202,6 @@ class Card:
         self.window.menu_button.set_icon_name('view-more-symbolic')
         self.window.menu_button.show()
 
-        self.info_box.populate()
         self.window.show_page('card', transition=transition)
 
     def refresh(self, chapters):

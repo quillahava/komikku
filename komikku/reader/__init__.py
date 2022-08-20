@@ -304,17 +304,18 @@ class Reader:
 
         self.pager.set_orientation(orientation)
 
-    def show(self):
+    def show(self, reset=True):
+        if reset:
+            self.page_number_label.hide()
+            self.controls.hide()
+
+            if Settings.get_default().fullscreen:
+                self.window.set_fullscreen()
+
         self.window.right_button_stack.set_visible_child_name('reader')
         self.window.right_button_stack.show()
         self.window.menu_button.set_icon_name('view-more-symbolic')
         self.window.menu_button.show()
-
-        self.page_number_label.hide()
-        self.controls.hide()
-
-        if Settings.get_default().fullscreen:
-            self.window.set_fullscreen()
 
         self.window.show_page('reader')
 

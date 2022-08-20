@@ -502,8 +502,9 @@ class DownloadManager(Gtk.Box):
             self.listbox.select_row(row)
             row._selected = True
 
-    def show(self, transition=True):
-        self.populate()
+    def show(self, transition=True, reset=True):
+        if reset:
+            self.populate()
 
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')

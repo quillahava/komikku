@@ -536,16 +536,16 @@ class Library:
                 thumbnail._selected = True
                 self.flowbox.select_child(thumbnail)
 
-    def show(self, invalidate_sort=False):
-        self.window.left_button.set_tooltip_text(_('Add new comic'))
-        self.window.left_button.set_icon_name('list-add-symbolic')
-
-        if self.page == 'flowbox':
-            if self.searchbar.get_search_mode():
-                self.search_entry.grab_focus()
-
+    def show(self, invalidate_sort=False, reset=True):
+        if reset and self.page == 'flowbox':
             if invalidate_sort:
                 self.flowbox.invalidate_sort()
+
+        if self.searchbar.get_search_mode():
+            self.search_entry.grab_focus()
+
+        self.window.left_button.set_tooltip_text(_('Add new comic'))
+        self.window.left_button.set_icon_name('list-add-symbolic')
 
         self.update_headerbar_buttons()
 
