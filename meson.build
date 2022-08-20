@@ -1,7 +1,7 @@
 project('komikku',
     version: '1.0.beta2',
-    meson_version: '>= 0.50.0',
-    license: 'GPL3-or-later'
+    meson_version: '>= 0.59.0',
+    license: 'GPL-3.0-or-later'
 )
 
 description = 'A manga reader for GNOME'
@@ -34,8 +34,13 @@ pkgdatadir = join_paths(prefix, datadir, meson.project_name())
 pythondir = py_installation.get_install_dir()
 localedir = join_paths(prefix, get_option('localedir'))
 
-app_id = '.'.join([domainext, domainname, prettyname])
+base_id = '.'.join([domainext, domainname, prettyname])
 app_id_aspath = '/'.join([domainext, domainname, prettyname])
+if profile == 'development'
+    app_id = base_id + '.Devel'
+else
+    app_id = base_id
+endif
 
 install_subdir(meson.project_name(), install_dir: pythondir)
 
@@ -43,4 +48,9 @@ subdir('data')
 subdir('bin')
 subdir('po')
 
-meson.add_install_script('meson_post_install.py')
+# Run required post-install steps
+gnome.post_install(
+    gtk_update_icon_cache: true,
+    glib_compile_schemas: true,
+    update_desktop_database: true,
+)

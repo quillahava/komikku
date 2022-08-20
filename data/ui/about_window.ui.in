@@ -21,8 +21,8 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
   <requires lib="libadwaita" version="1.0"/>
   <object class="AdwAboutWindow" id="about_window">
     <property name="application-name">@prettyname@</property>
-    <property name="application-icon">@APPID@</property>
-    <property name="version">@VERSION@</property>
+    <property name="application-icon">@app_id@</property>
+    <property name="version">@version@</property>
     <property name="developer-name">@authorfullname@</property>
     <property name="copyright">© 2019-2022 @authorfullname@</property>
     <property name="comments" translatable="yes">A manga, manhwa, manhua, webtoons, webcomics and comics reader for GNOME
@@ -30,7 +30,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
 👉 Never forget, you can support the authors
 by buying the official comics when they are
 available in your region/language.</property>
-    <property name="website">@PACKAGE_URL@</property>
+    <property name="website">@website@</property>
     <property name="license-type">gpl-3-0</property>
     <property name="issue-url">@gitrepo@/-/issues/new</property>
   </object>

@@ -22,6 +22,7 @@ class DebugInfo:
     def __init__(self, app):
         self.version = app.version
         self.profile = app.profile
+        self.app_id = app.application_id
 
     def get_flatpak_info(self):
         path = os.path.join(GLib.get_user_runtime_dir(), 'flatpak-info')
@@ -87,6 +88,7 @@ class DebugInfo:
         info += f'- Version: {self.version}\n'
         info += f'- Profile: {self.profile}\n'
         info += f'- DB version: {DB_VERSION}\n'
+        info += f'- ID: {self.app_id}\n'
         info += '\n'
 
         info += 'Compiled against:\n'

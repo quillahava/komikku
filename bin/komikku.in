@@ -78,9 +78,6 @@ if __name__ == '__main__':
     resource._register()
 
     from @projectname@.application import Application
-    from @projectname@.models import init_db
-
-    init_db()
 
     Application.application_id = '@appid@'
     Application.profile = @PROFILE@

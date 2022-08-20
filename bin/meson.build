@@ -3,7 +3,7 @@ conf = configuration_data()
 
 conf.set_quoted('PROFILE', profile)
 conf.set('VERSION', meson.project_version())
-conf.set('PYTHON', py_installation.path())
+conf.set('PYTHON', py_installation.full_path())
 conf.set('prefix', prefix)
 conf.set('datadir', datadir)
 conf.set('pkgdatadir', pkgdatadir)
@@ -23,7 +23,7 @@ configure_file(
   install_dir: get_option('bindir')
 )
 
-myprogram = join_paths(meson.build_root(), 'bin', meson.project_name())
+myprogram = join_paths(meson.project_build_root(), 'bin', meson.project_name())
 run_target('run',
   command: [myprogram]
 )

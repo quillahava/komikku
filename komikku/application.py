@@ -32,6 +32,7 @@ from komikku.explorer import Explorer
 from komikku.history import History
 from komikku.library import Library
 from komikku.models import backup_db
+from komikku.models import init_db
 from komikku.models import Settings
 from komikku.preferences import Preferences
 from komikku.reader import Reader
@@ -137,6 +138,7 @@ class Application(Adw.Application):
     def do_startup(self):
         Adw.Application.do_startup(self)
 
+        init_db()
         Notify.init('Komikku')
 
 

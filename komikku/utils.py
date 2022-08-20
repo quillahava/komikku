@@ -116,6 +116,7 @@ def get_cache_dir():
 @lru_cache(maxsize=None)
 def get_data_dir():
     data_dir_path = GLib.get_user_data_dir()
+    app_profile = Gio.Application.get_default().profile
 
     # Check if inside flatpak sandbox
     if is_flatpak():
@@ -123,6 +124,11 @@ def get_data_dir():
 
     base_path = data_dir_path
     data_dir_path = os.path.join(base_path, 'komikku')
+    if app_profile == 'development':
+        data_dir_path += '-devel'
+    elif app_profile == 'beta':
+        data_dir_path += '-beta'
+
     if not os.path.exists(data_dir_path):
         os.mkdir(data_dir_path)
 

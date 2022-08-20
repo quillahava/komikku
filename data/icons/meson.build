@@ -1,15 +1,25 @@
 message('Install icons')
 
 # Scalable
-icondir = join_paths(datadir, 'icons/hicolor/scalable/apps')
-install_data (
-    'info.febvre.Komikku.svg',
-    install_dir: icondir
-)
+scalable_dir = join_paths(datadir, 'icons/hicolor/scalable/apps')
+profile = get_option('profile')
+if profile == 'beta'
+    install_data (
+        '@0@.Devel.svg'.format(base_id),
+        install_dir: scalable_dir,
+        rename: '@0@.svg'.format(app_id)
+    )
+else
+    install_data (
+        '@0@.svg'.format(app_id),
+        install_dir: scalable_dir,
+    )
+endif
 
 # Symbolic
-icondir = join_paths(datadir, 'icons/hicolor/symbolic/apps')
+symbolic_dir = join_paths(datadir, 'icons/hicolor/symbolic/apps')
 install_data (
-    'info.febvre.Komikku-symbolic.svg',
-    install_dir: icondir
+    '@0@-symbolic.svg'.format(base_id),
+    install_dir: symbolic_dir,
+    rename: '@0@-symbolic.svg'.format(app_id)
 )

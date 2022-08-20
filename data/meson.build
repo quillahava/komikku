@@ -8,15 +8,13 @@ desktop_conf = configuration_data()
 desktop_conf.set('bindir', join_paths(prefix, bindir))
 desktop_conf.set('prettyname', prettyname)
 # .desktop comment now hardcoded for better i18n support
-#desktop_conf.set('description', description)
+desktop_conf.set('description', description)
 desktop_conf.set('appid', app_id)
 desktop_conf.set('projectname', meson.project_name())
 
 desktop_file = configure_file(
-    input: app_id + '.desktop.in',
-    output: app_id + '.desktop.i18n.in',
-    #install: true,
-    #install_dir: join_paths(datadir, 'applications'),
+    input: base_id + '.desktop.in',
+    output: base_id + '.desktop.i18n.in',
     configuration: desktop_conf
 )
 
@@ -57,7 +55,7 @@ gschema_conf.set('appid', app_id)
 gschema_conf.set('projectname', meson.project_name())
 
 configure_file(
-    input: app_id + '.gschema.xml.in',
+    input: base_id + '.gschema.xml.in',
     output: app_id + '.gschema.xml',
     configuration: gschema_conf,
     install: true,
@@ -80,7 +78,7 @@ subdir('icons')
 #
 message('Compile gresource XML file')
 app_resources = gnome.compile_resources(app_id,
-    app_id + '.gresource.xml',
+    base_id + '.gresource.xml',
     gresource_bundle: true,
     dependencies: configure_file(
         input: 'ui/about_window.ui.in',
@@ -92,21 +90,33 @@ app_resources = gnome.compile_resources(app_id,
 )
 
 #
-# appdata XML file
+# appdata/metainfo XML file
 #
 message('Merge translations of appdata XML file')
-i18n.merge_file(
-    input: app_id + '.appdata.xml.in',
-    output: app_id + '.appdata.xml',
-    po_dir: '../po',
-    install: true,
-    install_dir: join_paths(datadir, 'metainfo')
+conf = configuration_data()
+conf.set('app_id', app_id)
+conf.set('prettyname', prettyname)
+conf.set('authorfullname', authorfullname)
+conf.set('authoremail', authoremail)
+conf.set('license', meson.project_license())
+conf.set('website', website)
+conf.set('gitrepo', gitrepo)
+appdata_file = i18n.merge_file(
+  input: configure_file(
+    input: '@0@.appdata.xml.in.in'.format(base_id),
+    output: '@0@.appdata.xml.in'.format(base_id),
+    configuration: conf
+  ),
+  output: '@0@.appdata.xml'.format(app_id),
+  po_dir: '../po',
+  install: true,
+  install_dir: join_paths(datadir, 'metainfo')
 )
 
 appstreamcli = find_program('appstream-util', required: false)
 if appstreamcli.found()
     test (
-        'Validate appdata file',
+        'Validate appdata/metainfo file',
         appstreamcli,
         args: ['validate-relax', join_paths(meson.current_build_dir (), app_id + '.appdata.xml')]
     )

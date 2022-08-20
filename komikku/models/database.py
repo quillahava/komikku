@@ -14,12 +14,15 @@ from PIL import Image
 import sqlite3
 import shutil
 
+from gi.repository import Gio
+
 from komikku.servers.utils import convert_image
 from komikku.servers.utils import get_server_class_name_by_id
 from komikku.servers.utils import get_server_dir_name_by_id
 from komikku.servers.utils import get_server_module_name_by_id
 from komikku.servers.utils import unscramble_image
 from komikku.utils import get_data_dir
+from komikku.utils import is_flatpak
 
 logger = logging.getLogger('komikku')
 
@@ -94,12 +97,29 @@ def execute_sql(conn, sql):
 
 @lru_cache(maxsize=None)
 def get_db_path():
-    return os.path.join(get_data_dir(), 'komikku.db')
+    app_profile = Gio.Application.get_default().profile
+
+    if is_flatpak() and app_profile == 'beta':
+        # In Flathub beta version share same data folder with stable version:
+        # ~/.var/app/info.febvre.Komikku/data/
+        # So, DB files must have distinct names
+        name = 'komikku_beta.db'
+    else:
+        name = 'komikku.db'
+
+    return os.path.join(get_data_dir(), name)
 
 
 @lru_cache(maxsize=None)
 def get_db_backup_path():
-    return os.path.join(get_data_dir(), 'komikku_backup.db')
+    app_profile = Gio.Application.get_default().profile
+
+    if is_flatpak() and app_profile == 'beta':
+        name = 'komikku_beta_backup.db'
+    else:
+        name = 'komikku_backup.db'
+
+    return os.path.join(get_data_dir(), name)
 
 
 def init_db():

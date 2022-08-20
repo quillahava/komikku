@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-    <id>info.febvre.Komikku</id>
-    <translation type="gettext">info.febvre.Komikku</translation>
-    <project_license>GPL-3.0-or-later</project_license>
+    <id>@app_id@</id>
+    <translation type="gettext">@app_id@</translation>
+    <launchable type="desktop-id">@app_id@.desktop</launchable>
+    <project_license>@license@</project_license>
     <metadata_license>CC-BY-4.0</metadata_license>
     <content_rating type="oars-1.1" />
 
-    <name>Komikku</name>
+    <name>@prettyname@</name>
     <summary>Read your favorite manga online or offline</summary>
     <description>
         <p>Komikku is a manga, manhwa, manhua, webtoons, webcomics and comics reader.</p>
@@ -77,15 +78,14 @@
         </screenshot>
     </screenshots>
 
-    <developer_name>Valéry Febvre</developer_name>
-    <update_contact>vfebvre@easter-eggs.com</update_contact>
+    <developer_name>@authorfullname@</developer_name>
+    <update_contact>@authoremail@</update_contact>
 
-    <url type="homepage">https://valos.gitlab.io/Komikku/</url>
-    <url type="bugtracker">https://gitlab.com/valos/Komikku/-/issues</url>
+    <url type="homepage">@website@</url>
+    <url type="bugtracker">@gitrepo@/-/issues</url>
     <url type="donation">https://liberapay.com/valos/donate</url>
     <url type="donation">https://ko-fi.com/valos</url>
 
-    <launchable type="desktop-id">info.febvre.Komikku.desktop</launchable>
     <releases>
         <release version="1.0.beta2" date="2022-08-15">
             <description>
