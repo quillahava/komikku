@@ -537,12 +537,12 @@ class Library:
                 self.flowbox.select_child(thumbnail)
 
     def show(self, invalidate_sort=False, reset=True):
-        if reset and self.page == 'flowbox':
+        if self.page == 'flowbox':
             if invalidate_sort:
                 self.flowbox.invalidate_sort()
 
-        if self.searchbar.get_search_mode():
-            self.search_entry.grab_focus()
+            if self.searchbar.get_search_mode():
+                self.search_entry.grab_focus()
 
         self.window.left_button.set_tooltip_text(_('Add new comic'))
         self.window.left_button.set_icon_name('list-add-symbolic')
