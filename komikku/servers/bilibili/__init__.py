@@ -160,7 +160,7 @@ class Bilibili(Server):
         payload = dict(
             area_id=-1,
             is_finish=-1,
-            is_free=-1,  # All: -1, Free: 1, Paid: 2
+            is_free=1,  # All: -1, Free: 1, Paid: 2
             page_num=1,
             style_id=-1,
             style_prefer='[]',
