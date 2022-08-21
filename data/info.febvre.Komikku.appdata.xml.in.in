@@ -87,7 +87,7 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
-        <release version="1.0.beta2" date="2022-08-15">
+        <release version="1.0.beta3" date="2022-08-22">
             <description>
                 <p>After several months of effort, Komikku's port to GTK4 and libadwaita is coming to an end.</p>
                 <p>The highlights of this new major version:</p>
