@@ -30,7 +30,7 @@ class Japscan(Server):
     lang = 'fr'
     long_strip_genres = ['Webtoon', ]
 
-    base_url = 'https://www.japscan.ws'
+    base_url = 'https://www.japscan.me'
     search_url = base_url + '/manga/'
     api_search_url = base_url + '/live-search/'
     manga_url = base_url + '/manga/{0}/'
