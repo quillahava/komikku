@@ -170,9 +170,11 @@ class Japscan(Server):
         """
         error = None
         image_buffer = None
+        user_agent = 'Mozilla/5.0 (Linux; Android 11; sdk_gphone_arm64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.104 Mobile Safari/537.36'
+        user_agent = user_agent.replace('Mobile', 'eliboM').replace('Android', 'diordnA')
 
         def load_page(url):
-            if not headless_browser.open(url):
+            if not headless_browser.open(url, user_agent=user_agent):
                 return True
 
             headless_browser.connect_signal('load-changed', on_load_changed)
@@ -188,14 +190,21 @@ class Japscan(Server):
                 const checkExist = setInterval(() => {
                     if (document.getElementsByTagName('CNV-VV').length) {
                         clearInterval(checkExist);
+
+                        var iframes = document.querySelectorAll('iframe');
+                        for (var i = 0; i < iframes.length; i++) {
+                            iframes[i].parentNode.removeChild(iframes[i]);
+                        }
+
                         var e = document.body,
                             a = e.children;
                         for (e.appendChild(document.getElementsByTagName('CNV-VV')[0]);
                             'CNV-VV' != a[0].tagName;) e.removeChild(a[0]);
+
                         for (var t of [].slice.call(a[0].all_canvas)) t.style.maxWidth = '100%';
                         document.title = JSON.stringify({width: a[0].all_canvas[0].width, height: a[0].all_canvas[0].height});
                     }
-                }, 100);
+                }, 1000);
             """
             headless_browser.webview.run_javascript(js, None, None)
 
@@ -208,7 +217,7 @@ class Japscan(Server):
 
         def on_title_changed(_webview, title):
             try:
-                size = json.loads(headless_browser.webview.props.title)
+                size = json.loads(headless_browser.webview.get_title())
             except Exception:
                 return
 
@@ -224,13 +233,16 @@ class Japscan(Server):
                 nonlocal image_buffer
 
                 # Get image data
-                surface = headless_browser.webview.get_snapshot_finish(result)
-                if surface:
-                    io_buffer = BytesIO()
-                    surface.write_to_png(io_buffer)
-                    image_buffer = io_buffer.getbuffer()
-                else:
-                    error = f'Failed to do page image snapshot: {page_url}'
+                try:
+                    surface = headless_browser.webview.get_snapshot_finish(result)
+                    if surface:
+                        io_buffer = BytesIO()
+                        surface.write_to_png(io_buffer)
+                        image_buffer = io_buffer.getbuffer()
+                    else:
+                        error = f'Failed to get page image snapshot: {page_url}'
+                except GLib.GError:
+                    error = f'Failed to get page image snapshot: {page_url}'
 
                 headless_browser.close()
 
@@ -241,7 +253,7 @@ class Japscan(Server):
         GLib.timeout_add(100, load_page, page_url)
 
         while image_buffer is None and error is None:
-            time.sleep(.1)
+            time.sleep(1)
 
         if error:
             logger.warning(error)
