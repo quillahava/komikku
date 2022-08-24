@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from copy import deepcopy
 from gettext import gettext as _
 from gettext import ngettext as n_
 import natsort

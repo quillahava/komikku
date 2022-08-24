@@ -141,7 +141,7 @@ class BasePager:
             # Init and fill with '0'
             read_progress = '0' * len(chapter.pages)
         # Mark current page as read
-        read_progress = read_progress[:page.index] + '1' + read_progress[page.index+1:]
+        read_progress = read_progress[:page.index] + '1' + read_progress[page.index + 1:]
         chapter_is_read = '0' not in read_progress
         if chapter_is_read:
             read_progress = None
