@@ -100,8 +100,9 @@ class HeadlessBrowser(Gtk.Window):
         self.viewport.set_child(self.webview)
 
         self.settings = self.webview.get_settings()
-        self.settings.set_enable_dns_prefetching(True)
         self.settings.set_enable_page_cache(False)
+        self.settings.set_enable_frame_flattening(True)
+        self.settings.set_enable_accelerated_2d_canvas(True)
 
         self.web_context = self.webview.get_context()
         self.web_context.set_cache_model(WebKit2.CacheModel.DOCUMENT_VIEWER)
