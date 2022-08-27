@@ -284,6 +284,9 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         if not self.interactive:
             return Gdk.EVENT_STOP
 
+        # Hide controls
+        self.reader.toggle_controls(False)
+
         self.interactive = False
 
         scroll_value_top = self.vadj.get_value()

@@ -509,6 +509,9 @@ class Pager(Adw.Bin, BasePager):
 
             return
 
+        # Hide controls
+        self.reader.toggle_controls(False)
+
         GLib.idle_add(self.update, page, index)
         GLib.idle_add(self.save_progress, page)
 

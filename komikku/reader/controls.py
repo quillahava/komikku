@@ -15,7 +15,7 @@ class Controls:
         self.reader = reader
         self.window = reader.window
 
-        self.bottom_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.bottom_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, visible=False)
         self.bottom_box.props.margin_end = 12
         self.bottom_box.props.margin_bottom = 12
         self.bottom_box.props.margin_start = 12

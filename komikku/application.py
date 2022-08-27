@@ -499,8 +499,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
                 self.library.update_thumbnail(self.card.manga)
 
         elif self.page == 'reader':
-            self.reader.remove_pager()
-            self.set_unfullscreen()
+            self.reader.on_navigate_back()
 
             # Refresh to update all previously chapters consulted (last page read may have changed)
             # and update info like disk usage

@@ -133,11 +133,14 @@ class Reader:
         self.set_action_borders_crop()
         self.set_action_page_numbering()
 
+        if self.page_numbering:
+            self.page_number_label.show()
+        if Settings.get_default().fullscreen:
+            self.window.set_fullscreen()
+
         self.show()
 
     def init_pager(self, chapter):
-        self.remove_pager()
-
         if self.reading_mode == 'webtoon':
             self.pager = WebtoonPager(self)
         else:
@@ -162,6 +165,15 @@ class Reader:
         self.manga.update(dict(borders_crop=variant.get_boolean()))
         self.set_action_borders_crop()
         self.pager.crop_pages_borders()
+
+    def on_navigate_back(self):
+        if self.pager:
+            self.pager.dispose()
+            self.pager = None
+
+        self.controls.hide()
+        self.page_number_label.hide()
+        self.window.set_unfullscreen()
 
     def on_page_numbering_changed(self, action, variant):
         value = not variant.get_boolean()
@@ -213,11 +225,6 @@ class Reader:
         # Wait page is shown (transition is ended) to init pager
         # Operation is resource intensive and could disrupt page transition
         self.init_pager(self.init_chapter)
-
-    def remove_pager(self):
-        if self.pager:
-            self.pager.dispose()
-            self.pager = None
 
     def save_page(self, action, param):
         if self.window.page != 'reader':
@@ -305,13 +312,6 @@ class Reader:
         self.pager.set_orientation(orientation)
 
     def show(self, reset=True):
-        if reset:
-            self.page_number_label.hide()
-            self.controls.hide()
-
-            if Settings.get_default().fullscreen:
-                self.window.set_fullscreen()
-
         self.window.right_button_stack.set_visible_child_name('reader')
         self.window.right_button_stack.show()
         self.window.menu_button.set_icon_name('view-more-symbolic')
@@ -319,14 +319,17 @@ class Reader:
 
         self.window.show_page('reader')
 
-    def toggle_controls(self):
-        if self.controls.is_visible:
+    def toggle_controls(self, visible=None):
+        if visible is None:
+            visible = not self.controls.is_visible
+
+        if visible:
+            self.controls.show()
+            self.page_number_label.hide()
+        else:
             self.controls.hide()
             if self.page_numbering:
                 self.page_number_label.show()
-        else:
-            self.controls.show()
-            self.page_number_label.hide()
 
     def update_page_number(self, number, total):
         if total is not None:
