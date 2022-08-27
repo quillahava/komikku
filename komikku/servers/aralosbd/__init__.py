@@ -91,7 +91,7 @@ class Aralosbd(Server):
         # Synopsis
         data['synopsis'] = soup.find('div', class_='description-text').text.strip()
 
-        # # Chapters
+        # Chapters
         r = self.session_get(
             self.api_chapters_url.format(data['slug']),
             headers={
