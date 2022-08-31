@@ -698,6 +698,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
             return
 
         if self.is_fullscreen():
+            # Hide reader controls if visible
+            self.reader.toggle_controls(False)
+
             self.set_unfullscreen()
         else:
             self.set_fullscreen()
