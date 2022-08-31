@@ -260,6 +260,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
     def page(self, value):
         self._page = value
 
+    @property
+    def monitor(self):
+        surface = self.get_native().get_surface()
+        return surface.get_display().get_monitor_at_surface(surface)
+
     def add_accelerators(self):
         self.application.set_accels_for_action('app.add', ['<Primary>plus'])
         self.application.set_accels_for_action('app.enter-search-mode', ['<Primary>f'])
@@ -310,6 +315,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.download_manager.add_actions()
 
     def assemble_window(self):
+        # Set window size: default or saved size
+        self.set_default_size(*Settings.get_default().window_size)
+        self.set_size_request(360, -1)
+
         # Titlebar
         self.left_button.connect('clicked', self.on_left_button_clicked)
         self.menu_button.set_create_popup_func(self.on_primary_menu_shown)
@@ -320,6 +329,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         # Window
         self.connect('notify::default-width', self.on_resize)
+        self.connect('notify::default-height', self.on_resize)
         self.connect('notify::fullscreened', self.on_resize)
         self.connect('notify::maximized', self.on_resize)
 
@@ -355,6 +365,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.init_theme()
 
         self.library.show()
+        # Used idle_add to be sure that startup things are finished and that window size is known
+        GLib.idle_add(self.library.populate)
 
     def confirm(self, title, message, callback, response_appearance=None):
         def on_response(dialog, response_id):
@@ -568,21 +580,27 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Focus is lost after showing popover submenu (bug?)
         self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())
 
-    def on_resize(self, _window, _allocation):
-        if not self.get_mapped():
-            return
+    def on_resize(self, _window, allocation):
+        def on_maximized():
+            # Wait until maximization is effective
+            if self.get_width() < self.monitor.props.geometry.width and self.is_maximized():
+                return True
 
-        if not self.is_maximized() and not self.is_fullscreen():
-            width = self.props.default_width
+            do_resize()
+
+        def do_resize():
+            self.mobile_width = self.get_width() <= 720
+
+            self.library.on_resize()
+            self.card.on_resize()
+            self.explorer.on_resize()
+            if self.page == 'reader':
+                self.reader.on_resize()
+
+        if allocation.name == 'maximized':
+            GLib.idle_add(on_maximized)
         else:
-            width = self.get_width()
-        self.mobile_width = width <= 720
-
-        self.library.on_resize()
-        self.card.on_resize()
-        self.explorer.on_resize()
-        if self.page == 'reader':
-            self.reader.on_resize()
+            do_resize()
 
     def on_shortcuts_menu_clicked(self, action, param):
         builder = Gtk.Builder()
@@ -592,15 +610,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         shortcuts_overview.set_modal(True)
         shortcuts_overview.set_transient_for(self)
         shortcuts_overview.present()
-
-    def present(self):
-        super().present()
-
-        # Set window size: default or saved size
-        self.set_default_size(*Settings.get_default().window_size)
-
-        self.library.populate()
-        self.library.show()
 
     def quit(self, *args):
         def do_quit():

@@ -236,11 +236,7 @@ class Library:
         default_width = Thumbnail.default_width
         default_height = Thumbnail.default_height
 
-        container_width = self.window.props.default_width if not self.window.is_maximized() else self.window.get_width()
-        if container_width == 0:
-            container_width = Settings.get_default().window_size[0]
-        # Substract flowbox horizontal margins
-        container_width -= self.flowbox.props.margin_start + self.flowbox.props.margin_end
+        container_width = self.window.get_width() or self.window.props.default_width
 
         if container_width / default_width != container_width // default_width:
             nb = container_width // default_width + 1
@@ -249,7 +245,7 @@ class Library:
             width = default_width
         width -= Thumbnail.padding * 2 + Thumbnail.margin * 2
 
-        height = width * default_height // default_width
+        height = (width * default_height) // default_width
 
         self.thumbnails_cover_size = (width, height)
 
@@ -451,9 +447,14 @@ class Library:
         if self.page == 'start_page':
             return
 
-        self.compute_thumbnails_cover_size()
-        for thumbnail in self.flowbox:
-            thumbnail.resize(*self.thumbnails_cover_size)
+        def do_resize():
+            self.compute_thumbnails_cover_size()
+
+            for thumbnail in self.flowbox:
+                thumbnail.resize(*self.thumbnails_cover_size)
+
+        # Wait until there are no higher priority events pending to the default main loop
+        GLib.idle_add(do_resize)
 
     def on_search_entry_activated(self, _entry):
         """Open first manga in search when <Enter> is pressed"""
@@ -557,10 +558,10 @@ class Library:
         if self.page == name:
             return
 
+        self.page = name
+
         self.stack.set_visible_child_name(name)
         self.update_headerbar_buttons()
-
-        self.page = name
 
     def toggle_search_mode(self):
         self.searchbar.set_search_mode(not self.searchbar.get_search_mode())
@@ -793,7 +794,7 @@ class Thumbnail(Gtk.FlowBoxChild):
     default_width = 180
     default_height = 256
     padding = 6  # padding is overriding via CSS
-    margin = 2   # flowbox column spacing / 2
+    margin = 3   # flowbox column spacing divided by 2
 
     def __init__(self, parent, manga, width, height):
         super().__init__()

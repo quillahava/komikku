@@ -5,7 +5,6 @@ spinner {
 /* Library page */
 flowbox flowboxchild {
     padding: 6px; /* default is 4px */
-    margin: 2px;
     border-radius: 12px; /* default is 6px */
 }
 flowbox flowboxchild:selected {
