@@ -61,6 +61,7 @@ class MangaStream(Server):
         },
     ]
 
+    ignored_chapters_keywords: list = []
     ignored_pages: list = []
     search_query_param = 's'
 
@@ -132,9 +133,17 @@ class MangaStream(Server):
         # Chapters
         if container_element := soup.find('div', id='chapterlist'):
             for item in reversed(container_element.find_all('li')):
-                slug = item.get('data-num').replace('.', '-')
-
                 a_element = item.div.div.a
+
+                slug = a_element.get('href').split('/')[-2]
+                ignore = False
+                for keyword in self.ignored_chapters_keywords:
+                    if keyword in slug:
+                        ignore = True
+                        break
+                if ignore:
+                    continue
+
                 title = a_element.find('span', class_='chapternum').text.strip()
                 if date_element := a_element.find('span', class_='chapterdate'):
                     date = convert_date_string(date_element.text.strip(), format='%B %d, %Y')
@@ -150,8 +159,17 @@ class MangaStream(Server):
             for item in reversed(soup.select('.bixbox li')):
                 a_element = item.find('a')
 
+                slug = a_element.get('href').split('/')[-1]
+                ignore = False
+                for keyword in self.ignored_chapters_keywords:
+                    if keyword in slug:
+                        ignore = True
+                        break
+                if ignore:
+                    continue
+
                 data['chapters'].append(dict(
-                    slug=a_element.get('href').split('/')[-1],
+                    slug=slug,
                     title=a_element.text.strip(),
                     date=convert_date_string(item.find('time').get('title').split()[0], format='%Y-%m-%d'),
                 ))
@@ -183,7 +201,8 @@ class MangaStream(Server):
         )
 
         if reader_element := soup.find('div', id='readerarea'):
-            if reader_element.is_empty_element:
+            img_elements = reader_element.find_all('img')
+            if not img_elements:
                 # Pages images are loaded via javascript
                 for script_element in soup.find_all('script'):
                     script = script_element.string
@@ -203,7 +222,7 @@ class MangaStream(Server):
                                     image=image,
                                 ))
             else:
-                for img_element in reader_element.find_all('img'):
+                for img_element in img_elements:
                     image = img_element.get('data-src')
                     if not image:
                         image = img_element.get('src')
