@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -20,10 +20,10 @@ class Rawmanga(MangaStream):
 
     name_selector = '.infox h1'
     thumbnail_selector = '.thumb img'
-    authors_selector = '.infox span:contains("Author")'
-    genres_selector = '.infox span:contains("Genres") a'
-    scanlators_selector = '.infox span:contains("Serialization")'
-    status_selector = '.infox span:contains("Status")'
+    authors_selector = '.infox span:-soup-contains("Author")'
+    genres_selector = '.infox span:-soup-contains("Genres") a'
+    scanlators_selector = '.infox span:-soup-contains("Serialization")'
+    status_selector = '.infox span:-soup-contains("Status")'
     synopsis_selector = '[itemprop="articleBody"]'
 
     search_query_param = 'q'
