@@ -1,4 +1,4 @@
-data/info.febvre.Komikku.appdata.xml.in
+data/info.febvre.Komikku.appdata.xml.in.in
 data/info.febvre.Komikku.desktop.in
 data/ui/about_window.ui.in
 data/ui/application_window.ui
@@ -32,6 +32,7 @@ komikku/servers/dynasty/__init__.py
 komikku/servers/exceptions.py
 komikku/servers/mangadex/__init__.py
 komikku/servers/mangapill/__init__.py
+komikku/servers/multi/madara.py
 komikku/servers/multi/manga_stream.py
 komikku/servers/readmanhwa/__init__.py
 komikku/updater.py
