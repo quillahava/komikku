@@ -87,7 +87,7 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
-        <release version="1.0.beta3" date="2022-08-22">
+        <release version="1.0.beta4" date="2022-09-01">
             <description>
                 <p>After several months of effort, Komikku's port to GTK4 and libadwaita is coming to an end.</p>
                 <p>The highlights of this new major version:</p>
@@ -99,6 +99,25 @@
                 </ul>
                 <p>We hope you will enjoy the new look as much as we do.
                 All your feedbacks/issues/suggestions are welcome.</p>
+            </description>
+        </release>
+        <release version="0.41.0" date="2022-09-01">
+            <description>
+                <ul>
+                    <li>[Servers] Add Aralos BD [FR]</li>
+                    <li>[Servers] Add Manga-Scantrad [FR]</li>
+                    <li>[Servers] Add Mangas Origines [FR]</li>
+                    <li>[Servers] Add Mangaowl [EN]</li>
+                    <li>[Servers] Asura Scans: Update (EN+TR)</li>
+                    <li>[Servers] BILIBILI COMICS: Update</li>
+                    <li>[Servers] JapScan: Update</li>
+                    <li>[Servers] MangaHub: Update</li>
+                    <li>[Servers] Mangas.in: Fix `Most populars` order</li>
+                    <li>[Servers] Phoenix Fansub: Update</li>
+                    <li>[Servers] Rawkuma: Update</li>
+                    <li>[Servers] ReadManhwa: Update</li>
+                    <li>[Servers] Union Mangás: Update</li>
+                </ul>
             </description>
         </release>
         <release version="0.40.0" date="2022-07-25">
