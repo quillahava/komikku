@@ -127,7 +127,7 @@ class Readcomiconline(Server):
     most_populars_url = base_url + '/ComicList/MostPopular'
     search_url = base_url + '/Search/SearchSuggest'
     manga_url = base_url + '/Comic/{0}'
-    chapter_url = base_url + '/Comic/{0}/{1}'
+    chapter_url = base_url + '/Comic/{0}/{1}?readType=1'
 
     def __init__(self):
         self.session = None
@@ -238,10 +238,11 @@ class Readcomiconline(Server):
         data = dict(
             pages=[],
         )
-        for img_element in soup.select('#divImage img'):
+        for index, img_element in enumerate(soup.select('#divImage img')):
             data['pages'].append(dict(
                 image=img_element.get('src'),
                 slug=None,
+                index=index + 1,
             ))
 
         return data
@@ -262,7 +263,7 @@ class Readcomiconline(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=page['image'].split('/')[-1],
+            name=f"{page['index']}.{mime_type.split('/')[1]}",
         )
 
     def get_manga_url(self, slug, url):
