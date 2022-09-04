@@ -1,126 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from bs4 import BeautifulSoup
-import functools
 import logging
 import requests
-import time
 
-from gi.repository import GLib
-from gi.repository import WebKit2
-
-from komikku.servers import headless_browser
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
-from komikku.servers.exceptions import CloudflareBypassError
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 
 logger = logging.getLogger('komikku.servers.mangafreak')
 
-SERVER_NAME = 'MangaFreak'
-
-
-def bypass_cloudflare(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        server = args[0]
-        if server.session:
-            return func(*args, **kwargs)
-
-        cf_reload_count = -1
-        done = False
-        error = None
-
-        def load_page():
-            settings = dict(
-                auto_load_images=False,
-            )
-            if not headless_browser.open(server.base_url, user_agent=USER_AGENT, settings=settings):
-                return True
-
-            headless_browser.connect_signal('load-changed', on_load_changed)
-            headless_browser.connect_signal('load-failed', on_load_failed)
-            headless_browser.connect_signal('notify::title', on_title_changed)
-
-        def on_load_changed(webview, event):
-            nonlocal cf_reload_count
-            nonlocal error
-
-            if event != WebKit2.LoadEvent.FINISHED:
-                return
-
-            cf_reload_count += 1
-            if cf_reload_count > 20:
-                error = 'Max Cloudflare reload exceeded'
-                headless_browser.close()
-                return
-
-            # Detect end of Cloudflare challenge via JavaScript
-            js = """
-                const checkCF = setInterval(() => {
-                    if (!document.getElementById('cf-content')) {
-                        clearInterval(checkCF);
-                        document.title = 'ready';
-                    }
-                }, 100);
-            """
-            headless_browser.webview.run_javascript(js, None, None)
-
-        def on_load_failed(_webview, _event, _uri, gerror):
-            nonlocal error
-
-            error = f'Failed to load homepage: {server.base_url}'
-
-            headless_browser.close()
-
-        def on_title_changed(webview, title):
-            if headless_browser.webview.props.title != 'ready':
-                return
-
-            cookie_manager = headless_browser.web_context.get_cookie_manager()
-            cookie_manager.get_cookies(server.base_url, None, on_get_cookies_finish, None)
-
-        def on_get_cookies_finish(cookie_manager, result, user_data):
-            nonlocal done
-
-            server.session = requests.Session()
-            server.session.headers.update({'User-Agent': USER_AGENT})
-
-            for cookie in cookie_manager.get_cookies_finish(result):
-                rcookie = requests.cookies.create_cookie(
-                    name=cookie.get_name(),
-                    value=cookie.get_value(),
-                    domain=cookie.get_domain(),
-                    path=cookie.get_path(),
-                    expires=cookie.get_expires().to_unix() if cookie.get_expires() else None,
-                )
-                server.session.cookies.set_cookie(rcookie)
-
-            done = True
-            headless_browser.close()
-
-        GLib.timeout_add(100, load_page)
-
-        while not done and error is None:
-            time.sleep(.1)
-
-        if error:
-            logger.warning(error)
-            raise CloudflareBypassError
-
-        return func(*args, **kwargs)
-
-    return wrapper
-
 
 class Mangafreak(Server):
     id = 'mangafreak'
-    name = SERVER_NAME
+    name = 'MangaFreak'
     lang = 'en'
 
     base_url = 'https://w13.mangafreak.net'
@@ -131,9 +29,10 @@ class Mangafreak(Server):
     image_url = 'https://images.mangafreak.net/mangas/{0}'
 
     def __init__(self):
-        self.session = None
+        if self.session is None:
+            self.session = requests.Session()
+            self.session.headers.update({'User-Agent': USER_AGENT})
 
-    @bypass_cloudflare
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -208,7 +107,6 @@ class Mangafreak(Server):
 
         return data
 
-    @bypass_cloudflare
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
         Returns manga chapter data by scraping chapter HTML page content
@@ -236,7 +134,6 @@ class Mangafreak(Server):
 
         return data
 
-    @bypass_cloudflare
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
         Returns chapter page scan (image) content
@@ -266,7 +163,6 @@ class Mangafreak(Server):
         """
         return self.manga_url.format(slug)
 
-    @bypass_cloudflare
     def get_most_populars(self):
         """
         Returns featured manga list
@@ -290,7 +186,6 @@ class Mangafreak(Server):
 
         return results
 
-    @bypass_cloudflare
     def search(self, term):
         r = self.session_get(self.search_url.format(term))
         if r.status_code != 200:

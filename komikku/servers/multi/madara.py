@@ -31,9 +31,9 @@ import logging
 import requests
 
 from komikku.models import Settings
-from komikku.servers import bypass_cloudflare_invisible_challenge
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
+from komikku.servers.headless_browser import bypass_cloudflare_invisible_challenge
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_soup_element_inner_text

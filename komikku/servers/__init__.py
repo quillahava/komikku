@@ -1,27 +1,16 @@
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from bs4 import BeautifulSoup
 from functools import cached_property
-from functools import wraps
-import gi
 import inspect
 import logging
 import os
 import pickle
 import requests
 from requests.adapters import TimeoutSauce
-import time
 
-gi.require_version('Gtk', '4.0')
-gi.require_version('WebKit2', '5.0')
-
-from gi.repository import GLib
-from gi.repository import Gtk
-from gi.repository import WebKit2
-
-from komikku.servers.exceptions import CloudflareBypassError
 from komikku.servers.loader import server_finder
 from komikku.servers.utils import convert_image
 from komikku.servers.utils import get_buffer_mime_type
@@ -77,91 +66,6 @@ class CustomTimeout(TimeoutSauce):
 
 # Set requests timeout globally, instead of specifying ``timeout=..`` kwarg on each call
 requests.adapters.TimeoutSauce = CustomTimeout
-
-
-class HeadlessBrowser(Gtk.Window):
-    lock = False
-
-    def __init__(self, *args, **kwargs):
-        self.__handlers_ids = []
-        self.debug = kwargs.pop('debug', False)
-
-        super().__init__(*args, **kwargs)
-
-        self.scrolledwindow = Gtk.ScrolledWindow()
-        self.scrolledwindow.get_hscrollbar().hide()
-        self.scrolledwindow.get_vscrollbar().hide()
-
-        self.viewport = Gtk.Viewport()
-        self.scrolledwindow.set_child(self.viewport)
-        self.set_child(self.scrolledwindow)
-
-        self.webview = WebKit2.WebView()
-        self.viewport.set_child(self.webview)
-
-        self.settings = self.webview.get_settings()
-        self.settings.set_enable_page_cache(False)
-        self.settings.set_enable_frame_flattening(True)
-        self.settings.set_enable_accelerated_2d_canvas(True)
-
-        self.web_context = self.webview.get_context()
-        self.web_context.set_cache_model(WebKit2.CacheModel.DOCUMENT_VIEWER)
-        self.web_context.set_tls_errors_policy(WebKit2.TLSErrorsPolicy.IGNORE)
-        self.settings.props.enable_developer_extras = self.debug
-
-        if not self.debug:
-            # Make window almost invisible
-            self.set_decorated(False)
-            self.set_default_size(1, 1)
-
-    def close(self, blank=True):
-        logger.debug('WebKit2 | Closed')
-
-        self.disconnect_all_signals()
-
-        if blank:
-            GLib.idle_add(self.webview.load_uri, 'about:blank')
-        self.hide()
-
-        self.lock = False
-
-    def connect_signal(self, *args):
-        handler_id = self.webview.connect(*args)
-        self.__handlers_ids.append(handler_id)
-
-    def disconnect_all_signals(self):
-        for handler_id in self.__handlers_ids:
-            self.webview.disconnect(handler_id)
-
-        self.__handlers_ids = []
-
-    def open(self, uri, user_agent=None, settings=None):
-        if self.lock:
-            return False
-
-        self.settings.set_user_agent(user_agent or USER_AGENT)
-        self.settings.set_auto_load_images(True if not settings or settings.get('auto_load_images', True) else False)
-
-        self.lock = True
-
-        logger.debug('WebKit2 | Load page %s', uri)
-
-        def do_load():
-            self.show()
-
-            if not self.debug:
-                # Make window almost invisible (part 2)
-                self.get_surface().lower()
-                self.minimize()
-
-            self.webview.load_uri(uri)
-
-        GLib.idle_add(do_load)
-
-        return True
-
-
-headless_browser = HeadlessBrowser(debug=False)
 
 
 class Server:
@@ -375,76 +279,6 @@ class Server:
 
     def update_chapter_read_progress(self, data, manga_slug, manga_name, chapter_slug, chapter_url):
         return NotImplemented
-
-
-def bypass_cloudflare_invisible_challenge(func):
-    """Allow to bypass Cloudflare invisible challenge using headless browser"""
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        """Decorator Wrapper function"""
-
-        server = args[0]
-        if server.session or not server.has_cloudflare_invisible_challenge:
-            return func(*args, **kwargs)
-
-        done = False
-        error = None
-
-        def load_page():
-            settings = dict(
-                auto_load_images=False,
-            )
-            if not headless_browser.open(server.base_url, user_agent=USER_AGENT, settings=settings):
-                return True
-
-            headless_browser.connect_signal('load-changed', on_load_changed)
-            headless_browser.connect_signal('load-failed', on_load_failed)
-
-        def on_load_changed(webview, event):
-            if event != WebKit2.LoadEvent.FINISHED:
-                return
-
-            cookie_manager = headless_browser.web_context.get_cookie_manager()
-            cookie_manager.get_cookies(server.base_url, None, on_get_cookies_finish, None)
-
-        def on_load_failed(_webview, _event, _uri, gerror):
-            nonlocal error
-
-            error = f'Failed to load homepage: {server.base_url}'
-            headless_browser.close()
-
-        def on_get_cookies_finish(cookie_manager, result, user_data):
-            nonlocal done
-
-            server.session = requests.Session()
-            server.session.headers.update({'User-Agent': USER_AGENT})
-
-            for cookie in cookie_manager.get_cookies_finish(result):
-                rcookie = requests.cookies.create_cookie(
-                    name=cookie.get_name(),
-                    value=cookie.get_value(),
-                    domain=cookie.get_domain(),
-                    path=cookie.get_path(),
-                    expires=cookie.get_expires().to_unix() if cookie.get_expires() else None,
-                )
-                server.session.cookies.set_cookie(rcookie)
-
-            done = True
-            headless_browser.close()
-
-        GLib.timeout_add(100, load_page)
-
-        while not done and error is None:
-            time.sleep(.1)
-
-        if error:
-            logger.warning(error)
-            raise CloudflareBypassError
-
-        return func(*args, **kwargs)
-
-    return wrapper
 
 
 def search_duckduckgo(site, term):

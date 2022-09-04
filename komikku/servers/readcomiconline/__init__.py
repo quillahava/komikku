@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -13,10 +13,11 @@ import time
 from gi.repository import GLib
 from gi.repository import WebKit2
 
-from komikku.servers import headless_browser
 from komikku.servers import Server
 from komikku.servers import USER_AGENT_MOBILE
 from komikku.servers.exceptions import CloudflareBypassError
+from komikku.servers.headless_browser import get_page_html
+from komikku.servers.headless_browser import headless_browser
 from komikku.servers.utils import get_buffer_mime_type
 
 headers = {
@@ -117,73 +118,6 @@ def bypass_cloudflare(func):
     return wrapper
 
 
-def get_chapter_page_html(url):
-    error = None
-    html = None
-
-    def load_page():
-        if not headless_browser.open(url, user_agent=USER_AGENT_MOBILE):
-            return True
-
-        headless_browser.connect_signal('load-changed', on_load_changed)
-        headless_browser.connect_signal('load-failed', on_load_failed)
-        headless_browser.connect_signal('notify::title', on_title_changed)
-
-    def on_get_html_finish(webview, result, user_data=None):
-        nonlocal error
-        nonlocal html
-
-        js_result = webview.run_javascript_finish(result)
-        if js_result:
-            js_value = js_result.get_js_value()
-            if js_value:
-                html = js_value.to_string()
-
-        if html is None:
-            error = f'Failed to get chapter page html: {url}'
-
-        headless_browser.close()
-
-    def on_load_changed(_webview, event):
-        if event != WebKit2.LoadEvent.FINISHED:
-            return
-
-        # Wait until all images URLs are inserted in DOM
-        js = """
-            const checkReady = setInterval(() => {
-                if (document.querySelectorAll('#divImage img[src^="http"]').length === document.querySelectorAll('#divImage img').length) {
-                    clearInterval(checkReady);
-                    document.title = 'ready';
-                }
-            }, 100);
-        """
-
-        headless_browser.webview.run_javascript(js, None, None, None)
-
-    def on_load_failed(_webview, _event, _uri, gerror):
-        nonlocal error
-
-        error = f'Failed to load chapter page: {url}'
-
-        headless_browser.close()
-
-    def on_title_changed(_webview, _title):
-        if headless_browser.webview.props.title == 'ready':
-            # All images have been inserted in DOM, we can retrieve page HTML
-            headless_browser.webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
-
-    GLib.timeout_add(100, load_page)
-
-    while html is None and error is None:
-        time.sleep(.1)
-
-    if error:
-        logger.warning(error)
-        raise requests.exceptions.RequestException()
-
-    return html
-
-
 class Readcomiconline(Server):
     id = 'readcomiconline'
     name = 'Read Comic Online'
@@ -280,7 +214,24 @@ class Readcomiconline(Server):
 
         Currently, only pages are expected.
         """
-        html = get_chapter_page_html(self.chapter_url.format(manga_slug, chapter_slug))
+        # Code to wait until all images URLs are inserted in DOM
+        js = """
+            let count = 0;
+            const checkReady = setInterval(() => {
+                count += 1;
+                if (count > 100) {
+                    // Abort after 100 iterations (10s)
+                    clearInterval(checkReady);
+                    document.title = 'abort';
+                    return;
+                }
+                if (document.querySelectorAll('#divImage img[src^="http"]').length === document.querySelectorAll('#divImage img').length) {
+                    clearInterval(checkReady);
+                    document.title = 'ready';
+                }
+            }, 100);
+        """
+        html = get_page_html(self.chapter_url.format(manga_slug, chapter_slug), user_agent=USER_AGENT_MOBILE, wait_js_code=js)
 
         soup = BeautifulSoup(html, 'html.parser')
 
