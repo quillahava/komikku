@@ -104,7 +104,7 @@ class HeadlessBrowser(Gtk.Window):
         return True
 
 
-headless_browser = HeadlessBrowser(debug=True)
+headless_browser = HeadlessBrowser(debug=False)
 
 
 def bypass_cloudflare(func):
