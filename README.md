@@ -1,6 +1,6 @@
 # <a href="https://valos.gitlab.io/Komikku/"><img height="88" src="data/icons/info.febvre.Komikku.svg" />Komikku</a>
 
-[![pipeline status](https://gitlab.com/valos/Komikku/badges/master/pipeline.svg)](https://gitlab.com/valos/Komikku/commits/master)
+[![pipeline status](https://gitlab.com/valos/Komikku/badges/main/pipeline.svg)](https://gitlab.com/valos/Komikku/-/pipelines)
 [![Please do not theme this app](https://stopthemingmy.app/badge.svg)](https://stopthemingmy.app)
 [![Donate using Liberapay](https://img.shields.io/liberapay/receives/valos.svg?logo=liberapay)](https://en.liberapay.com/valos/donate)
 
