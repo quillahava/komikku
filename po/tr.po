@@ -1,45 +1,56 @@
+# Turkish translation for Komikku.
+#
+# Copyright (C) 2020-2022 Komikku's COPYRIGHT HOLDER
+# This file is distributed under the same license as the Komikku package.
+#
+# Ege Çelikçi <egecelikci@gmail.com>, 2020.
+# Sabri Ünal <libreajans@gmail.com>, 2022.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Komikku 0.16.1\n"
+"Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-02 00:04+0200\n"
-"PO-Revision-Date: 2020-06-03 14:41+0300\n"
-"Last-Translator: Ege Çelikçi <egecelikci@gmail.com>\n"
+"PO-Revision-Date: 2022-09-05 13:35+0300\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga online or offline"
-msgstr ""
+msgstr "Gözde manganızı çevrimiçi veya çevrimdışı okuyun"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:13
 msgid ""
 "Komikku is a manga, manhwa, manhua, webtoons, webcomics and comics reader."
 msgstr ""
+"Komikku bir manga, manhwa, manhua, webtoon, webcomic ve çizgi roman "
+"okuyucusudur."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:14
 msgid "Features"
-msgstr ""
+msgstr "Özellikler"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:16
 msgid "Online reading from dozens of servers"
-msgstr ""
+msgstr "Onlarca sunucudan çevrimiçi okuma"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Offline reading of downloaded comics"
-msgstr ""
+msgstr "İndirilen çizgi romanların çevrimdışı okunma"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:18
 msgid "Categories to organize your library"
-msgstr ""
+msgstr "Kitaplığınızı düzenlemek için kategoriler"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
-msgstr ""
+msgstr "Sağdan Sola, Soldan Sağa, Dikey ve Webtoon okuma kipleri"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:20
 msgid ""
@@ -47,30 +58,34 @@ msgid ""
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
 "wheel, 2-fingers swipe gesture (touchpad), swipe gesture (touch screen)"
 msgstr ""
+"Çeşitli gezinti türlerini destekler: klavye ok tuşları, fare tıklaması veya "
+"dokunma yoluyla sağ ve sol gezinme düzeni (dokunmatik yüzey/dokunmatik "
+"ekran), fare tekerleği, 2 parmakla kaydırma hareketi (dokunmatik yüzey), "
+"kaydırma hareketi (dokunmatik ekran)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:21
 msgid "Automatic update of comics"
-msgstr ""
+msgstr "Çizgi romanları kendiliğinden güncelleme"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:22
 msgid "Automatic download of new chapters"
-msgstr ""
+msgstr "Yeni bölümleri kendiliğinden indirme"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:23
 msgid "Reading history"
-msgstr ""
+msgstr "Okuma geçmişi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:24
 msgid "Light and dark themes"
-msgstr ""
+msgstr "Açık ve koyu tema"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:26
 msgid "It focuses on providing a clean, intuitive and adaptive interface."
-msgstr ""
+msgstr "Temiz, sezgisel ve uyarlanabilir arayüz sağlamaya odaklanır."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:81
 msgid "@authorfullname@"
-msgstr ""
+msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:92
 msgid ""
@@ -1188,7 +1203,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:632
 msgid "New icon"
-msgstr ""
+msgstr "Yeni simge"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:639
 msgid "[Reader] Add 'Original Size' scaling"
@@ -1315,7 +1330,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:682
 msgid "Various bugs fixes"
-msgstr ""
+msgstr "Çeşitli hata düzeltmeleri"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:687
 msgid "Added the Dutch translation"
@@ -1545,7 +1560,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:837
 msgid "First release"
-msgstr ""
+msgstr "İlk sürüm"
 
 #: ../data/info.febvre.Komikku.desktop.in:3
 msgid "@prettyname@"
@@ -1553,12 +1568,14 @@ msgstr "@prettyname@"
 
 #: ../data/info.febvre.Komikku.desktop.in:4
 msgid "@description@"
-msgstr ""
+msgstr "@description@"
 
 #: ../data/info.febvre.Komikku.desktop.in:13
 msgid ""
 "manga;reader;viewer;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offline;"
 msgstr ""
+"manga;okuyucu;görüntüleyici;çizgi-roman;manhwa;manhua;bd;webtoon;webcomic;"
+"webtoon;scan;çevrimdışı;"
 
 #: ../data/ui/about_window.ui.in:28
 msgid ""
@@ -1568,6 +1585,11 @@ msgid ""
 "by buying the official comics when they are\n"
 "available in your region/language."
 msgstr ""
+"GNOME için manga, manhwa, manhua, webtoon, webcomic ve çizgi roman okuyucu.\n"
+"\n"
+"👉 Unutmayın, bölgenizde/dilinizde mevcut olduğunda\n"
+"resmi çizgi romanları satın alarak\n"
+"yazarları destekleyebilirsiniz."
 
 #: ../data/ui/application_window.ui:102 ../data/ui/menu/main.xml:25
 msgid "Preferences"
@@ -1579,32 +1601,32 @@ msgstr "İndirme Yöneticisi"
 
 #: ../data/ui/application_window.ui:186 ../data/ui/menu/main.xml:19
 msgid "History"
-msgstr ""
+msgstr "Geçmiş"
 
 #: ../data/ui/application_window.ui:208
 msgid "Toggle category sidebar"
-msgstr ""
+msgstr "Kategori kenar çubuğu aç/kapat"
 
 #: ../data/ui/application_window.ui:218
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 #: ../data/ui/application_window.ui:230 ../data/ui/application_window.ui:290
 #: ../data/ui/application_window.ui:302
 msgid "Search"
-msgstr ""
+msgstr "Ara"
 
 #: ../data/ui/application_window.ui:242
 msgid "Resume reading"
-msgstr ""
+msgstr "Okumayı sürdür"
 
 #: ../data/ui/application_window.ui:254
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Tam ekran kipini aç/kapat"
 
 #: ../data/ui/application_window.ui:266
 msgid "Start/Stop download"
-msgstr ""
+msgstr "İndirmeyi başlat/durdur"
 
 #: ../data/ui/application_window.ui:278 ../data/ui/menu/card.xml:60
 msgid "Open in Browser"
@@ -1623,15 +1645,15 @@ msgstr "Sil"
 #. The umbrella sentence of the application on the first start screen
 #: ../data/ui/application_window.ui:441
 msgid "Welcome to Komikku"
-msgstr ""
+msgstr "Komikku'ya Hoşgeldiniz"
 
 #: ../data/ui/application_window.ui:454
 msgid "Discover new readings"
-msgstr ""
+msgstr "Yeni okumaları keşfet"
 
 #: ../data/ui/application_window.ui:551
 msgid "OK"
-msgstr ""
+msgstr "Tamam"
 
 #: ../data/ui/application_window.ui:578
 msgid "Info"
@@ -1639,11 +1661,11 @@ msgstr "Bilgi"
 
 #: ../data/ui/application_window.ui:679
 msgid "Resume"
-msgstr ""
+msgstr "Sürdür"
 
 #: ../data/ui/application_window.ui:700 ../data/ui/explorer.ui:288
 msgid "Details"
-msgstr ""
+msgstr "Ayrıntılar"
 
 #: ../data/ui/application_window.ui:731 ../data/ui/explorer.ui:319
 msgid "Genres"
@@ -1655,11 +1677,11 @@ msgstr "Çevirenler"
 
 #: ../data/ui/application_window.ui:842
 msgid "Last Update"
-msgstr ""
+msgstr "Son Güncelleme"
 
 #: ../data/ui/application_window.ui:879
 msgid "Size on Disk"
-msgstr ""
+msgstr "Diskteki Boyutu"
 
 #: ../data/ui/application_window.ui:910 ../data/ui/explorer.ui:461
 msgid "Synopsis"
@@ -1667,7 +1689,7 @@ msgstr "Özet"
 
 #: ../data/ui/application_window.ui:1041 ../data/ui/categories_editor.ui:84
 msgid "No categories"
-msgstr ""
+msgstr "Kategori yok"
 
 #: ../data/ui/download_manager.ui:61
 msgid "No downloads"
@@ -1675,11 +1697,11 @@ msgstr "İndirme yok"
 
 #: ../data/ui/explorer.ui:430
 msgid "Last Chapter"
-msgstr ""
+msgstr "Son Bölüm"
 
 #: ../data/ui/history.ui:75
 msgid "No history"
-msgstr ""
+msgstr "Geçmiş yok"
 
 #: ../data/ui/menu/card.xml:18
 msgid "Order of Chapters"
@@ -1687,27 +1709,27 @@ msgstr "Bölümlerin Sıralanması"
 
 #: ../data/ui/menu/card.xml:23
 msgid "⬆ By Source"
-msgstr ""
+msgstr "⬆ Kaynak"
 
 #: ../data/ui/menu/card.xml:28
 msgid "⬇ By Source"
-msgstr ""
+msgstr "⬇ Kaynak"
 
 #: ../data/ui/menu/card.xml:34
 msgid "⬆ By Date"
-msgstr ""
+msgstr "⬆ Tarih"
 
 #: ../data/ui/menu/card.xml:39
 msgid "⬇ By Date"
-msgstr ""
+msgstr "⬇ Tarih"
 
 #: ../data/ui/menu/card.xml:45
 msgid "⬆ By Title"
-msgstr ""
+msgstr "⬆ Başlık"
 
 #: ../data/ui/menu/card.xml:50
 msgid "⬇ By Title"
-msgstr ""
+msgstr "⬇ Başlık"
 
 #: ../data/ui/menu/card_selection_mode.xml:18
 #: ../data/ui/menu/library_selection_mode.xml:25
@@ -1720,19 +1742,19 @@ msgstr "Hepsini Sil"
 
 #: ../data/ui/menu/library_search.xml:7
 msgid "Unread"
-msgstr ""
+msgstr "Okunmamış"
 
 #: ../data/ui/menu/library_search.xml:15
 msgid "Recents"
-msgstr ""
+msgstr "Son"
 
 #: ../data/ui/menu/library_selection_mode.xml:7
 msgid "Edit Categories"
-msgstr ""
+msgstr "Kategorileri Düzenle"
 
 #: ../data/ui/menu/main.xml:7
 msgid "Update Library"
-msgstr "Kütüphaneyi Güncelle"
+msgstr "Kitaplığı Güncelle"
 
 #: ../data/ui/menu/main.xml:29
 msgid "Keyboard Shortcuts"
@@ -1744,23 +1766,23 @@ msgstr "Komikku Hakkında"
 
 #: ../data/ui/menu/reader.xml:7 ../data/ui/preferences.ui:303
 msgid "Reading Mode"
-msgstr ""
+msgstr "Okuma Kipi"
 
 #: ../data/ui/menu/reader.xml:12 ../data/ui/preferences.ui:307
 msgid "⬅ Right to Left"
-msgstr ""
+msgstr "⬅ Sağdan Sola"
 
 #: ../data/ui/menu/reader.xml:17 ../data/ui/preferences.ui:308
 msgid "➡ Left to Right"
-msgstr ""
+msgstr "➡ Soldan Sağa"
 
 #: ../data/ui/menu/reader.xml:22 ../data/ui/preferences.ui:309
 msgid "⬇ Vertical"
-msgstr ""
+msgstr "⬇ Dikey"
 
 #: ../data/ui/menu/reader.xml:27 ../data/ui/preferences.ui:310
 msgid "⬇ Webtoon"
-msgstr ""
+msgstr "⬇ Webtoon"
 
 #: ../data/ui/menu/reader.xml:35
 msgid "Type of Scaling"
@@ -1768,19 +1790,19 @@ msgstr "Ölçekleme Türü"
 
 #: ../data/ui/menu/reader.xml:40 ../data/ui/preferences.ui:323
 msgid "Adapt to Screen"
-msgstr "Ekrana göre uyarla"
+msgstr "Ekrana Uy"
 
 #: ../data/ui/menu/reader.xml:45 ../data/ui/preferences.ui:324
 msgid "Adapt to Width"
-msgstr "Genişliğe göre uyarla"
+msgstr "Genişliğe Uy"
 
 #: ../data/ui/menu/reader.xml:50 ../data/ui/preferences.ui:325
 msgid "Adapt to Height"
-msgstr "Yüksekliğe göre uyarla"
+msgstr "Yüksekliğe Uy"
 
 #: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:326
 msgid "Original Size"
-msgstr "Orijinal boyut"
+msgstr "Özgün Boyut"
 
 #: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:334
 msgid "Background Color"
@@ -1792,7 +1814,7 @@ msgstr "Beyaz"
 
 #: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:339
 msgid "Gray"
-msgstr ""
+msgstr "Gri"
 
 #: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:340
 msgid "Black"
@@ -1800,23 +1822,23 @@ msgstr "Siyah"
 
 #: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:341
 msgid "System Style"
-msgstr ""
+msgstr "Sistem Biçemi"
 
 #: ../data/ui/menu/reader.xml:91
 msgid "Crop Borders"
-msgstr ""
+msgstr "Kenarları Kırp"
 
 #: ../data/ui/menu/reader.xml:95
 msgid "Hide Page Numbering"
-msgstr ""
+msgstr "Sayfa Numaralarını Gizle"
 
 #: ../data/ui/menu/reader.xml:102
 msgid "Save Page"
-msgstr ""
+msgstr "Sayfayı Kaydet"
 
 #: ../data/ui/preferences.ui:37 ../data/ui/preferences.ui:42
 msgid "General"
-msgstr ""
+msgstr "Genel"
 
 #: ../data/ui/preferences.ui:47
 msgid "Dark Theme"
@@ -1832,7 +1854,7 @@ msgstr "Gece Işığı"
 
 #: ../data/ui/preferences.ui:62
 msgid "Automatically enable dark theme at night"
-msgstr "Geceleri karanlık temayı otomatik olarak etkinleştir"
+msgstr "Geceleri koyu temayı kendiliğinden etkinleştir"
 
 #: ../data/ui/preferences.ui:73
 msgid "Desktop Notifications"
@@ -1841,50 +1863,51 @@ msgstr "Masaüstü bildirimleri"
 #: ../data/ui/preferences.ui:75
 msgid "Use desktop notifications for downloads and library updates"
 msgstr ""
+"İndirmeler ve kitaplık güncellemeleri için masaüstü bildirimlerini kullan"
 
 #: ../data/ui/preferences.ui:93 ../data/ui/preferences.ui:98
 msgid "Library"
-msgstr "Kütüphane"
+msgstr "Kitaplık"
 
 #: ../data/ui/preferences.ui:101
 msgid "Display"
-msgstr ""
+msgstr "Görünüm"
 
 #: ../data/ui/preferences.ui:104
 msgid "Display Mode"
-msgstr ""
+msgstr "Görünüm Kipi"
 
 #: ../data/ui/preferences.ui:108
 msgid "Grid"
-msgstr ""
+msgstr "Izgara"
 
 #: ../data/ui/preferences.ui:109
 msgid "Compact Grid"
-msgstr ""
+msgstr "Sıkışık Izgara"
 
 #: ../data/ui/preferences.ui:117
 msgid "Servers Logo"
-msgstr ""
+msgstr "Sunucu Logoları"
 
 #: ../data/ui/preferences.ui:119
 msgid "Display servers logo"
-msgstr ""
+msgstr "Sunucu logolarını görüntüle"
 
 #: ../data/ui/preferences.ui:130
 msgid "Badges"
-msgstr ""
+msgstr "Rozetler"
 
 #: ../data/ui/preferences.ui:133
 msgid "Number of Unread Chapters"
-msgstr ""
+msgstr "Okunmamış Bölüm Sayısı"
 
 #: ../data/ui/preferences.ui:154
 msgid "Number of Downloaded Chapters"
-msgstr ""
+msgstr "İndirilen Bölüm Sayısı"
 
 #: ../data/ui/preferences.ui:175
 msgid "Number of Recent and Unread Chapters"
-msgstr ""
+msgstr "Son ve Okunmamış Bölüm Sayısı"
 
 #: ../data/ui/preferences.ui:203
 msgid "Update at Startup"
@@ -1892,7 +1915,7 @@ msgstr "Açılışta güncelle"
 
 #: ../data/ui/preferences.ui:205
 msgid "Automatically update library at startup"
-msgstr "Açılışta kütüphaneyi otomatik olarak güncelle"
+msgstr "Açılışta kitaplığı kendiliğinden güncelle"
 
 #: ../data/ui/preferences.ui:217
 msgid "Auto Download of New Chapters"
@@ -1904,7 +1927,7 @@ msgstr "Yeni bölümleri otomatik olarak indir"
 
 #: ../data/ui/preferences.ui:237
 msgid "Restrict servers to selected languages"
-msgstr ""
+msgstr "Sunucuları seçilen dillerle kısıtla"
 
 #: ../data/ui/preferences.ui:248
 msgid "Enable/disable and configure servers"
@@ -1920,7 +1943,7 @@ msgstr "Mümkün olduğu zaman uzun dikey şeridi otomatik olarak algıla"
 
 #: ../data/ui/preferences.ui:274
 msgid "Whether to enable servers with NSFW only content"
-msgstr ""
+msgstr "Yalnızca NSFW içeriği olan sunucuların etkinleştirilme durumu"
 
 #: ../data/ui/preferences.ui:293 ../data/ui/preferences.ui:298
 msgid "Reader"
@@ -1944,11 +1967,11 @@ msgstr "Görsellerin beyaz kenarlarını kırp"
 
 #: ../data/ui/preferences.ui:363
 msgid "Page Numbering"
-msgstr ""
+msgstr "Sayfa Numaraları"
 
 #: ../data/ui/preferences.ui:365
 msgid "Hide the page numbering at the bottom of the screen while reading"
-msgstr ""
+msgstr "Okurken ekranın altındaki sayfa numaralarını gizle"
 
 #: ../data/ui/preferences.ui:377
 msgid "Fullscreen"
@@ -1960,19 +1983,19 @@ msgstr "Tam ekran moduna otomatik olarak gir"
 
 #: ../data/ui/preferences.ui:398 ../data/ui/preferences.ui:403
 msgid "Advanced"
-msgstr ""
+msgstr "Gelişmiş"
 
 #: ../data/ui/preferences.ui:406
 msgid "Credentials storage"
-msgstr ""
+msgstr "Kimlik bilgileri depolama"
 
 #: ../data/ui/preferences.ui:409
 msgid "Allow plaintext storage as fallback"
-msgstr ""
+msgstr "Düz metin depolamaya yedek olarak izin ver"
 
 #: ../data/ui/preferences.ui:411
 msgid "Used when no keyring backends are found"
-msgstr ""
+msgstr "Anahtarlık arka ucu bulunmadığında kullanılır"
 
 #: ../data/ui/shortcuts_overview.ui:30
 msgctxt "Shortcut window description"
@@ -1992,12 +2015,12 @@ msgstr "Tam ekran moduna geç"
 #: ../data/ui/shortcuts_overview.ui:45
 msgctxt "Shortcut window description"
 msgid "Open shortcuts window"
-msgstr ""
+msgstr "Kısayollar penceresini aç"
 
 #: ../data/ui/shortcuts_overview.ui:53
 msgctxt "Shortcut window description"
 msgid "Library"
-msgstr "Kütüphane"
+msgstr "Kitaplık"
 
 #: ../data/ui/shortcuts_overview.ui:56
 msgctxt "Shortcut window description"
@@ -2027,12 +2050,12 @@ msgstr "Tüm bölümleri seç"
 #: ../data/ui/shortcuts_overview.ui:87
 msgctxt "Shortcut window description"
 msgid "Reader"
-msgstr ""
+msgstr "Okuyucu"
 
 #: ../data/ui/shortcuts_overview.ui:90
 msgctxt "Shortcut window description"
 msgid "Save Page"
-msgstr ""
+msgstr "Sayfayı Kaydet"
 
 #: ../data/ui/shortcuts_overview.ui:98
 msgctxt "Shortcut window description"
@@ -2046,34 +2069,34 @@ msgstr "Tüm indirilenleri seç"
 
 #: ../komikku/application.py:114
 msgid "Multiple URLs not supported"
-msgstr ""
+msgstr "Birden fazla URL desteklenmiyor"
 
 #: ../komikku/application.py:130
 msgid "Invalid URL {}, not handled by any server."
-msgstr ""
+msgstr "Geçersiz URL {}, herhangi bir sunucu tarafından işlenmedi."
 
 #: ../komikku/application.py:381 ../komikku/card.py:75 ../komikku/card.py:76
 #: ../komikku/downloader.py:319 ../komikku/downloader.py:320
 #: ../komikku/library.py:315 ../komikku/library.py:316
 #: ../komikku/reader/__init__.py:248
 msgid "Cancel"
-msgstr ""
+msgstr "İptal"
 
 #: ../komikku/application.py:382
 msgid "Yes"
-msgstr ""
+msgstr "Evet"
 
 #: ../komikku/application.py:467
 msgid "Sponsor via Ko-fi"
-msgstr ""
+msgstr "Ko-fi ile Sponsor Ol"
 
 #: ../komikku/application.py:468
 msgid "Sponsor via Liberapay"
-msgstr ""
+msgstr "Liberapay ile Sponsor Ol"
 
 #: ../komikku/application.py:469
 msgid "Sponsor via Paypal"
-msgstr ""
+msgstr "Paypal ile Sponsor Ol"
 
 #: ../komikku/application.py:641
 msgid "Are you sure you want to quit?"
@@ -2085,7 +2108,7 @@ msgstr "Bazı bölümler şu anda indiriliyor."
 
 #: ../komikku/application.py:646
 msgid "Some mangas are currently being updated."
-msgstr "Bazı mangalar şu anda güncellenmekte."
+msgstr "Bazı mangalar şu anda güncelleniyor."
 
 #: ../komikku/application.py:649
 msgid "Quit?"
@@ -2107,19 +2130,19 @@ msgstr ""
 #: ../komikku/downloader.py:509 ../komikku/explorer.py:695
 #: ../komikku/history.py:203 ../komikku/preferences.py:305
 msgid "Back"
-msgstr ""
+msgstr "Geri"
 
 #: ../komikku/card.py:122
 msgid "Read progress synchronization with server completed successfully"
-msgstr ""
+msgstr "Sunucuyla, okuma ilerleme eşitlemesi başarıyla tamamlandı"
 
 #: ../komikku/card.py:133
 msgid "Failed to get manga URL"
-msgstr ""
+msgstr "Manga URL'si alınamadı"
 
 #: ../komikku/card.py:597 ../komikku/card.py:692
 msgid "Failed to update chapters reading status"
-msgstr ""
+msgstr "Bölümün okunma durumu güncellenemedi"
 
 #: ../komikku/card.py:771
 msgid "New"
@@ -2135,27 +2158,27 @@ msgstr "İndir"
 
 #: ../komikku/card.py:939
 msgid "Clear and Reset"
-msgstr ""
+msgstr "Temizle ve Sıfırla"
 
 #: ../komikku/card.py:947
 msgid "Mark as Read"
-msgstr "Okundu olarak işaretle"
+msgstr "Okundu Olarak İşaretle"
 
 #: ../komikku/card.py:951
 msgid "Mark as Unread"
-msgstr "Okunmamış olarak işaretle"
+msgstr "Okunmamış Olarak İşaretle"
 
 #: ../komikku/card.py:955
 msgid "Mark Previous Chapters as Read"
-msgstr ""
+msgstr "Önceki Bölümleri Okunmuş Olarak İşaretle"
 
 #: ../komikku/card.py:1025 ../komikku/explorer.py:460
 msgid "Unknown author"
-msgstr ""
+msgstr "Bilinmeyen yazar"
 
 #: ../komikku/categories_editor.py:78 ../komikku/library.py:287
 msgid "Delete?"
-msgstr "Sil?"
+msgstr "Silinsin mi?"
 
 #: ../komikku/categories_editor.py:79
 #, python-brace-format
@@ -2163,6 +2186,8 @@ msgid ""
 "Are you sure you want to delete\n"
 "\"{0}\" category?"
 msgstr ""
+"\"{0}\" kategorisini\n"
+"silmek istediğinizden emin misiniz?"
 
 #: ../komikku/downloader.py:191
 msgid "Download completed"
@@ -2171,7 +2196,7 @@ msgstr "İndirme tamamlandı"
 #: ../komikku/downloader.py:192 ../komikku/downloader.py:221
 #, python-brace-format
 msgid "[{0}] Chapter {1}"
-msgstr ""
+msgstr "[{0}] Bölüm {1}"
 
 #: ../komikku/downloader.py:215
 #, python-brace-format
@@ -2189,19 +2214,19 @@ msgstr "{0} manga eklendi"
 
 #: ../komikku/explorer.py:337 ../komikku/explorer.py:734
 msgid "Read"
-msgstr ""
+msgstr "Oku"
 
 #: ../komikku/explorer.py:398
 msgid "Oops, server website URL is unknown."
-msgstr ""
+msgstr "Hata, sunucu web sitesi URL'si bilinmiyor."
 
 #: ../komikku/explorer.py:507
 msgid "Oops, failed to retrieve manga's information."
-msgstr "Ups, manga bilgileri alınamadı."
+msgstr "Hata, manga bilgileri alınamadı."
 
 #: ../komikku/explorer.py:544
 msgid "Pinned"
-msgstr ""
+msgstr "Sabitlenmiş"
 
 #: ../komikku/explorer.py:644
 msgid "MOST POPULARS"
@@ -2209,7 +2234,7 @@ msgstr "EN POPÜLER"
 
 #: ../komikku/explorer.py:674
 msgid "Oops, search failed. Please try again."
-msgstr "Ups, arama başarısız oldu. Lütfen tekrar deneyin."
+msgstr "Hata, arama başarısız oldu. Lütfen tekrar deneyin."
 
 #: ../komikku/explorer.py:676
 msgid "No results"
@@ -2217,23 +2242,23 @@ msgstr "Sonuç yok"
 
 #: ../komikku/explorer.py:707
 msgid "Servers"
-msgstr ""
+msgstr "Sunucular"
 
 #: ../komikku/explorer.py:737
 msgid "Add to Library"
-msgstr ""
+msgstr "Kitaplığa Ekle"
 
 #: ../komikku/history.py:128
 msgid "Today"
-msgstr ""
+msgstr "Bugün"
 
 #: ../komikku/history.py:130
 msgid "Yesterday"
-msgstr ""
+msgstr "Dün"
 
 #: ../komikku/history.py:133
 msgid "%A, %B %e"
-msgstr ""
+msgstr "%A, %B %e"
 
 #: ../komikku/library.py:284
 msgid "Are you sure you want to delete this manga?"
@@ -2246,27 +2271,28 @@ msgstr "Seçilen mangaları silmek istediğinizden emin misiniz?"
 #: ../komikku/library.py:304
 msgid "Are you sure you want to download all chapters of selected mangas?"
 msgstr ""
+"Seçilen mangaların tüm bölümlerini indirmek istediğinizden emin misiniz?"
 
 #: ../komikku/library.py:305
 msgid "Download?"
-msgstr ""
+msgstr "İndirilsin mi?"
 
 #: ../komikku/library.py:327 ../komikku/library.py:547
 msgid "Add new comic"
-msgstr ""
+msgstr "Yeni çizgi roman ekle"
 
 #: ../komikku/library.py:593
 msgid "Failed to update reading status"
-msgstr ""
+msgstr "Bölümün okunma durumu güncellenemedi"
 
 #: ../komikku/library.py:620 ../komikku/library.py:762
 msgid "Uncategorized"
-msgstr ""
+msgstr "Kategorisiz"
 
 #: ../komikku/library.py:756 ../komikku/servers/mangapill/__init__.py:36
 #: ../komikku/servers/multi/manga_stream.py:55
 msgid "All"
-msgstr ""
+msgstr "Tümü"
 
 #: ../komikku/models/database.py:407
 msgid "Complete"
@@ -2282,7 +2308,7 @@ msgstr "Askıya alındı"
 
 #: ../komikku/models/database.py:410
 msgid "Hiatus"
-msgstr ""
+msgstr "Ara"
 
 #: ../komikku/models/database.py:1044
 msgid "Download pending"
@@ -2302,27 +2328,32 @@ msgstr "İndirme hatası"
 
 #: ../komikku/preferences.py:349
 msgid "Servers Languages"
-msgstr ""
+msgstr "Sunucu Dilleri"
 
 #: ../komikku/preferences.py:427
 msgid "User Account"
-msgstr "Sunucu Ayarları"
+msgstr "Kullanıcı Hesabı"
 
 #: ../komikku/preferences.py:458
 msgid "System keyring service is disabled. Credential cannot be saved."
 msgstr ""
+"Sistem anahtarlık hizmeti devre dışı bırakıldı. Kimlik bilgisi kaydedilemez."
 
 #: ../komikku/preferences.py:463
 msgid ""
 "No keyring backends were found to store credential. Use plaintext storage as "
 "fallback."
 msgstr ""
+"Kimlik bilgilerini depolayacak anahtarlık arka ucu bulunamadı. Düz metin "
+"depolamayı yedek olarak kullan."
 
 #: ../komikku/preferences.py:468
 msgid ""
 "No keyring backends were found to store credential. Plaintext storage will "
 "be used as fallback."
 msgstr ""
+"Kimlik bilgilerini depolayacak anahtarlık arka ucu bulunamadı. Düz metin "
+"depolama, yedek olarak kullanılacak."
 
 #: ../komikku/preferences.py:476
 msgid "Test"
@@ -2330,25 +2361,25 @@ msgstr "Test"
 
 #: ../komikku/preferences.py:514
 msgid "Servers Settings"
-msgstr ""
+msgstr "Sunucu Ayarları"
 
 #: ../komikku/reader/__init__.py:244
 msgid "Please choose a file"
-msgstr ""
+msgstr "Dosya seçiniz"
 
 #: ../komikku/reader/__init__.py:250
 msgid "Save"
-msgstr ""
+msgstr "Kaydet"
 
 #: ../komikku/reader/__init__.py:269
 msgid ""
 "Failed to save page: missing permission to access the XDG pictures directory"
-msgstr ""
+msgstr "Sayfa kaydedilemedi: XDG resimler dizinine erişim izni yok"
 
 #: ../komikku/reader/__init__.py:273
 #, python-brace-format
 msgid "Page successfully saved to {0}"
-msgstr ""
+msgstr "Sayfa başarıyla {0} konumuna kaydedildi"
 
 #: ../komikku/reader/pager/__init__.py:187
 #, python-brace-format
@@ -2356,10 +2387,12 @@ msgid ""
 "Failed to sync read progress with server:\n"
 "{message}"
 msgstr ""
+"Sunucuyla okuma ilerlemesi eşitlenemedi:\n"
+"{message}"
 
 #: ../komikku/reader/pager/__init__.py:189
 msgid "Failed to sync read progress with server"
-msgstr ""
+msgstr "Sunucuyla okuma ilerlemesi eşitlenemedi"
 
 #: ../komikku/reader/pager/__init__.py:505
 #: ../komikku/reader/pager/webtoon.py:325
@@ -2386,27 +2419,27 @@ msgstr "Yeniden Dene"
 
 #: ../komikku/servers/dynasty/__init__.py:38
 msgid "Categories"
-msgstr ""
+msgstr "Kategoriler"
 
 #: ../komikku/servers/dynasty/__init__.py:39
 msgid "Types of comics to search for"
-msgstr ""
+msgstr "Aranacak çizgi roman türleri"
 
 #: ../komikku/servers/dynasty/__init__.py:42
 msgid "Anthology"
-msgstr ""
+msgstr "Antoloji"
 
 #: ../komikku/servers/dynasty/__init__.py:43
 msgid "Doujins"
-msgstr ""
+msgstr "Doujin"
 
 #: ../komikku/servers/dynasty/__init__.py:44
 msgid "Issues"
-msgstr ""
+msgstr "Sayılar"
 
 #: ../komikku/servers/dynasty/__init__.py:45
 msgid "Series"
-msgstr ""
+msgstr "Seriler"
 
 #: ../komikku/servers/dynasty/__init__.py:46
 msgid "Chapters"
@@ -2414,122 +2447,123 @@ msgstr "Bölümler"
 
 #: ../komikku/servers/dynasty/__init__.py:52
 msgid "With Tags"
-msgstr ""
+msgstr "Etiketler İle"
 
 #: ../komikku/servers/dynasty/__init__.py:53
 msgid "Tags to search for"
-msgstr ""
+msgstr "Aranacak etiketler"
 
 #: ../komikku/servers/dynasty/__init__.py:59
 msgid "Without Tags"
-msgstr ""
+msgstr "Etiketler Olmadan"
 
 #: ../komikku/servers/dynasty/__init__.py:60
 msgid "Tags to exclude from search"
-msgstr ""
+msgstr "Arama dışı tutulacak etiketler"
 
 #: ../komikku/servers/exceptions.py:10
 msgid "Error: {}"
-msgstr ""
+msgstr "Hata: {}"
 
 #: ../komikku/servers/exceptions.py:16
 msgid "Failed to bypass Cloudflare protection. Please try again."
-msgstr ""
+msgstr "Cloudflare koruması atlanamadı. Lütfen tekrar deneyin."
 
 #: ../komikku/servers/exceptions.py:21
 msgid "No longer exists."
-msgstr ""
+msgstr "Artık yok."
 
 #: ../komikku/servers/mangadex/__init__.py:60
 msgid "Rating"
-msgstr ""
+msgstr "Puan"
 
 #: ../komikku/servers/mangadex/__init__.py:61
 msgid "Content ratings to include in search"
-msgstr ""
+msgstr "Aramaya eklenecek içerik puanları"
 
 #: ../komikku/servers/mangadex/__init__.py:64
 msgid "Safe"
-msgstr ""
+msgstr "Güvenli"
 
+# Kesinlikle öneri ile alakası yok.
 #: ../komikku/servers/mangadex/__init__.py:65
 msgid "Suggestive"
-msgstr ""
+msgstr "Müstehcen"
 
 #: ../komikku/servers/mangadex/__init__.py:66
 msgid "Erotica"
-msgstr ""
+msgstr "Erotik"
 
 #: ../komikku/servers/mangadex/__init__.py:67
 msgid "Pornographic"
-msgstr ""
+msgstr "Porno"
 
 #: ../komikku/servers/mangapill/__init__.py:31
 #: ../komikku/servers/multi/manga_stream.py:50
 msgid "Type"
-msgstr ""
+msgstr "Tür"
 
 #: ../komikku/servers/mangapill/__init__.py:32
 #: ../komikku/servers/multi/manga_stream.py:51
 msgid "Type of comics to search for"
-msgstr ""
+msgstr "Aranacak çizgi roman türü"
 
 #: ../komikku/servers/mangapill/__init__.py:37
 #: ../komikku/servers/multi/manga_stream.py:56
 msgid "Manga"
-msgstr ""
+msgstr "Manga"
 
 #: ../komikku/servers/mangapill/__init__.py:38
 msgid "Novel"
-msgstr ""
+msgstr "Roman"
 
 #: ../komikku/servers/mangapill/__init__.py:39
 msgid "One shot"
-msgstr ""
+msgstr "Tek atış"
 
 #: ../komikku/servers/mangapill/__init__.py:40
 msgid "Doujinshi"
-msgstr ""
+msgstr "Doujinshi"
 
 #: ../komikku/servers/mangapill/__init__.py:41
 #: ../komikku/servers/multi/manga_stream.py:57
 msgid "Manhwa"
-msgstr ""
+msgstr "Manhwa"
 
 #: ../komikku/servers/mangapill/__init__.py:42
 #: ../komikku/servers/multi/manga_stream.py:58
 msgid "Manhua"
-msgstr ""
+msgstr "Manhua"
 
 #: ../komikku/servers/mangapill/__init__.py:43
 msgid "OEL"
-msgstr ""
+msgstr "OEL"
 
 #: ../komikku/servers/multi/madara.py:314
 #: ../komikku/servers/readmanhwa/__init__.py:45
 msgid "NSFW Content"
-msgstr ""
+msgstr "NSFW İçerik"
 
 #: ../komikku/servers/multi/madara.py:315
 #: ../komikku/servers/readmanhwa/__init__.py:46
 msgid "Whether to show manga containing NSFW content"
-msgstr ""
+msgstr "NSFW içeriği içeren mangaların gösterilme durumu"
 
 #: ../komikku/servers/multi/manga_stream.py:59
 msgid "Comic"
-msgstr ""
+msgstr "Çizgi Roman"
 
 #: ../komikku/updater.py:98
 msgid "Library update completed with errors"
-msgstr ""
+msgstr "Kitaplık güncellemesi hatalarla tamamlandı"
 
 #: ../komikku/updater.py:100
 msgid "Library update completed"
-msgstr "Kütüphane güncellemesi tamamlandı"
+msgstr "Kitaplık güncellemesi tamamlandı"
 
 #: ../komikku/updater.py:103
 msgid "Update completed with errors"
-msgstr ""
+msgstr "Güncelleme hatalarla tamamlandı"
 
 #: ../komikku/updater.py:105
 msgid "Update completed"
@@ -2541,11 +2575,11 @@ msgstr "Yeni bölüm bulunamadı"
 
 #: ../komikku/updater.py:141
 msgid "Oops, update has failed. Please try again."
-msgstr "Ups, güncelleme başarısız oldu. Lütfen tekrar deneyin."
+msgstr "Hata, güncelleme başarısız oldu. Lütfen tekrar deneyin."
 
 #: ../komikku/updater.py:153
 msgid "Library update started"
-msgstr "Kütüphane güncellemesi başladı"
+msgstr "Kitaplık güncellemesi başladı"
 
 #: ../komikku/updater.py:155
 msgid "Update started"
@@ -2553,7 +2587,7 @@ msgstr "Güncelleme başladı"
 
 #: ../komikku/utils.py:163
 msgid "You are currently offline"
-msgstr ""
+msgstr "Çevrim dışısınız"
 
 #: ../komikku/utils.py:179
 msgid "No Internet connection, timeout or server down"
