@@ -977,7 +977,9 @@ class InfoBox:
 
         self.resume2_button.connect('clicked', self.card.on_resume_button_clicked)
 
-    def on_resize(self):
+        self.adapt_to_width()
+
+    def adapt_to_width(self):
         if self.window.mobile_width:
             self.cover_box.set_orientation(Gtk.Orientation.VERTICAL)
             self.cover_box.props.spacing = 12
@@ -1006,6 +1008,9 @@ class InfoBox:
             self.authors_label.props.justify = Gtk.Justification.LEFT
 
             self.resume2_button.props.halign = Gtk.Align.START
+
+    def on_resize(self):
+        self.adapt_to_width()
 
     def populate(self):
         cover_width = 170

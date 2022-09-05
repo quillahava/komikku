@@ -119,6 +119,39 @@ class Explorer(Gtk.Stack):
 
         self.window.stack.add_named(self, 'explorer')
 
+        self.adapt_to_width()
+
+    def adapt_to_width(self):
+        # Adapt card page to window width
+        if self.window.mobile_width:
+            self.card_page_cover_box.set_orientation(Gtk.Orientation.VERTICAL)
+            self.card_page_cover_box.props.spacing = 12
+
+            self.card_page_name_label.props.halign = Gtk.Align.CENTER
+            self.card_page_name_label.props.justify = Gtk.Justification.CENTER
+
+            self.card_page_status_server_label.props.halign = Gtk.Align.CENTER
+            self.card_page_status_server_label.props.justify = Gtk.Justification.CENTER
+
+            self.card_page_authors_label.props.halign = Gtk.Align.CENTER
+            self.card_page_authors_label.props.justify = Gtk.Justification.CENTER
+
+            self.card_page_add_read_button.props.halign = Gtk.Align.CENTER
+        else:
+            self.card_page_cover_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+            self.card_page_cover_box.props.spacing = 24
+
+            self.card_page_name_label.props.halign = Gtk.Align.START
+            self.card_page_name_label.props.justify = Gtk.Justification.LEFT
+
+            self.card_page_status_server_label.props.halign = Gtk.Align.START
+            self.card_page_status_server_label.props.justify = Gtk.Justification.LEFT
+
+            self.card_page_authors_label.props.halign = Gtk.Align.START
+            self.card_page_authors_label.props.justify = Gtk.Justification.LEFT
+
+            self.card_page_add_read_button.props.halign = Gtk.Align.START
+
     def build_server_row(self, data):
         row = Gtk.ListBoxRow()
         row.add_css_class('explorer-listboxrow')
@@ -362,34 +395,7 @@ class Explorer(Gtk.Stack):
         self.populate_card(row.manga_data)
 
     def on_resize(self):
-        if self.window.mobile_width:
-            self.card_page_cover_box.set_orientation(Gtk.Orientation.VERTICAL)
-            self.card_page_cover_box.props.spacing = 12
-
-            self.card_page_name_label.props.halign = Gtk.Align.CENTER
-            self.card_page_name_label.props.justify = Gtk.Justification.CENTER
-
-            self.card_page_status_server_label.props.halign = Gtk.Align.CENTER
-            self.card_page_status_server_label.props.justify = Gtk.Justification.CENTER
-
-            self.card_page_authors_label.props.halign = Gtk.Align.CENTER
-            self.card_page_authors_label.props.justify = Gtk.Justification.CENTER
-
-            self.card_page_add_read_button.props.halign = Gtk.Align.CENTER
-        else:
-            self.card_page_cover_box.set_orientation(Gtk.Orientation.HORIZONTAL)
-            self.card_page_cover_box.props.spacing = 24
-
-            self.card_page_name_label.props.halign = Gtk.Align.START
-            self.card_page_name_label.props.justify = Gtk.Justification.LEFT
-
-            self.card_page_status_server_label.props.halign = Gtk.Align.START
-            self.card_page_status_server_label.props.justify = Gtk.Justification.LEFT
-
-            self.card_page_authors_label.props.halign = Gtk.Align.START
-            self.card_page_authors_label.props.justify = Gtk.Justification.LEFT
-
-            self.card_page_add_read_button.props.halign = Gtk.Align.START
+        self.adapt_to_width()
 
     def on_search_page_server_website_button_clicked(self, _button):
         if self.server.base_url:

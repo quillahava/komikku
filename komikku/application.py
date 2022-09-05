@@ -77,6 +77,8 @@ CREDITS = dict(
     ),
 )
 
+MOBILE_WIDTH_BREAKPOINT = 720
+
 
 class Application(Adw.Application):
     application_id = None
@@ -318,6 +320,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Set window size: default or saved size
         self.set_default_size(*Settings.get_default().window_size)
         self.set_size_request(360, -1)
+        self.mobile_width = self.get_width() <= MOBILE_WIDTH_BREAKPOINT
 
         # Titlebar
         self.left_button.connect('clicked', self.on_left_button_clicked)
@@ -589,7 +592,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
             do_resize()
 
         def do_resize():
-            self.mobile_width = self.get_width() <= 720
+            self.mobile_width = self.get_width() <= MOBILE_WIDTH_BREAKPOINT
 
             self.library.on_resize()
             self.card.on_resize()
