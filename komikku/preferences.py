@@ -7,12 +7,12 @@ from gettext import gettext as _
 from gi.repository import Adw
 from gi.repository import Gtk
 
+from komikku.keyring import KeyringHelper
 from komikku.models import Settings
 from komikku.servers import LANGUAGES
 from komikku.servers.utils import get_server_main_id_by_id
 from komikku.servers.utils import get_servers_list
 from komikku.utils import html_escape
-from komikku.utils import KeyringHelper
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/preferences.ui')

@@ -11,12 +11,12 @@ import pickle
 import requests
 from requests.adapters import TimeoutSauce
 
+from komikku.keyring import KeyringHelper
 from komikku.servers.loader import server_finder
 from komikku.servers.utils import convert_image
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_server_main_id_by_id
 from komikku.utils import get_cache_dir
-from komikku.utils import KeyringHelper
 
 # https://www.localeplanet.com/icu/
 LANGUAGES = dict(
