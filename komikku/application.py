@@ -71,6 +71,7 @@ CREDITS = dict(
         'Liliana Prikler (German)',
         'Heimen Stoffels (Dutch)',
         'Irénée Thirion (French)',
+        'Sabri Ünal (Turkish)',
         'GrownNed (Russian)',
         'Mek101 (Italian)',
         'VaGNaroK (Brazilian Portuguese)',
@@ -367,9 +368,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Theme (light or dark)
         self.init_theme()
 
+        self.library.populate()
         self.library.show()
-        # Used idle_add to be sure that startup things are finished and that window size is known
-        GLib.idle_add(self.library.populate)
 
     def confirm(self, title, message, callback, response_appearance=None):
         def on_response(dialog, response_id):
@@ -585,7 +585,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
     def on_resize(self, _window, allocation):
         def on_maximized():
-            # Wait until maximization is effective
+            # Gtk.Window::maximized (idem with Gdk.Toplevel:state) event is unreliable because it's emitted too earlier
+            # We detect that maximization is effective by comparing monitor size and window size
             if self.get_width() < self.monitor.props.geometry.width and self.is_maximized():
                 return True
 

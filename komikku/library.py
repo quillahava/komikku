@@ -797,7 +797,7 @@ class Thumbnail(Gtk.FlowBoxChild):
     margin = 3   # flowbox column spacing divided by 2
 
     def __init__(self, parent, manga, width, height):
-        super().__init__()
+        super().__init__(halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER)
 
         self.parent = parent
         self.manga = manga
