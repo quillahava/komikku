@@ -1,7 +1,8 @@
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from bs4 import BeautifulSoup
 from bs4 import NavigableString
 import dateparser
 import datetime
@@ -16,6 +17,7 @@ from operator import itemgetter
 import os
 from PIL import Image
 from pkgutil import iter_modules
+import requests
 import struct
 import sys
 
@@ -258,6 +260,34 @@ def get_soup_element_inner_text(outer, text=None):
             get_soup_element_inner_text(el, text)
 
     return ''.join(text).strip()
+
+
+def search_duckduckgo(site, term):
+    from komikku.servers import USER_AGENT
+
+    session = requests.Session()
+    session.headers.update({'user-agent': USER_AGENT})
+
+    params = dict(
+        kd=-1,
+        q=f'site:{site} {term}',
+    )
+
+    try:
+        r = session.get('https://duckduckgo.com/lite', params=params)
+    except Exception:
+        raise
+
+    soup = BeautifulSoup(r.content, 'html.parser')
+
+    results = []
+    for a_element in soup.find_all('a', class_='result-link'):
+        results.append(dict(
+            name=a_element.text.strip(),
+            url=a_element.get('href'),
+        ))
+
+    return results
 
 
 # https://github.com/Harkame/JapScanDownloader

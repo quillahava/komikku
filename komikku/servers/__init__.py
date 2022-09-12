@@ -279,29 +279,3 @@ class Server:
 
     def update_chapter_read_progress(self, data, manga_slug, manga_name, chapter_slug, chapter_url):
         return NotImplemented
-
-
-def search_duckduckgo(site, term):
-    session = requests.Session()
-    session.headers.update({'user-agent': USER_AGENT})
-
-    params = dict(
-        kd=-1,
-        q=f'site:{site} {term}',
-    )
-
-    try:
-        r = session.get('https://duckduckgo.com/lite', params=params)
-    except Exception:
-        raise
-
-    soup = BeautifulSoup(r.content, 'html.parser')
-
-    results = []
-    for a_element in soup.find_all('a', class_='result-link'):
-        results.append(dict(
-            name=a_element.text.strip(),
-            url=a_element.get('href'),
-        ))
-
-    return results
