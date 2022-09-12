@@ -11,7 +11,7 @@ import pickle
 import requests
 from requests.adapters import TimeoutSauce
 
-from komikku.keyring import KeyringHelper
+from komikku.models.keyring import KeyringHelper
 from komikku.servers.loader import server_finder
 from komikku.servers.utils import convert_image
 from komikku.servers.utils import get_buffer_mime_type

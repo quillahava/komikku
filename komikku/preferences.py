@@ -7,8 +7,8 @@ from gettext import gettext as _
 from gi.repository import Adw
 from gi.repository import Gtk
 
-from komikku.keyring import KeyringHelper
 from komikku.models import Settings
+from komikku.models.keyring import KeyringHelper
 from komikku.servers import LANGUAGES
 from komikku.servers.utils import get_server_main_id_by_id
 from komikku.servers.utils import get_servers_list
