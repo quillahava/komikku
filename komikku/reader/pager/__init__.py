@@ -274,6 +274,40 @@ class Pager(Adw.Bin, BasePager):
             self.carousel.get_nth_page(0).clean()
             self.carousel.remove(self.carousel.get_nth_page(0))
 
+    def adjust_page(self, page, direction=None):
+        # Only if page is scrollable
+        #
+        # 1. When rendering a page (no direction):
+        #   - In RTL reading mode: picture must be positioned on the right
+        #   - Else positioned on the left
+        # 2. During navigation:
+        #   - In RTL/LTR reading modes: picture must be positioned on the right when navigating to the left
+        #   - In Vertical reading mode: picture must be positioned at the bottom when navigating upwards
+
+        if not page.scrolledwindow.props.can_target:
+            return
+
+        if self.reader.reading_mode != 'vertical':
+            adj = page.scrolledwindow.get_hadjustment()
+        else:
+            adj = page.scrolledwindow.get_vadjustment()
+
+        def adjust():
+            if (direction is None and self.reader.reading_mode == 'right-to-left') or direction == 'left':
+                adj.set_value(adj.get_upper() - adj.get_page_size())
+            else:
+                adj.set_value(0)
+
+        def on_adjustment_change(adj):
+            adj.disconnect(handler_id)
+            adjust()
+
+        if adj.get_page_size() == 0:
+            # Wait until adjustment is ready
+            handler_id = adj.connect('changed', on_adjustment_change)
+        else:
+            adjust()
+
     def clear(self):
         page = self.carousel.get_first_child()
         while page:
@@ -422,6 +456,9 @@ class Pager(Adw.Bin, BasePager):
         if self.window.page != 'reader' or not self.interactive:
             return Gdk.EVENT_PROPAGATE
 
+        if self.carousel.get_progress() < 1:
+            return Gdk.EVENT_PROPAGATE
+
         position = self.carousel.get_position()
         if position != 1:
             # A transition is in progress
@@ -470,11 +507,7 @@ class Pager(Adw.Bin, BasePager):
                 return Gdk.EVENT_STOP
 
             if self.reader.reading_mode == 'vertical' and vadj.get_value() == 0:
-                prev_page = self.scroll_to_direction('left')
-
-                # After switching pages, go to the end of the page that is now the current page
-                vadj = prev_page.scrolledwindow.get_vadjustment()
-                vadj.set_value(vadj.get_upper() - self.reader.size.height)
+                self.scroll_to_direction('left')
 
                 return Gdk.EVENT_STOP
 
@@ -509,6 +542,9 @@ class Pager(Adw.Bin, BasePager):
 
             return
 
+        if index != 1:
+            self.adjust_page(page, 'left' if index == 0 else 'right')
+
         # Hide controls
         self.reader.toggle_controls(False)
 
@@ -517,6 +553,7 @@ class Pager(Adw.Bin, BasePager):
 
     def on_page_edge_overshotted(self, _page, position):
         # When page is scrollable, scroll events are consumed, so we must manage page changes in place of Adw.Carousel.
+        #
         # Use cases:
         # 1. Reading mode is `RTL` or `LTR`, page can be scrolled horizontally (page scaling is adapted to height) but not vertically
         # 2. Reading mode is `vertical`, page can be scrolled vertically (page scaling is adapted to width) but not horizontally
@@ -538,6 +575,7 @@ class Pager(Adw.Bin, BasePager):
 
     def on_page_rendered(self, page, retry):
         if not retry:
+            self.adjust_page(page)
             return
 
         self.on_page_changed(None, self.carousel.get_position())
@@ -550,8 +588,11 @@ class Pager(Adw.Bin, BasePager):
         # 2. Reading mode is `vertical` and page can be scrolled horizontally (page scaling is adapted to height) but not vertically
         # In both cases, we can't rely on `edge-overshot` event.
 
-        if self.current_page and not self.current_page.scrolledwindow.props.can_target or not self.interactive:
-            return
+        if (self.current_page and self.current_page.scrolledwindow.props.can_target) or not self.interactive:
+            return Gdk.EVENT_PROPAGATE
+
+        if self.carousel.get_progress() < 1:
+            return Gdk.EVENT_PROPAGATE
 
         if self.reader.reading_mode in ('right-to-left', 'left-to-right') and self.reader.scaling == 'width' and dx:
             self.scroll_to_direction('left' if dx < 0 else 'right')
@@ -586,6 +627,9 @@ class Pager(Adw.Bin, BasePager):
 
         self.carousel.reorder(left_page, 2)
         self.carousel.reorder(right_page, 0)
+
+        for page in self.pages:
+            self.adjust_page(page)
 
     def scroll_to_direction(self, direction):
         if direction == 'left':
