@@ -80,30 +80,8 @@ class Explorer(Gtk.Stack):
 
         self.servers_page_pinned_listbox.connect('row-activated', self.on_server_clicked)
 
-        def _servers_filter(row):
-            """
-            This function gets one row and has to return:
-            - True if the row should be displayed
-            - False if the row should not be displayed
-            """
-            term = self.servers_page_searchentry.get_text().strip().lower()
-
-            if not hasattr(row, 'server_data'):
-                # Languages headers should always be displayed
-                return True
-
-            server_name = row.server_data['name']
-            server_lang = row.server_data['lang']
-
-            # Search in name and language
-            return (
-                term in server_name.lower() or
-                term in LANGUAGES[server_lang].lower() or
-                term in server_lang.lower()
-            )
-
         self.servers_page_listbox.connect('row-activated', self.on_server_clicked)
-        self.servers_page_listbox.set_filter_func(_servers_filter)
+        self.servers_page_listbox.set_filter_func(self.filter_servers)
 
         # Search page
         self.search_page_server_website_button = self.window.explorer_search_page_server_website_button
@@ -215,6 +193,28 @@ class Explorer(Gtk.Stack):
         self.search_page_searchentry.set_text('')
         self.clear_search_page_results()
         self.init_search_page_filters()
+
+    def filter_servers(self, row):
+        """
+        This function gets one row and has to return:
+        - True if the row should be displayed
+        - False if the row should not be displayed
+        """
+        term = self.servers_page_searchentry.get_text().strip().lower()
+
+        if not hasattr(row, 'server_data'):
+            # Languages headers should always be displayed
+            return True
+
+        server_name = row.server_data['name']
+        server_lang = row.server_data['lang']
+
+        # Search in name and language
+        return (
+            term in server_name.lower() or
+            term in LANGUAGES[server_lang].lower() or
+            term in server_lang.lower()
+        )
 
     def init_search_page_filters(self):
         self.search_filters = {}
@@ -420,9 +420,12 @@ class Explorer(Gtk.Stack):
         if not self.servers_page_searchbar.get_search_mode():
             return
 
-        row = self.servers_page_listbox.get_row_at_y(0)
-        if row:
-            self.on_server_clicked(self.servers_page_listbox, row)
+        # Select first search result
+        for child_row in self.servers_page_listbox:
+            if not hasattr(child_row, 'server_data') or not self.filter_servers(child_row):
+                continue
+            self.on_server_clicked(self.servers_page_listbox, child_row)
+            break
 
     def populate_card(self, manga_data):
         def run(server, manga_slug):
