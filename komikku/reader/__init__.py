@@ -141,6 +141,9 @@ class Reader:
         self.show()
 
     def init_pager(self, chapter):
+        if self.pager:
+            self.pager.dispose()
+
         if self.reading_mode == 'webtoon':
             self.pager = WebtoonPager(self)
         else:
