@@ -83,7 +83,7 @@ class Card:
         self.viewswitchertitle.set_view_switcher_enabled(False)
         self.viewswitcherbar.set_reveal(False)
 
-    def init(self, manga, transition=True):
+    def init(self, manga, transition=True, show=True):
         # Default page is `Info` page except when we come from Explorer
         self.stack.set_visible_child_name('chapters' if self.window.page == 'explorer' else 'info')
 
@@ -96,7 +96,8 @@ class Card:
                 _('NOTICE\n{0} server is not longer supported.\nPlease switch to another server.').format(manga.server.name)
             )
 
-        self.show()
+        if show:
+            self.show()
 
     def leave_selection_mode(self, _param=None):
         self.window.left_button.set_icon_name('go-previous-symbolic')

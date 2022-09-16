@@ -225,6 +225,10 @@ class Reader:
         if self.window.page != 'reader' or self.window.previous_page not in ('card', 'history'):
             return
 
+        if self.window.previous_page == 'history':
+            # Update card
+            self.window.card.init(self.manga, show=False)
+
         # Wait page is shown (transition is ended) to init pager
         # Operation is resource intensive and could disrupt page transition
         self.init_pager(self.init_chapter)
