@@ -9,6 +9,7 @@ from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import Gtk
 
+from komikku.models import Settings
 from komikku.reader.pager import BasePager
 from komikku.reader.pager.page import Page
 
@@ -26,7 +27,6 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
     scroll_page_value = 0
     scroll_status = None
 
-    clamp_size = 800
     preloaded = 5  # number of preloaded pages before and after current page
 
     def __init__(self, reader):
@@ -38,7 +38,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         self.set_kinetic_scrolling(True)
 
         self.clamp = Adw.Clamp()
-        self.clamp.set_maximum_size(self.clamp_size)
+        self.clamp.set_maximum_size(Settings.get_default().clamp_size)
         self.set_child(self.clamp)
 
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.START)

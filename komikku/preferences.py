@@ -45,6 +45,7 @@ class Preferences(Adw.Bin):
     long_strip_detection_switch = Gtk.Template.Child('long_strip_detection_switch')
 
     reading_mode_row = Gtk.Template.Child('reading_mode_row')
+    clamp_size_adjustment = Gtk.Template.Child('clamp_size_adjustment')
     scaling_row = Gtk.Template.Child('scaling_row')
     background_color_row = Gtk.Template.Child('background_color_row')
     borders_crop_switch = Gtk.Template.Child('borders_crop_switch')
@@ -86,6 +87,9 @@ class Preferences(Adw.Bin):
 
     def on_borders_crop_changed(self, switch_button, _gparam):
         self.settings.borders_crop = switch_button.get_active()
+
+    def on_clamp_size_changed(self, adjustment):
+        self.settings.clamp_size = int(adjustment.get_value())
 
     def on_credentials_storage_plaintext_fallback_changed(self, switch_button, _gparam):
         self.settings.credentials_storage_plaintext_fallback = switch_button.get_active()
@@ -273,6 +277,10 @@ class Preferences(Adw.Bin):
         self.reading_mode_row.set_selected(self.settings.reading_mode_value)
         self.reading_mode_row.connect('notify::selected', self.on_reading_mode_changed)
 
+        # Vertical reading modes clamp size
+        self.clamp_size_adjustment.set_value(self.settings.clamp_size)
+        self.clamp_size_adjustment.connect('value-changed', self.on_clamp_size_changed)
+
         # Image scaling
         self.scaling_row.set_selected(self.settings.scaling_value)
         self.scaling_row.connect('notify::selected', self.on_scaling_changed)
@@ -309,6 +317,9 @@ class Preferences(Adw.Bin):
         self.window.right_button_stack.hide()
 
         self.window.menu_button.hide()
+
+        # Update maximum value of clamp size adjustment
+        self.clamp_size_adjustment.set_upper(self.window.monitor.props.geometry.width)
 
         self.pages_stack.set_visible_child_name('general')
         self.window.show_page('preferences', transition=transition)

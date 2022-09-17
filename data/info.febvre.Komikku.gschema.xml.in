@@ -141,6 +141,11 @@
             <summary>Reading Mode</summary>
             <description>Reading mode in reader</description>
         </key>
+        <key type="i" name="clamp-size">
+            <default>960</default>
+            <summary>Maximum Width</summary>
+            <description>Constrains pager's width to a given maximum size (vertical reading modes only)</description>
+        </key>
         <key enum="@appid@.Scaling" name="scaling">
             <default>"screen"</default>
             <summary>Type of Scaling</summary>

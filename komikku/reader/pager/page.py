@@ -241,7 +241,7 @@ class Page(Gtk.Overlay):
             if self.reader.scaling != 'original':
                 max_width = self.reader.size.width
                 if self.reader.reading_mode == 'webtoon':
-                    max_width = min(max_width, self.reader.pager.clamp_size)
+                    max_width = min(max_width, self.pager.clamp.props.maximum_size)
                 max_height = self.reader.size.height
 
                 adapt_to_width_height = picture.orig_height // (picture.orig_width / max_width)

@@ -80,6 +80,22 @@ class Settings(Gio.Settings):
         self.set_boolean('borders-crop', state)
 
     @property
+    def clamp_size(self):
+        """Return vertical reading modes clamp size"""
+        return self.get_int('clamp-size')
+
+    @clamp_size.setter
+    def clamp_size(self, size):
+        """
+        Set the clamp size of vertical reading modes (Vertical, Webtoon)
+
+        :param size: width in pixels
+        :type size: int
+        """
+        size = GLib.Variant('i', size)
+        self.set_value('clamp-size', size)
+
+    @property
     def credentials_storage_plaintext_fallback(self):
         return self.get_boolean('credentials-storage-plaintext-fallback')
 
