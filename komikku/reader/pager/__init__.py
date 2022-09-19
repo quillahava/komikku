@@ -431,11 +431,11 @@ class Pager(Adw.Bin, BasePager):
             self.zoom['orig_hadj_value'] = hadj.get_value()
             self.zoom['orig_vadj_value'] = vadj.get_value()
 
-            # Adjust image's width to 2x window's width
+            # Adjust image's width to 2x
             factor = 2
             orig_width = page.picture.width
             orig_height = page.picture.height
-            zoom_width = self.reader.size.width * factor
+            zoom_width = orig_width * factor
             zoom_height = orig_height * (zoom_width / orig_width)
             ratio = zoom_width / orig_width
 
