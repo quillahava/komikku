@@ -316,7 +316,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                             <child>
                               <object class="AdwActionRow">
                                 <property name="title" translatable="yes">Maximum Width</property>
-                                <property name="subtitle" translatable="yes">Constrains pager's width to a given maximum size (vertical reading modes only)</property>
+                                <property name="subtitle" translatable="yes">Constrains pager's width to a given maximum size (Webtoon reading mode only)</property>
                                 <child>
                                   <object class="GtkSpinButton">
                                     <property name="valign">center</property>

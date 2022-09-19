@@ -81,13 +81,13 @@ class Settings(Gio.Settings):
 
     @property
     def clamp_size(self):
-        """Return vertical reading modes clamp size"""
+        """Return Webtoon pager clamp size"""
         return self.get_int('clamp-size')
 
     @clamp_size.setter
     def clamp_size(self, size):
         """
-        Set the clamp size of vertical reading modes (Vertical, Webtoon)
+        Set the clamp size of Webtoon pager
 
         :param size: width in pixels
         :type size: int

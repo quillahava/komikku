@@ -277,7 +277,7 @@ class Preferences(Adw.Bin):
         self.reading_mode_row.set_selected(self.settings.reading_mode_value)
         self.reading_mode_row.connect('notify::selected', self.on_reading_mode_changed)
 
-        # Vertical reading modes clamp size
+        # Webtoon pager clamp size
         self.clamp_size_adjustment.set_value(self.settings.clamp_size)
         self.clamp_size_adjustment.connect('value-changed', self.on_clamp_size_changed)
 

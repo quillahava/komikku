@@ -148,8 +148,8 @@ class Reader:
             self.pager = WebtoonPager(self)
         else:
             self.pager = Pager(self)
+            self.set_orientation()
 
-        self.set_orientation()
         self.set_action_background_color()
 
         self.overlay.set_child(self.pager)

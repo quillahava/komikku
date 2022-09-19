@@ -144,7 +144,7 @@
         <key type="i" name="clamp-size">
             <default>960</default>
             <summary>Maximum Width</summary>
-            <description>Constrains pager's width to a given maximum size (vertical reading modes only)</description>
+            <description>Constrains pager's width to a given maximum size (Webtoon reading mode only)</description>
         </key>
         <key enum="@appid@.Scaling" name="scaling">
             <default>"screen"</default>
