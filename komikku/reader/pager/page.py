@@ -239,10 +239,8 @@ class Page(Gtk.Overlay):
         if size is None:
             scaling = self.reader.scaling if self.reader.reading_mode != 'webtoon' else 'width'
             if self.reader.scaling != 'original':
-                max_width = self.reader.size.width
-                if self.reader.reading_mode == 'webtoon':
-                    max_width = min(max_width, self.pager.clamp.props.maximum_size)
-                max_height = self.reader.size.height
+                max_width = self.pager.size.width
+                max_height = self.pager.size.height
 
                 adapt_to_width_height = picture.orig_height // (picture.orig_width / max_width)
                 adapt_to_height_width = picture.orig_width // (picture.orig_height / max_height)
@@ -267,7 +265,7 @@ class Page(Gtk.Overlay):
             if self.reader.reading_mode == 'webtoon':
                 self.scrolledwindow.props.can_target = False
                 self.props.can_target = False
-            elif picture.width > self.reader.size.width or picture.height > self.reader.size.height:
+            elif picture.width > self.pager.size.width or picture.height > self.pager.size.height:
                 # Allows page to be scrollable
                 self.scrolledwindow.props.can_target = True
                 self.props.can_target = True

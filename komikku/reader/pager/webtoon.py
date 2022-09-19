@@ -14,7 +14,7 @@ from komikku.reader.pager import BasePager
 from komikku.reader.pager.page import Page
 
 
-class WebtoonPager(Gtk.ScrolledWindow, BasePager):
+class WebtoonPager(Adw.Bin, BasePager):
     """Vertical smooth/continuous scrolling (a.k.a. infinite canvas) pager"""
 
     current_chapter_id = None
@@ -33,25 +33,31 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         super().__init__()
         BasePager.__init__(self, reader)
 
-        self.get_hscrollbar().hide()
-        self.get_vscrollbar().hide()
-        self.set_kinetic_scrolling(True)
-
         self.clamp = Adw.Clamp()
         self.clamp.set_maximum_size(Settings.get_default().clamp_size)
+        self.clamp.set_tightening_threshold(Settings.get_default().clamp_size)
         self.set_child(self.clamp)
 
-        self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.START)
-        self.clamp.set_child(self.box)
+        self.scrolledwindow = Gtk.ScrolledWindow()
+        self.scrolledwindow.get_hscrollbar().hide()
+        self.scrolledwindow.get_vscrollbar().hide()
+        self.scrolledwindow.set_kinetic_scrolling(True)
+        self.vadj = self.scrolledwindow.get_vadjustment()
+        self.clamp.set_child(self.scrolledwindow)
 
+        self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.START)
+        self.scrolledwindow.set_child(self.box)
+
+        # Scroll controller
         self.controller_scroll = Gtk.EventControllerScroll.new(
             Gtk.EventControllerScrollFlags.VERTICAL | Gtk.EventControllerScrollFlags.KINETIC
         )
         self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
-        self.add_controller(self.controller_scroll)
-
         self.controller_scroll.connect('decelerate', self.on_scroll_decelerate)
         self.controller_scroll.connect('scroll', self.on_scroll)
+        self.scrolledwindow.add_controller(self.controller_scroll)
+
+        self.value_changed_handler_id = self.vadj.connect('value-changed', self.on_scroll_value_changed)
 
         # Scrolling detection on touch screen
         self.gesture_drag = Gtk.GestureDrag.new()
@@ -60,10 +66,7 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
         self.gesture_drag.connect('drag-end', self.on_gesture_drag_end)
         self.gesture_drag.connect('drag-update', self.on_gesture_drag_update)
         self.gesture_drag.set_touch_only(True)
-        self.add_controller(self.gesture_drag)
-
-        self.vadj = self.get_vadjustment()
-        self.value_changed_handler_id = self.vadj.connect('value-changed', self.on_scroll_value_changed)
+        self.scrolledwindow.add_controller(self.gesture_drag)
 
         self.zoom['active'] = False
 
@@ -80,6 +83,17 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
             offsets.append(offsets[index] + page.height)
 
         return offsets
+
+    @property
+    def size(self):
+        size = self.box.get_allocation()
+
+        size.width = min(size.width, self.reader.size.width)
+
+        if self.window.headerbar_revealer.get_child_revealed():
+            size.height -= self.window.headerbar.get_preferred_size()[1].height
+
+        return size
 
     def add_pages(self, position, count=1, do_remove=True, init=False):
         """
@@ -293,10 +307,10 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
 
         if not decelerate:
             self.scroll_status = 'scroll'
-            self.set_kinetic_scrolling(True)
+            self.scrolledwindow.set_kinetic_scrolling(True)
         else:
             # Disable kinetic scrolling otherwise any changes to vadjustment's value would be ignored
-            self.set_kinetic_scrolling(False)
+            self.scrolledwindow.set_kinetic_scrolling(False)
 
         pages = self.pages
         scroll_position_top = self.get_position(scroll_value_top)
@@ -360,16 +374,16 @@ class WebtoonPager(Gtk.ScrolledWindow, BasePager):
             self.on_scroll(None, None, 1 if self.scroll_direction == Gtk.DirectionType.DOWN else -1, True)
 
     def on_single_click(self, x, _y):
-        if x >= self.reader.size.width / 3 or x <= 2 * self.reader.size.width / 3:
+        if x >= self.reader.size.width / 3 and x <= 2 * self.reader.size.width / 3:
             # Center part of the page: toggle controls
             self.reader.toggle_controls()
 
     def scroll_to_direction(self, direction):
         if direction == Gtk.DirectionType.DOWN:
-            self.emit('scroll-child', Gtk.ScrollType.STEP_DOWN, False)
+            self.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_DOWN, False)
             self.on_scroll(None, None, 1)
         else:
-            self.emit('scroll-child', Gtk.ScrollType.STEP_UP, False)
+            self.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_UP, False)
             self.on_scroll(None, None, -1)
 
     def set_orientation(self, _orientation):

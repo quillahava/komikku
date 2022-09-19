@@ -46,6 +46,11 @@ class BasePager:
     def pages(self):
         raise NotImplementedError()
 
+    @property
+    @abstractmethod
+    def size(self):
+        raise NotImplementedError()
+
     @abstractmethod
     def add_page(self, position):
         raise NotImplementedError()
@@ -236,6 +241,15 @@ class Pager(Adw.Bin, BasePager):
     def pages(self):
         for index in range(self.carousel.get_n_pages()):
             yield self.carousel.get_nth_page(index)
+
+    @property
+    def size(self):
+        size = self.get_allocation()
+
+        if self.window.headerbar_revealer.get_child_revealed():
+            size.height -= self.window.headerbar.get_preferred_size()[1].height
+
+        return size
 
     def add_page(self, position):
         if position == 'start':
@@ -483,7 +497,7 @@ class Pager(Adw.Bin, BasePager):
                 page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_LEFT, False)
                 return Gdk.EVENT_STOP
 
-            if hadj.get_value() + self.reader.size.width == hadj.get_upper() and self.zoom['active'] is False:
+            if hadj.get_value() + hadj.get_page_size() == hadj.get_upper() and self.zoom['active'] is False:
                 self.scroll_to_direction('right')
                 return Gdk.EVENT_STOP
 
@@ -497,7 +511,7 @@ class Pager(Adw.Bin, BasePager):
             vadj = page.scrolledwindow.get_vadjustment()
 
             if keyval in (Gdk.KEY_Down, Gdk.KEY_KP_Down):
-                if self.reader.reading_mode == 'vertical' and vadj.get_value() + self.reader.size.height == vadj.get_upper():
+                if self.reader.reading_mode == 'vertical' and vadj.get_value() + vadj.get_page_size() == vadj.get_upper():
                     self.scroll_to_direction('right')
                     return Gdk.EVENT_STOP
 
