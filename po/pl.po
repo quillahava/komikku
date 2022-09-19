@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 0.34.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-02 00:04+0200\n"
+"POT-Creation-Date: 2022-09-19 19:45+0200\n"
 "PO-Revision-Date: 2021-10-06 23:30+0200\n"
 "Last-Translator: Mariusz Kurek <mariuszkurek@pm.me>\n"
 "Language-Team: \n"
@@ -1885,39 +1885,39 @@ msgstr "⬇ Webtoon"
 msgid "Type of Scaling"
 msgstr "Tryb skalowania"
 
-#: ../data/ui/menu/reader.xml:40 ../data/ui/preferences.ui:323
+#: ../data/ui/menu/reader.xml:40 ../data/ui/preferences.ui:342
 msgid "Adapt to Screen"
 msgstr "Dostosuj do ekranu"
 
-#: ../data/ui/menu/reader.xml:45 ../data/ui/preferences.ui:324
+#: ../data/ui/menu/reader.xml:45 ../data/ui/preferences.ui:343
 msgid "Adapt to Width"
 msgstr "Dostosuj do szerokości"
 
-#: ../data/ui/menu/reader.xml:50 ../data/ui/preferences.ui:325
+#: ../data/ui/menu/reader.xml:50 ../data/ui/preferences.ui:344
 msgid "Adapt to Height"
 msgstr "Dostosuj do wysokości"
 
-#: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:326
+#: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:345
 msgid "Original Size"
 msgstr "Rozmiar oryginalny"
 
-#: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:334
+#: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:353
 msgid "Background Color"
 msgstr "Kolor tła"
 
-#: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:338
+#: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:357
 msgid "White"
 msgstr "Biały"
 
-#: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:339
+#: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:358
 msgid "Gray"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:340
+#: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:359
 msgid "Black"
 msgstr "Czarny"
 
-#: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:341
+#: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:360
 msgid "System Style"
 msgstr ""
 
@@ -2046,50 +2046,59 @@ msgid "Reader"
 msgstr "Czytnik"
 
 #: ../data/ui/preferences.ui:318
+msgid "Maximum Width"
+msgstr ""
+
+#: ../data/ui/preferences.ui:319
+msgid ""
+"Constrains reader's width to a given maximum size (Webtoon reading mode only)"
+msgstr ""
+
+#: ../data/ui/preferences.ui:337
 msgid "Scaling"
 msgstr "Skalowanie"
 
-#: ../data/ui/preferences.ui:319
+#: ../data/ui/preferences.ui:338
 msgid "Type of scaling to adapt image"
 msgstr "Typ skalowania by dostosować obraz"
 
-#: ../data/ui/preferences.ui:349
+#: ../data/ui/preferences.ui:368
 msgid "Borders Crop"
 msgstr "Przycinanie krawędzi"
 
-#: ../data/ui/preferences.ui:351
+#: ../data/ui/preferences.ui:370
 msgid "Crop white borders of images"
 msgstr "Ucinaj białe krawędzie obrazów"
 
-#: ../data/ui/preferences.ui:363
+#: ../data/ui/preferences.ui:382
 msgid "Page Numbering"
 msgstr "Numeracja stron"
 
-#: ../data/ui/preferences.ui:365
+#: ../data/ui/preferences.ui:384
 msgid "Hide the page numbering at the bottom of the screen while reading"
 msgstr "Ukryj numerację stron na dole ekranu podczas czytania"
 
-#: ../data/ui/preferences.ui:377
+#: ../data/ui/preferences.ui:396
 msgid "Fullscreen"
 msgstr "Pełny ekran"
 
-#: ../data/ui/preferences.ui:379
+#: ../data/ui/preferences.ui:398
 msgid "Automatically enter fullscreen mode"
 msgstr "Automatycznie włącz tryb pełnego ekranu"
 
-#: ../data/ui/preferences.ui:398 ../data/ui/preferences.ui:403
+#: ../data/ui/preferences.ui:417 ../data/ui/preferences.ui:422
 msgid "Advanced"
 msgstr "Zaawansowane"
 
-#: ../data/ui/preferences.ui:406
+#: ../data/ui/preferences.ui:425
 msgid "Credentials storage"
 msgstr "Magazyn poświadczeń"
 
-#: ../data/ui/preferences.ui:409
+#: ../data/ui/preferences.ui:428
 msgid "Allow plaintext storage as fallback"
 msgstr "Zezwól awaryjnie na przechowywanie zwykłym tekstem"
 
-#: ../data/ui/preferences.ui:411
+#: ../data/ui/preferences.ui:430
 msgid "Used when no keyring backends are found"
 msgstr "Użyte, jeśli nie znaleziono backendu bazy kluczy"
 
@@ -2163,50 +2172,50 @@ msgctxt "Shortcut window description"
 msgid "Select all downloads"
 msgstr "Zaznacz wszystkie pobrania"
 
-#: ../komikku/application.py:114
+#: ../komikku/application.py:116
 msgid "Multiple URLs not supported"
 msgstr "Wiele URL-i nie jest obsługiwane"
 
-#: ../komikku/application.py:130
+#: ../komikku/application.py:132
 msgid "Invalid URL {}, not handled by any server."
 msgstr "Błędny URL {}, nieobsługiwany przez żaden serwer."
 
-#: ../komikku/application.py:381 ../komikku/card.py:75 ../komikku/card.py:76
+#: ../komikku/application.py:383 ../komikku/card.py:75 ../komikku/card.py:76
 #: ../komikku/downloader.py:319 ../komikku/downloader.py:320
 #: ../komikku/library.py:315 ../komikku/library.py:316
-#: ../komikku/reader/__init__.py:248
+#: ../komikku/reader/__init__.py:256
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: ../komikku/application.py:382
+#: ../komikku/application.py:384
 msgid "Yes"
 msgstr "Tak"
 
-#: ../komikku/application.py:467
+#: ../komikku/application.py:469
 msgid "Sponsor via Ko-fi"
 msgstr ""
 
-#: ../komikku/application.py:468
+#: ../komikku/application.py:470
 msgid "Sponsor via Liberapay"
 msgstr ""
 
-#: ../komikku/application.py:469
+#: ../komikku/application.py:471
 msgid "Sponsor via Paypal"
 msgstr ""
 
-#: ../komikku/application.py:641
+#: ../komikku/application.py:644
 msgid "Are you sure you want to quit?"
 msgstr "Czy na pewno chcesz wyjść?"
 
-#: ../komikku/application.py:644
+#: ../komikku/application.py:647
 msgid "Some chapters are currently being downloaded."
 msgstr "Niektóre rozdziały są obecnie pobierane."
 
-#: ../komikku/application.py:646
+#: ../komikku/application.py:649
 msgid "Some mangas are currently being updated."
 msgstr "Niektóre mangi są obecnie aktualizowane."
 
-#: ../komikku/application.py:649
+#: ../komikku/application.py:652
 msgid "Quit?"
 msgstr "Wyjść?"
 
@@ -2221,54 +2230,54 @@ msgstr ""
 "Serwer {0} nie jest już obsługiwany.\n"
 "Proszę zmienić serwer."
 
-#: ../komikku/card.py:103 ../komikku/card.py:195
+#: ../komikku/card.py:104 ../komikku/card.py:196
 #: ../komikku/categories_editor.py:126 ../komikku/downloader.py:331
-#: ../komikku/downloader.py:509 ../komikku/explorer.py:695
-#: ../komikku/history.py:203 ../komikku/preferences.py:305
+#: ../komikku/downloader.py:509 ../komikku/explorer.py:704
+#: ../komikku/history.py:203 ../komikku/preferences.py:313
 msgid "Back"
 msgstr "Wstecz"
 
-#: ../komikku/card.py:122
+#: ../komikku/card.py:123
 msgid "Read progress synchronization with server completed successfully"
 msgstr "Synchronizacja postępu z serwerem zakończona pomyślnie"
 
-#: ../komikku/card.py:133
+#: ../komikku/card.py:134
 msgid "Failed to get manga URL"
 msgstr "Nie udało się uzyskać URL mangi"
 
-#: ../komikku/card.py:597 ../komikku/card.py:692
+#: ../komikku/card.py:598 ../komikku/card.py:693
 msgid "Failed to update chapters reading status"
 msgstr ""
 
-#: ../komikku/card.py:771
+#: ../komikku/card.py:772
 msgid "New"
 msgstr "Nowy"
 
-#: ../komikku/card.py:871 ../komikku/card.py:1052
+#: ../komikku/card.py:872 ../komikku/card.py:1058
 msgid "%m/%d/%Y"
 msgstr "%d.%m.%Y"
 
-#: ../komikku/card.py:935
+#: ../komikku/card.py:936
 msgid "Download"
 msgstr "Pobierz"
 
-#: ../komikku/card.py:939
+#: ../komikku/card.py:940
 msgid "Clear and Reset"
 msgstr ""
 
-#: ../komikku/card.py:947
+#: ../komikku/card.py:948
 msgid "Mark as Read"
 msgstr "Oznacz jako przeczytane"
 
-#: ../komikku/card.py:951
+#: ../komikku/card.py:952
 msgid "Mark as Unread"
 msgstr "Oznacz jako nieprzeczytane"
 
-#: ../komikku/card.py:955
+#: ../komikku/card.py:956
 msgid "Mark Previous Chapters as Read"
 msgstr ""
 
-#: ../komikku/card.py:1025 ../komikku/explorer.py:460
+#: ../komikku/card.py:1031 ../komikku/explorer.py:469
 msgid "Unknown author"
 msgstr ""
 
@@ -2303,44 +2312,44 @@ msgstr "Pobrane strony: {0}/{1}"
 msgid "error"
 msgstr "błąd"
 
-#: ../komikku/explorer.py:331
+#: ../komikku/explorer.py:364
 #, python-brace-format
 msgid "{0} manga added"
 msgstr "Dodano mangę: {0}"
 
-#: ../komikku/explorer.py:337 ../komikku/explorer.py:734
+#: ../komikku/explorer.py:370 ../komikku/explorer.py:743
 msgid "Read"
 msgstr "Czytaj"
 
-#: ../komikku/explorer.py:398
+#: ../komikku/explorer.py:404
 msgid "Oops, server website URL is unknown."
 msgstr "Ups, URL strony internetowej serwera jest nieznany."
 
-#: ../komikku/explorer.py:507
+#: ../komikku/explorer.py:516
 msgid "Oops, failed to retrieve manga's information."
 msgstr "Ups, nie udało się znaleźć informacji o mandze."
 
-#: ../komikku/explorer.py:544
+#: ../komikku/explorer.py:553
 msgid "Pinned"
 msgstr "Przypięte"
 
-#: ../komikku/explorer.py:644
+#: ../komikku/explorer.py:653
 msgid "MOST POPULARS"
 msgstr "NAJPOPULARNIEJSZE"
 
-#: ../komikku/explorer.py:674
+#: ../komikku/explorer.py:683
 msgid "Oops, search failed. Please try again."
 msgstr "Ups, wyszukiwanie nie powiodło się. Proszę spróbować ponownie."
 
-#: ../komikku/explorer.py:676
+#: ../komikku/explorer.py:685
 msgid "No results"
 msgstr "Brak rezulatów"
 
-#: ../komikku/explorer.py:707
+#: ../komikku/explorer.py:716
 msgid "Servers"
 msgstr "Serwery"
 
-#: ../komikku/explorer.py:737
+#: ../komikku/explorer.py:746
 msgid "Add to Library"
 msgstr ""
 
@@ -2421,21 +2430,21 @@ msgstr "Pobieranie"
 msgid "Download error"
 msgstr "Błąd pobierania"
 
-#: ../komikku/preferences.py:349
+#: ../komikku/preferences.py:360
 msgid "Servers Languages"
 msgstr "Języki serwerów"
 
-#: ../komikku/preferences.py:427
+#: ../komikku/preferences.py:438
 msgid "User Account"
 msgstr "Konto użytkownika"
 
-#: ../komikku/preferences.py:458
+#: ../komikku/preferences.py:469
 msgid "System keyring service is disabled. Credential cannot be saved."
 msgstr ""
 "Systemowa usługa bazy kluczy jest wyłączona. Poświadczenia nie mogą być "
 "zapisane."
 
-#: ../komikku/preferences.py:463
+#: ../komikku/preferences.py:474
 msgid ""
 "No keyring backends were found to store credential. Use plaintext storage as "
 "fallback."
@@ -2443,7 +2452,7 @@ msgstr ""
 "Nie znaleziono backendu bazy kluczy do przechowania poświadczeń. Awaryjne "
 "przechowanie zwykłym tekstem."
 
-#: ../komikku/preferences.py:468
+#: ../komikku/preferences.py:479
 msgid ""
 "No keyring backends were found to store credential. Plaintext storage will "
 "be used as fallback."
@@ -2451,34 +2460,34 @@ msgstr ""
 "Nie znaleziono backendu bazy kluczy do przechowania poświadczeń. Awaryjnie "
 "będzie przechowane zwykłym tekstem."
 
-#: ../komikku/preferences.py:476
+#: ../komikku/preferences.py:487
 msgid "Test"
 msgstr "Test"
 
-#: ../komikku/preferences.py:514
+#: ../komikku/preferences.py:525
 msgid "Servers Settings"
 msgstr "Ustawienia serwerów"
 
-#: ../komikku/reader/__init__.py:244
+#: ../komikku/reader/__init__.py:251
 msgid "Please choose a file"
 msgstr "Proszę wybrać plik"
 
-#: ../komikku/reader/__init__.py:250
+#: ../komikku/reader/__init__.py:257
 msgid "Save"
 msgstr "Zapisz"
 
-#: ../komikku/reader/__init__.py:269
+#: ../komikku/reader/__init__.py:269 ../komikku/reader/__init__.py:284
+#, python-brace-format
+msgid "Page successfully saved to {0}"
+msgstr "Strona pomyślnie zapisana do {0}"
+
+#: ../komikku/reader/__init__.py:280
 msgid ""
 "Failed to save page: missing permission to access the XDG pictures directory"
 msgstr ""
 "Nie udało się zapisać strony: brak uprawnień dostępu do katalogu obrazów XDG"
 
-#: ../komikku/reader/__init__.py:273
-#, python-brace-format
-msgid "Page successfully saved to {0}"
-msgstr "Strona pomyślnie zapisana do {0}"
-
-#: ../komikku/reader/pager/__init__.py:187
+#: ../komikku/reader/pager/__init__.py:192
 #, python-brace-format
 msgid ""
 "Failed to sync read progress with server:\n"
@@ -2487,22 +2496,22 @@ msgstr ""
 "Nie udało się zsynchronizować postępu z serwerem:\n"
 "{message}"
 
-#: ../komikku/reader/pager/__init__.py:189
+#: ../komikku/reader/pager/__init__.py:194
 msgid "Failed to sync read progress with server"
 msgstr "Nie udało się zsynchronizować postępu z serwerem"
 
-#: ../komikku/reader/pager/__init__.py:505
-#: ../komikku/reader/pager/webtoon.py:325
+#: ../komikku/reader/pager/__init__.py:552
+#: ../komikku/reader/pager/webtoon.py:339
 msgid "There is no previous chapter."
 msgstr "Nie ma poprzedniego rozdziału."
 
-#: ../komikku/reader/pager/__init__.py:507
-#: ../komikku/reader/pager/webtoon.py:323
+#: ../komikku/reader/pager/__init__.py:554
+#: ../komikku/reader/pager/webtoon.py:337
 msgid "It was the last chapter."
 msgstr "To był ostatni rozdział."
 
-#: ../komikku/reader/pager/__init__.py:624
-#: ../komikku/reader/pager/webtoon.py:399
+#: ../komikku/reader/pager/__init__.py:682
+#: ../komikku/reader/pager/webtoon.py:413
 msgid "This chapter is inaccessible."
 msgstr "Ten rozdział jest niedostępny."
 
@@ -2510,7 +2519,7 @@ msgstr "Ten rozdział jest niedostępny."
 msgid "Failed to load image"
 msgstr "Nie udało się wczytać obrazu"
 
-#: ../komikku/reader/pager/page.py:293
+#: ../komikku/reader/pager/page.py:294
 msgid "Retry"
 msgstr "Ponów"
 
@@ -2682,11 +2691,11 @@ msgstr "Aktualizacja biblioteki rozpoczęta"
 msgid "Update started"
 msgstr "Aktualizacja rozpoczęta"
 
-#: ../komikku/utils.py:163
+#: ../komikku/utils.py:157
 msgid "You are currently offline"
 msgstr "Obecnie jesteś offline"
 
-#: ../komikku/utils.py:179
+#: ../komikku/utils.py:173
 msgid "No Internet connection, timeout or server down"
 msgstr ""
 "Brak połączenia z internetem, upłynął limit czasu albo serwer nie odpowiada"
