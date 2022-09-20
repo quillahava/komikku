@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-19 19:45+0200\n"
+"POT-Creation-Date: 2022-09-20 17:10+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: VaGNaroK <indialuz42@gmail.com>\n"
 "Language-Team: \n"
@@ -1785,35 +1785,39 @@ msgstr "Adaptar à altura"
 msgid "Original Size"
 msgstr "Tamanho original"
 
-#: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:353
+#: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:367
 msgid "Background Color"
 msgstr "Cor do fundo"
 
-#: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:357
+#: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:371
 msgid "White"
 msgstr "Branco"
 
-#: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:358
+#: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:372
 msgid "Gray"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:359
+#: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:373
 msgid "Black"
 msgstr "Preto"
 
-#: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:360
+#: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:374
 msgid "System Style"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:91
-msgid "Crop Borders"
+#: ../data/ui/menu/reader.xml:91 ../data/ui/preferences.ui:353
+msgid "Landscape Pages Zoom"
 msgstr ""
 
 #: ../data/ui/menu/reader.xml:95
+msgid "Crop Borders"
+msgstr ""
+
+#: ../data/ui/menu/reader.xml:99
 msgid "Hide Page Numbering"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:102
+#: ../data/ui/menu/reader.xml:106
 msgid "Save Page"
 msgstr ""
 
@@ -1935,7 +1939,7 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:319
 msgid ""
-"Constrains reader's width to a given maximum size (Webtoon reading mode only)"
+"Constrain reader's width to a given maximum size (Webtoon reading mode only)"
 msgstr ""
 
 #: ../data/ui/preferences.ui:337
@@ -1946,43 +1950,48 @@ msgstr "Dimensionamento"
 msgid "Type of scaling to adapt image"
 msgstr "Tipo de dimensionamento para adaptar a imagem"
 
-#: ../data/ui/preferences.ui:368
+#: ../data/ui/preferences.ui:355
+msgid ""
+"Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
+msgstr ""
+
+#: ../data/ui/preferences.ui:382
 msgid "Borders Crop"
 msgstr "Cortar Bordas"
 
-#: ../data/ui/preferences.ui:370
+#: ../data/ui/preferences.ui:384
 msgid "Crop white borders of images"
 msgstr "Cortar bordas brancas das imagens"
 
-#: ../data/ui/preferences.ui:382
+#: ../data/ui/preferences.ui:396
 msgid "Page Numbering"
 msgstr ""
 
-#: ../data/ui/preferences.ui:384
+#: ../data/ui/preferences.ui:398
 msgid "Hide the page numbering at the bottom of the screen while reading"
 msgstr ""
 
-#: ../data/ui/preferences.ui:396
+#: ../data/ui/preferences.ui:410
 msgid "Fullscreen"
 msgstr "Tela cheia"
 
-#: ../data/ui/preferences.ui:398
+#: ../data/ui/preferences.ui:412
 msgid "Automatically enter fullscreen mode"
 msgstr "Entrar automaticamente no modo de tela cheia"
 
-#: ../data/ui/preferences.ui:417 ../data/ui/preferences.ui:422
+#: ../data/ui/preferences.ui:431 ../data/ui/preferences.ui:436
 msgid "Advanced"
 msgstr ""
 
-#: ../data/ui/preferences.ui:425
+#: ../data/ui/preferences.ui:439
 msgid "Credentials storage"
 msgstr ""
 
-#: ../data/ui/preferences.ui:428
+#: ../data/ui/preferences.ui:442
 msgid "Allow plaintext storage as fallback"
 msgstr ""
 
-#: ../data/ui/preferences.ui:430
+#: ../data/ui/preferences.ui:444
 msgid "Used when no keyring backends are found"
 msgstr ""
 
@@ -2067,7 +2076,7 @@ msgstr ""
 #: ../komikku/application.py:383 ../komikku/card.py:75 ../komikku/card.py:76
 #: ../komikku/downloader.py:319 ../komikku/downloader.py:320
 #: ../komikku/library.py:315 ../komikku/library.py:316
-#: ../komikku/reader/__init__.py:256
+#: ../komikku/reader/__init__.py:276
 msgid "Cancel"
 msgstr ""
 
@@ -2076,30 +2085,34 @@ msgid "Yes"
 msgstr ""
 
 #: ../komikku/application.py:469
-msgid "Sponsor via Ko-fi"
+msgid "Join Chat"
 msgstr ""
 
 #: ../komikku/application.py:470
-msgid "Sponsor via Liberapay"
+msgid "Sponsor via Ko-fi"
 msgstr ""
 
 #: ../komikku/application.py:471
+msgid "Sponsor via Liberapay"
+msgstr ""
+
+#: ../komikku/application.py:472
 msgid "Sponsor via Paypal"
 msgstr ""
 
-#: ../komikku/application.py:644
+#: ../komikku/application.py:645
 msgid "Are you sure you want to quit?"
 msgstr "Você tem certeza que quer sair?"
 
-#: ../komikku/application.py:647
+#: ../komikku/application.py:648
 msgid "Some chapters are currently being downloaded."
 msgstr "Alguns capítulos estão sendo baixados no momento."
 
-#: ../komikku/application.py:649
+#: ../komikku/application.py:650
 msgid "Some mangas are currently being updated."
 msgstr "Atualmente, alguns mangás estão sendo atualizados."
 
-#: ../komikku/application.py:652
+#: ../komikku/application.py:653
 msgid "Quit?"
 msgstr "Sair?"
 
@@ -2117,7 +2130,7 @@ msgstr ""
 #: ../komikku/card.py:104 ../komikku/card.py:196
 #: ../komikku/categories_editor.py:126 ../komikku/downloader.py:331
 #: ../komikku/downloader.py:509 ../komikku/explorer.py:704
-#: ../komikku/history.py:203 ../komikku/preferences.py:313
+#: ../komikku/history.py:203 ../komikku/preferences.py:321
 msgid "Back"
 msgstr ""
 
@@ -2280,84 +2293,84 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: ../komikku/models/database.py:407
+#: ../komikku/models/database.py:409
 msgid "Complete"
 msgstr "Completo"
 
-#: ../komikku/models/database.py:408
+#: ../komikku/models/database.py:410
 msgid "Ongoing"
 msgstr "Em andamento"
 
-#: ../komikku/models/database.py:409
+#: ../komikku/models/database.py:411
 msgid "Suspended"
 msgstr "Suspenso"
 
-#: ../komikku/models/database.py:410
+#: ../komikku/models/database.py:412
 msgid "Hiatus"
 msgstr "Falha"
 
-#: ../komikku/models/database.py:1044
+#: ../komikku/models/database.py:1046
 msgid "Download pending"
 msgstr "Transferência pendente"
 
-#: ../komikku/models/database.py:1045
+#: ../komikku/models/database.py:1047
 msgid "Downloaded"
 msgstr "Baixado"
 
-#: ../komikku/models/database.py:1046
+#: ../komikku/models/database.py:1048
 msgid "Downloading"
 msgstr "Baixando"
 
-#: ../komikku/models/database.py:1047
+#: ../komikku/models/database.py:1049
 msgid "Download error"
 msgstr "Erro ao baixar"
 
-#: ../komikku/preferences.py:360
+#: ../komikku/preferences.py:368
 msgid "Servers Languages"
 msgstr "Idiomas do Servidor"
 
-#: ../komikku/preferences.py:438
+#: ../komikku/preferences.py:446
 msgid "User Account"
 msgstr ""
 
-#: ../komikku/preferences.py:469
+#: ../komikku/preferences.py:477
 msgid "System keyring service is disabled. Credential cannot be saved."
 msgstr ""
 
-#: ../komikku/preferences.py:474
+#: ../komikku/preferences.py:482
 msgid ""
 "No keyring backends were found to store credential. Use plaintext storage as "
 "fallback."
 msgstr ""
 
-#: ../komikku/preferences.py:479
+#: ../komikku/preferences.py:487
 msgid ""
 "No keyring backends were found to store credential. Plaintext storage will "
 "be used as fallback."
 msgstr ""
 
-#: ../komikku/preferences.py:487
+#: ../komikku/preferences.py:495
 msgid "Test"
 msgstr ""
 
-#: ../komikku/preferences.py:525
+#: ../komikku/preferences.py:533
 msgid "Servers Settings"
 msgstr "Configurações de servidores"
 
-#: ../komikku/reader/__init__.py:251
+#: ../komikku/reader/__init__.py:271
 msgid "Please choose a file"
 msgstr ""
 
-#: ../komikku/reader/__init__.py:257
+#: ../komikku/reader/__init__.py:277
 msgid "Save"
 msgstr ""
 
-#: ../komikku/reader/__init__.py:269 ../komikku/reader/__init__.py:284
+#: ../komikku/reader/__init__.py:289 ../komikku/reader/__init__.py:304
 #, python-brace-format
 msgid "Page successfully saved to {0}"
 msgstr ""
 
-#: ../komikku/reader/__init__.py:280
+#: ../komikku/reader/__init__.py:300
 msgid ""
 "Failed to save page: missing permission to access the XDG pictures directory"
 msgstr ""
@@ -2392,7 +2405,7 @@ msgstr "Este capítulo está inacessível."
 msgid "Failed to load image"
 msgstr "Falha ao carregar a imagem"
 
-#: ../komikku/reader/pager/page.py:294
+#: ../komikku/reader/pager/page.py:299
 msgid "Retry"
 msgstr "Repetir"
 

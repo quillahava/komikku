@@ -129,7 +129,7 @@
         <key type="i" name="clamp-size">
             <default>960</default>
             <summary>Maximum Width</summary>
-            <description>Constrains reader's width to a given maximum size (Webtoon reading mode only)</description>
+            <description>Constrain reader's width to a given maximum size (Webtoon reading mode only)</description>
         </key>
         <key type="b" name="fullscreen">
             <default>false</default>
