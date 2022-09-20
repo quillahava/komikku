@@ -93,7 +93,6 @@ class Application(Adw.Application):
         self.window = None
 
         GLib.set_application_name('Komikku')
-        GLib.set_prgname(self.application_id)
 
         logging.basicConfig(
             format='%(asctime)s | %(levelname)s | %(name)s | %(message)s', datefmt='%d-%m-%y %H:%M:%S',
@@ -459,6 +458,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
             All your feedbacks/issues/suggestions are welcome.</p>
         """)
 
+        window.add_link(_('Join Chat'), 'https://matrix.to/#/#komikku-gnome:matrix.org')
         window.add_link(_('Sponsor via Ko-fi'), 'https://ko-fi.com/X8X06EM3L')
         window.add_link(_('Sponsor via Liberapay'), 'https://liberapay.com/valos/donate')
         window.add_link(_('Sponsor via Paypal'), 'https://www.paypal.com/donate?business=GSRGEQ78V97PU&no_recurring=0&item_name=You+can+help+me+to+keep+developing+apps+through+donations.&currency_code=EUR')
