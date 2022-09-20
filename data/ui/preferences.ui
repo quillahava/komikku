@@ -349,6 +349,20 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                               </object>
                             </child>
                             <child>
+                              <object class="AdwActionRow">
+                                <property name="title" translatable="yes">Landscape Pages Zoom</property>
+                                <property name="activatable_widget">landscape_zoom_switch</property>
+                                <property name="subtitle" translatable="yes">Zoom page to fit height when page is landscape (Adapt to Screen scaling only)</property>
+                                <child>
+                                  <object class="GtkSwitch" id="landscape_zoom_switch">
+                                    <property name="halign">center</property>
+                                    <property name="valign">center</property>
+                                    <property name="hexpand">0</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
                               <object class="AdwComboRow" id="background_color_row">
                                 <property name="title" translatable="yes">Background Color</property>
                                 <property name="model">

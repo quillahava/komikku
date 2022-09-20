@@ -47,6 +47,7 @@ class Preferences(Adw.Bin):
     reading_mode_row = Gtk.Template.Child('reading_mode_row')
     clamp_size_adjustment = Gtk.Template.Child('clamp_size_adjustment')
     scaling_row = Gtk.Template.Child('scaling_row')
+    landscape_zoom_switch = Gtk.Template.Child('landscape_zoom_switch')
     background_color_row = Gtk.Template.Child('background_color_row')
     borders_crop_switch = Gtk.Template.Child('borders_crop_switch')
     page_numbering_switch = Gtk.Template.Child('page_numbering_switch')
@@ -102,6 +103,9 @@ class Preferences(Adw.Bin):
 
     def on_fullscreen_changed(self, switch_button, _gparam):
         self.settings.fullscreen = switch_button.get_active()
+
+    def on_landscape_zoom_changed(self, switch_button, _gparam):
+        self.settings.landscape_zoom = switch_button.get_active()
 
     def on_library_badge_changed(self, switch_button, _gparam):
         badges = self.settings.library_badges
@@ -277,13 +281,17 @@ class Preferences(Adw.Bin):
         self.reading_mode_row.set_selected(self.settings.reading_mode_value)
         self.reading_mode_row.connect('notify::selected', self.on_reading_mode_changed)
 
-        # Webtoon pager clamp size
+        # Pager clamp size ('Webtoon' reading mode only)
         self.clamp_size_adjustment.set_value(self.settings.clamp_size)
         self.clamp_size_adjustment.connect('value-changed', self.on_clamp_size_changed)
 
         # Image scaling
         self.scaling_row.set_selected(self.settings.scaling_value)
         self.scaling_row.connect('notify::selected', self.on_scaling_changed)
+
+        # Landscape pages zoom ('LTR/RTL/Vertical' reading modes with 'Adapt to Screen' scaling only)
+        self.landscape_zoom_switch.set_active(self.settings.landscape_zoom)
+        self.landscape_zoom_switch.connect('notify::active', self.on_landscape_zoom_changed)
 
         # Background color
         self.background_color_row.set_selected(self.settings.background_color_value)

@@ -126,6 +126,21 @@
             <summary>Borders Crop</summary>
             <description>Crop white borders of images</description>
         </key>
+        <key type="i" name="clamp-size">
+            <default>960</default>
+            <summary>Maximum Width</summary>
+            <description>Constrains reader's width to a given maximum size (Webtoon reading mode only)</description>
+        </key>
+        <key type="b" name="fullscreen">
+            <default>false</default>
+            <summary>Fullscreen</summary>
+            <description>Automatically enter fullscreen mode in reader</description>
+        </key>
+        <key type="b" name="landscape-zoom">
+            <default>false</default>
+            <summary>Landscape Pages Zoom</summary>
+            <description>Zoom page to fit height when page is landscape (Adapt to Screen scaling only)</description>
+        </key>
         <key type="b" name="page-numbering">
             <default>true</default>
             <summary>Page Numbering</summary>
@@ -141,20 +156,10 @@
             <summary>Reading Mode</summary>
             <description>Reading mode in reader</description>
         </key>
-        <key type="i" name="clamp-size">
-            <default>960</default>
-            <summary>Maximum Width</summary>
-            <description>Constrains reader's width to a given maximum size (Webtoon reading mode only)</description>
-        </key>
         <key enum="@appid@.Scaling" name="scaling">
             <default>"screen"</default>
             <summary>Type of Scaling</summary>
             <description>Image adjustment</description>
-        </key>
-        <key type="b" name="fullscreen">
-            <default>false</default>
-            <summary>Fullscreen</summary>
-            <description>Automatically enter fullscreen mode in reader</description>
         </key>
 
         <!-- Preferences: Advanced -->

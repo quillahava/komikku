@@ -88,6 +88,10 @@
             </submenu>
 
             <item>
+                <attribute name="label" translatable="yes">Landscape Pages Zoom</attribute>
+                <attribute name="action">app.reader.landscape-zoom</attribute>
+            </item>
+            <item>
                 <attribute name="label" translatable="yes">Crop Borders</attribute>
                 <attribute name="action">app.reader.borders-crop</attribute>
             </item>

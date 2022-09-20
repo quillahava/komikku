@@ -60,6 +60,13 @@ class Reader:
         return Settings.get_default().borders_crop
 
     @property
+    def landscape_zoom(self):
+        if self.manga.landscape_zoom in (0, 1):
+            return bool(self.manga.landscape_zoom)
+
+        return Settings.get_default().landscape_zoom
+
+    @property
     def page_numbering(self):
         if self.manga.page_numbering in (0, 1):
             return bool(self.manga.page_numbering)
@@ -99,6 +106,11 @@ class Reader:
         self.scaling_action.connect('activate', self.on_scaling_changed)
         self.window.application.add_action(self.scaling_action)
 
+        # Landscape Pages Zoom
+        self.landscape_zoom_action = Gio.SimpleAction.new_stateful('reader.landscape-zoom', None, GLib.Variant('b', False))
+        self.landscape_zoom_action.connect('change-state', self.on_landscape_zoom_changed)
+        self.window.application.add_action(self.landscape_zoom_action)
+
         # Background color
         variant = GLib.Variant.new_string('white')
         self.background_color_action = Gio.SimpleAction.new_stateful('reader.background-color', variant.get_type(), variant)
@@ -130,6 +142,7 @@ class Reader:
         # Init settings
         self.set_action_reading_mode()
         self.set_action_scaling()
+        self.set_action_landscape_zoom()
         self.set_action_borders_crop()
         self.set_action_page_numbering()
 
@@ -168,6 +181,13 @@ class Reader:
         self.manga.update(dict(borders_crop=variant.get_boolean()))
         self.set_action_borders_crop()
         self.pager.crop_pages_borders()
+
+    def on_landscape_zoom_changed(self, action, variant):
+        value = variant.get_boolean()
+        self.manga.update(dict(landscape_zoom=value))
+        self.set_action_landscape_zoom()
+
+        self.pager.rescale_pages()
 
     def on_navigate_back(self):
         if self.pager:
@@ -299,20 +319,28 @@ class Reader:
     def set_action_borders_crop(self):
         self.borders_crop_action.set_state(GLib.Variant('b', self.borders_crop))
 
+    def set_action_landscape_zoom(self):
+        self.landscape_zoom_action.set_state(GLib.Variant('b', self.landscape_zoom))
+
     def set_action_page_numbering(self):
         self.page_numbering_action.set_state(GLib.Variant('b', not self.page_numbering))
 
     def set_action_reading_mode(self):
         self.reading_mode_action.set_state(GLib.Variant('s', self.reading_mode))
 
-        # Scaling action is enabled in RTL and LTR reading modes only
+        # Scaling action is enabled in RTL/LTR/Vertical reading modes only
         self.scaling_action.set_enabled(self.reading_mode != 'webtoon')
+        # Landscape pages zoom is enabled in RTL/LTR/Vertical reading modes only and when scaling is 'screen'
+        self.landscape_zoom_action.set_enabled(self.reading_mode != 'webtoon' and self.scaling == 'screen')
 
         # Additionally, direction of page slider in controls must be updated
         self.controls.set_scale_direction(inverted=self.reading_mode == 'right-to-left')
 
     def set_action_scaling(self, scaling=None):
         self.scaling_action.set_state(GLib.Variant('s', scaling or self.scaling))
+
+        # Landscape pages zoom is enabled in RTL/LTR/Vertical reading modes only and when scaling is 'screen'
+        self.landscape_zoom_action.set_enabled(self.reading_mode != 'webtoon' and self.scaling == 'screen')
 
     def set_orientation(self):
         if self.reading_mode in ('right-to-left', 'left-to-right'):

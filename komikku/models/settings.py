@@ -136,6 +136,14 @@ class Settings(Gio.Settings):
         self.set_boolean('fullscreen', state)
 
     @property
+    def landscape_zoom(self):
+        return self.get_boolean('landscape-zoom')
+
+    @landscape_zoom.setter
+    def landscape_zoom(self, state):
+        self.set_boolean('landscape-zoom', state)
+
+    @property
     def library_badges(self):
         return list(self.get_value('library-badges'))
 

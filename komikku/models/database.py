@@ -143,6 +143,7 @@ def init_db():
         status text,
         background_color text,
         borders_crop integer,
+        landscape_zoom integer,
         page_numbering integer,
         reading_mode text,
         scaling text,
@@ -292,6 +293,7 @@ def init_db():
 
         if 0 < db_version <= 10:
             # Version 1.0.0
+            execute_sql(db_conn, 'ALTER TABLE mangas ADD COLUMN landscape_zoom integer;')
             execute_sql(db_conn, 'ALTER TABLE chapters ADD COLUMN read_progress text;')
 
             # Chapters: move reading status of pages in a new 'read_progress' field
