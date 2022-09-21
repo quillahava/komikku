@@ -447,31 +447,30 @@ class PreferencesServersSettingsSubpage:
                     label.set_valign(Gtk.Align.CENTER)
                     box.append(label)
 
+                    group = Adw.PreferencesGroup()
+
                     if server_class.base_url is None:
                         # Server has a customizable address/base_url (ex. Komga)
-                        address_entry = Gtk.Entry()
-                        address_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, 'network-server-symbolic')
-                        box.append(address_entry)
+                        address_entry = Adw.EntryRow(title=_('Address'))
+                        address_entry.add_prefix(Gtk.Image.new_from_icon_name('network-server-symbolic'))
+                        group.add(address_entry)
                     else:
                         address_entry = None
 
-                    entry_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-                    entry_box.append(Gtk.Image.new_from_icon_name('avatar-default-symbolic'))
-                    username_entry = Gtk.Entry(hexpand=True)
-                    entry_box.append(username_entry)
-                    box.append(entry_box)
+                    username_entry = Adw.EntryRow(title=_('Username'))
+                    username_entry.add_prefix(Gtk.Image.new_from_icon_name('avatar-default-symbolic'))
+                    group.add(username_entry)
 
-                    entry_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-                    entry_box.append(Gtk.Image.new_from_icon_name('dialog-password-symbolic'))
-                    password_entry = Gtk.PasswordEntry(hexpand=True)
-                    password_entry.set_show_peek_icon(True)
-                    entry_box.append(password_entry)
-                    box.append(entry_box)
+                    password_entry = Adw.PasswordEntryRow(title=_('Password'))
+                    password_entry.add_prefix(Gtk.Image.new_from_icon_name('dialog-password-symbolic'))
+                    group.add(password_entry)
+
+                    box.append(group)
 
                     plaintext_checkbutton = None
                     if self.keyring_helper.is_disabled or not self.keyring_helper.has_recommended_backend:
                         label = Gtk.Label()
-                        label.set_line_wrap(True)
+                        label.set_wrap(True)
                         if self.keyring_helper.is_disabled:
                             label.add_css_class('dim-label')
                             label.set_text(_('System keyring service is disabled. Credential cannot be saved.'))
