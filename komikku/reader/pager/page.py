@@ -33,9 +33,9 @@ class Page(Gtk.Overlay):
         self.init_height = None
         self.path = None
 
-        self._status = None     # rendering, rendered, offlimit, cleaned
-        self._error = None      # connection error, server error or corrupt file error
-        self._loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
+        self._status = None    # rendering, rendered, offlimit, cleaned
+        self.error = None      # connection error, server error or corrupt file error
+        self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
 
         self.scrolledwindow = Gtk.ScrolledWindow()
 
@@ -56,26 +56,23 @@ class Page(Gtk.Overlay):
         self.activity_indicator = ActivityIndicator()
         self.add_overlay(self.activity_indicator)
 
-    @GObject.Property(type=str)
-    def error(self):
-        return self._error
+    @property
+    def animated(self):
+        return isinstance(self.picture.get_paintable(), PaintablePixbufAnimation)
 
-    @error.setter
-    def error(self, value):
-        self._error = value
-
-    @GObject.Property(type=float)
+    @property
     def height(self):
         _minimal, natural = self.get_preferred_size()
         return natural.height
 
-    @GObject.Property(type=bool, default=False)
-    def loadable(self):
-        return self._loadable
+    @property
+    def hscrollable(self):
+        adj = self.scrolledwindow.get_hadjustment()
+        return adj.props.upper > adj.props.page_size
 
-    @loadable.setter
-    def loadable(self, value):
-        self._loadable = value
+    @property
+    def scrollable(self):
+        return self.hscrollable or self.vscrollable
 
     @GObject.Property(type=str)
     def status(self):
@@ -86,8 +83,9 @@ class Page(Gtk.Overlay):
         self._status = value
 
     @property
-    def animated(self):
-        return isinstance(self.picture.get_paintable(), PaintablePixbufAnimation)
+    def vscrollable(self):
+        adj = self.scrolledwindow.get_vadjustment()
+        return adj.props.upper > adj.props.page_size
 
     def clean(self):
         if self.status is None:

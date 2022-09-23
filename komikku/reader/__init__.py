@@ -383,10 +383,6 @@ class Reader:
             self.page_numbering_label.hide()
 
     def update_title(self, chapter):
-        # Add chapter to list of chapters consulted
-        # This list is used by the Card page to update chapters rows
-        self.chapters_consulted.add(chapter)
-
         # Set title & subtitle (headerbar)
         self.title_label.set_text(chapter.manga.name)
         subtitle = chapter.title

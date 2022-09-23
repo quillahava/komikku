@@ -1,5 +1,5 @@
 spinner {
-    color: #EE4035;
+    color: #FD7E0B;
 }
 
 /* Library page */
@@ -49,6 +49,10 @@ listview :last-child {
 }
 
 /* Reader page */
+carousel slider {
+    background-color: #FD7E0B;
+}
+
 .reader-page-number-indicator-label {
     color: #fff;
     letter-spacing: 1px;

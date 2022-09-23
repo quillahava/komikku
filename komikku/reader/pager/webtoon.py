@@ -87,11 +87,7 @@ class WebtoonPager(Adw.Bin, BasePager):
     @property
     def size(self):
         size = self.box.get_allocation()
-
         size.width = min(size.width, self.reader.size.width)
-
-        if self.window.headerbar_revealer.get_child_revealed():
-            size.height -= self.window.headerbar.get_preferred_size()[1].height
 
         return size
 
@@ -281,6 +277,14 @@ class WebtoonPager(Adw.Bin, BasePager):
 
         return Gdk.EVENT_PROPAGATE
 
+    def on_page_rendered(self, page, retry):
+        if not retry:
+            return
+
+        # After a retry, update the page and save the progress (if relevant)
+        GLib.idle_add(self.update, page, 1)
+        GLib.idle_add(self.save_progress, page)
+
     def on_page_status_changed(self, page, _param):
         if page.status != 'rendered':
             return
@@ -409,7 +413,7 @@ class WebtoonPager(Adw.Bin, BasePager):
             self.window.show_notification(page.chapter.title, 2)
             self.reader.controls.init(page.chapter)
 
-        if page.error:
+        if not page.loadable:
             self.window.show_notification(_('This chapter is inaccessible.'), 2)
 
         # Update page number and controls page slider
