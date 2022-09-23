@@ -413,7 +413,7 @@ class WebtoonPager(Adw.Bin, BasePager):
             self.window.show_notification(_('This chapter is inaccessible.'), 2)
 
         # Update page number and controls page slider
-        self.reader.update_page_number(page.index + 1, len(page.chapter.pages) if page.loadable else None)
+        self.reader.update_page_numbering(page.index + 1, len(page.chapter.pages) if page.loadable else None)
         self.reader.controls.set_scale_value(page.index + 1)
 
         return GLib.SOURCE_REMOVE

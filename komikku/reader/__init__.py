@@ -37,11 +37,12 @@ class Reader:
         self.fullscreen_button = self.window.reader_fullscreen_button
         self.fullscreen_button.connect('clicked', self.window.toggle_fullscreen, None)
 
-        # Page number indicator
-        self.page_number_label = Gtk.Label()
-        self.page_number_label.add_css_class('reader-page-number-indicator-label')
-        self.page_number_label.set_valign(Gtk.Align.END)
-        self.overlay.add_overlay(self.page_number_label)
+        # Page numbering
+        self.page_numbering_defined = False
+        self.page_numbering_label = Gtk.Label()
+        self.page_numbering_label.add_css_class('reader-page-number-indicator-label')
+        self.page_numbering_label.set_valign(Gtk.Align.END)
+        self.overlay.add_overlay(self.page_numbering_label)
 
         self.window.connect('notify::page', self.on_shown)
 
@@ -146,8 +147,6 @@ class Reader:
         self.set_action_borders_crop()
         self.set_action_page_numbering()
 
-        if self.page_numbering:
-            self.page_number_label.show()
         if Settings.get_default().fullscreen:
             self.window.set_fullscreen()
 
@@ -195,17 +194,17 @@ class Reader:
             self.pager = None
 
         self.controls.hide()
-        self.page_number_label.hide()
+        self.page_numbering_label.hide()
         self.window.set_unfullscreen()
 
     def on_page_numbering_changed(self, action, variant):
         value = not variant.get_boolean()
         self.manga.update(dict(page_numbering=value))
         self.set_action_page_numbering()
-        if value and not self.controls.is_visible:
-            self.page_number_label.show()
+        if value and self.page_numbering_defined and not self.controls.is_visible:
+            self.page_numbering_label.show()
         else:
-            self.page_number_label.hide()
+            self.page_numbering_label.hide()
 
     def on_reading_mode_changed(self, action, variant):
         value = variant.get_string()
@@ -364,20 +363,24 @@ class Reader:
 
         if visible:
             self.controls.show()
-            self.page_number_label.hide()
+            self.page_numbering_label.hide()
         else:
             self.controls.hide()
-            if self.page_numbering:
-                self.page_number_label.show()
+            if self.page_numbering and self.page_numbering_defined:
+                self.page_numbering_label.show()
 
-    def update_page_number(self, number, total):
-        if total is not None:
-            self.page_number_label.set_text('{0}/{1}'.format(number, total))
+    def update_page_numbering(self, number=None, total=None):
+        if number and total:
+            self.page_numbering_label.set_text('{0}/{1}'.format(number, total))
+            self.page_numbering_defined = True
 
-        if self.page_numbering and not self.controls.is_visible and total is not None:
-            self.page_number_label.show()
+            if self.page_numbering and not self.controls.is_visible:
+                self.page_numbering_label.show()
+            else:
+                self.page_numbering_label.hide()
         else:
-            self.page_number_label.hide()
+            self.page_numbering_defined = False
+            self.page_numbering_label.hide()
 
     def update_title(self, chapter):
         # Add chapter to list of chapters consulted
