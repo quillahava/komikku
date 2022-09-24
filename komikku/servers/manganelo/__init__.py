@@ -205,8 +205,8 @@ class Manganelo(Server):
         data = r.json()
 
         results = []
-        for item in data:
-            link = item['link_story']
+        for item in data['searchlist']:
+            link = item['url_story']
             results.append(dict(
                 slug=link[skip_past(link, '/manga-'):],
                 name=BeautifulSoup(item['name'], 'html.parser').text,
