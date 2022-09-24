@@ -88,7 +88,7 @@
             </submenu>
 
             <item>
-                <attribute name="label" translatable="yes">Landscape Pages Zoom</attribute>
+                <attribute name="label" translatable="yes">Zoom Landscape Pages</attribute>
                 <attribute name="action">app.reader.landscape-zoom</attribute>
             </item>
             <item>

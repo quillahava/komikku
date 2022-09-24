@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 17:10+0200\n"
+"POT-Creation-Date: 2022-09-24 23:00+0200\n"
 "PO-Revision-Date: 2022-09-05 13:35+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
@@ -1824,8 +1824,8 @@ msgstr "Siyah"
 msgid "System Style"
 msgstr "Sistem Biçemi"
 
-#: ../data/ui/menu/reader.xml:91 ../data/ui/preferences.ui:353
-msgid "Landscape Pages Zoom"
+#: ../data/ui/menu/reader.xml:91
+msgid "Zoom Landscape Pages"
 msgstr ""
 
 #: ../data/ui/menu/reader.xml:95
@@ -1970,6 +1970,10 @@ msgstr "Ölçekleme"
 msgid "Type of scaling to adapt image"
 msgstr "Görseli uyarlarken uyulacak ölçeklendirme türü"
 
+#: ../data/ui/preferences.ui:353
+msgid "Landscape Pages Zoom"
+msgstr ""
+
 #: ../data/ui/preferences.ui:355
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
@@ -2096,7 +2100,7 @@ msgstr "Geçersiz URL {}, herhangi bir sunucu tarafından işlenmedi."
 #: ../komikku/application.py:383 ../komikku/card.py:75 ../komikku/card.py:76
 #: ../komikku/downloader.py:319 ../komikku/downloader.py:320
 #: ../komikku/library.py:315 ../komikku/library.py:316
-#: ../komikku/reader/__init__.py:276
+#: ../komikku/reader/__init__.py:275
 msgid "Cancel"
 msgstr "İptal"
 
@@ -2356,12 +2360,24 @@ msgstr "Sunucu Dilleri"
 msgid "User Account"
 msgstr "Kullanıcı Hesabı"
 
-#: ../komikku/preferences.py:477
+#: ../komikku/preferences.py:454
+msgid "Address"
+msgstr ""
+
+#: ../komikku/preferences.py:460
+msgid "Username"
+msgstr ""
+
+#: ../komikku/preferences.py:464
+msgid "Password"
+msgstr ""
+
+#: ../komikku/preferences.py:476
 msgid "System keyring service is disabled. Credential cannot be saved."
 msgstr ""
 "Sistem anahtarlık hizmeti devre dışı bırakıldı. Kimlik bilgisi kaydedilemez."
 
-#: ../komikku/preferences.py:482
+#: ../komikku/preferences.py:481
 msgid ""
 "No keyring backends were found to store credential. Use plaintext storage as "
 "fallback."
@@ -2369,7 +2385,7 @@ msgstr ""
 "Kimlik bilgilerini depolayacak anahtarlık arka ucu bulunamadı. Düz metin "
 "depolamayı yedek olarak kullan."
 
-#: ../komikku/preferences.py:487
+#: ../komikku/preferences.py:486
 msgid ""
 "No keyring backends were found to store credential. Plaintext storage will "
 "be used as fallback."
@@ -2377,28 +2393,28 @@ msgstr ""
 "Kimlik bilgilerini depolayacak anahtarlık arka ucu bulunamadı. Düz metin "
 "depolama, yedek olarak kullanılacak."
 
-#: ../komikku/preferences.py:495
+#: ../komikku/preferences.py:494
 msgid "Test"
 msgstr "Test"
 
-#: ../komikku/preferences.py:533
+#: ../komikku/preferences.py:532
 msgid "Servers Settings"
 msgstr "Sunucu Ayarları"
 
-#: ../komikku/reader/__init__.py:271
+#: ../komikku/reader/__init__.py:270
 msgid "Please choose a file"
 msgstr "Dosya seçiniz"
 
-#: ../komikku/reader/__init__.py:277
+#: ../komikku/reader/__init__.py:276
 msgid "Save"
 msgstr "Kaydet"
 
-#: ../komikku/reader/__init__.py:289 ../komikku/reader/__init__.py:304
+#: ../komikku/reader/__init__.py:288 ../komikku/reader/__init__.py:303
 #, python-brace-format
 msgid "Page successfully saved to {0}"
 msgstr "Sayfa başarıyla {0} konumuna kaydedildi"
 
-#: ../komikku/reader/__init__.py:300
+#: ../komikku/reader/__init__.py:299
 msgid ""
 "Failed to save page: missing permission to access the XDG pictures directory"
 msgstr "Sayfa kaydedilemedi: XDG resimler dizinine erişim izni yok"
@@ -2416,26 +2432,26 @@ msgstr ""
 msgid "Failed to sync read progress with server"
 msgstr "Sunucuyla okuma ilerlemesi eşitlenemedi"
 
-#: ../komikku/reader/pager/__init__.py:552
-#: ../komikku/reader/pager/webtoon.py:339
+#: ../komikku/reader/pager/__init__.py:534
+#: ../komikku/reader/pager/webtoon.py:343
 msgid "There is no previous chapter."
 msgstr "Önceki bölüm yok."
 
-#: ../komikku/reader/pager/__init__.py:554
-#: ../komikku/reader/pager/webtoon.py:337
+#: ../komikku/reader/pager/__init__.py:536
+#: ../komikku/reader/pager/webtoon.py:341
 msgid "It was the last chapter."
 msgstr "Bu son bölümdü."
 
-#: ../komikku/reader/pager/__init__.py:682
-#: ../komikku/reader/pager/webtoon.py:413
+#: ../komikku/reader/pager/__init__.py:673
+#: ../komikku/reader/pager/webtoon.py:417
 msgid "This chapter is inaccessible."
 msgstr "Bu bölüme erişilemiyor."
 
-#: ../komikku/reader/pager/page.py:232
+#: ../komikku/reader/pager/page.py:230
 msgid "Failed to load image"
 msgstr "Görsel yüklenemedi"
 
-#: ../komikku/reader/pager/page.py:299
+#: ../komikku/reader/pager/page.py:297
 msgid "Retry"
 msgstr "Yeniden Dene"
 

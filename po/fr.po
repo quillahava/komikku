@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 17:10+0200\n"
-"PO-Revision-Date: 2022-09-20 17:17+0200\n"
+"POT-Creation-Date: 2022-09-24 23:00+0200\n"
+"PO-Revision-Date: 2022-09-24 23:02+0200\n"
 "Last-Translator: Irénée THIRION <irenee.thirion@e.email>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -1990,9 +1990,9 @@ msgstr "Noir"
 msgid "System Style"
 msgstr "Thème système"
 
-#: ../data/ui/menu/reader.xml:91 ../data/ui/preferences.ui:353
-msgid "Landscape Pages Zoom"
-msgstr "Zoom des pages en format paysage"
+#: ../data/ui/menu/reader.xml:91
+msgid "Zoom Landscape Pages"
+msgstr "Zoomer les pages en format paysage"
 
 #: ../data/ui/menu/reader.xml:95
 msgid "Crop Borders"
@@ -2139,6 +2139,10 @@ msgstr "Mise à l'échelle"
 msgid "Type of scaling to adapt image"
 msgstr "Type de mise à l'échelle pour adapter l'image"
 
+#: ../data/ui/preferences.ui:353
+msgid "Landscape Pages Zoom"
+msgstr "Zoom des pages en format paysage"
+
 #: ../data/ui/preferences.ui:355
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
@@ -2267,7 +2271,7 @@ msgstr "URL invalide {}, gérée par aucun serveur."
 #: ../komikku/application.py:383 ../komikku/card.py:75 ../komikku/card.py:76
 #: ../komikku/downloader.py:319 ../komikku/downloader.py:320
 #: ../komikku/library.py:315 ../komikku/library.py:316
-#: ../komikku/reader/__init__.py:276
+#: ../komikku/reader/__init__.py:275
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -2530,13 +2534,25 @@ msgstr "Langues des serveurs"
 msgid "User Account"
 msgstr "Compte utilisateur"
 
-#: ../komikku/preferences.py:477
+#: ../komikku/preferences.py:454
+msgid "Address"
+msgstr "Adresse"
+
+#: ../komikku/preferences.py:460
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: ../komikku/preferences.py:464
+msgid "Password"
+msgstr "Mot de passe"
+
+#: ../komikku/preferences.py:476
 msgid "System keyring service is disabled. Credential cannot be saved."
 msgstr ""
 "Le service de trousseau de clés est désactivé. Les informations "
 "d'identification ne pourront pas être enregistrées."
 
-#: ../komikku/preferences.py:482
+#: ../komikku/preferences.py:481
 msgid ""
 "No keyring backends were found to store credential. Use plaintext storage as "
 "fallback."
@@ -2545,7 +2561,7 @@ msgstr ""
 "informations d'identification. Utilisez le stockage en texte en clair comme "
 "solution de secours."
 
-#: ../komikku/preferences.py:487
+#: ../komikku/preferences.py:486
 msgid ""
 "No keyring backends were found to store credential. Plaintext storage will "
 "be used as fallback."
@@ -2554,28 +2570,28 @@ msgstr ""
 "informations d'identification. Le stockage en texte en clair sera utilisé "
 "comme solution de secours."
 
-#: ../komikku/preferences.py:495
+#: ../komikku/preferences.py:494
 msgid "Test"
 msgstr "Tester"
 
-#: ../komikku/preferences.py:533
+#: ../komikku/preferences.py:532
 msgid "Servers Settings"
 msgstr "Paramètres des serveurs"
 
-#: ../komikku/reader/__init__.py:271
+#: ../komikku/reader/__init__.py:270
 msgid "Please choose a file"
 msgstr "Veuillez choisir un fichier"
 
-#: ../komikku/reader/__init__.py:277
+#: ../komikku/reader/__init__.py:276
 msgid "Save"
 msgstr "Enregistrer"
 
-#: ../komikku/reader/__init__.py:289 ../komikku/reader/__init__.py:304
+#: ../komikku/reader/__init__.py:288 ../komikku/reader/__init__.py:303
 #, python-brace-format
 msgid "Page successfully saved to {0}"
 msgstr "Page enregistrée avec succès dans {0}"
 
-#: ../komikku/reader/__init__.py:300
+#: ../komikku/reader/__init__.py:299
 msgid ""
 "Failed to save page: missing permission to access the XDG pictures directory"
 msgstr ""
@@ -2595,26 +2611,26 @@ msgstr ""
 msgid "Failed to sync read progress with server"
 msgstr "Échec de la synchro serveur de la progression de la lecture"
 
-#: ../komikku/reader/pager/__init__.py:552
-#: ../komikku/reader/pager/webtoon.py:339
+#: ../komikku/reader/pager/__init__.py:534
+#: ../komikku/reader/pager/webtoon.py:343
 msgid "There is no previous chapter."
 msgstr "Il n'y a pas de chapitre précédent."
 
-#: ../komikku/reader/pager/__init__.py:554
-#: ../komikku/reader/pager/webtoon.py:337
+#: ../komikku/reader/pager/__init__.py:536
+#: ../komikku/reader/pager/webtoon.py:341
 msgid "It was the last chapter."
 msgstr "C'était le dernier chapitre."
 
-#: ../komikku/reader/pager/__init__.py:682
-#: ../komikku/reader/pager/webtoon.py:413
+#: ../komikku/reader/pager/__init__.py:673
+#: ../komikku/reader/pager/webtoon.py:417
 msgid "This chapter is inaccessible."
 msgstr "Ce chapitre est inaccessible."
 
-#: ../komikku/reader/pager/page.py:232
+#: ../komikku/reader/pager/page.py:230
 msgid "Failed to load image"
 msgstr "Impossible de charger l'image"
 
-#: ../komikku/reader/pager/page.py:299
+#: ../komikku/reader/pager/page.py:297
 msgid "Retry"
 msgstr "Réessayer"
 
