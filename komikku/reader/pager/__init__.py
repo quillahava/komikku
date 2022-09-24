@@ -296,34 +296,23 @@ class Pager(Adw.Bin, BasePager):
         #   - In Vertical reading mode: picture must be centered horizontally
         #   - Otherwise positioned at the top/left
 
+        if not page.scrollable:
+            return
+
         if self.reader.reading_mode == 'vertical':
             adj = page.scrolledwindow.get_vadjustment()
         else:
             adj = page.scrolledwindow.get_hadjustment()
 
-        def adjust_position():
-            if not page.scrollable:
-                return
-
-            if (direction is None and self.reader.reading_mode == 'right-to-left') or direction == 'left':
-                adj.set_value(adj.get_upper() - adj.get_page_size())
-            else:
-                adj.set_value(0)
-
-            if self.reader.reading_mode == 'vertical':
-                # Center page horizontally
-                hadj = page.scrolledwindow.get_hadjustment()
-                hadj.set_value((hadj.get_upper() - hadj.get_page_size()) / 2)
-
-        def on_adjustment_change(adj):
-            adj.disconnect(handler_id)
-            adjust_position()
-
-        if adj.get_page_size() == 0:
-            # Wait until adjustment is ready
-            handler_id = adj.connect('changed', on_adjustment_change)
+        if (direction is None and self.reader.reading_mode == 'right-to-left') or direction == 'left':
+            adj.set_value(adj.get_upper() - adj.get_page_size())
         else:
-            adjust_position()
+            adj.set_value(0)
+
+        if self.reader.reading_mode == 'vertical':
+            # Center page horizontally
+            hadj = page.scrolledwindow.get_hadjustment()
+            hadj.set_value((hadj.get_upper() - hadj.get_page_size()) / 2)
 
     def clear(self):
         page = self.carousel.get_first_child()
@@ -574,7 +563,7 @@ class Pager(Adw.Bin, BasePager):
 
     def on_page_rendered(self, page, retry):
         if not retry:
-            self.adjust_page_position(page)
+            GLib.idle_add(self.adjust_page_position, page)
             return
 
         self.on_page_changed(None, self.carousel.get_position())
