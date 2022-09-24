@@ -87,18 +87,27 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
-        <release version="1.0.beta4" date="2022-09-01">
+        <release version="1.0.0" date="2022-09-25">
             <description>
-                <p>After several months of effort, Komikku's port to GTK4 and libadwaita is coming to an end.</p>
+                <p>After several months of effort, Komikku's port to GTK4 and libadwaita is ended.</p>
                 <p>The highlights of this new major version:</p>
                 <ul>
+                    <li>Refreshing of the UI to follow the GNOME HIG as much as possible</li>
                     <li>Library has now two display modes: Grid and Compact grid</li>
                     <li>Faster display of the chapters list, whether there are few or many chapters</li>
                     <li>Full rewriting of the Webtoon reading mode</li>
                     <li>Modern ‘About’ window</li>
                 </ul>
-                <p>We hope you will enjoy the new look as much as we do.
-                All your feedbacks/issues/suggestions are welcome.</p>
+                <p>Changes since 0.41.0:</p>
+                <ul>
+                    <li>[Preferences] Reader: Add 'Landscape Pages Zoom' setting</li>
+                    <li>[Preferences] Reader: Add 'Maximum Width' setting (Webtoon reading mode)</li>
+                    <li>[Servers] Add Grise Bouille [FR]</li>
+                    <li>[Servers] MangaNato (MangaNelo): Update</li>
+                    <li>[Servers] Mangaowl: Update</li>
+                    <li>[Servers] Read Comic Online: Update</li>
+                    <li>[L10n] Update French, German, Spanish and Turkish translations</li>
+                </ul>
             </description>
         </release>
         <release version="0.41.0" date="2022-09-01">
