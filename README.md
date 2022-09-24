@@ -72,8 +72,8 @@ Dependencies:
 * `ninja`
 * `meson` >= 0.59.0
 * `python` >= 3.8
-* `gtk` >= 4.7.1
-* `libadwaita` >= 1.2.beta
+* `gtk` >= 4.8.1
+* `libadwaita` >= 1.2.0
 * `python-beautifulsoup4`
 * `python-brotli`
 * `python-cloudscraper`
