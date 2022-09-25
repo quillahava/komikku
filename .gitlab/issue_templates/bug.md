@@ -8,19 +8,23 @@
 
   Please provide steps to reproduce the issue. If it's a graphical issue please attach screenshots.
 
-# Which version of Komikku did you encounter the bug in?
+# Debugging information
 
- - [ ] I run it from sources. If you run Komikku from source please provide the git revision via e.g. by running ``git log -1 --pretty=oneline`` and pasting the output below. Also indicate whether you run it from the command line or with GNOME Builder.
+Please paste here information available in About ⇨ Troubleshooting ⇨ Debugging Information
 
- - [ ] I used a Flatpak package. Please provide the version number.
+## Alternatively with older versions (<= 0.41.0)
 
- - [ ] I used a distribution package (e.g. Arch, Fedora, GNU Guix, …). Please provide the version number.
+### Which version of Komikku did you encounter the bug in?
+
+ - [ ] I used a Flatpak package
+
+ - [ ] I used a distribution package (e.g. Arch, Fedora, GNU Guix, …)
 
 ```
   Komikku Version:
 ```
 
-# What windowing system are you running Komikku on?
+### What windowing system are you running Komikku on?
 
 You can obtain the windowing system used by running ``echo $WAYLAND_DISPLAY``. If wayland-0 is returned, you are running Wayland. Otherwise, you are running X11.
 
