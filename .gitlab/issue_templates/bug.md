@@ -10,7 +10,7 @@
 
 # Debugging information
 
-Please paste here information available in About ⇨ Troubleshooting ⇨ Debugging Information
+Please paste here information available in `☰ Menu` ⇨ `About Komikku` ⇨ `Troubleshooting` ⇨ `Debugging Information`.
 
 ## Alternatively with older versions (<= 0.41.0)
 
@@ -38,6 +38,6 @@ You can obtain the windowing system used by running ``echo $WAYLAND_DISPLAY``. I
  - [ ] Librem5
  - [ ] Other (please elaborate)
 
-# Releveant logs
+# Relevant logs
 
   Please provide any relevant logs like Python stack tracebacks.
