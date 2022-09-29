@@ -23,6 +23,7 @@ from komikku.servers.utils import get_server_module_name_by_id
 from komikku.servers.utils import unscramble_image
 from komikku.utils import get_data_dir
 from komikku.utils import is_flatpak
+from komikku.utils import trunc_filename
 
 logger = logging.getLogger('komikku')
 
@@ -554,7 +555,7 @@ class Manga:
 
     @property
     def path(self):
-        return os.path.join(get_data_dir(), self.dir_name, self.name)
+        return os.path.join(get_data_dir(), self.dir_name, trunc_filename(self.name))
 
     @property
     def server(self):
@@ -811,7 +812,9 @@ class Chapter:
     def path(self):
         # BEWARE: self.slug may contain '/' characters
         # os.makedirs() must be used to create chapter's folder
-        return os.path.join(self.manga.path, self.slug)
+        name = '/'.join([trunc_filename(part) for part in self.slug.split('/')])
+
+        return os.path.join(self.manga.path, name)
 
     def delete(self, db_conn=None):
         if db_conn is not None:

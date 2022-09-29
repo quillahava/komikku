@@ -203,6 +203,11 @@ def subdivide_pixbuf(pixbuf, part_height):
     return parts
 
 
+def trunc_filename(filename):
+    """Reduce filename length to 255 (common FS limit) if it's too long"""
+    return filename.encode('utf-8')[:255].decode().strip()
+
+
 class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
     def __init__(self, path, pixbuf):
         super().__init__()
