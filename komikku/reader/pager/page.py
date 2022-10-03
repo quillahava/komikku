@@ -236,10 +236,7 @@ class Page(Gtk.Overlay):
 
         if size is None:
             if self.reader.scaling != 'original':
-                if self.reader.reading_mode == 'webtoon':
-                    # Always scale to fit width in Webtoon reading mode
-                    scaling = 'width'
-                elif self.reader.landscape_zoom and self.reader.scaling == 'screen' and picture.orig_width > picture.orig_height:
+                if self.reader.landscape_zoom and self.reader.scaling == 'screen' and picture.orig_width > picture.orig_height:
                     # When page is landscape and scaling is 'screen', scale/zoom page to fit height
                     scaling = 'height'
                 else:

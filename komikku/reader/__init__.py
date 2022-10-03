@@ -80,6 +80,10 @@ class Reader:
 
     @property
     def scaling(self):
+        if self.reading_mode == 'webtoon':
+            # Always scale to fit width in Webtoon reading mode
+            return 'width'
+
         return self.manga.scaling or Settings.get_default().scaling
 
     @property
