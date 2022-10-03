@@ -21,6 +21,7 @@ from komikku.servers.utils import get_server_class_name_by_id
 from komikku.servers.utils import get_server_dir_name_by_id
 from komikku.servers.utils import get_server_module_name_by_id
 from komikku.servers.utils import unscramble_image
+from komikku.utils import expand_cover
 from komikku.utils import get_data_dir
 from komikku.utils import is_flatpak
 from komikku.utils import trunc_filename
@@ -574,6 +575,7 @@ class Manga:
         if cover_data is None:
             return
 
+        cover_data = expand_cover(cover_data)
         cover_fs_path = os.path.join(self.path, 'cover.jpg')
 
         with open(cover_fs_path, 'wb') as fp:

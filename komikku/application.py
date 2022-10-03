@@ -65,6 +65,7 @@ CREDITS = dict(
     ),
     translators=(
         'Ege Çelikçi (Turkish)',
+        'Dingzhong Chen (Simplified Chinese)',
         'Valéry Febvre (French)',
         'Óscar Fernández Díaz (Spanish)',
         'Mariusz Kurek (Polish)',

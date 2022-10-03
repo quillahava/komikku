@@ -16,6 +16,7 @@ from komikku.servers.loader import server_finder
 from komikku.servers.utils import convert_image
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_server_main_id_by_id
+from komikku.utils import expand_cover
 from komikku.utils import get_cache_dir
 
 # https://www.localeplanet.com/icu/
@@ -203,7 +204,7 @@ class Server:
         if mime_type == 'image/webp':
             buffer = convert_image(buffer, ret_type='bytes')
 
-        return buffer
+        return expand_cover(buffer)
 
     def is_long_strip(self, data):
         """

@@ -8,6 +8,7 @@ from functools import wraps
 from gettext import gettext as _
 import gi
 import html
+from io import BytesIO
 import logging
 import math
 import os
@@ -81,6 +82,44 @@ def crop_pixbuf(pixbuf, src_x, src_y, width, height):
     pixbuf.copy_area(src_x, src_y, width, height, pixbuf_cropped, 0, 0)
 
     return pixbuf_cropped
+
+
+def expand_cover(buffer):
+    """Convert a cover that is in landscape format (rare) to portrait format"""
+
+    def get_dominant_color(img):
+        # Resize imgae to reduce number of colors
+        colors = img.resize((150, 150), resample=0).getcolors(150 * 150)
+        sorted_colors = sorted(colors, key=lambda t: t[0])
+
+        return sorted_colors[-1][1]
+
+    def remove_alpha(img):
+        img = img.convert('RGBA')
+        background = Image.new('RGBA', img.size, (255, 255, 255))
+
+        return Image.alpha_composite(background, img)
+
+    img = Image.open(BytesIO(buffer))
+
+    width, height = img.size
+    if width < height:
+        # Nothing to do
+        return buffer
+
+    img = remove_alpha(img)
+
+    new_width, new_height = (180, 256)
+    new_ratio = new_height / new_width
+
+    new_img = Image.new(img.mode, (width, int(width * new_ratio)), get_dominant_color(img))
+    new_img.paste(img, (0, (int(width * new_ratio) - height) // 2))
+    new_img = new_img.resize((new_width, new_height))
+
+    new_buffer = BytesIO()
+    new_img.save(new_buffer, 'png')
+
+    return new_buffer.getbuffer()
 
 
 def folder_size(path):
