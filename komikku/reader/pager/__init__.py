@@ -141,26 +141,27 @@ class BasePager:
         self.reader.manga.update(dict(last_read=datetime.datetime.utcnow()))
 
         # Chapter read progress
-        read_progress = chapter.read_progress
-        if read_progress is None:
-            # Init and fill with '0'
-            read_progress = '0' * len(chapter.pages)
-        # Mark current page as read
-        read_progress = read_progress[:page.index] + '1' + read_progress[page.index + 1:]
-        chapter_is_read = '0' not in read_progress
-        if chapter_is_read:
-            read_progress = None
+        if not chapter.read:
+            read_progress = chapter.read_progress
+            if read_progress is None:
+                # Init and fill with '0'
+                read_progress = '0' * len(chapter.pages)
+            # Mark current page as read
+            read_progress = read_progress[:page.index] + '1' + read_progress[page.index + 1:]
+            chapter_is_read = '0' not in read_progress
+            if chapter_is_read:
+                read_progress = None
 
-        # Update chapter
-        chapter.update(dict(
-            last_page_read_index=page.index if not chapter_is_read else None,
-            last_read=datetime.datetime.utcnow(),
-            read_progress=read_progress,
-            read=chapter_is_read,
-            recent=0,
-        ))
+            # Update chapter
+            chapter.update(dict(
+                last_page_read_index=page.index if not chapter_is_read else None,
+                last_read=datetime.datetime.utcnow(),
+                read_progress=read_progress,
+                read=chapter_is_read,
+                recent=0,
+            ))
 
-        self.sync_progress_with_server(page, chapter_is_read)
+            self.sync_progress_with_server(page, chapter_is_read)
 
         return GLib.SOURCE_REMOVE
 
