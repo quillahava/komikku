@@ -1,5 +1,4 @@
 # Turkish translation for Komikku.
-#
 # Copyright (C) 2020-2022 Komikku's COPYRIGHT HOLDER
 # This file is distributed under the same license as the Komikku package.
 #
@@ -11,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-24 23:00+0200\n"
-"PO-Revision-Date: 2022-09-05 13:35+0300\n"
+"PO-Revision-Date: 2022-10-03 03:07+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
 "Language: tr\n"
@@ -1705,7 +1704,7 @@ msgstr "Geçmiş yok"
 
 #: ../data/ui/menu/card.xml:18
 msgid "Order of Chapters"
-msgstr "Bölümlerin Sıralanması"
+msgstr "Bölümleri Sırala"
 
 #: ../data/ui/menu/card.xml:23
 msgid "⬆ By Source"
@@ -1806,7 +1805,7 @@ msgstr "Özgün Boyut"
 
 #: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:367
 msgid "Background Color"
-msgstr "Arka plan rengi"
+msgstr "Arka Plan Rengi"
 
 #: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:371
 msgid "White"
@@ -1826,7 +1825,7 @@ msgstr "Sistem Biçemi"
 
 #: ../data/ui/menu/reader.xml:91
 msgid "Zoom Landscape Pages"
-msgstr ""
+msgstr "Yatay Sayfaları Yakınlaştır"
 
 #: ../data/ui/menu/reader.xml:95
 msgid "Crop Borders"
@@ -1862,7 +1861,7 @@ msgstr "Geceleri koyu temayı kendiliğinden etkinleştir"
 
 #: ../data/ui/preferences.ui:73
 msgid "Desktop Notifications"
-msgstr "Masaüstü bildirimleri"
+msgstr "Masaüstü Bildirimleri"
 
 #: ../data/ui/preferences.ui:75
 msgid "Use desktop notifications for downloads and library updates"
@@ -1915,15 +1914,16 @@ msgstr "Son ve Okunmamış Bölüm Sayısı"
 
 #: ../data/ui/preferences.ui:203
 msgid "Update at Startup"
-msgstr "Açılışta güncelle"
+msgstr "Açılışta Güncelle"
 
 #: ../data/ui/preferences.ui:205
 msgid "Automatically update library at startup"
 msgstr "Açılışta kitaplığı kendiliğinden güncelle"
 
+# Bu çeviri, arayüze daha uygun.
 #: ../data/ui/preferences.ui:217
 msgid "Auto Download of New Chapters"
-msgstr "Yeni Bölümlerin Otomatik İndirilmesi"
+msgstr "Yeni Bölümleri Otomatik İndir"
 
 #: ../data/ui/preferences.ui:219
 msgid "Automatically download new chapters"
@@ -1955,12 +1955,14 @@ msgstr "Okuyucu"
 
 #: ../data/ui/preferences.ui:318
 msgid "Maximum Width"
-msgstr ""
+msgstr "Azami Genişlik"
 
 #: ../data/ui/preferences.ui:319
 msgid ""
 "Constrain reader's width to a given maximum size (Webtoon reading mode only)"
 msgstr ""
+"Okuyucu genişliğini belirli bir azami boyuta sınırla (yalnızca Webtoon okuma "
+"kipi)"
 
 #: ../data/ui/preferences.ui:337
 msgid "Scaling"
@@ -1972,12 +1974,14 @@ msgstr "Görseli uyarlarken uyulacak ölçeklendirme türü"
 
 #: ../data/ui/preferences.ui:353
 msgid "Landscape Pages Zoom"
-msgstr ""
+msgstr "Yatay Sayfaları Yakınlaştır"
 
 #: ../data/ui/preferences.ui:355
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
 msgstr ""
+"Sayfa yatay olduğunda sayfayı yüksekliğe sığdırmak için yakınlaştır "
+"(yalnızca Ekrana Uy ölçeklemesinde)"
 
 #: ../data/ui/preferences.ui:382
 msgid "Borders Crop"
@@ -1995,9 +1999,10 @@ msgstr "Sayfa Numaraları"
 msgid "Hide the page numbering at the bottom of the screen while reading"
 msgstr "Okurken ekranın altındaki sayfa numaralarını gizle"
 
+# Bulunduğu konum gereği Başlık Düzeni tercih edildi
 #: ../data/ui/preferences.ui:410
 msgid "Fullscreen"
-msgstr "Tam ekran"
+msgstr "Tam Ekran"
 
 #: ../data/ui/preferences.ui:412
 msgid "Automatically enter fullscreen mode"
@@ -2032,7 +2037,7 @@ msgstr "Tercihleri aç"
 #: ../data/ui/shortcuts_overview.ui:39
 msgctxt "Shortcut window description"
 msgid "Toggle fullscreen mode"
-msgstr "Tam ekran moduna geç"
+msgstr "Tam ekran kipine geç"
 
 #: ../data/ui/shortcuts_overview.ui:45
 msgctxt "Shortcut window description"
@@ -2110,7 +2115,7 @@ msgstr "Evet"
 
 #: ../komikku/application.py:469
 msgid "Join Chat"
-msgstr ""
+msgstr "Sohbete Katıl"
 
 #: ../komikku/application.py:470
 msgid "Sponsor via Ko-fi"
@@ -2362,15 +2367,15 @@ msgstr "Kullanıcı Hesabı"
 
 #: ../komikku/preferences.py:454
 msgid "Address"
-msgstr ""
+msgstr "Adres"
 
 #: ../komikku/preferences.py:460
 msgid "Username"
-msgstr ""
+msgstr "Kullanıcı adı"
 
 #: ../komikku/preferences.py:464
 msgid "Password"
-msgstr ""
+msgstr "Parola"
 
 #: ../komikku/preferences.py:476
 msgid "System keyring service is disabled. Credential cannot be saved."
