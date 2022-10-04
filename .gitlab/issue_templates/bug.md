@@ -10,15 +10,14 @@
 
 # Debugging information
 
-Please paste here information available in `☰ Menu` ⇨ `About Komikku` ⇨ `Troubleshooting` ⇨ `Debugging Information`.
+  Please paste here information available in `☰ Menu` ⇨ `About Komikku` ⇨ `Troubleshooting` ⇨ `Debugging Information`.
 
 ## Alternatively with older versions (<= 0.41.0)
 
 ### Which version of Komikku did you encounter the bug in?
 
- - [ ] I used a Flatpak package
-
- - [ ] I used a distribution package (e.g. Arch, Fedora, GNU Guix, …)
+  - [ ] I used a Flatpak package
+  - [ ] I used a distribution package (e.g. Arch, Fedora, GNU Guix, …)
 
 ```
   Komikku Version:
@@ -26,17 +25,17 @@ Please paste here information available in `☰ Menu` ⇨ `About Komikku` ⇨ `T
 
 ### What windowing system are you running Komikku on?
 
-You can obtain the windowing system used by running ``echo $WAYLAND_DISPLAY``. If wayland-0 is returned, you are running Wayland. Otherwise, you are running X11.
+  You can obtain the windowing system used by running ``echo $WAYLAND_DISPLAY``. If wayland-0 is returned, you are running Wayland. Otherwise, you are running X11.
 
-- [ ] Wayland
-- [ ] X11
+  - [ ] Wayland
+  - [ ] X11
 
 # What hardware are you running Komikku on?
 
- - [ ] Computer/laptop
- - [ ] PinePhone
- - [ ] Librem5
- - [ ] Other (please elaborate)
+  - [ ] Computer/laptop
+  - [ ] PinePhone
+  - [ ] Librem5
+  - [ ] Other (please elaborate)
 
 # Relevant logs
 
