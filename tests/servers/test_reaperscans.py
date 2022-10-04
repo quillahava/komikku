@@ -98,7 +98,7 @@ def test_reaperscans_pt(reaperscans_pt_server):
     # Search
     print('Search')
     try:
-        response = reaperscans_pt_server.search('return of the legendary spear knight')
+        response = reaperscans_pt_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
@@ -134,7 +134,7 @@ def test_reaperscans_pt(reaperscans_pt_server):
     # Get page image
     print('Get page image')
     try:
-        response = reaperscans_pt_server.get_manga_chapter_page_image(slug, None, chapter_slug, page)
+        response = reaperscans_pt_server.get_manga_chapter_page_image(None, None, None, page)
     except Exception as e:
         response = None
         log_error_traceback(e)
