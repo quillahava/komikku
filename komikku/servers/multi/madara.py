@@ -99,13 +99,18 @@ class Madara(Server):
         # Details
         for element in soup.find('div', class_='summary_content').find_all('div', class_='post-content_item'):
             label_element = element.find('div', class_='summary-heading')
+            if not label_element:
+                label_element = element.find('h5')
             if label_element:
                 label = get_soup_element_inner_text(label_element)
             else:
                 continue
 
             label = label.encode('ascii', 'ignore').decode('utf-8').strip()  # remove none-ASCII characters
-            content = element.find('div', class_='summary-content').text.strip()
+
+            content_element = element.find('div', class_='summary-content')
+            if content_element:
+                content = content_element.text.strip()
 
             if label.startswith(('Author', 'Artist', 'Auteur', 'Autor', 'Artista', 'Yazar', 'Sanatçı', 'Çizer', 'الرسام', 'المؤلف', 'Автор', 'Художник')):
                 for author in content.split(','):
@@ -126,13 +131,18 @@ class Madara(Server):
                     if genre == '':
                         continue
                     data['genres'].append(genre)
-            elif label.startswith(('Status', 'État', 'STATUS', 'Durum', 'الحالة', 'Статус')):
+            elif label.startswith(('Status', 'État', 'Statut', 'STATUS', 'Durum', 'الحالة', 'Статус')):
                 status = content.encode('ascii', 'ignore').decode('utf-8').strip()
 
-                if status in ('Completed', 'Terminé', 'Completo', 'Concluído', 'Tamamlandı', 'مكتملة', 'Закончена'):
+                if status in ('Completed', 'Terminé', 'Completé', 'Completo', 'Concluído', 'Tamamlandı', 'مكتملة', 'Закончена'):
                     data['status'] = 'complete'
                 elif status in ('OnGoing', 'En Cours', 'En cours', 'Updating', 'Devam Ediyor', 'Em Lançamento', 'Em andamento', 'مستمرة', 'Продолжается', 'Выпускается'):
                     data['status'] = 'ongoing'
+                elif status in ('On Hold', 'En pause'):
+                    data['status'] = 'hiatus'
+            elif label.startswith(('Summary')):
+                # In case of synopsis has been moved with details
+                data['synopsis'] = element.find('p').text.strip()
 
         summary_container = soup.find('div', class_=['summary__content', 'manga-excerpt'])
         if summary_container:
@@ -174,6 +184,8 @@ class Madara(Server):
         for element in reversed(elements):
             a_element = element.a
             date_element = element.find(class_='chapter-release-date').extract()
+            if view_element := element.find(class_='view'):
+                view_element.extract()
 
             if date := date_element.text.strip():
                 date = convert_date_string(date, format=self.date_format)
