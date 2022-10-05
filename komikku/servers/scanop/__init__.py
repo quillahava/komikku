@@ -11,6 +11,7 @@ class Scanop(MyMangaReaderCMS):
     id = 'scanop'
     name = 'Scan OP'
     lang = 'fr'
+    status = 'disabled'
 
     base_url = 'https://scan-op.cc'
     search_url = base_url + '/search'

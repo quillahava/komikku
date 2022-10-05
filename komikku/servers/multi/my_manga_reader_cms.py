@@ -14,7 +14,7 @@
 # Mangasin [ES]
 # Read Comics Online [RU]
 # Scan FR [FR]
-# Scan OP [FR]
+# Scan OP [FR] (Disabled)
 # ScanOnePiece [FR]
 
 from bs4 import BeautifulSoup
