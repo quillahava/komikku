@@ -30,7 +30,7 @@ def test_viewcomics(viewcomics_server):
     # Search
     print('Search')
     try:
-        response = viewcomics_server.search('amazing spider-man')
+        response = viewcomics_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
@@ -66,7 +66,7 @@ def test_viewcomics(viewcomics_server):
     # Get page image
     print('Get page image')
     try:
-        response = viewcomics_server.get_manga_chapter_page_image(None, None, None, page)
+        response = viewcomics_server.get_manga_chapter_page_image(slug, None, chapter_slug, page)
     except Exception as e:
         response = None
         log_error_traceback(e)
