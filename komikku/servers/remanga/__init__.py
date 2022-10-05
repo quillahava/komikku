@@ -23,10 +23,9 @@ class Remanga(Server):
     name = 'Remanga'
     lang = 'ru'
 
-    base_url = 'https://remanga.org'
+    base_url = 'https://xn--80aaig9ahr.xn--c1avg'
     manga_url = base_url + '/manga/{0}'
-
-    api_base_url = 'https://api.remanga.org'
+    api_base_url = 'https://api.xn--80aaig9ahr.xn--c1avg'
     api_search_url = api_base_url + '/api/search/'
     api_most_populars_url = api_base_url + '/api/search/catalog/'
     api_manga_url = api_base_url + '/api/titles/{0}/'
