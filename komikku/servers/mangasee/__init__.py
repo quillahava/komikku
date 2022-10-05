@@ -314,7 +314,8 @@ class Mangalife(Mangasee):
     id = 'mangalife:mangasee'
     name = 'MangaLife'
     lang = 'en'
-    status = 'disabled'
+
+    # Clone of MangaSee (with different IPV4 and IPV6 addresses)
 
     base_url = 'https://manga4life.com'
     search_url = base_url + '/search/'
