@@ -87,6 +87,24 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
+        <release version="1.1.0" date="2022-10-06">
+            <description>
+                <ul>
+                    <li>Landscape covers (rare) are now converted to portrait</li>
+                    <li>[Reader] Webtoon reading mode: Bugfix</li>
+                    <li>[Reader] Fixed detection of 'read' chapters</li>
+                    <li>[Servers] MangaLife [EN]: Reenable</li>
+                    <li>[Servers] LeviatanScans [EN]: Reenable</li>
+                    <li>[Servers] Mangas Origines: Update</li>
+                    <li>[Servers] Reaper Scans [PT]: Update</li>
+                    <li>[Servers] Remanga: Update</li>
+                    <li>[Servers] Scan OP [FR]: Disable</li>
+                    <li>[Servers] Zero Scans: Disable</li>
+                    <li>[L10n] Add Simplified Chinese translations</li>
+                    <li>[L10n] Update Turkish translation</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.0.0" date="2022-09-25">
             <description>
                 <p>After several months of effort, Komikku's port to GTK4 and libadwaita is ended.</p>

@@ -447,24 +447,19 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_debug_info(debug_info.generate())
 
         window.set_release_notes("""
-            <p>After several months of effort, Komikku's port to GTK4 and libadwaita is ended.</p>
-            <p>The highlights of this new major version:</p>
             <ul>
-                <li>Refreshing of the UI to follow the GNOME HIG as much as possible</li>
-                <li>Library has now two display modes: Grid and Compact grid</li>
-                <li>Faster display of the chapters list, whether there are few or many chapters</li>
-                <li>Full rewriting of the Webtoon reading mode</li>
-                <li>Modern ‘About’ window</li>
-            </ul>
-            <p>Changes since 0.41.0:</p>
-            <ul>
-                <li>[Preferences] Reader: Add 'Landscape Pages Zoom' setting</li>
-                <li>[Preferences] Reader: Add 'Maximum Width' setting (Webtoon reading mode)</li>
-                <li>[Servers] Add Grise Bouille [FR]</li>
-                <li>[Servers] MangaNato (MangaNelo): Update</li>
-                <li>[Servers] Mangaowl: Update</li>
-                <li>[Servers] Read Comic Online: Update</li>
-                <li>[L10n] Update French, German, Spanish and Turkish translations</li>
+                <li>Landscape covers (rare) are now converted to portrait</li>
+                <li>[Reader] Webtoon reading mode: Bugfix</li>
+                <li>[Reader] Fixed detection of 'read' chapters</li>
+                <li>[Servers] MangaLife [EN]: Reenable</li>
+                <li>[Servers] LeviatanScans [EN]: Reenable</li>
+                <li>[Servers] Mangas Origines: Update</li>
+                <li>[Servers] Reaper Scans [PT]: Update</li>
+                <li>[Servers] Remanga: Update</li>
+                <li>[Servers] Scan OP [FR]: Disable</li>
+                <li>[Servers] Zero Scans: Disable</li>
+                <li>[L10n] Add Simplified Chinese translations</li>
+                <li>[L10n] Update Turkish translation</li>
             </ul>
         """)
 
