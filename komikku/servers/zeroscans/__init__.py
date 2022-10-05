@@ -11,11 +11,16 @@ from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 
+#
+# Server site has been rewritten, an important update is necessary
+#
+
 
 class Zeroscans(Server):
     id = 'zeroscans'
     name = 'Zero Scans'
     lang = 'en'
+    status = 'disabled'
 
     base_url = 'https://zeroscans.com'
     api_url = base_url + '/swordflake'
