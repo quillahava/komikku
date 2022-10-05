@@ -17,6 +17,7 @@
 # Best Manga [RU]
 # Colored Council [EN]
 # Leomanga [ES]
+# Leviatanscans [EN]
 # Manga-Scantrad [FR]
 # Mangas Origines [FR]
 # Reaperscans [EN]

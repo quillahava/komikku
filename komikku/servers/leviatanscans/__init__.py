@@ -1,11 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from komikku.servers.multi.genkan import Genkan
 from komikku.servers.multi.genkan import GenkanInitial
+from komikku.servers.multi.madara import Madara
+
+
+class Leviatanscans(Madara):
+    id = 'leviatanscans'
+    name = 'LeviatanScans'
+    lang = 'en'
+
+    date_format = None
+    series_name = 'hb/manga'
+
+    base_url = 'https://en.leviatanscans.com'
+    chapters_url = base_url + '/manga/{0}/ajax/chapters/'
 
 
 class Leviatanscans__old(Genkan):
