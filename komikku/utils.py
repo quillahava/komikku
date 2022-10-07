@@ -31,7 +31,20 @@ from gi.repository.GdkPixbuf import InterpType
 from gi.repository.GdkPixbuf import Pixbuf
 from gi.repository.GdkPixbuf import PixbufAnimation
 
+from komikku.servers.utils import get_buffer_mime_type
+
 logger = logging.getLogger('komikku')
+
+
+def create_picture_from_data(data, static_animation=False, subdivided=False):
+    mime_type = get_buffer_mime_type(data)
+
+    if mime_type == 'image/gif' and not static_animation:
+        return PictureAnimation.new_from_data(data)
+    elif subdivided:
+        return PictureSubdivided.new_from_data(data)
+    else:
+        return Picture.new_from_data(data)
 
 
 def create_picture_from_file(path, static_animation=False, subdivided=False):
@@ -88,7 +101,7 @@ def expand_cover(buffer):
     """Convert a cover that is in landscape format (rare) to portrait format"""
 
     def get_dominant_color(img):
-        # Resize imgae to reduce number of colors
+        # Resize image to reduce number of colors
         colors = img.resize((150, 150), resample=0).getcolors(150 * 150)
         sorted_colors = sorted(colors, key=lambda t: t[0])
 
@@ -151,31 +164,33 @@ def get_data_dir():
     data_dir_path = GLib.get_user_data_dir()
     app_profile = Gio.Application.get_default().profile
 
-    # Check if inside flatpak sandbox
-    if is_flatpak():
-        return data_dir_path
+    if not is_flatpak():
+        base_path = data_dir_path
+        data_dir_path = os.path.join(base_path, 'komikku')
+        if app_profile == 'development':
+            data_dir_path += '-devel'
+        elif app_profile == 'beta':
+            data_dir_path += '-beta'
 
-    base_path = data_dir_path
-    data_dir_path = os.path.join(base_path, 'komikku')
-    if app_profile == 'development':
-        data_dir_path += '-devel'
-    elif app_profile == 'beta':
-        data_dir_path += '-beta'
+        if not os.path.exists(data_dir_path):
+            os.mkdir(data_dir_path)
 
-    if not os.path.exists(data_dir_path):
-        os.mkdir(data_dir_path)
+            # Until version 0.11.0, data files (chapters, database) were stored in a wrong place
+            from komikku.servers.utils import get_servers_list
 
-        # Until version 0.11.0, data files (chapters, database) were stored in a wrong place
-        from komikku.servers.utils import get_servers_list
+            must_be_moved = ['komikku.db', 'komikku_backup.db', ]
+            for server in get_servers_list(include_disabled=True):
+                must_be_moved.append(server['id'])
 
-        must_be_moved = ['komikku.db', 'komikku_backup.db', ]
-        for server in get_servers_list(include_disabled=True):
-            must_be_moved.append(server['id'])
+            for name in must_be_moved:
+                data_path = os.path.join(base_path, name)
+                if os.path.exists(data_path):
+                    os.rename(data_path, os.path.join(data_dir_path, name))
 
-        for name in must_be_moved:
-            data_path = os.path.join(base_path, name)
-            if os.path.exists(data_path):
-                os.rename(data_path, os.path.join(data_dir_path, name))
+    # Create folder for 'local' server
+    data_local_dir_path = os.path.join(data_dir_path, 'local')
+    if not os.path.exists(data_local_dir_path):
+        os.mkdir(data_local_dir_path)
 
     return data_dir_path
 
@@ -559,6 +574,11 @@ class PictureSubdivided(Gtk.Box):
 
         self.orig_width = pixbuf.get_width()
         self.orig_height = pixbuf.get_height()
+
+    @classmethod
+    def new_from_data(cls, data):
+        stream = Gio.MemoryInputStream.new_from_data(data, None)
+        return cls(None, Pixbuf.new_from_stream(stream))
 
     @classmethod
     def new_from_file(cls, path):

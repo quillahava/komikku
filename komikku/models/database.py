@@ -589,7 +589,8 @@ class Manga:
 
         db_conn.close()
 
-        if os.path.exists(self.path):
+        # Delete folder except when server is 'local'
+        if os.path.exists(self.path) and self.server_id != 'local':
             shutil.rmtree(self.path)
 
     def get_next_chapter(self, chapter, direction=1):
@@ -721,7 +722,7 @@ class Manga:
                     chapter_data.update(dict(
                         manga_id=self.id,
                         rank=rank,
-                        downloaded=0,
+                        downloaded=chapter_data.get('downloaded', 0),
                         recent=1,
                         read=0,
                     ))
@@ -786,7 +787,7 @@ class Chapter:
         data.update(dict(
             manga_id=manga_id,
             rank=rank,
-            downloaded=0,
+            downloaded=data.get('downloaded', 0),
             recent=0,
             read=0,
         ))
@@ -884,6 +885,14 @@ class Chapter:
             self.update(updated_data)
 
         return page_path
+
+    def get_page_data(self, index):
+        """
+        Return page image data: buffer, mime type, name
+
+        Useful for locally stored manga. Image data (bytes) are retrieved directly from archive.
+        """
+        return self.manga.server.get_manga_chapter_page_image(self.manga.slug, self.manga.name, self.slug, self.pages[index])
 
     def get_page_path(self, index):
         if not self.pages:

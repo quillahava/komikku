@@ -3,9 +3,11 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from gettext import gettext as _
+import os
 import threading
 import time
 
+from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
@@ -16,6 +18,7 @@ from komikku.models import Manga
 from komikku.models import Settings
 from komikku.servers import LANGUAGES
 from komikku.servers.utils import get_allowed_servers_list
+from komikku.utils import get_data_dir
 from komikku.utils import html_escape
 from komikku.utils import log_error_traceback
 from komikku.utils import create_paintable_from_data
@@ -144,23 +147,33 @@ class Explorer(Gtk.Stack):
         # Server logo
         logo = Gtk.Image()
         logo.set_size_request(28, 28)
-        if data['logo_path']:
-            logo.set_from_file(data['logo_path'])
+        if data['id'] != 'local':
+            if data['logo_path']:
+                logo.set_from_file(data['logo_path'])
+        else:
+            logo.set_from_icon_name('folder-symbolic')
         box.append(logo)
 
         # Server title & language
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
 
+        if data['id'] != 'local':
+            title = data['name']
+            if data['is_nsfw']:
+                title += ' (NSFW)'
+            subtitle = LANGUAGES[data['lang']]
+        else:
+            title = _('Local')
+            subtitle = _('Comics stored locally as archives in CBZ/CBR formats')
+
         label = Gtk.Label(xalign=0, hexpand=True)
         label.set_ellipsize(Pango.EllipsizeMode.END)
-        title = data['name']
-        if data['is_nsfw']:
-            title += ' (NSFW)'
         label.set_text(title)
         vbox.append(label)
 
         label = Gtk.Label(xalign=0)
-        label.set_text(LANGUAGES[data['lang']])
+        label.set_wrap(True)
+        label.set_text(subtitle)
         label.add_css_class('subtitle')
         vbox.append(label)
 
@@ -171,8 +184,38 @@ class Explorer(Gtk.Stack):
             label = Gtk.Image.new_from_icon_name('dialog-password-symbolic')
             box.append(label)
 
+        if data['id'] == 'local':
+            # Info button
+            button = Gtk.MenuButton(valign=Gtk.Align.CENTER)
+            button.set_icon_name('help-about-symbolic')
+            popover = Gtk.Popover()
+            label = Gtk.Label()
+            label.set_markup("""A specific folder structure is required
+for local comics to be properly processed.
+
+Each comic must have its own folder which
+must contain the chapters as archive files
+in CBZ or CBR formats.
+
+The folder's name will be used as name
+for the comic.
+
+The 'unrar' utility is required for
+CBR format archives.
+""")
+            popover.set_child(label)
+            button.set_popover(popover)
+            box.append(button)
+
+            # Button to open local folder
+            button = Gtk.Button(valign=Gtk.Align.CENTER)
+            button.set_icon_name('folder-symbolic')
+            button.set_tooltip_text(_('Open local folder'))
+            button.connect('clicked', self.open_local_folder)
+            box.append(button)
+
         # Button to pin/unpin
-        button = Gtk.ToggleButton()
+        button = Gtk.ToggleButton(valign=Gtk.Align.CENTER)
         button.set_icon_name('view-pin-symbolic')
         button.set_active(data['id'] in Settings.get_default().pinned_servers)
         button.connect('toggled', self.toggle_server_pinned_state, row)
@@ -427,6 +470,10 @@ class Explorer(Gtk.Stack):
             self.on_server_clicked(self.servers_page_listbox, child_row)
             break
 
+    def open_local_folder(self, _button):
+        path = os.path.join(get_data_dir(), 'local')
+        Gio.app_info_launch_default_for_uri(f'file://{path}')
+
     def populate_card(self, manga_data):
         def run(server, manga_slug):
             try:
@@ -469,14 +516,22 @@ class Explorer(Gtk.Stack):
             authors = html_escape(', '.join(self.manga_data['authors'])) if self.manga_data['authors'] else _('Unknown author')
             self.card_page_authors_label.set_markup(authors)
 
-            self.card_page_status_server_label.set_markup(
-                '{0} · <a href="{1}">{2}</a> ({3})'.format(
-                    _(Manga.STATUSES[self.manga_data['status']]) if self.manga_data['status'] else '-',
-                    self.server.get_manga_url(self.manga_data['slug'], self.manga_data.get('url')),
-                    html_escape(self.server.name),
-                    self.server.lang.upper()
+            if self.manga_data['server_id'] != 'local':
+                self.card_page_status_server_label.set_markup(
+                    '{0} · <a href="{1}">{2}</a> ({3})'.format(
+                        _(Manga.STATUSES[self.manga_data['status']]) if self.manga_data['status'] else _('Unknown status'),
+                        self.server.get_manga_url(self.manga_data['slug'], self.manga_data.get('url')),
+                        html_escape(self.server.name),
+                        self.server.lang.upper()
+                    )
                 )
-            )
+            else:
+                self.card_page_status_server_label.set_markup(
+                    '{0} · {1}'.format(
+                        _('Unknown status'),
+                        html_escape(_('Local'))
+                    )
+                )
 
             if self.manga_data['genres']:
                 self.card_page_genres_label.set_markup(html_escape(', '.join(self.manga_data['genres'])))
@@ -587,7 +642,7 @@ class Explorer(Gtk.Stack):
                 row.add_css_class('explorer-section-listboxrow')
                 label = Gtk.Label(xalign=0)
                 label.add_css_class('subtitle')
-                label.set_text(LANGUAGES[server_data['lang']].upper())
+                label.set_text(LANGUAGES[server_data['lang']].upper() if server_data['lang'] else _('Other'))
                 row.set_child(label)
                 self.servers_page_listbox.append(row)
 
@@ -650,7 +705,10 @@ class Explorer(Gtk.Stack):
                 row = Gtk.ListBoxRow()
                 row.add_css_class('explorer-section-listboxrow')
                 row.manga_data = None
-                label = Gtk.Label(label=_('MOST POPULARS'), xalign=0)
+                if server.id != 'local':
+                    label = Gtk.Label(label=_('Most populars').upper(), xalign=0)
+                else:
+                    label = Gtk.Label(label=_('Collection').upper(), xalign=0)
                 label.add_css_class('subtitle')
                 row.set_child(label)
 

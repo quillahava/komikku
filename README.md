@@ -84,6 +84,7 @@ Dependencies:
 * `python-natsort`
 * `python-pillow`
 * `python-pure-protobuf`
+* `python-rarfile`
 * `python-unidecode`
 
 This is the best practice to test __Komikku__ without installing using meson and ninja.

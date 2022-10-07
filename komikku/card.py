@@ -62,9 +62,9 @@ class Card:
         self.sort_order_action.connect('activate', self.chapters_list.on_sort_order_changed)
         self.window.application.add_action(self.sort_order_action)
 
-        open_in_browser_action = Gio.SimpleAction.new('card.open-in-browser', None)
-        open_in_browser_action.connect('activate', self.on_open_in_browser_menu_clicked)
-        self.window.application.add_action(open_in_browser_action)
+        self.open_in_browser_action = Gio.SimpleAction.new('card.open-in-browser', None)
+        self.open_in_browser_action.connect('activate', self.on_open_in_browser_menu_clicked)
+        self.window.application.add_action(self.open_in_browser_action)
 
         self.chapters_list.add_actions()
 
@@ -201,6 +201,8 @@ class Card:
 
         self.window.menu_button.set_icon_name('view-more-symbolic')
         self.window.menu_button.show()
+
+        self.open_in_browser_action.set_enabled(self.manga.server_id != 'local')
 
         self.window.show_page('card', transition=transition)
 
@@ -1031,14 +1033,22 @@ class InfoBox:
         authors = html_escape(', '.join(manga.authors)) if manga.authors else _('Unknown author')
         self.authors_label.set_markup(authors)
 
-        self.status_server_label.set_markup(
-            '{0} · <a href="{1}">{2}</a> ({3})'.format(
-                _(manga.STATUSES[manga.status]) if manga.status else '-',
-                manga.server.get_manga_url(manga.slug, manga.url),
-                html_escape(manga.server.name),
-                manga.server.lang.upper()
+        if manga.server_id != 'local':
+            self.status_server_label.set_markup(
+                '{0} · <a href="{1}">{2}</a> ({3})'.format(
+                    _(manga.STATUSES[manga.status]) if manga.status else _('Unknown status'),
+                    manga.server.get_manga_url(manga.slug, manga.url),
+                    html_escape(manga.server.name),
+                    manga.server.lang.upper()
+                )
             )
-        )
+        else:
+            self.status_server_label.set_markup(
+                '{0} · {1}'.format(
+                    _('Unknown status'),
+                    html_escape(_('Local'))
+                )
+            )
 
         if manga.genres:
             self.genres_label.set_markup(html_escape(', '.join(manga.genres)))

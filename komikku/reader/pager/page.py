@@ -10,6 +10,7 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 from komikku.activity_indicator import ActivityIndicator
+from komikku.utils import create_picture_from_data
 from komikku.utils import create_picture_from_file
 from komikku.utils import create_picture_from_resource
 from komikku.utils import log_error_traceback
@@ -29,9 +30,11 @@ class Page(Gtk.Overlay):
         self.window = self.reader.window
 
         self.chapter = self.init_chapter = chapter
+        self.data = None
         self.index = self.init_index = index
         self.init_height = None
         self.path = None
+        self.picture = None
 
         self._status = None    # rendering, rendered, offlimit, cleaned
         self.error = None      # connection error, server error or corrupt file error
@@ -49,8 +52,6 @@ class Page(Gtk.Overlay):
             self.scrolledwindow.set_overlay_scrolling(True)
 
         self.set_child(self.scrolledwindow)
-
-        self.picture = None
 
         # Activity indicator
         self.activity_indicator = ActivityIndicator()
@@ -181,19 +182,25 @@ class Page(Gtk.Overlay):
 
             self.loadable = True
 
-            page_path = self.chapter.get_page_path(self.index)
-            if page_path is None:
-                try:
-                    page_path = self.chapter.get_page(self.index)
-                    if page_path:
-                        self.path = page_path
-                    else:
-                        error_code, error_message = 'server', None
-                        on_error('server')
-                except Exception as e:
-                    error_code, error_message = 'connection', log_error_traceback(e)
+            if self.chapter.manga.server_id != 'local':
+                page_path = self.chapter.get_page_path(self.index)
+                if page_path is None:
+                    try:
+                        page_path = self.chapter.get_page(self.index)
+                        if page_path:
+                            self.path = page_path
+                        else:
+                            error_code, error_message = 'server', None
+                            on_error('server')
+                    except Exception as e:
+                        error_code, error_message = 'connection', log_error_traceback(e)
+                else:
+                    self.path = page_path
             else:
-                self.path = page_path
+                self.data = self.chapter.get_page_data(self.index)
+                # FIXME
+                if self.data is None:
+                    self.error = 'corrupt_file'
 
             GLib.idle_add(complete, error_code, error_message)
 
@@ -205,9 +212,12 @@ class Page(Gtk.Overlay):
 
         self.activity_indicator.start()
 
-        thread = threading.Thread(target=run)
-        thread.daemon = True
-        thread.start()
+        if self.chapter.manga.server_id != 'local':
+            thread = threading.Thread(target=run)
+            thread.daemon = True
+            thread.start()
+        else:
+            run()
 
     def rescale(self):
         if self.status == 'rendered':
@@ -219,10 +229,14 @@ class Page(Gtk.Overlay):
 
     def set_image(self, size=None):
         if self.picture is None:
-            if self.path is None:
+            if self.path is None and self.data is None:
                 picture = create_picture_from_resource('/info/febvre/Komikku/images/missing_file.png')
             else:
-                picture = create_picture_from_file(self.path, subdivided=self.reader.reading_mode == 'webtoon')
+                if self.path:
+                    picture = create_picture_from_file(self.path, subdivided=self.reader.reading_mode == 'webtoon')
+                else:
+                    picture = create_picture_from_data(self.data['buffer'], subdivided=self.reader.reading_mode == 'webtoon')
+
                 if picture is None:
                     GLib.unlink(self.path)
 
