@@ -52,19 +52,15 @@ class CBR:
 
     def get_namelist(self):
         with rarfile.RarFile(self.path) as archive:
-            names = archive.namelist()
-
-        return names
+            return archive.namelist()
 
     def get_name_buffer(self, name):
         with rarfile.RarFile(self.path) as archive:
             try:
-                buffer = archive.read(name)
+                return archive.read(name)
             except Exception:
-                # `unrar` command line tool is missing, bad/invalid archive, not RAR archive...
-                buffer = None
-
-        return buffer
+                # `unrar` command line tool is missing
+                return None
 
 
 class CBZ:
@@ -73,15 +69,11 @@ class CBZ:
 
     def get_namelist(self):
         with zipfile.ZipFile(self.path) as archive:
-            names = archive.namelist()
-
-        return names
+            return archive.namelist()
 
     def get_name_buffer(self, name):
         with zipfile.ZipFile(self.path) as archive:
-            buffer = archive.read(name)
-
-        return buffer
+            return archive.read(name)
 
 
 class Local(Server):
@@ -95,12 +87,10 @@ class Local(Server):
 
         archive = Archive(data['path'])
         buffer = archive.get_name_buffer(data['name'])
-
         if buffer is None:
             return None
 
         mime_type = get_buffer_mime_type(buffer)
-
         if not mime_type.startswith('image'):
             return None
 
@@ -141,7 +131,7 @@ class Local(Server):
                     downloaded=1,
                 ))
 
-        # Cover is by default 1st page of 1st chapter
+        # Cover is by default 1st page of 1st chapter (archive)
         if len(data['chapters']) > 0:
             path = os.path.join(dir_path, data['chapters'][0]['slug'])
             archive = Archive(path)
@@ -198,17 +188,16 @@ class Local(Server):
         dir_path = os.path.join(get_data_dir(), self.id)
 
         result = []
-        for path, _dirs, _files in os.walk(dir_path):
-            if path == dir_path:
+        for name in os.listdir(dir_path):
+            if not os.path.isdir(os.path.join(dir_path, name)):
                 continue
 
-            name = os.path.basename(path)
             if term and term.lower() not in name.lower():
                 continue
 
             result.append(dict(
-                name=name,
                 slug=name,
+                name=name,
             ))
 
         return result
