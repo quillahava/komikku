@@ -460,7 +460,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
               </object>
             </child>
             <child>
-              <object class="AdwViewSwitcherBar">
+              <object class="AdwViewSwitcherBar" id="viewswitcherbar">
                 <property name="stack">pages_stack</property>
                 <property name="reveal">True</property>
               </object>

@@ -218,8 +218,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
     history_search_button = Gtk.Template.Child('history_search_button')
 
-    preferences_subtitle_label = Gtk.Template.Child('preferences_subtitle_label')
-
     notification_timer = None
     notification_label = Gtk.Template.Child('notification_label')
     notification_revealer = Gtk.Template.Child('notification_revealer')

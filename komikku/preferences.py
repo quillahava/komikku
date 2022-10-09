@@ -25,6 +25,7 @@ class Preferences(Adw.Bin):
     leaflet = Gtk.Template.Child('leaflet')
     pages_stack = Gtk.Template.Child('pages_stack')
     subpages_stack = Gtk.Template.Child('subpages_stack')
+    viewswitcherbar = Gtk.Template.Child('viewswitcherbar')
 
     theme_switch = Gtk.Template.Child('theme_switch')
     night_light_switch = Gtk.Template.Child('night_light_switch')
@@ -59,7 +60,13 @@ class Preferences(Adw.Bin):
         super().__init__()
 
         self.window = window
-        self.subtitle_label = self.window.preferences_subtitle_label
+
+        # Add Adw.ViewSwitcherTitle in Adw.HeaderBar => Gtk.Stack 'preferences' page
+        self.viewswitchertitle = Adw.ViewSwitcherTitle(title=_('Preferences'))
+        self.viewswitchertitle.set_stack(self.pages_stack)
+        self.viewswitchertitle.connect('notify::title-visible', self.on_viewswitchertitle_title_visible)
+        self.window.title_stack.get_child_by_name('preferences').set_child(self.viewswitchertitle)
+        self.viewswitcherbar.set_reveal(self.viewswitchertitle.get_title_visible())
 
         self.settings = Settings.get_default()
 
@@ -158,10 +165,8 @@ class Preferences(Adw.Bin):
             self.settings.nsfw_content = False
 
     def on_page_changed(self, _deck, _child):
-        if self.leaflet.get_visible_child_name() == 'subpages':
-            self.subtitle_label.show()
-        else:
-            self.subtitle_label.hide()
+        if self.leaflet.get_visible_child_name() != 'subpages':
+            self.viewswitchertitle.set_subtitle('')
 
     def on_page_numbering_changed(self, switch_button, _gparam):
         self.settings.page_numbering = not switch_button.get_active()
@@ -206,6 +211,9 @@ class Preferences(Adw.Bin):
             self.settings.update_at_startup = True
         else:
             self.settings.update_at_startup = False
+
+    def on_viewswitchertitle_title_visible(self, _viewswitchertitle, _param):
+        self.viewswitcherbar.set_reveal(self.viewswitchertitle.get_title_visible())
 
     def set_config_values(self):
         #
@@ -365,7 +373,7 @@ class PreferencesServersLanguagesSubpage:
             self.settings.remove_servers_language(code)
 
     def present(self, _widget):
-        self.parent.subtitle_label.set_text(_('Servers Languages'))
+        self.parent.viewswitchertitle.set_subtitle(_('Servers Languages'))
         self.parent.subpages_stack.set_visible_child_name('servers_languages')
         self.parent.leaflet.set_visible_child_name('subpages')
 
@@ -529,7 +537,7 @@ class PreferencesServersSettingsSubpage:
         self.settings.toggle_server_lang(server_main_id, lang, switch_button.get_active())
 
     def present(self, _widget):
-        self.parent.subtitle_label.set_text(_('Servers Settings'))
+        self.parent.viewswitchertitle.set_subtitle(_('Servers Settings'))
         self.parent.subpages_stack.set_visible_child_name('servers_settings')
         self.parent.leaflet.set_visible_child_name('subpages')
 
