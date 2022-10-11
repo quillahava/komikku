@@ -167,6 +167,9 @@ class Preferences(Adw.Bin):
     def on_page_changed(self, _deck, _child):
         if self.leaflet.get_visible_child_name() != 'subpages':
             self.viewswitchertitle.set_subtitle('')
+            self.viewswitchertitle.set_view_switcher_enabled(True)
+        else:
+            self.viewswitchertitle.set_view_switcher_enabled(False)
 
     def on_page_numbering_changed(self, switch_button, _gparam):
         self.settings.page_numbering = not switch_button.get_active()
@@ -194,12 +197,6 @@ class Preferences(Adw.Bin):
             self.settings.scaling = 'height'
         elif index == 3:
             self.settings.scaling = 'original'
-
-    def on_servers_language_activated(self, switch_button, _gparam, code):
-        if switch_button.get_active():
-            self.settings.add_servers_language(code)
-        else:
-            self.settings.remove_servers_language(code)
 
     def on_theme_changed(self, switch_button, _gparam):
         self.settings.dark_theme = switch_button.get_active()
