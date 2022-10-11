@@ -174,6 +174,7 @@ class Downloader(GObject.GObject):
                     # - No Internet connection
                     # - Connexion timeout, read timeout
                     # - Server down
+                    # - Bad/currupt local archive
                     download.update(dict(status='error'))
                     user_error_message = log_error_traceback(e)
                     GLib.idle_add(notify_download_error, download, user_error_message)

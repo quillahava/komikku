@@ -4,16 +4,21 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+import logging
 import os
 import rarfile
 import zipfile
 
 from komikku.servers import Server
+from komikku.servers.exceptions import ArchiveError
+from komikku.servers.exceptions import ArchiveUnrarMissingError
 from komikku.servers.utils import convert_image
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.utils import get_data_dir
 
-IMG_EXTENSIONS = ['bmp', 'gif', 'jpg', 'jpeg', 'png', 'webp']
+IMG_EXTENSIONS = ['bmp', 'gif', 'jpg', 'jpeg', 'png', 'tiff', 'webp']
+
+logger = logging.getLogger('komikku.servers.local')
 
 
 def is_archive(path):
@@ -27,11 +32,21 @@ def is_archive(path):
 
 class Archive:
     def __init__(self, path):
-        if zipfile.is_zipfile(path):
-            self.obj = CBZ(path)
+        try:
+            if zipfile.is_zipfile(path):
+                self.obj = CBZ(path)
 
-        elif rarfile.is_rarfile(path):
-            self.obj = CBR(path)
+            elif rarfile.is_rarfile(path):
+                self.obj = CBR(path)
+        except Exception:
+            logger.error(f'Bad/corrupt archive: {path}')
+            raise ArchiveError
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc_info):
+        self.obj.archive.close()
 
     def get_namelist(self):
         names = []
@@ -47,33 +62,38 @@ class Archive:
 
 
 class CBR:
+    """Comic Book Rar (CBR) format"""
+
     def __init__(self, path):
         self.path = path
+        self.archive = rarfile.RarFile(self.path)
 
     def get_namelist(self):
-        with rarfile.RarFile(self.path) as archive:
-            return archive.namelist()
+        return self.archive.namelist()
 
     def get_name_buffer(self, name):
-        with rarfile.RarFile(self.path) as archive:
-            try:
-                return archive.read(name)
-            except Exception:
-                # `unrar` command line tool is missing
-                return None
+        try:
+            return self.archive.read(name)
+        except Exception:
+            logger.error("Possible missing 'unrar' command-line tool")
+            raise ArchiveUnrarMissingError
 
 
 class CBZ:
+    """Comic Book Zip (CBZ) format
+
+    Can also handle EPUB archives if images are well named (use of zero as a prefix to numbers to keep correct order)
+    """
+
     def __init__(self, path):
         self.path = path
+        self.archive = zipfile.ZipFile(self.path)
 
     def get_namelist(self):
-        with zipfile.ZipFile(self.path) as archive:
-            return archive.namelist()
+        return self.archive.namelist()
 
     def get_name_buffer(self, name):
-        with zipfile.ZipFile(self.path) as archive:
-            return archive.read(name)
+        return self.archive.read(name)
 
 
 class Local(Server):
@@ -85,8 +105,8 @@ class Local(Server):
         if data is None:
             return None
 
-        archive = Archive(data['path'])
-        buffer = archive.get_name_buffer(data['name'])
+        with Archive(data['path']) as archive:
+            buffer = archive.get_name_buffer(data['name'])
         if buffer is None:
             return None
 
@@ -124,21 +144,28 @@ class Local(Server):
                 if not is_archive(os.path.join(dir_path, file)):
                     continue
 
-                data['chapters'].append(dict(
-                    slug=file,
-                    title=os.path.splitext(file)[0],
-                    date=None,
-                    downloaded=1,
-                ))
+                try:
+                    with Archive(path) as archive:
+                        names = archive.get_namelist()
 
-        # Cover is by default 1st page of 1st chapter (archive)
-        if len(data['chapters']) > 0:
-            path = os.path.join(dir_path, data['chapters'][0]['slug'])
-            archive = Archive(path)
-            data['cover'] = dict(
-                path=path,
-                name=archive.get_namelist()[0],
-            )
+                        chapter = dict(
+                            slug=file,
+                            title=os.path.splitext(file)[0],
+                            date=None,
+                            downloaded=1,
+                        )
+
+                        data['chapters'].append(chapter)
+
+                        # Cover is by default 1st page of 1st chapter (archive)
+                        if data['cover'] is None:
+                            data['cover'] = dict(
+                                path=path,
+                                name=names[0],
+                            )
+                except Exception:
+                    # Bad archive
+                    pass
 
         return data
 
@@ -147,12 +174,13 @@ class Local(Server):
         if not os.path.exists(path):
             return None
 
-        archive = Archive(path)
+        with Archive(path) as archive:
+            names = archive.get_namelist()
 
         data = dict(
             pages=[],
         )
-        for name in archive.get_namelist():
+        for name in names:
             data['pages'].append(dict(
                 slug=name,
                 image=None,
@@ -165,8 +193,8 @@ class Local(Server):
         if not os.path.exists(path):
             return None
 
-        archive = Archive(path)
-        content = archive.get_name_buffer(page['slug'])
+        with Archive(path) as archive:
+            content = archive.get_name_buffer(page['slug'])
 
         mime_type = get_buffer_mime_type(content)
         if not mime_type.startswith('image'):

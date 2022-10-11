@@ -37,7 +37,7 @@ class Page(Gtk.Overlay):
         self.picture = None
 
         self._status = None    # rendering, rendered, offlimit, cleaned
-        self.error = None      # connection error, server error or corrupt file error
+        self.error = None      # connection error, server error, archive error or corrupt file error
         self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
 
         self.scrolledwindow = Gtk.ScrolledWindow()
@@ -108,10 +108,8 @@ class Page(Gtk.Overlay):
         def complete(error_code, error_message):
             self.activity_indicator.stop()
 
-            if error_code == 'server':
-                on_error('server')
-            elif error_code == 'connection':
-                on_error('connection', error_message)
+            if error_code in ('archive', 'connection', 'server'):
+                on_error(error_code, error_message)
             elif error_code == 'offlimit':
                 self.status = 'offlimit'
                 return
@@ -165,7 +163,7 @@ class Page(Gtk.Overlay):
             return load_chapter(prior_chapter)
 
         def on_error(kind, message=None):
-            assert kind in ('connection', 'server', ), 'Invalid error kind'
+            assert kind in ('archive', 'connection', 'server', ), 'Invalid error kind'
 
             if message is not None:
                 self.window.show_notification(message, 2)
@@ -191,16 +189,15 @@ class Page(Gtk.Overlay):
                             self.path = page_path
                         else:
                             error_code, error_message = 'server', None
-                            on_error('server')
                     except Exception as e:
                         error_code, error_message = 'connection', log_error_traceback(e)
                 else:
                     self.path = page_path
             else:
-                self.data = self.chapter.get_page_data(self.index)
-                # FIXME
-                if self.data is None:
-                    self.error = 'corrupt_file'
+                try:
+                    self.data = self.chapter.get_page_data(self.index)
+                except Exception as e:
+                    error_code, error_message = 'archive', log_error_traceback(e)
 
             GLib.idle_add(complete, error_code, error_message)
 
