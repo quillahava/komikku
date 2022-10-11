@@ -1062,11 +1062,12 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="can_target">0</property>
                     <property name="halign">center</property>
                     <property name="child">
-                      <object class="GtkFrame">
+                      <object class="AdwBin">
                         <child type="label">
                           <object class="GtkLabel" id="notification_label">
                             <property name="label">app notification message</property>
                             <property name="justify">center</property>
+                            <property name="wrap">1</property>
                           </object>
                         </child>
                         <style>
