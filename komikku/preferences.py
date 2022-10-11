@@ -369,6 +369,9 @@ class PreferencesServersLanguagesSubpage:
         else:
             self.settings.remove_servers_language(code)
 
+        # Update Servers settings subpage
+        self.parent.servers_settings_subpage.populate()
+
     def present(self, _widget):
         self.parent.viewswitchertitle.set_subtitle(_('Servers Languages'))
         self.parent.subpages_stack.set_visible_child_name('servers_languages')
@@ -384,9 +387,28 @@ class PreferencesServersSettingsSubpage:
         self.settings = Settings.get_default()
         self.keyring_helper = KeyringHelper()
 
+        self.populate()
+
+    def on_server_activated(self, widget, _gparam, server_main_id):
+        if isinstance(widget, Adw.ExpanderRow):
+            self.settings.toggle_server(server_main_id, widget.get_enable_expansion())
+        else:
+            self.settings.toggle_server(server_main_id, widget.get_active())
+
+    def on_server_language_activated(self, switch_button, _gparam, server_main_id, lang):
+        self.settings.toggle_server_lang(server_main_id, lang, switch_button.get_active())
+
+    def populate(self):
         settings = self.settings.servers_settings
         languages = self.settings.servers_languages
         credentials_storage_plaintext_fallback = self.settings.credentials_storage_plaintext_fallback
+
+        # Clear
+        child = self.parent.servers_settings_subpage_group.get_first_child().get_last_child().get_first_child().get_first_child()
+        while child:
+            next_child = child.get_next_sibling()
+            self.parent.servers_settings_subpage_group.remove(child)
+            child = next_child
 
         servers_data = {}
         for server_data in get_servers_list(order_by=('name', 'lang')):
@@ -523,15 +545,6 @@ class PreferencesServersSettingsSubpage:
                 action_row.add_suffix(switch)
 
                 self.parent.servers_settings_subpage_group.add(action_row)
-
-    def on_server_activated(self, widget, _gparam, server_main_id):
-        if isinstance(widget, Adw.ExpanderRow):
-            self.settings.toggle_server(server_main_id, widget.get_enable_expansion())
-        else:
-            self.settings.toggle_server(server_main_id, widget.get_active())
-
-    def on_server_language_activated(self, switch_button, _gparam, server_main_id, lang):
-        self.settings.toggle_server_lang(server_main_id, lang, switch_button.get_active())
 
     def present(self, _widget):
         self.parent.viewswitchertitle.set_subtitle(_('Servers Settings'))
