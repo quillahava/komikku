@@ -54,12 +54,12 @@ class Reaperscans_pt(Server):
     name = 'Reaper Scans'
     lang = 'pt'
 
-    api_base_url = 'https://api.reaperscans.com.br'
+    api_base_url = 'https://api.reaperscans.net'
     api_search_url = api_base_url + '/series/search'
     api_most_populars_url = api_base_url + '/series/querysearch'
     api_chapter_url = api_base_url + '/series/chapter/{}'
 
-    base_url = 'https://reaperscans.com.br'
+    base_url = 'https://reaperscans.net'
     manga_url = base_url + '/series/{0}'
     chapter_url = base_url + '/series/{0}/{1}'
 
