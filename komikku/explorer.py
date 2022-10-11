@@ -255,7 +255,7 @@ CBR format archives.
         # Search in name and language
         return (
             term in server_name.lower() or
-            term in LANGUAGES[server_lang].lower() or
+            term in LANGUAGES.get(server_lang, _('Other')).lower() or
             term in server_lang.lower()
         )
 
@@ -642,7 +642,7 @@ CBR format archives.
                 row.add_css_class('explorer-section-listboxrow')
                 label = Gtk.Label(xalign=0)
                 label.add_css_class('subtitle')
-                label.set_text(LANGUAGES[server_data['lang']].upper() if server_data['lang'] else _('Other'))
+                label.set_text(LANGUAGES.get(server_data['lang'], _('Other')).upper())
                 row.set_child(label)
                 self.servers_page_listbox.append(row)
 

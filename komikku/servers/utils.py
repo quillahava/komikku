@@ -109,7 +109,7 @@ def get_allowed_servers_list(settings):
 
     servers = []
     for server_data in get_servers_list():
-        if servers_languages and server_data['lang'] not in servers_languages:
+        if servers_languages and server_data['lang'] and server_data['lang'] not in servers_languages:
             continue
 
         server_settings = servers_settings.get(get_server_main_id_by_id(server_data['id']))
