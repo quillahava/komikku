@@ -31,13 +31,11 @@ from gi.repository.GdkPixbuf import InterpType
 from gi.repository.GdkPixbuf import Pixbuf
 from gi.repository.GdkPixbuf import PixbufAnimation
 
-from komikku.servers.utils import get_buffer_mime_type
-
 logger = logging.getLogger('komikku')
 
 
 def create_picture_from_data(data, static_animation=False, subdivided=False):
-    mime_type = get_buffer_mime_type(data)
+    mime_type, _result_uncertain = Gio.content_type_guess(None, data)
 
     if mime_type == 'image/gif' and not static_animation:
         return PictureAnimation.new_from_data(data)
