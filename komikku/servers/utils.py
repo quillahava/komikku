@@ -269,12 +269,11 @@ def search_duckduckgo(site, term):
     session.headers.update({'user-agent': USER_AGENT})
 
     params = dict(
-        kd=-1,
         q=f'site:{site} {term}',
     )
 
     try:
-        r = session.get('https://duckduckgo.com/lite', params=params)
+        r = session.get('https://lite.duckduckgo.com/lite/', params=params)
     except Exception:
         raise
 
