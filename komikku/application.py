@@ -102,7 +102,8 @@ class Application(Adw.Application):
         self.logger = logging.getLogger('komikku')
 
     def do_activate(self):
-        self.window = ApplicationWindow(application=self, title='Komikku', icon_name=self.application_id)
+        if not self.window:
+            self.window = ApplicationWindow(application=self, title='Komikku', icon_name=self.application_id)
         self.window.present()
 
     def do_command_line(self, command_line):
