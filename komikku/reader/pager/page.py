@@ -209,7 +209,7 @@ class Page(Gtk.Overlay):
 
         self.activity_indicator.start()
 
-        if self.chapter.manga.server_id != 'local':
+        if self.reader.manga.server_id != 'local':
             thread = threading.Thread(target=run)
             thread.daemon = True
             thread.start()
