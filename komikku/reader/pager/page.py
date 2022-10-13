@@ -37,7 +37,7 @@ class Page(Gtk.Overlay):
         self.picture = None
 
         self._status = None    # rendering, rendered, offlimit, cleaned
-        self.error = None      # connection error, server error, archive error or corrupt file error
+        self.error = None      # connection error, server error, corrupt file error
         self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
 
         self.scrolledwindow = Gtk.ScrolledWindow()
@@ -108,7 +108,7 @@ class Page(Gtk.Overlay):
         def complete(error_code, error_message):
             self.activity_indicator.stop()
 
-            if error_code in ('archive', 'connection', 'server'):
+            if error_code in ('connection', 'server'):
                 on_error(error_code, error_message)
             elif error_code == 'offlimit':
                 self.status = 'offlimit'
@@ -163,7 +163,7 @@ class Page(Gtk.Overlay):
             return load_chapter(prior_chapter)
 
         def on_error(kind, message=None):
-            assert kind in ('archive', 'connection', 'server', ), 'Invalid error kind'
+            assert kind in ('connection', 'server', ), 'Invalid error kind'
 
             if message is not None:
                 self.window.show_notification(message, 2)
@@ -180,7 +180,7 @@ class Page(Gtk.Overlay):
 
             self.loadable = True
 
-            if self.chapter.manga.server_id != 'local':
+            if self.server.manga.server_id != 'local':
                 page_path = self.chapter.get_page_path(self.index)
                 if page_path is None:
                     try:
@@ -197,7 +197,7 @@ class Page(Gtk.Overlay):
                 try:
                     self.data = self.chapter.get_page_data(self.index)
                 except Exception as e:
-                    error_code, error_message = 'archive', log_error_traceback(e)
+                    error_code, error_message = 'server', log_error_traceback(e)
 
             GLib.idle_add(complete, error_code, error_message)
 

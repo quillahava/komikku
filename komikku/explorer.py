@@ -190,19 +190,15 @@ class Explorer(Gtk.Stack):
             button.set_icon_name('help-about-symbolic')
             popover = Gtk.Popover()
             label = Gtk.Label()
-            label.set_markup("""A specific folder structure is required
-for local comics to be properly processed.
+            label.set_wrap(True)
+            label.set_max_width_chars(32)
+            label.set_markup(_("""A specific folder structure is required for local comics to be properly processed.
 
-Each comic must have its own folder which
-must contain the chapters as archive files
-in CBZ or CBR formats.
+Each comic must have its own folder which must contain the chapters/volumes as archive files in CBZ or CBR formats.
 
-The folder's name will be used as name
-for the comic.
+The folder's name will be used as name for the comic.
 
-The 'unrar' utility is required for
-CBR format archives.
-""")
+NOTE: The 'unrar' command-line tool is required for CBR archives."""))
             popover.set_child(label)
             button.set_popover(popover)
             box.append(button)
