@@ -17,6 +17,7 @@ data/ui/preferences.ui
 data/ui/shortcuts_overview.ui
 komikku/application.py
 komikku/card.py
+komikku/explorer.py
 komikku/categories_editor.py
 komikku/downloader.py
 komikku/explorer.py
