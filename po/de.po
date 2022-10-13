@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: Komikku 0.19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-13 14:01+0200\n"
-"PO-Revision-Date: 2022-09-18 01:03+0200\n"
+"PO-Revision-Date: 2022-10-13 22:26+0200\n"
 "Last-Translator: Liliana Prikler <liliana.prikler@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 40.0\n"
+"X-Generator: Gtranslator 42.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
@@ -42,7 +42,7 @@ msgstr "Heruntergeladene Comics offline lesen"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:18
 msgid "Reading of local comics in CBZ or CBR formats"
-msgstr ""
+msgstr "Lokale Comics in CBZ-Format oder CBR-Format lesen"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
@@ -89,57 +89,59 @@ msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:94
 msgid "Landscape covers (rare) are now converted to portrait"
-msgstr ""
+msgstr "Breite Buchumschläge (selten) werden nun in Portraits konvertiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:95
 msgid "[Reader] Webtoon reading mode: Bugfix"
-msgstr ""
+msgstr "[Leser] Webtoon-Modus: Fehler behoben"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:96
 msgid "[Reader] Fixed detection of 'read' chapters"
-msgstr ""
+msgstr "[Leser] Fehler in der Erkennung gelesener Kapitel behoben"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 msgid "[Servers] MangaLife [EN]: Reenable"
-msgstr ""
+msgstr "[Server] MangaLife (EN) reaktiviert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:98
 msgid "[Servers] LeviatanScans [EN]: Reenable"
-msgstr ""
+msgstr "[Server] LeviatanScans (EN) reaktiviert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:99
 msgid "[Servers] Mangas Origines: Update"
-msgstr ""
+msgstr "[Server] Mangas Origines: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:100
 msgid "[Servers] Reaper Scans [PT]: Update"
-msgstr ""
+msgstr "[Server] Reaper Scans (PT): Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:101
 msgid "[Servers] Remanga: Update"
-msgstr ""
+msgstr "[Server] Remanga: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 msgid "[Servers] Scan OP [FR]: Disable"
-msgstr ""
+msgstr "[Server] Scan OP (FR) deaktiviert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:103
 msgid "[Servers] Zero Scans: Disable"
-msgstr ""
+msgstr "[Server] Zero Scans deaktiviert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[L10n] Add Simplified Chinese translations"
-msgstr ""
+msgstr "[L10] Übersetzung in Chinesisch (vereinfacht) hinzugefügt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid "[L10n] Update Turkish translation"
-msgstr ""
+msgstr "[L10] Türkische Übersetzung überarbeitet"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 msgid ""
 "After several months of effort, Komikku's port to GTK4 and libadwaita is "
 "ended."
 msgstr ""
+"Nach mehreren Monaten Arbeit ist Komikkus Portierung zu GTK4 und libadwaita "
+"vollendet."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:112
 msgid "The highlights of this new major version:"
@@ -147,7 +149,7 @@ msgstr "Die Highlights dieser Version sind:"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:114
 msgid "Refreshing of the UI to follow the GNOME HIG as much as possible"
-msgstr ""
+msgstr "Benutzeroberfläche weitestgehend an GNOME-Richtlinien angepasst"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
 msgid "Library has now two display modes: Grid and Compact grid"
@@ -169,28 +171,30 @@ msgstr "Modernes ‘Über Komikku’-Fenster"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:120
 msgid "Changes since 0.41.0:"
-msgstr ""
+msgstr "Änderungen seit 0.41.0:"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:122
 msgid "[Preferences] Reader: Add 'Landscape Pages Zoom' setting"
-msgstr ""
+msgstr "[Einstellungen] Einstellung zum Zoom bei breiten Bildern hinzugefügt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:123
 msgid ""
 "[Preferences] Reader: Add 'Maximum Width' setting (Webtoon reading mode)"
 msgstr ""
+"[Einstellungen] Leser: Maximale Breite im Webtoon-Modus kann nun angepasst "
+"werden"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:124
 msgid "[Servers] Add Grise Bouille [FR]"
-msgstr ""
+msgstr "[Server] Grise Bouille (FR) hinzugefügt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:125
 msgid "[Servers] MangaNato (MangaNelo): Update"
-msgstr ""
+msgstr "[Server] MangaNato (auch bekannt als MangaNelo): Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:126
 msgid "[Servers] Mangaowl: Update"
-msgstr ""
+msgstr "[Server] Mangaowl: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:127
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:190
@@ -200,7 +204,7 @@ msgstr "[Server] Read Comic Online: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:128
 msgid "[L10n] Update French, German, Spanish and Turkish translations"
-msgstr ""
+msgstr "[L10] Französische, deutsche und türkische Übersetzung aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:135
 msgid "[Servers] Add Aralos BD [FR]"
@@ -1570,8 +1574,8 @@ msgstr "[Manga] Besseres Rendern der Kapitelliste"
 msgid ""
 "[Manga] Improved chapters download: add a progress bar and a \"Stop\" button"
 msgstr ""
-"[Manga] Verbesserte Herunterladen von Kapiteln: Fortschrittsbalken und "
-"\"Stop\"-Button"
+"[Manga] Verbesserte Herunterladen von Kapiteln: Fortschrittsbalken und \"Stop"
+"\"-Button"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:749
 msgid "[Settings] General: New option to disable desktop notifications"
@@ -2001,7 +2005,7 @@ msgstr "Systemstil"
 
 #: ../data/ui/menu/reader.xml:91
 msgid "Zoom Landscape Pages"
-msgstr ""
+msgstr "Breite Seiten vergrößern"
 
 #: ../data/ui/menu/reader.xml:95
 msgid "Crop Borders"
@@ -2131,12 +2135,12 @@ msgstr "Leser"
 
 #: ../data/ui/preferences.ui:318
 msgid "Maximum Width"
-msgstr ""
+msgstr "Maximale Weite"
 
 #: ../data/ui/preferences.ui:319
 msgid ""
 "Constrain reader's width to a given maximum size (Webtoon reading mode only)"
-msgstr ""
+msgstr "Schränke im Webtoon-Modus die maximale Breite ein"
 
 #: ../data/ui/preferences.ui:337
 msgid "Scaling"
@@ -2148,12 +2152,12 @@ msgstr "Art der Skalierung, um das Bild anzupassen"
 
 #: ../data/ui/preferences.ui:353
 msgid "Landscape Pages Zoom"
-msgstr ""
+msgstr "Breite Seiten vergrößern"
 
 #: ../data/ui/preferences.ui:355
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
-msgstr ""
+msgstr "Bei adaptiver Skalierung breite Seiten an die Höhe anpassen"
 
 #: ../data/ui/preferences.ui:382
 msgid "Borders Crop"
@@ -2286,7 +2290,7 @@ msgstr "Ja"
 
 #: ../komikku/application.py:473
 msgid "Join Chat"
-msgstr ""
+msgstr "Unterhaltung beitreten"
 
 #: ../komikku/application.py:474
 msgid "Sponsor via Ko-fi"
@@ -2381,12 +2385,12 @@ msgstr "Unbekannter Autor"
 #: ../komikku/card.py:1039 ../komikku/card.py:1048 ../komikku/explorer.py:518
 #: ../komikku/explorer.py:527
 msgid "Unknown status"
-msgstr ""
+msgstr "Unbekannter Status"
 
 #: ../komikku/card.py:1049 ../komikku/explorer.py:166
 #: ../komikku/explorer.py:528
 msgid "Local"
-msgstr ""
+msgstr "Lokal"
 
 #: ../komikku/categories_editor.py:78 ../komikku/library.py:287
 msgid "Delete?"
@@ -2421,7 +2425,7 @@ msgstr "Fehler"
 
 #: ../komikku/explorer.py:167
 msgid "Comics stored locally as archives in CBZ/CBR formats"
-msgstr ""
+msgstr "Lokale Archive in CBZ/CBR-Format"
 
 #: ../komikku/explorer.py:195
 msgid ""
@@ -2435,14 +2439,23 @@ msgid ""
 "\n"
 "NOTE: The 'unrar' command-line tool is required for CBR archives."
 msgstr ""
+"Eine spezielle Ordnerstruktur ist benötigt, um lokale Comics richtig "
+"handzuhaben.\n"
+"\n"
+"Jeder Comic benötigt seien eigenen Ordner, in dem Kapitel als Archive im "
+"CBZ- oder CBR-Format enthalten sind.\n"
+"\n"
+"Der Ordnername wird als Comicname übernommen.\n"
+"\n"
+"Hinweis: Zum Lesen von CBR-Archiven wird 'unrar' benötigt."
 
 #: ../komikku/explorer.py:209
 msgid "Open local folder"
-msgstr ""
+msgstr "Lokalen Ordner öffnen"
 
 #: ../komikku/explorer.py:254 ../komikku/explorer.py:641
 msgid "Other"
-msgstr ""
+msgstr "Andere"
 
 #: ../komikku/explorer.py:403
 #, python-brace-format
@@ -2467,11 +2480,11 @@ msgstr "Favoriten"
 
 #: ../komikku/explorer.py:705
 msgid "Most populars"
-msgstr ""
+msgstr "Beliebteste"
 
 #: ../komikku/explorer.py:707
 msgid "Collection"
-msgstr ""
+msgstr "Sammlung"
 
 #: ../komikku/explorer.py:737
 msgid "Oops, search failed. Please try again."
@@ -2581,15 +2594,15 @@ msgstr "Benutzerkonto"
 
 #: ../komikku/preferences.py:481
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
 #: ../komikku/preferences.py:487
 msgid "Username"
-msgstr ""
+msgstr "Benutzername"
 
 #: ../komikku/preferences.py:491
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: ../komikku/preferences.py:503
 msgid "System keyring service is disabled. Credential cannot be saved."
@@ -2725,11 +2738,11 @@ msgstr "Fehler: {}"
 
 #: ../komikku/servers/exceptions.py:16
 msgid "Local archive is corrupt."
-msgstr ""
+msgstr "Lokales Archiv ist beschädigt."
 
 #: ../komikku/servers/exceptions.py:21
 msgid "Unable to extract page. Maybe the 'unrar' tool is missing?"
-msgstr ""
+msgstr "Konnte Seite nicht extrahieren. Fehlt das 'unrar'-Werkzeug?"
 
 #: ../komikku/servers/exceptions.py:26
 msgid "Failed to bypass Cloudflare protection. Please try again."
