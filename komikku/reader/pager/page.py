@@ -180,7 +180,7 @@ class Page(Gtk.Overlay):
 
             self.loadable = True
 
-            if self.server.manga.server_id != 'local':
+            if self.reader.manga.server_id != 'local':
                 page_path = self.chapter.get_page_path(self.index)
                 if page_path is None:
                     try:

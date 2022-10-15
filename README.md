@@ -14,7 +14,7 @@ __Komikku__ is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.
 
 * Online reading from dozens of servers
 * Offline reading of downloaded comics
-* Reading of local comics in CBZ or CBR formats
+* Support for locally stored comics (in CBZ or CBR formats)
 * RTL, LTR, Vertical and Webtoon reading modes
 * Several types of navigation:
   * Keyboard arrow keys
