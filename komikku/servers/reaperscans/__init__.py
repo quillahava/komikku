@@ -186,20 +186,36 @@ class Reaperscans_pt(Server):
 
     def search(self, term, populars=False):
         if populars:
-            r = self.session_post(self.api_most_populars_url, params=dict(
-                order='desc',
-                order_by='total_views',
-                series_type='Comic',
-            ))
+            r = self.session_post(
+                self.api_most_populars_url,
+                params=dict(
+                    order='desc',
+                    order_by='total_views',
+                    series_type='Comic',
+                ),
+                headers={
+                    'content-type': 'application/json',
+                }
+            )
         else:
-            r = self.session_post(self.api_search_url, params=dict(
-                term=term,
-            ))
+            r = self.session_post(
+                self.api_search_url,
+                params=dict(
+                    term=term,
+                ),
+                headers={
+                    'content-type': 'application/json',
+                }
+            )
         if r.status_code != 200:
             return None
 
+        items = r.json()
+        if populars:
+            items = items['data']
+
         results = []
-        for item in r.json():
+        for item in items:
             if item['series_type'] not in ('Comic',):
                 continue
 
