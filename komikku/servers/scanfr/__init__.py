@@ -18,4 +18,4 @@ class Scanfr(MyMangaReaderCMS):
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/{1}'
     image_url = None  # For some manga chapters, chapter slug can be used to compute images URLs
-    cover_url = base_url + '/uploads/manga/{0}/cover/cover_250x350.jpg'
+    cover_url = 'https://opfrcdn.xyz/uploads/manga/{0}/cover/cover_250x350.jpg'
