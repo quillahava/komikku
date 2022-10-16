@@ -21,7 +21,6 @@
 # Manga-Scantrad [FR]
 # Mangas Origines [FR]
 # Reaperscans [EN]
-# Reaperscans [PT]
 # Submanga [ES] (disabled)
 # Wakascan [FR] (disabled)
 
@@ -94,6 +93,11 @@ class Madara(Server):
         data['name'] = get_soup_element_inner_text(soup.find('h1'))
         if cover_div := soup.find('div', class_='summary_image'):
             data['cover'] = cover_div.a.img.get('data-src')
+            if data['cover'] is None:
+                data['cover'] = cover_div.a.img.get('data-lazy-srcset')
+                if data['cover']:
+                    # data-lazy-srcset can contain several covers with sizes: url1 size1 url2 size2...
+                    data['cover'] = data['cover'].split()[0]
             if data['cover'] is None:
                 data['cover'] = cover_div.a.img.get('src')
 
