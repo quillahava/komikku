@@ -8,12 +8,13 @@ from bs4 import BeautifulSoup
 import cloudscraper
 from functools import wraps
 import json
+import requests
+from urllib.parse import urlparse
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
-from komikku.servers.utils import get_soup_element_inner_text
 
 SERVER_NAME = 'MangaKawaii'
 
@@ -54,6 +55,23 @@ class Mangakawaii(Server):
     def __init__(self):
         if self.session is None:
             self.session = cloudscraper.create_scraper()
+            cookie = requests.cookies.create_cookie(
+                name='mk_search_type',
+                value='manga',
+                domain=urlparse(self.base_url).netloc,
+                path='/',
+                expires=None,
+            )
+            self.session.cookies.set_cookie(cookie)
+            cookie = requests.cookies.create_cookie(
+                name='mk_cookie_consent',
+                value='1',
+                domain=urlparse(self.base_url).netloc,
+                path='/',
+                expires=None,
+            )
+            self.session.cookies.set_cookie(cookie)
+
             self.session.headers.update({'User-Agent': USER_AGENT})
 
     @set_lang
@@ -152,11 +170,15 @@ class Mangakawaii(Server):
             td_element = tr_element.find('td', class_='table__chapter')
             if not td_element:
                 continue
-            date = get_soup_element_inner_text(tr_element.find('td', class_='table__date'))
+
+            date_element = tr_element.find('td', class_='table__date')
+            if date_element.div:
+                date_element.div.extract()
+
             data['chapters'].append(dict(
                 slug=td_element.a.get('href').strip().split('/')[-1],
                 title=' '.join(td_element.a.span.text.strip().split()),
-                date=convert_date_string(date, format='%d.%m.%Y'),
+                date=convert_date_string(date_element.text.strip(), format='%d.%m.%Y'),
             ))
 
         # Finally, we recursively retrieve other chapters by page (via a web service)
@@ -237,11 +259,15 @@ class Mangakawaii(Server):
             td_element = tr_element.find('td', class_='table__chapter')
             if not td_element:
                 continue
-            date = get_soup_element_inner_text(tr_element.find('td', class_='table__date'))
+
+            date_element = tr_element.find('td', class_='table__date')
+            if date_element.div:
+                date_element.div.extract()
+
             chapters.append(dict(
                 slug=td_element.a.get('href').strip().split('/')[-1],
                 title=' '.join(td_element.a.span.text.strip().split()),
-                date=convert_date_string(date, format='%d.%m.%Y'),
+                date=convert_date_string(date_element.text.strip(), format='%d.%m.%Y'),
             ))
 
         chapters += self.get_manga_chapters_data(manga_slug, oeuvre_id, page + 1)
