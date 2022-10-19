@@ -37,13 +37,16 @@ def install_excepthook():
     old_hook = sys.excepthook
 
     def new_hook(etype, evalue, etb):
+        print('Error: An unhandled exception occurs')
+
         old_hook(etype, evalue, etb)
 
         context = GLib.main_context_default()
         while context.iteration():
             app = Gio.Application.get_default()
             if app is not None:
-               app.quit()
+               app.window.quit()
+               break
 
         sys.exit()
 
