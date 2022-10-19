@@ -17,17 +17,14 @@ from komikku.reader.pager.page import Page
 class WebtoonPager(Adw.Bin, BasePager):
     """Vertical smooth/continuous scrolling (a.k.a. infinite canvas) pager"""
 
+    add_page_lock = False
     current_chapter_id = None
-    interactive = True
 
     gesture_drag_offset = None
-    scroll_page = None
     scroll_direction = None
+    scroll_page = None
     scroll_page_percentage = 0
-    scroll_page_value = 0
     scroll_status = None
-
-    preloaded = 5  # number of preloaded pages before and after current page
 
     def __init__(self, reader):
         super().__init__()
@@ -53,11 +50,8 @@ class WebtoonPager(Adw.Bin, BasePager):
             Gtk.EventControllerScrollFlags.VERTICAL | Gtk.EventControllerScrollFlags.KINETIC
         )
         self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
-        self.controller_scroll.connect('decelerate', self.on_scroll_decelerate)
         self.controller_scroll.connect('scroll', self.on_scroll)
         self.scrolledwindow.add_controller(self.controller_scroll)
-
-        self.value_changed_handler_id = self.vadj.connect('value-changed', self.on_scroll_value_changed)
 
         # Scrolling detection on touch screen
         self.gesture_drag = Gtk.GestureDrag.new()
@@ -91,71 +85,105 @@ class WebtoonPager(Adw.Bin, BasePager):
 
         return size
 
-    def add_pages(self, position, count=1, do_remove=True, init=False):
+    def add_page(self, position, init=False):
         """
-        Allows to add one or more pages
+        Depending on the position parameter, add a page at start (top) or at end (bottom)
 
-        - Depending on the position parameter, pages are added at the beginning or at the end.
-        - Unless do_remove = False, a page is removed on the opposite.
-        - On init, when first pages are added, relative vertical adjustment is not working
-          (we don't know when vertical adjustment will be modifiable and in which order pages will be added),
-          so an absolute vertical adjustment is done each time a page is added.
+        At init, when first pages are added, no page is removed on opposite position
         """
+        self.add_page_lock = True
+
         pages = self.pages
 
-        if position == 'start':
-            if pages[0].index - 1 >= 0:
-                if not pages[0].loadable and pages[0].error is None and not pages[0].status == 'offlimit':
-                    return GLib.SOURCE_CONTINUE
+        def remove_page():
+            if len(self.pages) < 11:
+                return
 
-                if not pages[0].loadable:
-                    if init:
-                        self.adjust_scroll()
+            if position == 'start':
+                bottom_page = pages[-1]
 
-                    self.interactive = True
-                    return GLib.SOURCE_REMOVE
+                # Don't remove bottom page if visible
+                if self.get_page_offset(bottom_page) <= self.vadj.props.value + self.vadj.props.page_size:
+                    return
 
-            if do_remove:
+                # Remove bottom page
                 pages[-1].clean()
                 self.box.remove(pages[-1])
+            else:
+                top_page = pages[0]
 
-            new_page = Page(self, pages[0].chapter, pages[0].index - 1)
-            self.box.prepend(new_page)
-            # New page is added on top, scroll position must be adjusted
-            self.adjust_scroll(self.vadj.props.value + new_page.init_height)
-        else:
-            if not pages[-1].loadable and pages[-1].error is None and not pages[-1].status == 'offlimit':
-                return GLib.SOURCE_CONTINUE
+                # Don't remove top page if visible
+                if self.get_page_offset(top_page) + top_page.height > self.vadj.props.value:
+                    return
 
-            if not pages[-1].loadable:
-                if init:
-                    self.adjust_scroll()
+                scroll_value = self.vadj.props.value - top_page.height
+                top_page.clean()
+                self.box.remove(top_page)
+                # Page removed at top, scroll position has been lost and must be re-adjusted
+                self.adjust_scroll(scroll_value)
 
-                self.interactive = True
+        def add_and_remove(page):
+            # At init, page on opposite is not deleted
+            if not init:
+                remove_page()
+
+            if position == 'start':
+                scroll_value = self.vadj.props.value + page.init_height
+                self.box.prepend(page)
+                # Page is added at top, scroll position has been lost and must be re-adjusted
+                self.adjust_scroll(scroll_value)
+            else:
+                self.box.append(page)
+
+            page.connect('notify::status', self.on_page_status_changed)
+            page.connect('rendered', self.on_page_rendered)
+            page.render()
+
+            self.add_page_lock = False
+
+        if position == 'start':
+            if not pages[0].loadable or pages[0].status == 'offlimit':
+                self.add_page_lock = False
                 return GLib.SOURCE_REMOVE
 
-            if do_remove:
-                height = pages[0].height
-                pages[0].clean()
-                self.box.remove(pages[0])
-                # Top page is removed, scroll position must be adjusted
-                self.adjust_scroll(self.vadj.props.value - height)
+            new_page = Page(self, pages[0].chapter, pages[0].index - 1)
+        else:
+            if not pages[-1].loadable or pages[-1].status == 'offlimit':
+                self.add_page_lock = False
+                return GLib.SOURCE_REMOVE
 
             new_page = Page(self, pages[-1].chapter, pages[-1].index + 1)
-            self.box.append(new_page)
 
-        if init:
-            self.adjust_scroll()
+        GLib.idle_add(add_and_remove, new_page)
 
-        new_page.connect('notify::status', self.on_page_status_changed)
-        new_page.connect('rendered', self.on_page_rendered)
-        new_page.render()
+        return GLib.SOURCE_REMOVE
 
-        if count - 1 > 0:
-            GLib.idle_add(self.add_pages, position, count - 1, do_remove, init)
-        else:
-            self.interactive = True
-            return GLib.SOURCE_REMOVE
+    def add_pages_worker(self):
+        """Monitors whether pages need to be added"""
+        pages = self.pages
+
+        if self.add_page_lock:
+            return GLib.SOURCE_CONTINUE
+
+        # At init (until pages are scrollable), pages are added only at bottom
+        # If pages were added at top, scroll position could not be maintained
+        init = self.vadj.props.upper == self.vadj.props.page_size
+
+        if init or self.scroll_direction == Gtk.DirectionType.DOWN:
+            bottom_page = pages[-1]
+            bottom_page_offset = self.get_page_offset(bottom_page)
+            # Add page at bottom only if bottom page is visible
+            if bottom_page_offset <= self.vadj.props.value + self.vadj.props.page_size:
+                self.add_page('end', init)
+
+        if self.scroll_direction == Gtk.DirectionType.UP:
+            top_page = pages[0]
+            top_page_offset = self.get_page_offset(top_page)
+            # Add page at top only if top page is visible
+            if top_page_offset + top_page.height > self.vadj.props.value:
+                self.add_page('start', init)
+
+        return GLib.SOURCE_CONTINUE
 
     def adjust_scroll(self, value=None):
         if value is None:
@@ -163,8 +191,7 @@ class WebtoonPager(Adw.Bin, BasePager):
             if self.scroll_page_percentage:
                 value += (self.scroll_page.height / 100) * self.scroll_page_percentage
 
-        with self.vadj.handler_block(self.value_changed_handler_id):
-            self.vadj.props.value = value
+        self.vadj.set_value(value)
 
     def clear(self):
         page = self.box.get_first_child()
@@ -175,7 +202,7 @@ class WebtoonPager(Adw.Bin, BasePager):
             page = next_page
 
     def dispose(self):
-        self.vadj.disconnect(self.value_changed_handler_id)
+        GLib.Source.remove(self.add_pages_worker_id)
         self.clear()
 
         BasePager.dispose(self)
@@ -218,12 +245,12 @@ class WebtoonPager(Adw.Bin, BasePager):
         page.connect('notify::status', self.on_page_status_changed)
         page.connect('rendered', self.on_page_rendered)
         self.box.append(page)
+
         self.scroll_page = page
         self.current_page = page
         page.render()
 
-        GLib.idle_add(self.add_pages, 'end', self.preloaded, False, True)
-        GLib.idle_add(self.add_pages, 'start', self.preloaded, False, True)
+        self.add_pages_worker_id = GLib.timeout_add(100, self.add_pages_worker)
         GLib.idle_add(self.update, self.current_page)
 
     def on_btn_clicked(self, _gesture, _n_press, x, y):
@@ -258,7 +285,7 @@ class WebtoonPager(Adw.Bin, BasePager):
         self.gesture_drag_offset = offset_y
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
-        if self.window.page != 'reader' or not self.interactive:
+        if self.window.page != 'reader':
             return Gdk.EVENT_PROPAGATE
 
         modifiers = Gtk.accelerator_get_default_mod_mask()
@@ -293,34 +320,25 @@ class WebtoonPager(Adw.Bin, BasePager):
 
         try:
             if pages.index(page) < pages.index(self.scroll_page):
-                # A page above current page were rendered, scroll position must be adjusted
+                # A page above scroll_page were rendered, scroll position must be adjusted
                 self.adjust_scroll(self.vadj.props.value + page.height - page.init_height)
         except Exception:
             pass
 
-    def on_scroll(self, _controller, _dx, dy, decelerate=False):
-        if not self.interactive:
-            return Gdk.EVENT_STOP
+    def on_scroll(self, _controller, _dx, dy):
+        pages = self.pages
+
+        # Update scroll state
+        scroll_value_top = self.vadj.get_value()
+        scroll_position_top = self.get_position(scroll_value_top)
+        self.scroll_page = pages[scroll_position_top]
+        scroll_page_value = scroll_value_top - self.get_page_offset(self.scroll_page)
+        self.scroll_page_percentage = 100 * scroll_page_value / self.scroll_page.height
+        self.scroll_direction = Gtk.DirectionType.UP if dy < 0 else Gtk.DirectionType.DOWN
 
         # Hide controls
         self.reader.toggle_controls(False)
 
-        self.interactive = False
-
-        scroll_value_top = self.vadj.get_value()
-
-        if not decelerate:
-            self.scroll_status = 'scroll'
-            self.scrolledwindow.set_kinetic_scrolling(True)
-        else:
-            # Disable kinetic scrolling otherwise any changes to vadjustment's value would be ignored
-            self.scrolledwindow.set_kinetic_scrolling(False)
-
-        pages = self.pages
-        scroll_position_top = self.get_position(scroll_value_top)
-        page_top = pages[scroll_position_top]
-
-        self.scroll_direction = Gtk.DirectionType.UP if dy < 0 else Gtk.DirectionType.DOWN
         if self.scroll_direction == Gtk.DirectionType.DOWN:
             current_page = pages[self.get_position(scroll_value_top + self.vadj.props.page_size)]
         else:
@@ -329,13 +347,13 @@ class WebtoonPager(Adw.Bin, BasePager):
         if not current_page.loadable:
             if current_page.status == 'offlimit':
                 if self.scroll_direction == Gtk.DirectionType.UP:
-                    self.scroll_page_value = self.get_page_offset(self.scroll_page)
+                    scroll_page_value = self.get_page_offset(pages[1])
                     self.scroll_page_percentage = 0
                 else:
-                    self.scroll_page_value = self.get_page_offset(self.current_page) + self.scroll_page.height - self.vadj.props.page_size
+                    scroll_page_value = self.get_page_offset(pages[-1]) - self.vadj.props.page_size
                     self.scroll_page_percentage = 100
 
-                self.adjust_scroll(self.scroll_page_value)
+                self.adjust_scroll(scroll_page_value)
 
                 if self.scroll_direction == Gtk.DirectionType.DOWN:
                     message = _('It was the last chapter.')
@@ -343,39 +361,12 @@ class WebtoonPager(Adw.Bin, BasePager):
                     message = _('There is no previous chapter.')
                 self.window.show_notification(message, 1)
 
-                self.interactive = True
                 return Gdk.EVENT_STOP
-
-        add_cond1 = self.scroll_direction == Gtk.DirectionType.DOWN and scroll_position_top > self.preloaded
-        add_cond2 = self.scroll_direction == Gtk.DirectionType.UP and scroll_position_top < self.preloaded
-
-        if page_top != self.scroll_page and (add_cond1 or add_cond2):
-            delta = abs(scroll_position_top - self.pages.index(self.scroll_page))
-
-            self.scroll_page = page_top
-
-            do_remove = len(self.pages) == self.preloaded * 2 + 1
-            GLib.idle_add(self.add_pages, 'start' if self.scroll_direction == Gtk.DirectionType.UP else 'end', delta, do_remove)
-        else:
-            if page_top != self.scroll_page:
-                self.scroll_page = page_top
-            self.interactive = True
 
         if current_page != self.current_page:
             self.current_page = current_page
             GLib.idle_add(self.update, current_page)
             GLib.idle_add(self.save_progress, current_page)
-
-        self.scroll_page_value = scroll_value_top - self.get_page_offset(page_top)
-        self.scroll_page_percentage = 100 * self.scroll_page_value / page_top.height
-
-    def on_scroll_decelerate(self, _controller, _vel_x, _vel_y):
-        self.scroll_status = 'decelerate'
-
-    def on_scroll_value_changed(self, _vadj):
-        if self.scroll_status == 'decelerate':
-            # A decelerate scroll doesn't emit scroll events
-            self.on_scroll(None, None, 1 if self.scroll_direction == Gtk.DirectionType.DOWN else -1, True)
 
     def on_single_click(self, x, _y):
         if x >= self.reader.size.width / 3 and x <= 2 * self.reader.size.width / 3:
