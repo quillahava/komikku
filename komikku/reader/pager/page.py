@@ -40,18 +40,18 @@ class Page(Gtk.Overlay):
         self.error = None      # connection error, server error, corrupt file error
         self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
 
-        self.scrolledwindow = Gtk.ScrolledWindow()
-
         if self.reader.reading_mode == 'webtoon':
-            self.scrolledwindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
+            # No Gtk.ScrolledWindow because it creates issues in pager
+            self.scrolledwindow = None
             self.init_height = self.reader.size.height
             self.set_size_request(-1, self.init_height)
         else:
+            self.scrolledwindow = Gtk.ScrolledWindow()
             self.scrolledwindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
             self.scrolledwindow.set_kinetic_scrolling(True)
             self.scrolledwindow.set_overlay_scrolling(True)
 
-        self.set_child(self.scrolledwindow)
+            self.set_child(self.scrolledwindow)
 
         # Activity indicator
         self.activity_indicator = ActivityIndicator()
@@ -63,8 +63,10 @@ class Page(Gtk.Overlay):
 
     @property
     def height(self):
-        _minimal, natural = self.get_preferred_size()
-        return natural.height
+        if self.reader.reading_mode == 'webtoon' and self.picture:
+            return self.picture.height
+
+        return self.get_allocation().height
 
     @property
     def hscrollable(self):
@@ -272,12 +274,14 @@ class Page(Gtk.Overlay):
 
         if self.picture is None:
             self.picture = picture
-            self.scrolledwindow.set_child(picture)
+            if self.reader.reading_mode == 'webtoon':
+                self.set_child(picture)
+            else:
+                self.scrolledwindow.set_child(picture)
 
         # Determine if page can receive pointer events
         if not self.error:
             if self.reader.reading_mode == 'webtoon':
-                self.scrolledwindow.props.can_target = False
                 self.props.can_target = False
             elif picture.width > self.pager.size.width or picture.height > self.pager.size.height:
                 # Allows page to be scrollable
@@ -289,7 +293,8 @@ class Page(Gtk.Overlay):
         else:
             # Allows `Retry` button to be clickable
             self.props.can_target = True
-            self.scrolledwindow.props.can_target = False
+            if self.reader.reading_mode != 'webtoon':
+                self.scrolledwindow.props.can_target = False
 
     def show_retry_button(self):
         btn = Gtk.Button()

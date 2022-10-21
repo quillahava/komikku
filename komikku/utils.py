@@ -572,6 +572,8 @@ class PictureSubdivided(Gtk.Box):
 
         self.orig_width = pixbuf.get_width()
         self.orig_height = pixbuf.get_height()
+        self.width = self.orig_width
+        self.height = self.orig_height
 
     @classmethod
     def new_from_data(cls, data):
@@ -583,4 +585,6 @@ class PictureSubdivided(Gtk.Box):
         return cls(path, Pixbuf.new_from_file(path))
 
     def resize(self, width, height, _cropped=False):
+        self.width = width
+        self.height = height
         self.set_size_request(width, height)

@@ -24,7 +24,6 @@ class WebtoonPager(Adw.Bin, BasePager):
     scroll_direction = None
     scroll_page = None
     scroll_page_percentage = 0
-    scroll_status = None
 
     def __init__(self, reader):
         super().__init__()
@@ -70,17 +69,15 @@ class WebtoonPager(Adw.Bin, BasePager):
 
     @property
     def pages_offsets(self):
-        pages = self.pages
-
         offsets = [0]
-        for index, page in enumerate(pages[:-1]):
+        for index, page in enumerate(self.pages[:-1]):
             offsets.append(offsets[index] + page.height)
 
         return offsets
 
     @property
     def size(self):
-        size = self.box.get_allocation()
+        size = self.scrolledwindow.get_allocation()
         size.width = min(size.width, self.reader.size.width)
 
         return size
@@ -94,80 +91,76 @@ class WebtoonPager(Adw.Bin, BasePager):
         self.add_page_lock = True
 
         pages = self.pages
+        top_page = pages[0]
+        bottom_page = pages[-1]
 
         def remove_page():
             if len(self.pages) < 11:
                 return
 
             if position == 'start':
-                bottom_page = pages[-1]
-
                 # Don't remove bottom page if visible
                 if self.get_page_offset(bottom_page) <= self.vadj.props.value + self.vadj.props.page_size:
                     return
 
                 # Remove bottom page
-                pages[-1].clean()
-                self.box.remove(pages[-1])
+                bottom_page.clean()
+                self.box.remove(bottom_page)
             else:
-                top_page = pages[0]
-
                 # Don't remove top page if visible
                 if self.get_page_offset(top_page) + top_page.height > self.vadj.props.value:
                     return
 
+                # Remove top page
                 scroll_value = self.vadj.props.value - top_page.height
                 top_page.clean()
                 self.box.remove(top_page)
                 # Page removed at top, scroll position has been lost and must be re-adjusted
                 self.adjust_scroll(scroll_value)
 
-        def add_and_remove(page):
-            # At init, page on opposite is not deleted
-            if not init:
-                remove_page()
+        if position == 'start':
+            if not top_page.loadable or top_page.status == 'offlimit':
+                self.add_page_lock = False
+                return GLib.SOURCE_REMOVE
 
-            if position == 'start':
-                scroll_value = self.vadj.props.value + page.init_height
-                self.box.prepend(page)
-                # Page is added at top, scroll position has been lost and must be re-adjusted
-                self.adjust_scroll(scroll_value)
-            else:
-                self.box.append(page)
+            new_page = Page(self, top_page.chapter, top_page.index - 1)
+        else:
+            if not bottom_page.loadable or bottom_page.status == 'offlimit':
+                self.add_page_lock = False
+                return GLib.SOURCE_REMOVE
 
-            page.connect('notify::status', self.on_page_status_changed)
-            page.connect('rendered', self.on_page_rendered)
-            page.render()
+            new_page = Page(self, bottom_page.chapter, bottom_page.index + 1)
 
-            self.add_page_lock = False
+        # At init, page on opposite side is not deleted
+        if not init:
+            remove_page()
 
         if position == 'start':
-            if not pages[0].loadable or pages[0].status == 'offlimit':
-                self.add_page_lock = False
-                return GLib.SOURCE_REMOVE
-
-            new_page = Page(self, pages[0].chapter, pages[0].index - 1)
+            scroll_value = self.vadj.get_value() + new_page.init_height
+            self.box.prepend(new_page)
+            # Page is added at top, scroll position has been lost and must be re-adjusted
+            self.adjust_scroll(scroll_value)
         else:
-            if not pages[-1].loadable or pages[-1].status == 'offlimit':
-                self.add_page_lock = False
-                return GLib.SOURCE_REMOVE
+            self.box.append(new_page)
 
-            new_page = Page(self, pages[-1].chapter, pages[-1].index + 1)
+        new_page.connect('notify::status', self.on_page_status_changed)
+        new_page.connect('rendered', self.on_page_rendered)
+        new_page.render()
 
-        GLib.idle_add(add_and_remove, new_page)
+        self.add_page_lock = False
 
         return GLib.SOURCE_REMOVE
 
     def add_pages_worker(self):
         """Monitors whether pages need to be added"""
-        pages = self.pages
-
         if self.add_page_lock:
             return GLib.SOURCE_CONTINUE
 
         # At init (until pages are scrollable), pages are added only at bottom
         # If pages were added at top, scroll position could not be maintained
         init = self.vadj.props.upper == self.vadj.props.page_size
+
+        pages = self.pages
 
         if init or self.scroll_direction == Gtk.DirectionType.DOWN:
             bottom_page = pages[-1]
@@ -316,6 +309,7 @@ class WebtoonPager(Adw.Bin, BasePager):
         if page.status != 'rendered':
             return
 
+        self.add_page_lock = True
         pages = self.pages
 
         try:
@@ -325,16 +319,18 @@ class WebtoonPager(Adw.Bin, BasePager):
         except Exception:
             pass
 
+        self.add_page_lock = False
+
     def on_scroll(self, _controller, _dx, dy):
         pages = self.pages
 
         # Update scroll state
+        self.scroll_direction = Gtk.DirectionType.UP if dy < 0 else Gtk.DirectionType.DOWN
         scroll_value_top = self.vadj.get_value()
         scroll_position_top = self.get_position(scroll_value_top)
         self.scroll_page = pages[scroll_position_top]
         scroll_page_value = scroll_value_top - self.get_page_offset(self.scroll_page)
         self.scroll_page_percentage = 100 * scroll_page_value / self.scroll_page.height
-        self.scroll_direction = Gtk.DirectionType.UP if dy < 0 else Gtk.DirectionType.DOWN
 
         # Hide controls
         self.reader.toggle_controls(False)
