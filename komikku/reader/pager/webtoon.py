@@ -148,11 +148,13 @@ class WebtoonPager(Adw.Bin, BasePager):
         if self.add_page_lock:
             return GLib.SOURCE_CONTINUE
 
+        pages = self.pages
+        if not pages:
+            return GLib.SOURCE_REMOVE
+
         # At init (until pages are scrollable), pages are added only at bottom
         # If pages were added at top, scroll position could not be maintained
         init = self.vadj.props.upper == self.vadj.props.page_size
-
-        pages = self.pages
 
         if init or self.scroll_direction == Gtk.DirectionType.DOWN:
             bottom_page = pages[-1]
@@ -299,10 +301,10 @@ class WebtoonPager(Adw.Bin, BasePager):
 
         # Update scroll state
         self.scroll_direction = Gtk.DirectionType.UP if dy < 0 else Gtk.DirectionType.DOWN
-        scroll_value_top = self.vadj.get_value()
-        self.scroll_page = self.get_page_at_scroll_value(scroll_value_top)
-        bottom_page = self.get_page_at_scroll_value(scroll_value_top + self.vadj.props.page_size)
-        scroll_page_value = scroll_value_top - self.get_page_offset(self.scroll_page)
+        scroll_value = self.vadj.get_value()
+        self.scroll_page = self.get_page_at_scroll_value(scroll_value)  # Top page
+        bottom_page = self.get_page_at_scroll_value(scroll_value + self.vadj.props.page_size)
+        scroll_page_value = scroll_value - self.get_page_offset(self.scroll_page)
         self.scroll_page_percentage = 100 * scroll_page_value / self.scroll_page.height if self.scroll_page.height else 0
 
         # Hide controls
