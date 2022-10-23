@@ -68,14 +68,6 @@ class WebtoonPager(Adw.Bin, BasePager):
         return list(self.box)
 
     @property
-    def pages_offsets(self):
-        offsets = [0]
-        for index, page in enumerate(self.pages[:-1]):
-            offsets.append(offsets[index] + page.height)
-
-        return offsets
-
-    @property
     def size(self):
         size = self.scrolledwindow.get_allocation()
         size.width = min(size.width, self.reader.size.width)
@@ -200,25 +192,15 @@ class WebtoonPager(Adw.Bin, BasePager):
 
         BasePager.dispose(self)
 
+    def get_page_at_scroll_value(self, scroll_value):
+        pages = self.pages
+
+        for index in reversed(range(len(pages))):
+            if scroll_value >= self.get_page_offset(pages[index]):
+                return pages[index]
+
     def get_page_offset(self, page):
-        offset = 0
-        for p in self.box:
-            if p == page:
-                break
-            offset += p.height
-
-        return offset
-
-    def get_position(self, scroll_value):
-        pages_offsets = self.pages_offsets
-        position = None
-
-        for i, page_offset in enumerate(reversed(pages_offsets)):
-            if scroll_value >= page_offset:
-                position = len(pages_offsets) - 1 - i
-                break
-
-        return position
+        return page.translate_coordinates(self.box, 0, 0)[1]
 
     def goto_page(self, index):
         self.init(self.scroll_page.chapter, index)
@@ -306,20 +288,11 @@ class WebtoonPager(Adw.Bin, BasePager):
         GLib.idle_add(self.save_progress, page)
 
     def on_page_status_changed(self, page, _param):
-        if page.status != 'rendered':
+        if self.scroll_direction != Gtk.DirectionType.UP or page.status != 'rendered' or page.error:
             return
 
-        self.add_page_lock = True
-        pages = self.pages
-
-        try:
-            if pages.index(page) < pages.index(self.scroll_page):
-                # A page above scroll_page were rendered, scroll position must be adjusted
-                self.adjust_scroll(self.vadj.props.value + page.height - page.init_height)
-        except Exception:
-            pass
-
-        self.add_page_lock = False
+        # A page above scroll_page were rendered, scroll position must be adjusted
+        self.adjust_scroll(self.vadj.props.value + page.height - page.init_height)
 
     def on_scroll(self, _controller, _dx, dy):
         pages = self.pages
@@ -327,18 +300,18 @@ class WebtoonPager(Adw.Bin, BasePager):
         # Update scroll state
         self.scroll_direction = Gtk.DirectionType.UP if dy < 0 else Gtk.DirectionType.DOWN
         scroll_value_top = self.vadj.get_value()
-        scroll_position_top = self.get_position(scroll_value_top)
-        self.scroll_page = pages[scroll_position_top]
+        self.scroll_page = self.get_page_at_scroll_value(scroll_value_top)
+        bottom_page = self.get_page_at_scroll_value(scroll_value_top + self.vadj.props.page_size)
         scroll_page_value = scroll_value_top - self.get_page_offset(self.scroll_page)
-        self.scroll_page_percentage = 100 * scroll_page_value / self.scroll_page.height
+        self.scroll_page_percentage = 100 * scroll_page_value / self.scroll_page.height if self.scroll_page.height else 0
 
         # Hide controls
         self.reader.toggle_controls(False)
 
         if self.scroll_direction == Gtk.DirectionType.DOWN:
-            current_page = pages[self.get_position(scroll_value_top + self.vadj.props.page_size)]
+            current_page = bottom_page
         else:
-            current_page = pages[scroll_position_top]
+            current_page = self.scroll_page
 
         if not current_page.loadable:
             if current_page.status == 'offlimit':
