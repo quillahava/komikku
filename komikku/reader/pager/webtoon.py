@@ -18,6 +18,7 @@ class WebtoonPager(Adw.Bin, BasePager):
     """Vertical smooth/continuous scrolling (a.k.a. infinite canvas) pager"""
 
     add_page_lock = False
+    add_page_superlock = False
     current_chapter_id = None
 
     gesture_drag_offset = None
@@ -87,20 +88,17 @@ class WebtoonPager(Adw.Bin, BasePager):
         bottom_page = pages[-1]
 
         def remove_page():
-            if len(self.pages) < 11:
-                return
-
             if position == 'start':
-                # Don't remove bottom page if visible
-                if self.get_page_offset(bottom_page) <= self.vadj.props.value + self.vadj.props.page_size:
+                # Don't remove bottom page if inside preload limit (self.vadj.props.page_size pixels below view's bottom)
+                if self.get_page_offset(bottom_page) < self.vadj.props.value + 2 * self.vadj.props.page_size:
                     return
 
                 # Remove bottom page
                 bottom_page.clean()
                 self.box.remove(bottom_page)
             else:
-                # Don't remove top page if visible
-                if self.get_page_offset(top_page) + top_page.height > self.vadj.props.value:
+                # Don't remove top page if inside preload limit (self.vadj.props.page_size pixels above view's top)
+                if self.get_page_offset(top_page) + top_page.height > self.vadj.props.value - self.vadj.props.page_size:
                     return
 
                 # Remove top page
@@ -145,29 +143,31 @@ class WebtoonPager(Adw.Bin, BasePager):
 
     def add_pages_worker(self):
         """Monitors whether pages need to be added"""
-        if self.add_page_lock:
+        if self.add_page_lock or self.add_page_superlock:
             return GLib.SOURCE_CONTINUE
 
         pages = self.pages
         if not pages:
             return GLib.SOURCE_REMOVE
 
-        # At init (until pages are scrollable), pages are added only at bottom
+        # At init (pages aren't immediately scrollable), so pages are added only at bottom
         # If pages were added at top, scroll position could not be maintained
         init = self.vadj.props.upper == self.vadj.props.page_size
 
         if init or self.scroll_direction == Gtk.DirectionType.DOWN:
             bottom_page = pages[-1]
             bottom_page_offset = self.get_page_offset(bottom_page)
-            # Add page at bottom only if bottom page is visible
-            if bottom_page_offset <= self.vadj.props.value + self.vadj.props.page_size:
+            # Add page at bottom only if bottom page is less than '2 * self.vadj.props.page_size' pixels
+            # below current scroll position
+            if bottom_page_offset + bottom_page.height < self.vadj.props.value + 2 * self.vadj.props.page_size:
                 self.add_page('end', init)
 
         if self.scroll_direction == Gtk.DirectionType.UP:
             top_page = pages[0]
             top_page_offset = self.get_page_offset(top_page)
-            # Add page at top only if top page is visible
-            if top_page_offset + top_page.height > self.vadj.props.value:
+            # Add page at top only if top page is less than 'self.vadj.props.page_size' pixels
+            # above current scroll position
+            if top_page_offset > self.vadj.props.value - self.vadj.props.page_size:
                 self.add_page('start', init)
 
         return GLib.SOURCE_CONTINUE
@@ -340,17 +340,55 @@ class WebtoonPager(Adw.Bin, BasePager):
             GLib.idle_add(self.save_progress, current_page)
 
     def on_single_click(self, x, _y):
-        if x >= self.reader.size.width / 3 and x <= 2 * self.reader.size.width / 3:
-            # Center part of the page: toggle controls
+        if x < self.reader.size.width / 3:
+            self.scroll_by_increment(-2 * self.vadj.props.page_size / 3)
+        elif x > 2 * self.reader.size.width / 3:
+            self.scroll_by_increment(2 * self.vadj.props.page_size / 3)
+        else:
+            # Center part of the page
             self.reader.toggle_controls()
+
+    def scroll_by_increment(self, increment, animate=True, duration=200):
+        def ease_out_cubic(t):
+            return (t - 1) ** 3 + 1
+
+        def tick_callback(_scrolledwindow, clock):
+            now = clock.get_frame_time()
+
+            start = self.get_page_offset(self.scroll_page)
+            if self.scroll_page_percentage:
+                start += (self.scroll_page.height / 100) * self.scroll_page_percentage
+            end = start + increment
+
+            if now < end_time and self.vadj.get_value() != end:
+                t = (now - start_time) / (end_time - start_time)
+                t = ease_out_cubic(t)
+                self.vadj.set_value(start + t * (end - start))
+
+                return GLib.SOURCE_CONTINUE
+            else:
+                self.vadj.set_value(end)
+                self.on_scroll(None, None, increment)
+                self.add_page_superlock = False
+
+                return GLib.SOURCE_REMOVE
+
+        self.add_page_superlock = True
+        if animate:
+            clock = self.scrolledwindow.get_frame_clock()
+            start_time = clock.get_frame_time()
+            end_time = start_time + 1000 * duration
+            self.scrolledwindow.add_tick_callback(tick_callback)
+        else:
+            self.vadj.set_value(self.vadj.props.value + increment)
 
     def scroll_to_direction(self, direction):
         if direction == Gtk.DirectionType.DOWN:
             self.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_DOWN, False)
-            self.on_scroll(None, None, 1)
+            GLib.idle_add(self.on_scroll, None, None, 1)
         else:
             self.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_UP, False)
-            self.on_scroll(None, None, -1)
+            GLib.idle_add(self.on_scroll, None, None, -1)
 
     def set_orientation(self, _orientation):
         return
