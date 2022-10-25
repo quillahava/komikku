@@ -33,7 +33,7 @@ class BasePager:
         self.add_controller(self.controller_motion)
         self.controller_motion.connect('motion', self.on_pointer_motion)
 
-        # Mouse click layout navigation
+        # Mouse click layout navigation, Zoom
         self.gesture_click = Gtk.GestureClick.new()
         self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
         self.gesture_click.set_exclusive(True)

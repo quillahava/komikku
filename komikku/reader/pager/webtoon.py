@@ -55,12 +55,13 @@ class WebtoonPager(Adw.Bin, BasePager):
 
         # Scrolling detection on touch screen
         self.gesture_drag = Gtk.GestureDrag.new()
+        self.gesture_drag.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.gesture_drag.connect('cancel', self.on_gesture_drag_cancel)
         self.gesture_drag.connect('drag-begin', self.on_gesture_drag_begin)
         self.gesture_drag.connect('drag-end', self.on_gesture_drag_end)
         self.gesture_drag.connect('drag-update', self.on_gesture_drag_update)
         self.gesture_drag.set_touch_only(True)
-        self.scrolledwindow.add_controller(self.gesture_drag)
+        self.add_controller(self.gesture_drag)
 
         self.zoom['active'] = False
 
@@ -358,7 +359,7 @@ class WebtoonPager(Adw.Bin, BasePager):
             # Center part of the page
             self.reader.toggle_controls()
 
-    def scroll_by_increment(self, increment, animate=True, duration=200):
+    def scroll_by_increment(self, increment, animate=True, duration=500):
         def ease_out_cubic(t):
             return (t - 1) ** 3 + 1
 
