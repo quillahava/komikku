@@ -118,50 +118,79 @@ class BasePager:
         for page in self.pages:
             page.resize()
 
-    def save_progress(self, page):
-        """Save reading progress"""
+    def save_progress(self, read_pages):
+        """Save reading progress
 
-        if page not in self.pages:
+        Accepts one or several pages which can be from different chapters"""
+
+        if type(read_pages) != list:
+            read_pages = [read_pages]
+
+        for page in read_pages.copy():
+            if page not in self.pages:
+                # Page is no longer present in pager
+                read_pages.remove(page)
+
+        if not read_pages:
             return GLib.SOURCE_REMOVE
 
-        # Loop as long as the page rendering is not ended
-        if page.status == 'rendering':
-            return GLib.SOURCE_CONTINUE
+        for page in read_pages.copy():
+            # Loop as long as a page rendering is not ended
+            if page.status == 'rendering':
+                return GLib.SOURCE_CONTINUE
 
-        if page.status != 'rendered' or page.error is not None:
+            if page.status != 'rendered' or page.error is not None:
+                read_pages.remove(page)
+
+        if not read_pages:
             return GLib.SOURCE_REMOVE
 
-        chapter = page.chapter
-
-        # Add chapter to the list of chapters consulted
-        # Used by the Card page to update chapters rows
-        self.reader.chapters_consulted.add(chapter)
+        read_chapters = dict()
+        for page in read_pages:
+            chapter = page.chapter
+            if chapter.id not in read_chapters:
+                read_chapters[chapter.id] = dict(
+                    chapter=chapter,
+                    pages=[],
+                )
+            read_chapters[chapter.id]['pages'].append(page)
 
         # Update manga last read time
         self.reader.manga.update(dict(last_read=datetime.datetime.utcnow()))
 
-        # Chapter read progress
-        if not chapter.read:
-            read_progress = chapter.read_progress
-            if read_progress is None:
-                # Init and fill with '0'
-                read_progress = '0' * len(chapter.pages)
-            # Mark current page as read
-            read_progress = read_progress[:page.index] + '1' + read_progress[page.index + 1:]
-            chapter_is_read = '0' not in read_progress
-            if chapter_is_read:
-                read_progress = None
+        # Update chapters read progress
+        for read_chapter in read_chapters.values():
+            chapter = read_chapter['chapter']
+            pages = read_chapter['pages']
 
-            # Update chapter
-            chapter.update(dict(
-                last_page_read_index=page.index if not chapter_is_read else None,
-                last_read=datetime.datetime.utcnow(),
-                read_progress=read_progress,
-                read=chapter_is_read,
-                recent=0,
-            ))
+            if not chapter.read:
+                # Add chapter to the list of chapters consulted
+                # Used by Card page to update chapters rows
+                self.reader.chapters_consulted.add(chapter)
 
-            self.sync_progress_with_server(page, chapter_is_read)
+                read_progress = chapter.read_progress
+                if read_progress is None:
+                    # Init and fill with '0'
+                    read_progress = '0' * len(chapter.pages)
+
+                # Mark current page as read
+                for page in pages:
+                    read_progress = read_progress[:page.index] + '1' + read_progress[page.index + 1:]
+                chapter_is_read = '0' not in read_progress
+                if chapter_is_read:
+                    read_progress = None
+
+                # Update chapter
+                chapter.update(dict(
+                    last_page_read_index=page.index if not chapter_is_read else None,
+                    last_read=datetime.datetime.utcnow(),
+                    read_progress=read_progress,
+                    read=chapter_is_read,
+                    recent=0,
+                ))
+
+                for page in pages:
+                    self.sync_progress_with_server(page, chapter_is_read)
 
         return GLib.SOURCE_REMOVE
 
@@ -549,7 +578,7 @@ class Pager(Adw.Bin, BasePager):
                 self.reader.update_page_numbering()
 
         GLib.idle_add(self.update, page, index)
-        GLib.idle_add(self.save_progress, page)
+        GLib.timeout_add(100, self.save_progress, page)
 
     def on_page_edge_overshotted(self, _page, position):
         if not self.interactive:

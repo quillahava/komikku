@@ -197,12 +197,22 @@ class WebtoonPager(Adw.Bin, BasePager):
     def get_page_at_scroll_value(self, scroll_value):
         pages = self.pages
 
-        for index in reversed(range(len(pages))):
-            if scroll_value >= self.get_page_offset(pages[index]):
-                return pages[index]
+        offsets = [0]
+        for index, page in enumerate(self.pages[:-1]):
+            offsets.append(offsets[index] + page.height)
+
+        for i, offset in enumerate(reversed(offsets)):
+            if scroll_value >= offset:
+                return pages[len(offsets) - 1 - i]
 
     def get_page_offset(self, page):
-        return page.translate_coordinates(self.box, 0, 0)[1]
+        offset = 0
+        for p in self.box:
+            if p == page:
+                break
+            offset += p.height
+
+        return offset
 
     def goto_page(self, index):
         self.init(self.scroll_page.chapter, index)
@@ -286,8 +296,8 @@ class WebtoonPager(Adw.Bin, BasePager):
             return
 
         # After a retry, update the page and save the progress (if relevant)
-        GLib.idle_add(self.update, page, 1)
-        GLib.idle_add(self.save_progress, page)
+        GLib.idle_add(self.update, page)
+        GLib.timeout_add(100, self.save_progress, page)
 
     def on_page_status_changed(self, page, _param):
         if self.scroll_direction != Gtk.DirectionType.UP or page.status != 'rendered' or page.error:
@@ -337,7 +347,7 @@ class WebtoonPager(Adw.Bin, BasePager):
         if current_page != self.current_page:
             self.current_page = current_page
             GLib.idle_add(self.update, current_page)
-            GLib.idle_add(self.save_progress, current_page)
+            GLib.timeout_add(100, self.save_progress, pages[pages.index(self.scroll_page):pages.index(self.current_page) + 1])
 
     def on_single_click(self, x, _y):
         if x < self.reader.size.width / 3:
@@ -373,8 +383,8 @@ class WebtoonPager(Adw.Bin, BasePager):
 
                 return GLib.SOURCE_REMOVE
 
-        self.add_page_superlock = True
         if animate:
+            self.add_page_superlock = True
             clock = self.scrolledwindow.get_frame_clock()
             start_time = clock.get_frame_time()
             end_time = start_time + 1000 * duration
