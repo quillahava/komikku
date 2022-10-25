@@ -88,6 +88,19 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
+        <release version="1.2.0" date="2022-10-26">
+            <description>
+                <ul>
+                    <li>[Reader] Improved Webtoon reading mode</li>
+                    <li>[Servers] Add Local server (CBZ/CBR archives)</li>
+                    <li>[Servers] Add Comic Book Plus [EN]</li>
+                    <li>[Servers] MangaKawaii: Update</li>
+                    <li>[Servers] Reaper Scans [PT]: Update</li>
+                    <li>[Servers] Scan FR: Update</li>
+                    <li>[L10n] Update French and German translations</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.1.0" date="2022-10-06">
             <description>
                 <ul>

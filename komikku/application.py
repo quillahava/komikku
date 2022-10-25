@@ -447,18 +447,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>Landscape covers (rare) are now converted to portrait</li>
-                <li>[Reader] Webtoon reading mode: Bugfix</li>
-                <li>[Reader] Fixed detection of 'read' chapters</li>
-                <li>[Servers] MangaLife [EN]: Reenable</li>
-                <li>[Servers] LeviatanScans [EN]: Reenable</li>
-                <li>[Servers] Mangas Origines: Update</li>
+                <li>[Reader] Improved Webtoon reading mode</li>
+                <li>[Servers] Add Local server (CBZ/CBR archives)</li>
+                <li>[Servers] Add Comic Book Plus [EN]</li>
+                <li>[Servers] MangaKawaii: Update</li>
                 <li>[Servers] Reaper Scans [PT]: Update</li>
-                <li>[Servers] Remanga: Update</li>
-                <li>[Servers] Scan OP [FR]: Disable</li>
-                <li>[Servers] Zero Scans: Disable</li>
-                <li>[L10n] Add Simplified Chinese translations</li>
-                <li>[L10n] Update Turkish translation</li>
+                <li>[Servers] Scan FR: Update</li>
+                <li>[L10n] Update French and German translations</li>
             </ul>
         """)
 
