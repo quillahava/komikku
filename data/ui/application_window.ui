@@ -316,6 +316,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                             <child>
                                               <object class="GtkSearchEntry" id="library_searchentry">
                                                 <property name="hexpand">1</property>
+                                                <property name="placeholder-text" translatable="yes">Search by name, server or genre</property>
                                               </object>
                                             </child>
                                             <child>

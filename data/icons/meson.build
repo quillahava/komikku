@@ -23,3 +23,12 @@ install_data (
     install_dir: symbolic_dir,
     rename: '@0@-symbolic.svg'.format(app_id)
 )
+
+install_data (
+    'explore-symbolic.svg',
+    install_dir: symbolic_dir
+)
+install_data (
+    'grid-symbolic.svg',
+    install_dir: symbolic_dir
+)

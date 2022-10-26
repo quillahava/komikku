@@ -35,6 +35,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkSearchBar" id="servers_page_searchbar">
                     <child>
                       <object class="GtkSearchEntry" id="servers_page_searchentry">
+                        <property name="placeholder-text" translatable="yes">Search for servers by name or language</property>
                         <property name="hexpand">1</property>
                       </object>
                     </child>

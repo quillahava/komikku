@@ -205,7 +205,7 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
 
             # Button to open local folder
             button = Gtk.Button(valign=Gtk.Align.CENTER)
-            button.set_icon_name('folder-symbolic')
+            button.set_icon_name('folder-visiting-symbolic')
             button.set_tooltip_text(_('Open local folder'))
             button.connect('clicked', self.open_local_folder)
             box.append(button)
