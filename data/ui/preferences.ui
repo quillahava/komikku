@@ -381,7 +381,9 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                               <object class="AdwActionRow">
                                 <property name="title" translatable="yes">Borders Crop</property>
                                 <property name="activatable_widget">borders_crop_switch</property>
-                                <property name="subtitle" translatable="yes">Crop white borders of images</property>
+                                <property name="subtitle" translatable="yes">Crop white borders of images
+
+NOTE: Requires more CPU usage and can cause rendering and animation slowdowns, especially on mobile devices.</property>
                                 <child>
                                   <object class="GtkSwitch" id="borders_crop_switch">
                                     <property name="halign">center</property>
@@ -513,7 +515,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
               </object>
             </property>
           </object>
-      </child>
+        </child>
       </object>
     </child>
   </template>
