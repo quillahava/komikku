@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 0.19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-26 11:44+0200\n"
-"PO-Revision-Date: 2022-10-13 22:26+0200\n"
+"PO-Revision-Date: 2022-10-26 14:16+0200\n"
 "Last-Translator: Liliana Prikler <liliana.prikler@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -42,7 +42,7 @@ msgstr "Heruntergeladene Comics offline lesen"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:18
 msgid "Support for locally stored comics (in CBZ or CBR formats)"
-msgstr ""
+msgstr "Unterstützung lokaler Comics im CBZ- bzw. CBR-Format"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
@@ -89,15 +89,15 @@ msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:94
 msgid "[Reader] Improved Webtoon reading mode"
-msgstr ""
+msgstr "[Leser] Webtoon-Modus verbessert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:95
 msgid "[Servers] Add Local server (CBZ/CBR archives)"
-msgstr ""
+msgstr "[Server] Lokalen \"Server\" für archivierte Dateien hinzugefügt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:96
 msgid "[Servers] Add Comic Book Plus [EN]"
-msgstr ""
+msgstr "[Server] Comic Book Plus (EN) hinzugefügt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:190
@@ -1590,8 +1590,8 @@ msgstr "[Manga] Besseres Rendern der Kapitelliste"
 msgid ""
 "[Manga] Improved chapters download: add a progress bar and a \"Stop\" button"
 msgstr ""
-"[Manga] Verbesserte Herunterladen von Kapiteln: Fortschrittsbalken und "
-"\"Stop\"-Button"
+"[Manga] Verbesserte Herunterladen von Kapiteln: Fortschrittsbalken und \"Stop"
+"\"-Button"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:762
 msgid "[Settings] General: New option to disable desktop notifications"
@@ -2186,6 +2186,11 @@ msgid ""
 "NOTE: Requires more CPU usage and can cause rendering and animation "
 "slowdowns, especially on mobile devices."
 msgstr ""
+"Weiße Ränder entfernen\n"
+"\n"
+"Achtung: Diese Option erhöht die Nutzung der CPU und kann zu langsamen "
+"Animationen,\n"
+"insbesondere bei mobilen Geräten, führen."
 
 #: ../data/ui/preferences.ui:398
 msgid "Page Numbering"
