@@ -45,8 +45,11 @@ def install_excepthook():
         while context.iteration():
             app = Gio.Application.get_default()
             if app is not None:
-               app.window.quit()
-               break
+                try:
+                    app.window.quit()
+                except:
+                    app.quit()
+                break
 
         sys.exit()
 
