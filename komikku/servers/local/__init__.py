@@ -7,11 +7,13 @@
 import logging
 import os
 import rarfile
+import xml.etree.ElementTree as ET
 import zipfile
 
 from komikku.servers import Server
 from komikku.servers.exceptions import ArchiveError
 from komikku.servers.exceptions import ArchiveUnrarMissingError
+from komikku.servers.exceptions import ServerException
 from komikku.servers.utils import convert_image
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.utils import get_data_dir
@@ -48,6 +50,33 @@ class Archive:
     def __exit__(self, *exc_info):
         self.obj.archive.close()
 
+    def get_info(self):
+        # Parse ComicInfo.xml if exists
+        data = dict(
+            title=None,
+            authors=[],
+            genre=None,
+        )
+        info_xml = self.get_name_buffer('ComicInfo.xml')
+        if not info_xml:
+            return data
+
+        tree = ET.ElementTree(ET.fromstring(info_xml))
+        root = tree.getroot()
+
+        for info in root.findall('./'):
+            if not info.text:
+                continue
+
+            if info.tag in ('Series', 'Title', ):
+                data['title'] = info.text
+            elif info.tag in ('Colorist', 'CoverArtist', 'Inker', 'Letterer', 'Penciller', 'Writer', ) and info.text not in data['authors']:
+                data['authors'].append(info.text)
+            elif info.tag == 'Genre':
+                data['genre'] = info.text
+
+        return data
+
     def get_namelist(self):
         names = []
         for name in self.obj.get_namelist():
@@ -74,9 +103,15 @@ class CBR:
     def get_name_buffer(self, name):
         try:
             return self.archive.read(name)
-        except Exception:
-            logger.error("Possible missing 'unrar' command-line tool")
+        except rarfile.NoRarEntry as e:
+            logger.info(f'{self.path}: {e}')
+            return None
+        except rarfile.RarCannotExec as e:
+            logger.error(e)
             raise ArchiveUnrarMissingError
+        except Exception as e:
+            logger.info(f'{self.path}: {e}')
+            raise ServerException(e)
 
 
 class CBZ:
@@ -93,7 +128,14 @@ class CBZ:
         return self.archive.namelist()
 
     def get_name_buffer(self, name):
-        return self.archive.read(name)
+        try:
+            return self.archive.read(name)
+        except KeyError as e:
+            logger.info(f'{self.path}: {e}')
+            return None
+        except Exception as e:
+            logger.info(f'{self.path}: {e}')
+            raise ServerException(e)
 
 
 class Local(Server):
@@ -148,24 +190,31 @@ class Local(Server):
                     with Archive(path) as archive:
                         names = archive.get_namelist()
 
+                        # Used some chapters/volumes info to populate comic info
+                        info = archive.get_info()
+                        if info['genre'] and info['genre'] not in data['genres']:
+                            data['genres'].append(info['genre'])
+                        for author in info['authors']:
+                            if author not in data['authors']:
+                                data['authors'].append(author)
+
                         chapter = dict(
                             slug=file,
-                            title=os.path.splitext(file)[0],
+                            title=info['title'] or os.path.splitext(file)[0],
                             date=None,
                             downloaded=1,
                         )
 
                         data['chapters'].append(chapter)
 
-                        # Cover is by default 1st page of 1st chapter (archive)
+                        # Cover is by default 1st page of 1st chapter/volume (archive)
                         if data['cover'] is None:
                             data['cover'] = dict(
                                 path=path,
                                 name=names[0],
                             )
-                except Exception:
-                    # Bad archive
-                    pass
+                except Exception as e:
+                    logger.error(e)
 
         return data
 
