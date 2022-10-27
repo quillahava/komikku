@@ -198,8 +198,10 @@ class Aralosbd(Server):
             return data
 
         results = []
-        page_num = 0
-        while True:
+        more = True
+        page_num = -1
+        while more:
+            page_num += 1
             data = get_page(page_num)
             if data is None:
                 break
@@ -210,9 +212,6 @@ class Aralosbd(Server):
                     name=manga['title'],
                 ))
 
-            if page_num == data['page_count'] - 1:
-                break
-
-            page_num += 1
+            more = page_num < data['page_count'] - 1
 
         return results
