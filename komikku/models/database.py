@@ -921,7 +921,8 @@ class Chapter:
         return path if os.path.exists(path) else None
 
     def reset(self):
-        if os.path.exists(self.path):
+        # Delete folder except when server is 'local'
+        if os.path.exists(self.path) and self.manga.server_id != 'local':
             shutil.rmtree(self.path)
 
         self.update(dict(
