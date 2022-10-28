@@ -24,6 +24,8 @@ from komikku.utils import log_error_traceback
 from komikku.utils import create_paintable_from_data
 from komikku.utils import create_paintable_from_resource
 
+LOGO_SIZE = 28
+
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/explorer.ui')
 class Explorer(Gtk.Stack):
@@ -32,6 +34,7 @@ class Explorer(Gtk.Stack):
     page = 'servers'
     preselection = False
     search_filters = None
+    search_global_mode = False
     search_lock = False
     servers_search_mode = False
 
@@ -70,8 +73,10 @@ class Explorer(Gtk.Stack):
         self.title_label = self.window.explorer_title_label
 
         # Servers page
-        self.servers_page_search_button = self.window.explorer_servers_page_search_button
+        self.servers_page_global_search_button = self.window.explorer_servers_page_global_search_button
+        self.servers_page_global_search_button.connect('clicked', self.on_servers_page_global_search_button_clicked)
 
+        self.servers_page_search_button = self.window.explorer_servers_page_search_button
         self.servers_page_searchbar.bind_property(
             'search-mode-enabled', self.servers_page_search_button, 'active', GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
@@ -134,8 +139,9 @@ class Explorer(Gtk.Stack):
             self.card_page_add_read_button.props.halign = Gtk.Align.START
 
     def build_server_row(self, data):
+        # Used in `servers` and `search` (global search) pages
         row = Gtk.ListBoxRow()
-        row.add_css_class('explorer-listboxrow')
+        row.add_css_class('explorer-section-listboxrow' if self.search_global_mode else 'explorer-listboxrow')
 
         row.server_data = data
         if 'manga_initial_data' in data:
@@ -146,7 +152,7 @@ class Explorer(Gtk.Stack):
 
         # Server logo
         logo = Gtk.Image()
-        logo.set_size_request(28, 28)
+        logo.set_size_request(LOGO_SIZE, LOGO_SIZE)
         if data['id'] != 'local':
             if data['logo_path']:
                 logo.set_from_file(data['logo_path'])
@@ -179,6 +185,9 @@ class Explorer(Gtk.Stack):
 
         box.append(vbox)
 
+        if self.search_global_mode:
+            return row
+
         # Server requires a user account
         if data['has_login']:
             label = Gtk.Image.new_from_icon_name('dialog-password-symbolic')
@@ -198,7 +207,7 @@ Each comic must have its own folder which must contain the chapters/volumes as a
 
 The folder's name will be used as name for the comic.
 
-NOTE: The 'unrar' command-line tool is required for CBR archives."""))
+NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             popover.set_child(label)
             button.set_popover(popover)
             box.append(button)
@@ -255,16 +264,28 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
             term in server_lang.lower()
         )
 
-    def init_search_page_filters(self):
-        self.search_filters = {}
+    def get_server_default_search_filters(self, server):
+        search_filters = {}
 
-        if getattr(self.server, 'filters', None) is None:
+        if getattr(server, 'filters', None) is None:
+            return search_filters
+
+        for filter in server.filters:
+            if filter['type'] == 'select' and filter['value_type'] == 'multiple':
+                search_filters[filter['key']] = [option['key'] for option in filter['options'] if option['default']]
+            else:
+                search_filters[filter['key']] = filter['default']
+
+        return search_filters
+
+    def init_search_page_filters(self):
+        self.search_filters = self.get_server_default_search_filters(self.server)
+
+        if not self.search_filters:
             self.search_page_filter_menu_button.set_popover(None)
             return
 
         def build_checkbox(filter):
-            self.search_filters[filter['key']] = filter['default']
-
             def toggle(button, _param):
                 self.search_filters[filter['key']] = button.get_active()
 
@@ -277,8 +298,6 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
             return vbox
 
         def build_entry(filter):
-            self.search_filters[filter['key']] = filter['default']
-
             def on_text_changed(buf, _param):
                 self.search_filters[filter['key']] = buf.get_text()
 
@@ -288,8 +307,6 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
             return entry
 
         def build_select_single(filter):
-            self.search_filters[filter['key']] = filter['default']
-
             def toggle_option(button, _param, key):
                 if button.get_active():
                     self.search_filters[filter['key']] = key
@@ -309,8 +326,6 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
             return vbox
 
         def build_select_multiple(filter):
-            self.search_filters[filter['key']] = [option['key'] for option in filter['options'] if option['default']]
-
             def toggle_option(button, _param, key):
                 if button.get_active():
                     self.search_filters[filter['key']].append(key)
@@ -370,6 +385,7 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
             if self.servers_page_searchbar.get_search_mode():
                 self.servers_page_searchbar.set_search_mode(False)
         elif self.page == 'search':
+            self.search_global_mode = False
             self.search_lock = False
             self.server = None
 
@@ -383,9 +399,6 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
             self.show_page('servers')
         elif self.page == 'card':
             self.manga_slug = None
-
-            # Restore focus to search entry
-            self.search_page_searchentry.grab_focus()
 
             if self.preselection:
                 self.show_page('servers')
@@ -431,10 +444,17 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
         if row.manga_data is None:
             return
 
+        if self.search_global_mode:
+            self.server = getattr(row.server_data['module'], row.server_data['class_name'])()
+
         self.populate_card(row.manga_data)
 
     def on_resize(self):
         self.adapt_to_width()
+
+    def on_servers_page_global_search_button_clicked(self, _button):
+        self.search_global_mode = True
+        self.show_page('search')
 
     def on_search_page_server_website_button_clicked(self, _button):
         if self.server.base_url:
@@ -652,11 +672,15 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
         else:
             self.show_page(self.page)
 
-    def search(self, entry=None):
+    def search(self, _entry=None):
         if self.search_lock:
             return
 
         term = self.search_page_searchentry.get_text().strip()
+
+        if self.search_global_mode:
+            self.search_global(term)
+            return
 
         # Find manga by Id
         if term.startswith('id:'):
@@ -746,6 +770,72 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
         thread.daemon = True
         thread.start()
 
+    def search_global(self, term):
+        def run(servers):
+            self.search_page_listbox.show()
+
+            for server_data in servers:
+                server = getattr(server_data['module'], server_data['class_name'])()
+
+                try:
+                    default_search_filters = self.get_server_default_search_filters(server)
+                    result = server.search(term, **default_search_filters)
+
+                    GLib.idle_add(complete_server, result, server_data)
+                except Exception as e:
+                    user_error_message = log_error_traceback(e)
+                    GLib.idle_add(complete_server, None, server_data, user_error_message)
+
+            GLib.idle_add(complete)
+
+        def complete():
+            self.window.activity_indicator.stop()
+            self.search_lock = False
+
+        def complete_server(result, server_data, message=None):
+            # Server section
+            row = self.build_server_row(server_data)
+            row.set_activatable(False)
+            row.manga_data = None
+            self.search_page_listbox.append(row)
+
+            # Server results
+            if result:
+                for item in result:
+                    row = Gtk.ListBoxRow()
+                    row.add_css_class('explorer-listboxrow')
+                    row.manga_data = item
+                    row.server_data = server_data
+                    label = Gtk.Label(label=item['name'], xalign=0)
+                    label.set_ellipsize(Pango.EllipsizeMode.END)
+                    row.set_child(label)
+
+                    self.search_page_listbox.append(row)
+            else:
+                row = Gtk.ListBoxRow(activatable=False)
+                row.add_css_class('explorer-listboxrow')
+                label = Gtk.Label(halign=Gtk.Align.CENTER, justify=Gtk.Justification.CENTER)
+                if result is None:
+                    # Error
+                    text = _('Oops, search failed. Please try again.')
+                    if message:
+                        text = f'{text}\n{message}'
+                else:
+                    # No results
+                    text = _('No results')
+                label.set_markup(f'<i>{text}</i>')
+                label.set_ellipsize(Pango.EllipsizeMode.END)
+                row.set_child(label)
+
+                self.search_page_listbox.append(row)
+
+        self.clear_search_page_results()
+        self.window.activity_indicator.start()
+
+        thread = threading.Thread(target=run, args=(self.servers, ))
+        thread.daemon = True
+        thread.start()
+
     def search_servers(self, _entry):
         self.servers_page_listbox.invalidate_filter()
 
@@ -773,11 +863,16 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
                 self.servers_page_searchbar.set_search_mode(False)
 
         elif name == 'search':
-            self.title_label.set_text(self.server.name)
+            self.title_label.set_text(_('Global Search') if self.search_global_mode else self.server.name)
+
+            self.search_page_searchentry.grab_focus()
 
             if self.page == 'servers':
                 self.clear_search_page_search()
-                self.search()
+
+                if not self.search_global_mode:
+                    # Load search with populars
+                    self.search()
 
         elif name == 'card':
             self.title_label.set_text(self.manga_data['name'])
@@ -799,11 +894,11 @@ NOTE: The 'unrar' command-line tool is required for CBR archives."""))
                 self.card_page_add_read_button.get_child().get_first_child().set_from_icon_name('list-add-symbolic')
                 self.card_page_add_read_button.get_child().get_last_child().set_text(_('Add to Library'))
 
-        if name in ('servers', 'search'):
+        if name == 'servers' or (name == 'search' and not self.search_global_mode):
             self.window.right_button_stack.set_visible_child_name('explorer.' + name)
             self.window.right_button_stack.show()
         else:
-            # `Card` stack doesn't have a right button in headerbar
+            # `Search` (in global mode) and `Card` pages doesn't have a right button in headerbar
             self.window.right_button_stack.hide()
         self.set_visible_child_name(name)
 

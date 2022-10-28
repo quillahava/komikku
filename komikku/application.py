@@ -214,6 +214,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
     download_manager_start_stop_button = Gtk.Template.Child('download_manager_start_stop_button')
 
     explorer_title_label = Gtk.Template.Child('explorer_title_label')
+    explorer_servers_page_global_search_button = Gtk.Template.Child('explorer_servers_page_global_search_button')
     explorer_servers_page_search_button = Gtk.Template.Child('explorer_servers_page_search_button')
     explorer_search_page_server_website_button = Gtk.Template.Child('explorer_search_page_server_website_button')
 
