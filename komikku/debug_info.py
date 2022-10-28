@@ -16,6 +16,7 @@ from gi.repository import Gsk
 from gi.repository import Gtk
 
 from komikku.models.database import VERSION as DB_VERSION
+from komikku.utils import check_cmdline_tool
 
 
 class DebugInfo:
@@ -83,6 +84,22 @@ class DebugInfo:
 
         return info
 
+    def get_tools_info(self):
+        info = {}
+
+        # Unrar (not available in flatpak sandbox)
+        status, ret = check_cmdline_tool('unrar')
+        info['unrar'] = ret.split('\n')[0] if status else 'N/A'
+
+        # Unar
+        status, ret = check_cmdline_tool(['unar', '-v'])
+        if not status:
+            # Check flatpak location
+            status, ret = check_cmdline_tool(['/app/bin/unar', '-v'])
+        info['unar'] = ret if status else 'N/A'
+
+        return info
+
     def generate(self):
         info = 'Komikku:\n'
         info += f'- Version: {self.version}\n'
@@ -143,5 +160,11 @@ class DebugInfo:
             info += f'- ADW_DEBUG_HIGH_CONTRAST: {adw_debug_high_contrast}\n'
         if adw_disable_portal := GLib.getenv("ADW_DISABLE_PORTAL"):
             info += f'- ADW_DISABLE_PORTAL: {adw_disable_portal}\n'
+        info += '\n'
+
+        tools_info = self.get_tools_info()
+        info += 'Command-line tools:\n'
+        info += f'- unrar: {tools_info["unrar"]}\n'
+        info += f'- unar: {tools_info["unar"]}'
 
         return info
