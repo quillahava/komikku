@@ -36,7 +36,7 @@ class Page(Gtk.Overlay):
         self.path = None
         self.picture = None
 
-        self._status = None    # rendering, rendered, offlimit, cleaned
+        self._status = None    # rendering, rendered, offlimit, disposed
         self.error = None      # connection error, server error, corrupt file error
         self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
 
@@ -90,12 +90,9 @@ class Page(Gtk.Overlay):
         adj = self.scrolledwindow.get_vadjustment()
         return adj.props.upper > adj.props.page_size
 
-    def clean(self):
-        if self.status is None:
-            return
-
-        self.status = 'cleaned'
-        self.loadable = False
+    def dispose(self):
+        self.status = 'disposed'
+        self.get_parent().remove(self)
 
     def on_button_retry_clicked(self, button):
         self.remove_overlay(button)
@@ -116,7 +113,7 @@ class Page(Gtk.Overlay):
                 self.status = 'offlimit'
                 return
 
-            if self.status == 'cleaned' or self.get_parent() is None:
+            if self.status == 'disposed':
                 # Page has been removed from pager
                 return False
 

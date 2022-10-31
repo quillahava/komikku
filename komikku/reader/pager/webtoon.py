@@ -95,8 +95,7 @@ class WebtoonPager(Adw.Bin, BasePager):
                     return
 
                 # Remove bottom page
-                bottom_page.clean()
-                self.box.remove(bottom_page)
+                bottom_page.dispose()
             else:
                 # Don't remove top page if inside preload limit (self.vadj.props.page_size pixels above view's top)
                 if self.get_page_offset(top_page) + top_page.height > self.vadj.props.value - self.vadj.props.page_size:
@@ -104,8 +103,7 @@ class WebtoonPager(Adw.Bin, BasePager):
 
                 # Remove top page
                 scroll_value = self.vadj.props.value - top_page.height
-                top_page.clean()
-                self.box.remove(top_page)
+                top_page.dispose()
                 # Page removed at top, scroll position has been lost and must be re-adjusted
                 self.adjust_scroll(scroll_value)
 
@@ -185,8 +183,7 @@ class WebtoonPager(Adw.Bin, BasePager):
         page = self.box.get_first_child()
         while page:
             next_page = page.get_next_sibling()
-            page.clean()
-            self.box.remove(page)
+            page.dispose()
             page = next_page
 
     def dispose(self):
@@ -216,6 +213,7 @@ class WebtoonPager(Adw.Bin, BasePager):
         return offset
 
     def goto_page(self, index):
+        # TODO: use scroll_by_increment when possible
         self.init(self.scroll_page.chapter, index)
 
     def init(self, chapter, page_index=None):
@@ -409,7 +407,7 @@ class WebtoonPager(Adw.Bin, BasePager):
         self.adjust_scroll()
 
     def update(self, page, _direction=None):
-        if self.window.page != 'reader' or self.current_page != page:
+        if self.window.page != 'reader' or page.status == 'disposed' or self.current_page != page:
             return GLib.SOURCE_REMOVE
 
         if not page.loadable and page.error is None:

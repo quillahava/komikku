@@ -18,6 +18,7 @@ from komikku.utils import log_error_traceback
 
 
 class BasePager:
+    autohide_controls = True
     default_double_click_time = Gtk.Settings.get_default().get_property('gtk-double-click-time')
     zoom = dict(active=False)
 
@@ -127,7 +128,7 @@ class BasePager:
             read_pages = [read_pages]
 
         for page in read_pages.copy():
-            if page not in self.pages:
+            if page.status == 'disposed':
                 # Page is no longer present in pager
                 read_pages.remove(page)
 
@@ -153,7 +154,7 @@ class BasePager:
                     chapter=chapter,
                     pages=[],
                 )
-            read_chapters[chapter.id]['pages'].append(page)
+            read_chapters[chapter.id]['pages'].append(page.index)
 
         # Update manga last read time
         self.reader.manga.update(dict(last_read=datetime.datetime.utcnow()))
@@ -174,8 +175,8 @@ class BasePager:
                     read_progress = '0' * len(chapter.pages)
 
                 # Mark current page as read
-                for page in pages:
-                    read_progress = read_progress[:page.index] + '1' + read_progress[page.index + 1:]
+                for index in pages:
+                    read_progress = read_progress[:index] + '1' + read_progress[index + 1:]
                 chapter_is_read = '0' not in read_progress
                 if chapter_is_read:
                     read_progress = None
@@ -189,8 +190,8 @@ class BasePager:
                     recent=0,
                 ))
 
-                for page in pages:
-                    self.sync_progress_with_server(page, chapter_is_read)
+                for index in pages:
+                    self.sync_progress_with_server(chapter, index)
 
         return GLib.SOURCE_REMOVE
 
@@ -198,16 +199,14 @@ class BasePager:
     def scroll_to_direction(self, direction):
         raise NotImplementedError()
 
-    def sync_progress_with_server(self, page, chapter_is_read):
+    def sync_progress_with_server(self, chapter, index):
         # Sync reading progress with server if function is supported
-        chapter = page.chapter
-
         def run():
             try:
                 res = chapter.manga.server.update_chapter_read_progress(
                     dict(
-                        page=page.index + 1,
-                        completed=chapter_is_read,
+                        page=index + 1,
+                        completed=chapter.read,
                     ),
                     self.reader.manga.slug, self.reader.manga.name, chapter.slug, chapter.url
                 )
@@ -247,7 +246,7 @@ class Pager(Adw.Bin, BasePager):
         self.set_child(self.carousel)
 
         self.carousel.connect('notify::orientation', self.resize_pages)
-        self.carousel.connect('page-changed', self.on_page_changed)
+        self.page_changed_handler_id = self.carousel.connect('page-changed', self.on_page_changed)
 
         self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.BOTH_AXES)
         self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
@@ -279,8 +278,7 @@ class Pager(Adw.Bin, BasePager):
 
     def add_page(self, position):
         if position == 'start':
-            self.carousel.get_nth_page(2).clean()
-            self.carousel.remove(self.carousel.get_nth_page(2))
+            self.carousel.get_nth_page(2).dispose()
 
             page = self.carousel.get_nth_page(0)
             direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
@@ -311,8 +309,7 @@ class Pager(Adw.Bin, BasePager):
             # Cf. issue https://gitlab.gnome.org/GNOME/libadwaita/-/issues/430
             position_handler_id = self.carousel.connect('notify::position', append_after_remove)
 
-            self.carousel.get_nth_page(0).clean()
-            self.carousel.remove(self.carousel.get_nth_page(0))
+            self.carousel.get_nth_page(0).dispose()
 
     def adjust_page_position(self, page, direction=None):
         # Only if page is scrollable
@@ -348,19 +345,19 @@ class Pager(Adw.Bin, BasePager):
         page = self.carousel.get_first_child()
         while page:
             next_page = page.get_next_sibling()
-            page.clean()
-            self.carousel.remove(page)
+            page.dispose()
             page = next_page
 
     def dispose(self):
+        self.carousel.disconnect(self.page_changed_handler_id)
         BasePager.dispose(self)
         self.clear()
 
     def goto_page(self, index):
         if self.carousel.get_nth_page(0).index == index and self.carousel.get_nth_page(0).chapter == self.current_page.chapter:
-            self.scroll_to_direction('left')
+            self.scroll_to_direction('left', False)
         elif self.carousel.get_nth_page(2).index == index and self.carousel.get_nth_page(2).chapter == self.current_page.chapter:
-            self.scroll_to_direction('right')
+            self.scroll_to_direction('right', False)
         else:
             self.init(self.current_page.chapter, index)
 
@@ -404,9 +401,9 @@ class Pager(Adw.Bin, BasePager):
             left_page.render()
             right_page.render()
 
-            GLib.idle_add(self.carousel.scroll_to, center_page, 0)
+            GLib.idle_add(self.scroll_to_page, center_page, False, False)
 
-        # Hack: use a `GLib.timeout_add` to add first pages in carousel
+        # Hack: use a `GLib.timeout_add + GLib.idle_add` to add first pages in carousel
         # Without it, the `scroll_to` (with velocity=0) doesn't work!
         # Cf. issue https://gitlab.gnome.org/GNOME/libadwaita/-/issues/457
         GLib.timeout_add(150, init_pages)
@@ -558,7 +555,7 @@ class Pager(Adw.Bin, BasePager):
         self.current_page = page
 
         if page.status == 'offlimit':
-            GLib.idle_add(self.carousel.scroll_to, self.carousel.get_nth_page(1), True)
+            GLib.idle_add(self.scroll_to_page, self.carousel.get_nth_page(1), True, False)
 
             if page.index == -1:
                 message = _('There is no previous chapter.')
@@ -571,8 +568,12 @@ class Pager(Adw.Bin, BasePager):
         if index != 1:
             self.adjust_page_position(page, 'left' if index == 0 else 'right')
 
-            # Hide controls
-            self.reader.toggle_controls(False)
+            if self.autohide_controls:
+                # Hide controls
+                self.reader.toggle_controls(False)
+            else:
+                self.autohide_controls = True
+
             # Hide page numbering if chapter pages are not yet known
             if not page.loadable:
                 self.reader.update_page_numbering()
@@ -592,6 +593,9 @@ class Pager(Adw.Bin, BasePager):
             self.scroll_to_direction('left' if position in (Gtk.PositionType.LEFT, Gtk.PositionType.TOP) else 'right')
 
     def on_page_rendered(self, page, retry):
+        if page.status == 'disposed':
+            return
+
         if not retry:
             GLib.idle_add(self.adjust_page_position, page)
             return
@@ -664,7 +668,7 @@ class Pager(Adw.Bin, BasePager):
         for page in self.pages:
             self.adjust_page_position(page)
 
-    def scroll_to_direction(self, direction):
+    def scroll_to_direction(self, direction, autohide_controls=True):
         position = self.carousel.get_position()
         page = None
 
@@ -674,13 +678,17 @@ class Pager(Adw.Bin, BasePager):
             page = self.carousel.get_nth_page(position + 1)
 
         if page:
-            self.carousel.scroll_to(page, 1)
+            self.scroll_to_page(page, True, autohide_controls)
+
+    def scroll_to_page(self, page, animate=True, autohide_controls=True):
+        self.autohide_controls = autohide_controls
+        self.carousel.scroll_to(page, animate)
 
     def set_orientation(self, orientation):
         self.carousel.set_orientation(orientation)
 
     def update(self, page, index):
-        if self.window.page != 'reader':
+        if self.window.page != 'reader' or page.status == 'disposed':
             return GLib.SOURCE_REMOVE
 
         if not page.loadable and page.error is None:

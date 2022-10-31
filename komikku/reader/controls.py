@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from gi.repository import GLib
 from gi.repository import Gtk
 
 
@@ -36,6 +37,7 @@ class Controls:
         self.scale.set_hexpand(True)
         self.scale.set_increments(1, 0)  # Disable scrolling with mouse wheel
         self.scale_handler_id = self.scale.connect('change-value', self.on_scale_value_changed)
+        self.scale_timeout_id = None
 
         self.bottom_box.append(self.scale)
         self.reader.overlay.add_overlay(self.bottom_box)
@@ -61,9 +63,18 @@ class Controls:
         self.window.headerbar_revealer.set_reveal_child(self.is_visible)
 
     def on_scale_value_changed(self, scale, scroll_type, value):
+        if self.scale_timeout_id:
+            GLib.source_remove(self.scale_timeout_id)
+            self.scale_timeout_id = None
+
+        def goto_page(index):
+            self.reader.pager.goto_page(index)
+            self.scale_timeout_id = None
+
         value = round(value)
-        if scroll_type == Gtk.ScrollType.JUMP and value > 0 and round(self.scale.get_value()) != value:
-            self.reader.pager.goto_page(value - 1)
+        if scroll_type == Gtk.ScrollType.JUMP and value > 0:
+            # Schedule event
+            self.scale_timeout_id = GLib.timeout_add(250, goto_page, value - 1)
 
     def on_unfullscreen(self):
         self.window.headerbar_revealer.set_reveal_child(True)
