@@ -52,7 +52,9 @@ class Explorer(Gtk.Stack):
     search_page_searchbar = Gtk.Template.Child('search_page_searchbar')
     search_page_searchentry = Gtk.Template.Child('search_page_searchentry')
     search_page_filter_menu_button = Gtk.Template.Child('search_page_filter_menu_button')
+    search_page_stack = Gtk.Template.Child('search_page_stack')
     search_page_listbox = Gtk.Template.Child('search_page_listbox')
+    search_page_status_page = Gtk.Template.Child('search_page_status_page')
 
     card_page_cover_box = Gtk.Template.Child('card_page_cover_box')
     card_page_cover_image = Gtk.Template.Child('card_page_cover_image')
@@ -141,8 +143,12 @@ class Explorer(Gtk.Stack):
 
     def build_server_row(self, data):
         # Used in `servers` and `search` (global search) pages
-        row = Gtk.ListBoxRow()
-        row.add_css_class('explorer-section-listboxrow' if self.search_global_mode else 'explorer-listboxrow')
+        if self.search_global_mode:
+            row = Gtk.ListBoxRow(activatable=False)
+            row.add_css_class('explorer-section-listboxrow')
+        else:
+            row = Gtk.ListBoxRow(activatable=True)
+            row.add_css_class('explorer-listboxrow')
 
         row.server_data = data
         if 'manga_initial_data' in data:
@@ -231,6 +237,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
     def clear_search_page_results(self):
         self.search_page_listbox.hide()
+        self.search_page_stack.set_visible_child_name('search.results')
 
         child = self.search_page_listbox.get_first_child()
         while child:
@@ -446,9 +453,6 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         self.window.card.init(self.manga, transition=False)
 
     def on_manga_clicked(self, listbox, row):
-        if row.manga_data is None:
-            return
-
         if self.search_global_mode:
             self.server = getattr(row.server_data['module'], row.server_data['class_name'])()
 
@@ -731,16 +735,12 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
                 GLib.idle_add(error, None, server, user_error_message)
 
         def complete(result, server, most_populars):
-            if server != self.server:
-                return False
-
             self.window.activity_indicator.stop()
             self.search_page_listbox.show()
 
             if most_populars:
-                row = Gtk.ListBoxRow()
+                row = Gtk.ListBoxRow(activatable=False)
                 row.add_css_class('explorer-section-listboxrow')
-                row.manga_data = None
                 if server.id != 'local':
                     label = Gtk.Label(label=_('Most populars').upper(), xalign=0)
                 else:
@@ -763,18 +763,18 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             self.search_lock = False
 
         def error(result, server, message=None):
-            if server != self.server:
-                return
-
             self.window.activity_indicator.stop()
-            self.search_lock = False
 
-            if message:
-                self.window.show_notification(message)
-            elif result is None:
-                self.window.show_notification(_('Oops, search failed. Please try again.'), 2)
-            elif len(result) == 0:
-                self.window.show_notification(_('No results'))
+            if result is None:
+                self.search_page_status_page.set_title(_('Oops, search failed. Please try again.'))
+                if message:
+                    self.search_page_status_page.set_description(message)
+            else:
+                self.search_page_status_page.set_title(_('No Results Found'))
+                self.search_page_status_page.set_description(_('Try a different search'))
+
+            self.search_page_stack.set_visible_child_name('search.no_results')
+            self.search_lock = False
 
         self.search_lock = True
         self.search_stop = stop = False
@@ -820,8 +820,8 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         def complete_server(result, server_data, message=None):
             # Remove spinner
             for index, row in enumerate(self.search_page_listbox):
-                if row.server_data['name'] == server_data['name']:
-                    self.search_page_listbox.remove(row.get_next_sibling())
+                if row.server_data['name'] == server_data['name'] and row.position == 1:
+                    self.search_page_listbox.remove(row)
                     break
 
             if result:
@@ -883,11 +883,9 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         self.clear_search_page_results()
 
         # Init results list
-        self.search_page_listbox.show()
         for server_data in self.servers:
             # Server
             row = self.build_server_row(server_data)
-            row.set_activatable(False)
             row.server_data = server_data
             row.position = 0
             self.search_page_listbox.append(row)
