@@ -647,7 +647,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
                 confirm_callback
             )
 
-            return
+            return Gdk.EVENT_STOP
 
         do_quit()
 
