@@ -36,6 +36,7 @@ class Explorer(Gtk.Stack):
     search_filters = None
     search_global_mode = False
     search_lock = False
+    search_stop = False
     servers_search_mode = False
 
     server = None
@@ -387,6 +388,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         elif self.page == 'search':
             self.search_global_mode = False
             self.search_lock = False
+            self.search_stop = True
             self.server = None
 
             # Stop activity indicator in case of search page is left before the end of a search
@@ -438,6 +440,9 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             self.on_card_page_add_button_clicked()
 
     def on_card_page_read_button_clicked(self):
+        # Stop global search if not ended
+        self.search_stop = True
+
         self.window.card.init(self.manga, transition=False)
 
     def on_manga_clicked(self, listbox, row):
@@ -696,15 +701,26 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             # An empty term is allowed only if server has 'get_most_populars' method
             return
 
+        def detect_stop_request():
+            nonlocal stop
+
+            if not self.search_stop:
+                return GLib.SOURCE_CONTINUE
+
+            stop = True
+
         def run(server):
-            most_populars = not term
+            GLib.timeout_add(100, detect_stop_request)
 
             try:
+                most_populars = not term
                 if most_populars:
                     # We offer most popular mangas as starting search results
                     result = server.get_most_populars(**self.search_filters)
                 else:
                     result = server.search(term, **self.search_filters)
+                if stop:
+                    return
 
                 if result:
                     GLib.idle_add(complete, result, server, most_populars)
@@ -746,8 +762,6 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
             self.search_lock = False
 
-            return False
-
         def error(result, server, message=None):
             if server != self.server:
                 return
@@ -763,7 +777,9 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
                 self.window.show_notification(_('No results'))
 
         self.search_lock = True
+        self.search_stop = stop = False
         self.clear_search_page_results()
+        self.search_page_listbox.set_sort_func(None)
         self.window.activity_indicator.start()
 
         thread = threading.Thread(target=run, args=(self.server, ))
@@ -771,8 +787,16 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         thread.start()
 
     def search_global(self, term):
+        def detect_stop_request():
+            nonlocal stop
+
+            if not self.search_stop:
+                return GLib.SOURCE_CONTINUE
+
+            stop = True
+
         def run(servers):
-            self.search_page_listbox.show()
+            GLib.timeout_add(100, detect_stop_request)
 
             for server_data in servers:
                 server = getattr(server_data['module'], server_data['class_name'])()
@@ -780,6 +804,8 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
                 try:
                     default_search_filters = self.get_server_default_search_filters(server)
                     result = server.search(term, **default_search_filters)
+                    if stop:
+                        return
 
                     GLib.idle_add(complete_server, result, server_data)
                 except Exception as e:
@@ -789,30 +815,33 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             GLib.idle_add(complete)
 
         def complete():
-            self.window.activity_indicator.stop()
             self.search_lock = False
 
         def complete_server(result, server_data, message=None):
-            # Server section
-            row = self.build_server_row(server_data)
-            row.set_activatable(False)
-            row.manga_data = None
-            self.search_page_listbox.append(row)
+            # Remove spinner
+            for index, row in enumerate(self.search_page_listbox):
+                if row.server_data['name'] == server_data['name']:
+                    self.search_page_listbox.remove(row.get_next_sibling())
+                    break
 
-            # Server results
             if result:
-                for item in result:
+                # Add results
+                for index, item in enumerate(result):
                     row = Gtk.ListBoxRow()
                     row.add_css_class('explorer-listboxrow')
                     row.manga_data = item
                     row.server_data = server_data
+                    row.position = index + 1
                     label = Gtk.Label(label=item['name'], xalign=0)
                     label.set_ellipsize(Pango.EllipsizeMode.END)
                     row.set_child(label)
 
                     self.search_page_listbox.append(row)
             else:
+                # Error or no results
                 row = Gtk.ListBoxRow(activatable=False)
+                row.server_data = server_data
+                row.position = 1
                 row.add_css_class('explorer-listboxrow')
                 label = Gtk.Label(halign=Gtk.Align.CENTER, justify=Gtk.Justification.CENTER)
                 if result is None:
@@ -829,8 +858,54 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
                 self.search_page_listbox.append(row)
 
+            self.search_page_listbox.invalidate_sort()
+
+        def sort_results(row1, row2):
+            """
+            This function gets two children and has to return:
+            - a negative integer if the first one should come before the second one
+            - zero if they are equal
+            - a positive integer if the second one should come before the firstone
+            """
+            row1_server_name = row1.server_data['name']
+            row1_position = row1.position
+            row2_server_name = row2.server_data['name']
+            row2_position = row2.position
+
+            if row1_server_name == row2_server_name:
+                if row1_position < row2_position:
+                    return -1
+            elif row1_server_name < row2_server_name:
+                return -1
+
+            return 1
+
         self.clear_search_page_results()
-        self.window.activity_indicator.start()
+
+        # Init results list
+        self.search_page_listbox.show()
+        for server_data in self.servers:
+            # Server
+            row = self.build_server_row(server_data)
+            row.set_activatable(False)
+            row.server_data = server_data
+            row.position = 0
+            self.search_page_listbox.append(row)
+
+            # Spinner
+            row = Gtk.ListBoxRow(activatable=False)
+            row.server_data = server_data
+            row.position = 1
+            row.add_css_class('explorer-listboxrow')
+            spinner = Gtk.Spinner()
+            spinner.start()
+            row.set_child(spinner)
+            self.search_page_listbox.append(row)
+
+        self.search_lock = True
+        self.search_stop = stop = False
+        self.search_page_listbox.set_sort_func(sort_results)
+        self.search_page_listbox.show()
 
         thread = threading.Thread(target=run, args=(self.servers, ))
         thread.daemon = True
