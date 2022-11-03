@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-26 11:44+0200\n"
+"POT-Creation-Date: 2022-11-03 22:39+0100\n"
 "PO-Revision-Date: 2022-10-03 03:07+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
@@ -21,8 +21,8 @@ msgstr ""
 "X-Generator: Poedit 3.1.1\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
-msgid "Read your favorite manga online or offline"
-msgstr "Gözde manganızı çevrimiçi veya çevrimdışı okuyun"
+msgid "Read your favorite manga"
+msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:13
 msgid ""
@@ -1702,83 +1702,94 @@ msgstr "Kategori kenar çubuğu aç/kapat"
 msgid "Menu"
 msgstr "Menü"
 
-#: ../data/ui/application_window.ui:208 ../data/ui/application_window.ui:268
-#: ../data/ui/application_window.ui:280
+#: ../data/ui/application_window.ui:209 ../data/ui/application_window.ui:298
 msgid "Search"
 msgstr "Ara"
 
-#: ../data/ui/application_window.ui:220
+#: ../data/ui/application_window.ui:222
 msgid "Resume reading"
 msgstr "Okumayı sürdür"
 
-#: ../data/ui/application_window.ui:232
+#: ../data/ui/application_window.ui:235
 msgid "Toggle fullscreen mode"
 msgstr "Tam ekran kipini aç/kapat"
 
-#: ../data/ui/application_window.ui:244
+#: ../data/ui/application_window.ui:248
 msgid "Start/Stop download"
 msgstr "İndirmeyi başlat/durdur"
 
-#: ../data/ui/application_window.ui:256 ../data/ui/menu/card.xml:60
+#: ../data/ui/application_window.ui:261 ../data/ui/menu/card.xml:60
 msgid "Open in Browser"
 msgstr "Tarayıcıda aç"
 
-#: ../data/ui/application_window.ui:365 ../data/ui/menu/card.xml:11
+#: ../data/ui/application_window.ui:276
+msgid "Search for comics across all servers"
+msgstr ""
+
+#: ../data/ui/application_window.ui:283
+msgid "Search for servers"
+msgstr ""
+
+#: ../data/ui/application_window.ui:337
+msgid "Search by name, server or genre"
+msgstr ""
+
+#: ../data/ui/application_window.ui:384 ../data/ui/menu/card.xml:11
 #: ../data/ui/preferences.ui:200
 msgid "Update"
 msgstr "Güncelle"
 
-#: ../data/ui/application_window.ui:379 ../data/ui/download_manager.ui:80
+#: ../data/ui/application_window.ui:398 ../data/ui/download_manager.ui:80
 #: ../data/ui/menu/card.xml:7
 msgid "Delete"
 msgstr "Sil"
 
 #. The umbrella sentence of the application on the first start screen
-#: ../data/ui/application_window.ui:419
+#: ../data/ui/application_window.ui:438
 msgid "Welcome to Komikku"
 msgstr "Komikku'ya Hoşgeldiniz"
 
-#: ../data/ui/application_window.ui:432
+#: ../data/ui/application_window.ui:451
 msgid "Discover new readings"
 msgstr "Yeni okumaları keşfet"
 
-#: ../data/ui/application_window.ui:529
+#: ../data/ui/application_window.ui:548
 msgid "OK"
 msgstr "Tamam"
 
-#: ../data/ui/application_window.ui:556
+#: ../data/ui/application_window.ui:575
 msgid "Info"
 msgstr "Bilgi"
 
-#: ../data/ui/application_window.ui:657
+#: ../data/ui/application_window.ui:676
 msgid "Resume"
 msgstr "Sürdür"
 
-#: ../data/ui/application_window.ui:678 ../data/ui/explorer.ui:288
+#: ../data/ui/application_window.ui:697 ../data/ui/explorer.ui:315
 msgid "Details"
 msgstr "Ayrıntılar"
 
-#: ../data/ui/application_window.ui:709 ../data/ui/explorer.ui:319
+#: ../data/ui/application_window.ui:728 ../data/ui/explorer.ui:346
 msgid "Genres"
 msgstr "Türler"
 
-#: ../data/ui/application_window.ui:747 ../data/ui/explorer.ui:357
+#: ../data/ui/application_window.ui:766 ../data/ui/explorer.ui:384
 msgid "Scanlators"
 msgstr "Çevirenler"
 
-#: ../data/ui/application_window.ui:820
+#: ../data/ui/application_window.ui:839
 msgid "Last Update"
 msgstr "Son Güncelleme"
 
-#: ../data/ui/application_window.ui:857
+#: ../data/ui/application_window.ui:876
 msgid "Size on Disk"
 msgstr "Diskteki Boyutu"
 
-#: ../data/ui/application_window.ui:888 ../data/ui/explorer.ui:461
+#: ../data/ui/application_window.ui:907 ../data/ui/explorer.ui:488
 msgid "Synopsis"
 msgstr "Özet"
 
-#: ../data/ui/application_window.ui:1019 ../data/ui/categories_editor.ui:84
+#: ../data/ui/application_window.ui:1038 ../data/ui/categories_editor.ui:84
 msgid "No categories"
 msgstr "Kategori yok"
 
@@ -1786,7 +1797,11 @@ msgstr "Kategori yok"
 msgid "No downloads"
 msgstr "İndirme yok"
 
-#: ../data/ui/explorer.ui:430
+#: ../data/ui/explorer.ui:38
+msgid "Search for servers by name or language"
+msgstr ""
+
+#: ../data/ui/explorer.ui:457
 msgid "Last Chapter"
 msgstr "Son Bölüm"
 
@@ -2198,46 +2213,46 @@ msgstr "Birden fazla URL desteklenmiyor"
 msgid "Invalid URL {}, not handled by any server."
 msgstr "Geçersiz URL {}, herhangi bir sunucu tarafından işlenmedi."
 
-#: ../komikku/application.py:383 ../komikku/card.py:75 ../komikku/card.py:76
+#: ../komikku/application.py:384 ../komikku/card.py:75 ../komikku/card.py:76
 #: ../komikku/downloader.py:320 ../komikku/downloader.py:321
 #: ../komikku/library.py:315 ../komikku/library.py:316
 #: ../komikku/reader/__init__.py:280
 msgid "Cancel"
 msgstr "İptal"
 
-#: ../komikku/application.py:384
+#: ../komikku/application.py:385
 msgid "Yes"
 msgstr "Evet"
 
-#: ../komikku/application.py:468
+#: ../komikku/application.py:469
 msgid "Join Chat"
 msgstr "Sohbete Katıl"
 
-#: ../komikku/application.py:469
+#: ../komikku/application.py:470
 msgid "Sponsor via Ko-fi"
 msgstr "Ko-fi ile Sponsor Ol"
 
-#: ../komikku/application.py:470
+#: ../komikku/application.py:471
 msgid "Sponsor via Liberapay"
 msgstr "Liberapay ile Sponsor Ol"
 
-#: ../komikku/application.py:471
+#: ../komikku/application.py:472
 msgid "Sponsor via Paypal"
 msgstr "Paypal ile Sponsor Ol"
 
-#: ../komikku/application.py:644
+#: ../komikku/application.py:645
 msgid "Are you sure you want to quit?"
 msgstr "Çıkmak istediğinden emin misin?"
 
-#: ../komikku/application.py:647
+#: ../komikku/application.py:648
 msgid "Some chapters are currently being downloaded."
 msgstr "Bazı bölümler şu anda indiriliyor."
 
-#: ../komikku/application.py:649
+#: ../komikku/application.py:650
 msgid "Some mangas are currently being updated."
 msgstr "Bazı mangalar şu anda güncelleniyor."
 
-#: ../komikku/application.py:652
+#: ../komikku/application.py:653
 msgid "Quit?"
 msgstr "Çık?"
 
@@ -2254,7 +2269,7 @@ msgstr ""
 
 #: ../komikku/card.py:104 ../komikku/card.py:196
 #: ../komikku/categories_editor.py:126 ../komikku/downloader.py:332
-#: ../komikku/downloader.py:510 ../komikku/explorer.py:758
+#: ../komikku/downloader.py:510 ../komikku/explorer.py:923
 #: ../komikku/history.py:203 ../komikku/preferences.py:326
 msgid "Back"
 msgstr "Geri"
@@ -2299,17 +2314,17 @@ msgstr "Okunmamış Olarak İşaretle"
 msgid "Mark Previous Chapters as Read"
 msgstr "Önceki Bölümleri Okunmuş Olarak İşaretle"
 
-#: ../komikku/card.py:1033 ../komikku/explorer.py:512
+#: ../komikku/card.py:1033 ../komikku/explorer.py:543
 msgid "Unknown author"
 msgstr "Bilinmeyen yazar"
 
-#: ../komikku/card.py:1039 ../komikku/card.py:1048 ../komikku/explorer.py:518
-#: ../komikku/explorer.py:527
+#: ../komikku/card.py:1039 ../komikku/card.py:1048 ../komikku/explorer.py:549
+#: ../komikku/explorer.py:558
 msgid "Unknown status"
 msgstr ""
 
-#: ../komikku/card.py:1049 ../komikku/explorer.py:166
-#: ../komikku/explorer.py:528
+#: ../komikku/card.py:1049 ../komikku/explorer.py:179
+#: ../komikku/explorer.py:559
 msgid "Local"
 msgstr ""
 
@@ -2344,11 +2359,11 @@ msgstr "{0}/{1} sayfa indirildi"
 msgid "error"
 msgstr "hata"
 
-#: ../komikku/explorer.py:167
+#: ../komikku/explorer.py:180
 msgid "Comics stored locally as archives in CBZ/CBR formats"
 msgstr ""
 
-#: ../komikku/explorer.py:195
+#: ../komikku/explorer.py:211
 msgid ""
 "A specific folder structure is required for local comics to be properly "
 "processed.\n"
@@ -2358,59 +2373,71 @@ msgid ""
 "\n"
 "The folder's name will be used as name for the comic.\n"
 "\n"
-"NOTE: The 'unrar' command-line tool is required for CBR archives."
+"NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."
 msgstr ""
 
-#: ../komikku/explorer.py:209
+#: ../komikku/explorer.py:225
 msgid "Open local folder"
 msgstr ""
 
-#: ../komikku/explorer.py:254 ../komikku/explorer.py:641
+#: ../komikku/explorer.py:271 ../komikku/explorer.py:672
 msgid "Other"
 msgstr ""
 
-#: ../komikku/explorer.py:403
+#: ../komikku/explorer.py:427
 #, python-brace-format
 msgid "{0} manga added"
 msgstr "{0} manga eklendi"
 
-#: ../komikku/explorer.py:409 ../komikku/explorer.py:797
+#: ../komikku/explorer.py:433 ../komikku/explorer.py:967
 msgid "Read"
 msgstr "Oku"
 
-#: ../komikku/explorer.py:443
+#: ../komikku/explorer.py:474
 msgid "Oops, server website URL is unknown."
 msgstr "Hata, sunucu web sitesi URL'si bilinmiyor."
 
-#: ../komikku/explorer.py:567
+#: ../komikku/explorer.py:598
 msgid "Oops, failed to retrieve manga's information."
 msgstr "Hata, manga bilgileri alınamadı."
 
-#: ../komikku/explorer.py:604
+#: ../komikku/explorer.py:635
 msgid "Pinned"
 msgstr "Sabitlenmiş"
 
-#: ../komikku/explorer.py:705
+#: ../komikku/explorer.py:747
 msgid "Most populars"
 msgstr ""
 
-#: ../komikku/explorer.py:707
+#: ../komikku/explorer.py:749
 msgid "Collection"
 msgstr ""
 
-#: ../komikku/explorer.py:737
+#: ../komikku/explorer.py:771 ../komikku/explorer.py:851
 msgid "Oops, search failed. Please try again."
 msgstr "Hata, arama başarısız oldu. Lütfen tekrar deneyin."
 
-#: ../komikku/explorer.py:739
+#: ../komikku/explorer.py:775
+msgid "No Results Found"
+msgstr ""
+
+#: ../komikku/explorer.py:776
+msgid "Try a different search"
+msgstr ""
+
+#: ../komikku/explorer.py:856
 msgid "No results"
 msgstr "Sonuç yok"
 
-#: ../komikku/explorer.py:770
+#: ../komikku/explorer.py:935
 msgid "Servers"
 msgstr "Sunucular"
 
-#: ../komikku/explorer.py:800
+#: ../komikku/explorer.py:941
+msgid "Global Search"
+msgstr ""
+
+#: ../komikku/explorer.py:970
 msgid "Add to Library"
 msgstr "Kitaplığa Ekle"
 
@@ -2476,19 +2503,19 @@ msgstr "Askıya alındı"
 msgid "Hiatus"
 msgstr "Ara"
 
-#: ../komikku/models/database.py:1060
+#: ../komikku/models/database.py:1061
 msgid "Download pending"
 msgstr "İndirme bekleniyor"
 
-#: ../komikku/models/database.py:1061
+#: ../komikku/models/database.py:1062
 msgid "Downloaded"
 msgstr "İndirildi"
 
-#: ../komikku/models/database.py:1062
+#: ../komikku/models/database.py:1063
 msgid "Downloading"
 msgstr "İndiriliyor"
 
-#: ../komikku/models/database.py:1063
+#: ../komikku/models/database.py:1064
 msgid "Download error"
 msgstr "İndirme hatası"
 
@@ -2563,7 +2590,7 @@ msgid ""
 "Failed to save page: missing permission to access the XDG pictures directory"
 msgstr "Sayfa kaydedilemedi: XDG resimler dizinine erişim izni yok"
 
-#: ../komikku/reader/pager/__init__.py:222
+#: ../komikku/reader/pager/__init__.py:221
 #, python-brace-format
 msgid ""
 "Failed to sync read progress with server:\n"
@@ -2572,30 +2599,30 @@ msgstr ""
 "Sunucuyla okuma ilerlemesi eşitlenemedi:\n"
 "{message}"
 
-#: ../komikku/reader/pager/__init__.py:224
+#: ../komikku/reader/pager/__init__.py:223
 msgid "Failed to sync read progress with server"
 msgstr "Sunucuyla okuma ilerlemesi eşitlenemedi"
 
-#: ../komikku/reader/pager/__init__.py:564
-#: ../komikku/reader/pager/webtoon.py:343
+#: ../komikku/reader/pager/__init__.py:561
+#: ../komikku/reader/pager/webtoon.py:341
 msgid "There is no previous chapter."
 msgstr "Önceki bölüm yok."
 
-#: ../komikku/reader/pager/__init__.py:566
-#: ../komikku/reader/pager/webtoon.py:341
+#: ../komikku/reader/pager/__init__.py:563
+#: ../komikku/reader/pager/webtoon.py:339
 msgid "It was the last chapter."
 msgstr "Bu son bölümdü."
 
-#: ../komikku/reader/pager/__init__.py:703
-#: ../komikku/reader/pager/webtoon.py:428
+#: ../komikku/reader/pager/__init__.py:711
+#: ../komikku/reader/pager/webtoon.py:426
 msgid "This chapter is inaccessible."
 msgstr "Bu bölüme erişilemiyor."
 
-#: ../komikku/reader/pager/page.py:243
+#: ../komikku/reader/pager/page.py:240
 msgid "Failed to load image"
 msgstr "Görsel yüklenemedi"
 
-#: ../komikku/reader/pager/page.py:310
+#: ../komikku/reader/pager/page.py:307
 msgid "Retry"
 msgstr "Yeniden Dene"
 
@@ -2775,14 +2802,17 @@ msgstr "Kitaplık güncellemesi başladı"
 msgid "Update started"
 msgstr "Güncelleme başladı"
 
-#: ../komikku/utils.py:209
+#: ../komikku/utils.py:219
 msgid "You are currently offline"
 msgstr "Çevrim dışısınız"
 
-#: ../komikku/utils.py:225
+#: ../komikku/utils.py:235
 msgid "No Internet connection, timeout or server down"
 msgstr ""
 "İnternet bağlantısı yok, bağlantınız zaman aşımına uğradı veya sunucu kapalı"
+
+#~ msgid "Read your favorite manga online or offline"
+#~ msgstr "Gözde manganızı çevrimiçi veya çevrimdışı okuyun"
 
 #~ msgid "Crop white borders of images"
 #~ msgstr "Görsellerin beyaz kenarlarını kırp"

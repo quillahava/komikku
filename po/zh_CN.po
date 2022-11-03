@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-26 11:44+0200\n"
+"POT-Creation-Date: 2022-11-03 22:39+0100\n"
 "PO-Revision-Date: 2022-10-02 15:07+0800\n"
 "Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
 "Language-Team: \n"
@@ -20,8 +20,8 @@ msgstr ""
 "X-Poedit-Bookmarks: -1,118,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
-msgid "Read your favorite manga online or offline"
-msgstr "在线或离线阅读你最爱的漫画"
+msgid "Read your favorite manga"
+msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:13
 msgid ""
@@ -1717,83 +1717,94 @@ msgstr "开关类别侧边栏"
 msgid "Menu"
 msgstr "菜单"
 
-#: ../data/ui/application_window.ui:208 ../data/ui/application_window.ui:268
-#: ../data/ui/application_window.ui:280
+#: ../data/ui/application_window.ui:209 ../data/ui/application_window.ui:298
 msgid "Search"
 msgstr "搜索"
 
-#: ../data/ui/application_window.ui:220
+#: ../data/ui/application_window.ui:222
 msgid "Resume reading"
 msgstr "恢复阅读"
 
-#: ../data/ui/application_window.ui:232
+#: ../data/ui/application_window.ui:235
 msgid "Toggle fullscreen mode"
 msgstr "切换全屏模式"
 
-#: ../data/ui/application_window.ui:244
+#: ../data/ui/application_window.ui:248
 msgid "Start/Stop download"
 msgstr "开始/停止下载"
 
-#: ../data/ui/application_window.ui:256 ../data/ui/menu/card.xml:60
+#: ../data/ui/application_window.ui:261 ../data/ui/menu/card.xml:60
 msgid "Open in Browser"
 msgstr "在浏览器中打开"
 
-#: ../data/ui/application_window.ui:365 ../data/ui/menu/card.xml:11
+#: ../data/ui/application_window.ui:276
+msgid "Search for comics across all servers"
+msgstr ""
+
+#: ../data/ui/application_window.ui:283
+msgid "Search for servers"
+msgstr ""
+
+#: ../data/ui/application_window.ui:337
+msgid "Search by name, server or genre"
+msgstr ""
+
+#: ../data/ui/application_window.ui:384 ../data/ui/menu/card.xml:11
 #: ../data/ui/preferences.ui:200
 msgid "Update"
 msgstr "更新"
 
-#: ../data/ui/application_window.ui:379 ../data/ui/download_manager.ui:80
+#: ../data/ui/application_window.ui:398 ../data/ui/download_manager.ui:80
 #: ../data/ui/menu/card.xml:7
 msgid "Delete"
 msgstr "删除"
 
 #. The umbrella sentence of the application on the first start screen
-#: ../data/ui/application_window.ui:419
+#: ../data/ui/application_window.ui:438
 msgid "Welcome to Komikku"
 msgstr "欢迎使用 Komikku"
 
-#: ../data/ui/application_window.ui:432
+#: ../data/ui/application_window.ui:451
 msgid "Discover new readings"
 msgstr "发现新的读物"
 
-#: ../data/ui/application_window.ui:529
+#: ../data/ui/application_window.ui:548
 msgid "OK"
 msgstr "确定"
 
-#: ../data/ui/application_window.ui:556
+#: ../data/ui/application_window.ui:575
 msgid "Info"
 msgstr "提示"
 
-#: ../data/ui/application_window.ui:657
+#: ../data/ui/application_window.ui:676
 msgid "Resume"
 msgstr "恢复"
 
-#: ../data/ui/application_window.ui:678 ../data/ui/explorer.ui:288
+#: ../data/ui/application_window.ui:697 ../data/ui/explorer.ui:315
 msgid "Details"
 msgstr "详情"
 
-#: ../data/ui/application_window.ui:709 ../data/ui/explorer.ui:319
+#: ../data/ui/application_window.ui:728 ../data/ui/explorer.ui:346
 msgid "Genres"
 msgstr "流派"
 
-#: ../data/ui/application_window.ui:747 ../data/ui/explorer.ui:357
+#: ../data/ui/application_window.ui:766 ../data/ui/explorer.ui:384
 msgid "Scanlators"
 msgstr "扫描仪"
 
-#: ../data/ui/application_window.ui:820
+#: ../data/ui/application_window.ui:839
 msgid "Last Update"
 msgstr "最后更新"
 
-#: ../data/ui/application_window.ui:857
+#: ../data/ui/application_window.ui:876
 msgid "Size on Disk"
 msgstr "占用空间"
 
-#: ../data/ui/application_window.ui:888 ../data/ui/explorer.ui:461
+#: ../data/ui/application_window.ui:907 ../data/ui/explorer.ui:488
 msgid "Synopsis"
 msgstr "摘要"
 
-#: ../data/ui/application_window.ui:1019 ../data/ui/categories_editor.ui:84
+#: ../data/ui/application_window.ui:1038 ../data/ui/categories_editor.ui:84
 msgid "No categories"
 msgstr "无类别"
 
@@ -1801,7 +1812,11 @@ msgstr "无类别"
 msgid "No downloads"
 msgstr "无下载"
 
-#: ../data/ui/explorer.ui:430
+#: ../data/ui/explorer.ui:38
+msgid "Search for servers by name or language"
+msgstr ""
+
+#: ../data/ui/explorer.ui:457
 msgid "Last Chapter"
 msgstr "最后一章"
 
@@ -2206,46 +2221,46 @@ msgstr "不支持多个 URL"
 msgid "Invalid URL {}, not handled by any server."
 msgstr "无效的 URL {}，任何服务器都不能处理。"
 
-#: ../komikku/application.py:383 ../komikku/card.py:75 ../komikku/card.py:76
+#: ../komikku/application.py:384 ../komikku/card.py:75 ../komikku/card.py:76
 #: ../komikku/downloader.py:320 ../komikku/downloader.py:321
 #: ../komikku/library.py:315 ../komikku/library.py:316
 #: ../komikku/reader/__init__.py:280
 msgid "Cancel"
 msgstr "取消"
 
-#: ../komikku/application.py:384
+#: ../komikku/application.py:385
 msgid "Yes"
 msgstr "确定"
 
-#: ../komikku/application.py:468
+#: ../komikku/application.py:469
 msgid "Join Chat"
 msgstr "加入聊天"
 
-#: ../komikku/application.py:469
+#: ../komikku/application.py:470
 msgid "Sponsor via Ko-fi"
 msgstr "通过 Ko-fi 支持"
 
-#: ../komikku/application.py:470
+#: ../komikku/application.py:471
 msgid "Sponsor via Liberapay"
 msgstr "通过 Liberapay 支持"
 
-#: ../komikku/application.py:471
+#: ../komikku/application.py:472
 msgid "Sponsor via Paypal"
 msgstr "通过 Paypal 支持"
 
-#: ../komikku/application.py:644
+#: ../komikku/application.py:645
 msgid "Are you sure you want to quit?"
 msgstr "你确定要退出吗？"
 
-#: ../komikku/application.py:647
+#: ../komikku/application.py:648
 msgid "Some chapters are currently being downloaded."
 msgstr "当前有些章节正在下载中。"
 
-#: ../komikku/application.py:649
+#: ../komikku/application.py:650
 msgid "Some mangas are currently being updated."
 msgstr "当前有些漫画正在更新中。"
 
-#: ../komikku/application.py:652
+#: ../komikku/application.py:653
 msgid "Quit?"
 msgstr "退出？"
 
@@ -2262,7 +2277,7 @@ msgstr ""
 
 #: ../komikku/card.py:104 ../komikku/card.py:196
 #: ../komikku/categories_editor.py:126 ../komikku/downloader.py:332
-#: ../komikku/downloader.py:510 ../komikku/explorer.py:758
+#: ../komikku/downloader.py:510 ../komikku/explorer.py:923
 #: ../komikku/history.py:203 ../komikku/preferences.py:326
 msgid "Back"
 msgstr "返回"
@@ -2307,17 +2322,17 @@ msgstr "标记为未读"
 msgid "Mark Previous Chapters as Read"
 msgstr "标记前一章为已读"
 
-#: ../komikku/card.py:1033 ../komikku/explorer.py:512
+#: ../komikku/card.py:1033 ../komikku/explorer.py:543
 msgid "Unknown author"
 msgstr "位置作者"
 
-#: ../komikku/card.py:1039 ../komikku/card.py:1048 ../komikku/explorer.py:518
-#: ../komikku/explorer.py:527
+#: ../komikku/card.py:1039 ../komikku/card.py:1048 ../komikku/explorer.py:549
+#: ../komikku/explorer.py:558
 msgid "Unknown status"
 msgstr ""
 
-#: ../komikku/card.py:1049 ../komikku/explorer.py:166
-#: ../komikku/explorer.py:528
+#: ../komikku/card.py:1049 ../komikku/explorer.py:179
+#: ../komikku/explorer.py:559
 msgid "Local"
 msgstr ""
 
@@ -2352,11 +2367,11 @@ msgstr "已下载 {0}/{1} 页"
 msgid "error"
 msgstr "错误"
 
-#: ../komikku/explorer.py:167
+#: ../komikku/explorer.py:180
 msgid "Comics stored locally as archives in CBZ/CBR formats"
 msgstr ""
 
-#: ../komikku/explorer.py:195
+#: ../komikku/explorer.py:211
 msgid ""
 "A specific folder structure is required for local comics to be properly "
 "processed.\n"
@@ -2366,59 +2381,71 @@ msgid ""
 "\n"
 "The folder's name will be used as name for the comic.\n"
 "\n"
-"NOTE: The 'unrar' command-line tool is required for CBR archives."
+"NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."
 msgstr ""
 
-#: ../komikku/explorer.py:209
+#: ../komikku/explorer.py:225
 msgid "Open local folder"
 msgstr ""
 
-#: ../komikku/explorer.py:254 ../komikku/explorer.py:641
+#: ../komikku/explorer.py:271 ../komikku/explorer.py:672
 msgid "Other"
 msgstr ""
 
-#: ../komikku/explorer.py:403
+#: ../komikku/explorer.py:427
 #, python-brace-format
 msgid "{0} manga added"
 msgstr "{0} 个漫画已添加"
 
-#: ../komikku/explorer.py:409 ../komikku/explorer.py:797
+#: ../komikku/explorer.py:433 ../komikku/explorer.py:967
 msgid "Read"
 msgstr "阅读"
 
-#: ../komikku/explorer.py:443
+#: ../komikku/explorer.py:474
 msgid "Oops, server website URL is unknown."
 msgstr "糟糕，服务器网站 URL 未知。"
 
-#: ../komikku/explorer.py:567
+#: ../komikku/explorer.py:598
 msgid "Oops, failed to retrieve manga's information."
 msgstr "糟糕，检索漫画的信息失败。"
 
-#: ../komikku/explorer.py:604
+#: ../komikku/explorer.py:635
 msgid "Pinned"
 msgstr "已固定"
 
-#: ../komikku/explorer.py:705
+#: ../komikku/explorer.py:747
 msgid "Most populars"
 msgstr ""
 
-#: ../komikku/explorer.py:707
+#: ../komikku/explorer.py:749
 msgid "Collection"
 msgstr ""
 
-#: ../komikku/explorer.py:737
+#: ../komikku/explorer.py:771 ../komikku/explorer.py:851
 msgid "Oops, search failed. Please try again."
 msgstr "糟糕，搜索失败。请重试。"
 
-#: ../komikku/explorer.py:739
+#: ../komikku/explorer.py:775
+msgid "No Results Found"
+msgstr ""
+
+#: ../komikku/explorer.py:776
+msgid "Try a different search"
+msgstr ""
+
+#: ../komikku/explorer.py:856
 msgid "No results"
 msgstr "无结果"
 
-#: ../komikku/explorer.py:770
+#: ../komikku/explorer.py:935
 msgid "Servers"
 msgstr "服务器"
 
-#: ../komikku/explorer.py:800
+#: ../komikku/explorer.py:941
+msgid "Global Search"
+msgstr ""
+
+#: ../komikku/explorer.py:970
 msgid "Add to Library"
 msgstr "添加到漫画库"
 
@@ -2483,19 +2510,19 @@ msgstr "已暂停"
 msgid "Hiatus"
 msgstr "已停止"
 
-#: ../komikku/models/database.py:1060
+#: ../komikku/models/database.py:1061
 msgid "Download pending"
 msgstr "下载等待中"
 
-#: ../komikku/models/database.py:1061
+#: ../komikku/models/database.py:1062
 msgid "Downloaded"
 msgstr "已下载"
 
-#: ../komikku/models/database.py:1062
+#: ../komikku/models/database.py:1063
 msgid "Downloading"
 msgstr "下载中"
 
-#: ../komikku/models/database.py:1063
+#: ../komikku/models/database.py:1064
 msgid "Download error"
 msgstr "下载错误"
 
@@ -2565,7 +2592,7 @@ msgid ""
 "Failed to save page: missing permission to access the XDG pictures directory"
 msgstr "保存页面失败：缺少访问 XDG 图片目录的权限"
 
-#: ../komikku/reader/pager/__init__.py:222
+#: ../komikku/reader/pager/__init__.py:221
 #, python-brace-format
 msgid ""
 "Failed to sync read progress with server:\n"
@@ -2574,30 +2601,30 @@ msgstr ""
 "与服务器同步阅读进度失败：\n"
 "{message}"
 
-#: ../komikku/reader/pager/__init__.py:224
+#: ../komikku/reader/pager/__init__.py:223
 msgid "Failed to sync read progress with server"
 msgstr "与服务器同步阅读进度失败"
 
-#: ../komikku/reader/pager/__init__.py:564
-#: ../komikku/reader/pager/webtoon.py:343
+#: ../komikku/reader/pager/__init__.py:561
+#: ../komikku/reader/pager/webtoon.py:341
 msgid "There is no previous chapter."
 msgstr "没有上一章。"
 
-#: ../komikku/reader/pager/__init__.py:566
-#: ../komikku/reader/pager/webtoon.py:341
+#: ../komikku/reader/pager/__init__.py:563
+#: ../komikku/reader/pager/webtoon.py:339
 msgid "It was the last chapter."
 msgstr "已经时最后一章。"
 
-#: ../komikku/reader/pager/__init__.py:703
-#: ../komikku/reader/pager/webtoon.py:428
+#: ../komikku/reader/pager/__init__.py:711
+#: ../komikku/reader/pager/webtoon.py:426
 msgid "This chapter is inaccessible."
 msgstr "此章节无法访问。"
 
-#: ../komikku/reader/pager/page.py:243
+#: ../komikku/reader/pager/page.py:240
 msgid "Failed to load image"
 msgstr "加载图像失败"
 
-#: ../komikku/reader/pager/page.py:310
+#: ../komikku/reader/pager/page.py:307
 msgid "Retry"
 msgstr "重试"
 
@@ -2776,13 +2803,16 @@ msgstr "已开始收藏库更新"
 msgid "Update started"
 msgstr "已开始更新"
 
-#: ../komikku/utils.py:209
+#: ../komikku/utils.py:219
 msgid "You are currently offline"
 msgstr "你当前处于离线"
 
-#: ../komikku/utils.py:225
+#: ../komikku/utils.py:235
 msgid "No Internet connection, timeout or server down"
 msgstr "无网络连接，超时或者服务器下线"
+
+#~ msgid "Read your favorite manga online or offline"
+#~ msgstr "在线或离线阅读你最爱的漫画"
 
 #~ msgid "Crop white borders of images"
 #~ msgstr "裁减图像的白色边框"
