@@ -1,5 +1,5 @@
 spinner {
-    color: #FD7E0B;
+    color: #ee4035;
 }
 
 /* Library page */
@@ -50,7 +50,7 @@ listview :last-child {
 
 /* Reader page */
 carousel slider {
-    background-color: #FD7E0B;
+    background-color: #ee4035;
 }
 
 .reader-page-number-indicator-label {
