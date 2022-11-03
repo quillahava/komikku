@@ -299,7 +299,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
             vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
-            check_button = Gtk.CheckButton(label=filter['name'], active=filter['default'], tooltip_text=filter['description'])
+            check_button = Gtk.CheckButton(label=filter['name'], active=filter['default'])
             check_button.connect('notify::active', toggle)
             vbox.append(check_button)
 
@@ -309,7 +309,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             def on_text_changed(buf, _param):
                 self.search_filters[filter['key']] = buf.get_text()
 
-            entry = Gtk.Entry(text=filter['default'], placeholder_text=filter['name'], tooltip_text=filter['description'])
+            entry = Gtk.Entry(text=filter['default'])
             entry.get_buffer().connect('notify::text', on_text_changed)
 
             return entry
@@ -353,7 +353,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
         last = None
-        for filter in self.server.filters:
+        for index, filter in enumerate(self.server.filters):
             if filter['type'] == 'checkbox':
                 filter_widget = build_checkbox(filter)
             elif filter['type'] == 'entry':
@@ -366,14 +366,16 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
                 else:
                     raise NotImplementedError('Invalid select value_type')
 
-                label = Gtk.Label(label=filter['name'], tooltip_text=filter['description'], sensitive=False)
                 if last:
                     sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
                     vbox.append(sep)
-                vbox.append(label)
             else:
                 raise NotImplementedError('Invalid filter type')
 
+            if index > 0:
+                vbox.append(Gtk.Separator())
+
+            vbox.append(Gtk.Label(label=filter['name'], tooltip_text=filter['description']))
             vbox.append(filter_widget)
             last = filter_widget
 
