@@ -117,7 +117,7 @@
 
         <!-- Preferences: Reader -->
         <key enum="@appid@.BackgroundColor" name="background-color">
-            <default>"white"</default>
+            <default>"system-style"</default>
             <summary>Background Color</summary>
             <description>Background color of reader</description>
         </key>
