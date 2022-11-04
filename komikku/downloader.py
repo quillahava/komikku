@@ -23,7 +23,7 @@ from komikku.models import Settings
 from komikku.utils import if_network_available
 from komikku.utils import log_error_traceback
 
-DOWNLOAD_DELAY = 1  # in seconds
+DOWNLOAD_MAX_DELAY = 1  # in seconds
 
 
 class Downloader(GObject.GObject):
@@ -145,7 +145,7 @@ class Downloader(GObject.GObject):
                                 # equal to 2x the time it took to load the page (responsive delay).
                                 start = time.time()
                                 path = chapter.get_page(index)
-                                delay = min(2 * (time.time() - start), 1)
+                                delay = min(2 * (time.time() - start), DOWNLOAD_MAX_DELAY)
 
                                 if path is not None:
                                     success_counter += 1
