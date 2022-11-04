@@ -275,7 +275,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.application.set_accels_for_action('app.select-all', ['<Primary>a'])
         self.application.set_accels_for_action('app.preferences', ['<Primary>comma'])
         self.application.set_accels_for_action('app.shortcuts', ['<Primary>question'])
-        self.application.set_accels_for_action('app.quit', ['<Primary>q'])
+        self.application.set_accels_for_action('app.quit', ['<Primary>q', '<Primary>w'])
 
         self.reader.add_accelerators()
 
