@@ -173,9 +173,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                 <property name="name">search.no_results</property>
                                 <property name="child">
                                   <object class="AdwStatusPage" id="search_page_status_page">
-                                    <style>
-                                      <class name="compact"/>
-                                    </style>
                                   </object>
                                 </property>
                               </object>
