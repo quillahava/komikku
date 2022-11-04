@@ -135,7 +135,18 @@ class Downloader(GObject.GObject):
                                 break
 
                             if chapter.get_page_path(index) is None:
+                                # Depending on the amount of bandwidth the server has, we must be mindful not to overload it
+                                # with our requests.
+                                #
+                                # Furthermore, multiple and fast-paced requests from the same IP address can alert the system
+                                # administrator that potentially unwanted actions are taking place. This may result in an IP ban.
+                                #
+                                # The easiest way to avoid overloading the server is to set a time-out between requests
+                                # equal to 2x the time it took to load the page (responsive delay).
+                                start = time.time()
                                 path = chapter.get_page(index)
+                                delay = min(2 * (time.time() - start), 1)
+
                                 if path is not None:
                                     success_counter += 1
                                     download.update(dict(percent=(index + 1) * 100 / len(chapter.pages)))
@@ -146,7 +157,7 @@ class Downloader(GObject.GObject):
                                 GLib.idle_add(notify_download_progress, download, success_counter, error_counter)
 
                                 if index < len(chapter.pages) - 1 and not self.stop_flag:
-                                    time.sleep(DOWNLOAD_DELAY)
+                                    time.sleep(delay)
                             else:
                                 success_counter += 1
 
