@@ -88,6 +88,16 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
+        <release version="1.3.0" date="2022-11-05">
+            <description>
+                <ul>
+                    <li>[Downloader] Improved download speed</li>
+                    <li>[Explorer] Add Global search</li>
+                    <li>[Servers] Aralos BD: Fixed search</li>
+                    <li>[Servers] Local: Fixed CBR archives reading bug (Flatpak only)</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.2.0" date="2022-10-26">
             <description>
                 <ul>

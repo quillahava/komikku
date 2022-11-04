@@ -448,13 +448,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] Improved Webtoon reading mode</li>
-                <li>[Servers] Add Local server (CBZ/CBR archives)</li>
-                <li>[Servers] Add Comic Book Plus [EN]</li>
-                <li>[Servers] MangaKawaii: Update</li>
-                <li>[Servers] Reaper Scans [PT]: Update</li>
-                <li>[Servers] Scan FR: Update</li>
-                <li>[L10n] Update French and German translations</li>
+                <li>[Downloader] Improved download speed</li>
+                <li>[Explorer] Add Global search</li>
+                <li>[Servers] Aralos BD: Fixed search</li>
+                <li>[Servers] Local: Fixed CBR archives reading bug (Flatpak only)</li>
             </ul>
         """)
 
