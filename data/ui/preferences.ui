@@ -431,10 +431,10 @@ NOTE: Requires more CPU usage and can cause rendering and animation slowdowns, e
                   <object class="AdwViewStackPage">
                     <property name="name">advanced</property>
                     <property name="title" translatable="yes">Advanced</property>
-                    <property name="icon_name">preferences-other-symbolic</property>
+                    <property name="icon_name">system-run-symbolic</property>
                     <property name="child">
                       <object class="AdwPreferencesPage">
-                        <property name="icon_name">preferences-other-symbolic</property>
+                        <property name="icon_name">system-run-symbolic</property>
                         <property name="title" translatable="yes">Advanced</property>
                         <child>
                           <object class="AdwPreferencesGroup">
