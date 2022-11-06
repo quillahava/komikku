@@ -821,8 +821,10 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
         def complete_server(result, server_data, message=None):
             # Remove spinner
+            lang = server_data['lang']
+            name = server_data['name']
             for index, row in enumerate(self.search_page_listbox):
-                if row.server_data['name'] == server_data['name'] and row.position == 1:
+                if row.server_data['lang'] == lang and row.server_data['name'] == name and row.position == 1:
                     self.search_page_listbox.remove(row)
                     break
 
@@ -870,15 +872,21 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             - a positive integer if the second one should come before the firstone
             """
             row1_server_name = row1.server_data['name']
+            row1_server_lang = LANGUAGES.get(row1.server_data['lang'], '')
             row1_position = row1.position
             row2_server_name = row2.server_data['name']
+            row2_server_lang = LANGUAGES.get(row2.server_data['lang'], '')
             row2_position = row2.position
 
-            if row1_server_name == row2_server_name:
-                if row1_position < row2_position:
-                    return -1
-            elif row1_server_name < row2_server_name:
+            if row1_server_lang < row2_server_lang:
                 return -1
+
+            if row1_server_lang == row2_server_lang:
+                if row1_server_name < row2_server_name:
+                    return -1
+
+                if row1_server_name == row2_server_name and row1_position < row2_position:
+                    return -1
 
             return 1
 
