@@ -39,7 +39,7 @@ class Reader:
 
         # Page numbering
         self.page_numbering_defined = False
-        self.page_numbering_label = Gtk.Label()
+        self.page_numbering_label = Gtk.Label(halign=Gtk.Align.CENTER, can_focus=False, can_target=False)
         self.page_numbering_label.add_css_class('reader-page-number-indicator-label')
         self.page_numbering_label.set_valign(Gtk.Align.END)
         self.overlay.add_overlay(self.page_numbering_label)

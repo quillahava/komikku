@@ -55,9 +55,10 @@ carousel slider {
 
 .reader-page-number-indicator-label {
     color: #fff;
-    letter-spacing: 1px;
+    letter-spacing: 3px;
     /* bordered text */
-    text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    text-shadow: 1px 0px 0px #000, -1px 0px 0px #000, 0px 1px 0px #000, 0px -1px 0px #000;
+    font-weight: bold;
     margin-bottom: 8px;
 }
 
