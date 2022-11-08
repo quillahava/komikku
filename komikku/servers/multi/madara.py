@@ -7,7 +7,7 @@
 # Madara – WordPress Theme for Manga
 
 # Supported servers:
-# 24hRomance [EN]
+# 24hRomance [EN] (disabled)
 # AkuManga [AR]
 # Aloalivn [EN] (disabled)
 # Apoll Comics [ES]

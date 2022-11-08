@@ -11,6 +11,7 @@ class Romance24h(Madara):
     id = 'romance24h'
     name = '24hRomance'
     lang = 'en'
+    status = 'disabled'
 
     base_url = 'https://24hromance.com'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
