@@ -105,8 +105,10 @@ def crop_pixbuf(pixbuf, src_x, src_y, width, height):
     return pixbuf_cropped
 
 
-def expand_cover(buffer):
-    """Convert a cover that is in landscape format (rare) to portrait format"""
+def expand_and_resize_cover(buffer):
+    """Convert and resize a cover (except animated GIF)
+
+    Covers in landscape format are convert to portrait format"""
 
     def get_dominant_color(img):
         # Resize image to reduce number of colors
@@ -116,6 +118,9 @@ def expand_cover(buffer):
         return sorted_colors[-1][1]
 
     def remove_alpha(img):
+        if img.mode not in ('P', 'RGBA'):
+            return img
+
         img = img.convert('RGBA')
         background = Image.new('RGBA', img.size, (255, 255, 255))
 
@@ -123,22 +128,25 @@ def expand_cover(buffer):
 
     img = Image.open(BytesIO(buffer))
 
-    width, height = img.size
-    if width < height:
-        # Nothing to do
+    if img.format == 'GIF' and img.is_animated:
         return buffer
 
-    img = remove_alpha(img)
+    width, height = img.size
+    new_width, new_height = (360, 512)
+    if width >= height:
+        img = remove_alpha(img)
 
-    new_width, new_height = (180, 256)
-    new_ratio = new_height / new_width
+        new_ratio = new_height / new_width
 
-    new_img = Image.new(img.mode, (width, int(width * new_ratio)), get_dominant_color(img))
-    new_img.paste(img, (0, (int(width * new_ratio) - height) // 2))
-    new_img = new_img.resize((new_width, new_height))
+        new_img = Image.new(img.mode, (width, int(width * new_ratio)), get_dominant_color(img))
+        new_img.paste(img, (0, (int(width * new_ratio) - height) // 2))
+        new_img.thumbnail((new_width, new_height), Image.LANCZOS)
+    else:
+        img.thumbnail((new_width, new_height), Image.LANCZOS)
+        new_img = img
 
     new_buffer = BytesIO()
-    new_img.save(new_buffer, 'png')
+    new_img.convert('RGB').save(new_buffer, 'JPEG', quality=95)
 
     return new_buffer.getbuffer()
 
