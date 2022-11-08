@@ -228,10 +228,6 @@ class Library:
         select_all_action.connect('activate', self.select_all)
         self.window.application.add_action(select_all_action)
 
-    def add_manga(self, manga, position=-1):
-        thumbnail = Thumbnail(self, manga, *self.thumbnails_cover_size)
-        self.flowbox.insert(thumbnail, position)
-
     def compute_thumbnails_cover_size(self):
         default_width = Thumbnail.default_width
         default_height = Thumbnail.default_height
@@ -391,7 +387,8 @@ class Library:
             # Library was previously empty
             self.populate()
         else:
-            self.add_manga(manga, position=0)
+            thumbnail = Thumbnail(self, manga, *self.thumbnails_cover_size)
+            self.flowbox.prepend(thumbnail)
 
     def on_manga_thumbnail_activated(self, _flowbox, thumbnail):
         if self.selection_mode:
@@ -484,19 +481,25 @@ class Library:
         self.window.history.show()
 
     def populate(self):
+        self.show_page('start_page')
+
         db_conn = create_db_connection()
 
         self.update_subtitle(db_conn=db_conn)
 
         mangas_rows = db_conn.execute('SELECT id FROM mangas ORDER BY last_read DESC').fetchall()
+        db_conn.close()
 
         if len(mangas_rows) == 0:
-            # Display start page
-            self.show_page('start_page')
-
+            # Update start page title, hide loading progress bar and show 'Discover' button
+            self.window.start_page_progressbar.hide()
+            self.window.start_page_title_label.set_text(_('Welcome to Komikku'))
+            self.window.start_page_discover_button.show()
             return
 
-        self.show_page('flowbox')
+        self.window.start_page_progressbar.show()
+        self.window.start_page_title_label.set_text(_('Loading…'))
+        self.window.start_page_discover_button.hide()
 
         # Clear library flowbox
         thumbnail = self.flowbox.get_first_child()
@@ -505,12 +508,31 @@ class Library:
             self.flowbox.remove(thumbnail)
             thumbnail = next_thumbnail
 
-        # Populate flowbox with mangas
-        self.compute_thumbnails_cover_size()
-        for row in mangas_rows:
-            self.add_manga(Manga.get(row['id'], db_conn=db_conn))
+        def run():
+            db_conn = create_db_connection()
 
-        db_conn.close()
+            for index, row in enumerate(mangas_rows):
+                thumbnail = Thumbnail(self, Manga.get(row['id'], db_conn=db_conn), *self.thumbnails_cover_size)
+                thumbnails.append(thumbnail)
+
+                GLib.idle_add(self.window.start_page_progressbar.set_fraction, (index + 1) / len(mangas_rows))
+
+            db_conn.close()
+            GLib.idle_add(complete)
+
+        def complete():
+            self.show_page('flowbox')
+
+            for thumbnail in thumbnails:
+                self.flowbox.append(thumbnail)
+
+        # Populate flowbox
+        self.compute_thumbnails_cover_size()
+        thumbnails = []
+
+        thread = threading.Thread(target=run)
+        thread.daemon = True
+        thread.start()
 
     def remove_thumbnail(self, manga):
         # Remove manga thumbnail in flowbox

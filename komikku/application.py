@@ -224,7 +224,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
     notification_label = Gtk.Template.Child('notification_label')
     notification_revealer = Gtk.Template.Child('notification_revealer')
 
-    app_logo = Gtk.Template.Child('app_logo')
+    start_page_progressbar = Gtk.Template.Child('start_page_progressbar')
+    start_page_logo_image = Gtk.Template.Child('start_page_logo_image')
+    start_page_title_label = Gtk.Template.Child('start_page_title_label')
+    start_page_discover_button = Gtk.Template.Child('start_page_discover_button')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -329,7 +332,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         # Fisrt start page
         pixbuf = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/logo.png', 256, 256, True)
-        self.app_logo.set_from_pixbuf(pixbuf)
+        self.start_page_logo_image.set_from_pixbuf(pixbuf)
 
         # Window
         self.connect('notify::default-width', self.on_resize)
@@ -368,8 +371,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Theme (light or dark)
         self.init_theme()
 
-        self.library.populate()
         self.library.show()
+        GLib.idle_add(self.library.populate)
 
     def confirm(self, title, message, callback, response_appearance=None):
         def on_response(dialog, response_id):
