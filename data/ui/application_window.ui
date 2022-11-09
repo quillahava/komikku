@@ -204,7 +204,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="name">library</property>
                         <property name="child">
                           <object class="GtkToggleButton" id="library_search_button">
-                            <property name="halign">end</property>
                             <property name="receives_default">1</property>
                             <property name="icon-name">edit-find-symbolic</property>
                             <property name="tooltip-text" translatable="yes">Search</property>
@@ -217,7 +216,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="name">card</property>
                         <property name="child">
                           <object class="GtkButton" id="card_resume_button">
-                            <property name="halign">end</property>
                             <property name="receives_default">1</property>
                             <property name="icon-name">media-playback-start-symbolic</property>
                             <property name="tooltip-text" translatable="yes">Resume reading</property>
@@ -230,7 +228,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="name">reader</property>
                         <property name="child">
                           <object class="GtkButton" id="reader_fullscreen_button">
-                            <property name="halign">end</property>
                             <property name="receives_default">1</property>
                             <property name="icon-name">view-fullscreen-symbolic</property>
                             <property name="tooltip-text" translatable="yes">Toggle fullscreen mode</property>
@@ -243,7 +240,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="name">download_manager</property>
                         <property name="child">
                           <object class="GtkButton" id="download_manager_start_stop_button">
-                            <property name="halign">end</property>
                             <property name="receives_default">1</property>
                             <property name="icon-name">media-playback-start-symbolic</property>
                             <property name="tooltip-text" translatable="yes">Start/Stop download</property>
@@ -256,7 +252,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="name">explorer.search</property>
                         <property name="child">
                           <object class="GtkToggleButton" id="explorer_search_page_server_website_button">
-                            <property name="halign">end</property>
                             <property name="receives_default">1</property>
                             <property name="icon-name">web-browser-symbolic</property>
                             <property name="tooltip-text" translatable="yes">Open in Browser</property>
@@ -293,7 +288,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="name">history</property>
                         <property name="child">
                           <object class="GtkToggleButton" id="history_search_button">
-                            <property name="halign">end</property>
                             <property name="receives_default">1</property>
                             <property name="icon-name">edit-find-symbolic</property>
                             <property name="tooltip-text" translatable="yes">Search</property>
