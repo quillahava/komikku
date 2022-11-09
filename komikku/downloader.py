@@ -56,6 +56,10 @@ class Downloader(GObject.GObject):
             else:
                 chapter_id = chapter
 
+            if Download.get_by_chapter_id(chapter_id):
+                # Chapter download is already scheduled
+                continue
+
             rows_data.append(dict(
                 chapter_id=chapter_id,
                 status='pending',
