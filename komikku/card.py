@@ -535,6 +535,10 @@ class ChaptersList:
     def reset_selected_chapters(self, _action, _param):
         # Clear and reset selected chapters
         for chapter in self.get_selected_chapters():
+            if Download.get_by_chapter_id(chapter.id) is not None:
+                # Prevent reset of a chapter that is currently downloaded or scheduled for download
+                continue
+
             chapter.reset()
 
         self.card.leave_selection_mode()
@@ -542,6 +546,10 @@ class ChaptersList:
     def reset_chapter(self, _action, position):
         # Clear and reset chapter
         item = self.list_model.get_item(position.get_uint16())
+        if Download.get_by_chapter_id(item.chapter.id) is not None:
+            # Prevent reset of a chapter that is currently downloaded or scheduled for download
+            return
+
         item.chapter.reset()
         item.emit_changed()
 

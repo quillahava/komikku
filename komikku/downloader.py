@@ -56,7 +56,7 @@ class Downloader(GObject.GObject):
             else:
                 chapter_id = chapter
 
-            if Download.get_by_chapter_id(chapter_id):
+            if Download.get_by_chapter_id(chapter_id) is not None:
                 # Chapter download is already scheduled
                 continue
 
