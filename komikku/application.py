@@ -451,10 +451,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Downloader] Improved download speed</li>
-                <li>[Explorer] Add Global search</li>
-                <li>[Servers] Aralos BD: Fixed search</li>
-                <li>[Servers] Local: Fixed CBR archives reading bug (Flatpak only)</li>
+                <li>[Library] Improved loading: Added a waiting page with a progress bar</li>
+                <li>[Explorer] Fixed Global Search when several languages are enabled</li>
+                <li>[Reader] Improved rendering of Page numbering</li>
+                <li>[Servers] 24hRomance: Disable</li>
             </ul>
         """)
 

@@ -88,6 +88,16 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
+        <release version="1.4.0" date="2022-11-09">
+            <description>
+                <ul>
+                    <li>[Library] Improved loading: Added a waiting page with a progress bar</li>
+                    <li>[Explorer] Fixed Global Search when several languages are enabled</li>
+                    <li>[Reader] Improved rendering of Page numbering</li>
+                    <li>[Servers] 24hRomance: Disable</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.3.0" date="2022-11-05">
             <description>
                 <ul>
