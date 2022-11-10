@@ -29,6 +29,10 @@ class Reader:
         self.builder = window.builder
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/reader.xml')
 
+        # Double maximum distance allowed between two clicks (default 5)
+        # Allows to zoom more easily (double tap) on touch screen
+        Gtk.Settings.get_default().set_property('gtk-double-click-distance', 10)
+
         self.overlay = self.window.reader_overlay
 
         # Headerbar
