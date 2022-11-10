@@ -54,7 +54,7 @@ class Updater(GObject.GObject):
 
             if notification is None:
                 # Use in-app notification
-                self.window.show_notification('{0}\n{1}'.format(summary, body))
+                self.window.show_notification(f'{summary}\n{body}' if body else summary)
             else:
                 if new:
                     notification = Notify.Notification.new(summary, body)
