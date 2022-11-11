@@ -275,21 +275,18 @@ class Reader:
         success = False
         xdg_pictures_dir = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES)
         if not is_flatpak():
-            chooser = Gtk.FileChooserDialog(
+            chooser = Gtk.FileChooserNative(
                 title=_('Please choose a file'),
                 transient_for=self.window,
-                modal=True,
                 action=Gtk.FileChooserAction.SAVE,
+                accept_label=_('Save'),
+                cancel_label=_('Cancel')
             )
-            chooser.add_button(_('Cancel'), Gtk.ResponseType.CANCEL)
-            chooser.add_button(_('Save'), Gtk.ResponseType.ACCEPT)
-            chooser.set_default_response(Gtk.ResponseType.ACCEPT)
-
             chooser.set_current_name(filename)
             if xdg_pictures_dir is not None:
                 chooser.set_current_folder(Gio.File.new_for_path(xdg_pictures_dir))
 
-            def on_response(_dialog, response):
+            def on_response(_native, response):
                 if response == Gtk.ResponseType.ACCEPT:
                     dest_path = chooser.get_file().get_path()
                     shutil.copy(page.path, dest_path)
@@ -299,7 +296,7 @@ class Reader:
                 chooser.destroy()
 
             chooser.connect('response', on_response)
-            chooser.present()
+            chooser.show()
         else:
             if xdg_pictures_dir:
                 dest_path = os.path.join(xdg_pictures_dir, filename)
