@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+import cairo
 from gettext import gettext as _
 from gettext import ngettext as n_
 import threading
@@ -964,6 +965,7 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
 
         # Draw badges (top right corner)
         context = snapshot.append_cairo(self.rect)
+        context.select_font_face('', cairo.FontSlant.NORMAL, cairo.FontWeight.BOLD)
         context.set_font_size(self.cover_font_size)
         spacing = 5  # with top border, right border and between badges
         x = width
@@ -982,7 +984,8 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
             # Draw rectangle
             x = x - spacing - w
             y = spacing
-            r = 15
+            r = 14 + len(text)
+
             context.set_source_rgb(color_r, color_g, color_b)
             context.move_to(x + r, y)                                       # Move to A
             context.line_to(x + w - r, y)                                   # Line to B
