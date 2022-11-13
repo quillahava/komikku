@@ -84,7 +84,7 @@ class Archive:
             if ext[1:].lower() in IMG_EXTENSIONS:
                 names.append(name)
 
-        return names
+        return sorted(names)
 
     def get_name_buffer(self, name):
         return self.obj.get_name_buffer(name)
