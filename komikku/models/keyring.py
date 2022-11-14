@@ -43,7 +43,7 @@ class KeyringHelper:
     appid = 'info.febvre.Komikku'
 
     def __init__(self, fallback_keyring='plaintext'):
-        if not self.is_disabled and not self.has_recommended_backend:
+        if not self.is_disabled or not self.has_recommended_backend:
             if fallback_keyring == 'plaintext':
                 keyring.set_keyring(PlaintextKeyring())
 
