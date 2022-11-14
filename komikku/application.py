@@ -451,10 +451,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Library] Improved loading: Added a waiting page with a progress bar</li>
-                <li>[Explorer] Fixed Global Search when several languages are enabled</li>
-                <li>[Reader] Improved rendering of Page numbering</li>
-                <li>[Servers] 24hRomance: Disable</li>
+                <li>Fixed app not starting on SteamOS (Steam Deck)</li>
+                <li>[Library] Improved thumbnails badges</li>
+                <li>[Reader] Improved double tap zoom on touch screens</li>
+                <li>[Downloader] Bug fix</li>
+                <li>[Updater] Bug fix</li>
+                <li>[Servers] Local: Fixed wrong pages order with some archives</li>
             </ul>
         """)
 

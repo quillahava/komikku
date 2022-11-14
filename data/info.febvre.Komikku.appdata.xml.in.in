@@ -88,6 +88,18 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
+        <release version="1.4.1" date="2022-11-14">
+            <description>
+                <ul>
+                    <li>Fixed app not starting on SteamOS (Steam Deck)</li>
+                    <li>[Library] Improved thumbnails badges</li>
+                    <li>[Reader] Improved double tap zoom on touch screens</li>
+                    <li>[Downloader] Bug fix</li>
+                    <li>[Updater] Bug fix</li>
+                    <li>[Servers] Local: Fixed wrong pages order with some archives</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.4.0" date="2022-11-09">
             <description>
                 <ul>
