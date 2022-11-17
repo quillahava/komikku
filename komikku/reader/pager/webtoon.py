@@ -288,6 +288,16 @@ class WebtoonPager(Adw.Bin, BasePager):
             self.scroll_to_direction(Gtk.DirectionType.UP)
             return Gdk.EVENT_STOP
 
+        if keyval == Gdk.KEY_Page_Down:
+            self.hide_cursor()
+            self.scroll_by_increment(95 * self.vadj.props.page_size / 100)
+            return Gdk.EVENT_STOP
+
+        if keyval == Gdk.KEY_Page_Up:
+            self.hide_cursor()
+            self.scroll_by_increment(-95 * self.vadj.props.page_size / 100)
+            return Gdk.EVENT_STOP
+
         return Gdk.EVENT_PROPAGATE
 
     def on_page_rendered(self, page, retry):
