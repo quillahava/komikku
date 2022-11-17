@@ -193,4 +193,4 @@ class Catmanga(Server):
         return results
 
     def search(self, term):
-        return filter(lambda x: term.lower() in x['name'].lower(), self.get_most_populars())
+        return list(filter(lambda x: term.lower() in x['name'].lower(), self.get_most_populars()))

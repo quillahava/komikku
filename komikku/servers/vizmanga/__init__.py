@@ -218,7 +218,7 @@ class Vizmanga(Server):
 
     def search(self, term):
         term_lower = term.lower()
-        return filter(lambda x: term_lower in x['name'].lower(), self.get_most_populars())
+        return list(filter(lambda x: term_lower in x['name'].lower(), self.get_most_populars()))
 
     @staticmethod
     def solve_image(orig: Image) -> Image.Image:
