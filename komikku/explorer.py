@@ -278,11 +278,11 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         if getattr(server, 'filters', None) is None:
             return search_filters
 
-        for filter in server.filters:
-            if filter['type'] == 'select' and filter['value_type'] == 'multiple':
-                search_filters[filter['key']] = [option['key'] for option in filter['options'] if option['default']]
+        for filter_ in server.filters:
+            if filter_['type'] == 'select' and filter_['value_type'] == 'multiple':
+                search_filters[filter_['key']] = [option['key'] for option in filter_['options'] if option['default']]
             else:
-                search_filters[filter['key']] = filter['default']
+                search_filters[filter_['key']] = filter_['default']
 
         return search_filters
 
@@ -293,37 +293,37 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             self.search_page_filter_menu_button.set_popover(None)
             return
 
-        def build_checkbox(filter):
+        def build_checkbox(filter_):
             def toggle(button, _param):
-                self.search_filters[filter['key']] = button.get_active()
+                self.search_filters[filter_['key']] = button.get_active()
 
             vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
-            check_button = Gtk.CheckButton(label=filter['name'], active=filter['default'])
+            check_button = Gtk.CheckButton(label=filter_['name'], active=filter_['default'])
             check_button.connect('notify::active', toggle)
             vbox.append(check_button)
 
             return vbox
 
-        def build_entry(filter):
+        def build_entry(filter_):
             def on_text_changed(buf, _param):
-                self.search_filters[filter['key']] = buf.get_text()
+                self.search_filters[filter_['key']] = buf.get_text()
 
-            entry = Gtk.Entry(text=filter['default'])
+            entry = Gtk.Entry(text=filter_['default'])
             entry.get_buffer().connect('notify::text', on_text_changed)
 
             return entry
 
-        def build_select_single(filter):
+        def build_select_single(filter_):
             def toggle_option(button, _param, key):
                 if button.get_active():
-                    self.search_filters[filter['key']] = key
+                    self.search_filters[filter_['key']] = key
 
             vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
             last = None
-            for option in filter['options']:
-                is_active = option['key'] == filter['default']
+            for option in filter_['options']:
+                is_active = option['key'] == filter_['default']
                 radio_button = Gtk.CheckButton(label=option['name'])
                 radio_button.set_group(last)
                 radio_button.set_active(is_active)
@@ -333,16 +333,16 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
             return vbox
 
-        def build_select_multiple(filter):
+        def build_select_multiple(filter_):
             def toggle_option(button, _param, key):
                 if button.get_active():
-                    self.search_filters[filter['key']].append(key)
+                    self.search_filters[filter_['key']].append(key)
                 else:
-                    self.search_filters[filter['key']].remove(key)
+                    self.search_filters[filter_['key']].remove(key)
 
             vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
-            for option in filter['options']:
+            for option in filter_['options']:
                 check_button = Gtk.CheckButton(label=option['name'], active=option['default'])
                 check_button.connect('notify::active', toggle_option, option['key'])
                 vbox.append(check_button)
@@ -353,16 +353,16 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
         last = None
-        for index, filter in enumerate(self.server.filters):
-            if filter['type'] == 'checkbox':
-                filter_widget = build_checkbox(filter)
-            elif filter['type'] == 'entry':
-                filter_widget = build_entry(filter)
-            elif filter['type'] == 'select':
-                if filter['value_type'] == 'single':
-                    filter_widget = build_select_single(filter)
-                elif filter['value_type'] == 'multiple':
-                    filter_widget = build_select_multiple(filter)
+        for index, filter_ in enumerate(self.server.filters):
+            if filter_['type'] == 'checkbox':
+                filter_widget = build_checkbox(filter_)
+            elif filter_['type'] == 'entry':
+                filter_widget = build_entry(filter_)
+            elif filter_['type'] == 'select':
+                if filter_['value_type'] == 'single':
+                    filter_widget = build_select_single(filter_)
+                elif filter_['value_type'] == 'multiple':
+                    filter_widget = build_select_multiple(filter_)
                 else:
                     raise NotImplementedError('Invalid select value_type')
 
@@ -375,7 +375,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             if index > 0:
                 vbox.append(Gtk.Separator())
 
-            vbox.append(Gtk.Label(label=filter['name'], tooltip_text=filter['description']))
+            vbox.append(Gtk.Label(label=filter_['name'], tooltip_text=filter_['description']))
             vbox.append(filter_widget)
             last = filter_widget
 
@@ -722,21 +722,21 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
                 most_populars = not term
                 if most_populars:
                     # We offer most popular mangas as starting search results
-                    result = server.get_most_populars(**self.search_filters)
+                    results = server.get_most_populars(**self.search_filters)
                 else:
-                    result = server.search(term, **self.search_filters)
+                    results = server.search(term, **self.search_filters)
                 if stop:
                     return
 
-                if result:
-                    GLib.idle_add(complete, result, server, most_populars)
+                if results:
+                    GLib.idle_add(complete, results, server, most_populars)
                 else:
-                    GLib.idle_add(error, result, server)
+                    GLib.idle_add(error, results, server)
             except Exception as e:
                 user_error_message = log_error_traceback(e)
                 GLib.idle_add(error, None, server, user_error_message)
 
-        def complete(result, server, most_populars):
+        def complete(results, server, most_populars):
             self.window.activity_indicator.stop()
             self.search_page_listbox.show()
 
@@ -752,7 +752,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
                 self.search_page_listbox.append(row)
 
-            for item in result:
+            for item in results:
                 row = Gtk.ListBoxRow()
                 row.add_css_class('explorer-listboxrow')
                 row.manga_data = item
@@ -764,10 +764,10 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
             self.search_lock = False
 
-        def error(result, server, message=None):
+        def error(results, server, message=None):
             self.window.activity_indicator.stop()
 
-            if result is None:
+            if results is None:
                 self.search_page_status_page.set_title(_('Oops, search failed. Please try again.'))
                 if message:
                     self.search_page_status_page.set_description(message)
@@ -805,11 +805,11 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
                 try:
                     default_search_filters = self.get_server_default_search_filters(server)
-                    result = server.search(term, **default_search_filters)
+                    results = server.search(term, **default_search_filters)
                     if stop:
                         return
 
-                    GLib.idle_add(complete_server, result, server_data)
+                    GLib.idle_add(complete_server, results, server_data)
                 except Exception as e:
                     user_error_message = log_error_traceback(e)
                     GLib.idle_add(complete_server, None, server_data, user_error_message)
@@ -819,23 +819,28 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         def complete():
             self.search_lock = False
 
-        def complete_server(result, server_data, message=None):
-            # Remove spinner
+        def complete_server(results, server_data, message=None):
             lang = server_data['lang']
             name = server_data['name']
-            for index, row in enumerate(self.search_page_listbox):
-                if row.server_data['lang'] == lang and row.server_data['name'] == name and row.position == 1:
-                    self.search_page_listbox.remove(row)
-                    break
 
-            if result:
+            # Remove spinner
+            for row in self.search_page_listbox:
+                if row.server_data['lang'] == lang and row.server_data['name'] == name:
+                    if row.position == 0:
+                        row.results = results is not None and len(results) > 0
+                    elif row.position == 1:
+                        self.search_page_listbox.remove(row)
+                        break
+
+            if results:
                 # Add results
-                for index, item in enumerate(result):
+                for index, item in enumerate(results):
                     row = Gtk.ListBoxRow()
                     row.add_css_class('explorer-listboxrow')
                     row.manga_data = item
                     row.server_data = server_data
                     row.position = index + 1
+                    row.results = True
                     label = Gtk.Label(label=item['name'], xalign=0)
                     label.set_ellipsize(Pango.EllipsizeMode.END)
                     row.set_child(label)
@@ -846,9 +851,10 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
                 row = Gtk.ListBoxRow(activatable=False)
                 row.server_data = server_data
                 row.position = 1
+                row.results = False
                 row.add_css_class('explorer-listboxrow')
                 label = Gtk.Label(halign=Gtk.Align.CENTER, justify=Gtk.Justification.CENTER)
-                if result is None:
+                if results is None:
                     # Error
                     text = _('Oops, search failed. Please try again.')
                     if message:
@@ -871,20 +877,32 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             - zero if they are equal
             - a positive integer if the second one should come before the firstone
             """
-            row1_server_name = row1.server_data['name']
+            row1_results = row1.results
             row1_server_lang = LANGUAGES.get(row1.server_data['lang'], '')
+            row1_server_name = row1.server_data['name']
             row1_position = row1.position
-            row2_server_name = row2.server_data['name']
+
+            row2_results = row2.results
             row2_server_lang = LANGUAGES.get(row2.server_data['lang'], '')
+            row2_server_name = row2.server_data['name']
             row2_position = row2.position
 
+            # Servers with results first
+            if row1_results and not row2_results:
+                return -1
+            if not row1_results and row2_results:
+                return 1
+
+            # Sort by language
             if row1_server_lang < row2_server_lang:
                 return -1
 
             if row1_server_lang == row2_server_lang:
+                # Sort by server name
                 if row1_server_name < row2_server_name:
                     return -1
 
+                # Sort by position
                 if row1_server_name == row2_server_name and row1_position < row2_position:
                     return -1
 
@@ -898,12 +916,14 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             row = self.build_server_row(server_data)
             row.server_data = server_data
             row.position = 0
+            row.results = False
             self.search_page_listbox.append(row)
 
             # Spinner
             row = Gtk.ListBoxRow(activatable=False)
             row.server_data = server_data
             row.position = 1
+            row.results = False
             row.add_css_class('explorer-listboxrow')
             spinner = Gtk.Spinner()
             spinner.start()
