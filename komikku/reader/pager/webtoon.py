@@ -13,6 +13,8 @@ from komikku.models import Settings
 from komikku.reader.pager import BasePager
 from komikku.reader.pager.page import Page
 
+CLICK_SCROLL_PERCENTAGE = 2 / 3
+
 
 class WebtoonPager(Adw.Bin, BasePager):
     """Vertical smooth/continuous scrolling (a.k.a. infinite canvas) pager"""
@@ -290,12 +292,12 @@ class WebtoonPager(Adw.Bin, BasePager):
 
         if keyval == Gdk.KEY_Page_Down:
             self.hide_cursor()
-            self.scroll_by_increment(95 * self.vadj.props.page_size / 100)
+            self.scroll_by_increment(self.vadj.props.page_size * CLICK_SCROLL_PERCENTAGE)
             return Gdk.EVENT_STOP
 
         if keyval == Gdk.KEY_Page_Up:
             self.hide_cursor()
-            self.scroll_by_increment(-95 * self.vadj.props.page_size / 100)
+            self.scroll_by_increment(-self.vadj.props.page_size * CLICK_SCROLL_PERCENTAGE)
             return Gdk.EVENT_STOP
 
         return Gdk.EVENT_PROPAGATE
@@ -360,9 +362,9 @@ class WebtoonPager(Adw.Bin, BasePager):
 
     def on_single_click(self, x, _y):
         if x < self.reader.size.width / 3:
-            self.scroll_by_increment(-2 * self.vadj.props.page_size / 3)
+            self.scroll_by_increment(-self.vadj.props.page_size * CLICK_SCROLL_PERCENTAGE)
         elif x > 2 * self.reader.size.width / 3:
-            self.scroll_by_increment(2 * self.vadj.props.page_size / 3)
+            self.scroll_by_increment(self.vadj.props.page_size * CLICK_SCROLL_PERCENTAGE)
         else:
             # Center part of the page
             self.reader.toggle_controls()
