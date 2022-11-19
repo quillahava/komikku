@@ -79,6 +79,7 @@ Dependencies:
 * `python-brotli`
 * `python-cloudscraper`
 * `python-dateparser` >= 1.1.1
+* `python-emoji`
 * `python-keyring` >= 21.6.0
 * `python-lxml`
 * `python-magic` or `file-magic`
