@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from bs4 import NavigableString
 import dateparser
 import datetime
+import emoji
 from functools import lru_cache
 from functools import wraps
 import importlib
@@ -260,6 +261,10 @@ def get_soup_element_inner_text(outer, text=None):
             get_soup_element_inner_text(el, text)
 
     return ''.join(text).strip()
+
+
+def remove_emoji_from_string(text):
+    return emoji.replace_emoji(text, replace='')
 
 
 def search_duckduckgo(site, term):

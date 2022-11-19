@@ -37,6 +37,7 @@ from komikku.servers.headless_browser import bypass_cloudflare_invisible_challen
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_soup_element_inner_text
+from komikku.servers.utils import remove_emoji_from_string
 
 logger = logging.getLogger('komikku.servers.madara')
 
@@ -111,7 +112,8 @@ class Madara(Server):
             else:
                 continue
 
-            label = label.encode('ascii', 'ignore').decode('utf-8').strip()  # remove none-ASCII characters
+            # Remove emoji
+            label = remove_emoji_from_string(label)
 
             content_element = element.find('div', class_='summary-content')
             if content_element:
@@ -137,7 +139,8 @@ class Madara(Server):
                         continue
                     data['genres'].append(genre)
             elif label.startswith(('Status', 'État', 'Statut', 'STATUS', 'Durum', 'الحالة', 'Статус')):
-                status = content.encode('ascii', 'ignore').decode('utf-8').strip()
+                # Remove emoji
+                status = remove_emoji_from_string(content)
 
                 if status in ('Completed', 'Terminé', 'Completé', 'Completo', 'Concluído', 'Tamamlandı', 'مكتملة', 'Закончена'):
                     data['status'] = 'complete'
@@ -315,9 +318,14 @@ class Madara(Server):
         results = []
         for element in soup.find_all('div', class_='post-title'):
             a_element = element.h3.a
+            slug = a_element.get('href').split('/')[-2]
+            name = a_element.text.strip()
+            if not name or not slug:
+                continue
+
             results.append(dict(
-                slug=a_element.get('href').split('/')[-2],
-                name=a_element.text.strip(),
+                slug=slug,
+                name=name,
             ))
 
         return results
