@@ -8,6 +8,7 @@
 
 # Supported servers:
 # 24hRomance [EN] (disabled)
+# 3asq [AR]
 # AkuManga [AR]
 # Aloalivn [EN] (disabled)
 # Apoll Comics [ES]
