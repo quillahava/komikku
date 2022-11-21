@@ -78,7 +78,7 @@ Dependencies:
 * `python-beautifulsoup4`
 * `python-brotli`
 * `python-cloudscraper`
-* `python-dateparser` >= 1.1.1
+* `python-dateparser` >= 1.1.4
 * `python-emoji`
 * `python-keyring` >= 21.6.0
 * `python-lxml`
