@@ -38,7 +38,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="icon_name">emblem-system-symbolic</property>
                     <property name="child">
                       <object class="AdwPreferencesPage">
-                        <property name="icon_name">emblem-system-symbolic</property>
                         <property name="title" translatable="yes">General</property>
                         <child>
                           <object class="AdwPreferencesGroup">
@@ -94,7 +93,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="icon_name">grid-symbolic</property>
                     <property name="child">
                       <object class="AdwPreferencesPage">
-                        <property name="icon_name">grid-symbolic</property>
                         <property name="title" translatable="yes">Library</property>
                         <child>
                           <object class="AdwPreferencesGroup">
@@ -294,7 +292,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="icon_name">view-paged-symbolic</property>
                     <property name="child">
                       <object class="AdwPreferencesPage">
-                        <property name="icon_name">view-paged-symbolic</property>
                         <property name="title" translatable="yes">Reader</property>
                         <child>
                           <object class="AdwPreferencesGroup">
@@ -431,10 +428,9 @@ NOTE: Requires more CPU usage and can cause rendering and animation slowdowns, e
                   <object class="AdwViewStackPage">
                     <property name="name">advanced</property>
                     <property name="title" translatable="yes">Advanced</property>
-                    <property name="icon_name">system-run-symbolic</property>
+                    <property name="icon_name">applications-science-symbolic</property>
                     <property name="child">
                       <object class="AdwPreferencesPage">
-                        <property name="icon_name">system-run-symbolic</property>
                         <property name="title" translatable="yes">Advanced</property>
                         <child>
                           <object class="AdwPreferencesGroup">
@@ -446,6 +442,28 @@ NOTE: Requires more CPU usage and can cause rendering and animation slowdowns, e
                                 <property name="subtitle" translatable="yes">Used when no keyring backends are found</property>
                                 <child>
                                   <object class="GtkSwitch" id="credentials_storage_plaintext_fallback_switch">
+                                    <property name="halign">center</property>
+                                    <property name="valign">center</property>
+                                    <property name="hexpand">0</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwPreferencesGroup">
+                            <property name="title" translatable="yes">Tweaks</property>
+                            <child>
+                              <object class="AdwActionRow">
+                                <property name="title" translatable="yes">Disable Animations</property>
+                                <property name="activatable_widget">disable_animations_switch</property>
+                                <property name="subtitle" translatable="yes">Useful with E Ink e-readers to avoid very choppy and unpleasant animations (due to the low refresh rate of the screen)
+
+This tweak is only intended for users who DO NOT use the GNOME desktop environment and therefore cannot disable animations globally via GNOME Settings (Accessibility ⇨ Seeing ⇨ Enable Animations).
+                                </property>
+                                <child>
+                                  <object class="GtkSwitch" id="disable_animations_switch">
                                     <property name="halign">center</property>
                                     <property name="valign">center</property>
                                     <property name="hexpand">0</property>

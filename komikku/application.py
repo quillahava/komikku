@@ -234,8 +234,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         self.application = kwargs['application']
 
-        self.hidpi_scale = self.get_scale_factor()
-
         self._night_light_handler_id = 0
         self._night_light_proxy = None
 
@@ -374,10 +372,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.library.show()
         GLib.idle_add(self.library.populate)
 
-    def confirm(self, title, message, callback, response_appearance=None):
+    def confirm(self, title, message, confirm_callback, cancel_callback=None, response_appearance=None):
         def on_response(dialog, response_id):
             if response_id == 'yes':
-                callback()
+                confirm_callback()
+            elif response_id == 'cancel':
+                cancel_callback()
 
             dialog.destroy()
 

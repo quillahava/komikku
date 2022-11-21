@@ -168,5 +168,10 @@
             <summary>Allow plaintext storage as fallback</summary>
             <description>Used when no keyring backends are found</description>
         </key>
+        <key type="b" name="disable-animations">
+            <default>false</default>
+            <summary>Disable Animations</summary>
+            <description>Useful with E Ink e-readers to avoid very choppy and unpleasant animations (due to the low refresh rate of the screen)</description>
+        </key>
     </schema>
 </schemalist>

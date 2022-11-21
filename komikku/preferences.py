@@ -55,6 +55,7 @@ class Preferences(Adw.Bin):
     fullscreen_switch = Gtk.Template.Child('fullscreen_switch')
 
     credentials_storage_plaintext_fallback_switch = Gtk.Template.Child('credentials_storage_plaintext_fallback_switch')
+    disable_animations_switch = Gtk.Template.Child('disable_animations_switch')
 
     def __init__(self, window):
         super().__init__()
@@ -107,6 +108,25 @@ class Preferences(Adw.Bin):
             self.settings.desktop_notifications = True
         else:
             self.settings.desktop_notifications = False
+
+    def on_disable_animations_changed(self, switch_button, _gparam):
+        def on_cancel():
+            switch_button.set_active(False)
+
+        def on_confirm():
+            self.settings.disable_animations = True
+            Gtk.Settings.get_default().set_property('gtk-enable-animations', False)
+
+        if switch_button.get_active():
+            self.window.confirm(
+                _('Disable animations?'),
+                _('Are you sure you want to disable animations?\n\nThe gesture navigation in the reader will not work properly anymore.'),
+                on_confirm,
+                cancel_callback=on_cancel
+            )
+        else:
+            self.settings.disable_animations = False
+            Gtk.Settings.get_default().set_property('gtk-enable-animations', True)
 
     def on_fullscreen_changed(self, switch_button, _gparam):
         self.settings.fullscreen = switch_button.get_active()
@@ -321,6 +341,17 @@ class Preferences(Adw.Bin):
         # Credentials storage: allow plaintext as fallback
         self.credentials_storage_plaintext_fallback_switch.set_active(self.settings.credentials_storage_plaintext_fallback)
         self.credentials_storage_plaintext_fallback_switch.connect('notify::active', self.on_credentials_storage_plaintext_fallback_changed)
+
+        # Disable animations
+        if Gtk.Settings.get_default().get_property('gtk-enable-animations'):
+            Gtk.Settings.get_default().set_property('gtk-enable-animations', not Settings.get_default().disable_animations)
+            self.disable_animations_switch.set_active(self.settings.disable_animations)
+        else:
+            # GTK animations are already disabled (in GNOME Settings for ex.)
+            self.disable_animations_switch.get_parent().get_parent().get_parent().set_sensitive(False)
+            self.disable_animations_switch.set_active(False)
+
+        self.disable_animations_switch.connect('notify::active', self.on_disable_animations_changed)
 
     def show(self, transition=True):
         self.window.left_button.set_tooltip_text(_('Back'))

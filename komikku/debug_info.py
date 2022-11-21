@@ -79,6 +79,8 @@ class DebugInfo:
         else:
             info['renderer'] = renderer
 
+        info['animations'] = Gtk.Settings.get_default().get_property('gtk-enable-animations')
+
         gsk_renderer.unrealize()
         surface.destroy()
 
@@ -138,6 +140,7 @@ class DebugInfo:
         info += 'GTK:\n'
         info += f"- GDK backend: {gtk_info['backend']}\n"
         info += f"- GSK renderer: {gtk_info['renderer']}\n"
+        info += f"- Animations: {gtk_info['animations']}\n"
         info += '\n'
 
         info += 'Python:\n'

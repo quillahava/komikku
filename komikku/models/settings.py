@@ -112,6 +112,14 @@ class Settings(Gio.Settings):
         self.set_boolean('dark-theme', state)
 
     @property
+    def disable_animations(self):
+        return self.get_boolean('disable-animations')
+
+    @disable_animations.setter
+    def disable_animations(self, state):
+        self.set_boolean('disable-animations', state)
+
+    @property
     def downloader_state(self):
         return self.get_boolean('downloader-state')
 
