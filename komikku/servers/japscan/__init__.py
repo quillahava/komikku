@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
+
 # Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from bs4 import BeautifulSoup
 from io import BytesIO
-from pathlib import Path
-from urllib.parse import urlparse
 import json
 import logging
 import requests
 import time
-import inspect
-import os
 
 from gi.repository import GLib
 from gi.repository import WebKit2
@@ -159,32 +156,10 @@ class Japscan(Server):
 
         soup = BeautifulSoup(r.text, 'html.parser')
 
-        scripts = soup.find_all("script", src=True)
-        decoding_script_soup = filter(lambda script: script.get("src").startswith("/zjs/"), scripts).__next__()
-        decoding_script_name = decoding_script_soup.get("src").split('/')[-1].split('.')[0]
-        decoding_script_path = Path(inspect.getfile(self.__class__)).parent / f'decoding_tables/{decoding_script_name}.txt'
-
-        def decode_url(url: str):
-            url = urlparse(url)
-            enc_path, extension = url.path.split(".")
-            try:
-                dec_path = "".join(map(lambda letter: decoding_dict[letter], enc_path)) + "." + extension
-            except KeyError:
-                return None
-            return url._replace(path=dec_path).geturl()
-
-        if decoding_script_path.exists():
-            logger.debug(f"Using decoding tables: {decoding_script_name}.txt")
-            with open(decoding_script_path, "r") as decoding_table:
-                decoding_dict = {line[0]: line[2] for line in decoding_table.readlines()}
-        else:
-            logger.info(f"No decoding tables found for {decoding_script_name}.js")
-            decoding_dict = {}
-
         for option_element in soup.find('select', id='pages').find_all('option'):
             data['pages'].append(dict(
                 url=option_element.get('value'),
-                image=decode_url(option_element.get("data-img")),
+                image=None,
             ))
 
         return data
@@ -193,16 +168,6 @@ class Japscan(Server):
         """
         Returns chapter page scan (image) content
         """
-
-        if page.get('image'):
-            r = self.session_get(page['image'])
-            if r.status_code == 200 and (mime_type := get_buffer_mime_type(r.content)).startswith('image'):
-                return dict(
-                    buffer=r.content,
-                    mime_type=mime_type,
-                    name=page['image'].split('?')[0].split('/')[-1],
-                )
-
         error = None
         image_buffer = None
         user_agent = 'Mozilla/5.0 (Linux; Android 11; sdk_gphone_arm64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.104 Mobile Safari/537.36'
