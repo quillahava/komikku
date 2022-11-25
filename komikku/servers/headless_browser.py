@@ -83,7 +83,7 @@ class HeadlessBrowser(Gtk.Window):
             return False
 
         self.settings.set_user_agent(user_agent or USER_AGENT)
-        self.settings.set_auto_load_images(True if not settings or settings.get('auto_load_images', True) else False)
+        self.settings.set_auto_load_images(settings.get('auto_load_images', False) if settings else False)
 
         self.lock = True
 
@@ -119,10 +119,7 @@ def bypass_cloudflare(func):
         error = None
 
         def load_page():
-            settings = dict(
-                auto_load_images=False,
-            )
-            if not headless_browser.open(server.base_url, user_agent=USER_AGENT, settings=settings):
+            if not headless_browser.open(server.base_url, user_agent=USER_AGENT):
                 return True
 
             headless_browser.connect_signal('load-changed', on_load_changed)
@@ -215,10 +212,7 @@ def bypass_cloudflare_invisible_challenge(func):
         error = None
 
         def load_page():
-            settings = dict(
-                auto_load_images=False,
-            )
-            if not headless_browser.open(server.base_url, user_agent=USER_AGENT, settings=settings):
+            if not headless_browser.open(server.base_url, user_agent=USER_AGENT):
                 return True
 
             headless_browser.connect_signal('load-changed', on_load_changed)
@@ -275,7 +269,7 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
     html = None
 
     def load_page():
-        if not headless_browser.open(url, user_agent=user_agent, settings=settings):
+        if not headless_browser.open(url, user_agent=user_agent):
             return True
 
         headless_browser.connect_signal('load-changed', on_load_changed)

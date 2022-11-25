@@ -5,7 +5,6 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from bs4 import BeautifulSoup
-from io import BytesIO
 import json
 import logging
 import requests
@@ -16,6 +15,7 @@ from gi.repository import WebKit2
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
+from komikku.servers.headless_browser import get_page_html
 from komikku.servers.headless_browser import headless_browser
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
@@ -35,6 +35,7 @@ class Japscan(Server):
     api_search_url = base_url + '/live-search/'
     manga_url = base_url + '/manga/{0}/'
     chapter_url = base_url + '/lecture-en-ligne/{0}/{1}/'
+    page_url = '/lecture-en-ligne/{0}/{1}/{2}.html'
     cover_url = base_url + '{0}'
 
     def __init__(self):
@@ -63,7 +64,7 @@ class Japscan(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -141,35 +142,65 @@ class Japscan(Server):
 
         Currently, only pages and scrambled are expected.
         """
-        r = self.session_get(self.chapter_url.format(manga_slug, chapter_slug))
-        if r is None:
-            return None
+        html = get_page_html(self.chapter_url.format(manga_slug, chapter_slug))
+        soup = BeautifulSoup(html, 'lxml')
 
-        mime_type = get_buffer_mime_type(r.content)
+        if reader_element := soup.find(id='full-reader'):
+            data = dict(
+                pages=[],
+            )
 
-        if r.status_code != 200 or mime_type != 'text/html':
-            return None
+            img_elements = reader_element.find_all('img')
+            if img_elements:
+                # Full reader (several images)
+                for img_element in img_elements:
+                    data['pages'].append(dict(
+                        url=None,
+                        slug=None,
+                        image=img_element.get('src'),
+                    ))
+            else:
+                # Single reader (single image)
+                for option_element in soup.find('select', id='pages').find_all('option'):
+                    data['pages'].append(dict(
+                        url=self.page_url.format(manga_slug, chapter_slug, int(option_element.get('value')) + 1),
+                        slug=None,
+                        image=None,
+                    ))
 
-        data = dict(
-            pages=[],
-        )
-
-        soup = BeautifulSoup(r.text, 'html.parser')
-
-        for option_element in soup.find('select', id='pages').find_all('option'):
-            data['pages'].append(dict(
-                url=option_element.get('value'),
-                image=None,
-            ))
-
-        return data
+            return data
+        else:
+            raise requests.exceptions.RequestException
 
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
         Returns chapter page scan (image) content
         """
+        if page['image']:
+            # We already know the image URL
+            r = self.session_get(
+                page['image'],
+                headers={
+                    'Referer': self.chapter_url.format(manga_slug, chapter_slug),
+                }
+            )
+            if r.status_code != 200:
+                return None
+
+            mime_type = get_buffer_mime_type(r.content)
+            if not mime_type.startswith('image'):
+                return None
+
+            return dict(
+                buffer=r.content,
+                mime_type=mime_type,
+                name=page['image'].split('/')[-1],
+            )
+
+        # We don't know the image URL yet
+        # It must be extracted from the HTML page containing the image
         error = None
-        image_buffer = None
+        image_url = None
         user_agent = 'Mozilla/5.0 (Linux; Android 11; sdk_gphone_arm64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.104 Mobile Safari/537.36'
         user_agent = user_agent.replace('Mobile', 'eliboM').replace('Android', 'diordnA')
 
@@ -185,26 +216,22 @@ class Japscan(Server):
             if event != WebKit2.LoadEvent.FINISHED:
                 return
 
-            # Clean page and return image size in webview title
+            # Return image URL via webview title
             js = """
+                let timeoutCounter = 50;  // 5s
+                var reader = document.getElementById('single-reader');
                 const checkExist = setInterval(() => {
-                    if (document.getElementsByTagName('CNV-VV').length) {
+                    var img = reader.getElementsByTagName('IMG')[0];
+                    timeoutCounter -= 1;
+                    if (img.src.startsWith('http')) {
                         clearInterval(checkExist);
-
-                        var iframes = document.querySelectorAll('iframe');
-                        for (var i = 0; i < iframes.length; i++) {
-                            iframes[i].parentNode.removeChild(iframes[i]);
-                        }
-
-                        var e = document.body,
-                            a = e.children;
-                        for (e.appendChild(document.getElementsByTagName('CNV-VV')[0]);
-                            'CNV-VV' != a[0].tagName;) e.removeChild(a[0]);
-
-                        for (var t of [].slice.call(a[0].all_canvas)) t.style.maxWidth = '100%';
-                        document.title = JSON.stringify({width: a[0].all_canvas[0].width, height: a[0].all_canvas[0].height});
+                        document.title = JSON.stringify({status: true, url: img.src});
                     }
-                }, 1000);
+                    else if (timeoutCounter == 0) {
+                        clearInterval(checkExist);
+                        document.title = JSON.stringify({status: false});
+                    }
+                }, 100);
             """
             headless_browser.webview.run_javascript(js, None, None)
 
@@ -216,53 +243,44 @@ class Japscan(Server):
             headless_browser.close()
 
         def on_title_changed(_webview, title):
+            nonlocal error
+            nonlocal image_url
+
             try:
-                size = json.loads(headless_browser.webview.get_title())
+                data = json.loads(headless_browser.webview.get_title())
             except Exception:
                 return
 
-            # Resize webview to image size
-            headless_browser.webview.set_size_request(size['width'], size['height'])
+            if data['status']:
+                image_url = data['url']
+            else:
+                error = f'Failed to load page image: {page_url}'
 
-            def do_snapshot():
-                headless_browser.webview.get_snapshot(
-                    WebKit2.SnapshotRegion.FULL_DOCUMENT, WebKit2.SnapshotOptions.NONE, None, on_snapshot_finished)
-
-            def on_snapshot_finished(_webview, result):
-                nonlocal error
-                nonlocal image_buffer
-
-                # Get image data
-                try:
-                    surface = headless_browser.webview.get_snapshot_finish(result)
-                    if surface:
-                        io_buffer = BytesIO()
-                        surface.write_to_png(io_buffer)
-                        image_buffer = io_buffer.getbuffer()
-                    else:
-                        error = f'Failed to get page image snapshot: {page_url}'
-                except GLib.GError:
-                    error = f'Failed to get page image snapshot: {page_url}'
-
-                headless_browser.close()
-
-            GLib.timeout_add(100, do_snapshot)
+            headless_browser.close()
 
         page_url = self.base_url + page['url']
-        image_name = page_url.split('/')[-1].replace('html', 'png')
         GLib.timeout_add(100, load_page, page_url)
 
-        while image_buffer is None and error is None:
-            time.sleep(1)
+        # While image_url is None and error is None:
+        while image_url is None and error is None:
+            time.sleep(.1)
 
         if error:
             logger.warning(error)
-            raise requests.exceptions.RequestException()
+            return None
+
+        r = self.session_get(image_url)
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if not mime_type.startswith('image'):
+            return None
 
         return dict(
-            buffer=image_buffer,
-            mime_type='image/png',
-            name=image_name,
+            buffer=r.content,
+            mime_type=mime_type,
+            name=page_url.split('/')[-1].replace('html', mime_type.split('/')[-1]),
         )
 
     def get_manga_url(self, slug, url):
