@@ -900,7 +900,7 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
     __gtype_name__ = 'ThumbnailCover'
 
     corners_radius = 8
-    cover_font_size = 13
+    cover_font_size = 11
     width = None
     height = None
     ratio = Thumbnail.default_width / Thumbnail.default_height
