@@ -12,7 +12,7 @@ class Mangaowl(Madara2):
     name = 'Mangaowl'
     lang = 'en'
 
-    series_name = '7xoehy'
+    series_name = '7xoehy'  # This value changes regularly!
 
     base_url = 'https://mangaowl.io'
     chapters_url = base_url + '/7xoehy/{0}/ajax/chapters/'
