@@ -18,7 +18,7 @@ class Readmanga(Server):
     name = 'Read Manga'
     lang = 'ru'
 
-    base_url = 'https://readmanga.io'
+    base_url = 'https://readmanga.live'
     search_url = base_url + '/search/advanced'
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
@@ -80,7 +80,10 @@ class Readmanga(Server):
             data['status'] = 'complete'
 
         for element in elements[i:]:
-            label = element.span.text.strip()
+            label_element = element.span
+            if not label_element:
+                continue
+            label = label_element.text.strip()
 
             if label.startswith('Автор') or label.startswith('Сценарист') or label.startswith('Художник'):
                 value = [author.text.strip() for author in element.find_all('a', class_='person-link')]
@@ -101,7 +104,7 @@ class Readmanga(Server):
             return data
 
         for element in reversed(chapters_element.table.find_all('tr', recursive=False)):
-            a_element = element.find('a')
+            a_element = element.find('a', class_='chapter-link')
             slug = a_element.get('href').split('/', 2)[2]
             title = a_element.find(text=True, recursive=False).strip()
             date = element.find('td', class_='text-right').text.strip()
