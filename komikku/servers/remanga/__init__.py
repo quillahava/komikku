@@ -25,6 +25,7 @@ class Remanga(Server):
 
     base_url = 'https://xn--80aaig9ahr.xn--c1avg'
     manga_url = base_url + '/manga/{0}'
+    chapter_url = base_url + '/manga/{0}/{1}'
     api_base_url = 'https://api.xn--80aaig9ahr.xn--c1avg'
     api_search_url = api_base_url + '/api/search/'
     api_most_populars_url = api_base_url + '/api/search/catalog/'
@@ -163,7 +164,7 @@ class Remanga(Server):
         """
         Returns chapter page scan (image) content
         """
-        r = self.session_get(page['image'])
+        r = self.session_get(page['image'], headers={'Referer': self.chapter_url.format(manga_slug, chapter_slug)})
         if r.status_code != 200:
             return None
 
