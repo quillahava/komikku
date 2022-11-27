@@ -229,7 +229,7 @@ class Madara(Server):
         data = dict(
             pages=[],
         )
-        for img_element in soup.find(class_='reading-content').find_all('img'):
+        for img_element in soup.find(class_=['read-container', 'reading-content']).find_all('img'):
             img_url = img_element.get('data-src')
             if img_url is None:
                 img_url = img_element.get('src')
