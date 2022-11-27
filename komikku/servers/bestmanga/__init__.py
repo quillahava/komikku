@@ -4,10 +4,10 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from komikku.servers.multi.madara import Madara
+from komikku.servers.multi.madara import Madara2
 
 
-class Bestmanga(Madara):
+class Bestmanga(Madara2):
     id = 'bestmanga'
     name = 'Best Manga'
     lang = 'ru'
