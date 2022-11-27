@@ -219,9 +219,9 @@ class Japscan(Server):
             # Return image URL via webview title
             js = """
                 let timeoutCounter = 50;  // 5s
-                var reader = document.getElementById('single-reader');
+                let reader = document.getElementById('single-reader');
+                let img = reader.getElementsByTagName('IMG')[0];
                 const checkExist = setInterval(() => {
-                    var img = reader.getElementsByTagName('IMG')[0];
                     timeoutCounter -= 1;
                     if (img.src.startsWith('http')) {
                         clearInterval(checkExist);
