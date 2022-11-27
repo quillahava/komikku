@@ -6,6 +6,8 @@
 
 from bs4 import BeautifulSoup
 import requests
+from urllib.parse import parse_qs
+from urllib.parse import urlparse
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
@@ -108,9 +110,9 @@ class Xoxocomics(Server):
                     date=convert_date_string(col_elements[1].text.strip(), '%m/%d/%Y'),
                 ))
 
-            next_element = soup.find('a', rel='next')
-            next_num = next_element.get('href')[-1] if next_element else None
-            if next_num:
+            if next_element := soup.find('a', rel='next'):
+                next_url = next_element.get('href')
+                next_num = parse_qs(urlparse(next_url).query)['page'][0]
                 walk_chapters_pages(num=next_num)
 
         walk_chapters_pages(soup=soup)
