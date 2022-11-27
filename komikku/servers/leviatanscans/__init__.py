@@ -15,7 +15,7 @@ class Leviatanscans(Madara):
     lang = 'en'
 
     date_format = None
-    series_name = 'hb/manga'
+    series_name = 'tkl/manga'  # This value changes regularly!
 
     base_url = 'https://en.leviatanscans.com'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
