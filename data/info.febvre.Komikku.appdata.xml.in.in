@@ -88,6 +88,26 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
+        <release version="1.5.0" date="2022-11-27">
+            <description>
+                <ul>
+                    <li>[Reader] Webtoon reading mode: Add srcolling with Page Up and Page Down keys</li>
+                    <li>[Explorer] Global search: Put servers without results at end</li>
+                    <li>[Preferences] Advanced: Add new option to disable GTK animations (useful with E Ink e-readers)</li>
+                    <li>[Servers] Add 3asq (مانجا العاش) [AR]</li>
+                    <li>[Servers] Apoll Comics: Update</li>
+                    <li>[Servers] Best Manga: Update</li>
+                    <li>[Servers] JapScan: Update</li>
+                    <li>[Servers] Lector Manga (Leomanga): Update</li>
+                    <li>[Servers] LeviatanScans: Update</li>
+                    <li>[Servers] Mangaowl: Update</li>
+                    <li>[Servers] Read Manga: Update</li>
+                    <li>[Servers] Remanga: Update</li>
+                    <li>[Servers] Xoxocomics: Update</li>
+                    <li>[Servers] Kirei Cake: Disable</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.4.1" date="2022-11-14">
             <description>
                 <ul>
