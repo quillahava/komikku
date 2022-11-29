@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-09 00:56+0100\n"
-"PO-Revision-Date: 2022-11-09 00:58+0100\n"
-"Last-Translator: Irénée THIRION <irenee.thirion@e.email>\n"
+"PO-Revision-Date: 2022-11-29 15:31+0100\n"
+"Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -92,46 +92,52 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:94
 msgid "[Library] Improved loading: Added a waiting page with a progress bar"
 msgstr ""
+"[Bibliothèque] Amélioration du chargement : Ajout d’une page d’attente avec "
+"une barre de progression"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:95
 msgid "[Explorer] Fixed Global Search when several languages are enabled"
 msgstr ""
+"[Explorateur] Correction de la recherche globale quand plusieurs langues "
+"sont activées"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:96
 msgid "[Reader] Improved rendering of Page numbering"
-msgstr ""
+msgstr "[Lecteur] Amélioration du rendu de la numérotation des pages"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 msgid "[Servers] 24hRomance: Disable"
-msgstr ""
+msgstr "[Serveurs] 24hRomance : Désactivé"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[Downloader] Improved download speed"
-msgstr ""
+msgstr "[Téléchargeur] Amélioration de la vitesse de téléchargement"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid "[Explorer] Add Global search"
-msgstr ""
+msgstr "[Explorateur] Ajout d’une recherche globale"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Servers] Aralos BD: Fixed search"
-msgstr ""
+msgstr "[Serveurs] Aralos BD : Correction de la recherche"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Servers] Local: Fixed CBR archives reading bug (Flatpak only)"
 msgstr ""
+"[Serveurs] Local : Correction d’un bogue de lecture des archives CBR "
+"(Flatpak uniquement)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:114
 msgid "[Reader] Improved Webtoon reading mode"
-msgstr ""
+msgstr "[Lecteur] Amélioration du mode lecture Webtoon"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
 msgid "[Servers] Add Local server (CBZ/CBR archives)"
-msgstr ""
+msgstr "[Serveurs] Ajout de Local server (archives CBZ/CBR )"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:116
 msgid "[Servers] Add Comic Book Plus [EN]"
-msgstr ""
+msgstr "[Serveurs] Ajout de Comic Book Plus [EN]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:117
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:210
