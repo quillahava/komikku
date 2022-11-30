@@ -376,7 +376,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         def on_response(dialog, response_id):
             if response_id == 'yes':
                 confirm_callback()
-            elif response_id == 'cancel':
+            elif response_id == 'cancel' and cancel_callback is not None:
                 cancel_callback()
 
             dialog.destroy()
