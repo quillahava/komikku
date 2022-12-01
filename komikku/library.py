@@ -900,7 +900,7 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
     __gtype_name__ = 'ThumbnailCover'
 
     corners_radius = 8
-    cover_font_size = 11
+    cover_font_size = 9
     width = None
     height = None
     ratio = Thumbnail.default_width / Thumbnail.default_height
@@ -961,51 +961,58 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
         self.rounded_rect.init(self.rect, self.rounded_rect_size, self.rounded_rect_size, self.rounded_rect_size, self.rounded_rect_size)
         snapshot.push_rounded_clip(self.rounded_rect)
         snapshot.append_texture(self.cover_texture, self.rect)
-        snapshot.pop()
+        snapshot.pop()  # remove the clip
 
         # Draw badges (top right corner)
-        context = snapshot.append_cairo(self.rect)
-        context.select_font_face('', cairo.FontSlant.NORMAL, cairo.FontWeight.BOLD)
-        context.set_font_size(self.cover_font_size)
+        font = Pango.FontDescription.new()
+        font.set_weight(Pango.Weight.HEAVY)
+        font.set_size(self.cover_font_size * Pango.SCALE)
+        layout = Pango.Layout(Gio.Application.get_default().window.get_pango_context())
+        layout.set_font_description(font)
         spacing = 5  # with top border, right border and between badges
+        text_color = Gdk.RGBA()
+        text_color.parse('#ffffff')
         x = width
 
-        def draw_badge(value, color_r, color_g, color_b):
-            nonlocal x
+        def draw_badge(value, color):
+            nonlocal x, layout
 
             if not value:
                 return
 
-            text = str(value)
-            text_extents = context.text_extents(text)
-            w = text_extents.x_advance + 2 * 3 + 1
-            h = text_extents.height + 2 * 5
+            layout.set_text(str(value))
+            extent = layout.get_pixel_extents()[1]
+            w = extent.width + 2 * 7
+            h = extent.height + 2 * 1
 
-            # Draw rectangle
+            # Draw rounded rectangle (pill)
             x = x - spacing - w
             y = spacing
-            r = 14 + len(text)
 
-            context.set_source_rgb(color_r, color_g, color_b)
-            context.move_to(x + r, y)                                       # Move to A
-            context.line_to(x + w - r, y)                                   # Line to B
-            context.curve_to(x + w, y, x + w, y, x + w, y + r)              # Curve to C
-            context.line_to(x + w, y + h - r)                               # Line to D
-            context.curve_to(x + w, y + h, x + w, y + h, x + w - r, y + h)  # Curve to E
-            context.line_to(x + r, y + h)                                   # Line to F
-            context.curve_to(x, y + h, x, y + h, x, y + h - r)              # Curve to G
-            context.line_to(x, y + r)                                       # Line to H
-            context.curve_to(x, y, x, y, x + r, y)                          # Curve to A
-            context.fill()
+            bg_color = Gdk.RGBA()
+            bg_color.parse(color)
+
+            rect = Graphene.Rect().init(x, y, w, h)
+            rounded_rect = Gsk.RoundedRect()
+            rounded_rect.init_from_rect(rect, radius=90)
+
+            snapshot.push_rounded_clip(rounded_rect)
+            snapshot.append_color(bg_color, rect)
+            snapshot.pop()  # remove the clip
 
             # Draw number
-            context.set_source_rgb(1, 1, 1)
-            context.move_to(x + 3, h)
-            context.show_text(text)
+            point = Graphene.Point()
+            point.x = x + 7
+            point.y = y + 1
 
-        draw_badge(self.nb_unread_chapters, 0.208, 0.518, 0.894)      # #3584e4 @blue_3
-        draw_badge(self.nb_downloaded_chapters, 0.569, 0.255, 0.675)  # #9141ac @purple_3
-        draw_badge(self.nb_recent_chapters, 0.18, 0.761, 0.494)       # #2ec27e @green_4
+            snapshot.save()
+            snapshot.translate(point)
+            snapshot.append_layout(layout, text_color)
+            snapshot.restore()
+
+        draw_badge(self.nb_unread_chapters, '#3584e4')      # @blue_3
+        draw_badge(self.nb_downloaded_chapters, '#9141ac')  # @purple_3
+        draw_badge(self.nb_recent_chapters, '#2ec27e')      # @green_4
 
         # Drow server logo (top left corner)
         if self.server_logo_texture:
