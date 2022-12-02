@@ -1,0 +1,14 @@
+PyGObject
+natsort
+Pillow
+beautifulsoup4
+lxml
+keyring >= 21.6.0
+dateparser >= 1.1.4
+emoji
+python_magic
+pure-protobuf
+cloudscraper
+Unidecode
+brotli
+rarfile
