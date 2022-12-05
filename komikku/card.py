@@ -416,7 +416,10 @@ class ChaptersList:
         bitsec = self.model.get_selection()
         for index in range(bitsec.get_size()):
             position = bitsec.get_nth(index)
-            chapters.append(self.list_model.get_item(position).chapter)
+            if self.sort_order.endswith('desc'):
+                chapters.insert(0, self.list_model.get_item(position).chapter)
+            else:
+                chapters.append(self.list_model.get_item(position).chapter)
 
         return chapters
 
