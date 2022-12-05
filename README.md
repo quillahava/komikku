@@ -57,90 +57,30 @@ flatpak install info.febvre.Komikku.flatpak
 flatpak run -d info.febvre.Komikku
 ```
 
-## Building from source
+## Contributing
 
-### Option 1: Test or building a Flatpak with GNOME Builder
+### Code
 
-Open GNOME Builder, click the **Clone...** button, paste the repository url.
+Please follow our [contributing guidelines](CONTRIBUTING.md).
 
-Clone the project and hit the **Play** button to start building Komikku or test Flatpaks with **Export Bundle** button.
-
-### Option 2: Testing with Meson
-
-Dependencies:
-
-* `git`
-* `ninja`
-* `meson` >= 0.59.0
-* `python` >= 3.8
-* `gtk` >= 4.8.1
-* `libadwaita` >= 1.2.0
-* `python-beautifulsoup4`
-* `python-brotli`
-* `python-cloudscraper`
-* `python-dateparser` >= 1.1.4
-* `python-emoji`
-* `python-keyring` >= 21.6.0
-* `python-lxml`
-* `python-magic` or `file-magic`
-* `python-natsort`
-* `python-pillow`
-* `python-pure-protobuf`
-* `python-rarfile`
-* `python-unidecode`
-
-This is the best practice to test __Komikku__ without installing using meson and ninja.
-
-#### First time
-
-```bash
-git clone https://gitlab.com/valos/Komikku
-cd Komikku
-mkdir _build
-cd _build
-meson ..
-meson configure -Dprefix=$(pwd)/testdir
-ninja install # This will actually install in _build/testdir
-ninja run
-```
-
-#### Later on
-
-```bash
-cd Komikku/_build
-ninja install # This will actually install in _build/testdir
-ninja run
-```
-
-### Option 3: Build and install system-wide directly with Meson
-
-**WARNING**: This approach is discouraged, since it will manually copy all the files in your system. **Uninstalling could be difficult and/or dangerous**.
-
-But if you know what you're doing, here you go:
-
-```bash
-git clone https://gitlab.com/valos/Komikku
-cd Komikku
-mkdir _build
-cd _build
-meson ..
-ninja install
-```
-
-## Code of Conduct
-We follow the [GNOME Code of Conduct](/CODE_OF_CONDUCT.md).
-All communications in project spaces are expected to follow it.
-
-## Translations
+### Translations
 
 Helping to translate __Komikku__ or add support to a new language is very welcome.
 
+### Code of Conduct
+We follow the [GNOME Code of Conduct](/CODE_OF_CONDUCT.md).
+All communications in project spaces are expected to follow it.
+
 ## Sponsor this project
 
-You can help me to keep developing __Komikku__ through donations. Any amount will be greatly appreciated :-)
+__Komikku__ is a `Free software`. If you like it and would like to support and fund it, you may donate through one of the plateform below. Any amount will be greatly appreciated __;-)__
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X06EM3L) [![lp Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/valos/donate) [![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?business=GSRGEQ78V97PU&no_recurring=0&item_name=You+can+help+me+to+keep+developing+apps+through+donations.&currency_code=EUR)
+|Plateforms|||
+|:---:|:--:|---|
+|Ko-fi|[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X06EM3L)|One-time or monthly donation|
+|Liberapay|[![lp Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/valos/donate)|Weekly/monthly/yearly donation|
+|PayPal|[![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?business=GSRGEQ78V97PU&no_recurring=0&item_name=You+can+help+me+to+keep+developing+apps+through+donations.&currency_code=EUR)|One-time donation|
 
 ## Disclaimer
 
-The developer of this application does not have any affiliation with the content providers available.
+The developers of this application does not have any affiliation with the content providers available.
