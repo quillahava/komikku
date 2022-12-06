@@ -71,15 +71,14 @@ class History(Gtk.Box):
         return ret
 
     def navigate_back(self, source):
-        # Back to Library if:
-        # - user click on 'Back' button
-        # - or use 'Esc' key and not in search mode
+        # Back to Library if user click on 'Back' button
         if source == 'click' or not self.searchbar.get_search_mode():
             self.window.library.show()
 
         # Leave search mode
         if self.searchbar.get_search_mode():
             self.searchbar.set_search_mode(False)
+            self.search_button.grab_focus()
 
     def on_searchentry_activated(self, _entry):
         if not self.searchbar.get_search_mode():

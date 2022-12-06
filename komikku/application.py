@@ -513,8 +513,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
                 self.explorer.show()
             if self.library.selection_mode:
                 self.library.leave_selection_mode()
-            if source == 'esc-key':
+            if source == 'esc-key' and self.library.searchbar.get_search_mode():
                 self.library.searchbar.set_search_mode(False)
+                self.library.search_button.grab_focus()
 
         elif self.page == 'card':
             if self.card.selection_mode:

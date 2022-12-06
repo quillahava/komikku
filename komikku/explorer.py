@@ -394,6 +394,8 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             # Leave search mode
             if self.servers_page_searchbar.get_search_mode():
                 self.servers_page_searchbar.set_search_mode(False)
+                self.servers_page_search_button.grab_focus()
+
         elif self.page == 'search':
             self.search_global_mode = False
             self.search_lock = False
@@ -408,6 +410,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
                 self.servers_page_searchentry.grab_focus()
 
             self.show_page('servers')
+
         elif self.page == 'card':
             self.manga_slug = None
 
