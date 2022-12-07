@@ -452,8 +452,10 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             self.on_card_page_add_button_clicked()
 
     def on_card_page_read_button_clicked(self):
-        # Stop global search if not ended
+        self.search_global_mode = False
+        self.search_lock = False
         self.search_stop = True
+        self.server = None
 
         self.window.card.init(self.manga, transition=False)
 
@@ -710,17 +712,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             # An empty term is allowed only if server has 'get_most_populars' method
             return
 
-        def detect_stop_request():
-            nonlocal stop
-
-            if not self.search_stop:
-                return GLib.SOURCE_CONTINUE
-
-            stop = True
-
         def run(server):
-            GLib.timeout_add(100, detect_stop_request)
-
             try:
                 most_populars = not term
                 if most_populars:
@@ -728,7 +720,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
                     results = server.get_most_populars(**self.search_filters)
                 else:
                     results = server.search(term, **self.search_filters)
-                if stop:
+                if self.search_stop:
                     return
 
                 if results:
@@ -782,7 +774,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             self.search_lock = False
 
         self.search_lock = True
-        self.search_stop = stop = False
+        self.search_stop = False
         self.clear_search_page_results()
         self.search_page_listbox.set_sort_func(None)
         self.window.activity_indicator.start()
@@ -792,25 +784,15 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         thread.start()
 
     def search_global(self, term):
-        def detect_stop_request():
-            nonlocal stop
-
-            if not self.search_stop:
-                return GLib.SOURCE_CONTINUE
-
-            stop = True
-
         def run(servers):
-            GLib.timeout_add(100, detect_stop_request)
-
             for server_data in servers:
                 server = getattr(server_data['module'], server_data['class_name'])()
 
                 try:
                     default_search_filters = self.get_server_default_search_filters(server)
                     results = server.search(term, **default_search_filters)
-                    if stop:
-                        return
+                    if self.search_stop:
+                        break
 
                     GLib.idle_add(complete_server, results, server_data)
                 except Exception as e:
@@ -934,7 +916,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             self.search_page_listbox.append(row)
 
         self.search_lock = True
-        self.search_stop = stop = False
+        self.search_stop = False
         self.search_page_listbox.set_sort_func(sort_results)
         self.search_page_listbox.show()
 
