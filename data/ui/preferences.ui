@@ -458,10 +458,7 @@ NOTE: Requires more CPU usage and can cause rendering and animation slowdowns, e
                               <object class="AdwActionRow">
                                 <property name="title" translatable="yes">Disable Animations</property>
                                 <property name="activatable_widget">disable_animations_switch</property>
-                                <property name="subtitle" translatable="yes">Useful with E Ink e-readers to avoid very choppy and unpleasant animations (due to the low refresh rate of the screen)
-
-This tweak is only intended for users who DO NOT use the GNOME desktop environment and therefore cannot disable animations globally via GNOME Settings (Accessibility ⇨ Seeing ⇨ Enable Animations).
-                                </property>
+                                <property name="subtitle" translatable="yes">Useful with E Ink e-readers to avoid very choppy and unpleasant animations (due to the low refresh rate of the screen)</property>
                                 <child>
                                   <object class="GtkSwitch" id="disable_animations_switch">
                                     <property name="halign">center</property>
@@ -469,6 +466,17 @@ This tweak is only intended for users who DO NOT use the GNOME desktop environme
                                     <property name="hexpand">0</property>
                                   </object>
                                 </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label" translatable="yes">This tweak is only intended for users who do not use the GNOME desktop environment and therefore cannot disable animations globally via GNOME Settings (Accessibility ⇨ Seeing ⇨ Enable Animations).</property>
+                                <property name="wrap">1</property>
+                                <property name="margin-top">12</property>
+                                <style>
+                                  <class name="caption"/>
+                                  <class name="dim-label"/>
+                                </style>
                               </object>
                             </child>
                           </object>
