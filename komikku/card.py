@@ -741,23 +741,19 @@ class ChaptersListRow(Gtk.Box):
         self.append(self.primary_hbox)
 
         # Vertical box for title and scanlators
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, hexpand=1)
-        vbox.set_valign(Gtk.Align.CENTER)  # Allows title to be vertically centered if scanlators are missing
+        # valign property is set to CENTER to allow title to be vertically centered if scanlators are missing
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.CENTER, spacing=4, hexpand=1)
         self.primary_hbox.append(vbox)
 
         # Title
-        self.title_label = Gtk.Label(xalign=0)
-        self.title_label.set_valign(Gtk.Align.CENTER)
+        self.title_label = Gtk.Label(xalign=0, valign=Gtk.Align.CENTER, wrap=True)
         self.title_label.add_css_class('body')
-        self.title_label.set_wrap(True)
         vbox.append(self.title_label)
 
         # Scanlators
-        self.scanlators_label = Gtk.Label(xalign=0, visible=False)
-        self.scanlators_label.set_valign(Gtk.Align.CENTER)
+        self.scanlators_label = Gtk.Label(xalign=0, valign=Gtk.Align.CENTER, wrap=True, visible=False)
         self.scanlators_label.add_css_class('dim-label')
         self.scanlators_label.add_css_class('caption')
-        self.scanlators_label.set_wrap(True)
         vbox.append(self.scanlators_label)
 
         # Menu button
@@ -778,24 +774,19 @@ class ChaptersListRow(Gtk.Box):
         )
 
         # Recent badge
-        self.badge_label = Gtk.Label(xalign=0, yalign=1, visible=False)
-        self.badge_label.set_valign(Gtk.Align.CENTER)
+        self.badge_label = Gtk.Label(xalign=0, yalign=1, valign=Gtk.Align.CENTER, visible=False)
         self.badge_label.add_css_class('caption')
         self.badge_label.add_css_class('badge')
         self.badge_label.set_text(_('New'))
         self.secondary_hbox.append(self.badge_label)
 
         # Date + Download status (text or progress bar)
-        self.subtitle_label = Gtk.Label(xalign=0, yalign=1, hexpand=1)
-        self.subtitle_label.set_halign(Gtk.Align.START)
-        self.subtitle_label.set_valign(Gtk.Align.CENTER)
+        self.subtitle_label = Gtk.Label(xalign=0, yalign=1, halign=Gtk.Align.START, valign=Gtk.Align.CENTER, hexpand=1)
         self.subtitle_label.add_css_class('caption')
         self.secondary_hbox.append(self.subtitle_label)
 
         # Download progress
-        self.download_progress_progressbar = Gtk.ProgressBar(hexpand=1, visible=False)
-        self.download_progress_progressbar.set_halign(Gtk.Align.FILL)
-        self.download_progress_progressbar.set_valign(Gtk.Align.CENTER)
+        self.download_progress_progressbar = Gtk.ProgressBar(halign=Gtk.Align.FILL, valign=Gtk.Align.CENTER, hexpand=1, visible=False)
         self.secondary_hbox.append(self.download_progress_progressbar)
 
         self.download_stop_button = Gtk.Button.new_from_icon_name('media-playback-stop-symbolic')
@@ -803,8 +794,7 @@ class ChaptersListRow(Gtk.Box):
         self.secondary_hbox.append(self.download_stop_button)
 
         # Read progress: nb read / nb pages
-        self.read_progress_label = Gtk.Label(xalign=0.5, yalign=1)
-        self.read_progress_label.set_halign(Gtk.Align.CENTER)
+        self.read_progress_label = Gtk.Label(xalign=0.5, yalign=1, halign=Gtk.Align.CENTER)
         self.read_progress_label.add_css_class('caption')
         self.secondary_hbox.append(self.read_progress_label)
 
@@ -867,8 +857,14 @@ class ChaptersListRow(Gtk.Box):
             self.scanlators_label.set_text('')
             self.scanlators_label.hide()
 
+        #
+        # Recent badge, date, download status, page counter
+        #
+        show_secondary_hbox = False
+
         if self.chapter.recent == 1:
             self.badge_label.show()
+            show_secondary_hbox = True
         else:
             self.badge_label.hide()
 
@@ -887,15 +883,15 @@ class ChaptersListRow(Gtk.Box):
             text.append(_(Download.STATUSES[download_status]).upper())
 
         self.subtitle_label.set_text(' · '.join(text))
+        if text:
+            show_secondary_hbox = True
 
         if download_status == 'downloading':
+            show_secondary_hbox = True
             self.subtitle_label.set_hexpand(False)
             self.download_progress_progressbar.show()
             self.download_stop_button.show()
             self.read_progress_label.hide()
-            self.primary_hbox.props.margin_top = 6
-            self.primary_hbox.props.margin_bottom = 6
-            self.secondary_hbox.show()
 
             # Set download progress
             self.download_progress_progressbar.set_fraction(item.download.percent / 100)
@@ -907,31 +903,25 @@ class ChaptersListRow(Gtk.Box):
             # Read progress: nb read / nb pages
             if not self.chapter.read:
                 if self.chapter.last_page_read_index is not None:
+                    show_secondary_hbox = True
+
                     # Nb read / nb pages
                     nb_pages = len(self.chapter.pages) if self.chapter.pages else '?'
                     self.read_progress_label.set_text(f'{self.chapter.last_page_read_index + 1}/{nb_pages}')
                     self.read_progress_label.show()
-                    self.primary_hbox.props.margin_top = 6
-                    self.primary_hbox.props.margin_bottom = 6
-                    self.secondary_hbox.show()
                 elif text:
                     self.read_progress_label.hide()
-                    self.primary_hbox.props.margin_top = 6
-                    self.primary_hbox.props.margin_bottom = 6
-                    self.secondary_hbox.show()
-                else:
-                    self.primary_hbox.props.margin_top = 17
-                    self.primary_hbox.props.margin_bottom = 17
-                    self.secondary_hbox.hide()
             elif text:
                 self.read_progress_label.hide()
-                self.primary_hbox.props.margin_top = 6
-                self.primary_hbox.props.margin_bottom = 6
-                self.secondary_hbox.show()
-            else:
-                self.primary_hbox.props.margin_top = 17
-                self.primary_hbox.props.margin_bottom = 17
-                self.secondary_hbox.hide()
+
+        if show_secondary_hbox:
+            self.secondary_hbox.show()
+            self.primary_hbox.props.margin_top = 6
+            self.primary_hbox.props.margin_bottom = 6
+        else:
+            self.secondary_hbox.hide()
+            self.primary_hbox.props.margin_top = 17
+            self.primary_hbox.props.margin_bottom = 16
 
     def update_menu(self, popover):
         if self.card.selection_mode:
