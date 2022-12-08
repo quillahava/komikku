@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -36,12 +36,11 @@ class Dbmultiverse(Server):
         Returns manga data by scraping manga HTML page content
         """
         r = self.session_get(self.manga_url)
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'text/html':
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -88,12 +87,11 @@ class Dbmultiverse(Server):
         Returns manga data by scraping manga HTML page content
         """
         r = self.session_get(self.manga_url)
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'text/html':
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -114,18 +112,24 @@ class Dbmultiverse(Server):
         Returns chapter page scan (image) content
         """
         r = self.session_get(self.page_url.format(page['slug']))
-        if r is None:
+        if r.status_code != 200:
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
 
-        try:
-            url = soup.find('img', id='balloonsimg').get('src')
-        except Exception:
-            url = soup.find('div', id='balloonsimg').get('style').split(';')[0].split(':')[1][4:-1]
+        if img_element := soup.find('img', id='balloonsimg'):
+            url = img_element.get('src')
+            if not url:
+                url = img_element.get('style').split(';')[0].split(':')[1][4:-1]
+        elif celebrate_element := soup.find('div', class_='cadrelect'):
+            # Special page to celebrate 1000/2000/... pages
+            # return first contribution image
+            url = celebrate_element.find('img').get('src')
+        else:
+            return None
 
         r = self.session_get(self.base_url + url)
-        if r is None or r.status_code != 200:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
