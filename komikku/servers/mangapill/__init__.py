@@ -105,7 +105,8 @@ class Mangapill(Server):
             data['genres'].append(element.text.strip())
 
         # Synopsis
-        data['synopsis'] = info_element.find('p').text.strip()
+        if synopsis_element := info_element.find('p'):
+            data['synopsis'] = synopsis_element.text.strip()
 
         # Chapters
         for a_element in reversed(soup.select('#chapters a')):
