@@ -265,6 +265,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="child">
                           <object class="GtkBox">
                             <property name="orientation">horizontal</property>
+                            <property name="spacing">6</property>
                             <child>
                               <object class="GtkButton" id="explorer_servers_page_global_search_button">
                                 <property name="receives_default">1</property>
