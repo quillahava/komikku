@@ -20,7 +20,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="Explorer" parent="GtkStack">
+  <template class="Explorer_" parent="GtkStack">
     <property name="transition_type">slide-left-right</property>
     <child>
       <object class="GtkStackPage">
