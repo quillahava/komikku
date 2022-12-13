@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-09 00:56+0100\n"
-"PO-Revision-Date: 2022-10-02 15:07+0800\n"
+"PO-Revision-Date: 2022-12-11 21:04+0800\n"
 "Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -16,17 +16,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-Bookmarks: -1,118,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
-msgstr ""
+msgstr "阅读你最喜欢的漫画"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:13
 msgid ""
 "Komikku is a manga, manhwa, manhua, webtoons, webcomics and comics reader."
-msgstr "Komikku 是个日漫、韩漫、国漫、Webtoon 等的漫画阅读器。"
+msgstr "Komikku 是个日漫、韩漫、国漫、Webtoon 等等的漫画阅读器。"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:14
 msgid "Features"
@@ -42,11 +42,11 @@ msgstr "离线阅读下载的漫画"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:18
 msgid "Support for locally stored comics (in CBZ or CBR formats)"
-msgstr ""
+msgstr "支持本地存储的（CBZ 和 CBR 格式）漫画"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
-msgstr "从右至左、从左至右、垂直和卷轴阅读模式"
+msgstr "从右至左、从左至右、垂直和 Webtoon 阅读模式"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:20
 msgid ""
@@ -87,47 +87,47 @@ msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:94
 msgid "[Library] Improved loading: Added a waiting page with a progress bar"
-msgstr ""
+msgstr "[收藏库] 改进加载：添加了带进度条的等待页面"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:95
 msgid "[Explorer] Fixed Global Search when several languages are enabled"
-msgstr ""
+msgstr "[资源管理器] 修复启用多种语言时的全局搜索"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:96
 msgid "[Reader] Improved rendering of Page numbering"
-msgstr ""
+msgstr "[阅读器] 改进页码的渲染"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 msgid "[Servers] 24hRomance: Disable"
-msgstr ""
+msgstr "[服务器] 24hRomance：停用"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[Downloader] Improved download speed"
-msgstr ""
+msgstr "[下载器] 提升下载速度"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid "[Explorer] Add Global search"
-msgstr ""
+msgstr "[资源管理器] 添加全局搜索"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Servers] Aralos BD: Fixed search"
-msgstr ""
+msgstr "[服务器] Aralos BD：修复搜索"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Servers] Local: Fixed CBR archives reading bug (Flatpak only)"
-msgstr ""
+msgstr "[服务器] 本地：修复 CBR 归档阅读错误（限 Flatpak）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:114
 msgid "[Reader] Improved Webtoon reading mode"
-msgstr ""
+msgstr "[阅读器] 改进 Webtoon 阅读模式"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
 msgid "[Servers] Add Local server (CBZ/CBR archives)"
-msgstr ""
+msgstr "[服务器] 添加本地服务器（CBZ/CBR 归档）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:116
 msgid "[Servers] Add Comic Book Plus [EN]"
-msgstr ""
+msgstr "[服务器] 添加 Comic Book Plus [英]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:117
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:210
@@ -143,7 +143,7 @@ msgstr "[服务器] MangaKawaii：更新"
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:118
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:133
 msgid "[Servers] Reaper Scans [PT]: Update"
-msgstr ""
+msgstr "[服务器] Reaper Scans [葡]：更新"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:119
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:197
@@ -159,53 +159,53 @@ msgstr "[本地化] 更新法语和德语翻译"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:127
 msgid "Landscape covers (rare) are now converted to portrait"
-msgstr ""
+msgstr "横幅封面（少见）现在会转换成竖幅"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:128
 msgid "[Reader] Webtoon reading mode: Bugfix"
-msgstr ""
+msgstr "[阅读器] Webtoon 阅读模式：缺陷修复"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:129
 msgid "[Reader] Fixed detection of 'read' chapters"
-msgstr ""
+msgstr "[阅读器] 修复“已读”章节的检测"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:130
 msgid "[Servers] MangaLife [EN]: Reenable"
-msgstr ""
+msgstr "[服务器] MangaLife [英]：重新启用"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:131
 msgid "[Servers] LeviatanScans [EN]: Reenable"
-msgstr ""
+msgstr "[服务器] LeviatanScans [英]：重新启用"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:132
 msgid "[Servers] Mangas Origines: Update"
-msgstr ""
+msgstr "[服务器] Mangas Origines：更新"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:134
 msgid "[Servers] Remanga: Update"
-msgstr ""
+msgstr "[服务器] Remanga：更新"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:135
 msgid "[Servers] Scan OP [FR]: Disable"
-msgstr ""
+msgstr "[服务器] Scan OP [法]：停用"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
 msgid "[Servers] Zero Scans: Disable"
-msgstr ""
+msgstr "[服务器] Zero Scans：停用"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:137
 msgid "[L10n] Add Simplified Chinese translations"
-msgstr ""
+msgstr "[本地化] 添加简体中文翻译"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:138
 msgid "[L10n] Update Turkish translation"
-msgstr ""
+msgstr "[本地化] 更新土耳其语翻译"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:144
 msgid ""
 "After several months of effort, Komikku's port to GTK4 and libadwaita is "
 "ended."
-msgstr ""
+msgstr "经过多月的努力，Komikku 的 GTK4 和 libadwaita 移植工作已经结束。"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:145
 msgid "The highlights of this new major version:"
@@ -213,7 +213,7 @@ msgstr "这个新主要版本的亮点："
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:147
 msgid "Refreshing of the UI to follow the GNOME HIG as much as possible"
-msgstr ""
+msgstr "重制界面以尽可能遵循 GNOME 人机界面指南"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:148
 msgid "Library has now two display modes: Grid and Compact grid"
@@ -226,7 +226,7 @@ msgstr "更快的章节列表显示，不论章节数量"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:150
 msgid "Full rewriting of the Webtoon reading mode"
-msgstr "卷轴阅读模式的完全重写"
+msgstr "Webtoon 阅读模式的完全重写"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:151
 msgid "Modern ‘About’ window"
@@ -234,28 +234,28 @@ msgstr "现代的“关于”窗口"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:153
 msgid "Changes since 0.41.0:"
-msgstr ""
+msgstr "自 0.41.0 起的更改："
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:155
 msgid "[Preferences] Reader: Add 'Landscape Pages Zoom' setting"
-msgstr ""
+msgstr "[首选项] 阅读器：添加“横幅缩放”设置"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:156
 msgid ""
 "[Preferences] Reader: Add 'Maximum Width' setting (Webtoon reading mode)"
-msgstr ""
+msgstr "[首选项] 阅读器：添加“最大宽度”设置（Webtoon 阅读模式）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:157
 msgid "[Servers] Add Grise Bouille [FR]"
-msgstr ""
+msgstr "[服务器] 添加 Grise Bouille [法]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:158
 msgid "[Servers] MangaNato (MangaNelo): Update"
-msgstr ""
+msgstr "[服务器] MangaNato (MangaNelo)：更新"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:159
 msgid "[Servers] Mangaowl: Update"
-msgstr ""
+msgstr "[服务器] Mangaowl：更新"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:160
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:223
@@ -265,7 +265,7 @@ msgstr "[服务器] Read Comic Online：更新"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:161
 msgid "[L10n] Update French, German, Spanish and Turkish translations"
-msgstr ""
+msgstr "[本地化] 更新法语、德语、西班牙语和土耳其语翻译"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:168
 msgid "[Servers] Add Aralos BD [FR]"
@@ -909,7 +909,7 @@ msgstr "[服务器] Komga：添加服务器同步（阅读进度）"
 msgid ""
 "[Servers] JapScan: Partial fix (Webtoons chapters in single page are not "
 "handled)"
-msgstr "[服务器] JapScan：部分修复（未能处理单页面的卷轴模式章节）"
+msgstr "[服务器] JapScan：部分修复（未能处理单页面的 Webtoon 模式章节）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:478
 msgid ""
@@ -1057,7 +1057,8 @@ msgstr "[卡片] 章节列表：添加按日期排序"
 msgid ""
 "[Reader] Add new pager for Webtoons: Vertical smooth/continuous scrolling (a."
 "k.a. infinite canvas)"
-msgstr "[阅读器] 添加新的分页器——卷轴模式：垂直平滑/连续滚动（又名无限画布）"
+msgstr ""
+"[阅读器] 为 Webtoon 模式添加新的分页器：垂直平滑/连续滚动（又名无限画布）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:569
 msgid "[Download Manager] Adding downloads: Improve responsiveness"
@@ -1771,15 +1772,15 @@ msgstr "在浏览器中打开"
 
 #: ../data/ui/application_window.ui:277
 msgid "Search for comics across all servers"
-msgstr ""
+msgstr "在所有服务器中搜索漫画"
 
 #: ../data/ui/application_window.ui:284
 msgid "Search for servers"
-msgstr ""
+msgstr "搜索服务器"
 
 #: ../data/ui/application_window.ui:339
 msgid "Search by name, server or genre"
-msgstr ""
+msgstr "按名称、服务器或流派搜索"
 
 #: ../data/ui/application_window.ui:386 ../data/ui/menu/card.xml:11
 #: ../data/ui/preferences.ui:200
@@ -1841,7 +1842,7 @@ msgstr "无下载"
 
 #: ../data/ui/explorer.ui:38
 msgid "Search for servers by name or language"
-msgstr ""
+msgstr "按名称或语言搜索服务器"
 
 #: ../data/ui/explorer.ui:454
 msgid "Last Chapter"
@@ -1930,7 +1931,7 @@ msgstr "⬇ 垂直"
 
 #: ../data/ui/menu/reader.xml:27 ../data/ui/preferences.ui:310
 msgid "⬇ Webtoon"
-msgstr "⬇ 卷轴"
+msgstr "⬇ Webtoon"
 
 #: ../data/ui/menu/reader.xml:35
 msgid "Type of Scaling"
@@ -1974,7 +1975,7 @@ msgstr "系统样式"
 
 #: ../data/ui/menu/reader.xml:91
 msgid "Zoom Landscape Pages"
-msgstr "缩放横向页面"
+msgstr "缩放横幅"
 
 #: ../data/ui/menu/reader.xml:95
 msgid "Crop Borders"
@@ -2107,7 +2108,7 @@ msgstr "最大宽度"
 #: ../data/ui/preferences.ui:319
 msgid ""
 "Constrain reader's width to a given maximum size (Webtoon reading mode only)"
-msgstr "将阅读器的宽度限制为给定的最大尺寸（仅限卷轴阅读模式）"
+msgstr "将阅读器的宽度限制为给定的最大尺寸（仅限 Webtoon 阅读模式）"
 
 #: ../data/ui/preferences.ui:337
 msgid "Scaling"
@@ -2119,7 +2120,7 @@ msgstr "图像调整的缩放类型"
 
 #: ../data/ui/preferences.ui:353
 msgid "Landscape Pages Zoom"
-msgstr "横向页面缩放"
+msgstr "横幅缩放"
 
 #: ../data/ui/preferences.ui:355
 msgid ""
@@ -2137,6 +2138,9 @@ msgid ""
 "NOTE: Requires more CPU usage and can cause rendering and animation "
 "slowdowns, especially on mobile devices."
 msgstr ""
+"裁减图像的白边\n"
+"\n"
+"注意：需要使用更多 CPU 资源且可能引起渲染和动画变慢，特别是对移动设备。"
 
 #: ../data/ui/preferences.ui:398
 msgid "Page Numbering"
@@ -2356,12 +2360,12 @@ msgstr "位置作者"
 #: ../komikku/card.py:1039 ../komikku/card.py:1048 ../komikku/explorer.py:549
 #: ../komikku/explorer.py:558
 msgid "Unknown status"
-msgstr ""
+msgstr "未知状态"
 
 #: ../komikku/card.py:1049 ../komikku/explorer.py:179
 #: ../komikku/explorer.py:559
 msgid "Local"
-msgstr ""
+msgstr "本地"
 
 #: ../komikku/categories_editor.py:78 ../komikku/library.py:283
 msgid "Delete?"
@@ -2396,7 +2400,7 @@ msgstr "错误"
 
 #: ../komikku/explorer.py:180
 msgid "Comics stored locally as archives in CBZ/CBR formats"
-msgstr ""
+msgstr "以 CBZ/CBR 归档格式本地存储的漫画"
 
 #: ../komikku/explorer.py:211
 msgid ""
@@ -2410,14 +2414,22 @@ msgid ""
 "\n"
 "NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."
 msgstr ""
+"本地漫画需要特定的目录结构以正确处理。\n"
+"\n"
+"每个漫画必须有自己的文件夹，其中包含以 CBZ 或 CBR 格式的归档文件存储的章节/"
+"卷。\n"
+"\n"
+"文件夹的名称将用作漫画名称。\n"
+"\n"
+"注意：CBR 归档需要“unrar”或“unar”命令行工具。"
 
 #: ../komikku/explorer.py:225
 msgid "Open local folder"
-msgstr ""
+msgstr "打开本地文件夹"
 
 #: ../komikku/explorer.py:271 ../komikku/explorer.py:672
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: ../komikku/explorer.py:427
 #, python-brace-format
@@ -2442,11 +2454,11 @@ msgstr "已固定"
 
 #: ../komikku/explorer.py:747
 msgid "Most populars"
-msgstr ""
+msgstr "最流行"
 
 #: ../komikku/explorer.py:749
 msgid "Collection"
-msgstr ""
+msgstr "合集"
 
 #: ../komikku/explorer.py:771 ../komikku/explorer.py:853
 msgid "Oops, search failed. Please try again."
@@ -2454,11 +2466,11 @@ msgstr "糟糕，搜索失败。请重试。"
 
 #: ../komikku/explorer.py:775
 msgid "No Results Found"
-msgstr ""
+msgstr "未找到结果"
 
 #: ../komikku/explorer.py:776
 msgid "Try a different search"
-msgstr ""
+msgstr "尝试不同的搜索"
 
 #: ../komikku/explorer.py:858
 msgid "No results"
@@ -2470,7 +2482,7 @@ msgstr "服务器"
 
 #: ../komikku/explorer.py:949
 msgid "Global Search"
-msgstr ""
+msgstr "全局搜索"
 
 #: ../komikku/explorer.py:978
 msgid "Add to Library"
@@ -2514,7 +2526,7 @@ msgstr "欢迎使用 Komikku"
 
 #: ../komikku/library.py:501
 msgid "Loading…"
-msgstr ""
+msgstr "正在加载……"
 
 #: ../komikku/library.py:615
 msgid "Failed to update reading status"
@@ -2713,11 +2725,11 @@ msgstr "错误：{}"
 
 #: ../komikku/servers/exceptions.py:16
 msgid "Local archive is corrupt."
-msgstr ""
+msgstr "本地归档已损坏。"
 
 #: ../komikku/servers/exceptions.py:21
 msgid "Unable to extract page. Maybe the 'unrar' tool is missing?"
-msgstr ""
+msgstr "无法提取页面。可能缺少“unrar”工具？"
 
 #: ../komikku/servers/exceptions.py:26
 msgid "Failed to bypass Cloudflare protection. Please try again."
