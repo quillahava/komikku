@@ -2,6 +2,11 @@ spinner {
     color: #ee4035;
 }
 
+headerbar label {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 /* Library page */
 flowbox flowboxchild {
     padding: 6px; /* default is 4px */

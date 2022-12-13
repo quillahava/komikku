@@ -158,6 +158,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
     headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
     headerbar = Gtk.Template.Child('headerbar')
     left_button = Gtk.Template.Child('left_button')
+    left_extra_button_stack = Gtk.Template.Child('left_extra_button_stack')
     title_stack = Gtk.Template.Child('title_stack')
     right_button_stack = Gtk.Template.Child('right_button_stack')
     menu_button = Gtk.Template.Child('menu_button')
