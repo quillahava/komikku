@@ -626,7 +626,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         shortcuts_overview.set_transient_for(self)
         shortcuts_overview.present()
 
-    def quit(self, *args):
+    def quit(self, *args, force=False):
         def do_quit():
             self.save_window_size()
             backup_db()
@@ -652,11 +652,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
             if self.updater.running:
                 message.append(_('Some mangas are currently being updated.'))
 
-            self.confirm(
-                _('Quit?'),
-                '\n'.join(message),
-                confirm_callback
-            )
+            if not force:
+                self.confirm(
+                    _('Quit?'),
+                    '\n'.join(message),
+                    confirm_callback
+                )
+            else:
+                confirm_callback()
 
             return Gdk.EVENT_STOP
 

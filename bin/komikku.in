@@ -42,13 +42,16 @@ def install_excepthook():
         old_hook(etype, evalue, etb)
 
         context = GLib.main_context_default()
-        while context.iteration(False):
+        done = False
+        while context.iteration():
+            if done:
+                continue
             app = Gio.Application.get_default()
-            if app is not None:
-                if app.window:
-                    app.window.quit()
-                else:
-                    app.quit()
+            if app.window:
+                app.window.quit(force=True)
+            else:
+                app.quit()
+            done = True
 
         sys.exit()
 
