@@ -272,7 +272,7 @@ class ChapterItemWrapper(GObject.Object):
     }
 
     def __init__(self, chapter):
-        super().__init__()
+        GObject.Object.__init__(self)
         self.chapter = chapter
         self.download = None
 
@@ -287,7 +287,7 @@ class ChaptersListModel(Gtk.SortListModel):
         self.sorter.set_sort_func(self.sort_func)
         self.list_store = Gio.ListStore(item_type=ChapterItemWrapper)
 
-        super().__init__(model=self.list_store, sorter=self.sorter)
+        Gtk.SortListModel.__init__(self, model=self.list_store, sorter=self.sorter)
 
     def clear(self):
         self.list_store.remove_all()
@@ -296,12 +296,11 @@ class ChaptersListModel(Gtk.SortListModel):
         self.sorter.set_sort_func(self.sort_func)
 
     def populate(self, chapters):
-        self.clear()
-
         items = []
         for chapter in chapters:
             items.append(ChapterItemWrapper(chapter))
 
+        self.clear()
         self.list_store.splice(0, 0, items)
 
 
@@ -727,78 +726,31 @@ class ChaptersList:
                 break
 
 
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/card_chapters_list_row.ui')
 class ChaptersListRow(Gtk.Box):
+    __gtype_name__ = 'ChaptersListRow'
+
+    primary_hbox = Gtk.Template.Child('primary_hbox')
+    title_label = Gtk.Template.Child('title_label')
+    scanlators_label = Gtk.Template.Child('scanlators_label')
+    menubutton = Gtk.Template.Child('menubutton')
+    secondary_hbox = Gtk.Template.Child('secondary_hbox')
+    badge_label = Gtk.Template.Child('badge_label')
+    subtitle_label = Gtk.Template.Child('subtitle_label')
+    download_progress_progressbar = Gtk.Template.Child('download_progress_progressbar')
+    download_stop_button = Gtk.Template.Child('download_stop_button')
+    read_progress_label = Gtk.Template.Child('read_progress_label')
+
     def __init__(self, card):
-        super().__init__(orientation=Gtk.Orientation.VERTICAL)
+        Gtk.Box.__init__(self)
 
         self.card = card
         self.chapter = None
 
-        #
-        # Title, scanlators, action button
-        #
-        self.primary_hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin_top=6, margin_end=6, margin_bottom=0, margin_start=12)
-        self.append(self.primary_hbox)
-
-        # Vertical box for title and scanlators
-        # valign property is set to CENTER to allow title to be vertically centered if scanlators are missing
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.CENTER, spacing=4, hexpand=1)
-        self.primary_hbox.append(vbox)
-
-        # Title
-        self.title_label = Gtk.Label(xalign=0, valign=Gtk.Align.CENTER, wrap=True)
-        self.title_label.add_css_class('body')
-        vbox.append(self.title_label)
-
-        # Scanlators
-        self.scanlators_label = Gtk.Label(xalign=0, valign=Gtk.Align.CENTER, wrap=True, visible=False)
-        self.scanlators_label.add_css_class('dim-label')
-        self.scanlators_label.add_css_class('caption')
-        vbox.append(self.scanlators_label)
-
         # Menu button
-        self.menu_model = Gio.Menu()
-        menu_button = Gtk.MenuButton()
-        menu_button.set_icon_name('view-more-symbolic')
-        menu_button.add_css_class('flat')
-        menu_button.set_menu_model(self.menu_model)
-        menu_button.get_popover().connect('show', self.update_menu)
-        self.primary_hbox.append(menu_button)
-
-        #
-        # Recent badge, date, download status, page counter
-        #
-        self.secondary_hbox = Gtk.Box(
-            orientation=Gtk.Orientation.HORIZONTAL, spacing=12, hexpand=1,
-            margin_top=0, margin_end=6, margin_bottom=6, margin_start=12
-        )
-
-        # Recent badge
-        self.badge_label = Gtk.Label(xalign=0, yalign=1, valign=Gtk.Align.CENTER, visible=False)
-        self.badge_label.add_css_class('caption')
-        self.badge_label.add_css_class('badge')
-        self.badge_label.set_text(_('New'))
-        self.secondary_hbox.append(self.badge_label)
-
-        # Date + Download status (text or progress bar)
-        self.subtitle_label = Gtk.Label(xalign=0, yalign=1, halign=Gtk.Align.START, valign=Gtk.Align.CENTER, hexpand=1)
-        self.subtitle_label.add_css_class('caption')
-        self.secondary_hbox.append(self.subtitle_label)
-
-        # Download progress
-        self.download_progress_progressbar = Gtk.ProgressBar(halign=Gtk.Align.FILL, valign=Gtk.Align.CENTER, hexpand=1, visible=False)
-        self.secondary_hbox.append(self.download_progress_progressbar)
-
-        self.download_stop_button = Gtk.Button.new_from_icon_name('media-playback-stop-symbolic')
-        self.download_stop_button.hide()
-        self.secondary_hbox.append(self.download_stop_button)
-
-        # Read progress: nb read / nb pages
-        self.read_progress_label = Gtk.Label(xalign=0.5, yalign=1, halign=Gtk.Align.CENTER)
-        self.read_progress_label.add_css_class('caption')
-        self.secondary_hbox.append(self.read_progress_label)
-
-        self.append(self.secondary_hbox)
+        self.menubutton_model = Gio.Menu()
+        self.menubutton.set_menu_model(self.menubutton_model)
+        self.menubutton.get_popover().connect('show', self.update_menu)
 
         # Gesture to detect click on mouse button 3 and enter in selection mode
         self.gesture_right_click = Gtk.GestureClick.new()
@@ -920,6 +872,7 @@ class ChaptersListRow(Gtk.Box):
             self.primary_hbox.props.margin_bottom = 6
         else:
             self.secondary_hbox.hide()
+            # Increase top and bottom margins so that all rows have the same height
             self.primary_hbox.props.margin_top = 17
             self.primary_hbox.props.margin_bottom = 16
 
@@ -930,11 +883,11 @@ class ChaptersListRow(Gtk.Box):
             return
 
         position = self.position
-        self.menu_model.remove_all()
+        self.menubutton_model.remove_all()
 
         section_menu_model = Gio.Menu()
         section = Gio.MenuItem.new_section(None, section_menu_model)
-        self.menu_model.append_item(section)
+        self.menubutton_model.append_item(section)
         if not self.chapter.downloaded:
             menu_item = Gio.MenuItem.new(_('Download'))
             menu_item.set_action_and_target_value('app.card.download-chapter', GLib.Variant.new_uint16(position))
@@ -946,7 +899,7 @@ class ChaptersListRow(Gtk.Box):
 
         section_menu_model = Gio.Menu()
         section = Gio.MenuItem.new_section(None, section_menu_model)
-        self.menu_model.append_item(section)
+        self.menubutton_model.append_item(section)
         if not self.chapter.read:
             menu_item = Gio.MenuItem.new(_('Mark as Read'))
             menu_item.set_action_and_target_value('app.card.mark-chapter-read', GLib.Variant.new_uint16(position))

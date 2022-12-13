@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <requires lib="gtk" version="4.6"/>
+  <template class="ChaptersListRow" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkBox" id="primary_hbox">
+        <property name="margin-bottom">0</property>
+        <property name="margin-end">6</property>
+        <property name="margin-start">12</property>
+        <property name="margin-top">6</property>
+        <child>
+          <object class="GtkBox">
+            <property name="hexpand">True</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">4</property>
+            <!-- valign property is set to CENTER to allow title to be vertically centered if scanlators are missing -->
+            <property name="valign">center</property>
+            <child>
+              <object class="GtkLabel" id="title_label">
+                <property name="css-classes">body</property>
+                <property name="valign">center</property>
+                <property name="wrap">True</property>
+                <property name="xalign">0.0</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="scanlators_label">
+                <property name="css-classes">dim-label
+caption</property>
+                <property name="valign">center</property>
+                <property name="wrap">True</property>
+                <property name="xalign">0.0</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkMenuButton" id="menubutton">
+            <property name="css-classes">flat</property>
+            <property name="icon-name">view-more-symbolic</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="secondary_hbox">
+        <property name="hexpand">True</property>
+        <property name="margin-bottom">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-start">12</property>
+        <property name="margin-top">0</property>
+        <property name="spacing">12</property>
+        <child>
+          <object class="GtkLabel" id="badge_label">
+            <property name="css-classes">caption
+badge</property>
+            <property name="label" translatable="yes">New</property>
+            <property name="valign">center</property>
+            <property name="xalign">0.0</property>
+            <property name="yalign">1.0</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="subtitle_label">
+            <property name="css-classes">caption</property>
+            <property name="halign">start</property>
+            <property name="hexpand">True</property>
+            <property name="valign">center</property>
+            <property name="xalign">0.0</property>
+            <property name="yalign">1.0</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkProgressBar" id="download_progress_progressbar">
+            <property name="hexpand">True</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="download_stop_button">
+            <property name="icon-name">media-playback-stop-symbolic</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="read_progress_label">
+            <property name="css-classes">caption</property>
+            <property name="xalign">0.5</property>
+            <property name="yalign">1.0</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
