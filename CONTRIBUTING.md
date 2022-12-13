@@ -10,6 +10,7 @@ Here are a few links to help you get started with Python, the GTK Python binding
 - [Python API Reference](https://amolenaar.github.io/pgi-docgen/)
 - [C API Reference](https://docs.gtk.org/)
 - [Tutorials](https://developer.gnome.org/documentation/tutorials.html)
+- [PyGObject Guide](https://rafaelmardojai.pages.gitlab.gnome.org/pygobject-guide/)
 - [GNOME Builder](https://wiki.gnome.org/Apps/Builder)
 
 Don't hesitate to join [our Matrix room](https://matrix.to/#/#komikku-gnome:matrix.org) to come talk to us and ask us any questions you might have.
