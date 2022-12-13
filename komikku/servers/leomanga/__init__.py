@@ -12,5 +12,5 @@ class Leomanga(Madara):
     name = 'Lector Manga (Leomanga)'
     lang = 'es'
 
-    base_url = 'https://lectormanga.me'
+    base_url = 'https://y2.lectormanga.me'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
