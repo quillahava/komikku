@@ -197,18 +197,26 @@ def init_db():
         UNIQUE (category_id, manga_id)
     );"""
 
+    sql_create_indexes = [
+        'CREATE INDEX IF NOT EXISTS idx_chapters_downloaded on chapters(manga_id, downloaded);',
+        'CREATE INDEX IF NOT EXISTS idx_chapters_recent on chapters(manga_id, recent);',
+        'CREATE INDEX IF NOT EXISTS idx_chapters_read on chapters(manga_id, read);',
+    ]
+
     db_conn = create_db_connection()
     if db_conn is not None:
         db_version = db_conn.execute('PRAGMA user_version').fetchone()[0]
 
+        execute_sql(db_conn, sql_create_mangas_table)
+        execute_sql(db_conn, sql_create_chapters_table)
+        execute_sql(db_conn, sql_create_downloads_table)
+        execute_sql(db_conn, sql_create_categories_table)
+        execute_sql(db_conn, sql_create_categories_mangas_association_table)
+        for sql_create_index in sql_create_indexes:
+            execute_sql(db_conn, sql_create_index)
+
         if db_version == 0:
             # First launch
-            execute_sql(db_conn, sql_create_mangas_table)
-            execute_sql(db_conn, sql_create_chapters_table)
-            execute_sql(db_conn, sql_create_downloads_table)
-            execute_sql(db_conn, sql_create_categories_table)
-            execute_sql(db_conn, sql_create_categories_mangas_association_table)
-
             db_conn.execute('PRAGMA user_version = {0}'.format(VERSION))
 
         if 0 < db_version <= 1:
@@ -220,13 +228,6 @@ def init_db():
             # Version 0.12.0
             if execute_sql(db_conn, 'ALTER TABLE mangas ADD COLUMN borders_crop integer;'):
                 db_conn.execute('PRAGMA user_version = {0}'.format(3))
-
-        if 0 < db_version <= 3:
-            # Version 0.15.0
-            execute_sql(db_conn, 'CREATE INDEX idx_chapters_downloaded on chapters(manga_id, downloaded);')
-            execute_sql(db_conn, 'CREATE INDEX idx_chapters_recent on chapters(manga_id, recent);')
-            execute_sql(db_conn, 'CREATE INDEX idx_chapters_read on chapters(manga_id, read);')
-            db_conn.execute('PRAGMA user_version = {0}'.format(4))
 
         if 0 < db_version <= 4:
             # Version 0.16.0
