@@ -120,7 +120,6 @@ class ExplorerSearchPage:
         popover = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
-        last = None
         for index, filter_ in enumerate(self.parent.server.filters):
             if filter_['type'] == 'checkbox':
                 filter_widget = build_checkbox(filter_)
@@ -133,10 +132,6 @@ class ExplorerSearchPage:
                     filter_widget = build_select_multiple(filter_)
                 else:
                     raise NotImplementedError('Invalid select value_type')
-
-                if last:
-                    sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
-                    vbox.append(sep)
             else:
                 raise NotImplementedError('Invalid filter type')
 
@@ -145,7 +140,6 @@ class ExplorerSearchPage:
 
             vbox.append(Gtk.Label(label=filter_['name'], tooltip_text=filter_['description']))
             vbox.append(filter_widget)
-            last = filter_widget
 
         popover.set_child(vbox)
 
