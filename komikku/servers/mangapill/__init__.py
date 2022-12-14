@@ -36,7 +36,7 @@ class Mangapill(Server):
                 {'key': 'all', 'name': _('All')},
                 {'key': 'manga', 'name': _('Manga')},
                 {'key': 'novel', 'name': _('Novel')},
-                {'key': 'one-shot', 'name': _('One shot')},
+                {'key': 'one-shot', 'name': _('One Shot')},
                 {'key': 'doujinshi', 'name': _('Doujinshi')},
                 {'key': 'manhwa', 'name': _('Manhwa')},
                 {'key': 'manhua', 'name': _('Manhua')},
