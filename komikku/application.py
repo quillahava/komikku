@@ -452,20 +452,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] Webtoon reading mode: Add srcolling with Page Up and Page Down keys</li>
-                <li>[Explorer] Global search: Put servers without results at end</li>
-                <li>[Preferences] Advanced: Add new option to disable GTK animations (useful with E Ink e-readers)</li>
-                <li>[Servers] Add 3asq (مانجا العاش) [AR]</li>
-                <li>[Servers] Apoll Comics: Update</li>
-                <li>[Servers] Best Manga: Update</li>
-                <li>[Servers] JapScan: Update</li>
+                <li>New icon 🎉 Thank you to its author Tobias Bernard</li>
+                <li>[Card] Chapters are now downloaded in ascending order of chapter numbers</li>
+                <li>[Servers] Add Manga Tube [DE]</li>
+                <li>[Servers] Dragon Ball Multiverse: Update</li>
                 <li>[Servers] Lector Manga (Leomanga): Update</li>
-                <li>[Servers] LeviatanScans: Update</li>
-                <li>[Servers] Mangaowl: Update</li>
-                <li>[Servers] Read Manga: Update</li>
-                <li>[Servers] Remanga: Update</li>
-                <li>[Servers] Xoxocomics: Update</li>
-                <li>[Servers] Kirei Cake: Disable</li>
+                <li>[Servers] Mangapill: Update</li>
+                <li>[L10n] Update French and Simplified Chinese translations</li>
+                <li>Bugs fixes</li>
             </ul>
         """)
 

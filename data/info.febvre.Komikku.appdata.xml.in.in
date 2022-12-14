@@ -91,6 +91,20 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
+        <release version="1.6.0" date="2022-12-14">
+            <description>
+                <ul>
+                    <li>New icon 🎉 Thank you to its author Tobias Bernard</li>
+                    <li>[Card] Chapters are now downloaded in ascending order of chapter numbers</li>
+                    <li>[Servers] Add Manga Tube [DE]</li>
+                    <li>[Servers] Dragon Ball Multiverse: Update</li>
+                    <li>[Servers] Lector Manga (Leomanga): Update</li>
+                    <li>[Servers] Mangapill: Update</li>
+                    <li>[L10n] Update French and Simplified Chinese translations</li>
+                    <li>Bugs fixes</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.5.0" date="2022-11-27">
             <description>
                 <ul>
