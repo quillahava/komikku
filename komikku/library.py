@@ -568,6 +568,7 @@ class Library:
 
         self.window.left_button.set_tooltip_text(_('Add new comic'))
         self.window.left_button.set_icon_name('list-add-symbolic')
+        self.window.left_extra_button_stack.show()
 
         self.update_headerbar_buttons()
 
