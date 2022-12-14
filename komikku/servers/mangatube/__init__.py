@@ -37,11 +37,12 @@ class Mangatube(Server):
             'default': None,
             'options': [
                 {'key': '0', 'name': _('Manga')},
-                {'key': '2', 'name': _('Manhua')},
-                {'key': '4', 'name': _('Comic')},
                 {'key': '1', 'name': _('Manhwa')},
+                {'key': '2', 'name': _('Manhua')},
                 {'key': '3', 'name': _('Webtoon')},
+                {'key': '4', 'name': _('Comic')},
                 {'key': '5', 'name': _('One Shot')},
+                {'key': '6', 'name': _('Light Novel')},
             ]
         },
         {
