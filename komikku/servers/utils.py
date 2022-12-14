@@ -256,11 +256,11 @@ def get_soup_element_inner_text(outer, text=None):
 
     for el in outer:
         if isinstance(el, NavigableString):
-            text.append(el)
+            text.append(el.strip())
         else:
             get_soup_element_inner_text(el, text)
 
-    return ''.join(text).strip()
+    return ' '.join(text).strip()
 
 
 def remove_emoji_from_string(text):
