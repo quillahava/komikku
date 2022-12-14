@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 0.30.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-13 13:37+0100\n"
+"POT-Creation-Date: 2022-12-14 12:22+0100\n"
 "PO-Revision-Date: 2022-09-07 09:56+0200\n"
 "Last-Translator: Óscar Fernández Díaz <oscfdezdz@tuta.io>\n"
 "Language-Team: Spanish\n"
@@ -1917,105 +1917,105 @@ msgstr ""
 "comprando los cómics oficiales cuando estén\n"
 "disponibles en su región/idioma."
 
-#: ../data/ui/application_window.ui:124 ../data/ui/menu/main.xml:11
+#: ../data/ui/application_window.ui:125 ../data/ui/menu/main.xml:11
 msgid "Download Manager"
 msgstr "Gestor de descargas"
 
-#: ../data/ui/application_window.ui:164 ../data/ui/menu/main.xml:19
+#: ../data/ui/application_window.ui:165 ../data/ui/menu/main.xml:19
 msgid "History"
 msgstr "Historial"
 
-#: ../data/ui/application_window.ui:186
+#: ../data/ui/application_window.ui:191
 msgid "Toggle category sidebar"
 msgstr "Conmutar la barra lateral de la categoría"
 
-#: ../data/ui/application_window.ui:196
+#: ../data/ui/application_window.ui:203
 msgid "Menu"
 msgstr "Menú"
 
-#: ../data/ui/application_window.ui:209 ../data/ui/application_window.ui:294
+#: ../data/ui/application_window.ui:216 ../data/ui/application_window.ui:301
 msgid "Search"
 msgstr "Buscar"
 
-#: ../data/ui/application_window.ui:221
+#: ../data/ui/application_window.ui:228
 msgid "Resume reading"
 msgstr "Reanudar la lectura"
 
-#: ../data/ui/application_window.ui:233
+#: ../data/ui/application_window.ui:240
 msgid "Toggle fullscreen mode"
 msgstr "Conmutar modo de pantalla completa"
 
-#: ../data/ui/application_window.ui:245
+#: ../data/ui/application_window.ui:252
 msgid "Start/Stop download"
 msgstr "Iniciar/Detener descarga"
 
-#: ../data/ui/application_window.ui:257 ../data/ui/menu/card.xml:60
+#: ../data/ui/application_window.ui:264 ../data/ui/menu/card.xml:60
 msgid "Open in Browser"
 msgstr "Abrir en el navegador"
 
-#: ../data/ui/application_window.ui:273
+#: ../data/ui/application_window.ui:280
 msgid "Search for comics across all servers"
 msgstr ""
 
-#: ../data/ui/application_window.ui:280
+#: ../data/ui/application_window.ui:287
 msgid "Search for servers"
 msgstr ""
 
-#: ../data/ui/application_window.ui:334
+#: ../data/ui/application_window.ui:341
 msgid "Search by name, server or genre"
 msgstr ""
 
-#: ../data/ui/application_window.ui:381 ../data/ui/menu/card.xml:11
+#: ../data/ui/application_window.ui:388 ../data/ui/menu/card.xml:11
 #: ../data/ui/preferences.ui:198
 msgid "Update"
 msgstr "Actualizar"
 
-#: ../data/ui/application_window.ui:395 ../data/ui/download_manager.ui:80
+#: ../data/ui/application_window.ui:402 ../data/ui/download_manager.ui:80
 #: ../data/ui/menu/card.xml:7
 msgid "Delete"
 msgstr "Eliminar"
 
-#: ../data/ui/application_window.ui:460
+#: ../data/ui/application_window.ui:467
 msgid "Discover new readings"
 msgstr "Descubra nuevas lecturas"
 
-#: ../data/ui/application_window.ui:556
+#: ../data/ui/application_window.ui:563
 msgid "OK"
 msgstr "VALE"
 
-#: ../data/ui/application_window.ui:583
+#: ../data/ui/application_window.ui:590
 msgid "Info"
 msgstr "Información"
 
-#: ../data/ui/application_window.ui:684
+#: ../data/ui/application_window.ui:691
 msgid "Resume"
 msgstr "Reanudar"
 
-#: ../data/ui/application_window.ui:705 ../data/ui/explorer.ui:312
+#: ../data/ui/application_window.ui:712 ../data/ui/explorer.ui:312
 msgid "Details"
 msgstr "Detalles"
 
-#: ../data/ui/application_window.ui:736 ../data/ui/explorer.ui:343
+#: ../data/ui/application_window.ui:743 ../data/ui/explorer.ui:343
 msgid "Genres"
 msgstr "Géneros"
 
-#: ../data/ui/application_window.ui:774 ../data/ui/explorer.ui:381
+#: ../data/ui/application_window.ui:781 ../data/ui/explorer.ui:381
 msgid "Scanlators"
 msgstr "Scanlators"
 
-#: ../data/ui/application_window.ui:847
+#: ../data/ui/application_window.ui:854
 msgid "Last Update"
 msgstr "Última actualización"
 
-#: ../data/ui/application_window.ui:884
+#: ../data/ui/application_window.ui:891
 msgid "Size on Disk"
 msgstr "Tamaño en disco"
 
-#: ../data/ui/application_window.ui:915 ../data/ui/explorer.ui:485
+#: ../data/ui/application_window.ui:922 ../data/ui/explorer.ui:485
 msgid "Synopsis"
 msgstr "Sinopsis"
 
-#: ../data/ui/application_window.ui:1046 ../data/ui/categories_editor.ui:84
+#: ../data/ui/application_window.ui:1053 ../data/ui/categories_editor.ui:84
 msgid "No categories"
 msgstr "Sin categorías"
 
@@ -2461,46 +2461,46 @@ msgstr "No se admiten múltiples URLs"
 msgid "Invalid URL {}, not handled by any server."
 msgstr "URL inválida {}, no manejada por ningún servidor."
 
-#: ../komikku/application.py:387 ../komikku/card.py:75 ../komikku/card.py:76
+#: ../komikku/application.py:388 ../komikku/card.py:75 ../komikku/card.py:76
 #: ../komikku/downloader.py:335 ../komikku/downloader.py:336
 #: ../komikku/library.py:311 ../komikku/library.py:312
 #: ../komikku/reader/__init__.py:283
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../komikku/application.py:388
+#: ../komikku/application.py:389
 msgid "Yes"
 msgstr "Sí"
 
-#: ../komikku/application.py:479
+#: ../komikku/application.py:480
 msgid "Join Chat"
 msgstr ""
 
-#: ../komikku/application.py:480
+#: ../komikku/application.py:481
 msgid "Sponsor via Ko-fi"
 msgstr "Patrocinar a través de Ko-fi"
 
-#: ../komikku/application.py:481
+#: ../komikku/application.py:482
 msgid "Sponsor via Liberapay"
 msgstr "Patrocinar a través de Liberapay"
 
-#: ../komikku/application.py:482
+#: ../komikku/application.py:483
 msgid "Sponsor via Paypal"
 msgstr "Patrocinar a través de Paypal"
 
-#: ../komikku/application.py:656
+#: ../komikku/application.py:657
 msgid "Are you sure you want to quit?"
 msgstr "¿Está seguro de que quiere salir?"
 
-#: ../komikku/application.py:659
+#: ../komikku/application.py:660
 msgid "Some chapters are currently being downloaded."
 msgstr "Se están descargando algunos capítulos."
 
-#: ../komikku/application.py:661
+#: ../komikku/application.py:662
 msgid "Some mangas are currently being updated."
 msgstr "Se están actualizando algunos mangas."
 
-#: ../komikku/application.py:664
+#: ../komikku/application.py:666
 msgid "Quit?"
 msgstr "¿Salir?"
 
@@ -2532,44 +2532,44 @@ msgstr ""
 msgid "Failed to get manga URL"
 msgstr "Error en la obtención de la URL del manga"
 
-#: ../komikku/card.py:610 ../komikku/card.py:705
+#: ../komikku/card.py:611 ../komikku/card.py:706
 msgid "Failed to update chapters reading status"
 msgstr "Fallo en la actualización del estado de lectura de los capítulos"
 
-#: ../komikku/card.py:833 ../komikku/card.py:1022
+#: ../komikku/card.py:834 ../komikku/card.py:1023
 msgid "%m/%d/%Y"
 msgstr "%d/%m/%Y"
 
-#: ../komikku/card.py:892
+#: ../komikku/card.py:893
 msgid "Download"
 msgstr "Descargar"
 
-#: ../komikku/card.py:896
+#: ../komikku/card.py:897
 msgid "Clear and Reset"
 msgstr "Limpiar y reiniciar"
 
-#: ../komikku/card.py:904
+#: ../komikku/card.py:905
 msgid "Mark as Read"
 msgstr "Marcar como leído"
 
-#: ../komikku/card.py:908
+#: ../komikku/card.py:909
 msgid "Mark as Unread"
 msgstr "Marcar como no leído"
 
-#: ../komikku/card.py:912
+#: ../komikku/card.py:913
 msgid "Mark Previous Chapters as Read"
 msgstr "Marcar capítulos anteriores como leídos"
 
-#: ../komikku/card.py:987 ../komikku/explorer/card.py:150
+#: ../komikku/card.py:988 ../komikku/explorer/card.py:150
 msgid "Unknown author"
 msgstr "Autor desconocido"
 
-#: ../komikku/card.py:993 ../komikku/card.py:1002
+#: ../komikku/card.py:994 ../komikku/card.py:1003
 #: ../komikku/explorer/card.py:156 ../komikku/explorer/card.py:165
 msgid "Unknown status"
 msgstr ""
 
-#: ../komikku/card.py:1003 ../komikku/explorer/__init__.py:105
+#: ../komikku/card.py:1004 ../komikku/explorer/__init__.py:105
 #: ../komikku/explorer/card.py:166
 msgid "Local"
 msgstr ""
@@ -2626,19 +2626,19 @@ msgstr ""
 msgid "Open local folder"
 msgstr ""
 
-#: ../komikku/explorer/__init__.py:224
+#: ../komikku/explorer/__init__.py:225
 msgid "Servers"
 msgstr "Servidores"
 
-#: ../komikku/explorer/__init__.py:230
+#: ../komikku/explorer/__init__.py:231
 msgid "Global Search"
 msgstr ""
 
-#: ../komikku/explorer/__init__.py:256 ../komikku/explorer/card.py:87
+#: ../komikku/explorer/__init__.py:257 ../komikku/explorer/card.py:87
 msgid "Read"
 msgstr "Leer"
 
-#: ../komikku/explorer/__init__.py:259
+#: ../komikku/explorer/__init__.py:260
 msgid "Add to Library"
 msgstr "Añadir a la biblioteca"
 
@@ -2651,31 +2651,31 @@ msgstr "Manga {0} añadido"
 msgid "Oops, failed to retrieve manga's information."
 msgstr "Ups, ha fallado la recuperación de la información del manga."
 
-#: ../komikku/explorer/search.py:164
+#: ../komikku/explorer/search.py:158
 msgid "Oops, server website URL is unknown."
 msgstr "Ups, la URL del sitio web del servidor es desconocida."
 
-#: ../komikku/explorer/search.py:217
+#: ../komikku/explorer/search.py:211
 msgid "Most populars"
 msgstr ""
 
-#: ../komikku/explorer/search.py:219
+#: ../komikku/explorer/search.py:213
 msgid "Collection"
 msgstr ""
 
-#: ../komikku/explorer/search.py:241 ../komikku/explorer/search.py:319
+#: ../komikku/explorer/search.py:235 ../komikku/explorer/search.py:313
 msgid "Oops, search failed. Please try again."
 msgstr "Ups, la búsqueda ha fallado. Por favor, inténtelo de nuevo."
 
-#: ../komikku/explorer/search.py:245
+#: ../komikku/explorer/search.py:239
 msgid "No Results Found"
 msgstr ""
 
-#: ../komikku/explorer/search.py:246
+#: ../komikku/explorer/search.py:240
 msgid "Try a different search"
 msgstr ""
 
-#: ../komikku/explorer/search.py:324
+#: ../komikku/explorer/search.py:318
 msgid "No results"
 msgstr "Sin resultados"
 
@@ -2986,6 +2986,7 @@ msgid "Pornographic"
 msgstr "Pornográfico"
 
 #: ../komikku/servers/mangapill/__init__.py:31
+#: ../komikku/servers/mangatube/__init__.py:34
 #: ../komikku/servers/multi/manga_stream.py:50
 msgid "Type"
 msgstr "Tipo"
@@ -2996,6 +2997,7 @@ msgid "Type of comics to search for"
 msgstr "Tipo de cómics a buscar"
 
 #: ../komikku/servers/mangapill/__init__.py:37
+#: ../komikku/servers/mangatube/__init__.py:39
 #: ../komikku/servers/multi/manga_stream.py:56
 msgid "Manga"
 msgstr "Manga"
@@ -3005,19 +3007,22 @@ msgid "Novel"
 msgstr "Novela"
 
 #: ../komikku/servers/mangapill/__init__.py:39
-msgid "One shot"
-msgstr "One shot"
+#: ../komikku/servers/mangatube/__init__.py:44
+msgid "One Shot"
+msgstr ""
 
 #: ../komikku/servers/mangapill/__init__.py:40
 msgid "Doujinshi"
 msgstr "Doujinshi"
 
 #: ../komikku/servers/mangapill/__init__.py:41
+#: ../komikku/servers/mangatube/__init__.py:40
 #: ../komikku/servers/multi/manga_stream.py:57
 msgid "Manhwa"
 msgstr "Manhwa"
 
 #: ../komikku/servers/mangapill/__init__.py:42
+#: ../komikku/servers/mangatube/__init__.py:41
 #: ../komikku/servers/multi/manga_stream.py:58
 msgid "Manhua"
 msgstr "Manhua"
@@ -3025,6 +3030,43 @@ msgstr "Manhua"
 #: ../komikku/servers/mangapill/__init__.py:43
 msgid "OEL"
 msgstr "OEL"
+
+#: ../komikku/servers/mangatube/__init__.py:35
+msgid "Type of Serie"
+msgstr ""
+
+#: ../komikku/servers/mangatube/__init__.py:42
+msgid "Webtoon"
+msgstr ""
+
+#: ../komikku/servers/mangatube/__init__.py:43
+#: ../komikku/servers/multi/manga_stream.py:59
+msgid "Comic"
+msgstr "Cómic"
+
+#: ../komikku/servers/mangatube/__init__.py:45
+msgid "Light Novel"
+msgstr ""
+
+#: ../komikku/servers/mangatube/__init__.py:51
+msgid "Age Rating"
+msgstr ""
+
+#: ../komikku/servers/mangatube/__init__.py:52
+msgid "Maturity"
+msgstr ""
+
+#: ../komikku/servers/mangatube/__init__.py:56
+msgid "Without"
+msgstr ""
+
+#: ../komikku/servers/mangatube/__init__.py:57
+msgid "16+"
+msgstr ""
+
+#: ../komikku/servers/mangatube/__init__.py:58
+msgid "18+"
+msgstr ""
 
 #: ../komikku/servers/multi/madara.py:340
 #: ../komikku/servers/readmanhwa/__init__.py:45
@@ -3035,10 +3077,6 @@ msgstr "Contenido inapropiado"
 #: ../komikku/servers/readmanhwa/__init__.py:46
 msgid "Whether to show manga containing NSFW content"
 msgstr "Si se muestra el manga con contenido inapropiado"
-
-#: ../komikku/servers/multi/manga_stream.py:59
-msgid "Comic"
-msgstr "Cómic"
 
 #: ../komikku/updater.py:98
 msgid "Library update completed with errors"
@@ -3081,6 +3119,9 @@ msgid "No Internet connection, timeout or server down"
 msgstr ""
 "Sin conexión a Internet, se ha agotado el tiempo de espera o se ha caído el "
 "servidor"
+
+#~ msgid "One shot"
+#~ msgstr "One shot"
 
 #~ msgid "Read your favorite manga online or offline"
 #~ msgstr "Lea su manga favorito con o sin conexión"
