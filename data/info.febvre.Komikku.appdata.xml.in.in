@@ -91,6 +91,15 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
+        <release version="1.6.1" date="2022-12-14">
+            <description>
+                <p>Bug-fix release:</p>
+                <ul>
+                    <li>Missing database indexes</li>
+                    <li>Disappearance of the categories toggle button after leaving the library</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.6.0" date="2022-12-14">
             <description>
                 <ul>
