@@ -18,10 +18,14 @@ from komikku.utils import log_error_traceback
 class ExplorerSearchPage:
     global_search_mode = False
     search_filters = None
+
     lock_search = False
     lock_most_populars = False
+    lock_latest_updates = False
+
     stop_search = False
     stop_most_populars = False
+    stop_latest_updates = False
 
     def __init__(self, parent):
         self.parent = parent
@@ -46,6 +50,11 @@ class ExplorerSearchPage:
         self.most_populars_status_page = self.parent.search_page_most_populars_status_page
         self.most_populars_spinner = self.parent.search_page_most_populars_spinner
 
+        self.latest_updates_stack = self.parent.search_page_latest_updates_stack
+        self.latest_updates_listbox = self.parent.search_page_latest_updates_listbox
+        self.latest_updates_status_page = self.parent.search_page_latest_updates_status_page
+        self.latest_updates_spinner = self.parent.search_page_latest_updates_spinner
+
         self.stack.connect('notify::visible-child', self.on_page_changed)
 
         self.server_website_button.connect('clicked', self.on_server_website_button_clicked)
@@ -55,12 +64,22 @@ class ExplorerSearchPage:
         self.search_listbox.connect('row-activated', self.on_manga_clicked)
 
         self.most_populars_listbox.connect('row-activated', self.on_manga_clicked)
+        self.latest_updates_listbox.connect('row-activated', self.on_manga_clicked)
 
         # Add Adw.ViewSwitcherTitle in Adw.HeaderBar => Gtk.Stack 'explorer' page => Gtk.Stack 'search' page
         self.viewswitchertitle = Adw.ViewSwitcherTitle(title=_('Search'))
         self.viewswitchertitle.set_stack(self.stack)
         self.viewswitchertitle.connect('notify::title-visible', self.on_viewswitchertitle_title_visible)
         self.parent.title_stack.get_child_by_name('search').set_child(self.viewswitchertitle)
+
+    def clear_latest_updates(self):
+        self.latest_updates_listbox.hide()
+
+        child = self.latest_updates_listbox.get_first_child()
+        while child:
+            next_child = child.get_next_sibling()
+            self.latest_updates_listbox.remove(child)
+            child = next_child
 
     def clear_most_populars(self):
         self.most_populars_listbox.hide()
@@ -181,6 +200,8 @@ class ExplorerSearchPage:
         page = self.stack.props.visible_child_name
         if page == 'most_populars':
             self.populate_most_populars()
+        elif page == 'latest_updates':
+            self.populate_latest_updates()
 
     def on_server_website_button_clicked(self, _button):
         if self.parent.server.base_url:
@@ -190,14 +211,75 @@ class ExplorerSearchPage:
 
     def on_viewswitchertitle_title_visible(self, _viewswitchertitle, _param):
         if self.viewswitchertitle.get_title_visible():
-            if not self.global_search_mode:
-                self.viewswitcherbar.set_reveal(True)
+            self.viewswitcherbar.set_reveal(not self.global_search_mode and self.viewswitchertitle.props.view_switcher_enabled)
             self.title_label.get_parent().hide()
         else:
             self.viewswitcherbar.set_reveal(False)
             self.title_label.get_parent().show()
 
+    def populate_latest_updates(self):
+        if self.lock_latest_updates:
+            return
+
+        def run(server):
+            try:
+                results = server.get_latest_updates(**self.search_filters)
+                if self.stop_latest_updates:
+                    return
+
+                if results:
+                    GLib.idle_add(complete, results, server)
+                else:
+                    GLib.idle_add(error, results, server)
+            except Exception as e:
+                user_error_message = log_error_traceback(e)
+                GLib.idle_add(error, None, server, user_error_message)
+
+        def complete(results, server):
+            self.latest_updates_spinner.stop()
+            self.latest_updates_listbox.show()
+
+            for item in results:
+                row = Gtk.ListBoxRow()
+                row.add_css_class('explorer-listboxrow')
+                row.manga_data = item
+                label = Gtk.Label(label=item['name'], xalign=0)
+                label.set_ellipsize(Pango.EllipsizeMode.END)
+                row.set_child(label)
+
+                self.latest_updates_listbox.append(row)
+
+            self.latest_updates_stack.set_visible_child_name('results')
+            self.lock_latest_updates = False
+
+        def error(results, server, message=None):
+            self.latest_updates_spinner.stop()
+
+            if results is None:
+                self.latest_updates_status_page.set_title(_('Oops, failed to retrieve latest updates. Please try again.'))
+                if message:
+                    self.latest_updates_status_page.set_description(message)
+            else:
+                self.latest_updates_status_page.set_title(_('No Latest Updates Found'))
+                self.latest_updates_status_page.set_description(_('Try later'))
+
+            self.latest_updates_stack.set_visible_child_name('no_results')
+            self.lock_latest_updates = False
+
+        self.lock_latest_updates = True
+        self.stop_latest_updates = False
+        self.latest_updates_spinner.start()
+        self.clear_latest_updates()
+        self.latest_updates_stack.set_visible_child_name('loading')
+
+        thread = threading.Thread(target=run, args=(self.parent.server, ))
+        thread.daemon = True
+        thread.start()
+
     def populate_most_populars(self):
+        if self.lock_most_populars:
+            return
+
         def run(server):
             try:
                 results = server.get_most_populars(**self.search_filters)
@@ -479,18 +561,18 @@ class ExplorerSearchPage:
         self.lock_most_populars = False
 
         if not self.global_search_mode:
-            # Search, Most Populars, Last Updated
+            # Search, Most Populars, Latest Updates
             self.title_label.set_text(self.parent.server.name)
             self.title_label.show()
             self.viewswitchertitle.set_title(self.parent.server.name)
 
             has_search = getattr(self.parent.server, 'search', None) is not None and not self.parent.server.no_search
             has_most_populars = getattr(self.parent.server, 'get_most_populars', None) is not None
-            has_last_updated = getattr(self.parent.server, 'get_last_updated', None) is not None
+            has_latest_updates = getattr(self.parent.server, 'get_latest_updates', None) is not None
 
             self.stack.get_page(self.stack.get_child_by_name('search')).set_visible(has_search)
             self.stack.get_page(self.stack.get_child_by_name('most_populars')).set_visible(has_most_populars)
-            self.stack.get_page(self.stack.get_child_by_name('last_updated')).set_visible(has_last_updated)
+            self.stack.get_page(self.stack.get_child_by_name('latest_updates')).set_visible(has_latest_updates)
 
             if has_search:
                 start_page = 'search'
@@ -500,8 +582,9 @@ class ExplorerSearchPage:
                 # Should not happen
                 return
 
-            self.viewswitcherbar.set_reveal(self.viewswitchertitle.get_title_visible())
-            self.viewswitchertitle.set_view_switcher_enabled(has_search + has_most_populars + has_last_updated > 1)
+            viewswitcher_enabled = has_search + has_most_populars + has_latest_updates > 1
+            self.viewswitcherbar.set_reveal(self.viewswitchertitle.get_title_visible() and viewswitcher_enabled)
+            self.viewswitchertitle.set_view_switcher_enabled(viewswitcher_enabled)
         else:
             # Global Search
             self.title_label.set_text('')

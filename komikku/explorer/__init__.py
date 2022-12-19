@@ -42,6 +42,10 @@ class Explorer(Gtk.Stack):
     search_page_most_populars_listbox = Gtk.Template.Child('search_page_most_populars_listbox')
     search_page_most_populars_status_page = Gtk.Template.Child('search_page_most_populars_status_page')
     search_page_most_populars_spinner = Gtk.Template.Child('search_page_most_populars_spinner')
+    search_page_latest_updates_stack = Gtk.Template.Child('search_page_latest_updates_stack')
+    search_page_latest_updates_listbox = Gtk.Template.Child('search_page_latest_updates_listbox')
+    search_page_latest_updates_status_page = Gtk.Template.Child('search_page_latest_updates_status_page')
+    search_page_latest_updates_spinner = Gtk.Template.Child('search_page_latest_updates_spinner')
 
     card_page_cover_box = Gtk.Template.Child('card_page_cover_box')
     card_page_cover_image = Gtk.Template.Child('card_page_cover_image')
@@ -182,9 +186,10 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         elif self.page == 'search':
             self.server = None
             self.search_page.global_search_mode = False
-            # Stop search and most_populars if not ended
+            # Stop search, most_populars and latest_updates if not ended
             self.search_page.stop_search = True
             self.search_page.stop_most_populars = True
+            self.search_page.stop_latest_updates = True
 
             # Stop activity indicator in case of search page is left before the end of a search
             self.window.activity_indicator.stop()
