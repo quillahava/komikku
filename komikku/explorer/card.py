@@ -8,6 +8,7 @@ import threading
 from gi.repository import GLib
 from gi.repository import Gtk
 
+from komikku.models import create_db_connection
 from komikku.models import Manga
 from komikku.models import Settings
 from komikku.utils import html_escape
@@ -103,8 +104,9 @@ class ExplorerCardPage:
             self.on_add_button_clicked()
 
     def on_read_button_clicked(self):
-        # Stop search if not ended
-        self.parent.search_page.stop = True
+        # Stop search and most populars if not ended
+        self.parent.search_page.stop_search = True
+        self.parent.search_page.stop_most_populars = True
 
         self.window.card.init(self.manga, transition=False)
 
@@ -213,3 +215,23 @@ class ExplorerCardPage:
         thread = threading.Thread(target=run, args=(self.parent.server, self.manga_slug, ))
         thread.daemon = True
         thread.start()
+
+    def show(self):
+        self.parent.title_stack.get_child_by_name('card').set_text(self.manga_data['name'])
+
+        # Check if selected manga is already in library
+        db_conn = create_db_connection()
+        row = db_conn.execute(
+            'SELECT * FROM mangas WHERE slug = ? AND server_id = ?',
+            (self.manga_data['slug'], self.manga_data['server_id'])
+        ).fetchone()
+        db_conn.close()
+
+        if row:
+            self.manga = Manga.get(row['id'], self.parent.server)
+
+            self.add_read_button.get_child().get_first_child().set_from_icon_name('media-playback-start-symbolic')
+            self.add_read_button.get_child().get_last_child().set_text(_('Read'))
+        else:
+            self.add_read_button.get_child().get_first_child().set_from_icon_name('list-add-symbolic')
+            self.add_read_button.get_child().get_last_child().set_text(_('Add to Library'))

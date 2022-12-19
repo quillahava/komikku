@@ -148,11 +148,44 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkStackPage">
                         <property name="name">explorer</property>
                         <property name="child">
-                          <object class="GtkLabel" id="explorer_title_label">
-                            <property name="ellipsize">end</property>
-                            <style>
-                              <class name="title"/>
-                            </style>
+                          <object class="GtkStack">
+                            <property name="hhomogeneous">0</property>
+                            <child>
+                              <object class="GtkStackPage">
+                                <property name="name">servers</property>
+                                <property name="child">
+                                  <object class="GtkLabel">
+                                    <property name="ellipsize">end</property>
+                                    <property name="label" translatable="yes">Servers</property>
+                                    <style>
+                                      <class name="title"/>
+                                    </style>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkStackPage">
+                                <property name="name">search</property>
+                                <property name="child">
+                                  <object class="AdwBin"><!-- Fake child, a stack page can't be empty -->
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkStackPage">
+                                <property name="name">card</property>
+                                <property name="child">
+                                  <object class="GtkLabel">
+                                    <property name="ellipsize">end</property>
+                                    <style>
+                                      <class name="title"/>
+                                    </style>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
                           </object>
                         </property>
                       </object>

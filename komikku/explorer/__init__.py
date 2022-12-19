@@ -10,8 +10,6 @@ from gi.repository import Pango
 from komikku.explorer.card import ExplorerCardPage
 from komikku.explorer.search import ExplorerSearchPage
 from komikku.explorer.servers import ExplorerServersPage
-from komikku.models import create_db_connection
-from komikku.models import Manga
 from komikku.models import Settings
 from komikku.servers import LANGUAGES
 
@@ -30,12 +28,20 @@ class Explorer(Gtk.Stack):
     servers_page_listbox = Gtk.Template.Child('servers_page_listbox')
     servers_page_pinned_listbox = Gtk.Template.Child('servers_page_pinned_listbox')
 
+    search_page_title_label = Gtk.Template.Child('search_page_title_label')
+    search_page_stack = Gtk.Template.Child('search_page_stack')
+    search_page_viewswitcherbar = Gtk.Template.Child('search_page_viewswitcherbar')
     search_page_searchbar = Gtk.Template.Child('search_page_searchbar')
     search_page_searchentry = Gtk.Template.Child('search_page_searchentry')
     search_page_filter_menu_button = Gtk.Template.Child('search_page_filter_menu_button')
-    search_page_stack = Gtk.Template.Child('search_page_stack')
-    search_page_listbox = Gtk.Template.Child('search_page_listbox')
-    search_page_status_page = Gtk.Template.Child('search_page_status_page')
+    search_page_search_stack = Gtk.Template.Child('search_page_search_stack')
+    search_page_search_listbox = Gtk.Template.Child('search_page_search_listbox')
+    search_page_search_status_page = Gtk.Template.Child('search_page_search_status_page')
+    search_page_search_spinner = Gtk.Template.Child('search_page_search_spinner')
+    search_page_most_populars_stack = Gtk.Template.Child('search_page_most_populars_stack')
+    search_page_most_populars_listbox = Gtk.Template.Child('search_page_most_populars_listbox')
+    search_page_most_populars_status_page = Gtk.Template.Child('search_page_most_populars_status_page')
+    search_page_most_populars_spinner = Gtk.Template.Child('search_page_most_populars_spinner')
 
     card_page_cover_box = Gtk.Template.Child('card_page_cover_box')
     card_page_cover_image = Gtk.Template.Child('card_page_cover_image')
@@ -53,8 +59,7 @@ class Explorer(Gtk.Stack):
         Gtk.Stack.__init__(self)
 
         self.window = window
-
-        self.title_label = self.window.explorer_title_label
+        self.title_stack = self.window.title_stack.get_child_by_name('explorer')
 
         self.servers_page = ExplorerServersPage(self)
         self.search_page = ExplorerSearchPage(self)
@@ -69,7 +74,7 @@ class Explorer(Gtk.Stack):
 
     def build_server_row(self, data):
         # Used in `servers` and `search` (global search) pages
-        if self.search_page.global_mode:
+        if self.search_page.global_search_mode:
             row = Gtk.ListBoxRow(activatable=False)
             row.add_css_class('explorer-section-listboxrow')
         else:
@@ -118,7 +123,7 @@ class Explorer(Gtk.Stack):
 
         box.append(vbox)
 
-        if self.search_page.global_mode:
+        if self.search_page.global_search_mode:
             return row
 
         # Server requires a user account
@@ -176,9 +181,10 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
         elif self.page == 'search':
             self.server = None
-            self.search_page.global_mode = False
-            # Stop search if not ended
-            self.search_page.stop = True
+            self.search_page.global_search_mode = False
+            # Stop search and most_populars if not ended
+            self.search_page.stop_search = True
+            self.search_page.stop_most_populars = True
 
             # Stop activity indicator in case of search page is left before the end of a search
             self.window.activity_indicator.stop()
@@ -203,7 +209,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
     def show(self, transition=True, servers=None, reset=True):
         if reset:
             self.server = None
-            self.search_page.global_mode = False
+            self.search_page.global_search_mode = False
 
             self.servers_page.searchbar.set_search_mode(False)
             self.servers_page.populate(servers)
@@ -221,49 +227,26 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         self.window.show_page('explorer', transition=transition)
 
     def show_page(self, name):
-        if name == 'servers':
-            self.title_label.set_text(_('Servers'))
+        self.title_stack.set_visible_child_name(name)
 
+        if name == 'servers':
             if self.page is None and self.servers_page.searchbar.get_search_mode():
                 self.servers_page.searchbar.set_search_mode(False)
 
         elif name == 'search':
-            self.title_label.set_text(_('Global Search') if self.search_page.global_mode else self.server.name)
-
             self.search_page.searchentry.grab_focus()
 
             if self.page == 'servers':
-                self.search_page.clear_search()
-
-                if not self.search_page.global_mode:
-                    # Load search with populars
-                    self.search_page.search()
+                self.search_page.show()
 
         elif name == 'card':
-            self.title_label.set_text(self.card_page.manga_data['name'])
+            self.card_page.show()
 
-            # Check if selected manga is already in library
-            db_conn = create_db_connection()
-            row = db_conn.execute(
-                'SELECT * FROM mangas WHERE slug = ? AND server_id = ?',
-                (self.card_page.manga_data['slug'], self.card_page.manga_data['server_id'])
-            ).fetchone()
-            db_conn.close()
-
-            if row:
-                self.card_page.manga = Manga.get(row['id'], self.server)
-
-                self.card_page.add_read_button.get_child().get_first_child().set_from_icon_name('media-playback-start-symbolic')
-                self.card_page.add_read_button.get_child().get_last_child().set_text(_('Read'))
-            else:
-                self.card_page.add_read_button.get_child().get_first_child().set_from_icon_name('list-add-symbolic')
-                self.card_page.add_read_button.get_child().get_last_child().set_text(_('Add to Library'))
-
-        if name == 'servers' or (name == 'search' and not self.search_page.global_mode):
+        if name == 'servers' or (name == 'search' and not self.search_page.global_search_mode and self.server.id != 'local'):
             self.window.right_button_stack.set_visible_child_name('explorer.' + name)
             self.window.right_button_stack.show()
         else:
-            # `Search` (in global mode) and `Card` pages doesn't have a right button in headerbar
+            # `Search` (in global mode), Search when server is local and `Card` pages doesn't have a right button in headerbar
             self.window.right_button_stack.hide()
         self.set_visible_child_name(name)
 

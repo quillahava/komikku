@@ -17,6 +17,7 @@ class Grisebouille(Server):
     id = 'grisebouille'
     name = 'Grise Bouille'
     lang = 'fr'
+    no_search = True
 
     long_strip_genres = ['Long Strip', ]
 
@@ -125,9 +126,6 @@ class Grisebouille(Server):
         return self.manga_url.format(slug)
 
     def get_most_populars(self):
-        return self.search()
-
-    def search(self, term=None):
         r = self.session_get(self.search_url)
         if r.status_code != 200:
             return None
@@ -140,13 +138,21 @@ class Grisebouille(Server):
             if slug not in ('comic-trip', 'depeches-melba', 'tu-sais-quoi'):
                 continue
 
-            name = item.a.img.get('title').encode('iso-8859-1').decode()
-            if term and term.lower() not in name.lower():
-                continue
-
             data.append(dict(
-                slug=item.a.get('href').split('/')[-2],
+                slug=slug,
                 name=item.a.img.get('title').encode('iso-8859-1').decode(),
             ))
 
         return data
+
+    def search(self, term=None):
+        # This server does not have a search
+        # but a search method is needed for `Global Search` in `Explorer`
+        # In order not to be offered in `Explorer`, class attribute `no_search` must be set to True
+
+        results = []
+        for item in self.get_most_populars():
+            if term and term.lower() in item['name'].lower():
+                results.append(item)
+
+        return results

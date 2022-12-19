@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -38,6 +38,7 @@ class Peppercarrot(Server):
     id = 'peppercarrot'
     name = SERVER_NAME
     lang = 'en'
+    no_search = True
 
     base_url = 'https://www.peppercarrot.com'
     manga_url = base_url + '/{0}/webcomics/index.html'
@@ -170,14 +171,22 @@ class Peppercarrot(Server):
         return self.manga_url.format(LANGUAGES_CODES[self.lang])
 
     def get_most_populars(self):
-        return self.search()
-
-    @staticmethod
-    def search(term=None):
         return [dict(
             slug='',
             name='Pepper&Carrot',
         )]
+
+    def search(self, term=None):
+        # This server does not have a search
+        # but a search method is needed for `Global Search` in `Explorer`
+        # In order not to be offered in `Explorer`, class attribute `no_search` must be set to True
+
+        results = []
+        for item in self.get_most_populars():
+            if term and term.lower() in item['name'].lower():
+                results.append(item)
+
+        return results
 
 
 class Peppercarrot_cs(Peppercarrot):

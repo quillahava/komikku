@@ -70,7 +70,7 @@ class ExplorerServersPage:
         )
 
     def on_global_search_button_clicked(self, _button):
-        self.parent.search_page.global_mode = True
+        self.parent.search_page.global_search_mode = True
         self.parent.show_page('search')
 
     def on_server_clicked(self, listbox, row):

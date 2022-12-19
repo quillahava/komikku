@@ -74,18 +74,20 @@ class Server:
     name: str
     lang: str
 
+    base_url = None
+
     has_cloudflare_invisible_challenge = False
     has_login = False
     headers = None
     is_nsfw = False
-    logged_in = False
     long_strip_genres = []
     manga_title_css_selector = None  # Used to extract manga title in a manga URL
+    no_search = False  # Hide search in Explorer (XKCD, DBM, pepper&carotte…)
     session_expiration_cookies = []  # Session cookies for which validity (not expired) must be checked
     status = 'enabled'
     sync = False
 
-    base_url = None
+    logged_in = False
 
     __sessions = {}  # to cache all existing sessions
 

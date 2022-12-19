@@ -258,9 +258,6 @@ class Local(Server):
     def get_manga_url(self, slug, url):
         return None
 
-    def get_most_populars(self):
-        return self.search('')
-
     def search(self, term):
         dir_path = os.path.join(get_data_dir(), self.id)
 
