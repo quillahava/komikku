@@ -270,6 +270,50 @@ class Mangadex(Server):
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self, ratings=None):
+        params = {
+            'limit': SEARCH_RESULTS_LIMIT,
+            'contentRating[]': ratings,
+            'translatedLanguage[]': [self.lang_code],
+            'order[publishAt]': 'desc',
+            'includeFutureUpdates': '0',
+            'includeFuturePublishAt': '0',
+            'includeEmptyPages': '0',
+        }
+
+        r = self.session_get(self.api_chapter_base, params=params)
+        if r.status_code != 200:
+            return None
+
+        results = []
+        manga_slugs = set()
+        for result in r.json()['data']:
+            for relationship in result['relationships']:
+                if relationship['type'] == 'manga':
+                    manga_slugs.add(relationship['id'])
+
+        params = {
+            'limit': SEARCH_RESULTS_LIMIT,
+            'ids[]': list(manga_slugs)
+        }
+
+        r = self.session_get(self.api_manga_base, params=params)
+        if r.status_code != 200:
+            return None
+
+        for result in r.json()['data']:
+            name = self.__get_manga_title(result['attributes'])
+
+            if name:
+                results.append(dict(
+                    slug=result['id'],
+                    name=name,
+                ))
+            else:
+                logger.warning("Ignoring result {}, missing name".format(result['id']))
+
+        return results
+
     def get_most_populars(self, ratings=None):
         return self.search('', ratings)
 
