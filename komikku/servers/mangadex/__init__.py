@@ -294,7 +294,7 @@ class Mangadex(Server):
 
         params = {
             'limit': SEARCH_RESULTS_LIMIT,
-            'ids[]': list(manga_slugs)
+            'ids[]': list(manga_slugs),
         }
 
         r = self.session_get(self.api_manga_base, params=params)
@@ -367,6 +367,7 @@ class Mangadex(Server):
             'limit': SEARCH_RESULTS_LIMIT,
             'contentRating[]': ratings,
             'availableTranslatedLanguage[]': [self.lang_code],
+            'order[followedCount]': 'desc',
         }
         if term:
             params['title'] = term
