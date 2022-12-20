@@ -21,6 +21,9 @@ indent_size = 2
 [*.json]
 insert_final_newline = ignore
 
+[*.md]
+trim_trailing_whitespace = false
+
 # Makefiles always use tabs for indentation
 [Makefile]
 indent_style = tab
