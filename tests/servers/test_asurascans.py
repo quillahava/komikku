@@ -1,7 +1,6 @@
 import logging
 import pytest
 from pytest_steps import test_steps
-import urllib
 
 from komikku.utils import log_error_traceback
 

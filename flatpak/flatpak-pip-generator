@@ -13,7 +13,6 @@ import tempfile
 import urllib.request
 
 from collections import OrderedDict
-from typing import Dict
 
 try:
     import requirements
@@ -197,7 +196,7 @@ if opts.runtime:
         if os.path.exists(requirements_file):
             prefix = os.path.realpath(requirements_file)
             flag = '--filesystem={}'.format(prefix)
-            flatpak_cmd.insert(1,flag)
+            flatpak_cmd.insert(1, flag)
 else:
     flatpak_cmd = [pip_executable]
 

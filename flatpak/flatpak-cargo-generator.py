@@ -28,14 +28,14 @@ def canonical_url(url):
     u = urlparse(url)
     # It seems cargo drops query and fragment
     u = ParseResult(u.scheme, u.netloc, u.path, None, None, None)
-    u = u._replace(path = u.path.rstrip('/'))
+    u = u._replace(path=u.path.rstrip('/'))
 
     if u.netloc == 'github.com':
-        u = u._replace(scheme = 'https')
-        u = u._replace(path = u.path.lower())
+        u = u._replace(scheme='https')
+        u = u._replace(path=u.path.lower())
 
     if u.path.endswith('.git'):
-        u = u._replace(path = u.path[:-len('.git')])
+        u = u._replace(path=u.path[:-len('.git')])
 
     return u
 
@@ -91,7 +91,7 @@ def find_cargo_toml(git_repo_dir):
             f'Multiple Cargo.toml files found in {git_repo_dir}\n'
             'Please report this error and the link to the affected repisitory here:\n'
             'https://github.com/flatpak/flatpak-builder-tools/issues'
-            )
+        )
     raise Exception(f'No Cargo.toml found in {git_repo_dir}')
 
 
@@ -234,7 +234,7 @@ async def get_git_package_sources(package, git_repos):
         {
             'type': 'inline',
             'contents': json.dumps({'package': None, 'files': {}}),
-            'dest': f'{CARGO_CRATES}/{name}', #-{version}',
+            'dest': f'{CARGO_CRATES}/{name}',  # -{version}',
             'dest-filename': '.cargo-checksum.json',
         }
     ]
