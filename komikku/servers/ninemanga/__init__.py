@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from collections import OrderedDict
 from bs4 import BeautifulSoup
 import requests
 from requests.adapters import HTTPAdapter
@@ -16,23 +15,15 @@ from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 
-SERVER_NAME = 'Nine Manga'
-
-headers = OrderedDict(
-    [
-        ('User-Agent', USER_AGENT),
-        ('Accept-Language', 'en-US,en;q=0.5'),
-    ]
-)
-
 
 class Ninemanga(Server):
     id = 'ninemanga'
-    name = SERVER_NAME
+    name = 'Nine Manga'
     lang = 'en'
 
     base_url = 'https://www.ninemanga.com'
     search_url = base_url + '/search/ajax/'
+    latest_updates_url = base_url + '/list/New-Update/'
     most_populars_url = base_url + '/list/Hot-Book/'
     manga_url = base_url + '/manga/{0}.html?waring=1'
     chapter_url = base_url + '/chapter/{0}/{1}'
@@ -41,7 +32,10 @@ class Ninemanga(Server):
     def __init__(self):
         if self.session is None:
             self.session = requests.Session()
-            self.session.headers = headers
+            self.session.headers = {
+                'User-Agent': USER_AGENT,
+                'Accept-Language': 'en-US,en;q=0.5',
+            }
 
             retry = Retry(total=3, backoff_factor=1, respect_retry_after_header=False, status_forcelist=Retry.RETRY_AFTER_STATUS_CODES)
             self.session.mount(self.base_url, HTTPAdapter(max_retries=retry))
@@ -59,15 +53,15 @@ class Ninemanga(Server):
         assert 'slug' in initial_data, 'Slug is missing in initial data'
 
         r = self.session_get(self.manga_url.format(initial_data['slug']))
-        if r is None:
+        if r.status_code != 200:
             return None
-
-        mime_type = get_buffer_mime_type(r.content)
 
         if r.url == self.base_url:
             # Manga page doesn't exist, we have been redirected to homepage
             return None
-        if r.status_code != 200 or mime_type != 'text/html':
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -134,12 +128,11 @@ class Ninemanga(Server):
         Currently, only pages are expected.
         """
         r = self.session_get(self.chapter_url.format(manga_slug, chapter_slug))
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'text/html':
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -162,7 +155,7 @@ class Ninemanga(Server):
         """
         # Scrap HTML page to get image url
         r = self.session_get(self.page_url.format(manga_slug, page['slug']))
-        if r is None:
+        if r.status_code != 200:
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -170,8 +163,7 @@ class Ninemanga(Server):
 
         # Get scan image
         r = self.session_get(url, timeout=30)
-
-        if r is None or r.status_code != 200:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
@@ -190,17 +182,39 @@ class Ninemanga(Server):
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self):
+        """
+        Returns Latest Upadtes list
+        """
+        r = self.session_get(self.latest_updates_url)
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        for a_element in soup.find('ul', class_='direlist').find_all('a', class_='bookname'):
+            results.append(dict(
+                name=a_element.text.strip(),
+                slug=unquote_plus(a_element.get('href')).split('/')[-1][:-5],
+            ))
+
+        return results
+
     def get_most_populars(self):
         """
         Returns Hot manga list
         """
         r = self.session_get(self.most_populars_url)
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'text/html':
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -216,9 +230,6 @@ class Ninemanga(Server):
 
     def search(self, term):
         r = self.session_get(self.search_url, params=dict(term=term))
-        if r is None:
-            return None
-
         if r.status_code == 200:
             try:
                 # Returned data for each manga:
@@ -246,11 +257,11 @@ class Ninemanga(Server):
 class Ninemanga_br(Ninemanga):
     # BEWARE: For historical reasons, Id is ninemanga_br instead of ninemanga_pt_br (idem for class name)
     id = 'ninemanga_br'
-    name = SERVER_NAME
     lang = 'pt_BR'
 
     base_url = 'https://br.ninemanga.com'
     search_url = base_url + '/search/ajax/'
+    latest_updates_url = base_url + '/list/New-Update/'
     most_populars_url = base_url + '/list/Hot-Book/'
     manga_url = base_url + '/manga/{0}.html?waring=1'
     chapter_url = base_url + '/chapter/{0}/{1}'
@@ -259,11 +270,11 @@ class Ninemanga_br(Ninemanga):
 
 class Ninemanga_de(Ninemanga):
     id = 'ninemanga_de'
-    name = SERVER_NAME
     lang = 'de'
 
     base_url = 'https://de.ninemanga.com'
     search_url = base_url + '/search/ajax/'
+    latest_updates_url = base_url + '/list/New-Update/'
     most_populars_url = base_url + '/list/Hot-Book/'
     manga_url = base_url + '/manga/{0}.html?waring=1'
     chapter_url = base_url + '/chapter/{0}/{1}'
@@ -272,11 +283,11 @@ class Ninemanga_de(Ninemanga):
 
 class Ninemanga_es(Ninemanga):
     id = 'ninemanga_es'
-    name = SERVER_NAME
     lang = 'es'
 
     base_url = 'https://es.ninemanga.com'
     search_url = base_url + '/search/ajax/'
+    latest_updates_url = base_url + '/list/New-Update/'
     most_populars_url = base_url + '/list/Hot-Book/'
     manga_url = base_url + '/manga/{0}.html?waring=1'
     chapter_url = base_url + '/chapter/{0}/{1}'
@@ -285,11 +296,11 @@ class Ninemanga_es(Ninemanga):
 
 class Ninemanga_fr(Ninemanga):
     id = 'ninemanga_fr'
-    name = SERVER_NAME
     lang = 'fr'
 
     base_url = 'https://fr.ninemanga.com'
     search_url = base_url + '/search/ajax/'
+    latest_updates_url = base_url + '/list/New-Update/'
     most_populars_url = base_url + '/list/Hot-Book/'
     manga_url = base_url + '/manga/{0}.html?waring=1'
     chapter_url = base_url + '/chapter/{0}/{1}'
@@ -298,11 +309,11 @@ class Ninemanga_fr(Ninemanga):
 
 class Ninemanga_it(Ninemanga):
     id = 'ninemanga_it'
-    name = SERVER_NAME
     lang = 'it'
 
     base_url = 'https://it.ninemanga.com'
     search_url = base_url + '/search/ajax/'
+    latest_updates_url = base_url + '/list/New-Update/'
     most_populars_url = base_url + '/list/Hot-Book/'
     manga_url = base_url + '/manga/{0}.html?waring=1'
     chapter_url = base_url + '/chapter/{0}/{1}'
@@ -311,11 +322,11 @@ class Ninemanga_it(Ninemanga):
 
 class Ninemanga_ru(Ninemanga):
     id = 'ninemanga_ru'
-    name = SERVER_NAME
     lang = 'ru'
 
     base_url = 'https://ru.ninemanga.com'
     search_url = base_url + '/search/ajax/'
+    latest_updates_url = base_url + '/list/New-Update/'
     most_populars_url = base_url + '/list/Hot-Book/'
     manga_url = base_url + '/manga/{0}.html?waring=1'
     chapter_url = base_url + '/chapter/{0}/{1}'
