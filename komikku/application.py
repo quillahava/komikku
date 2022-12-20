@@ -41,10 +41,10 @@ from komikku.updater import Updater
 
 CREDITS = dict(
     artists=(
-        'Valéry Febvre (valos)',
+        'Tobias Bernard (bertob)',
     ),
     designers=(
-        'Tobias Bernard 🌱 (bertob)',
+        'Tobias Bernard (bertob)',
         'Valéry Febvre (valos)',
     ),
     developers=(
