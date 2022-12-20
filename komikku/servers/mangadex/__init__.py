@@ -279,6 +279,7 @@ class Mangadex(Server):
             'includeFutureUpdates': '0',
             'includeFuturePublishAt': '0',
             'includeEmptyPages': '0',
+            'includes[]': ['manga'],  # expand manga relationships with their attributes
         }
 
         r = self.session_get(self.api_chapter_base, params=params)
@@ -289,28 +290,21 @@ class Mangadex(Server):
         manga_slugs = set()
         for result in r.json()['data']:
             for relationship in result['relationships']:
-                if relationship['type'] == 'manga':
-                    manga_slugs.add(relationship['id'])
+                if relationship['type'] != 'manga':
+                    continue
 
-        params = {
-            'limit': SEARCH_RESULTS_LIMIT,
-            'ids[]': list(manga_slugs),
-        }
+                slug = relationship['id']
+                if slug in manga_slugs:
+                    continue
 
-        r = self.session_get(self.api_manga_base, params=params)
-        if r.status_code != 200:
-            return None
-
-        for result in r.json()['data']:
-            name = self.__get_manga_title(result['attributes'])
-
-            if name:
-                results.append(dict(
-                    slug=result['id'],
-                    name=name,
-                ))
-            else:
-                logger.warning("Ignoring result {}, missing name".format(result['id']))
+                if name := self.__get_manga_title(relationship['attributes']):
+                    results.append(dict(
+                        slug=slug,
+                        name=name,
+                    ))
+                    manga_slugs.add(slug)
+                else:
+                    logger.warning(f'Ignoring result {slug}, missing name')
 
         return results
 
@@ -386,7 +380,7 @@ class Mangadex(Server):
                     name=name,
                 ))
             else:
-                logger.warning("Ignoring result {}, missing name".format(result['id']))
+                logger.warning('Ignoring result {}, missing name'.format(result['id']))
 
         return results
 
