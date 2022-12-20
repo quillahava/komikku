@@ -75,10 +75,16 @@ Komikku can be built in a Python virtual environment. However, some tools and de
     ```sh
     # Create venv
     python3 -m venv .venv
+
     # Activate venv
     source .venv/bin/activate
+
     # Install dependencies
     pip install -r requirements.txt
+    pip install -r requirements-dev.txt
+
+    # Install pre-commit hooks
+    pre-commit install
     ```
 
     NOTE: Python package `file-magic` is an possible alternative to `python-magic`.

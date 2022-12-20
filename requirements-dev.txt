@@ -1,0 +1,5 @@
+flake8
+pre-commit
+pycodestyle
+pytest
+pytest-steps
