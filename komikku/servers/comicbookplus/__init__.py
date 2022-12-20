@@ -25,6 +25,7 @@ class Comicbookplus(Server):
     lang = 'en'
 
     base_url = 'https://comicbookplus.com'
+    latest_updates_url = base_url + '/?cbplus=latestuploads_s_s_0'
     most_populars_url = base_url + '/?cbplus=mostviewed_s_s_0'
     manga_url = base_url + '/?cid={0}'
     chapter_url = base_url + '/?dlid={0}'
@@ -172,6 +173,37 @@ class Comicbookplus(Server):
         Returns comic absolute URL
         """
         return self.manga_url.format(slug)
+
+    def get_latest_updates(self):
+        """
+        Returns latest uploads
+        """
+        r = self.session_get(self.latest_updates_url)
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        cids = []
+        for tr_element in soup.find('div', class_='mainbody').find_all('table')[1].find_all('tr')[1:]:
+            a_element = tr_element.find_all('td')[1].a
+            qs = parse_qs(urlparse(a_element.get('href')).query)
+
+            if qs['cid'][0] in cids:
+                continue
+
+            cids.append(qs['cid'][0])
+            results.append(dict(
+                name=a_element.text.strip(),
+                slug=qs['cid'][0],
+            ))
+
+        return results
 
     def get_most_populars(self):
         """
