@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019-2021 Valéry Febvre
+# Copyright (C) 2019-2022 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -26,8 +26,9 @@ class Manganelo(Server):
 
     base_url = 'https://manganato.com'
     search_url = base_url + '/getstorysearchjson'
+    latest_updates_url = base_url
     most_populars_url = base_url + '/genre-all?type=topview'
-    manga_url = 'https://readmanganato.com/manga-{0}'
+    manga_url = 'https://chapmanganato.com/manga-{0}'
     chapter_url = manga_url + '/chapter-{1}'
 
     def __init__(self):
@@ -172,6 +173,30 @@ class Manganelo(Server):
         Returns manga absolute URL
         """
         return self.manga_url.format(slug)
+
+    def get_latest_updates(self):
+        """
+        Returns latest manga list
+        """
+        r = self.session_get(self.latest_updates_url)
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        for item_element in soup.find_all('div', class_='content-homepage-item'):
+            url = item_element.a.get('href')
+            results.append(dict(
+                name=item_element.a.get('title').strip(),
+                slug=url[skip_past(url, '/manga-'):],
+            ))
+
+        return results
 
     def get_most_populars(self):
         """
