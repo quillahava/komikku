@@ -133,7 +133,7 @@ class Madara(Server):
                     if scanlator == '' or scanlator in data['scanlators']:
                         continue
                     data['scanlators'].append(scanlator)
-            elif label.startswith(('Genre', 'Gênero', 'Tür', 'Kategoriler', 'التصنيف', 'Жанр')):
+            elif label.startswith(('Genre', 'Gênero', 'Tür', 'Kategori', 'التصنيف', 'Жанр')):
                 for genre in content.split(','):
                     genre = genre.strip()
                     if genre == '':
@@ -271,21 +271,27 @@ class Madara(Server):
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self):
+        """
+        Returns list of latest updates manga
+        """
+        return self.search('', orderby='latest')
+
     def get_most_populars(self):
         """
         Returns list of most viewed manga
         """
-        return self.search('', True)
+        return self.search('', orderby='populars')
 
     @bypass_cloudflare_invisible_challenge
-    def search(self, term, populars=False):
+    def search(self, term, orderby=None):
         data = {
             'action': 'madara_load_more',
             'page': 0,
-            'template': 'madara-core/content/content-archive' if populars else 'madara-core/content/content-search',
-            'vars[orderby]': 'meta_value_num' if populars else '',
+            'template': 'madara-core/content/content-search',
+            'vars[orderby]': 'meta_value_num' if orderby else '',
             'vars[paged]': 0,
-            'vars[template]': 'archive' if populars else 'search',
+            'vars[template]': 'search',
             'vars[post_type]': 'wp-manga',
             'vars[post_status]': 'publish',
             'vars[manga_archives_item_layout]': 'default',
@@ -293,16 +299,19 @@ class Madara(Server):
             'vars[meta_query][0][0][value]': 'manga',  # allows to ignore novels
             'vars[meta_query][0][orderby]': '',
             'vars[meta_query][0][paged]': '0',
-            'vars[meta_query][0][template]': 'archive' if populars else 'search',
+            'vars[meta_query][0][template]': 'search',
             'vars[meta_query][0][meta_query][relation]': 'AND',
             'vars[meta_query][0][post_type]': 'wp-manga',
             'vars[meta_query][0][post_status]': 'publish',
-            'vars[meta_query][relation]': 'AND'
+            'vars[meta_query][relation]': 'AND',
         }
-        if populars:
+        if orderby:
             data['vars[order]'] = 'desc'
             data['vars[posts_per_page]'] = 100
-            data['vars[meta_key]'] = '_wp_manga_views'
+            if orderby == 'populars':
+                data['vars[meta_key]'] = '_wp_manga_views'
+            elif orderby == 'latest':
+                data['vars[meta_key]'] = '_latest_update'
         else:
             data['vars[meta_query][0][s]'] = term
             data['vars[s]'] = term
@@ -351,6 +360,36 @@ class Madara2(Madara):
             self.filters[0]['default'] = Settings.get_default().nsfw_content
 
     @bypass_cloudflare_invisible_challenge
+    def get_latest_updates(self, nsfw):
+        """
+        Returns list of latest updates manga
+        """
+        r = self.session_get(f'{self.base_url}/', params=dict(
+            s='',
+            post_type='wp-manga',
+            op='',
+            author='',
+            artist='',
+            release='',
+            adult='' if nsfw else 0,
+            m_orderby='new-manga',
+        ))
+        if r.status_code != 200:
+            return None
+
+        soup = BeautifulSoup(r.text, 'lxml')
+
+        results = []
+        for element in soup.find_all('div', class_='post-title'):
+            a_element = element.h3.a
+            results.append(dict(
+                slug=a_element.get('href').split('/')[-2],
+                name=a_element.text.strip(),
+            ))
+
+        return results
+
+    @bypass_cloudflare_invisible_challenge
     def get_most_populars(self, nsfw):
         """
         Returns list of most viewed manga
@@ -362,7 +401,8 @@ class Madara2(Madara):
             author='',
             artist='',
             release='',
-            adult='' if nsfw else 0
+            adult='' if nsfw else 0,
+            m_orderby='views',
         ))
         if r.status_code != 200:
             return None
