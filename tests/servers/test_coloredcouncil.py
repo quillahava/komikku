@@ -14,8 +14,19 @@ def coloredcouncil_server():
     return Coloredcouncil()
 
 
-@test_steps('get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_latest_updates', 'get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_coloredcouncil(coloredcouncil_server):
+    # Get latest updates
+    print('Get latest updates')
+    try:
+        response = coloredcouncil_server.get_latest_updates()
+    except Exception as e:
+        response = None
+        log_error_traceback(e)
+
+    assert response is not None
+    yield
+
     # Get most populars (empty search)
     print('Get most populars')
     try:

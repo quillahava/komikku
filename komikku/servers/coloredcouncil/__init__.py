@@ -12,5 +12,5 @@ class Coloredcouncil(Madara):
     name = 'Colored Manga'
     lang = 'en'
 
-    base_url = 'https://coloredmanga.com/'
+    base_url = 'https://coloredmanga.com'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
