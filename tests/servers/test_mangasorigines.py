@@ -14,12 +14,23 @@ def mangasorigines_server():
     return Mangasorigines()
 
 
-@test_steps('get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_latest_updates', 'get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_mangasorigines(mangasorigines_server):
+    # Get latest updates
+    print('Get latest updates')
+    try:
+        response = mangasorigines_server.get_latest_updates()
+    except Exception as e:
+        response = None
+        log_error_traceback(e)
+
+    assert response is not None
+    yield
+
     # Get most populars
     print('Get most populars')
     try:
-        response = mangasorigines_server.get_most_populars(False)
+        response = mangasorigines_server.get_most_populars()
     except Exception as e:
         response = None
         log_error_traceback(e)
@@ -31,7 +42,7 @@ def test_mangasorigines(mangasorigines_server):
     print('Search')
     try:
         # Use first result of get_most_populars
-        response = mangasorigines_server.search(response[0]['name'], False)
+        response = mangasorigines_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
