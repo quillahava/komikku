@@ -12,7 +12,6 @@ from komikku.servers import Server
 from komikku.servers import USER_AGENT
 from komikku.servers.multi.genkan import GenkanInitial
 from komikku.servers.multi.madara import Madara
-from komikku.servers.multi.manga_stream import MangaStream
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 
@@ -27,26 +26,37 @@ class Reaperscans(Madara):
     base_url = 'https://reaperscans.com'
 
 
-class Reaperscans_fr(MangaStream):
+class Reaperscans_ar(Madara):
+    id = 'reaperscans_ar'
+    name = 'ريبر العربي'
+    lang = 'ar'
+
+    series_name = 'series'
+    date_format = '%Y, %d %B'
+
+    base_url = 'https://reaperscansar.com'
+    chapters_url = base_url + '/series/{0}/ajax/chapters/'
+
+
+class Reaperscans_fr(Madara):
     id = 'reaperscans_fr'
     name = 'ReaperScansFR (GS)'
     lang = 'fr'
-    status = 'disabled'
 
-    # Use Cloudflare version 2 challenge
+    series_name = 'serie'
+    date_format = '%d/%m/%Y'
 
     base_url = 'https://reaperscans.fr'
-    search_url = base_url + '/manga/'
-    manga_url = base_url + '/manga/{0}/'
-    chapter_url = base_url + '/{0}-{1}/'
 
-    name_selector = 'info-desc.bixbox .entry-title'
-    thumbnail_selector = '.thumb img'
-    authors_selector = '.tsinfo.bixbox .imptdt:contains("Auteur") i'
-    genres_selector = '.info-desc.bixbox .mgen a'
-    scanlators_selector = None
-    status_selector = '.tsinfo.bixbox .imptdt:contains("Statut") i'
-    synopsis_selector = '.info-desc.bixbox [itemprop="description"]'
+
+class Reaperscans_id(Madara):
+    id = 'reaperscans_id'
+    name = 'Reaper Scans'
+    lang = 'id'
+
+    series_name = 'series'
+
+    base_url = 'https://reaperscans.id'
 
 
 class Reaperscans_pt(Server):
@@ -228,6 +238,16 @@ class Reaperscans_pt(Server):
             ))
 
         return results
+
+
+class Reaperscans_tr(Madara):
+    id = 'reaperscans_tr'
+    name = 'Reaper Scans'
+    lang = 'tr'
+
+    series_name = 'seri'
+
+    base_url = 'https://reaperscanstr.com'
 
 
 class Reaperscans__old(GenkanInitial):

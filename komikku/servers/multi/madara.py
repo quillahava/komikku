@@ -21,7 +21,7 @@
 # Leviatanscans [EN]
 # Manga-Scantrad [FR]
 # Mangas Origines [FR]
-# Reaperscans [EN]
+# Reaperscans [EN/AR/FR/ID/TR]
 # Submanga [ES] (disabled)
 # Wakascan [FR] (disabled)
 
