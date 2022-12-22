@@ -4,14 +4,13 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from komikku.servers.multi.madara import Madara2
+from komikku.servers.multi.madara import Madara
 
 
-class Mangascantrad(Madara2):
+class Mangascantrad(Madara):
     id = 'mangascantrad'
     name = 'Manga-Scantrad'
     lang = 'fr'
-    has_cloudflare_invisible_challenge = True
 
     date_format = None
 
