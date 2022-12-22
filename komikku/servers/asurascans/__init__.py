@@ -49,6 +49,6 @@ class Asurascans_tr(MangaStream):
     ignored_chapters_keywords = ['tanitim', ]
     ignored_pages = ['page100-10.jpg', 'zzzzzzz999999.jpg', ]
 
-    def search(self, term, type, populars=False):
+    def search(self, term, type, orderby=None):
         # Remove novels from results
-        return [item for item in super().search(term, type, populars) if 'novel' not in item['name'].lower()]
+        return [item for item in super().search(term, type, orderby) if 'novel' not in item['name'].lower()]

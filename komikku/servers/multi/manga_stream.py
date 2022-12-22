@@ -12,7 +12,6 @@
 # Phoenix Fansub [ES]
 # Rawkuma [JA]
 # Raw Manga [JA]
-# Reaper Scans [FR] (disabled)
 
 from bs4 import BeautifulSoup
 from gettext import gettext as _
@@ -281,16 +280,22 @@ class MangaStream(Server):
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self, type):
+        """
+        Returns list of latest updates
+        """
+        return self.search('', type, orderby='latest')
+
     def get_most_populars(self, type):
         """
         Returns list of most popular manga
         """
-        return self.search('', type, True)
+        return self.search('', type, orderby='populars')
 
-    def search(self, term, type, populars=False):
-        if populars:
+    def search(self, term, type, orderby=None):
+        if orderby:
             data = dict(
-                order='popular',
+                order='popular' if orderby == 'populars' else 'update',
                 status='',
                 type=type if type != 'all' else '',
             )
