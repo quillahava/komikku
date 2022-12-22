@@ -181,16 +181,19 @@ class Reaperscans_pt(Server):
         """
         return self.manga_url.format(slug)
 
-    def get_most_populars(self):
-        return self.search('', populars=True)
+    def get_latest_updates(self):
+        return self.search('', orderby='latest')
 
-    def search(self, term, populars=False):
-        if populars:
+    def get_most_populars(self):
+        return self.search('', orderby='populars')
+
+    def search(self, term, orderby=None):
+        if orderby:
             r = self.session_post(
                 self.api_most_populars_url,
                 params=dict(
                     order='desc',
-                    order_by='total_views',
+                    order_by='total_views' if orderby == 'populars' else 'recently_added',
                     series_type='Comic',
                 ),
                 headers={
@@ -211,7 +214,7 @@ class Reaperscans_pt(Server):
             return None
 
         items = r.json()
-        if populars:
+        if orderby:
             items = items['data']
 
         results = []
