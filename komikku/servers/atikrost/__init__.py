@@ -13,3 +13,4 @@ class Atikrost(Madara):
     lang = 'tr'
 
     base_url = 'https://atikrost.com'
+    chapters_url = base_url + '/manga/{0}/ajax/chapters/'
