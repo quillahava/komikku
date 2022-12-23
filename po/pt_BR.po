@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-23 02:21+0100\n"
+"POT-Creation-Date: 2022-12-23 23:29+0100\n"
 "PO-Revision-Date: 2022-12-15 09:52-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao>\n"
@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
-msgid "Current features:"
-msgstr ""
+msgid "Features"
+msgstr "Recursos"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
@@ -2037,15 +2037,15 @@ msgstr "Informação"
 msgid "Resume"
 msgstr "Continuar"
 
-#: ../data/ui/application_window.ui:745 ../data/ui/explorer.ui:531
+#: ../data/ui/application_window.ui:745 ../data/ui/explorer.ui:551
 msgid "Details"
 msgstr "Detalhes"
 
-#: ../data/ui/application_window.ui:776 ../data/ui/explorer.ui:562
+#: ../data/ui/application_window.ui:776 ../data/ui/explorer.ui:582
 msgid "Genres"
 msgstr "Gênero"
 
-#: ../data/ui/application_window.ui:814 ../data/ui/explorer.ui:600
+#: ../data/ui/application_window.ui:814 ../data/ui/explorer.ui:620
 msgid "Scanlators"
 msgstr "Tradutores"
 
@@ -2057,7 +2057,7 @@ msgstr "Última atualização"
 msgid "Size on Disk"
 msgstr "Tamanho no disco"
 
-#: ../data/ui/application_window.ui:955 ../data/ui/explorer.ui:704
+#: ../data/ui/application_window.ui:955 ../data/ui/explorer.ui:724
 msgid "Synopsis"
 msgstr "Sinopse"
 
@@ -2081,11 +2081,11 @@ msgstr "Pesquisa por servidores por nome ou idioma"
 msgid "Most Populars"
 msgstr ""
 
-#: ../data/ui/explorer.ui:323
+#: ../data/ui/explorer.ui:333
 msgid "Latest Updates"
 msgstr ""
 
-#: ../data/ui/explorer.ui:673
+#: ../data/ui/explorer.ui:693
 msgid "Last Chapter"
 msgstr "Último capítulo"
 
@@ -2718,31 +2718,27 @@ msgstr "Opa, falha ao recuperar as informações do mangá."
 msgid "Add to Library"
 msgstr "Adicionar à biblioteca"
 
-#: ../komikku/explorer/search.py:70
+#: ../komikku/explorer/search.py:72
 msgid "Search"
 msgstr "Pesquisar"
 
-#: ../komikku/explorer/search.py:210
+#: ../komikku/explorer/search.py:212
 msgid "Oops, server website URL is unknown."
 msgstr "Opa, a URL de site do servidor é desconhecida."
 
-#: ../komikku/explorer/search.py:259
-msgid "Oops, failed to retrieve latest updates. Please try again."
+#: ../komikku/explorer/search.py:261
+msgid "Oops, failed to retrieve latest updates."
 msgstr ""
 
-#: ../komikku/explorer/search.py:263
+#: ../komikku/explorer/search.py:265
 msgid "No Latest Updates Found"
 msgstr ""
 
-#: ../komikku/explorer/search.py:264 ../komikku/explorer/search.py:323
-msgid "Try later"
+#: ../komikku/explorer/search.py:319
+msgid "Oops, failed to retrieve most populars."
 msgstr ""
 
-#: ../komikku/explorer/search.py:318
-msgid "Oops, failed to retrieve most populars. Please try again."
-msgstr ""
-
-#: ../komikku/explorer/search.py:322
+#: ../komikku/explorer/search.py:323
 msgid "No Most Populars Found"
 msgstr ""
 
@@ -3215,9 +3211,6 @@ msgstr "Sem conexão com a Internet, tempo limite excedido ou servidor inativo"
 #~ msgstr ""
 #~ "Komikku é um leitor de mangá, manhwa, manhua, webtoons, webcomics e "
 #~ "quadrinhos."
-
-#~ msgid "Features"
-#~ msgstr "Recursos"
 
 #~ msgid "Online reading from dozens of servers"
 #~ msgstr "Leitura online de dezenas de servidores"

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-23 02:21+0100\n"
-"PO-Revision-Date: 2022-12-23 02:28+0100\n"
+"POT-Creation-Date: 2022-12-23 23:29+0100\n"
+"PO-Revision-Date: 2022-12-23 23:52+0100\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -30,8 +30,8 @@ msgstr ""
 "simplicité."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
-msgid "Current features:"
-msgstr "Fonctionnalités actuelles :"
+msgid "Features"
+msgstr "Fonctionnalités"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
@@ -2071,15 +2071,15 @@ msgstr "Infos"
 msgid "Resume"
 msgstr "Reprendre"
 
-#: ../data/ui/application_window.ui:745 ../data/ui/explorer.ui:531
+#: ../data/ui/application_window.ui:745 ../data/ui/explorer.ui:551
 msgid "Details"
 msgstr "Détail"
 
-#: ../data/ui/application_window.ui:776 ../data/ui/explorer.ui:562
+#: ../data/ui/application_window.ui:776 ../data/ui/explorer.ui:582
 msgid "Genres"
 msgstr "Genres"
 
-#: ../data/ui/application_window.ui:814 ../data/ui/explorer.ui:600
+#: ../data/ui/application_window.ui:814 ../data/ui/explorer.ui:620
 msgid "Scanlators"
 msgstr "Scanlateurs"
 
@@ -2091,7 +2091,7 @@ msgstr "Dernière mise à jour"
 msgid "Size on Disk"
 msgstr "Espace disque utilisé"
 
-#: ../data/ui/application_window.ui:955 ../data/ui/explorer.ui:704
+#: ../data/ui/application_window.ui:955 ../data/ui/explorer.ui:724
 msgid "Synopsis"
 msgstr "Synopsis"
 
@@ -2113,13 +2113,13 @@ msgstr "Rechercher des serveurs par nom ou par langue"
 
 #: ../data/ui/explorer.ui:243
 msgid "Most Populars"
-msgstr "Les + populaires"
+msgstr "Populaires"
 
-#: ../data/ui/explorer.ui:323
+#: ../data/ui/explorer.ui:333
 msgid "Latest Updates"
-msgstr "Dernières màj"
+msgstr "Récents"
 
-#: ../data/ui/explorer.ui:673
+#: ../data/ui/explorer.ui:693
 msgid "Last Chapter"
 msgstr "Dernier chapitre"
 
@@ -2754,34 +2754,27 @@ msgstr "Oups, les informations du manga n'ont pas pu être récupérées ."
 msgid "Add to Library"
 msgstr "Ajouter à la bibliothèque"
 
-#: ../komikku/explorer/search.py:70
+#: ../komikku/explorer/search.py:72
 msgid "Search"
 msgstr "Rechercher"
 
-#: ../komikku/explorer/search.py:210
+#: ../komikku/explorer/search.py:212
 msgid "Oops, server website URL is unknown."
 msgstr "Oups, l'URL du site web du serveur est inconnue."
 
-#: ../komikku/explorer/search.py:259
-msgid "Oops, failed to retrieve latest updates. Please try again."
-msgstr ""
-"Oups, échec de la récupération des dernières mises à jour. Veuillez "
-"réessayer."
+#: ../komikku/explorer/search.py:261
+msgid "Oops, failed to retrieve latest updates."
+msgstr "Oups, échec de la récupération des dernières mises à jour."
 
-#: ../komikku/explorer/search.py:263
+#: ../komikku/explorer/search.py:265
 msgid "No Latest Updates Found"
 msgstr "Aucune mise à jour récente trouvée"
 
-#: ../komikku/explorer/search.py:264 ../komikku/explorer/search.py:323
-msgid "Try later"
-msgstr "Essayez plus tard"
+#: ../komikku/explorer/search.py:319
+msgid "Oops, failed to retrieve most populars."
+msgstr "Oups, échec de la récupération des plus populaires."
 
-#: ../komikku/explorer/search.py:318
-msgid "Oops, failed to retrieve most populars. Please try again."
-msgstr ""
-"Oups, échec de la récupération des plus populaires. Veuillez réessayer."
-
-#: ../komikku/explorer/search.py:322
+#: ../komikku/explorer/search.py:323
 msgid "No Most Populars Found"
 msgstr "Aucun populaire trouvé"
 

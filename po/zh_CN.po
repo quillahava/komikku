@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-23 02:21+0100\n"
+"POT-Creation-Date: 2022-12-23 23:29+0100\n"
 "PO-Revision-Date: 2022-12-11 21:04+0800\n"
 "Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
 "Language-Team: \n"
@@ -30,8 +30,8 @@ msgid ""
 msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
-msgid "Current features:"
-msgstr ""
+msgid "Features"
+msgstr "特性"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
@@ -1908,15 +1908,15 @@ msgstr "提示"
 msgid "Resume"
 msgstr "恢复"
 
-#: ../data/ui/application_window.ui:745 ../data/ui/explorer.ui:531
+#: ../data/ui/application_window.ui:745 ../data/ui/explorer.ui:551
 msgid "Details"
 msgstr "详情"
 
-#: ../data/ui/application_window.ui:776 ../data/ui/explorer.ui:562
+#: ../data/ui/application_window.ui:776 ../data/ui/explorer.ui:582
 msgid "Genres"
 msgstr "流派"
 
-#: ../data/ui/application_window.ui:814 ../data/ui/explorer.ui:600
+#: ../data/ui/application_window.ui:814 ../data/ui/explorer.ui:620
 msgid "Scanlators"
 msgstr "扫描仪"
 
@@ -1928,7 +1928,7 @@ msgstr "最后更新"
 msgid "Size on Disk"
 msgstr "占用空间"
 
-#: ../data/ui/application_window.ui:955 ../data/ui/explorer.ui:704
+#: ../data/ui/application_window.ui:955 ../data/ui/explorer.ui:724
 msgid "Synopsis"
 msgstr "摘要"
 
@@ -1952,11 +1952,11 @@ msgstr "按名称或语言搜索服务器"
 msgid "Most Populars"
 msgstr ""
 
-#: ../data/ui/explorer.ui:323
+#: ../data/ui/explorer.ui:333
 msgid "Latest Updates"
 msgstr ""
 
-#: ../data/ui/explorer.ui:673
+#: ../data/ui/explorer.ui:693
 msgid "Last Chapter"
 msgstr "最后一章"
 
@@ -2573,31 +2573,27 @@ msgstr "糟糕，检索漫画的信息失败。"
 msgid "Add to Library"
 msgstr "添加到漫画库"
 
-#: ../komikku/explorer/search.py:70
+#: ../komikku/explorer/search.py:72
 msgid "Search"
 msgstr "搜索"
 
-#: ../komikku/explorer/search.py:210
+#: ../komikku/explorer/search.py:212
 msgid "Oops, server website URL is unknown."
 msgstr "糟糕，服务器网站 URL 未知。"
 
-#: ../komikku/explorer/search.py:259
-msgid "Oops, failed to retrieve latest updates. Please try again."
+#: ../komikku/explorer/search.py:261
+msgid "Oops, failed to retrieve latest updates."
 msgstr ""
 
-#: ../komikku/explorer/search.py:263
+#: ../komikku/explorer/search.py:265
 msgid "No Latest Updates Found"
 msgstr ""
 
-#: ../komikku/explorer/search.py:264 ../komikku/explorer/search.py:323
-msgid "Try later"
+#: ../komikku/explorer/search.py:319
+msgid "Oops, failed to retrieve most populars."
 msgstr ""
 
-#: ../komikku/explorer/search.py:318
-msgid "Oops, failed to retrieve most populars. Please try again."
-msgstr ""
-
-#: ../komikku/explorer/search.py:322
+#: ../komikku/explorer/search.py:323
 msgid "No Most Populars Found"
 msgstr ""
 
@@ -3054,9 +3050,6 @@ msgstr "无网络连接，超时或者服务器下线"
 #~ msgid ""
 #~ "Komikku is a manga, manhwa, manhua, webtoons, webcomics and comics reader."
 #~ msgstr "Komikku 是个日漫、韩漫、国漫、Webtoon 等等的漫画阅读器。"
-
-#~ msgid "Features"
-#~ msgstr "特性"
 
 #~ msgid "Online reading from dozens of servers"
 #~ msgstr "在线阅读多个服务器上的资源"

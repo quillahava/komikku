@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-23 02:21+0100\n"
+"POT-Creation-Date: 2022-12-23 23:29+0100\n"
 "PO-Revision-Date: 2022-10-03 03:07+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
@@ -31,8 +31,8 @@ msgid ""
 msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
-msgid "Current features:"
-msgstr ""
+msgid "Features"
+msgstr "Özellikler"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
@@ -1890,15 +1890,15 @@ msgstr "Bilgi"
 msgid "Resume"
 msgstr "Sürdür"
 
-#: ../data/ui/application_window.ui:745 ../data/ui/explorer.ui:531
+#: ../data/ui/application_window.ui:745 ../data/ui/explorer.ui:551
 msgid "Details"
 msgstr "Ayrıntılar"
 
-#: ../data/ui/application_window.ui:776 ../data/ui/explorer.ui:562
+#: ../data/ui/application_window.ui:776 ../data/ui/explorer.ui:582
 msgid "Genres"
 msgstr "Türler"
 
-#: ../data/ui/application_window.ui:814 ../data/ui/explorer.ui:600
+#: ../data/ui/application_window.ui:814 ../data/ui/explorer.ui:620
 msgid "Scanlators"
 msgstr "Çevirenler"
 
@@ -1910,7 +1910,7 @@ msgstr "Son Güncelleme"
 msgid "Size on Disk"
 msgstr "Diskteki Boyutu"
 
-#: ../data/ui/application_window.ui:955 ../data/ui/explorer.ui:704
+#: ../data/ui/application_window.ui:955 ../data/ui/explorer.ui:724
 msgid "Synopsis"
 msgstr "Özet"
 
@@ -1934,11 +1934,11 @@ msgstr ""
 msgid "Most Populars"
 msgstr ""
 
-#: ../data/ui/explorer.ui:323
+#: ../data/ui/explorer.ui:333
 msgid "Latest Updates"
 msgstr ""
 
-#: ../data/ui/explorer.ui:673
+#: ../data/ui/explorer.ui:693
 msgid "Last Chapter"
 msgstr "Son Bölüm"
 
@@ -2551,31 +2551,27 @@ msgstr "Hata, manga bilgileri alınamadı."
 msgid "Add to Library"
 msgstr "Kitaplığa Ekle"
 
-#: ../komikku/explorer/search.py:70
+#: ../komikku/explorer/search.py:72
 msgid "Search"
 msgstr "Ara"
 
-#: ../komikku/explorer/search.py:210
+#: ../komikku/explorer/search.py:212
 msgid "Oops, server website URL is unknown."
 msgstr "Hata, sunucu web sitesi URL'si bilinmiyor."
 
-#: ../komikku/explorer/search.py:259
-msgid "Oops, failed to retrieve latest updates. Please try again."
+#: ../komikku/explorer/search.py:261
+msgid "Oops, failed to retrieve latest updates."
 msgstr ""
 
-#: ../komikku/explorer/search.py:263
+#: ../komikku/explorer/search.py:265
 msgid "No Latest Updates Found"
 msgstr ""
 
-#: ../komikku/explorer/search.py:264 ../komikku/explorer/search.py:323
-msgid "Try later"
+#: ../komikku/explorer/search.py:319
+msgid "Oops, failed to retrieve most populars."
 msgstr ""
 
-#: ../komikku/explorer/search.py:318
-msgid "Oops, failed to retrieve most populars. Please try again."
-msgstr ""
-
-#: ../komikku/explorer/search.py:322
+#: ../komikku/explorer/search.py:323
 msgid "No Most Populars Found"
 msgstr ""
 
@@ -3039,9 +3035,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Komikku bir manga, manhwa, manhua, webtoon, webcomic ve çizgi roman "
 #~ "okuyucusudur."
-
-#~ msgid "Features"
-#~ msgstr "Özellikler"
 
 #~ msgid "Online reading from dozens of servers"
 #~ msgstr "Onlarca sunucudan çevrimiçi okuma"
