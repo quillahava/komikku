@@ -114,15 +114,31 @@ class PizzaReader(Server):
         """
         return f'{self.base_url}/comics/{slug}'
 
+    def get_latest_updates(self):
+        r = self.session_get(self.base_url + '/api/comics')
+        if r.status_code != 200:
+            return None
+
+        resp_data = r.json()
+
+        results = []
+        for item in sorted(resp_data['comics'], key=lambda m: m['updated_at'], reverse=True):
+            results.append(dict(
+                slug=item['slug'],
+                name=item['title'],
+            ))
+
+        return results
+
     def get_most_populars(self):
         r = self.session_get(self.base_url + '/api/comics')
         if r.status_code != 200:
             return None
 
         resp_data = r.json()
-        results = []
 
-        for item in resp_data['comics']:
+        results = []
+        for item in sorted(resp_data['comics'], key=lambda m: m['views'], reverse=True):
             results.append(dict(
                 slug=item['slug'],
                 name=item['title'],
@@ -136,8 +152,8 @@ class PizzaReader(Server):
             return None
 
         resp_data = r.json()
-        results = []
 
+        results = []
         for item in resp_data['comics']:
             results.append(dict(
                 slug=item['slug'],
