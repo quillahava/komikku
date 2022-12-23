@@ -64,7 +64,9 @@ class ExplorerSearchPage:
         self.search_listbox.connect('row-activated', self.on_manga_clicked)
 
         self.most_populars_listbox.connect('row-activated', self.on_manga_clicked)
+        self.most_populars_status_page.get_child().connect('clicked', self.populate_most_populars)
         self.latest_updates_listbox.connect('row-activated', self.on_manga_clicked)
+        self.latest_updates_status_page.get_child().connect('clicked', self.populate_latest_updates)
 
         # Add Adw.ViewSwitcherTitle in Adw.HeaderBar => Gtk.Stack 'explorer' page => Gtk.Stack 'search' page
         self.viewswitchertitle = Adw.ViewSwitcherTitle(title=_('Search'))
@@ -217,7 +219,7 @@ class ExplorerSearchPage:
             self.viewswitcherbar.set_reveal(False)
             self.title_label.get_parent().show()
 
-    def populate_latest_updates(self):
+    def populate_latest_updates(self, *args):
         if self.lock_latest_updates:
             return
 
@@ -256,12 +258,11 @@ class ExplorerSearchPage:
             self.latest_updates_spinner.stop()
 
             if results is None:
-                self.latest_updates_status_page.set_title(_('Oops, failed to retrieve latest updates. Please try again.'))
+                self.latest_updates_status_page.set_title(_('Oops, failed to retrieve latest updates.'))
                 if message:
                     self.latest_updates_status_page.set_description(message)
             else:
                 self.latest_updates_status_page.set_title(_('No Latest Updates Found'))
-                self.latest_updates_status_page.set_description(_('Try later'))
 
             self.latest_updates_stack.set_visible_child_name('no_results')
             self.lock_latest_updates = False
@@ -276,7 +277,7 @@ class ExplorerSearchPage:
         thread.daemon = True
         thread.start()
 
-    def populate_most_populars(self):
+    def populate_most_populars(self, *args):
         if self.lock_most_populars:
             return
 
@@ -315,12 +316,11 @@ class ExplorerSearchPage:
             self.most_populars_spinner.stop()
 
             if results is None:
-                self.most_populars_status_page.set_title(_('Oops, failed to retrieve most populars. Please try again.'))
+                self.most_populars_status_page.set_title(_('Oops, failed to retrieve most populars.'))
                 if message:
                     self.most_populars_status_page.set_description(message)
             else:
                 self.most_populars_status_page.set_title(_('No Most Populars Found'))
-                self.most_populars_status_page.set_description(_('Try later'))
 
             self.most_populars_stack.set_visible_child_name('no_results')
             self.lock_most_populars = False
