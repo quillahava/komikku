@@ -452,15 +452,17 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>New icon 🎉 Thank you to its author Tobias Bernard</li>
-                <li>[Card] Chapters are now downloaded in ascending order of chapter numbers</li>
-                <li>[Servers] Add Manga Tube [DE]</li>
-                <li>[Servers] Dragon Ball Multiverse: Update</li>
-                <li>[Servers] Lector Manga (Leomanga): Update</li>
-                <li>[Servers] Mangapill: Update</li>
-                <li>[L10n] Update French and Simplified Chinese translations</li>
-                <li>Bugs fixes</li>
+                <li>[Explorer] Add `Latest Updates` (not available for all compatible servers yet)</li>
+                <li>[Servers] Add Reaper Scans AR, FR, ID and TR</li>
+                <li>[Servers] Re-enables Tutto Anime Manga (TAM) [IT]</li>
+                <li>[Servers] Atikrost: Update</li>
+                <li>[Servers] LeviatanScans [EN]: Update</li>
+                <li>[Servers] Manga-Scantrad: Update</li>
+                <li>[Servers] MangaDex: Update</li>
+                <li>[Servers] Mangaowl: Update</li>
+                <li>Brings new French and Brazilian Portuguese translations</li>
             </ul>
+            <p>Happy reading and merry christmas.</p>
         """)
 
         window.add_link(_('Join Chat'), 'https://matrix.to/#/#komikku-gnome:matrix.org')

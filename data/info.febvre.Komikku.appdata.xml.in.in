@@ -10,9 +10,9 @@
     <name>@prettyname@</name>
     <summary>Read your favorite manga and more</summary>
     <description>
-        <p>With its clean, intuitive and adaptive interface, this manga reader allows you to search, sort and read all your favorite manga with ease.</p>
+        <p>With its simple, elegant and adaptive interface, this manga reader allows you to search, sort and read all your favorite manga with ease.</p>
 
-        <p>Current features:</p>
+        <p>Why you will love Komikku?</p>
         <ul>
             <li>Online and offline reading from dozens of servers</li>
             <li>Support for locally stored manga (in CBZ or CBR formats)</li>
@@ -90,6 +90,22 @@
     <url type="donation">https://ko-fi.com/valos</url>
 
     <releases>
+        <release version="1.7.0" date="2022-12-24">
+            <description>
+                <ul>
+                    <li>[Explorer] Add `Latest Updates` (not available for all compatible servers yet)</li>
+                    <li>[Servers] Add Reaper Scans AR, FR, ID and TR</li>
+                    <li>[Servers] Re-enables Tutto Anime Manga (TAM) [IT]</li>
+                    <li>[Servers] Atikrost: Update</li>
+                    <li>[Servers] LeviatanScans [EN]: Update</li>
+                    <li>[Servers] Manga-Scantrad: Update</li>
+                    <li>[Servers] MangaDex: Update</li>
+                    <li>[Servers] Mangaowl: Update</li>
+                    <li>Brings new French and Brazilian Portuguese translations</li>
+                </ul>
+                <p>Happy reading and merry christmas.</p>
+            </description>
+        </release>
         <release version="1.6.1" date="2022-12-14">
             <description>
                 <p>Bug-fix release:</p>
