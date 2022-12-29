@@ -40,8 +40,8 @@ class Mangakawaii(Server):
 
     base_url = 'https://www.mangakawaii.io'
     search_url = base_url + '/recherche-manga'
-    most_populars_url = base_url + '/filterMangaList?page=1&cat=&alpha=&sortBy=views&asc=false&author='
-    most_populars_referer_url = base_url + '/liste-manga'
+    manga_list_url = base_url + '/filterMangaList'
+    manga_list_referer_url = base_url + '/liste-manga'
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/{1}/{2}/1'
     chapters_url = base_url + '/loadChapter?page={0}'
@@ -303,16 +303,25 @@ class Mangakawaii(Server):
         """
         return self.manga_url.format(slug)
 
-    @set_lang
-    def get_most_populars(self):
+    def get_manga_list(self, orderby):
         """
-        Returns list of most viewed manga
+        Returns manga list sorted
         """
+        params = dict(
+            page=1,
+            cat='',
+            alpha='',
+            asc='false',
+            author='',
+        )
+        params['sortBy'] = 'views' if orderby == 'populars' else 'last_updated'
+
         r = self.session_get(
-            self.most_populars_url,
+            self.manga_list_url,
+            params=params,
             headers={
                 'X-Requested-With': 'XMLHttpRequest',
-                'Referer': self.most_populars_referer_url,
+                'Referer': self.manga_list_url,
             }
         )
         if r.status_code != 200:
@@ -332,6 +341,20 @@ class Mangakawaii(Server):
             ))
 
         return results
+
+    @set_lang
+    def get_latest_updates(self):
+        """
+        Returns latest updates
+        """
+        return self.get_manga_list('latest')
+
+    @set_lang
+    def get_most_populars(self):
+        """
+        Returns list of most viewed manga
+        """
+        return self.get_manga_list('populars')
 
     @set_lang
     def search(self, term):
