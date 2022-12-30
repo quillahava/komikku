@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-from bs4 import BeautifulSoup
 import requests
 
 from komikku.servers import Server
@@ -23,9 +22,13 @@ class Aralosbd(Server):
     search_url = base_url + '/manga/query'
     manga_url = base_url + '/manga/display?id={0}'
     chapter_url = base_url + '/manga/chapter?id={0}'
+
+    api_url = base_url + '/manga/api'
     api_search_url = base_url + '/manga/search'
-    api_chapters_url = base_url + '/manga/api?get=chapters&manga={0}'
-    api_chapter_url = base_url + '/manga/api?get=pages&chapter={0}'
+    latest_updates_url = api_url + '?get=lastchapters&limit=12&order=desc&showReleased=1&showUnreleased=0'
+    api_manga_url = api_url + '?get=manga&id={0}'
+    api_chapters_url = api_url + '?get=chapters&manga={0}'
+    api_chapter_url = api_url + '?get=pages&chapter={0}'
 
     def __init__(self):
         if self.session is None:
@@ -41,55 +44,46 @@ class Aralosbd(Server):
         assert 'slug' in initial_data, 'Manga slug is missing in initial data'
 
         r = self.session_get(
-            self.manga_url.format(initial_data['slug']),
+            self.api_manga_url.format(initial_data['slug']),
             headers={
-                'Referer': self.search_url,
+                'Referer': self.base_url,
             }
         )
         if r.status_code != 200:
             return None
 
-        mime_type = get_buffer_mime_type(r.content)
-        if mime_type != 'text/html':
+        resp_data = r.json()
+        if resp_data['error'] != 0:
             return None
-
-        soup = BeautifulSoup(r.text, 'html.parser')
 
         data = initial_data.copy()
         data.update(dict(
-            authors=[],
-            scanlators=[],
-            genres=[],
+            authors=[author['name'] for author in resp_data['authors']],
+            scanlators=[translator['name'] for translator in resp_data['translators']],
+            genres=[tag['tag'] for tag in resp_data['tags']],
             status=None,
             synopsis=None,
             chapters=[],
             server_id=self.id,
         ))
 
-        info_element = soup.find('div', class_='manga-info')
+        data['name'] = resp_data['main_title']
+        data['cover'] = self.base_url + '/' + resp_data['icon']
 
-        data['name'] = info_element.find('span', class_='title-text').text.strip()
-        data['cover'] = self.base_url + info_element.find('img', class_='icon-image').get('src')
-
-        # Details
-        for a_element in info_element.find_all('a', class_='author'):
-            data['authors'].append(a_element.text.strip())
-
-        for a_element in info_element.find_all('a', class_='manga-tag'):
-            data['genres'].append(a_element.text.strip())
-
-        for a_element in info_element.find_all('a', class_='translator'):
-            data['scanlators'].append(a_element.text.strip())
-
-        view_mode = info_element.find('span', class_='view-mode-text').text.strip()
-        # Add 'Webtoon' reading mode in genres if missing
-        if view_mode in ('Webtoon',) and view_mode not in data['genres']:
-            data['genres'].append(view_mode)
-
-        data['status'] = 'complete' if 'Terminé' in data['genres'] else 'ongoing'
+        if 'Terminé' in data['genres']:
+            data['status'] = 'complete'
+            data['genres'].remove('Terminé')
+        elif 'En cours' in data['genres']:
+            data['status'] = 'ongoing'
+            data['genres'].remove('En cours')
+        elif 'En pause' in data['genres']:
+            data['status'] = 'hiatus'
+            data['genres'].remove('En pause')
 
         # Synopsis
-        data['synopsis'] = soup.find('div', class_='description-text').text.strip()
+        data['synopsis'] = resp_data['description']
+        if resp_data['fulldescription']:
+            data['synopsis'] += '\n\n' + resp_data['fulldescription']
 
         # Chapters
         r = self.session_get(
@@ -122,7 +116,7 @@ class Aralosbd(Server):
             return None
 
         resp_data = r.json()
-        if resp_data['error']:
+        if resp_data['error'] != 0:
             return None
 
         data = dict(
@@ -166,6 +160,37 @@ class Aralosbd(Server):
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self):
+        """
+        Returns list of latest mangas
+        """
+        r = self.session_get(
+            self.latest_updates_url,
+            headers={
+                'Referer': self.base_url,
+            }
+        )
+        if r.status_code != 200:
+            return None
+
+        resp_data = r.json()
+        if resp_data['error'] != 0:
+            return None
+
+        ids = []
+        results = []
+        for chapter in resp_data['chapters']:
+            if chapter['manga_id'] in ids:
+                continue
+
+            results.append(dict(
+                slug=chapter['manga_id'],
+                name=chapter['manga_title'],
+            ))
+            ids.append(chapter['manga_id'])
+
+        return results
+
     def get_most_populars(self):
         """
         Returns list of most viewed mangas
@@ -192,7 +217,7 @@ class Aralosbd(Server):
                 return None
 
             data = r.json()
-            if data['error']:
+            if data['error'] != 0:
                 return None
 
             return data
