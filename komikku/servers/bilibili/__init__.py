@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2021 Liliana Prikler
+# Copyright (C) 2021-2023 Liliana Prikler
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Liliana Prikler <liliana.prikler@gmail.com>
 
 from bs4 import BeautifulSoup
+from gettext import gettext as _
 import logging
 from operator import itemgetter
 import requests
@@ -28,16 +29,32 @@ class Bilibili(Server):
     base_url = 'https://www.bilibilicomics.com'
     manga_url = base_url + '/detail/mc{}'
 
-    query_params = '?device=pc&platform=web&lang={lang}&sys_lang={lang}'
-
-    api_base_url = base_url + '/twirp/comic.v1.Comic'
-    api_most_populars_url = api_base_url + '/ClassPage' + query_params
-    api_search_url = api_base_url + '/Search' + query_params
-    api_manga_url = api_base_url + '/ComicDetail' + query_params
-    api_chapter_url = api_base_url + '/GetImageIndex' + query_params
-    api_image_token_url = api_base_url + '/ImageToken' + query_params
+    filters = [
+        {
+            'key': 'price',
+            'type': 'select',
+            'name': _('Price'),
+            'description': _('Price of comics to search for'),
+            'value_type': 'single',
+            'default': '1',
+            'options': [
+                {'key': '-1', 'name': _('All')},
+                {'key': '1', 'name': _('Free')},
+                {'key': '2', 'name': _('Paid')},
+            ],
+        },
+    ]
 
     def __init__(self):
+        query_params = f'?device=pc&platform=web&lang={self.lang}&sys_lang={self.lang}'
+
+        self.api_base_url = self.base_url + '/twirp/comic.v1.Comic'
+        self.api_manga_list_url = self.api_base_url + '/ClassPage' + query_params
+        self.api_search_url = self.api_base_url + '/Search' + query_params
+        self.api_manga_url = self.api_base_url + '/ComicDetail' + query_params
+        self.api_chapter_url = self.api_base_url + '/GetImageIndex' + query_params
+        self.api_image_token_url = self.api_base_url + '/ImageToken' + query_params
+
         if self.session is None:
             self.session = requests.Session()
             self.session.headers.update({
@@ -144,29 +161,32 @@ class Bilibili(Server):
             name=page['slug'].split('/')[-1],
         )
 
-    def get_most_populars(self):
-        return self.search(None, True)
-
     def get_manga_url(self, slug, url):
         """
         Returns manga absolute URL
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self, price=1):
+        return self.search(None, price=price, orderby='latest')
+
+    def get_most_populars(self, price=1):
+        return self.search(None, price=price, orderby='populars')
+
     def is_long_strip(self, _manga_data):
         return True
 
-    def search(self, term, popular=False):
+    def search(self, term, price=1, orderby=None):
         payload = dict(
             area_id=-1,
             is_finish=-1,
-            is_free=1,  # All: -1, Free: 1, Paid: 2
+            is_free=price,
             page_num=1,
             style_id=-1,
             style_prefer='[]',
         )
-        if popular:
-            payload['order'] = 1
+        if orderby:
+            payload['order'] = 0 if orderby == 'populars' else 1
             payload['page_size'] = SEARCH_RESULTS_LIMIT * 2
         else:
             payload['order'] = 0
@@ -175,19 +195,19 @@ class Bilibili(Server):
             payload['key_word'] = term
 
         r = self.session_post(
-            self.api_most_populars_url if popular else self.api_search_url,
+            self.api_manga_list_url if orderby else self.api_search_url,
             json=payload
         )
         if r.status_code != 200:
             return None
 
         data = r.json()['data']
-        if not popular:
+        if orderby is None:
             data = data['list']
 
         results = []
         for manga in data:
-            if popular:
+            if orderby:
                 results.append(dict(
                     slug=str(manga['season_id']),
                     name=manga['title'],
@@ -199,3 +219,18 @@ class Bilibili(Server):
                 ))
 
         return results
+
+
+class Bilibili_es(Bilibili):
+    id = 'bilibili_es'
+    lang = 'es'
+
+
+class Bilibili_fr(Bilibili):
+    id = 'bilibili_fr'
+    lang = 'fr'
+
+
+class Bilibili_id(Bilibili):
+    id = 'bilibili_id'
+    lang = 'id'

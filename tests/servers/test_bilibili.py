@@ -14,11 +14,11 @@ def bilibili_server():
     return Bilibili()
 
 
-@test_steps('get_most_popular', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_most_populars', 'get_latest_updates', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_bilibili(bilibili_server):
-    # Get most popular
-    print('Get most popular')
-    with optional_step('get_most_popular') as step:
+    # Get most populars
+    print('Get most populars')
+    with optional_step('get_most_populars') as step:
         try:
             response = bilibili_server.get_most_populars()
         except Exception as e:
@@ -27,6 +27,17 @@ def test_bilibili(bilibili_server):
 
         assert response is not None
     yield step
+
+    # Get latest updates
+    print('Get latest updates')
+    try:
+        response = bilibili_server.get_latest_updates()
+    except Exception as e:
+        response = None
+        log_error_traceback(e)
+
+    assert response is not None
+    yield
 
     # Search
     print('Search')
