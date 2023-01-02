@@ -1,13 +1,13 @@
 #
 # Sandor Odor <sandor@codingclouds.de>, 2020.
-# Liliana Prikler <liliana.prikler@gmail.com>, 2020-2022.
+# Liliana Prikler <liliana.prikler@gmail.com>, 2020-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 0.19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-23 23:29+0100\n"
-"PO-Revision-Date: 2022-10-26 14:16+0200\n"
+"PO-Revision-Date: 2023-01-01 20:34+0100\n"
 "Last-Translator: Liliana Prikler <liliana.prikler@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -19,13 +19,15 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga and more"
-msgstr ""
+msgstr "Lies deine Lieblingsmanga (und mehr)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:13
 msgid ""
 "With its clean, intuitive and adaptive interface, this manga reader allows "
 "you to search, sort and read all your favorite manga with ease."
 msgstr ""
+"Mit einem sauberen, intuitiven und adaptiven Oberfläche lässt dich Komikku "
+"deine Lieblingsmanga einfach sortieren und lesen."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
 msgid "Features"
@@ -34,10 +36,12 @@ msgstr "Features"
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
 msgstr ""
+"Lesen von Manga aus dutzenden Quellen (mit und ohne Netzwerkverbindung durch "
+"lokale Zwischenspeicherung)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:18
 msgid "Support for locally stored manga (in CBZ or CBR formats)"
-msgstr ""
+msgstr "Unterstützung lokal gespeicherter Manga im CBZ- und CBR-Format"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
@@ -58,7 +62,7 @@ msgstr "Kategorien zur Bibliothekorganisation"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:22
 msgid "Automatic update of manga"
-msgstr ""
+msgstr "Automatische Updates von Mangas"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:23
 msgid "Automatic download of new chapters"
@@ -78,28 +82,29 @@ msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:95
 msgid "Bug-fix release:"
-msgstr ""
+msgstr "Release zum Beheben von Fehlern:"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 msgid "Missing database indexes"
-msgstr ""
+msgstr "Fehlende Datenbank-Indizes"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:98
 msgid "Disappearance of the categories toggle button after leaving the library"
-msgstr ""
+msgstr "Verschwinden des Kategorien-Schalters"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid "New icon 🎉 Thank you to its author Tobias Bernard"
-msgstr ""
+msgstr "Neues Logo 🎉 Danke an Tobias Bernard"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid ""
 "[Card] Chapters are now downloaded in ascending order of chapter numbers"
 msgstr ""
+"[Mangakarte] Kapitel werden nun aufsteigend nach Nummer heruntergeladen"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Servers] Add Manga Tube [DE]"
-msgstr ""
+msgstr "[Server] Manga Tube (DE) hinzugefügt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:292
@@ -110,38 +115,39 @@ msgstr "[Server] Dragon Ball Multiverse: Aktualisert"
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:109
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:126
 msgid "[Servers] Lector Manga (Leomanga): Update"
-msgstr ""
+msgstr "[Server] Lector Manga (Leomanga): Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "[Servers] Mangapill: Update"
-msgstr ""
+msgstr "[Server] Mangapill: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 msgid "[L10n] Update French and Simplified Chinese translations"
-msgstr ""
+msgstr "[L10n] Französische und chinesische Übersetzung aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:112
 msgid "Bugs fixes"
-msgstr ""
+msgstr "Fehler behoben"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:119
 msgid ""
 "[Reader] Webtoon reading mode: Add srcolling with Page Up and Page Down keys"
-msgstr ""
+msgstr "[Leser] Webtoon-Modus: Scrollen mittels Bild-Tasten hinzugefügt."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:120
 msgid "[Explorer] Global search: Put servers without results at end"
-msgstr ""
+msgstr "[Explorer] Globale Suche: Schicke resultatlose Server ans Ende."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:121
 msgid ""
 "[Preferences] Advanced: Add new option to disable GTK animations (useful "
 "with E Ink e-readers)"
 msgstr ""
+"[Einstellungen] Einstellung zum Unterbinden von Animationen hinzugefügt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:122
 msgid "[Servers] Add 3asq (مانجا العاش) [AR]"
-msgstr ""
+msgstr "[Server] 3asq (AR) hinzugefügt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:123
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:278
@@ -150,7 +156,7 @@ msgstr "[Server] Apoll Comics: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:124
 msgid "[Servers] Best Manga: Update"
-msgstr ""
+msgstr "[Server] Best Manga: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:125
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:231
@@ -160,7 +166,7 @@ msgstr "[Server] JapScan: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:127
 msgid "[Servers] LeviatanScans: Update"
-msgstr ""
+msgstr "[Server] LeviatanScans: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:128
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:216
@@ -185,67 +191,69 @@ msgstr "[Server] Remanga: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:131
 msgid "[Servers] Xoxocomics: Update"
-msgstr ""
+msgstr "[Server] Xoxocomics: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:132
 msgid "[Servers] Kirei Cake: Disable"
-msgstr ""
+msgstr "[Server] Kirei Cake: Abgeschaltet"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:139
 msgid "Fixed app not starting on SteamOS (Steam Deck)"
-msgstr ""
+msgstr "Startfehler in SteamOS behoben"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:140
 msgid "[Library] Improved thumbnails badges"
-msgstr ""
+msgstr "[Bibliothek] Verbesserte Embleme"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:141
 msgid "[Reader] Improved double tap zoom on touch screens"
-msgstr ""
+msgstr "[Leser] Zoomen mittels Touchscreen verbessert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:142
 msgid "[Downloader] Bug fix"
-msgstr ""
+msgstr "[Downloader] Fehler behoben"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:143
 msgid "[Updater] Bug fix"
-msgstr ""
+msgstr "[Updater] Fehler behoben"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:144
 msgid "[Servers] Local: Fixed wrong pages order with some archives"
-msgstr ""
+msgstr "[Server] Lokal: Fehler beim Ordnen von Bildern behoben"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:151
 msgid "[Library] Improved loading: Added a waiting page with a progress bar"
-msgstr ""
+msgstr "[Bibliothek] Zeige Fortschrittbalken beim Laden"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:152
 msgid "[Explorer] Fixed Global Search when several languages are enabled"
-msgstr ""
+msgstr "[Explorer] Fehler bei der globalen Suche mit mehreren Sprache behoben"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:153
 msgid "[Reader] Improved rendering of Page numbering"
-msgstr ""
+msgstr "[Leser] Bessere Anzeige von Seitenzahlen"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:154
 msgid "[Servers] 24hRomance: Disable"
-msgstr ""
+msgstr "[Server] 24hRomance: Abgeschaltet"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:161
 msgid "[Downloader] Improved download speed"
-msgstr ""
+msgstr "[Downloader] Geschwindigkeit verbessert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:162
 msgid "[Explorer] Add Global search"
-msgstr ""
+msgstr "[Explorer] Globale Suche hinzugefügt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:163
 msgid "[Servers] Aralos BD: Fixed search"
-msgstr ""
+msgstr "[Server] Aralos BD: Fehler in der Suche behoben"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:164
 msgid "[Servers] Local: Fixed CBR archives reading bug (Flatpak only)"
 msgstr ""
+"[Server] Lokal: Fehler beim Lesen von CBR-Archiven in der Flatpak-Anwendung "
+"behoben"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:171
 msgid "[Reader] Improved Webtoon reading mode"
@@ -1718,8 +1726,8 @@ msgstr "[Manga] Besseres Rendern der Kapitelliste"
 msgid ""
 "[Manga] Improved chapters download: add a progress bar and a \"Stop\" button"
 msgstr ""
-"[Manga] Verbesserte Herunterladen von Kapiteln: Fortschrittsbalken und "
-"\"Stop\"-Button"
+"[Manga] Verbesserte Herunterladen von Kapiteln: Fortschrittsbalken und \"Stop"
+"\"-Button"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:839
 msgid "[Settings] General: New option to disable desktop notifications"
@@ -1954,15 +1962,15 @@ msgstr "Im Browser öffnen"
 
 #: ../data/ui/application_window.ui:313
 msgid "Search for comics across all servers"
-msgstr ""
+msgstr "Mangas über Server hinweg suchen"
 
 #: ../data/ui/application_window.ui:320
 msgid "Search for servers"
-msgstr ""
+msgstr "Server suchen"
 
 #: ../data/ui/application_window.ui:374
 msgid "Search by name, server or genre"
-msgstr ""
+msgstr "Suche nach Name, Server oder Genre"
 
 #: ../data/ui/application_window.ui:421 ../data/ui/menu/card.xml:11
 #: ../data/ui/preferences.ui:198
@@ -2029,15 +2037,15 @@ msgstr "Keine Downloads"
 
 #: ../data/ui/explorer.ui:38
 msgid "Search for servers by name or language"
-msgstr ""
+msgstr "Suche Server nach Name/Sprache"
 
 #: ../data/ui/explorer.ui:243
 msgid "Most Populars"
-msgstr ""
+msgstr "Beliebteste"
 
 #: ../data/ui/explorer.ui:333
 msgid "Latest Updates"
-msgstr ""
+msgstr "Zuletzt aktualisiert"
 
 #: ../data/ui/explorer.ui:693
 msgid "Last Chapter"
@@ -2376,17 +2384,19 @@ msgstr "Wird genutzt, falls kein Schlüsselbund gefunden werden kann"
 
 #: ../data/ui/preferences.ui:456
 msgid "Tweaks"
-msgstr ""
+msgstr "Anpassungen"
 
 #: ../data/ui/preferences.ui:459
 msgid "Disable Animations"
-msgstr ""
+msgstr "Animationen unterbinden"
 
 #: ../data/ui/preferences.ui:461
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
 msgstr ""
+"Nützlich bei Bildschirmen mit niedriger Aktualisierungsfrequenz z.B. auf "
+"elektronischem Papier"
 
 #: ../data/ui/preferences.ui:473
 msgid ""
@@ -2394,6 +2404,9 @@ msgid ""
 "environment and therefore cannot disable animations globally via GNOME "
 "Settings (Accessibility ⇨ Seeing ⇨ Enable Animations)."
 msgstr ""
+"Diese Anpassung ist nur für Nutzer gedacht, die nicht GNOME verwenden und "
+"daher die globale Einstellung\n"
+"unter dem Menüpunkt “Barrierefreiheit” nicht verwenden können."
 
 #: ../data/ui/shortcuts_overview.ui:30
 msgctxt "Shortcut window description"
@@ -2631,6 +2644,16 @@ msgid ""
 "\n"
 "NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."
 msgstr ""
+"Eine spezielle Ordnerstruktur wird erwartet, um lokale Manga ordnungsgemäß "
+"zu behandeln.\n"
+"\n"
+"Jeder Manga muss in seinem eigenen Ordner gespeichert werden, wobei Kapitel "
+"als CBZ/CBR-Archive abgelegt werden.\n"
+"\n"
+"Der Name des Ordners wird als Name für den Comic verwendet.\n"
+"\n"
+"HINWEIS: Die Kommandozeilenbefehle 'unrar' beziehungsweise 'unar' werden für "
+"CBR-Archive benötigt."
 
 #: ../komikku/explorer/__init__.py:160
 msgid "Open local folder"
@@ -2663,19 +2686,19 @@ msgstr "Ups, die URL des Servers ist unbekannt."
 
 #: ../komikku/explorer/search.py:261
 msgid "Oops, failed to retrieve latest updates."
-msgstr ""
+msgstr "Ups, Aktualisierung konnte nicht durchgeführt werden."
 
 #: ../komikku/explorer/search.py:265
 msgid "No Latest Updates Found"
-msgstr ""
+msgstr "Keine Daten zur Aktualisierung gefunden"
 
 #: ../komikku/explorer/search.py:319
 msgid "Oops, failed to retrieve most populars."
-msgstr ""
+msgstr "Ups, beliebteste Manga konnten nicht geholt werden."
 
 #: ../komikku/explorer/search.py:323
 msgid "No Most Populars Found"
-msgstr ""
+msgstr "Keine beliebten Manga gefunden"
 
 #: ../komikku/explorer/search.py:397 ../komikku/explorer/search.py:476
 msgid "Oops, search failed. Please try again."
@@ -2683,11 +2706,11 @@ msgstr "Ups, Suche fehlgeschlagen. Bitte erneut versuchen."
 
 #: ../komikku/explorer/search.py:401
 msgid "No Results Found"
-msgstr ""
+msgstr "Keine Treffer"
 
 #: ../komikku/explorer/search.py:402
 msgid "Try a different search"
-msgstr ""
+msgstr "Probieren Sie einen anderen Suchbefehl"
 
 #: ../komikku/explorer/search.py:481
 msgid "No results"
@@ -2695,7 +2718,7 @@ msgstr "Keine Ergebnisse"
 
 #: ../komikku/explorer/search.py:592
 msgid "Global Search"
-msgstr ""
+msgstr "Globale Suche"
 
 #: ../komikku/explorer/servers.py:68 ../komikku/explorer/servers.py:168
 msgid "Other"
@@ -2744,7 +2767,7 @@ msgstr "Willkommen"
 
 #: ../komikku/library.py:501
 msgid "Loading…"
-msgstr ""
+msgstr "Lade..."
 
 #: ../komikku/library.py:616
 msgid "Failed to update reading status"
@@ -2797,7 +2820,7 @@ msgstr "Einstellungen"
 
 #: ../komikku/preferences.py:122
 msgid "Disable animations?"
-msgstr ""
+msgstr "Animationen abschalten?"
 
 #: ../komikku/preferences.py:123
 msgid ""
@@ -2805,6 +2828,9 @@ msgid ""
 "\n"
 "The gesture navigation in the reader will not work properly anymore."
 msgstr ""
+"Wollen Sie Animationen wirklich abschalten?\n"
+"\n"
+"Die Gestensteuerung wird nicht mehr wie erwartet funktionieren."
 
 #: ../komikku/preferences.py:407
 msgid "Servers Languages"
@@ -3022,7 +3048,7 @@ msgstr "Romane"
 #: ../komikku/servers/mangapill/__init__.py:39
 #: ../komikku/servers/mangatube/__init__.py:44
 msgid "One Shot"
-msgstr ""
+msgstr "Einzelwerk"
 
 #: ../komikku/servers/mangapill/__init__.py:40
 msgid "Doujinshi"
@@ -3046,11 +3072,11 @@ msgstr "Original englischsprachige Manga"
 
 #: ../komikku/servers/mangatube/__init__.py:35
 msgid "Type of Serie"
-msgstr ""
+msgstr "Serienart"
 
 #: ../komikku/servers/mangatube/__init__.py:42
 msgid "Webtoon"
-msgstr ""
+msgstr "Webtoon"
 
 #: ../komikku/servers/mangatube/__init__.py:43
 #: ../komikku/servers/multi/manga_stream.py:58
@@ -3059,27 +3085,27 @@ msgstr "Comic"
 
 #: ../komikku/servers/mangatube/__init__.py:45
 msgid "Light Novel"
-msgstr ""
+msgstr "Light Novel"
 
 #: ../komikku/servers/mangatube/__init__.py:51
 msgid "Age Rating"
-msgstr ""
+msgstr "Alterseinschränkug"
 
 #: ../komikku/servers/mangatube/__init__.py:52
 msgid "Maturity"
-msgstr ""
+msgstr "Reife"
 
 #: ../komikku/servers/mangatube/__init__.py:56
 msgid "Without"
-msgstr ""
+msgstr "Ohne"
 
 #: ../komikku/servers/mangatube/__init__.py:57
 msgid "16+"
-msgstr ""
+msgstr "Ü16"
 
 #: ../komikku/servers/mangatube/__init__.py:58
 msgid "18+"
-msgstr ""
+msgstr "Ü18"
 
 #: ../komikku/servers/multi/madara.py:349
 #: ../komikku/servers/readmanhwa/__init__.py:45
