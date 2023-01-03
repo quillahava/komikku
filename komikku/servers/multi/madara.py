@@ -34,7 +34,6 @@ import requests
 from komikku.models import Settings
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
-from komikku.servers.headless_browser import bypass_cloudflare_invisible_challenge
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_soup_element_inner_text
@@ -45,6 +44,7 @@ logger = logging.getLogger('komikku.servers.madara')
 
 class Madara(Server):
     base_url: str = None
+    chapter_url: str = None
     chapters_url: str = None
 
     series_name: str = 'manga'
@@ -53,16 +53,13 @@ class Madara(Server):
     def __init__(self):
         self.api_url = self.base_url + '/wp-admin/admin-ajax.php'
         self.manga_url = self.base_url + '/' + self.series_name + '/{0}/'
-        self.chapter_url = self.base_url + '/' + self.series_name + '/{0}/{1}/?style=list'
+        if self.chapter_url is None:
+            self.chapter_url = self.base_url + '/' + self.series_name + '/{0}/{1}/?style=list'
 
-        if not self.has_cloudflare_invisible_challenge:
-            if self.session is None:
-                self.session = requests.Session()
-                self.session.headers.update({'User-Agent': USER_AGENT})
-        else:
-            self.session = None
+        if self.session is None:
+            self.session = requests.Session()
+            self.session.headers.update({'User-Agent': USER_AGENT})
 
-    @bypass_cloudflare_invisible_challenge
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -71,7 +68,12 @@ class Madara(Server):
         """
         assert 'slug' in initial_data, 'Manga slug is missing in initial data'
 
-        r = self.session_get(self.manga_url.format(initial_data['slug']))
+        r = self.session_get(
+            self.manga_url.format(initial_data['slug']),
+            headers={
+                'Referer': self.base_url,
+            }
+        )
         if r.status_code != 200:
             return None
 
@@ -209,14 +211,18 @@ class Madara(Server):
 
         return data
 
-    @bypass_cloudflare_invisible_challenge
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
         Returns manga chapter data by scraping chapter HTML page content
 
         Currently, only pages are expected.
         """
-        r = self.session_get(self.chapter_url.format(manga_slug, chapter_slug))
+        r = self.session_get(
+            self.chapter_url.format(manga_slug, chapter_slug),
+            headers={
+                'Referer': self.manga_url.format(manga_slug),
+            }
+        )
         if r.status_code != 200:
             return None
 
@@ -241,7 +247,6 @@ class Madara(Server):
 
         return data
 
-    @bypass_cloudflare_invisible_challenge
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
         Returns chapter page scan (image) content
@@ -283,7 +288,6 @@ class Madara(Server):
         """
         return self.search('', orderby='populars')
 
-    @bypass_cloudflare_invisible_challenge
     def search(self, term, orderby=None):
         data = {
             'action': 'madara_load_more',
@@ -359,7 +363,6 @@ class Madara2(Madara):
         if Settings.instance:
             self.filters[0]['default'] = Settings.get_default().nsfw_content
 
-    @bypass_cloudflare_invisible_challenge
     def get_latest_updates(self, nsfw):
         """
         Returns list of latest updates manga
@@ -389,7 +392,6 @@ class Madara2(Madara):
 
         return results
 
-    @bypass_cloudflare_invisible_challenge
     def get_most_populars(self, nsfw):
         """
         Returns list of most viewed manga
@@ -419,7 +421,6 @@ class Madara2(Madara):
 
         return results
 
-    @bypass_cloudflare_invisible_challenge
     def search(self, term, nsfw):
         r = self.session_post(
             self.api_url,

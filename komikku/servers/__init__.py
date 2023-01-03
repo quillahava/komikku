@@ -76,7 +76,6 @@ class Server:
 
     base_url = None
 
-    has_cloudflare_invisible_challenge = False
     has_login = False
     headers = None
     is_nsfw = False
