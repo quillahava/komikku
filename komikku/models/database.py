@@ -21,7 +21,6 @@ from komikku.servers.utils import get_server_class_name_by_id
 from komikku.servers.utils import get_server_dir_name_by_id
 from komikku.servers.utils import get_server_module_name_by_id
 from komikku.servers.utils import unscramble_image
-from komikku.utils import expand_and_resize_cover
 from komikku.utils import get_data_dir
 from komikku.utils import is_flatpak
 from komikku.utils import trunc_filename
@@ -571,16 +570,32 @@ class Manga:
         if url is None:
             return
 
+        # If cover has already been retrieved
+        # Check first if it has changed using ETag
+        current_etag = None
+        cover_etag_fs_path = os.path.join(self.path, 'cover.etag')
+        if os.path.exists(cover_etag_fs_path):
+            with open(cover_etag_fs_path, 'r') as fp:
+                current_etag = fp.read()
+
+        etag = self.server.get_manga_cover_etag(url)
+        if current_etag is not None and current_etag == etag:
+            return
+
         # Save cover image file
         cover_data = self.server.get_manga_cover_image(url)
         if cover_data is None:
             return
 
-        cover_data = expand_and_resize_cover(cover_data)
         cover_fs_path = os.path.join(self.path, 'cover.jpg')
-
         with open(cover_fs_path, 'wb') as fp:
             fp.write(cover_data)
+
+        if etag:
+            with open(cover_etag_fs_path, 'w') as fp:
+                fp.write(etag)
+        elif os.path.exists(cover_etag_fs_path):
+            os.remove(cover_etag_fs_path)
 
     def delete(self):
         db_conn = create_db_connection()

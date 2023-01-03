@@ -183,6 +183,18 @@ class Server:
         elif self.id in Server.__sessions:
             del Server.__sessions[self.id]
 
+    def get_manga_cover_etag(self, url):
+        """
+        Returns manga cover (image) ETag
+        """
+        r = self.session.head(url, allow_redirects=True, headers={'Referer': self.base_url})
+        if r.status_code != 200:
+            return None
+
+        etag = r.headers.get('ETag')
+
+        return etag.replace('"', '') if etag else None
+
     def get_manga_cover_image(self, url):
         """
         Returns manga cover (image) content
@@ -191,15 +203,11 @@ class Server:
             return None
 
         r = self.session.get(url, headers={'Referer': self.base_url})
-        if r is None:
-            return None
-
         if r.status_code != 200:
             return None
 
         buffer = r.content
         mime_type = get_buffer_mime_type(buffer)
-
         if not mime_type.startswith('image'):
             return None
 
