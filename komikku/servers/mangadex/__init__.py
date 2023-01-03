@@ -51,7 +51,7 @@ class Mangadex(Server):
     api_page_url = '{0}/data/{1}/{2}'
 
     manga_url = base_url + '/title/{0}'
-    cover_url = 'https://uploads.mangadex.org/covers/{0}/{1}'
+    cover_url = 'https://uploads.mangadex.org/covers/{0}/{1}.256.jpg'
 
     filters = [
         {
