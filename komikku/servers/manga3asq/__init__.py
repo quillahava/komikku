@@ -12,8 +12,8 @@ class Manga3asq(Madara):
     name = 'مانجا العاشق'
     lang = 'ar'
 
-    date_format = 'd MMM\u060c yyy'
-    series_name = 'manga'
+    date_format = '%Y \u060c%B %-d'
 
     base_url = 'https://3asq.org'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
+    chapter_url = base_url + '/manga/{0}/{1}/'
