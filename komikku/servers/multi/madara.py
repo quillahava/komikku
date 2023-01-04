@@ -93,6 +93,9 @@ class Madara(Server):
             chapters=[],
             server_id=self.id,
         ))
+        if r.history and r.history[-1].status_code == 301:
+            # Slug has changed
+            data['slug'] = r.url.split('/')[-2]
 
         data['name'] = get_soup_element_inner_text(soup.find('h1'))
         if cover_div := soup.find('div', class_='summary_image'):
