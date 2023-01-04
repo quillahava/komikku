@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2021 Mariusz Kurek
+# Copyright (C) 2021-2023 Mariusz Kurek
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Mariusz Kurek <mariuszkurek@pm.me>
 
@@ -12,5 +12,7 @@ class Coloredcouncil(Madara):
     name = 'Colored Manga'
     lang = 'en'
 
+    series_name = 'mangas'
+    date_format = '%d-%b'
+
     base_url = 'https://coloredmanga.com'
-    chapters_url = base_url + '/manga/{0}/ajax/chapters/'
