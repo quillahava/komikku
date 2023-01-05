@@ -454,17 +454,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Explorer] Add `Latest Updates` (not available for all compatible servers yet)</li>
-                <li>[Servers] Add Reaper Scans AR, FR, ID and TR</li>
-                <li>[Servers] Re-enables Tutto Anime Manga (TAM) [IT]</li>
-                <li>[Servers] Atikrost: Update</li>
-                <li>[Servers] LeviatanScans [EN]: Update</li>
-                <li>[Servers] Manga-Scantrad: Update</li>
-                <li>[Servers] MangaDex: Update</li>
-                <li>[Servers] Mangaowl: Update</li>
-                <li>Brings new French and Brazilian Portuguese translations</li>
+                <li>[Servers] Add Bilibili Comics ES, FR, ID</li>
+                <li>[Servers] Add Golden Mangás [pt_BR]</li>
+                <li>[Servers] Add MangaWorld [IT]</li>
+                <li>[Servers] Add Mangalek [AR]</li>
+                <li>[Servers] 3asq: Update</li>
+                <li>[Servers] Colored Manga: Update</li>
+                <li>Brings new Brazilian Portuguese, French and German translations</li>
             </ul>
-            <p>Happy reading and merry christmas.</p>
         """)
 
         window.add_link(_('Join Chat'), 'https://matrix.to/#/#komikku-gnome:matrix.org')
