@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (C) 2019-2022 Valéry Febvre
+Copyright (C) 2019-2023 Valéry Febvre
 
 This file is part of Komikku.
 
@@ -24,7 +24,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
     <property name="application-icon">@app_id@</property>
     <property name="version">@version@</property>
     <property name="developer-name">@authorfullname@</property>
-    <property name="copyright">© 2019-2022 @authorfullname@</property>
+    <property name="copyright">© 2019-2023 @authorfullname@</property>
     <property name="comments" translatable="yes">A manga, manhwa, manhua, webtoons, webcomics and comics reader for GNOME
 
 👉 Never forget, you can support the authors

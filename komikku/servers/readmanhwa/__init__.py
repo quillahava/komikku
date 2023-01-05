@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2020 JaskaranSM
+# Copyright (C) 2020-2023 JaskaranSM
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: JaskaranSM
 

@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+
+# Copyright (C) 2020-2023 TAAPArthur
+# SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
+# Author: TAAPArthur
+
 import logging
 
 from komikku.servers import Server

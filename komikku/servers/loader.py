@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2021 Liliana Prikler
+# Copyright (C) 2021-2023 Liliana Prikler
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Liliana Prikler <liliana.prikler@gmail.com>
 

@@ -1,4 +1,4 @@
-# Copyright (C) 2019-2022 Valéry Febvre
+# Copyright (C) 2019-2023 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
@@ -103,8 +103,10 @@ class Application(Adw.Application):
         self.logger = logging.getLogger('komikku')
 
     def do_activate(self):
+        # We only allow a single window and raise any existing ones
         if not self.window:
             self.window = ApplicationWindow(application=self, title='Komikku', icon_name=self.application_id)
+
         self.window.present()
 
     def do_command_line(self, command_line):
