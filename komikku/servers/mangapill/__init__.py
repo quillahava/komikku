@@ -29,7 +29,7 @@ class Mangapill(Server):
             'key': 'type',
             'type': 'select',
             'name': _('Type'),
-            'description': _('Type of comics to search for'),
+            'description': _('Filter by type'),
             'value_type': 'single',
             'default': 'all',
             'options': [

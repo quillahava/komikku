@@ -36,7 +36,7 @@ class Dynasty(Server):
             'key': 'classes',
             'type': 'select',
             'name': _('Categories'),
-            'description': _('Types of comics to search for'),
+            'description': _('Filter by types'),
             'value_type': 'multiple',
             'options': [
                 {'key': 'Anthology', 'name': _('Anthology'), 'default': True},

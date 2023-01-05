@@ -34,7 +34,7 @@ class Bilibili(Server):
             'key': 'price',
             'type': 'select',
             'name': _('Price'),
-            'description': _('Price of comics to search for'),
+            'description': _('Filter by price'),
             'value_type': 'single',
             'default': '1',
             'options': [

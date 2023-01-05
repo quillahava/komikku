@@ -58,7 +58,7 @@ class Mangadex(Server):
             'key': 'ratings',
             'type': 'select',
             'name': _('Rating'),
-            'description': _('Content ratings to include in search'),
+            'description': _('Filter by content ratings'),
             'value_type': 'multiple',
             'options': [
                 {'key': 'safe', 'name': _('Safe'), 'default': True},
