@@ -704,7 +704,7 @@ class Pager(Adw.Bin, BasePager):
             self.current_chapter_id = page.chapter.id
 
             self.reader.update_title(page.chapter)
-            self.window.show_notification(page.chapter.title, 2)
+            self.window.show_notification(page.chapter.title, 3)
             self.reader.controls.init(page.chapter)
 
         if not page.loadable:
