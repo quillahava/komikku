@@ -32,11 +32,13 @@ komikku/reader/__init__.py
 komikku/reader/pager/__init__.py
 komikku/reader/pager/page.py
 komikku/reader/pager/webtoon.py
+komikku/servers/bilibili/__init__.py
 komikku/servers/dynasty/__init__.py
 komikku/servers/exceptions.py
 komikku/servers/mangadex/__init__.py
 komikku/servers/mangapill/__init__.py
 komikku/servers/mangatube/__init__.py
+komikku/servers/mangaworld/__init__.py
 komikku/servers/multi/madara.py
 komikku/servers/multi/manga_stream.py
 komikku/servers/readmanhwa/__init__.py
