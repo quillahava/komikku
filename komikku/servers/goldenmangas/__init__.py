@@ -101,7 +101,7 @@ class Goldenmangas(Server):
             data['chapters'].append(dict(
                 slug=li_element.a.get('href').split('/')[-1],
                 title=title_element.text.strip(),
-                scanlators=[scanlator,],
+                scanlators=[scanlator, ],
                 date=convert_date_string(date_element.text.strip()[1:-1], format='%d/%m/%Y'),
             ))
 
