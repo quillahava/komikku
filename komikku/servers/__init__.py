@@ -182,38 +182,38 @@ class Server:
         elif self.id in Server.__sessions:
             del Server.__sessions[self.id]
 
-    def get_manga_cover_etag(self, url):
+    def get_manga_cover_image(self, url, etag=None):
         """
-        Returns manga cover (image) ETag
-        """
-        r = self.session.head(url, allow_redirects=True, headers={'Referer': self.base_url})
-        if r.status_code != 200:
-            return None
+        Get a manga cover
 
-        etag = r.headers.get('ETag')
-
-        return etag.replace('"', '') if etag else None
-
-    def get_manga_cover_image(self, url):
-        """
-        Returns manga cover (image) content
+        :param str url: The cover image URL
+        :param etag: The current cover image ETAG
+        :type etag: str or None
+        :return: the cover image content + the cover image ETag if exists
+        :rtype: tuple
         """
         if url is None:
-            return None
+            return None, None
 
-        r = self.session.get(url, headers={'Referer': self.base_url})
+        headers = {
+            'Referer': self.base_url,
+        }
+        if etag:
+            headers['If-None-Match'] = etag
+
+        r = self.session.get(url, headers=headers)
         if r.status_code != 200:
-            return None
+            return None, None
 
         buffer = r.content
         mime_type = get_buffer_mime_type(buffer)
         if not mime_type.startswith('image'):
-            return None
+            return None, None
 
         if mime_type == 'image/webp':
             buffer = convert_image(buffer, ret_type='bytes')
 
-        return expand_and_resize_cover(buffer)
+        return expand_and_resize_cover(buffer), r.headers.get('ETag')
 
     def is_long_strip(self, data):
         """

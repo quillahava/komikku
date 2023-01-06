@@ -132,7 +132,7 @@ class ExplorerCardPage:
 
             # Populate card
             try:
-                cover_data = self.parent.server.get_manga_cover_image(self.manga_data.get('cover'))
+                cover_data, _etag = self.parent.server.get_manga_cover_image(self.manga_data.get('cover'))
             except Exception as e:
                 cover_data = None
                 user_error_message = log_error_traceback(e)

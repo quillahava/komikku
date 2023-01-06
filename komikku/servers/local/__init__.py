@@ -143,23 +143,23 @@ class Local(Server):
     name = 'Local'
     lang = ''
 
-    def get_manga_cover_image(self, data):
+    def get_manga_cover_image(self, data, etag=None):
         if data is None:
-            return None
+            return None, None
 
         with Archive(data['path']) as archive:
             buffer = archive.get_name_buffer(data['name'])
         if buffer is None:
-            return None
+            return None, None
 
         mime_type = get_buffer_mime_type(buffer)
         if not mime_type.startswith('image'):
-            return None
+            return None, None
 
         if mime_type == 'image/webp':
             buffer = convert_image(buffer, ret_type='bytes')
 
-        return buffer
+        return buffer, None
 
     def get_manga_data(self, initial_data):
         data = initial_data.copy()

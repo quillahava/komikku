@@ -578,12 +578,8 @@ class Manga:
             with open(cover_etag_fs_path, 'r') as fp:
                 current_etag = fp.read()
 
-        etag = self.server.get_manga_cover_etag(url)
-        if current_etag is not None and current_etag == etag:
-            return
-
         # Save cover image file
-        cover_data = self.server.get_manga_cover_image(url)
+        cover_data, etag = self.server.get_manga_cover_image(url, current_etag)
         if cover_data is None:
             return
 
