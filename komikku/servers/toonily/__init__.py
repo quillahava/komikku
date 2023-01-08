@@ -12,14 +12,11 @@ class Toonily(Madara):
     name = 'Toonily'
     lang = 'en'
 
-    date_format = None
+    date_format = '%b %-d, %y'
+    medium = None
     series_name = 'webtoon'
 
     base_url = 'https://toonily.com'
-    chapters_url = base_url + '/manga/{0}/ajax/chapters/'
-
-    def search(self, term, orderby=None, medium=None):
-        return self._search(term, orderby=orderby, medium=medium)
 
     def is_long_strip(self, _manga_data):
         return True

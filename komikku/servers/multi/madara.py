@@ -47,8 +47,9 @@ class Madara(Server):
     chapter_url: str = None
     chapters_url: str = None
 
-    series_name: str = 'manga'
     date_format: str = '%B %d, %Y'
+    medium: str = 'manga'
+    series_name: str = 'manga'
 
     def __init__(self):
         self.api_url = self.base_url + '/wp-admin/admin-ajax.php'
@@ -291,10 +292,7 @@ class Madara(Server):
         """
         return self.search('', orderby='populars')
 
-    def search(self, term, orderby=None, medium='manga'):
-        return self._search(term, orderby, medium)
-
-    def _search(self, term, orderby, medium):
+    def search(self, term, orderby=None):
         data = {
             'action': 'madara_load_more',
             'page': 0,
@@ -307,8 +305,8 @@ class Madara(Server):
             'vars[manga_archives_item_layout]': 'default',
         }
 
-        if medium:
-            data['vars[meta_query][0][0][value]'] = medium  # 'manga' allows to ignore novels
+        if self.medium:
+            data['vars[meta_query][0][0][value]'] = self.medium  # allows to ignore novels
             data['vars[meta_query][0][orderby]'] = ''
             data['vars[meta_query][0][paged]'] = '0'
             data['vars[meta_query][0][template]'] = 'search'

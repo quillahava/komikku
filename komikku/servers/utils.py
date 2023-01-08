@@ -36,7 +36,10 @@ def convert_date_string(date, format=None):
     else:
         d = dateparser.parse(date)
 
-    return d.date() if d else None
+    if not d:
+        d = datetime.datetime.now()
+
+    return d.date()
 
 
 def convert_image(image, format='jpeg', ret_type='image'):
