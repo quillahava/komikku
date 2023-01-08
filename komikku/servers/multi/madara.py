@@ -291,7 +291,10 @@ class Madara(Server):
         """
         return self.search('', orderby='populars')
 
-    def search(self, term, orderby=None):
+    def search(self, term, orderby=None, medium='manga'):
+        return self._search(term, orderby, medium)
+
+    def _search(self, term, orderby, medium):
         data = {
             'action': 'madara_load_more',
             'page': 0,
@@ -302,16 +305,18 @@ class Madara(Server):
             'vars[post_type]': 'wp-manga',
             'vars[post_status]': 'publish',
             'vars[manga_archives_item_layout]': 'default',
-
-            'vars[meta_query][0][0][value]': 'manga',  # allows to ignore novels
-            'vars[meta_query][0][orderby]': '',
-            'vars[meta_query][0][paged]': '0',
-            'vars[meta_query][0][template]': 'search',
-            'vars[meta_query][0][meta_query][relation]': 'AND',
-            'vars[meta_query][0][post_type]': 'wp-manga',
-            'vars[meta_query][0][post_status]': 'publish',
-            'vars[meta_query][relation]': 'AND',
         }
+
+        if medium:
+            data['vars[meta_query][0][0][value]'] = medium  # 'manga' allows to ignore novels
+            data['vars[meta_query][0][orderby]'] = ''
+            data['vars[meta_query][0][paged]'] = '0'
+            data['vars[meta_query][0][template]'] = 'search'
+            data['vars[meta_query][0][meta_query][relation]'] = 'AND'
+            data['vars[meta_query][0][post_type]'] = 'wp-manga'
+            data['vars[meta_query][0][post_status]'] = 'publish'
+            data['vars[meta_query][relation]'] = 'AND'
+
         if orderby:
             data['vars[order]'] = 'desc'
             data['vars[posts_per_page]'] = 100
