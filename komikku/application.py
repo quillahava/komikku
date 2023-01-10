@@ -243,7 +243,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.builder = Gtk.Builder()
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/main.xml')
 
-        self.logging_manager = self.application.logger
         self.downloader = Downloader(self)
         self.updater = Updater(self)
 
@@ -558,6 +557,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
             if Settings.get_default().downloader_state:
                 self.downloader.start()
         else:
+            self.application.logger.warning('Connection status: {}'.format(monitor.get_connectivity()))
+
             # Stop Updater
             self.updater.stop()
 
