@@ -34,12 +34,12 @@ class BasePager:
         self.add_controller(self.controller_motion)
         self.controller_motion.connect('motion', self.on_pointer_motion)
 
-        # Mouse click layout navigation, Zoom
+        # Gesture click controller: layout navigation, zoom
+        # Note: Should be added to desired widget in derived class
         self.gesture_click = Gtk.GestureClick.new()
         self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
         self.gesture_click.set_exclusive(True)
         self.gesture_click.set_button(1)
-        self.add_controller(self.gesture_click)
         self.gesture_click.connect('released', self.on_btn_clicked)
 
     @property
@@ -248,10 +248,14 @@ class Pager(Adw.Bin, BasePager):
         self.carousel.connect('notify::orientation', self.resize_pages)
         self.page_changed_handler_id = self.carousel.connect('page-changed', self.on_page_changed)
 
+        # Scroll controller
         self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.BOTH_AXES)
         self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.add_controller(self.controller_scroll)
         self.controller_scroll.connect('scroll', self.on_scroll)
+
+        # Gesture click controller: layout navigation, zoom
+        self.carousel.add_controller(self.gesture_click)
 
     @GObject.Property(type=bool, default=True)
     def interactive(self):

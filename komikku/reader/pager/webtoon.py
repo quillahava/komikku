@@ -47,6 +47,9 @@ class WebtoonPager(Adw.Bin, BasePager):
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.START)
         self.scrolledwindow.set_child(self.box)
 
+        # Gesture click controller: layout navigation
+        self.add_controller(self.gesture_click)
+
         # Scroll controller
         self.controller_scroll = Gtk.EventControllerScroll.new(
             Gtk.EventControllerScrollFlags.VERTICAL | Gtk.EventControllerScrollFlags.KINETIC

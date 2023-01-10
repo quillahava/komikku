@@ -187,9 +187,9 @@ class Server:
         Get a manga cover
 
         :param str url: The cover image URL
-        :param etag: The current cover image ETAG
+        :param etag: The current cover image ETag
         :type etag: str or None
-        :return: the cover image content + the cover image ETag if exists
+        :return: The cover image content + the cover image ETag if exists
         :rtype: tuple
         """
         if url is None:
