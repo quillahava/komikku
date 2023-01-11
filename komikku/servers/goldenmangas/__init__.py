@@ -95,13 +95,14 @@ class Goldenmangas(Server):
         for li_element in reversed(soup.find(id='capitulos').find_all('li')):
             title_element = li_element.select_one('a > div.col-sm-5')
             date_element = title_element.span.extract()
-            if scanlator_element := li_element.select_one('div > a.label.label-default'):
-                scanlator = scanlator_element.text.strip()
+            scanlators = None
+            if scanlator_elements := li_element.select('div > a.label.label-default'):
+                scanlators = [scanlator_element.text.strip() for scanlator_element in scanlator_elements]
 
             data['chapters'].append(dict(
                 slug=li_element.a.get('href').split('/')[-1],
                 title=title_element.text.strip(),
-                scanlators=[scanlator, ],
+                scanlators=scanlators,
                 date=convert_date_string(date_element.text.strip()[1:-1], format='%d/%m/%Y'),
             ))
 
@@ -122,7 +123,7 @@ class Goldenmangas(Server):
         data = dict(
             pages=[],
         )
-        for img_element in soup.find_all('img', class_='img-manga'):
+        for img_element in soup.find(id='capitulos_images').find_all('img', class_='img-manga'):
             data['pages'].append(dict(
                 slug=img_element.get('src').split('/')[-1],
                 image=None,
