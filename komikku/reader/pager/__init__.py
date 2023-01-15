@@ -619,7 +619,7 @@ class Pager(Adw.Bin, BasePager):
             # Scroll events are consumed, so we must manage page changes in place of Adw.Carousel
             # In the scroll axis, page changes will be handled via 'edge-overshot' page event
 
-            if page.hscrollable and dy:
+            if page.hscrollable and not page.vscrollable and dy:
                 # Use vertical scroll event to scroll horizontally in page
                 if self.reader.reading_mode == 'right-to-left':
                     page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_LEFT if dy > 0 else Gtk.ScrollType.STEP_RIGHT, False)
@@ -627,7 +627,7 @@ class Pager(Adw.Bin, BasePager):
                 elif self.reader.reading_mode in ('left-to-right', 'vertical'):
                     page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_RIGHT if dy > 0 else Gtk.ScrollType.STEP_LEFT, False)
 
-            elif page.vscrollable and dx:
+            elif page.vscrollable and not page.hscrollable and dx:
                 # Scroll events are consumed, so we must manage page changes in place of Adw.Carousel
                 if self.reader.reading_mode in ('right-to-left', 'left-to-right'):
                     self.scroll_to_direction('left' if dx < 0 else 'right')
