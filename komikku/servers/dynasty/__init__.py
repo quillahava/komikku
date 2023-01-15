@@ -29,6 +29,7 @@ class Dynasty(Server):
     manga_url = base_url + '/{0}'
     search_url = base_url + '/search'
     chapter_url = base_url + '/chapters/{0}'
+    last_updates_url = chapter_url.format('added')
     tags_url = base_url + '/tags/suggest/'
 
     filters = [
@@ -290,6 +291,54 @@ class Dynasty(Server):
 
         return tag_id
 
+    def _do_search(self, response, with_tags=None, without_tags=None):
+        if response is None:
+            return None
+
+        if response.status_code != 200:
+            return None
+
+        # Make sure with_tags and without_tags are lists if not provided
+        if not with_tags:
+            with_tags = []
+        if not without_tags:
+            without_tags = []
+
+        try:
+            results = []
+            soup = BeautifulSoup(response.text, 'lxml')
+            elements = soup.find('dl', class_='chapter-list').find_all('dd')
+
+            for element in elements:
+                a_element = element.find('a', class_='name')
+
+                do_include = True
+                if with_tags or without_tags:
+                    tags_element = element.find('tags')
+                    tags = set([])
+                    if tags_element:
+                        tags = [t.text.strip() for t in tags_element.find_all('a')]
+                        do_include = do_include and tags >= set(with_tags)
+                        do_include = do_include and tags.isdisjoint(set(without_tags))
+                    elif with_tags:
+                        do_include = False
+
+                if do_include:
+                    results.append(dict(
+                        slug=a_element.get('href').lstrip('/'),
+                        name=a_element.text.strip(),
+                    ))
+            return results
+        except Exception:
+            return None
+
+
+    def get_latest_updates(self, classes=None, with_tags='', without_tags=''):
+        with_tags = [t.strip() for t in with_tags.split(',') if t]
+        without_tags = [t.strip() for t in without_tags.split(',') if t]
+        return self._do_search(self.session_get(self.last_updates_url),
+                               with_tags=with_tags, without_tags=without_tags)
+
     def search(self, term, classes=None, with_tags='', without_tags=''):
         if classes is None:
             classes = []
@@ -306,24 +355,5 @@ class Dynasty(Server):
                 'without[]': without_tags,
             }
         )
-        if r is None:
-            return None
 
-        if r.status_code == 200:
-            try:
-                results = []
-                soup = BeautifulSoup(r.text, 'lxml')
-                elements = soup.find('dl', class_='chapter-list').find_all('dd')
-
-                for element in elements:
-                    a_element = element.find('a', class_='name')
-                    results.append(dict(
-                        slug=a_element.get('href').lstrip('/'),
-                        name=a_element.text.strip(),
-                    ))
-
-                return results
-            except Exception:
-                return None
-
-        return None
+        return self._do_search(r)
