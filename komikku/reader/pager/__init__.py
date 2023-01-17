@@ -42,6 +42,14 @@ class BasePager:
         self.gesture_click.set_button(1)
         self.gesture_click.connect('released', self.on_btn_clicked)
 
+        # Gesture zoom controller
+        # Note: Should be added to desired widget in derived class
+        self.gesture_zoom = Gtk.GestureZoom.new()
+        self.gesture_zoom.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
+        self.gesture_zoom.connect('begin', self.on_gesture_zoom_begin)
+        self.gesture_zoom.connect('end', self.on_gesture_zoom_end)
+        self.gesture_zoom.connect('scale-changed', self.on_gesture_zoom_scale_changed)
+
     @property
     @abstractmethod
     def pages(self):
@@ -81,6 +89,18 @@ class BasePager:
 
     @abstractmethod
     def on_btn_clicked(self, _widget, event):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def on_gesture_zoom_begin(self, _gesture, _sequence):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def on_gesture_zoom_end(self, _gesture, _sequence):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def on_gesture_zoom_scale_changed(self, _gesture, scale):
         raise NotImplementedError()
 
     @abstractmethod
@@ -257,6 +277,9 @@ class Pager(Adw.Bin, BasePager):
         # Gesture click controller: layout navigation, zoom
         self.carousel.add_controller(self.gesture_click)
 
+        # Gesture zoom controller
+        self.carousel.add_controller(self.gesture_zoom)
+
     @GObject.Property(type=bool, default=True)
     def interactive(self):
         return self._interactive
@@ -423,70 +446,67 @@ class Pager(Adw.Bin, BasePager):
                 GLib.source_remove(self.btn_clicked_timeout_id)
                 self.btn_clicked_timeout_id = None
 
-            GLib.idle_add(self.on_double_click, x, y)
+            page = self.current_page
+            hadj = page.scrolledwindow.get_hadjustment()
+            vadj = page.scrolledwindow.get_vadjustment()
+
+            if not self.zoom['active']:
+                if page.status != 'rendered' or page.error is not None or page.animated:
+                    return
+
+                self.zoom['start_width'] = page.picture.width
+                self.zoom['start_height'] = page.picture.height
+                self.zoom['start_hadj_value'] = hadj.get_value()
+                self.zoom['start_vadj_value'] = vadj.get_value()
+                self.zoom['x'] = x
+                self.zoom['y'] = y
+                self.zoom['active'] = True
+                self.interactive = False
+
+                self.zoom_page()
+            else:
+                self.zoom['active'] = False
+                self.interactive = True
+
+                hadj.set_value(self.zoom['start_hadj_value'])
+                vadj.set_value(self.zoom['start_vadj_value'])
+
+                page.set_image()
 
         return Gdk.EVENT_STOP
 
-    def on_double_click(self, x, y):
-        # Zoom/unzoom
-        def on_adjustment_change(hadj, vadj, h_value, v_value):
-            hadj.disconnect(handler_id)
-
-            def adjust_scroll():
-                hadj.set_value(h_value)
-                vadj.set_value(v_value)
-
-            GLib.idle_add(adjust_scroll)
-
+    def on_gesture_zoom_end(self, _gesture, _sequence):
         page = self.current_page
+        if page.picture.width == self.zoom['orig_width'] and page.picture.height == self.zoom['orig_height']:
+            print('Zoom end')
+            self.zoom['active'] = False
+            self.interactive = True
+
+        self.gesture_zoom.set_state(Gtk.EventSequenceState.CLAIMED)
+
+    def on_gesture_zoom_begin(self, _gesture, _sequence):
+        page = self.current_page
+        print('Zoom begin')
 
         if page.status != 'rendered' or page.error is not None or page.animated:
             return
 
-        hadj = page.scrolledwindow.get_hadjustment()
-        vadj = page.scrolledwindow.get_vadjustment()
+        if not self.zoom['active']:
+            self.zoom['orig_width'] = page.picture.width
+            self.zoom['orig_height'] = page.picture.height
+        self.zoom['start_width'] = page.picture.width
+        self.zoom['start_height'] = page.picture.height
 
-        if self.zoom['active'] is False:
-            self.interactive = False
+        _active, x, y = self.gesture_zoom.get_bounding_box_center()
+        self.zoom['x'] = x
+        self.zoom['y'] = y
+        self.zoom['start_hadj_value'] = page.scrolledwindow.get_hadjustment().get_value()
+        self.zoom['start_vadj_value'] = page.scrolledwindow.get_vadjustment().get_value()
+        self.zoom['active'] = True
+        self.interactive = False
 
-            # Record hadjustment and vadjustment values
-            self.zoom['orig_hadj_value'] = hadj.get_value()
-            self.zoom['orig_vadj_value'] = vadj.get_value()
-
-            # Adjust image's width to 2x
-            factor = 2
-            orig_width = page.picture.width
-            orig_height = page.picture.height
-            zoom_width = orig_width * factor
-            zoom_height = orig_height * (zoom_width / orig_width)
-            ratio = zoom_width / orig_width
-
-            if orig_width <= self.reader.size.width:
-                rel_x = x - (self.reader.size.width - orig_width) / 2
-            else:
-                rel_x = x + hadj.get_value()
-            if orig_height <= self.reader.size.height:
-                rel_y = y - (self.reader.size.height - orig_height) / 2
-            else:
-                rel_y = y + vadj.get_value()
-
-            h_value = rel_x * ratio - x
-            v_value = rel_y * ratio - y
-
-            handler_id = hadj.connect('changed', on_adjustment_change, vadj, h_value, v_value)
-
-            page.set_image([zoom_width, zoom_height])
-
-            self.zoom['active'] = True
-        else:
-            self.interactive = True
-
-            handler_id = hadj.connect(
-                'changed', on_adjustment_change, vadj, self.zoom['orig_hadj_value'], self.zoom['orig_vadj_value'])
-
-            page.set_image()
-
-            self.zoom['active'] = False
+    def on_gesture_zoom_scale_changed(self, _gesture, scale):
+        self.zoom_page(scale, True)
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.window.page != 'reader':
@@ -719,3 +739,78 @@ class Pager(Adw.Bin, BasePager):
         self.reader.controls.set_scale_value(page.index + 1)
 
         return GLib.SOURCE_REMOVE
+
+    def zoom_page(self, factor=2, gesture=False):
+        page = self.current_page
+
+        hadj = page.scrolledwindow.get_hadjustment()
+        vadj = page.scrolledwindow.get_vadjustment()
+
+        start_width = self.zoom['start_width']
+        start_height = self.zoom['start_height']
+
+        stop = False
+        if self.reader.scaling == 'screen':
+            zoom_width = start_width * factor
+            zoom_height = start_height * factor
+            if zoom_width / self.reader.size.width < 1 and zoom_height / self.reader.size.height < 1:
+                stop = True
+        elif self.reader.scaling == 'width':
+            zoom_width = start_width * factor
+            if zoom_width / self.reader.size.width < 1:
+                stop = True
+        elif self.reader.scaling == 'height':
+            zoom_height = start_height * factor
+            if zoom_height / self.reader.size.height < 1:
+                stop = True
+
+        if not stop:
+            zoom_width = start_width * factor
+            zoom_height = start_height * (zoom_width / start_width)
+        else:
+            zoom_width = start_width
+            zoom_height = start_height
+
+        x = self.zoom['x']
+        y = self.zoom['y']
+        if gesture and self.gesture_zoom.get_device().get_source() == Gdk.InputSource.TOUCHSCREEN:
+            # Move image to follow zoom position on touchscreens
+            _active, x2, y2 = self.gesture_zoom.get_bounding_box_center()
+            if x2 or y2:
+                f = self.zoom['start_width'] / self.zoom['orig_width']
+                x -= f * (x2 - self.zoom['x'])
+                y -= f * (y2 - self.zoom['y'])
+
+        if start_width <= self.reader.size.width:
+            rel_x = x - (self.reader.size.width - start_width) / 2
+        else:
+            rel_x = x + self.zoom['start_hadj_value']
+        if start_height <= self.reader.size.height:
+            rel_y = y - (self.reader.size.height - start_height) / 2
+        else:
+            rel_y = y + self.zoom['start_vadj_value']
+
+        h_value = rel_x * factor - x
+        v_value = rel_y * factor - y
+
+        if not stop:
+            hadj.configure(
+                h_value,
+                0,
+                max(self.reader.size.width, zoom_width),
+                zoom_width * 0.01,
+                zoom_width * 0.9,
+                min(zoom_width, self.reader.size.width)
+            )
+            vadj.configure(
+                v_value,
+                0,
+                max(self.reader.size.height, zoom_height),
+                zoom_height * 0.01,
+                zoom_height * 0.9,
+                min(zoom_height, self.reader.size.height)
+            )
+
+            page.set_image([zoom_width, zoom_height])
+        else:
+            page.set_image()
