@@ -155,7 +155,7 @@ class ExplorerSearchPage:
                 else:
                     self.search_filters[filter_['key']].remove(key)
 
-            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
             for option in filter_['options']:
                 check_button = Gtk.CheckButton(label=option['name'], active=option['default'])
@@ -185,7 +185,9 @@ class ExplorerSearchPage:
             if index > 0:
                 vbox.append(Gtk.Separator())
 
-            vbox.append(Gtk.Label(label=filter_['name'], tooltip_text=filter_['description']))
+            label = Gtk.Label(label=filter_['name'], xalign=0, tooltip_text=filter_['description'])
+            label.add_css_class('heading')
+            vbox.append(label)
             vbox.append(filter_widget)
 
         popover.set_child(vbox)
