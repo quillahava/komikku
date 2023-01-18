@@ -111,21 +111,22 @@ class ExplorerCardPage:
 
         self.window.card.init(self.manga, transition=False)
 
-    def populate(self, manga_data):
+    def populate(self, initial_data):
         def run(server, manga_slug):
             try:
-                current_manga_data = self.parent.server.get_manga_data(manga_data)
+                manga_data = self.parent.server.get_manga_data(initial_data)
 
-                if current_manga_data is not None:
-                    GLib.idle_add(complete, current_manga_data, server)
+                if manga_data is not None:
+                    GLib.idle_add(complete, manga_data, server, manga_slug)
                 else:
                     GLib.idle_add(error, server, manga_slug)
             except Exception as e:
                 user_error_message = log_error_traceback(e)
                 GLib.idle_add(error, server, manga_slug, user_error_message)
 
-        def complete(manga_data, server):
-            if server != self.parent.server or manga_data['slug'] != self.manga_slug:
+        def complete(manga_data, server, manga_slug):
+            if server != self.parent.server or manga_slug != self.manga_slug:
+                self.window.activity_indicator.stop()
                 return False
 
             self.manga_data = manga_data
@@ -210,7 +211,7 @@ class ExplorerCardPage:
             return False
 
         self.manga = None
-        self.manga_slug = manga_data['slug']
+        self.manga_slug = initial_data['slug']
         self.window.activity_indicator.start()
 
         thread = threading.Thread(target=run, args=(self.parent.server, self.manga_slug, ))

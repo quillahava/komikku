@@ -75,6 +75,20 @@ def test_dynasty_common():
     return helper
 
 
+@test_steps('get_latest_updates')
+def test_dynasty(dynasty_server):
+    # Get latest updates
+    print('Get latest updates')
+    try:
+        response = dynasty_server.get_latest_updates()
+    except Exception as e:
+        response = None
+        log_error_traceback(e)
+
+    assert response is not None
+    yield
+
+
 @test_steps('search', 'get_manga_url', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_dynasty_anthologies(dynasty_server, test_dynasty_common):
     for step in test_dynasty_common(dynasty_server, 'eclair', classes=['Anthology']):

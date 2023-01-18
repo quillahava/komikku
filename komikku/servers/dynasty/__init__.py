@@ -26,10 +26,10 @@ class Dynasty(Server):
     long_strip_genres = ['Long strip', ]
 
     base_url = 'https://dynasty-scans.com'
-    manga_url = base_url + '/{0}'
     search_url = base_url + '/search'
+    last_updates_url = base_url + '/chapters/added'
+    manga_url = base_url + '/{0}'
     chapter_url = base_url + '/chapters/{0}'
-    last_updates_url = chapter_url.format('added')
     tags_url = base_url + '/tags/suggest/'
 
     filters = [
@@ -84,15 +84,28 @@ class Dynasty(Server):
         assert 'slug' in initial_data, 'Manga slug is missing in initial data'
 
         r = self.session_get(self.manga_url.format(initial_data['slug']))
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'text/html':
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'lxml')
+
+        # Check if chapter belongs to a serie
+        if a_element := soup.select_one('#chapter-title > b > a'):
+            initial_data['slug'] = a_element.get('href').lstrip('/')
+
+            r = self.session_get(self.manga_url.format(initial_data['slug']))
+            if r.status_code != 200:
+                return None
+
+            mime_type = get_buffer_mime_type(r.content)
+            if mime_type != 'text/html':
+                return None
+
+            soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -158,8 +171,11 @@ class Dynasty(Server):
         return data
 
     def _fill_data_multi(self, data, soup):
-        name_element = soup.find('h2', class_='tag-title')
-        data['name'] = name_element.b.text.strip()
+        if name_element := soup.find('h2', class_='tag-title'):
+            data['name'] = name_element.b.text.strip()
+        elif name_element := soup.find('h2'):
+            data['name'] = name_element.b.text.strip()
+
         data['authors'] = [elt.text.strip() for elt in name_element.find_all('a')]
 
         if name_element.find('small'):
@@ -214,12 +230,11 @@ class Dynasty(Server):
         Currently, only pages are expected.
         """
         r = self.session_get(self.chapter_url.format(chapter_slug))
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'text/html':
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'lxml')
@@ -258,7 +273,7 @@ class Dynasty(Server):
         Returns chapter page scan (image) content
         """
         r = self.session_get(page['image'])
-        if r is None or r.status_code != 200:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
@@ -279,22 +294,18 @@ class Dynasty(Server):
 
     def resolve_tag(self, search_tag):
         r = self.session_post(self.tags_url, params=dict(query=search_tag))
-        if r is None:
+        if r.status_code != 200:
             return None
 
         tag_id = None
-        if r.status_code == 200:
-            for tag in r.json():
-                if tag['name'].lower() == search_tag.lower():
-                    tag_id = tag['id']
-                    break
+        for tag in r.json():
+            if tag['name'].lower() == search_tag.lower():
+                tag_id = tag['id']
+                break
 
         return tag_id
 
     def _do_search(self, response, with_tags=None, without_tags=None):
-        if response is None:
-            return None
-
         if response.status_code != 200:
             return None
 
@@ -328,20 +339,21 @@ class Dynasty(Server):
                         slug=a_element.get('href').lstrip('/'),
                         name=a_element.text.strip(),
                     ))
+
             return results
         except Exception:
             return None
 
-
     def get_latest_updates(self, classes=None, with_tags='', without_tags=''):
         with_tags = [t.strip() for t in with_tags.split(',') if t]
         without_tags = [t.strip() for t in without_tags.split(',') if t]
-        return self._do_search(self.session_get(self.last_updates_url),
-                               with_tags=with_tags, without_tags=without_tags)
+
+        return self._do_search(self.session_get(self.last_updates_url), with_tags=with_tags, without_tags=without_tags)
 
     def search(self, term, classes=None, with_tags='', without_tags=''):
         if classes is None:
             classes = []
+
         classes = sorted(classes, key=str.lower)
         with_tags = [self.resolve_tag(t.strip()) for t in with_tags.split(',') if t]
         without_tags = [self.resolve_tag(t.strip()) for t in without_tags.split(',') if t]
