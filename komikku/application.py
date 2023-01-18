@@ -453,13 +453,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Servers] Add Bilibili Comics ES, FR, ID</li>
-                <li>[Servers] Add Golden Mangás [pt_BR]</li>
-                <li>[Servers] Add MangaWorld [IT]</li>
-                <li>[Servers] Add Mangalek [AR]</li>
-                <li>[Servers] 3asq: Update</li>
-                <li>[Servers] Colored Manga: Update</li>
-                <li>Brings new Brazilian Portuguese, French and German translations</li>
+                <li>[Reader] LTR, RTL, vertical pager: Added 2-finger zoom gesture</li>
+                <li>[Reader] LTR, RTL, vertical pager: Improved double-tap zoom on touchscreens</li>
+                <li>[Reader] LTR, RTL, vertical pager: Fixed page scrolling when scaling is `Original Size`</li>
+                <li>[Servers] Add Toonily [EN]</li>
+                <li>[Servers] Dynasty: Update</li>
+                <li>[Servers] Golden Mangás: Update</li>
+                <li>[Servers] Local: Repair</li>
             </ul>
         """)
 

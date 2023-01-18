@@ -90,6 +90,19 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.9.0" date="2023-01-18">
+            <description>
+                <ul>
+                    <li>[Reader] LTR, RTL, vertical pager: Added 2-finger zoom gesture</li>
+                    <li>[Reader] LTR, RTL, vertical pager: Improved double-tap zoom on touchscreens</li>
+                    <li>[Reader] LTR, RTL, vertical pager: Fixed page scrolling when scaling is `Original Size`</li>
+                    <li>[Servers] Add Toonily [EN]</li>
+                    <li>[Servers] Dynasty: Update</li>
+                    <li>[Servers] Golden Mangás: Update</li>
+                    <li>[Servers] Local: Repair</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.8.0" date="2023-01-05">
             <description>
                 <ul>
