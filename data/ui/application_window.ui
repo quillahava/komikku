@@ -439,6 +439,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                         <child type="end">
                                           <object class="GtkMenuButton" id="library_selection_mode_menubutton">
                                             <property name="icon-name">view-more-symbolic</property>
+                                            <property name="tooltip-text" translatable="yes">Menu</property>
                                             <property name="direction">up</property>
                                           </object>
                                         </child>
@@ -1034,6 +1035,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                         </child>
                                         <child type="end">
                                           <object class="GtkMenuButton" id="card_chapters_selection_mode_menubutton">
+                                            <property name="tooltip-text" translatable="yes">Menu</property>
                                             <property name="icon-name">view-more-symbolic</property>
                                             <property name="direction">up</property>
                                           </object>

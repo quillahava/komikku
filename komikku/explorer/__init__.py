@@ -139,6 +139,7 @@ class Explorer(Gtk.Stack):
             # Info button
             button = Gtk.MenuButton(valign=Gtk.Align.CENTER)
             button.set_icon_name('help-about-symbolic')
+            button.set_tooltip_text(_('Help'))
             popover = Gtk.Popover()
             label = Gtk.Label()
             label.set_wrap(True)
@@ -164,6 +165,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         # Button to pin/unpin
         button = Gtk.ToggleButton(valign=Gtk.Align.CENTER)
         button.set_icon_name('view-pin-symbolic')
+        button.set_tooltip_text(_('Toggle pinned status'))
         button.set_active(data['id'] in Settings.get_default().pinned_servers)
         button.connect('toggled', self.servers_page.toggle_server_pinned_state, row)
         box.append(button)

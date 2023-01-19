@@ -170,8 +170,9 @@ class History(Gtk.Box):
                 label.add_css_class('subtitle')
                 action_row.add_suffix(label)
 
-                # Play button
+                # Resume button
                 button = Gtk.Button.new_from_icon_name('media-playback-start-symbolic')
+                button.set_tooltip_text(_('Resume'))
                 button.connect('clicked', self.on_row_play_button_clicked, action_row)
                 button.set_valign(Gtk.Align.CENTER)
                 action_row.add_suffix(button)

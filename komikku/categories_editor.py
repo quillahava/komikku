@@ -183,22 +183,26 @@ class CategoryRow(Gtk.ListBoxRow):
         self.box.append(self.edit_entry)
 
         self.delete_button = Gtk.Button.new_from_icon_name('user-trash-symbolic')
+        self.delete_button.set_tooltip_text(_('Delete'))
         self.delete_button.set_valign(Gtk.Align.CENTER)
         self.delete_button.add_css_class('destructive-action')
         self.box.append(self.delete_button)
 
         self.edit_button = Gtk.Button.new_from_icon_name('document-edit-symbolic')
+        self.edit_button.set_tooltip_text(_('Edit'))
         self.edit_button.set_valign(Gtk.Align.CENTER)
         self.edit_button.connect('clicked', self.set_edit_mode, True)
         self.box.append(self.edit_button)
 
         self.cancel_button = Gtk.Button.new_from_icon_name('edit-undo-symbolic')
+        self.cancel_button.set_tooltip_text(_('Cancel'))
         self.cancel_button.set_valign(Gtk.Align.CENTER)
         self.cancel_button.hide()
         self.cancel_button.connect('clicked', self.set_edit_mode, False)
         self.box.append(self.cancel_button)
 
         self.save_button = Gtk.Button.new_from_icon_name('emblem-ok-symbolic')
+        self.save_button.set_tooltip_text(_('Save'))
         self.save_button.set_valign(Gtk.Align.CENTER)
         self.save_button.add_css_class('suggested-action')
         self.save_button.hide()

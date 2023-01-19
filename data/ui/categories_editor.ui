@@ -45,6 +45,7 @@ along with Komikku. If not, see <http://www.gnu.org/licenses/>.
                     </child>
                     <child>
                       <object class="GtkButton" id="add_button">
+                        <property name="tooltip-text" translatable="yes">Add</property>
                         <property name="receives_default">1</property>
                         <child>
                           <object class="GtkImage">
