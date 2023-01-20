@@ -20,7 +20,7 @@ class Xkcd(Server):
     id = 'xkcd'
     name = SERVER_NAME
     lang = 'en'
-    no_search = True
+    true_search = False
 
     base_url = 'https://www.xkcd.com'
     manga_url = base_url + '/archive/'
@@ -152,7 +152,7 @@ class Xkcd(Server):
     def search(self, term=None):
         # This server does not have a search
         # but a search method is needed for `Global Search` in `Explorer`
-        # In order not to be offered in `Explorer`, class attribute `no_search` must be set to True
+        # In order not to be offered in `Explorer`, class attribute `true_search` must be set to False
 
         results = []
         for item in self.get_most_populars():

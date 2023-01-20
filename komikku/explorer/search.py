@@ -568,7 +568,7 @@ class ExplorerSearchPage:
             self.title_label.show()
             self.viewswitchertitle.set_title(self.parent.server.name)
 
-            has_search = getattr(self.parent.server, 'search', None) is not None and not self.parent.server.no_search
+            has_search = getattr(self.parent.server, 'search', None) is not None and self.parent.server.true_search
             has_most_populars = getattr(self.parent.server, 'get_most_populars', None) is not None
             has_latest_updates = getattr(self.parent.server, 'get_latest_updates', None) is not None
 

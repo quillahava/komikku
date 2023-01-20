@@ -18,7 +18,7 @@ class Dbmultiverse(Server):
     id = 'dbmultiverse'
     name = SERVER_NAME
     lang = 'en'
-    no_search = True
+    true_search = False
 
     base_url = 'https://www.dragonball-multiverse.com'
     manga_url = base_url + '/en/chapters.html?comic=page'
@@ -156,9 +156,9 @@ class Dbmultiverse(Server):
         )]
 
     def search(self, term=None):
-        # This server does not have a search
+        # This server does not have a true search
         # but a search method is needed for `Global Search` in `Explorer`
-        # In order not to be offered in `Explorer`, class attribute `no_search` must be set to True
+        # In order not to be offered in `Explorer`, class attribute `true_search` must be set to False
 
         results = []
         for item in self.get_most_populars():
