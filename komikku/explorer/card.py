@@ -104,10 +104,8 @@ class ExplorerCardPage:
             self.on_add_button_clicked()
 
     def on_read_button_clicked(self):
-        # Stop search, most populars and latest_updates if not ended
-        self.parent.search_page.stop_search = True
-        self.parent.search_page.stop_most_populars = True
-        self.parent.search_page.stop_latest_updates = True
+        # Stop global search if not ended
+        self.parent.search_page.stop_search_global = True
 
         self.window.card.init(self.manga, transition=False)
 

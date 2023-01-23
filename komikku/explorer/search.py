@@ -17,21 +17,17 @@ from komikku.utils import log_error_traceback
 
 class ExplorerSearchPage:
     global_search_mode = False
+    page = None
     search_filters = None
 
-    lock_search = False
-    lock_most_populars = False
-    lock_latest_updates = False
-
-    stop_search = False
-    stop_most_populars = False
-    stop_latest_updates = False
+    requests = {}
+    lock_search_global = None
+    stop_search_global = None
 
     def __init__(self, parent):
         self.parent = parent
         self.window = parent.window
 
-        self.title_label = self.parent.search_page_title_label
         self.stack = self.parent.search_page_stack
         self.viewswitcherbar = self.parent.search_page_viewswitcherbar
 
@@ -55,7 +51,7 @@ class ExplorerSearchPage:
         self.latest_updates_status_page = self.parent.search_page_latest_updates_status_page
         self.latest_updates_spinner = self.parent.search_page_latest_updates_spinner
 
-        self.stack.connect('notify::visible-child', self.on_page_changed)
+        self.page_changed_handler_id = self.stack.connect('notify::visible-child-name', self.on_page_changed)
 
         self.server_website_button.connect('clicked', self.on_server_website_button_clicked)
         self.searchbar.connect_entry(self.searchentry)
@@ -73,6 +69,21 @@ class ExplorerSearchPage:
         self.viewswitchertitle.set_stack(self.stack)
         self.viewswitchertitle.connect('notify::title-visible', self.on_viewswitchertitle_title_visible)
         self.parent.title_stack.get_child_by_name('search').set_child(self.viewswitchertitle)
+
+    def can_page_be_updated_with_results(self, page, server_id):
+        self.requests[page].remove(server_id)
+
+        if self.parent.props.visible_child_name != 'search':
+            # Not in Explorer search page
+            return False
+        elif server_id != self.parent.server.id:
+            # server_id is not the current server
+            return False
+        elif page != self.page:
+            # page is not the current page
+            return False
+
+        return True
 
     def clear_latest_updates(self):
         self.latest_updates_listbox.hide()
@@ -201,10 +212,13 @@ class ExplorerSearchPage:
         self.parent.card_page.populate(row.manga_data)
 
     def on_page_changed(self, _stack, _param):
-        page = self.stack.props.visible_child_name
-        if page == 'most_populars':
+        self.page = self.stack.props.visible_child_name
+
+        if self.page == 'most_populars':
+            self.toggle_search_page(False)
             self.populate_most_populars()
-        elif page == 'latest_updates':
+        elif self.page == 'latest_updates':
+            self.toggle_search_page(False)
             self.populate_latest_updates()
 
     def on_server_website_button_clicked(self, _button):
@@ -216,31 +230,30 @@ class ExplorerSearchPage:
     def on_viewswitchertitle_title_visible(self, _viewswitchertitle, _param):
         if self.viewswitchertitle.get_title_visible():
             self.viewswitcherbar.set_reveal(not self.global_search_mode and self.viewswitchertitle.props.view_switcher_enabled)
-            self.title_label.get_parent().hide()
         else:
             self.viewswitcherbar.set_reveal(False)
-            self.title_label.get_parent().show()
 
     def populate_latest_updates(self, *args):
-        if self.lock_latest_updates:
-            return
-
         def run(server):
+            self.register_request('latest_updates')
+
             try:
                 results = server.get_latest_updates(**self.search_filters)
-                if self.stop_latest_updates:
-                    return
 
                 if results:
-                    GLib.idle_add(complete, results, server)
+                    GLib.idle_add(complete, results, server.id)
                 else:
-                    GLib.idle_add(error, results, server)
+                    GLib.idle_add(error, results, server.id)
             except Exception as e:
                 user_error_message = log_error_traceback(e)
-                GLib.idle_add(error, None, server, user_error_message)
+                GLib.idle_add(error, None, server.id, user_error_message)
 
-        def complete(results, server):
+        def complete(results, server_id):
             self.latest_updates_spinner.stop()
+
+            if not self.can_page_be_updated_with_results('latest_updates', server_id):
+                return
+
             self.latest_updates_listbox.show()
 
             for item in results:
@@ -254,10 +267,12 @@ class ExplorerSearchPage:
                 self.latest_updates_listbox.append(row)
 
             self.latest_updates_stack.set_visible_child_name('results')
-            self.lock_latest_updates = False
 
-        def error(results, server, message=None):
+        def error(results, server_id, message=None):
             self.latest_updates_spinner.stop()
+
+            if not self.can_page_be_updated_with_results('latest_updates', server_id):
+                return
 
             if results is None:
                 self.latest_updates_status_page.set_title(_('Oops, failed to retrieve latest updates.'))
@@ -267,38 +282,40 @@ class ExplorerSearchPage:
                 self.latest_updates_status_page.set_title(_('No Latest Updates Found'))
 
             self.latest_updates_stack.set_visible_child_name('no_results')
-            self.lock_latest_updates = False
 
-        self.lock_latest_updates = True
-        self.stop_latest_updates = False
-        self.latest_updates_spinner.start()
         self.clear_latest_updates()
+        self.latest_updates_spinner.start()
         self.latest_updates_stack.set_visible_child_name('loading')
+
+        if self.requests.get('latest_updates') and self.parent.server.id in self.requests['latest_updates']:
+            self.window.show_notification(_('A request is already in progress.'), 2)
+            return
 
         thread = threading.Thread(target=run, args=(self.parent.server, ))
         thread.daemon = True
         thread.start()
 
     def populate_most_populars(self, *args):
-        if self.lock_most_populars:
-            return
-
         def run(server):
+            self.register_request('most_populars')
+
             try:
                 results = server.get_most_populars(**self.search_filters)
-                if self.stop_most_populars:
-                    return
 
                 if results:
-                    GLib.idle_add(complete, results, server)
+                    GLib.idle_add(complete, results, server.id)
                 else:
-                    GLib.idle_add(error, results, server)
+                    GLib.idle_add(error, results, server.id)
             except Exception as e:
                 user_error_message = log_error_traceback(e)
-                GLib.idle_add(error, None, server, user_error_message)
+                GLib.idle_add(error, None, server.id, user_error_message)
 
-        def complete(results, server):
+        def complete(results, server_id):
             self.most_populars_spinner.stop()
+
+            if not self.can_page_be_updated_with_results('most_populars', server_id):
+                return
+
             self.most_populars_listbox.show()
 
             for item in results:
@@ -312,35 +329,41 @@ class ExplorerSearchPage:
                 self.most_populars_listbox.append(row)
 
             self.most_populars_stack.set_visible_child_name('results')
-            self.lock_most_populars = False
 
-        def error(results, server, message=None):
+        def error(results, server_id, message=None):
             self.most_populars_spinner.stop()
 
+            if not self.can_page_be_updated_with_results('most_populars', server_id):
+                return
+
             if results is None:
-                self.most_populars_status_page.set_title(_('Oops, failed to retrieve most populars.'))
+                self.most_populars_status_page.set_title(_('Oops, failed to retrieve most popular.'))
                 if message:
                     self.most_populars_status_page.set_description(message)
             else:
-                self.most_populars_status_page.set_title(_('No Most Populars Found'))
+                self.most_populars_status_page.set_title(_('No Most Popular Found'))
 
             self.most_populars_stack.set_visible_child_name('no_results')
-            self.lock_most_populars = False
 
-        self.lock_most_populars = True
-        self.stop_most_populars = False
-        self.most_populars_spinner.start()
         self.clear_most_populars()
+        self.most_populars_spinner.start()
         self.most_populars_stack.set_visible_child_name('loading')
+
+        if self.requests.get('most_populars') and self.parent.server.id in self.requests['most_populars']:
+            self.window.show_notification(_('A request is already in progress.'), 2)
+            return
 
         thread = threading.Thread(target=run, args=(self.parent.server, ))
         thread.daemon = True
         thread.start()
 
-    def search(self, _entry=None):
-        if self.lock_search:
-            return
+    def register_request(self, page):
+        if page not in self.requests:
+            self.requests[page] = []
 
+        self.requests[page].append(self.parent.server.id)
+
+    def search(self, _entry=None):
         term = self.searchentry.get_text().strip()
 
         if self.global_search_mode:
@@ -362,21 +385,25 @@ class ExplorerSearchPage:
             return
 
         def run(server):
+            self.register_request('search')
+
             try:
                 results = server.search(term, **self.search_filters)
-                if self.stop_search:
-                    return
 
                 if results:
-                    GLib.idle_add(complete, results, server)
+                    GLib.idle_add(complete, results, server.id)
                 else:
-                    GLib.idle_add(error, results, server)
+                    GLib.idle_add(error, results, server.id)
             except Exception as e:
                 user_error_message = log_error_traceback(e)
-                GLib.idle_add(error, None, server, user_error_message)
+                GLib.idle_add(error, None, server.id, user_error_message)
 
-        def complete(results, server):
+        def complete(results, server_id):
             self.search_spinner.stop()
+
+            if not self.can_page_be_updated_with_results('search', server_id):
+                return
+
             self.search_listbox.show()
 
             for item in results:
@@ -390,10 +417,12 @@ class ExplorerSearchPage:
                 self.search_listbox.append(row)
 
             self.search_stack.set_visible_child_name('results')
-            self.lock_search = False
 
-        def error(results, server, message=None):
+        def error(results, server_id, message=None):
             self.search_spinner.stop()
+
+            if not self.can_page_be_updated_with_results('search', server_id):
+                return
 
             if results is None:
                 self.search_status_page.set_title(_('Oops, search failed. Please try again.'))
@@ -404,20 +433,25 @@ class ExplorerSearchPage:
                 self.search_status_page.set_description(_('Try a different search'))
 
             self.search_stack.set_visible_child_name('no_results')
-            self.lock_search = False
 
-        self.lock_search = True
-        self.stop_search = False
+        self.toggle_search_page(True)
         self.search_spinner.start()
-        self.clear_search_results()
         self.search_stack.set_visible_child_name('loading')
         self.search_listbox.set_sort_func(None)
+
+        if self.requests.get('search') and self.parent.server.id in self.requests['search']:
+            self.window.show_notification(_('A request is already in progress.'), 2)
+            return
 
         thread = threading.Thread(target=run, args=(self.parent.server, ))
         thread.daemon = True
         thread.start()
 
     def search_global(self, term):
+        if self.lock_search_global:
+            self.window.show_notification(_('A request is already in progress.'), 2)
+            return
+
         def run(servers):
             for server_data in servers:
                 server = getattr(server_data['module'], server_data['class_name'])()
@@ -425,18 +459,20 @@ class ExplorerSearchPage:
                 try:
                     filters = get_server_default_search_filters(server)
                     results = server.search(term, **filters)
-                    if self.stop_search:
+                    if self.stop_search_global:
                         break
 
                     GLib.idle_add(complete_server, results, server_data)
                 except Exception as e:
+                    if self.stop_search_global:
+                        break
                     user_error_message = log_error_traceback(e)
                     GLib.idle_add(complete_server, None, server_data, user_error_message)
 
             GLib.idle_add(complete)
 
         def complete():
-            self.lock_search = False
+            self.lock_search_global = False
 
         def complete_server(results, server_data, message=None):
             lang = server_data['lang']
@@ -527,7 +563,7 @@ class ExplorerSearchPage:
 
             return 1
 
-        self.clear_search_results()
+        self.toggle_search_page(True)
 
         # Init results list
         for server_data in self.parent.servers_page.servers:
@@ -549,8 +585,8 @@ class ExplorerSearchPage:
             row.set_child(spinner)
             self.search_listbox.append(row)
 
-        self.lock_search = True
-        self.stop_search = False
+        self.lock_search_global = True
+        self.stop_search_global = False
         self.search_listbox.set_sort_func(sort_results)
         self.search_listbox.show()
 
@@ -559,49 +595,63 @@ class ExplorerSearchPage:
         thread.start()
 
     def show(self):
-        self.lock_search = False
-        self.lock_most_populars = False
+        self.init_search_filters()
 
         if not self.global_search_mode:
             # Search, Most Populars, Latest Updates
-            self.title_label.set_text(self.parent.server.name)
-            self.title_label.show()
             self.viewswitchertitle.set_title(self.parent.server.name)
+            self.searchentry.props.placeholder_text = _('Search {}').format(self.parent.server.name)
 
-            has_search = getattr(self.parent.server, 'search', None) is not None and self.parent.server.true_search
+            has_true_search = self.parent.server.true_search
             has_most_populars = getattr(self.parent.server, 'get_most_populars', None) is not None
             has_latest_updates = getattr(self.parent.server, 'get_latest_updates', None) is not None
 
-            self.stack.get_page(self.stack.get_child_by_name('search')).set_visible(has_search)
-            self.stack.get_page(self.stack.get_child_by_name('most_populars')).set_visible(has_most_populars)
-            self.stack.get_page(self.stack.get_child_by_name('latest_updates')).set_visible(has_latest_updates)
+            with self.stack.handler_block(self.page_changed_handler_id):
+                self.stack.get_page(self.stack.get_child_by_name('most_populars')).set_visible(has_most_populars)
+                self.stack.get_page(self.stack.get_child_by_name('latest_updates')).set_visible(has_latest_updates)
+                self.stack.get_page(self.stack.get_child_by_name('search')).set_visible(not has_true_search)
 
-            if has_search:
-                start_page = 'search'
-            elif has_most_populars:
-                start_page = 'most_populars'
+            if has_true_search:
+                self.searchbar.show()
             else:
-                # Should not happen
-                return
+                self.searchbar.hide()
 
-            viewswitcher_enabled = has_search + has_most_populars + has_latest_updates > 1
+            if has_most_populars:
+                start_page = 'most_populars'
+            elif has_latest_updates:
+                start_page = 'latest_updates'
+            else:
+                start_page = 'search'
+                self.clear_search_results()
+                self.search_stack.set_visible_child_name('results')
+
+            viewswitcher_enabled = has_true_search + has_most_populars + has_latest_updates > 1
             self.viewswitcherbar.set_reveal(self.viewswitchertitle.get_title_visible() and viewswitcher_enabled)
             self.viewswitchertitle.set_view_switcher_enabled(viewswitcher_enabled)
         else:
             # Global Search
-            self.title_label.set_text('')
-            self.title_label.hide()
             self.viewswitchertitle.set_title(_('Global Search'))
+            self.searchentry.props.placeholder_text = ''
+
+            self.searchbar.show()
+            start_page = 'search'
+            self.clear_search_results()
+            self.search_stack.set_visible_child_name('results')
+
             self.viewswitcherbar.set_reveal(False)
             self.viewswitchertitle.set_view_switcher_enabled(False)
-            start_page = 'search'
 
-        self.init_search_filters()
         self.searchentry.set_text('')
-        self.clear_search_results()
-
         self.stack.set_visible_child_name('search')  # To be sure to detect next page change
-        self.stack.set_visible_child_name(start_page)
+        GLib.idle_add(self.stack.set_visible_child_name, start_page)
+
+    def toggle_search_page(self, visible):
+        self.stack.get_page(self.stack.get_child_by_name('search')).set_visible(visible)
+        self.clear_search_results()
+        if not visible:
+            self.searchentry.set_text('')
+        else:
+            self.stack.set_visible_child_name('search')
 
 
 def get_server_default_search_filters(server):

@@ -102,16 +102,34 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
             <property name="orientation">vertical</property>
             <child>
               <object class="AdwClamp">
-                <property name="maximum_size">768</property>
-                <property name="margin-top">12</property>
-                <property name="margin-end">12</property>
+                <property name="maximum_size">800</property>
+                <property name="margin-top">6</property>
                 <property name="margin-bottom">6</property>
-                <property name="margin-start">12</property>
                 <child>
-                  <object class="GtkLabel" id="search_page_title_label">
-                    <property name="ellipsize">end</property>
+                  <object class="GtkSearchBar" id="search_page_searchbar">
+                    <property name="search_mode_enabled">True</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="hexpand">1</property>
+                        <child>
+                          <object class="GtkSearchEntry" id="search_page_searchentry">
+                            <property name="hexpand">1</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuButton" id="search_page_filter_menu_button">
+                            <property name="focus_on_click">0</property>
+                            <property name="receives_default">1</property>
+                            <property name="icon-name">go-down-symbolic</property>
+                          </object>
+                        </child>
+                        <style>
+                          <class name="linked"/>
+                        </style>
+                      </object>
+                    </child>
                     <style>
-                      <class name="heading"/>
+                      <class name="inline"/>
                     </style>
                   </object>
                 </child>
@@ -121,126 +139,8 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
               <object class="AdwViewStack" id="search_page_stack">
                 <child>
                   <object class="AdwViewStackPage">
-                    <property name="name">search</property>
-                    <property name="title" translatable="yes">Search</property>
-                    <property name="icon_name">system-search-symbolic</property>
-                    <property name="child">
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="AdwClamp">
-                            <property name="maximum_size">800</property>
-                            <child>
-                              <object class="GtkSearchBar" id="search_page_searchbar">
-                                <property name="search_mode_enabled">True</property>
-                                <child>
-                                  <object class="GtkBox">
-                                    <property name="hexpand">1</property>
-                                    <child>
-                                      <object class="GtkSearchEntry" id="search_page_searchentry">
-                                        <property name="hexpand">1</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkMenuButton" id="search_page_filter_menu_button">
-                                        <property name="focus_on_click">0</property>
-                                        <property name="receives_default">1</property>
-                                        <property name="icon-name">go-down-symbolic</property>
-                                      </object>
-                                    </child>
-                                    <style>
-                                      <class name="linked"/>
-                                    </style>
-                                  </object>
-                                </child>
-                                <style>
-                                  <class name="inline"/>
-                                </style>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkScrolledWindow">
-                            <property name="vexpand">1</property>
-                            <property name="hscrollbar_policy">never</property>
-                            <property name="child">
-                              <object class="GtkViewport">
-                                <property name="scroll-to-focus">True</property>
-                                <child>
-                                  <object class="AdwClamp">
-                                    <property name="maximum_size">768</property>
-                                    <property name="margin-top">12</property>
-                                    <property name="margin-end">12</property>
-                                    <property name="margin-bottom">12</property>
-                                    <property name="margin-start">12</property>
-                                    <child>
-                                      <object class="GtkStack" id="search_page_search_stack">
-                                        <property name="vhomogeneous">0</property>
-                                        <child>
-                                          <object class="GtkStackPage">
-                                            <property name="name">results</property>
-                                            <property name="child">
-                                              <object class="AdwBin">
-                                                <child>
-                                                  <object class="GtkListBox" id="search_page_search_listbox">
-                                                    <property name="valign">start</property>
-                                                    <property name="selection_mode">none</property>
-                                                    <style>
-                                                      <class name="boxed-list"/>
-                                                    </style>
-                                                  </object>
-                                                </child>
-                                              </object>
-                                            </property>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkStackPage">
-                                            <property name="name">no_results</property>
-                                            <property name="child">
-                                              <object class="AdwStatusPage" id="search_page_search_status_page">
-                                              </object>
-                                            </property>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkStackPage">
-                                            <property name="name">loading</property>
-                                            <property name="child">
-                                              <object class="GtkBox">
-                                                <property name="orientation">vertical</property>
-                                                <property name="valign">center</property>
-                                                <child>
-                                                  <object class="GtkSpinner" id="search_page_search_spinner">
-                                                    <property name="height-request">50</property>
-                                                    <property name="width-request">50</property>
-                                                    <property name="visible">True</property>
-                                                    <style>
-                                                      <class name="spinner"/>
-                                                    </style>
-                                                  </object>
-                                                </child>
-                                              </object>
-                                            </property>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </property>
-                          </object>
-                        </child>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwViewStackPage">
                     <property name="name">most_populars</property>
-                    <property name="title" translatable="yes">Most Populars</property>
+                    <property name="title" translatable="yes">Most Popular</property>
                     <property name="icon_name">starred-symbolic</property>
                     <property name="child">
                       <object class="GtkScrolledWindow">
@@ -395,6 +295,86 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                             <property name="valign">center</property>
                                             <child>
                                               <object class="GtkSpinner" id="search_page_latest_updates_spinner">
+                                                <property name="height-request">50</property>
+                                                <property name="width-request">50</property>
+                                                <property name="visible">True</property>
+                                                <style>
+                                                  <class name="spinner"/>
+                                                </style>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwViewStackPage">
+                    <property name="name">search</property>
+                    <property name="title" translatable="yes">Search</property>
+                    <property name="icon_name">system-search-symbolic</property>
+                    <property name="child">
+                      <object class="GtkScrolledWindow">
+                        <property name="vexpand">1</property>
+                        <property name="hscrollbar_policy">never</property>
+                        <property name="child">
+                          <object class="GtkViewport">
+                            <property name="scroll-to-focus">True</property>
+                            <child>
+                              <object class="AdwClamp">
+                                <property name="maximum_size">768</property>
+                                <property name="margin-top">12</property>
+                                <property name="margin-end">12</property>
+                                <property name="margin-bottom">12</property>
+                                <property name="margin-start">12</property>
+                                <child>
+                                  <object class="GtkStack" id="search_page_search_stack">
+                                    <property name="vhomogeneous">0</property>
+                                    <child>
+                                      <object class="GtkStackPage">
+                                        <property name="name">results</property>
+                                        <property name="child">
+                                          <object class="AdwBin">
+                                            <child>
+                                              <object class="GtkListBox" id="search_page_search_listbox">
+                                                <property name="valign">start</property>
+                                                <property name="selection_mode">none</property>
+                                                <style>
+                                                  <class name="boxed-list"/>
+                                                </style>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkStackPage">
+                                        <property name="name">no_results</property>
+                                        <property name="child">
+                                          <object class="AdwStatusPage" id="search_page_search_status_page">
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkStackPage">
+                                        <property name="name">loading</property>
+                                        <property name="child">
+                                          <object class="GtkBox">
+                                            <property name="orientation">vertical</property>
+                                            <property name="valign">center</property>
+                                            <child>
+                                              <object class="GtkSpinner" id="search_page_search_spinner">
                                                 <property name="height-request">50</property>
                                                 <property name="width-request">50</property>
                                                 <property name="visible">True</property>

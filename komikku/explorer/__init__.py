@@ -28,7 +28,6 @@ class Explorer(Gtk.Stack):
     servers_page_listbox = Gtk.Template.Child('servers_page_listbox')
     servers_page_pinned_listbox = Gtk.Template.Child('servers_page_pinned_listbox')
 
-    search_page_title_label = Gtk.Template.Child('search_page_title_label')
     search_page_stack = Gtk.Template.Child('search_page_stack')
     search_page_viewswitcherbar = Gtk.Template.Child('search_page_viewswitcherbar')
     search_page_searchbar = Gtk.Template.Child('search_page_searchbar')
@@ -177,7 +176,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             # Back to Library if:
             # - user click on 'Back' button
             # - or use 'Esc' key and 'severs' page in not in search mode
-            if source == 'click' or not self.servers_page_searchbar.get_search_mode():
+            if source == 'click' or not self.servers_page.searchbar.get_search_mode():
                 self.window.library.show()
 
             # Leave search mode
@@ -188,13 +187,8 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         elif self.page == 'search':
             self.server = None
             self.search_page.global_search_mode = False
-            # Stop search, most_populars and latest_updates if not ended
-            self.search_page.stop_search = True
-            self.search_page.stop_most_populars = True
-            self.search_page.stop_latest_updates = True
-
-            # Stop activity indicator in case of search page is left before the end of a search
-            self.window.activity_indicator.stop()
+            # Stop global search if not ended
+            self.search_page.stop_search_global = True
 
             # Restore focus to search entry if in search mode
             if self.servers_page.searchbar.get_search_mode():
@@ -235,6 +229,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
     def show_page(self, name):
         self.title_stack.set_visible_child_name(name)
+        self.set_visible_child_name(name)
 
         if name == 'servers':
             if self.page is None and self.servers_page.searchbar.get_search_mode():
@@ -255,6 +250,5 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         else:
             # `Search` (in global mode), Search when server is local and `Card` pages doesn't have a right button in headerbar
             self.window.right_button_stack.hide()
-        self.set_visible_child_name(name)
 
         self.page = name
