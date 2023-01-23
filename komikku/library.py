@@ -828,6 +828,7 @@ class Thumbnail(Gtk.FlowBoxChild):
         self._selected = False
 
         self.picture = Gtk.Picture()
+        self.picture.add_css_class('cover-dropshadow')
         self.picture.set_can_shrink(False)
         self.picture.set_keep_aspect_ratio(False)
         self.picture.set_paintable(ThumbnailCover(manga))
@@ -866,7 +867,7 @@ class Thumbnail(Gtk.FlowBoxChild):
                     logo_image.props.valign = Gtk.Align.CENTER
                 else:
                     logo_image = Gtk.Image()
-                logo_image.set_pixel_size(24)
+                logo_image.set_pixel_size(20)
 
                 box.attach(logo_image, 1, 1, 1, 1)
             else:
