@@ -867,7 +867,7 @@ class Thumbnail(Gtk.FlowBoxChild):
                     logo_image.props.valign = Gtk.Align.CENTER
                 else:
                     logo_image = Gtk.Image()
-                logo_image.set_pixel_size(20)
+                logo_image.set_pixel_size(16)
 
                 box.attach(logo_image, 1, 1, 1, 1)
             else:
@@ -905,7 +905,7 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
     width = None
     height = None
     ratio = Thumbnail.default_width / Thumbnail.default_height
-    server_logo_size = 20
+    server_logo_size = 16
 
     def __init__(self, manga):
         super().__init__()
@@ -1017,7 +1017,7 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
 
         # Drow server logo (top left corner)
         if self.server_logo_texture:
-            self.rect.init(4, 4, self.server_logo_size, self.server_logo_size)
+            self.rect.init(6, 6, self.server_logo_size, self.server_logo_size)
             snapshot.append_texture(self.server_logo_texture, self.rect)
 
     def resize(self, width, height):
