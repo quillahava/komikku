@@ -1,6 +1,7 @@
 #
 # Sandor Odor <sandor@codingclouds.de>, 2020.
 # Liliana Prikler <liliana.prikler@gmail.com>, 2020-2023.
+# gregorni <gregorniehl@web.de>, 2023.
 #
 msgid ""
 msgstr ""
@@ -8,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-05 12:19+0100\n"
 "PO-Revision-Date: 2023-01-01 20:34+0100\n"
-"Last-Translator: Liliana Prikler <liliana.prikler@gmail.com>\n"
+"Last-Translator: gregorni <gregorniehl@web.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -26,10 +27,12 @@ msgid ""
 "With its simple, elegant and adaptive interface, this manga reader allows "
 "you to search, sort and read all your favorite manga with ease."
 msgstr ""
+"In der eleganten und adaptiven Nutzeroberfläche dieses Manga-Readers kannst du "
+"problemlos deine Lieblingsmanga suchen, sortieren und lesen." 
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
 msgid "Why you will love Komikku?"
-msgstr ""
+msgstr "Warum Sie Komikku lieben werden:"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
@@ -83,26 +86,28 @@ msgid ""
 "[Explorer] Add `Latest Updates` (not available for all compatible servers "
 "yet)"
 msgstr ""
+"[Explorer] `Zuletzt aktualisiert` hinzugefügt (Noch nicht für alle kompatiblen "
+"Server verfügbar)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 msgid "[Servers] Add Reaper Scans AR, FR, ID and TR"
-msgstr ""
+msgstr "[Server] Reaper Scans für AR, FR, ID und TR hinzugefügt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:98
 msgid "[Servers] Re-enables Tutto Anime Manga (TAM) [IT]"
-msgstr ""
+msgstr "[Server] Tutto Anime Manga (TAM) wiederhergestellt [IT]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:99
 msgid "[Servers] Atikrost: Update"
-msgstr ""
+msgstr "[Server] Sttikrost: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:100
 msgid "[Servers] LeviatanScans [EN]: Update"
-msgstr ""
+msgstr "[Server] LevitianScans [EN]: Aktualisert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:101
 msgid "[Servers] Manga-Scantrad: Update"
-msgstr ""
+msgstr "[Server] Manga-Scantrad: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:321
@@ -121,11 +126,11 @@ msgstr "[Server] Mangaowl: Aktualisiert"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "Brings new French and Brazilian Portuguese translations"
-msgstr ""
+msgstr "Neue Französische und Brasilianisch-Protugiesische Übersetzungen"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "Happy reading and merry christmas."
-msgstr ""
+msgstr "Frohe Weihnachten und Viel Spaß beim Lesen."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 msgid "Bug-fix release:"
@@ -2977,19 +2982,19 @@ msgstr "Wiederholen"
 
 #: ../komikku/servers/bilibili/__init__.py:36
 msgid "Price"
-msgstr ""
+msgstr "Preis"
 
 #: ../komikku/servers/bilibili/__init__.py:37
 msgid "Filter by price"
-msgstr ""
+msgstr "Nach Preis filtern"
 
 #: ../komikku/servers/bilibili/__init__.py:42
 msgid "Free"
-msgstr ""
+msgstr "Kostenlos"
 
 #: ../komikku/servers/bilibili/__init__.py:43
 msgid "Paid"
-msgstr ""
+msgstr "Kostenpflichtig"
 
 #: ../komikku/servers/dynasty/__init__.py:38
 msgid "Categories"
@@ -2998,7 +3003,7 @@ msgstr "Kategorien"
 #: ../komikku/servers/dynasty/__init__.py:39
 #: ../komikku/servers/mangaworld/__init__.py:32
 msgid "Filter by types"
-msgstr ""
+msgstr "Nach Arten filtern"
 
 #: ../komikku/servers/dynasty/__init__.py:42
 msgid "Anthology"
@@ -3062,7 +3067,7 @@ msgstr "Einstufung"
 
 #: ../komikku/servers/mangadex/__init__.py:61
 msgid "Filter by content ratings"
-msgstr ""
+msgstr "Nach Inhalt filtern"
 
 #: ../komikku/servers/mangadex/__init__.py:64
 msgid "Safe"
@@ -3090,7 +3095,7 @@ msgstr "Art"
 #: ../komikku/servers/mangapill/__init__.py:32
 #: ../komikku/servers/multi/manga_stream.py:50
 msgid "Filter by type"
-msgstr ""
+msgstr "Nach Art filtern"
 
 #: ../komikku/servers/mangapill/__init__.py:37
 #: ../komikku/servers/mangatube/__init__.py:39
@@ -3174,11 +3179,11 @@ msgstr "Status"
 
 #: ../komikku/servers/mangaworld/__init__.py:47
 msgid "Filter by statuses"
-msgstr ""
+msgstr "Nach Status filtern"
 
 #: ../komikku/servers/mangaworld/__init__.py:54
 msgid "Canceled"
-msgstr ""
+msgstr "Abgebrochen"
 
 #: ../komikku/servers/multi/madara.py:356
 #: ../komikku/servers/readmanhwa/__init__.py:45
