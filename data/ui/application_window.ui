@@ -639,7 +639,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                             <child>
                                               <object class="GtkBox">
                                                 <property name="orientation">vertical</property>
-                                                <property name="can-focus">false</property>
                                                 <property name="spacing">32</property>
                                                 <child>
                                                   <object class="GtkBox" id="card_cover_box">
