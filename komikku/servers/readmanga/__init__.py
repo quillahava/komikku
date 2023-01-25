@@ -17,10 +17,13 @@ class Readmanga(Server):
     lang = 'ru'
 
     base_url = 'https://readmanga.live'
-    search_url = base_url + '/search/advanced'
+    search_url = base_url + '/search/advancedResults'
+    latest_updates_url = base_url + '/list?sortType=updated'
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
+    pages_js_start = 'rm_h.initReader'
+    pages_js_offset = 17
 
     def __init__(self):
         if self.session is None:
@@ -142,10 +145,10 @@ class Readmanga(Server):
 
             for line in script.split('\n'):
                 line = line.strip()
-                if not line.startswith('rm_h.init'):
+                if not line.startswith(self.pages_js_start):
                     continue
 
-                pages_data = '[{0}]'.format(line[24:-2].replace('\'', '"'))
+                pages_data = '[{0}]'.format(line[self.pages_js_offset:-2].replace('\'', '"'))
                 urls = json.loads(pages_data)[0]
                 for split_url in urls:
                     url = split_url[0] + split_url[2]
@@ -186,11 +189,8 @@ class Readmanga(Server):
         """
         return self.manga_url.format(slug)
 
-    def get_most_populars(self):
-        """
-        Returns best noted manga list
-        """
-        r = self.session_get(self.most_populars_url)
+    def get_manga_list(self, orderby):
+        r = self.session_get(self.most_populars_url if orderby == 'populars' else self.latest_updates_url)
         if r.status_code != 200:
             return None
 
@@ -210,6 +210,18 @@ class Readmanga(Server):
             ))
 
         return results
+
+    def get_most_populars(self):
+        """
+        Returns best noted manga
+        """
+        return self.get_manga_list('populars')
+
+    def get_latest_updates(self):
+        """
+        Returns latest updated manga
+        """
+        return self.get_manga_list('latest')
 
     def search(self, term):
         r = self.session_get(self.search_url, params=dict(q=term))
@@ -237,8 +249,9 @@ class Allhentai(Readmanga):
     name = 'AllHentai'
     is_nsfw = True
 
-    base_url = 'http://23.allhen.online'
+    base_url = 'http://2023.allhen.online'
     search_url = base_url + '/search/advanced'
+    latest_updates_url = base_url + '/list?sortType=updated'
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
@@ -248,8 +261,10 @@ class Mintmanga(Readmanga):
     id = 'mintmanga:readmanga'
     name = 'Mint Manga'
 
+    # 16
     base_url = 'https://mintmanga.live'
-    search_url = base_url + '/search/advanced'
+    search_url = base_url + '/search/advancedResults'
+    latest_updates_url = base_url + '/list?sortType=updated'
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
@@ -260,7 +275,11 @@ class Selfmanga(Readmanga):
     name = 'Self Manga'
 
     base_url = 'https://selfmanga.live'
-    search_url = base_url + '/search/advanced'
+    search_url = base_url + '/search/advancedResults'
+    latest_updates_url = base_url + '/list?sortType=updated'
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
+
+    pages_js_start = 'rm_h.readerInit'
+    pages_js_offset = 19
