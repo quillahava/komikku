@@ -14,24 +14,23 @@ def peppercarrot_server():
     return Peppercarrot()
 
 
-@test_steps('search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_peppercarrot(peppercarrot_server):
-    # Search
-    print('Search')
+    # Get most populars
+    print('Get most populars')
     try:
-        response = peppercarrot_server.search()
-        slug = response[0]['slug']
+        response = peppercarrot_server.get_most_populars()
     except Exception as e:
-        slug = None
+        response = None
         log_error_traceback(e)
 
-    assert slug is not None
+    assert response is not None
     yield
 
     # Get manga data
     print('Get manga data')
     try:
-        response = peppercarrot_server.get_manga_data({})
+        response = peppercarrot_server.get_manga_data(response[0])
         chapter_slug = response['chapters'][0]['slug']
     except Exception as e:
         chapter_slug = None
