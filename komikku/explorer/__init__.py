@@ -35,15 +35,16 @@ class Explorer(Gtk.Stack):
     search_page_filter_menu_button = Gtk.Template.Child('search_page_filter_menu_button')
     search_page_search_stack = Gtk.Template.Child('search_page_search_stack')
     search_page_search_listbox = Gtk.Template.Child('search_page_search_listbox')
-    search_page_search_status_page = Gtk.Template.Child('search_page_search_status_page')
+    search_page_search_no_results_status_page = Gtk.Template.Child('search_page_search_no_results_status_page')
+    search_page_search_intro_status_page = Gtk.Template.Child('search_page_search_intro_status_page')
     search_page_search_spinner = Gtk.Template.Child('search_page_search_spinner')
     search_page_most_populars_stack = Gtk.Template.Child('search_page_most_populars_stack')
     search_page_most_populars_listbox = Gtk.Template.Child('search_page_most_populars_listbox')
-    search_page_most_populars_status_page = Gtk.Template.Child('search_page_most_populars_status_page')
+    search_page_most_populars_no_results_status_page = Gtk.Template.Child('search_page_most_populars_no_results_status_page')
     search_page_most_populars_spinner = Gtk.Template.Child('search_page_most_populars_spinner')
     search_page_latest_updates_stack = Gtk.Template.Child('search_page_latest_updates_stack')
     search_page_latest_updates_listbox = Gtk.Template.Child('search_page_latest_updates_listbox')
-    search_page_latest_updates_status_page = Gtk.Template.Child('search_page_latest_updates_status_page')
+    search_page_latest_updates_no_results_status_page = Gtk.Template.Child('search_page_latest_updates_no_results_status_page')
     search_page_latest_updates_spinner = Gtk.Template.Child('search_page_latest_updates_spinner')
 
     card_page_cover_box = Gtk.Template.Child('card_page_cover_box')
@@ -143,7 +144,7 @@ class Explorer(Gtk.Stack):
             label = Gtk.Label()
             label.set_wrap(True)
             label.set_max_width_chars(32)
-            label.set_markup(_("""A specific folder structure is required for local comics to be properly processed.
+            label.set_text(_("""A specific folder structure is required for local comics to be properly processed.
 
 Each comic must have its own folder which must contain the chapters/volumes as archive files in CBZ or CBR formats.
 
