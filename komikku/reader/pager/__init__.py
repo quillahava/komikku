@@ -260,7 +260,7 @@ class Pager(Adw.Bin, BasePager):
         BasePager.__init__(self, reader)
 
         self.carousel = Adw.Carousel()
-        self.carousel.set_scroll_params(Adw.SpringParams.new(0.1, 0.05, 1))  # guesstimate
+        self.carousel.set_scroll_params(Adw.SpringParams.new(1, 0.05, 10))  # guesstimate
         self.carousel.set_allow_long_swipes(False)
         self.carousel.set_reveal_duration(0)
         self.set_child(self.carousel)
