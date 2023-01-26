@@ -542,6 +542,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                               </child>
                               <child>
                                 <object class="GtkListBox">
+                                  <property name="can-focus">false</property>
                                   <child>
                                     <object class="GtkListBoxRow">
                                       <property name="activatable">0</property>
