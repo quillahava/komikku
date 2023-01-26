@@ -453,13 +453,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] LTR, RTL, vertical pager: Added 2-finger zoom gesture</li>
-                <li>[Reader] LTR, RTL, vertical pager: Improved double-tap zoom on touchscreens</li>
-                <li>[Reader] LTR, RTL, vertical pager: Fixed page scrolling when scaling is `Original Size`</li>
-                <li>[Servers] Add Toonily [EN]</li>
-                <li>[Servers] Dynasty: Update</li>
-                <li>[Servers] Golden Mangás: Update</li>
-                <li>[Servers] Local: Repair</li>
+                <li>[Library] Improved thumbnails appearance</li>
+                <li>[Explorer] Various improvements in search</li>
+                <li>[Reader] LTR, RTL, vertical pager: Improved page transition animation</li>
+                <li>[Servers] Read Manga, AllHentai, Mint Manga, Self Manga: Update</li>
+                <li>[A11y] Fixed keyboard navigation and added missing buttons tooltips</li>
+                <li>[L10n] Update French and German translations</li>
             </ul>
         """)
 
