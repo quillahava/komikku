@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-23 23:47+0100\n"
+"POT-Creation-Date: 2023-01-26 03:00+0100\n"
 "PO-Revision-Date: 2022-12-11 21:04+0800\n"
 "Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
 "Language-Team: \n"
@@ -20,8 +20,8 @@ msgstr ""
 "X-Poedit-Bookmarks: -1,118,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
-msgid "Read your favorite manga and more"
-msgstr ""
+msgid "Read your favorite manga"
+msgstr "阅读你最喜欢的漫画"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:13
 msgid ""
@@ -1946,7 +1946,7 @@ msgid "Toggle category sidebar"
 msgstr "开关类别侧边栏"
 
 #: ../data/ui/application_window.ui:236 ../data/ui/application_window.ui:442
-#: ../data/ui/application_window.ui:1033
+#: ../data/ui/application_window.ui:1032
 #: ../data/ui/card_chapters_list_row.ui:44
 msgid "Menu"
 msgstr "菜单"
@@ -1996,31 +1996,31 @@ msgstr "确定"
 msgid "Info"
 msgstr "提示"
 
-#: ../data/ui/application_window.ui:741 ../data/ui/explorer.ui:526
+#: ../data/ui/application_window.ui:740 ../data/ui/explorer.ui:534
 msgid "Details"
 msgstr "详情"
 
-#: ../data/ui/application_window.ui:772 ../data/ui/explorer.ui:557
+#: ../data/ui/application_window.ui:771 ../data/ui/explorer.ui:565
 msgid "Genres"
 msgstr "流派"
 
-#: ../data/ui/application_window.ui:810 ../data/ui/explorer.ui:595
+#: ../data/ui/application_window.ui:809 ../data/ui/explorer.ui:603
 msgid "Scanlators"
 msgstr "扫描仪"
 
-#: ../data/ui/application_window.ui:883
+#: ../data/ui/application_window.ui:882
 msgid "Last Update"
 msgstr "最后更新"
 
-#: ../data/ui/application_window.ui:920
+#: ../data/ui/application_window.ui:919
 msgid "Size on Disk"
 msgstr "占用空间"
 
-#: ../data/ui/application_window.ui:951 ../data/ui/explorer.ui:699
+#: ../data/ui/application_window.ui:950 ../data/ui/explorer.ui:707
 msgid "Synopsis"
 msgstr "摘要"
 
-#: ../data/ui/application_window.ui:1083 ../data/ui/categories_editor.ui:85
+#: ../data/ui/application_window.ui:1082 ../data/ui/categories_editor.ui:85
 msgid "No categories"
 msgstr "无类别"
 
@@ -2048,7 +2048,7 @@ msgstr ""
 msgid "Latest Updates"
 msgstr ""
 
-#: ../data/ui/explorer.ui:668
+#: ../data/ui/explorer.ui:676
 msgid "Last Chapter"
 msgstr "最后一章"
 
@@ -2533,7 +2533,7 @@ msgstr ""
 
 #: ../komikku/card.py:104 ../komikku/card.py:196
 #: ../komikku/categories_editor.py:126 ../komikku/downloader.py:347
-#: ../komikku/downloader.py:525 ../komikku/explorer/__init__.py:219
+#: ../komikku/downloader.py:525 ../komikku/explorer/__init__.py:220
 #: ../komikku/history.py:203 ../komikku/preferences.py:357
 msgid "Back"
 msgstr "返回"
@@ -2583,7 +2583,7 @@ msgstr "位置作者"
 msgid "Unknown status"
 msgstr "未知状态"
 
-#: ../komikku/card.py:1004 ../komikku/explorer/__init__.py:113
+#: ../komikku/card.py:1004 ../komikku/explorer/__init__.py:114
 #: ../komikku/explorer/card.py:168
 msgid "Local"
 msgstr "本地"
@@ -2631,15 +2631,15 @@ msgstr "已下载 {0}/{1} 页"
 msgid "error"
 msgstr "错误"
 
-#: ../komikku/explorer/__init__.py:114
+#: ../komikku/explorer/__init__.py:115
 msgid "Comics stored locally as archives in CBZ/CBR formats"
 msgstr "以 CBZ/CBR 归档格式本地存储的漫画"
 
-#: ../komikku/explorer/__init__.py:141
+#: ../komikku/explorer/__init__.py:142
 msgid "Help"
 msgstr ""
 
-#: ../komikku/explorer/__init__.py:146
+#: ../komikku/explorer/__init__.py:147
 msgid ""
 "A specific folder structure is required for local comics to be properly "
 "processed.\n"
@@ -2660,11 +2660,11 @@ msgstr ""
 "\n"
 "注意：CBR 归档需要“unrar”或“unar”命令行工具。"
 
-#: ../komikku/explorer/__init__.py:160
+#: ../komikku/explorer/__init__.py:161
 msgid "Open local folder"
 msgstr "打开本地文件夹"
 
-#: ../komikku/explorer/__init__.py:167
+#: ../komikku/explorer/__init__.py:168
 msgid "Toggle pinned status"
 msgstr ""
 
@@ -2685,58 +2685,85 @@ msgstr "糟糕，检索漫画的信息失败。"
 msgid "Add to Library"
 msgstr "添加到漫画库"
 
-#: ../komikku/explorer/search.py:68
+#: ../komikku/explorer/search.py:71
 msgid "Search"
 msgstr "搜索"
 
-#: ../komikku/explorer/search.py:228
+#: ../komikku/explorer/search.py:240
 msgid "Oops, server website URL is unknown."
 msgstr "糟糕，服务器网站 URL 未知。"
 
-#: ../komikku/explorer/search.py:278
+#: ../komikku/explorer/search.py:290
 msgid "Oops, failed to retrieve latest updates."
 msgstr ""
 
-#: ../komikku/explorer/search.py:282
+#: ../komikku/explorer/search.py:294
 msgid "No Latest Updates Found"
 msgstr ""
 
-#: ../komikku/explorer/search.py:291 ../komikku/explorer/search.py:353
-#: ../komikku/explorer/search.py:443 ../komikku/explorer/search.py:452
+#: ../komikku/explorer/search.py:303 ../komikku/explorer/search.py:365
+#: ../komikku/explorer/search.py:455 ../komikku/explorer/search.py:464
 msgid "A request is already in progress."
 msgstr ""
 
-#: ../komikku/explorer/search.py:340
+#: ../komikku/explorer/search.py:352
 msgid "Oops, failed to retrieve most popular."
 msgstr ""
 
-#: ../komikku/explorer/search.py:344
+#: ../komikku/explorer/search.py:356
 msgid "No Most Popular Found"
 msgstr ""
 
-#: ../komikku/explorer/search.py:428 ../komikku/explorer/search.py:514
+#: ../komikku/explorer/search.py:440 ../komikku/explorer/search.py:526
 msgid "Oops, search failed. Please try again."
 msgstr "糟糕，搜索失败。请重试。"
 
-#: ../komikku/explorer/search.py:432
+#: ../komikku/explorer/search.py:444
 msgid "No Results Found"
 msgstr "未找到结果"
 
-#: ../komikku/explorer/search.py:433
+#: ../komikku/explorer/search.py:445
 msgid "Try a different search"
 msgstr "尝试不同的搜索"
 
-#: ../komikku/explorer/search.py:519
+#: ../komikku/explorer/search.py:531
 msgid "No results"
 msgstr "无结果"
 
-#: ../komikku/explorer/search.py:603
+#: ../komikku/explorer/search.py:626
 msgid "Search {}"
 msgstr ""
 
-#: ../komikku/explorer/search.py:633
+#: ../komikku/explorer/search.py:628
+msgid "Search by name in the server catalog"
+msgstr ""
+
+#: ../komikku/explorer/search.py:630
+msgid "Empty search is allowed."
+msgstr ""
+
+#: ../komikku/explorer/search.py:632
+msgid ""
+"Alternatively, if you cannot find by name, you can look up using the "
+"following format:\n"
+"id:<id from comic URL>."
+msgstr ""
+
+#: ../komikku/explorer/search.py:635
+msgid "This server accepts search filters."
+msgstr ""
+
+#: ../komikku/explorer/search.py:653
 msgid "Global Search"
 msgstr "全局搜索"
+
+#: ../komikku/explorer/search.py:655
+msgid "Search across all servers"
+msgstr ""
+
+#: ../komikku/explorer/search.py:657
+msgid "Search by name in all servers catalogs"
+msgstr ""
 
 #: ../komikku/explorer/servers.py:68 ../komikku/explorer/servers.py:168
 msgid "Other"
@@ -2798,29 +2825,29 @@ msgstr "更新阅读状态失败"
 msgid "Uncategorized"
 msgstr "未分类"
 
-#: ../komikku/library.py:779 ../komikku/servers/bilibili/__init__.py:41
-#: ../komikku/servers/mangapill/__init__.py:36
-#: ../komikku/servers/multi/manga_stream.py:54
+#: ../komikku/library.py:779 ../komikku/servers/bilibili/__init__.py:39
+#: ../komikku/servers/mangapill/__init__.py:34
+#: ../komikku/servers/multi/manga_stream.py:52
 msgid "All"
 msgstr "全部"
 
 #: ../komikku/models/database.py:411
-#: ../komikku/servers/mangaworld/__init__.py:51
+#: ../komikku/servers/mangaworld/__init__.py:49
 msgid "Complete"
 msgstr "已完成"
 
 #: ../komikku/models/database.py:412
-#: ../komikku/servers/mangaworld/__init__.py:50
+#: ../komikku/servers/mangaworld/__init__.py:48
 msgid "Ongoing"
 msgstr "进行中"
 
 #: ../komikku/models/database.py:413
-#: ../komikku/servers/mangaworld/__init__.py:52
+#: ../komikku/servers/mangaworld/__init__.py:50
 msgid "Suspended"
 msgstr "已暂停"
 
 #: ../komikku/models/database.py:414
-#: ../komikku/servers/mangaworld/__init__.py:53
+#: ../komikku/servers/mangaworld/__init__.py:51
 msgid "Hiatus"
 msgstr "已停止"
 
@@ -2959,64 +2986,64 @@ msgstr "加载图像失败"
 msgid "Retry"
 msgstr "重试"
 
-#: ../komikku/servers/bilibili/__init__.py:36
+#: ../komikku/servers/bilibili/__init__.py:34
 msgid "Price"
 msgstr ""
 
-#: ../komikku/servers/bilibili/__init__.py:37
+#: ../komikku/servers/bilibili/__init__.py:35
 msgid "Filter by price"
 msgstr ""
 
-#: ../komikku/servers/bilibili/__init__.py:42
+#: ../komikku/servers/bilibili/__init__.py:40
 msgid "Free"
 msgstr ""
 
-#: ../komikku/servers/bilibili/__init__.py:43
+#: ../komikku/servers/bilibili/__init__.py:41
 msgid "Paid"
 msgstr ""
 
-#: ../komikku/servers/dynasty/__init__.py:39
+#: ../komikku/servers/dynasty/__init__.py:37
 msgid "Categories"
 msgstr "类别"
 
-#: ../komikku/servers/dynasty/__init__.py:40
-#: ../komikku/servers/mangaworld/__init__.py:32
+#: ../komikku/servers/dynasty/__init__.py:38
+#: ../komikku/servers/mangaworld/__init__.py:30
 msgid "Filter by types"
 msgstr ""
 
-#: ../komikku/servers/dynasty/__init__.py:43
+#: ../komikku/servers/dynasty/__init__.py:41
 msgid "Anthology"
 msgstr "短篇"
 
-#: ../komikku/servers/dynasty/__init__.py:44
+#: ../komikku/servers/dynasty/__init__.py:42
 msgid "Doujins"
 msgstr "同人志"
 
-#: ../komikku/servers/dynasty/__init__.py:45
+#: ../komikku/servers/dynasty/__init__.py:43
 msgid "Issues"
 msgstr "册"
 
-#: ../komikku/servers/dynasty/__init__.py:46
+#: ../komikku/servers/dynasty/__init__.py:44
 msgid "Series"
 msgstr "系列"
 
-#: ../komikku/servers/dynasty/__init__.py:47
+#: ../komikku/servers/dynasty/__init__.py:45
 msgid "Chapters"
 msgstr "章节"
 
-#: ../komikku/servers/dynasty/__init__.py:53
+#: ../komikku/servers/dynasty/__init__.py:51
 msgid "With Tags"
 msgstr "包含标签"
 
-#: ../komikku/servers/dynasty/__init__.py:54
+#: ../komikku/servers/dynasty/__init__.py:52
 msgid "Tags to search for"
 msgstr "要搜索的标签"
 
-#: ../komikku/servers/dynasty/__init__.py:60
+#: ../komikku/servers/dynasty/__init__.py:58
 msgid "Without Tags"
 msgstr "不含标签"
 
-#: ../komikku/servers/dynasty/__init__.py:61
+#: ../komikku/servers/dynasty/__init__.py:59
 msgid "Tags to exclude from search"
 msgstr "要从搜索排除的标签"
 
@@ -3040,137 +3067,137 @@ msgstr "绕过 Cloudflare 保护失败。请重试。"
 msgid "No longer exists."
 msgstr "不再存在。"
 
-#: ../komikku/servers/mangadex/__init__.py:60
+#: ../komikku/servers/mangadex/__init__.py:58
 msgid "Rating"
 msgstr "评分"
 
-#: ../komikku/servers/mangadex/__init__.py:61
+#: ../komikku/servers/mangadex/__init__.py:59
 msgid "Filter by content ratings"
 msgstr ""
 
-#: ../komikku/servers/mangadex/__init__.py:64
+#: ../komikku/servers/mangadex/__init__.py:62
 msgid "Safe"
 msgstr "安全"
 
-#: ../komikku/servers/mangadex/__init__.py:65
+#: ../komikku/servers/mangadex/__init__.py:63
 msgid "Suggestive"
 msgstr "建议"
 
-#: ../komikku/servers/mangadex/__init__.py:66
+#: ../komikku/servers/mangadex/__init__.py:64
 msgid "Erotica"
 msgstr "情欲"
 
-#: ../komikku/servers/mangadex/__init__.py:67
+#: ../komikku/servers/mangadex/__init__.py:65
 msgid "Pornographic"
 msgstr "色情"
 
-#: ../komikku/servers/mangapill/__init__.py:31
-#: ../komikku/servers/mangatube/__init__.py:34
-#: ../komikku/servers/mangaworld/__init__.py:31
-#: ../komikku/servers/multi/manga_stream.py:49
+#: ../komikku/servers/mangapill/__init__.py:29
+#: ../komikku/servers/mangatube/__init__.py:32
+#: ../komikku/servers/mangaworld/__init__.py:29
+#: ../komikku/servers/multi/manga_stream.py:47
 msgid "Type"
 msgstr "类型"
 
-#: ../komikku/servers/mangapill/__init__.py:32
-#: ../komikku/servers/multi/manga_stream.py:50
+#: ../komikku/servers/mangapill/__init__.py:30
+#: ../komikku/servers/multi/manga_stream.py:48
 msgid "Filter by type"
 msgstr ""
 
-#: ../komikku/servers/mangapill/__init__.py:37
-#: ../komikku/servers/mangatube/__init__.py:39
-#: ../komikku/servers/mangaworld/__init__.py:35
-#: ../komikku/servers/multi/manga_stream.py:55
+#: ../komikku/servers/mangapill/__init__.py:35
+#: ../komikku/servers/mangatube/__init__.py:37
+#: ../komikku/servers/mangaworld/__init__.py:33
+#: ../komikku/servers/multi/manga_stream.py:53
 msgid "Manga"
 msgstr "日漫"
 
-#: ../komikku/servers/mangapill/__init__.py:38
+#: ../komikku/servers/mangapill/__init__.py:36
 msgid "Novel"
 msgstr "小说"
 
-#: ../komikku/servers/mangapill/__init__.py:39
-#: ../komikku/servers/mangatube/__init__.py:44
-#: ../komikku/servers/mangaworld/__init__.py:38
+#: ../komikku/servers/mangapill/__init__.py:37
+#: ../komikku/servers/mangatube/__init__.py:42
+#: ../komikku/servers/mangaworld/__init__.py:36
 msgid "One Shot"
 msgstr ""
 
-#: ../komikku/servers/mangapill/__init__.py:40
+#: ../komikku/servers/mangapill/__init__.py:38
 msgid "Doujinshi"
 msgstr "同人志"
 
-#: ../komikku/servers/mangapill/__init__.py:41
-#: ../komikku/servers/mangatube/__init__.py:40
-#: ../komikku/servers/mangaworld/__init__.py:37
-#: ../komikku/servers/multi/manga_stream.py:56
+#: ../komikku/servers/mangapill/__init__.py:39
+#: ../komikku/servers/mangatube/__init__.py:38
+#: ../komikku/servers/mangaworld/__init__.py:35
+#: ../komikku/servers/multi/manga_stream.py:54
 msgid "Manhwa"
 msgstr "韩漫"
 
-#: ../komikku/servers/mangapill/__init__.py:42
-#: ../komikku/servers/mangatube/__init__.py:41
-#: ../komikku/servers/mangaworld/__init__.py:36
-#: ../komikku/servers/multi/manga_stream.py:57
+#: ../komikku/servers/mangapill/__init__.py:40
+#: ../komikku/servers/mangatube/__init__.py:39
+#: ../komikku/servers/mangaworld/__init__.py:34
+#: ../komikku/servers/multi/manga_stream.py:55
 msgid "Manhua"
 msgstr "国漫"
 
-#: ../komikku/servers/mangapill/__init__.py:43
+#: ../komikku/servers/mangapill/__init__.py:41
 msgid "OEL"
 msgstr "英文原版漫画"
 
-#: ../komikku/servers/mangatube/__init__.py:35
+#: ../komikku/servers/mangatube/__init__.py:33
 msgid "Type of Serie"
 msgstr ""
 
-#: ../komikku/servers/mangatube/__init__.py:42
+#: ../komikku/servers/mangatube/__init__.py:40
 msgid "Webtoon"
 msgstr ""
 
-#: ../komikku/servers/mangatube/__init__.py:43
-#: ../komikku/servers/multi/manga_stream.py:58
+#: ../komikku/servers/mangatube/__init__.py:41
+#: ../komikku/servers/multi/manga_stream.py:56
 msgid "Comic"
 msgstr "漫画"
 
-#: ../komikku/servers/mangatube/__init__.py:45
+#: ../komikku/servers/mangatube/__init__.py:43
 msgid "Light Novel"
 msgstr ""
 
-#: ../komikku/servers/mangatube/__init__.py:51
+#: ../komikku/servers/mangatube/__init__.py:49
 msgid "Age Rating"
 msgstr ""
 
-#: ../komikku/servers/mangatube/__init__.py:52
+#: ../komikku/servers/mangatube/__init__.py:50
 msgid "Maturity"
 msgstr ""
 
-#: ../komikku/servers/mangatube/__init__.py:56
+#: ../komikku/servers/mangatube/__init__.py:54
 msgid "Without"
 msgstr ""
 
-#: ../komikku/servers/mangatube/__init__.py:57
+#: ../komikku/servers/mangatube/__init__.py:55
 msgid "16+"
 msgstr ""
 
-#: ../komikku/servers/mangatube/__init__.py:58
+#: ../komikku/servers/mangatube/__init__.py:56
 msgid "18+"
 msgstr ""
 
-#: ../komikku/servers/mangaworld/__init__.py:46
+#: ../komikku/servers/mangaworld/__init__.py:44
 msgid "Status"
 msgstr ""
 
-#: ../komikku/servers/mangaworld/__init__.py:47
+#: ../komikku/servers/mangaworld/__init__.py:45
 msgid "Filter by statuses"
 msgstr ""
 
-#: ../komikku/servers/mangaworld/__init__.py:54
+#: ../komikku/servers/mangaworld/__init__.py:52
 msgid "Canceled"
 msgstr ""
 
-#: ../komikku/servers/multi/madara.py:359
-#: ../komikku/servers/readmanhwa/__init__.py:45
+#: ../komikku/servers/multi/madara.py:357
+#: ../komikku/servers/readmanhwa/__init__.py:43
 msgid "NSFW Content"
 msgstr "工作场所不宜内容"
 
-#: ../komikku/servers/multi/madara.py:360
-#: ../komikku/servers/readmanhwa/__init__.py:46
+#: ../komikku/servers/multi/madara.py:358
+#: ../komikku/servers/readmanhwa/__init__.py:44
 msgid "Whether to show manga containing NSFW content"
 msgstr "是否显示包含工作场所不宜内容的漫画"
 
@@ -3225,9 +3252,6 @@ msgstr "无网络连接，超时或者服务器下线"
 
 #~ msgid "Features"
 #~ msgstr "特性"
-
-#~ msgid "Read your favorite manga"
-#~ msgstr "阅读你最喜欢的漫画"
 
 #~ msgid ""
 #~ "Komikku is a manga, manhwa, manhua, webtoons, webcomics and comics reader."

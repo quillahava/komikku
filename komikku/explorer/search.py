@@ -632,7 +632,7 @@ class ExplorerSearchPage:
                     description = _("""Alternatively, if you cannot find by name, you can look up using the following format:
 id:<id from comic URL>.""")
                 if self.search_filters:
-                    description += '\n\n' + _('⛊ This server supports filters.')
+                    description += '\n\n' + _('This server accepts search filters.')
                 self.search_intro_status_page.set_description(html_escape(description))
                 self.search_stack.set_visible_child_name('intro')
             else:
