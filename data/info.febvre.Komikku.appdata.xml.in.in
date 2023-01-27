@@ -90,7 +90,7 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
-        <release version="1.10.0" date="2023-01-26">
+        <release version="1.10.1" date="2023-01-27">
             <description>
                 <ul>
                     <li>[Library] Improved thumbnails appearance</li>
