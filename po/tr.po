@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-26 03:00+0100\n"
-"PO-Revision-Date: 2022-10-03 03:07+0300\n"
+"PO-Revision-Date: 2023-01-27 22:16+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
 "Language: tr\n"
@@ -22,25 +22,27 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
-msgstr ""
+msgstr "Gözde mangalarınızı okuyun"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:13
 msgid ""
 "With its simple, elegant and adaptive interface, this manga reader allows "
 "you to search, sort and read all your favorite manga with ease."
 msgstr ""
+"Basit, zarif ve uyarlanabilir arayüzü ile bu manga okuyucu, tüm gözde "
+"mangalarınızı kolaylıkla aramanızı, sıralamanızı ve okumanızı sağlar."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
 msgid "Why you will love Komikku?"
-msgstr ""
+msgstr "Komikkuʼyu neden seveceksiniz?"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
-msgstr ""
+msgstr "Düzinelerce sunucudan çevrim içi ve çevrim dışı okuma"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:18
 msgid "Support for locally stored manga (in CBZ or CBR formats)"
-msgstr ""
+msgstr "Yerel olarak depolanan manga desteği (CBZ veya CBR biçimlerinde)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
@@ -63,7 +65,7 @@ msgstr "Kitaplığınızı düzenlemek için kategoriler"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:22
 msgid "Automatic update of manga"
-msgstr ""
+msgstr "Kendiliğinden manga güncelleme"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:23
 msgid "Automatic download of new chapters"
@@ -138,7 +140,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
 msgid "Brings new Brazilian Portuguese, French and German translations"
-msgstr ""
+msgstr "Yeni Brezilya Portekizcesi, Fransızca ve Almanca çevirileri"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:122
 msgid ""
@@ -183,19 +185,19 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:130
 msgid "Brings new French and Brazilian Portuguese translations"
-msgstr ""
+msgstr "Yeni Fransızca ve Brezilya Portekizcesi çevirileri"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:132
 msgid "Happy reading and merry christmas."
-msgstr ""
+msgstr "İyi okumalar ve mutlu noeller."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:137
 msgid "Bug-fix release:"
-msgstr ""
+msgstr "Hata düzeltme sürümü:"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:139
 msgid "Missing database indexes"
-msgstr ""
+msgstr "Kayıp veri tabanı indeksleri"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:140
 msgid "Disappearance of the categories toggle button after leaving the library"
@@ -203,7 +205,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:147
 msgid "New icon 🎉 Thank you to its author Tobias Bernard"
-msgstr ""
+msgstr "Yeni simge 🎉 Yazarı Tobias Bernardʼa teşekkürler"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:148
 msgid ""
@@ -231,11 +233,11 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:153
 msgid "[L10n] Update French and Simplified Chinese translations"
-msgstr ""
+msgstr "[L10n] Fransızca ve Basitleştirilmiş Çince çevirileri güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:154
 msgid "Bugs fixes"
-msgstr ""
+msgstr "Hata düzeltmeler"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:161
 msgid ""
@@ -460,11 +462,11 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:249
 msgid "Full rewriting of the Webtoon reading mode"
-msgstr ""
+msgstr "Webtoon okuma kipi tamamen yeniden yazıldı"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:250
 msgid "Modern ‘About’ window"
-msgstr ""
+msgstr "Modern ‘About’ penceresi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:252
 msgid "Changes since 0.41.0:"
@@ -1951,15 +1953,15 @@ msgstr "Tarayıcıda aç"
 
 #: ../data/ui/application_window.ui:313
 msgid "Search for comics across all servers"
-msgstr ""
+msgstr "Tüm sunucularda çizgi roman ara"
 
 #: ../data/ui/application_window.ui:320
 msgid "Search for servers"
-msgstr ""
+msgstr "Sunucu ara"
 
 #: ../data/ui/application_window.ui:374
 msgid "Search by name, server or genre"
-msgstr ""
+msgstr "Ada, sunucuya veya türe göre ara"
 
 #: ../data/ui/application_window.ui:421 ../data/ui/menu/card.xml:11
 #: ../data/ui/preferences.ui:198
@@ -2012,7 +2014,7 @@ msgstr "Yeni"
 
 #: ../data/ui/categories_editor.ui:48
 msgid "Add"
-msgstr ""
+msgstr "Ekle"
 
 #: ../data/ui/download_manager.ui:61
 msgid "No downloads"
@@ -2020,15 +2022,15 @@ msgstr "İndirme yok"
 
 #: ../data/ui/explorer.ui:38
 msgid "Search for servers by name or language"
-msgstr ""
+msgstr "Ada veya dile göre sunucu ara"
 
 #: ../data/ui/explorer.ui:143
 msgid "Most Popular"
-msgstr ""
+msgstr "En Gözde"
 
 #: ../data/ui/explorer.ui:233
 msgid "Latest Updates"
-msgstr ""
+msgstr "Son Güncellemeler"
 
 #: ../data/ui/explorer.ui:676
 msgid "Last Chapter"
@@ -2330,6 +2332,10 @@ msgid ""
 "NOTE: Requires more CPU usage and can cause rendering and animation "
 "slowdowns, especially on mobile devices."
 msgstr ""
+"Görüntülerin beyaz kenarlıklarını kırp\n"
+"\n"
+"NOT: Daha fazla CPU kullanımı gerektirir ve özellikle mobil aygıtlarda "
+"işleme ve animasyon yavaşlamalarına neden olabilir."
 
 #: ../data/ui/preferences.ui:395
 msgid "Page Numbering"
@@ -2366,17 +2372,19 @@ msgstr "Anahtarlık arka ucu bulunmadığında kullanılır"
 
 #: ../data/ui/preferences.ui:456
 msgid "Tweaks"
-msgstr ""
+msgstr "İnce Ayarlar"
 
 #: ../data/ui/preferences.ui:459
 msgid "Disable Animations"
-msgstr ""
+msgstr "Animasyonları Devre Dışı Bırak"
 
 #: ../data/ui/preferences.ui:461
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
 msgstr ""
+"Çok dalgalı ve hoş olmayan animasyonlardan kaçınmak için E-Ink e-"
+"okuyucularda kullanışlıdır (ekranın düşük yenileme hızından dolayı)"
 
 #: ../data/ui/preferences.ui:473
 msgid ""
@@ -2384,6 +2392,10 @@ msgid ""
 "environment and therefore cannot disable animations globally via GNOME "
 "Settings (Accessibility ⇨ Seeing ⇨ Enable Animations)."
 msgstr ""
+"Bu ince ayar, yalnızca GNOME masaüstü ortamını kullanmayan ve bu nedenle "
+"GNOME Ayarları (Erişilebilirlik ⇨ Görme ⇨ Canlandırmaları Etkinleştir) "
+"aracılığıyla animasyonları genel olarak devre dışı bırakamayan kullanıcılar "
+"için tasarlanmıştır."
 
 #: ../data/ui/shortcuts_overview.ui:30
 msgctxt "Shortcut window description"
@@ -2530,7 +2542,7 @@ msgstr "Sunucuyla, okuma ilerleme eşitlemesi başarıyla tamamlandı"
 
 #: ../komikku/card.py:134
 msgid "Failed to get manga URL"
-msgstr "Manga URL'si alınamadı"
+msgstr "Manga URLʼsi alınamadı"
 
 #: ../komikku/card.py:611 ../komikku/card.py:706
 msgid "Failed to update chapters reading status"
@@ -2567,12 +2579,12 @@ msgstr "Bilinmeyen yazar"
 #: ../komikku/card.py:994 ../komikku/card.py:1003
 #: ../komikku/explorer/card.py:158 ../komikku/explorer/card.py:167
 msgid "Unknown status"
-msgstr ""
+msgstr "Bilinmeyen durum"
 
 #: ../komikku/card.py:1004 ../komikku/explorer/__init__.py:114
 #: ../komikku/explorer/card.py:168
 msgid "Local"
-msgstr ""
+msgstr "Yerel"
 
 #: ../komikku/categories_editor.py:78 ../komikku/library.py:283
 msgid "Delete?"
@@ -2593,7 +2605,7 @@ msgstr "Sil"
 
 #: ../komikku/categories_editor.py:192
 msgid "Edit"
-msgstr ""
+msgstr "Düzenle"
 
 #: ../komikku/categories_editor.py:205 ../komikku/reader/__init__.py:282
 msgid "Save"
@@ -2620,10 +2632,11 @@ msgstr "hata"
 #: ../komikku/explorer/__init__.py:115
 msgid "Comics stored locally as archives in CBZ/CBR formats"
 msgstr ""
+"Yerel olarak CBZ/CBR biçimlerinde arşiv olarak depolanan çizgi romanlar"
 
 #: ../komikku/explorer/__init__.py:142
 msgid "Help"
-msgstr ""
+msgstr "Yardım"
 
 #: ../komikku/explorer/__init__.py:147
 msgid ""
@@ -2637,14 +2650,23 @@ msgid ""
 "\n"
 "NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."
 msgstr ""
+"Yerel çizgi romanların düzgün şekilde işlenmesi için belirli bir klasör "
+"yapısı gereklidir.\n"
+"\n"
+"Her çizgi roman, bölümleri/ciltleri CBZ veya CBR biçimlerinde arşiv "
+"dosyaları olarak içermesi gereken kendi klasörüne sahip olmalıdır.\n"
+"\n"
+"Klasörün adı çizgi roman adı olarak kullanılacaktır.\n"
+"\n"
+"NOT: CBR arşivleri için 'unrar' veya 'unar' komut satırı aracı gereklidir."
 
 #: ../komikku/explorer/__init__.py:161
 msgid "Open local folder"
-msgstr ""
+msgstr "Yerel klasörü aç"
 
 #: ../komikku/explorer/__init__.py:168
 msgid "Toggle pinned status"
-msgstr ""
+msgstr "Sabitlenme durumu değiştir"
 
 #: ../komikku/explorer/card.py:82
 #, python-brace-format
@@ -2669,28 +2691,28 @@ msgstr "Ara"
 
 #: ../komikku/explorer/search.py:240
 msgid "Oops, server website URL is unknown."
-msgstr "Hata, sunucu web sitesi URL'si bilinmiyor."
+msgstr "Hata, sunucu web sitesi URLʼsi bilinmiyor."
 
 #: ../komikku/explorer/search.py:290
 msgid "Oops, failed to retrieve latest updates."
-msgstr ""
+msgstr "Hata, son güncellemeler alınamadı."
 
 #: ../komikku/explorer/search.py:294
 msgid "No Latest Updates Found"
-msgstr ""
+msgstr "Son Güncellemeler Bulunamadı"
 
 #: ../komikku/explorer/search.py:303 ../komikku/explorer/search.py:365
 #: ../komikku/explorer/search.py:455 ../komikku/explorer/search.py:464
 msgid "A request is already in progress."
-msgstr ""
+msgstr "Bir işlem zaten sürüyor"
 
 #: ../komikku/explorer/search.py:352
 msgid "Oops, failed to retrieve most popular."
-msgstr ""
+msgstr "Hata, en gözdeler alınamadı."
 
 #: ../komikku/explorer/search.py:356
 msgid "No Most Popular Found"
-msgstr ""
+msgstr "En Gözdeler Bulunamadı"
 
 #: ../komikku/explorer/search.py:440 ../komikku/explorer/search.py:526
 msgid "Oops, search failed. Please try again."
@@ -2698,27 +2720,28 @@ msgstr "Hata, arama başarısız oldu. Lütfen tekrar deneyin."
 
 #: ../komikku/explorer/search.py:444
 msgid "No Results Found"
-msgstr ""
+msgstr "Hiçbir Sonuç Bulunamadı"
 
 #: ../komikku/explorer/search.py:445
 msgid "Try a different search"
-msgstr ""
+msgstr "Başka arama dene"
 
 #: ../komikku/explorer/search.py:531
 msgid "No results"
 msgstr "Sonuç yok"
 
+# İlk kısım sunucu adını oluşturuyor
 #: ../komikku/explorer/search.py:626
 msgid "Search {}"
-msgstr ""
+msgstr "{} içinde ara"
 
 #: ../komikku/explorer/search.py:628
 msgid "Search by name in the server catalog"
-msgstr ""
+msgstr "Sunucu kataloğunda ada göre ara"
 
 #: ../komikku/explorer/search.py:630
 msgid "Empty search is allowed."
-msgstr ""
+msgstr "Boş aramaya izin verilir."
 
 #: ../komikku/explorer/search.py:632
 msgid ""
@@ -2726,26 +2749,29 @@ msgid ""
 "following format:\n"
 "id:<id from comic URL>."
 msgstr ""
+"Alternatif olarak, ada göre bulamazsanız, aşağıdaki biçimi kullanarak "
+"arayabilirsiniz:\n"
+"id:<id from comic URL>."
 
 #: ../komikku/explorer/search.py:635
 msgid "This server accepts search filters."
-msgstr ""
+msgstr "Bu sunucu arama filtrelerini kabul ediyor."
 
 #: ../komikku/explorer/search.py:653
 msgid "Global Search"
-msgstr ""
+msgstr "Genel Arama"
 
 #: ../komikku/explorer/search.py:655
 msgid "Search across all servers"
-msgstr ""
+msgstr "Tüm sunucularda ara"
 
 #: ../komikku/explorer/search.py:657
 msgid "Search by name in all servers catalogs"
-msgstr ""
+msgstr "Tüm sunucu kataloglarında ada göre ara"
 
 #: ../komikku/explorer/servers.py:68 ../komikku/explorer/servers.py:168
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: ../komikku/explorer/servers.py:129
 msgid "Pinned"
@@ -2790,11 +2816,11 @@ msgstr "Yeni çizgi roman ekle"
 
 #: ../komikku/library.py:496
 msgid "Welcome to Komikku"
-msgstr "Komikku'ya Hoşgeldiniz"
+msgstr "Komikkuʼya Hoşgeldiniz"
 
 #: ../komikku/library.py:501
 msgid "Loading…"
-msgstr ""
+msgstr "Yükleniyor…"
 
 #: ../komikku/library.py:616
 msgid "Failed to update reading status"
@@ -2852,7 +2878,7 @@ msgstr "Tercihler"
 
 #: ../komikku/preferences.py:122
 msgid "Disable animations?"
-msgstr ""
+msgstr "Animasyonlar devre dışı bırakılsın mı?"
 
 #: ../komikku/preferences.py:123
 msgid ""
@@ -2860,6 +2886,9 @@ msgid ""
 "\n"
 "The gesture navigation in the reader will not work properly anymore."
 msgstr ""
+"Animasyonları devre dışı bırakmak istediğinizden emin misiniz?\n"
+"\n"
+"Okuyucudaki hareketle gezinme özelliği artık düzgün çalışmayacaktır."
 
 #: ../komikku/preferences.py:407
 msgid "Servers Languages"
@@ -2972,19 +3001,19 @@ msgstr "Yeniden Dene"
 
 #: ../komikku/servers/bilibili/__init__.py:34
 msgid "Price"
-msgstr ""
+msgstr "Fiyat"
 
 #: ../komikku/servers/bilibili/__init__.py:35
 msgid "Filter by price"
-msgstr ""
+msgstr "Fiyata göre süz"
 
 #: ../komikku/servers/bilibili/__init__.py:40
 msgid "Free"
-msgstr ""
+msgstr "Ücretsiz"
 
 #: ../komikku/servers/bilibili/__init__.py:41
 msgid "Paid"
-msgstr ""
+msgstr "Paralı"
 
 #: ../komikku/servers/dynasty/__init__.py:37
 msgid "Categories"
@@ -2993,7 +3022,7 @@ msgstr "Kategoriler"
 #: ../komikku/servers/dynasty/__init__.py:38
 #: ../komikku/servers/mangaworld/__init__.py:30
 msgid "Filter by types"
-msgstr ""
+msgstr "Türlere göre süz"
 
 #: ../komikku/servers/dynasty/__init__.py:41
 msgid "Anthology"
@@ -3037,11 +3066,11 @@ msgstr "Hata: {}"
 
 #: ../komikku/servers/exceptions.py:16
 msgid "Local archive is corrupt."
-msgstr ""
+msgstr "Yerel arşiv bozulmuş."
 
 #: ../komikku/servers/exceptions.py:21
 msgid "Unable to extract page. Maybe the 'unrar' tool is missing?"
-msgstr ""
+msgstr "Sayfa çıkarılamıyor. 'unrar' aracı eksik olabilir mi?"
 
 #: ../komikku/servers/exceptions.py:26
 msgid "Failed to bypass Cloudflare protection. Please try again."
@@ -3057,7 +3086,7 @@ msgstr "Puan"
 
 #: ../komikku/servers/mangadex/__init__.py:59
 msgid "Filter by content ratings"
-msgstr ""
+msgstr "İçerik puanına göre süz"
 
 #: ../komikku/servers/mangadex/__init__.py:62
 msgid "Safe"
@@ -3086,7 +3115,7 @@ msgstr "Tür"
 #: ../komikku/servers/mangapill/__init__.py:30
 #: ../komikku/servers/multi/manga_stream.py:48
 msgid "Filter by type"
-msgstr ""
+msgstr "Türe göre süz"
 
 #: ../komikku/servers/mangapill/__init__.py:35
 #: ../komikku/servers/mangatube/__init__.py:37
@@ -3103,7 +3132,7 @@ msgstr "Roman"
 #: ../komikku/servers/mangatube/__init__.py:42
 #: ../komikku/servers/mangaworld/__init__.py:36
 msgid "One Shot"
-msgstr ""
+msgstr "Tek Atım"
 
 #: ../komikku/servers/mangapill/__init__.py:38
 msgid "Doujinshi"
@@ -3129,11 +3158,11 @@ msgstr "OEL"
 
 #: ../komikku/servers/mangatube/__init__.py:33
 msgid "Type of Serie"
-msgstr ""
+msgstr "Seri Türü"
 
 #: ../komikku/servers/mangatube/__init__.py:40
 msgid "Webtoon"
-msgstr ""
+msgstr "Webtoon"
 
 #: ../komikku/servers/mangatube/__init__.py:41
 #: ../komikku/servers/multi/manga_stream.py:56
@@ -3142,27 +3171,27 @@ msgstr "Çizgi Roman"
 
 #: ../komikku/servers/mangatube/__init__.py:43
 msgid "Light Novel"
-msgstr ""
+msgstr "Hafif Roman"
 
 #: ../komikku/servers/mangatube/__init__.py:49
 msgid "Age Rating"
-msgstr ""
+msgstr "Yaş Derecelendirmesi"
 
 #: ../komikku/servers/mangatube/__init__.py:50
 msgid "Maturity"
-msgstr ""
+msgstr "Yetişkinlik"
 
 #: ../komikku/servers/mangatube/__init__.py:54
 msgid "Without"
-msgstr ""
+msgstr "Olmadan"
 
 #: ../komikku/servers/mangatube/__init__.py:55
 msgid "16+"
-msgstr ""
+msgstr "16+"
 
 #: ../komikku/servers/mangatube/__init__.py:56
 msgid "18+"
-msgstr ""
+msgstr "18+"
 
 #: ../komikku/servers/mangaworld/__init__.py:44
 msgid "Status"
@@ -3170,11 +3199,11 @@ msgstr "Durum"
 
 #: ../komikku/servers/mangaworld/__init__.py:45
 msgid "Filter by statuses"
-msgstr ""
+msgstr "Durumlara göre süz"
 
 #: ../komikku/servers/mangaworld/__init__.py:52
 msgid "Canceled"
-msgstr ""
+msgstr "İptal edildi"
 
 #: ../komikku/servers/multi/madara.py:357
 #: ../komikku/servers/readmanhwa/__init__.py:43
