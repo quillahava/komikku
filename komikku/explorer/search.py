@@ -446,6 +446,7 @@ class ExplorerSearchPage:
 
             self.search_stack.set_visible_child_name('no_results')
 
+        self.clear_search_results()
         self.stack.set_visible_child_name('search')
         self.search_stack.set_visible_child_name('loading')
         self.search_spinner.start()
@@ -599,6 +600,7 @@ class ExplorerSearchPage:
 
         self.lock_search_global = True
         self.stop_search_global = False
+        self.search_stack.set_visible_child_name('results')
         self.search_listbox.set_sort_func(sort_results)
         self.search_listbox.show()
 
