@@ -401,6 +401,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
     def enter_search_mode(self, action, param):
         if self.page == 'library':
             self.library.toggle_search_mode()
+        elif self.page == 'explorer' and self.explorer.page == 'servers':
+            self.explorer.servers_page.toggle_search_mode()
+        elif self.page == 'history':
+            self.history.toggle_search_mode()
 
     def hide_notification(self):
         self.notification_revealer.set_reveal_child(False)

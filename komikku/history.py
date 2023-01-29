@@ -39,7 +39,6 @@ class History(Gtk.Box):
         self.builder = window.builder
 
         self.search_button = self.window.history_search_button
-        self.search_button.connect('clicked', self.toggle_search)
 
         self.searchbar.bind_property(
             'search-mode-enabled', self.search_button, 'active',
@@ -217,5 +216,5 @@ class History(Gtk.Box):
 
         self.window.show_page('history', transition=transition)
 
-    def toggle_search(self, button):
-        self.searchbar.set_search_mode(button.get_active())
+    def toggle_search_mode(self):
+        self.searchbar.set_search_mode(not self.searchbar.get_search_mode())

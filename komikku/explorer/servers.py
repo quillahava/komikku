@@ -187,6 +187,9 @@ class ExplorerServersPage:
     def search(self, _entry):
         self.listbox.invalidate_filter()
 
+    def toggle_search_mode(self):
+        self.searchbar.set_search_mode(not self.searchbar.get_search_mode())
+
     def toggle_server_pinned_state(self, button, row):
         if button.get_active():
             Settings.get_default().add_pinned_server(row.server_data['id'])
