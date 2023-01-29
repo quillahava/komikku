@@ -25,6 +25,7 @@ class ExplorerServersPage:
         self.search_button = self.window.explorer_servers_page_search_button
         self.global_search_button = self.window.explorer_servers_page_global_search_button
         self.searchbar = self.parent.servers_page_searchbar
+        self.searchbar_separator = self.parent.servers_page_searchbar_separator
         self.searchentry = self.parent.servers_page_searchentry
         self.pinned_listbox = self.parent.servers_page_pinned_listbox
         self.listbox = self.parent.servers_page_listbox
@@ -33,6 +34,10 @@ class ExplorerServersPage:
 
         self.searchbar.bind_property(
             'search-mode-enabled', self.search_button, 'active',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        )
+        self.searchbar.bind_property(
+            'search-mode-enabled', self.searchbar_separator, 'visible',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self.searchbar.connect_entry(self.searchentry)

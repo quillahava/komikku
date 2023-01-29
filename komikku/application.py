@@ -174,6 +174,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
     library_title_label = Gtk.Template.Child('library_title_label')
     library_search_button = Gtk.Template.Child('library_search_button')
     library_searchbar = Gtk.Template.Child('library_searchbar')
+    library_searchbar_separator = Gtk.Template.Child('library_searchbar_separator')
     library_search_menu_button = Gtk.Template.Child('library_search_menu_button')
     library_searchentry = Gtk.Template.Child('library_searchentry')
     library_flap = Gtk.Template.Child('library_flap')

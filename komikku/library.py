@@ -48,6 +48,7 @@ class Library:
 
         # Search
         self.searchbar = self.window.library_searchbar
+        self.searchbar_separator = self.window.library_searchbar_separator
         self.search_menu_button = self.window.library_search_menu_button
         self.search_menu_button.set_menu_model(self.builder.get_object('menu-library-search'))
         self.search_entry = self.window.library_searchentry
@@ -55,7 +56,12 @@ class Library:
         self.search_entry.connect('changed', self.search)
         self.search_button = self.window.library_search_button
         self.searchbar.bind_property(
-            'search-mode-enabled', self.search_button, 'active', GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+            'search-mode-enabled', self.search_button, 'active',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        )
+        self.searchbar.bind_property(
+            'search-mode-enabled', self.searchbar_separator, 'visible',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self.searchbar.connect_entry(self.search_entry)
         self.searchbar.set_key_capture_widget(self.window)

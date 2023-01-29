@@ -29,6 +29,7 @@ class History(Gtk.Box):
     stack = Gtk.Template.Child('stack')
     dates_box = Gtk.Template.Child('dates_box')
     searchbar = Gtk.Template.Child('searchbar')
+    searchbar_separator = Gtk.Template.Child('searchbar_separator')
     searchentry = Gtk.Template.Child('searchentry')
 
     def __init__(self, window):
@@ -41,7 +42,12 @@ class History(Gtk.Box):
         self.search_button.connect('clicked', self.toggle_search)
 
         self.searchbar.bind_property(
-            'search-mode-enabled', self.search_button, 'active', GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+            'search-mode-enabled', self.search_button, 'active',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        )
+        self.searchbar.bind_property(
+            'search-mode-enabled', self.searchbar_separator, 'visible',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self.searchbar.connect_entry(self.searchentry)
         self.searchbar.set_key_capture_widget(self.window)

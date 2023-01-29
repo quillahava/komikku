@@ -24,6 +24,7 @@ class Explorer(Gtk.Stack):
     server = None
 
     servers_page_searchbar = Gtk.Template.Child('servers_page_searchbar')
+    servers_page_searchbar_separator = Gtk.Template.Child('servers_page_searchbar_separator')
     servers_page_searchentry = Gtk.Template.Child('servers_page_searchentry')
     servers_page_listbox = Gtk.Template.Child('servers_page_listbox')
     servers_page_pinned_listbox = Gtk.Template.Child('servers_page_pinned_listbox')
@@ -31,6 +32,7 @@ class Explorer(Gtk.Stack):
     search_page_stack = Gtk.Template.Child('search_page_stack')
     search_page_viewswitcherbar = Gtk.Template.Child('search_page_viewswitcherbar')
     search_page_searchbar = Gtk.Template.Child('search_page_searchbar')
+    search_page_searchbar_separator = Gtk.Template.Child('search_page_searchbar_separator')
     search_page_searchentry = Gtk.Template.Child('search_page_searchentry')
     search_page_filter_menu_button = Gtk.Template.Child('search_page_filter_menu_button')
     search_page_search_stack = Gtk.Template.Child('search_page_search_stack')
