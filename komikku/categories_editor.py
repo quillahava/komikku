@@ -185,7 +185,6 @@ class CategoryRow(Gtk.ListBoxRow):
         self.delete_button = Gtk.Button.new_from_icon_name('user-trash-symbolic')
         self.delete_button.set_tooltip_text(_('Delete'))
         self.delete_button.set_valign(Gtk.Align.CENTER)
-        self.delete_button.add_css_class('destructive-action')
         self.box.append(self.delete_button)
 
         self.edit_button = Gtk.Button.new_from_icon_name('document-edit-symbolic')
