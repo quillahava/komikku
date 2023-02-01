@@ -10,7 +10,9 @@ class Mangascantrad(Madara):
     name = 'Manga-Scantrad'
     lang = 'fr'
 
+    has_cloudflare = True
+
     date_format = None
 
-    base_url = 'https://manga-scantrad.net'
+    base_url = 'https://manga-scantrad.io'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
