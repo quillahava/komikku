@@ -40,7 +40,8 @@ class HeadlessBrowser(Gtk.Window):
         self.webview = WebKit2.WebView()
         self.viewport.set_child(self.webview)
 
-        self.settings = self.webview.get_settings()
+        self.settings = WebKit2.Settings()
+        self.settings.set_enable_javascript(True)
         self.settings.set_enable_page_cache(False)
         self.settings.set_enable_frame_flattening(True)
         self.settings.set_enable_accelerated_2d_canvas(True)
@@ -116,8 +117,11 @@ def bypass_cloudflare(func):
         done = False
         error = None
 
+        # Gnome Web user agent
+        user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15'
+
         def load_page():
-            if not headless_browser.open(server.base_url, user_agent=USER_AGENT):
+            if not headless_browser.open(server.base_url, user_agent=user_agent):
                 return True
 
             headless_browser.connect_signal('load-changed', on_load_changed)
@@ -140,7 +144,7 @@ def bypass_cloudflare(func):
             # Detect end of Cloudflare challenge via JavaScript
             js = """
                 const checkCF = setInterval(() => {
-                    if (!document.getElementById('cf-content')) {
+                    if (!document.getElementById('challenge-running')) {
                         clearInterval(checkCF);
                         document.title = 'ready';
                     }
@@ -166,8 +170,9 @@ def bypass_cloudflare(func):
             nonlocal done
 
             server.session = requests.Session()
-            server.session.headers.update({'User-Agent': USER_AGENT})
+            server.session.headers.update({'User-Agent': user_agent})
 
+            # Copy libsoup cookies in session cookies jar
             for cookie in cookie_manager.get_cookies_finish(result):
                 rcookie = requests.cookies.create_cookie(
                     name=cookie.get_name(),
@@ -175,6 +180,8 @@ def bypass_cloudflare(func):
                     domain=cookie.get_domain(),
                     path=cookie.get_path(),
                     expires=cookie.get_expires().to_unix() if cookie.get_expires() else None,
+                    rest={'HttpOnly': cookie.get_http_only()},
+                    secure=cookie.get_secure(),
                 )
                 server.session.cookies.set_cookie(rcookie)
 
