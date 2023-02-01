@@ -110,7 +110,9 @@ def bypass_cloudflare(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         server = args[0]
-        if server.session:
+        if server.session or not server.has_cloudflare:
+            # Session already exists or server uses @bypass_cloudflare decorator
+            # when it has not set the `has_cloudflare` class attribute to True
             return func(*args, **kwargs)
 
         cf_reload_count = -1

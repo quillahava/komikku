@@ -76,6 +76,7 @@ class Server:
 
     base_url = None
 
+    has_cloudflare = False
     has_login = False
     headers = None
     is_nsfw = False
