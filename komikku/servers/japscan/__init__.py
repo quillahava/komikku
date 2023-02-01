@@ -3,18 +3,12 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from bs4 import BeautifulSoup
-import json
 import logging
 import requests
-import time
-
-from gi.repository import GLib
-from gi.repository import WebKit2
 
 from komikku.servers import Server
-from komikku.servers import USER_AGENT
+from komikku.servers.headless_browser import bypass_cloudflare
 from komikku.servers.headless_browser import get_page_html
-from komikku.servers.headless_browser import headless_browser
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import search_duckduckgo
@@ -37,14 +31,13 @@ class Japscan(Server):
     cover_url = base_url + '{0}'
 
     def __init__(self):
-        if self.session is None:
-            self.session = requests.Session()
-            self.session.headers.update({'user-agent': USER_AGENT})
+        self.session = None
 
     @classmethod
     def get_manga_initial_data_from_url(cls, url):
         return dict(slug=url.split('/')[-2])
 
+    @bypass_cloudflare
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -134,6 +127,7 @@ class Japscan(Server):
 
         return data
 
+    @bypass_cloudflare
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url, decode=True):
         """
         Returns manga chapter data by scraping chapter HTML page content
@@ -170,104 +164,24 @@ class Japscan(Server):
         else:
             raise requests.exceptions.RequestException
 
+    @bypass_cloudflare
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
         Returns chapter page scan (image) content
         """
         if page['image']:
             # We already know the image URL
-            r = self.session_get(
-                page['image'],
-                headers={
-                    'Referer': self.chapter_url.format(manga_slug, chapter_slug),
-                }
-            )
-            if r.status_code != 200:
-                return None
+            url = page['image']
+        elif page['url']:
+            soup = BeautifulSoup(get_page_html(self.base_url + page['url']), 'lxml')
+            url = soup.find(id='single-reader').img.get('src')
 
-            mime_type = get_buffer_mime_type(r.content)
-            if not mime_type.startswith('image'):
-                return None
-
-            return dict(
-                buffer=r.content,
-                mime_type=mime_type,
-                name=page['image'].split('/')[-1],
-            )
-
-        # We don't know the image URL yet
-        # It must be extracted from the HTML page containing the image
-        error = None
-        image_url = None
-        user_agent = 'Mozilla/5.0 (Linux; Android 11; sdk_gphone_arm64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.104 Mobile Safari/537.36'
-        user_agent = user_agent.replace('Mobile', 'eliboM').replace('Android', 'diordnA')
-
-        def load_page(url):
-            if not headless_browser.open(url, user_agent=user_agent):
-                return True
-
-            headless_browser.connect_signal('load-changed', on_load_changed)
-            headless_browser.connect_signal('load-failed', on_load_failed)
-            headless_browser.connect_signal('notify::title', on_title_changed)
-
-        def on_load_changed(_webview, event):
-            if event != WebKit2.LoadEvent.FINISHED:
-                return
-
-            # Return image URL via webview title
-            js = """
-                let timeoutCounter = 50;  // 5s
-                let reader = document.getElementById('single-reader');
-                let img = reader.getElementsByTagName('IMG')[0];
-                const checkExist = setInterval(() => {
-                    timeoutCounter -= 1;
-                    if (img.src.startsWith('http')) {
-                        clearInterval(checkExist);
-                        document.title = JSON.stringify({status: true, url: img.src});
-                    }
-                    else if (timeoutCounter == 0) {
-                        clearInterval(checkExist);
-                        document.title = JSON.stringify({status: false});
-                    }
-                }, 100);
-            """
-            headless_browser.webview.run_javascript(js, None, None)
-
-        def on_load_failed(_webview, _event, _uri, gerror):
-            nonlocal error
-
-            error = f'Failed to load page image: {page_url}'
-
-            headless_browser.close()
-
-        def on_title_changed(_webview, title):
-            nonlocal error
-            nonlocal image_url
-
-            try:
-                data = json.loads(headless_browser.webview.get_title())
-            except Exception:
-                return
-
-            if data['status']:
-                image_url = data['url']
-            else:
-                error = f'Failed to load page image: {page_url}'
-
-            headless_browser.close()
-
-        page_url = self.base_url + page['url']
-        GLib.timeout_add(100, load_page, page_url)
-
-        # While image_url is None and error is None:
-        while image_url is None and error is None:
-            time.sleep(.1)
-
-        if error:
-            logger.warning(error)
-            return None
-
-        r = self.session_get(image_url)
+        r = self.session_get(
+            url,
+            headers={
+                'Referer': self.chapter_url.format(manga_slug, chapter_slug),
+            }
+        )
         if r.status_code != 200:
             return None
 
@@ -278,7 +192,7 @@ class Japscan(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=page_url.split('/')[-1].replace('html', mime_type.split('/')[-1]),
+            name=url.split('/')[-1],
         )
 
     def get_manga_url(self, slug, url):
@@ -287,17 +201,41 @@ class Japscan(Server):
         """
         return self.manga_url.format(slug)
 
+    @bypass_cloudflare
+    def get_latest_updates(self):
+        """
+        Returns recent manga
+        """
+        r = self.session_get(self.base_url, headers={'Referer': self.base_url})
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'lxml')
+
+        results = []
+        for a_element in soup.select_one('div.card:nth-child(3) > div:nth-child(2) > ul').find_all('a'):
+            results.append(dict(
+                name=a_element.text.strip(),
+                slug=a_element.get('href').split('/')[-2],
+            ))
+
+        return results
+
+    @bypass_cloudflare
     def get_most_populars(self):
         """
         Returns TOP manga
         """
-        r = self.session_get(self.base_url)
-        if r is None:
+        r = self.session_get(self.base_url, headers={'Referer': self.base_url})
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'text/html':
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'lxml')
@@ -312,6 +250,7 @@ class Japscan(Server):
 
         return results
 
+    @bypass_cloudflare
     def search(self, term):
         r = self.session_post(self.api_search_url, data=dict(search=term), headers={
             'X-Requested-With': 'XMLHttpRequest',
