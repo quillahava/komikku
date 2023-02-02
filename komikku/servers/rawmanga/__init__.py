@@ -10,6 +10,8 @@ class Rawmanga(MangaStream):
     name = 'Raw Manga 生漫画'
     lang = 'ja'
 
+    has_cloudflare = True
+
     base_url = 'https://mangaraw.org'
     search_url = base_url + '/ajax/search'
     manga_url = base_url + '/{0}'
