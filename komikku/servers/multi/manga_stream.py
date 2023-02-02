@@ -20,6 +20,7 @@ import requests
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
+from komikku.servers.headless_browser import bypass_cloudflare
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_soup_element_inner_text
@@ -63,10 +64,11 @@ class MangaStream(Server):
     search_query_param = 's'
 
     def __init__(self):
-        if self.session is None:
+        if self.session is None and not self.has_cloudflare:
             self.session = requests.Session()
             self.session.headers.update({'User-Agent': USER_AGENT})
 
+    @bypass_cloudflare
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -173,6 +175,7 @@ class MangaStream(Server):
 
         return data
 
+    @bypass_cloudflare
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
         Returns manga chapter data by scraping chapter HTML page content
@@ -240,6 +243,7 @@ class MangaStream(Server):
 
         return data
 
+    @bypass_cloudflare
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
         Returns chapter page scan (image) content
@@ -290,6 +294,7 @@ class MangaStream(Server):
         """
         return self.search('', type, orderby='populars')
 
+    @bypass_cloudflare
     def search(self, term, type, orderby=None):
         if orderby:
             data = dict(
