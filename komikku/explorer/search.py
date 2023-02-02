@@ -215,19 +215,12 @@ class ExplorerSearchPage:
         self.parent.card_page.populate(row.manga_data)
 
     def on_page_changed(self, _stack, _param):
-        page = self.stack.props.visible_child_name
+        self.page = self.stack.props.visible_child_name
 
-        if self.page == 'search':
-            self.searchentry.set_text('')
-
-        if page == 'most_populars':
+        if self.page == 'most_populars':
             self.populate_most_populars()
-        elif page == 'latest_updates':
+        elif self.page == 'latest_updates':
             self.populate_latest_updates()
-        elif page == 'search':
-            self.search_stack.set_visible_child_name('intro')
-
-        self.page = page
 
     def on_search_changed(self, _entry):
         if not self.searchentry.get_text().strip():
@@ -447,7 +440,6 @@ class ExplorerSearchPage:
             self.search_stack.set_visible_child_name('no_results')
 
         self.clear_search_results()
-        self.stack.set_visible_child_name('search')
         self.search_stack.set_visible_child_name('loading')
         self.search_spinner.start()
         self.search_listbox.set_sort_func(None)
@@ -626,37 +618,35 @@ class ExplorerSearchPage:
 
             if has_search:
                 self.searchentry.props.placeholder_text = _('Search {}').format(self.parent.server.name)
-                self.searchbar.show()
+                self.searchentry.set_text('')
                 self.search_intro_status_page.set_title(_('Search by name in the server catalog'))
                 if self.parent.server.id == 'local':
                     description = _('Empty search is allowed.')
                 else:
                     description = _("""Alternatively, if you cannot find by name, you can look up using the following format:
-id:<id from comic URL>.""")
+id:<id from comic URL>""")
                 if self.search_filters:
                     description += '\n\n' + _('This server accepts search filters.')
                 self.search_intro_status_page.set_description(html_escape(description))
                 self.search_stack.set_visible_child_name('intro')
-            else:
-                self.searchbar.hide()
 
-            if has_most_populars:
+            if has_search:
+                start_page = 'search'
+            elif has_most_populars:
                 start_page = 'most_populars'
             elif has_latest_updates:
                 start_page = 'latest_updates'
-            else:
-                start_page = 'search'
 
             viewswitcher_enabled = has_search + has_most_populars + has_latest_updates > 1
             self.viewswitcherbar.set_reveal(self.viewswitchertitle.get_title_visible() and viewswitcher_enabled)
             self.viewswitchertitle.set_view_switcher_enabled(viewswitcher_enabled)
         else:
-            # Global Search
+            # Global Search (use `search` page)
             self.viewswitchertitle.set_title(_('Global Search'))
 
             self.searchentry.props.placeholder_text = _('Search across all servers')
-            self.searchbar.show()
-            self.search_intro_status_page.set_title(_('Search by name in all servers catalogs'))
+            self.searchentry.set_text('')
+            self.search_intro_status_page.set_title(_('Search by name globally across all the servers you have enabled'))
             self.search_intro_status_page.set_description('')
             self.search_stack.set_visible_child_name('intro')
             start_page = 'search'
@@ -664,8 +654,9 @@ id:<id from comic URL>.""")
             self.viewswitcherbar.set_reveal(False)
             self.viewswitchertitle.set_view_switcher_enabled(False)
 
-        self.searchentry.set_text('')
-        self.stack.set_visible_child_name('search')  # To be sure to detect next page change
+        self.page = start_page
+        # To be sure to be notify on next page change
+        self.stack.set_visible_child_name('search')
         GLib.idle_add(self.stack.set_visible_child_name, start_page)
 
 
