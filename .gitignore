@@ -6,9 +6,5 @@ po/*.mo
 _build
 .buildconfig
 flatpak/*Devel*
-untracked
 .venv
-.vscode/
 .flatpak/
-
-themes/
