@@ -10,7 +10,7 @@ class Mangascantrad(Madara):
     name = 'Manga-Scantrad'
     lang = 'fr'
 
-    has_cloudflare = True
+    has_cf = True
 
     date_format = None
 

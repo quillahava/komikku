@@ -16,7 +16,6 @@ class Izneo(Server):
     name = 'Izneo'
     lang = 'en'
     has_login = True
-    session_expiration_cookies = ['remember_me', ]
 
     base_url = 'https://www.izneo.com'
     base_reader_url = 'https://reader.izneo.com'

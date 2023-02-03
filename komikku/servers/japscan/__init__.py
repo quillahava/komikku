@@ -7,7 +7,7 @@ import logging
 import requests
 
 from komikku.servers import Server
-from komikku.servers.headless_browser import bypass_cloudflare
+from komikku.servers.headless_browser import bypass_cf
 from komikku.servers.headless_browser import get_page_html
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
@@ -37,7 +37,7 @@ class Japscan(Server):
     def get_manga_initial_data_from_url(cls, url):
         return dict(slug=url.split('/')[-2])
 
-    @bypass_cloudflare
+    @bypass_cf
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -127,7 +127,7 @@ class Japscan(Server):
 
         return data
 
-    @bypass_cloudflare
+    @bypass_cf
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url, decode=True):
         """
         Returns manga chapter data by scraping chapter HTML page content
@@ -164,7 +164,7 @@ class Japscan(Server):
         else:
             raise requests.exceptions.RequestException
 
-    @bypass_cloudflare
+    @bypass_cf
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
         Returns chapter page scan (image) content
@@ -201,7 +201,7 @@ class Japscan(Server):
         """
         return self.manga_url.format(slug)
 
-    @bypass_cloudflare
+    @bypass_cf
     def get_latest_updates(self):
         """
         Returns recent manga
@@ -225,7 +225,7 @@ class Japscan(Server):
 
         return results
 
-    @bypass_cloudflare
+    @bypass_cf
     def get_most_populars(self):
         """
         Returns TOP manga
@@ -250,7 +250,7 @@ class Japscan(Server):
 
         return results
 
-    @bypass_cloudflare
+    @bypass_cf
     def search(self, term):
         r = self.session_post(self.api_search_url, data=dict(search=term), headers={
             'X-Requested-With': 'XMLHttpRequest',

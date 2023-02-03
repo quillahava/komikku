@@ -1,6 +1,6 @@
 # Copyright (C) 2019-2023 Valéry Febvre
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
-# Author: ISO-morphism <me@iso-morphism.name>
+# Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from functools import wraps
 import gi
@@ -15,8 +15,9 @@ from gi.repository import Gtk
 from gi.repository import WebKit2
 
 from komikku.servers import USER_AGENT
-from komikku.servers.exceptions import CloudflareBypassError
+from komikku.servers.exceptions import CfBypassError
 
+CF_RELOAD_MAX = 20
 logger = logging.getLogger('komikku.servers.headless_browser')
 
 
@@ -103,17 +104,32 @@ class HeadlessBrowser(Gtk.Window):
         return True
 
 
-headless_browser = HeadlessBrowser(debug=False)
+headless_browser = HeadlessBrowser(debug=True)
 
 
-def bypass_cloudflare(func):
+def bypass_cf(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         server = args[0]
-        if server.session or not server.has_cloudflare:
-            # Session already exists or server uses @bypass_cloudflare decorator
-            # when it has not set the `has_cloudflare` class attribute to True
+
+        if not server.has_cf:
+            # Server uses @bypass_cf decorator when it has not set the `has_cf` class attribute to True
             return func(*args, **kwargs)
+
+        # Try loading a previous session
+        server.load_session()
+
+        if server.session:
+            bypassed = False
+            for cookie in server.session.cookies:
+                if cookie.name == 'cf_clearance':
+                    # CF cookie is there
+                    bypassed = True
+                    break
+
+            # Session already exists and valid
+            if bypassed:
+                return func(*args, **kwargs)
 
         cf_reload_count = -1
         done = False
@@ -138,12 +154,12 @@ def bypass_cloudflare(func):
                 return
 
             cf_reload_count += 1
-            if cf_reload_count > 20:
-                error = 'Max Cloudflare reload exceeded'
+            if cf_reload_count > CF_RELOAD_MAX:
+                error = 'Max CF reload exceeded'
                 headless_browser.close()
                 return
 
-            # Detect end of Cloudflare challenge via JavaScript
+            # Detect end of CF challenge via JavaScript
             js = """
                 const checkCF = setInterval(() => {
                     if (!document.getElementById('challenge-running')) {
@@ -187,6 +203,8 @@ def bypass_cloudflare(func):
                 )
                 server.session.cookies.set_cookie(rcookie)
 
+            server.save_session()
+
             done = True
             headless_browser.close()
 
@@ -197,22 +215,22 @@ def bypass_cloudflare(func):
 
         if error:
             logger.warning(error)
-            raise CloudflareBypassError
+            raise CfBypassError
 
         return func(*args, **kwargs)
 
     return wrapper
 
 
-def bypass_cloudflare_invisible_challenge(func):
-    """Allow to bypass Cloudflare invisible challenge using headless browser"""
+def bypass_cf_invisible_challenge(func):
+    """Allow to bypass CF invisible challenge using headless browser"""
 
     @wraps(func)
     def wrapper(*args, **kwargs):
         """Decorator Wrapper function"""
 
         server = args[0]
-        if server.session or not server.has_cloudflare_invisible_challenge:
+        if server.session or not server.has_cf_invisible_challenge:
             return func(*args, **kwargs)
 
         done = False
@@ -264,7 +282,7 @@ def bypass_cloudflare_invisible_challenge(func):
 
         if error:
             logger.warning(error)
-            raise CloudflareBypassError
+            raise CfBypassError
 
         return func(*args, **kwargs)
 

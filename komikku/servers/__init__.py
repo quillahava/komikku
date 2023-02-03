@@ -10,6 +10,7 @@ import os
 import pickle
 import requests
 from requests.adapters import TimeoutSauce
+from requests.cookies import remove_cookie_by_name
 
 from komikku.models.keyring import KeyringHelper
 from komikku.servers.loader import server_finder
@@ -76,14 +77,13 @@ class Server:
 
     base_url = None
 
-    has_cloudflare = False
+    has_cf = False
     has_login = False
     headers = None
     is_nsfw = False
     long_strip_genres = []
     manga_title_css_selector = None  # Used to extract manga title in a manga URL
     true_search = True  # If False, hide search in Explorer search page (XKCD, DBM, pepper&carotte…)
-    session_expiration_cookies = []  # Session cookies for which validity (not expired) must be checked
     status = 'enabled'
     sync = False
 
@@ -242,18 +242,23 @@ class Server:
             session = pickle.load(f)
 
         # Check session validity
-        if self.session_expiration_cookies:
-            # One or more cookies for which the expiration date must be checked are defined
-            # If one of them has expired, session must be cleared
-            for cookie in session.cookies:
-                if cookie.name not in self.session_expiration_cookies:
-                    continue
+        # Expired cookies must be deleted
+        clearables = []
+        for cookie in session.cookies:
+            if cookie.is_expired():
+                clearables.append(cookie.name)
 
-                if cookie.is_expired():
-                    self.clear_session(all=True)
-                    return False
+        for name in clearables:
+            remove_cookie_by_name(session.cookies, name)
+
+        if len(session.cookies) == 0:
+            self.clear_session(all=True)
+            return False
 
         self.session = session
+
+        if clearables:
+            self.save_session()
 
         return True
 
