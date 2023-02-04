@@ -5,6 +5,7 @@
 from functools import wraps
 import gi
 import logging
+import os
 import requests
 import time
 
@@ -16,6 +17,7 @@ from gi.repository import WebKit2
 
 from komikku.servers import USER_AGENT
 from komikku.servers.exceptions import CfBypassError
+from komikku.utils import get_cache_dir
 
 CF_RELOAD_MAX = 20
 logger = logging.getLogger('komikku.servers.headless_browser')
@@ -46,11 +48,19 @@ class HeadlessBrowser(Gtk.Window):
         self.settings.set_enable_page_cache(False)
         self.settings.set_enable_frame_flattening(True)
         self.settings.set_enable_accelerated_2d_canvas(True)
+        self.settings.props.enable_developer_extras = self.debug
+
+        data_manager = WebKit2.WebsiteDataManager()
+        data_manager.set_itp_enabled(False)
 
         self.web_context = self.webview.get_context()
         self.web_context.set_cache_model(WebKit2.CacheModel.DOCUMENT_VIEWER)
         self.web_context.set_tls_errors_policy(WebKit2.TLSErrorsPolicy.IGNORE)
-        self.settings.props.enable_developer_extras = self.debug
+        self.web_context.get_cookie_manager().set_persistent_storage(
+            os.path.join(get_cache_dir(), 'WebKitPersistentStorage.sqlite'),
+            WebKit2.CookiePersistentStorage.SQLITE
+        )
+        self.web_context.get_cookie_manager().set_accept_policy(WebKit2.CookieAcceptPolicy.ALWAYS)
 
         if not self.debug:
             # Make window almost invisible
@@ -108,18 +118,22 @@ headless_browser = HeadlessBrowser(debug=True)
 
 
 def bypass_cf(func):
+    """Allows to bypass CF challenge using headless browser"""
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         server = args[0]
 
         if not server.has_cf:
-            # Server uses @bypass_cf decorator when it has not set the `has_cf` class attribute to True
+            logger.debug('The class attribute `has_cf` must be True to use the @bypass_cf decorator')
             return func(*args, **kwargs)
 
-        # Try loading a previous session
-        server.load_session()
+        if server.session is None:
+            # Try loading a previous session
+            server.load_session()
 
         if server.session:
+            # Locate cf cookie
             bypassed = False
             for cookie in server.session.cookies:
                 if cookie.name == 'cf_clearance':
@@ -127,9 +141,11 @@ def bypass_cf(func):
                     bypassed = True
                     break
 
-            # Session already exists and valid
             if bypassed:
-                return func(*args, **kwargs)
+                # Check session validity
+                r = server.session_get(server.base_url)
+                if r.status_code == 200:
+                    return func(*args, **kwargs)
 
         cf_reload_count = -1
         done = False
@@ -223,7 +239,7 @@ def bypass_cf(func):
 
 
 def bypass_cf_invisible_challenge(func):
-    """Allow to bypass CF invisible challenge using headless browser"""
+    """Allows to bypass CF invisible challenge using headless browser"""
 
     @wraps(func)
     def wrapper(*args, **kwargs):

@@ -10,7 +10,6 @@ import os
 import pickle
 import requests
 from requests.adapters import TimeoutSauce
-from requests.cookies import remove_cookie_by_name
 
 from komikku.models.keyring import KeyringHelper
 from komikku.servers.loader import server_finder
@@ -246,10 +245,10 @@ class Server:
         clearables = []
         for cookie in session.cookies:
             if cookie.is_expired():
-                clearables.append(cookie.name)
+                clearables.append((cookie.domain, cookie.path, cookie.name))
 
-        for name in clearables:
-            remove_cookie_by_name(session.cookies, name)
+        for domain, path, name in clearables:
+            session.cookies.clear(domain, path, name)
 
         if len(session.cookies) == 0:
             self.clear_session(all=True)
