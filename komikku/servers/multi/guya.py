@@ -20,7 +20,7 @@ class Guya(Server):
     base_url: str
     manga_url: str
     api_manga_url: str
-    api_page_url: str
+    page_image_url: str
 
     def __init__(self):
         if self.session is None:
@@ -70,7 +70,7 @@ class Guya(Server):
         """
         Returns chapter page scan (image) content
         """
-        r = self.session_get(self.api_page_url.format(manga_slug, chapter_slug, page['slug']))
+        r = self.session_get(self.page_image_url.format(manga_slug, chapter_slug, page['slug']))
         if r.status_code != 200:
             return None
 

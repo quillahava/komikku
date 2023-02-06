@@ -46,9 +46,9 @@ class Mangadex(Server):
     api_cover_url = api_base_url + '/cover/{0}'
     api_scanlator_base = api_base_url + '/group'
     api_server_url = api_base_url + '/at-home/server/{0}'
-    api_page_url = '{0}/data/{1}/{2}'
 
     manga_url = base_url + '/title/{0}'
+    page_image_url = '{0}/data/{1}/{2}'
     cover_url = 'https://uploads.mangadex.org/covers/{0}/{1}.256.jpg'
 
     filters = [
@@ -247,7 +247,7 @@ class Mangadex(Server):
         else:
             slug = chapter_json['chapter']['dataSaver'][page['index']]
 
-        r = self.session_get(self.api_page_url.format(server_url, chapter_hash, slug))
+        r = self.session_get(self.page_image_url.format(server_url, chapter_hash, slug))
         if r.status_code != 200:
             self.__get_chapter_json.cache_clear()
             return None

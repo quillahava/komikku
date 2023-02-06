@@ -252,7 +252,7 @@ class MangaStream(Server):
             'Referer': self.chapter_url.format(manga_slug, chapter_slug),
         }
         if page['slug']:
-            r = self.session_get(self.page_url.format(manga_slug, chapter_slug, page['slug']), headers=headers)
+            r = self.session_get(self.page_image_url.format(manga_slug, chapter_slug, page['slug']), headers=headers)
         else:
             r = self.session_get(page['image'], headers=headers)
         if r.status_code != 200:

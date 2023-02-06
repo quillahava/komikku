@@ -16,7 +16,7 @@ class Rawmanga(MangaStream):
     search_url = base_url + '/ajax/search'
     manga_url = base_url + '/{0}'
     chapter_url = base_url + '/{0}/{1}'
-    page_url = base_url + '/viewer/{0}/{1}/{2}'
+    page_image_url = base_url + '/viewer/{0}/{1}/{2}'
 
     name_selector = '.infox h1'
     thumbnail_selector = '.thumb img'

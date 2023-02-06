@@ -26,7 +26,7 @@ class Nhentai(Server):
     base_url = 'https://nhentai.net'
     search_url = base_url + '/search'
     manga_url = base_url + '/g/{0}'
-    page_url = 'https://i.nhentai.net/galleries/{0}/{1}'
+    page_image_url = 'https://i.nhentai.net/galleries/{0}/{1}'
 
     def __init__(self):
         if self.session is None:
@@ -131,7 +131,7 @@ class Nhentai(Server):
         Returns chapter page scan (image) content
         """
         assert chapter_slug is not None
-        r = self.session_get(self.page_url.format(chapter_slug, page['slug']))
+        r = self.session_get(self.page_image_url.format(chapter_slug, page['slug']))
         if r.status_code != 200:
             return None
 
