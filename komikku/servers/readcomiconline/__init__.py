@@ -8,8 +8,8 @@ import requests
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT_MOBILE
-from komikku.servers.headless_browser import get_page_html
 from komikku.servers.utils import get_buffer_mime_type
+from komikku.webview import get_page_html
 
 headers = {
     'User-Agent': USER_AGENT_MOBILE,
