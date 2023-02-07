@@ -7,11 +7,11 @@ import logging
 import requests
 
 from komikku.servers import Server
-from komikku.servers.headless_browser import bypass_cf
-from komikku.servers.headless_browser import get_page_html
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import search_duckduckgo
+from komikku.webview import bypass_cf
+from komikku.webview import get_page_html
 
 logger = logging.getLogger('komikku.servers.japscan')
 
@@ -28,7 +28,7 @@ class Japscan(Server):
     search_url = base_url + '/manga/'
     api_search_url = base_url + '/live-search/'
     manga_url = base_url + '/manga/{0}/'
-    chapter_url = base_url + '/lecture-en-ligne/{0}/{1}/'
+    chapter_url = base_url + '/lecture-en-ligne/{manga_slug}/{chapter_slug}/'
     page_url = '/lecture-en-ligne/{0}/{1}/{2}.html'
     cover_url = base_url + '{0}'
 
@@ -39,7 +39,6 @@ class Japscan(Server):
     def get_manga_initial_data_from_url(cls, url):
         return dict(slug=url.split('/')[-2])
 
-    @bypass_cf
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -136,7 +135,7 @@ class Japscan(Server):
 
         Currently, only pages and scrambled are expected.
         """
-        html = get_page_html(self.chapter_url.format(manga_slug, chapter_slug))
+        html = get_page_html(self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug))
         soup = BeautifulSoup(html, 'lxml')
 
         if reader_element := soup.find(id='full-reader'):
@@ -181,7 +180,7 @@ class Japscan(Server):
         r = self.session_get(
             url,
             headers={
-                'Referer': self.chapter_url.format(manga_slug, chapter_slug),
+                'Referer': self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug),
             }
         )
         if r.status_code != 200:
@@ -203,7 +202,6 @@ class Japscan(Server):
         """
         return self.manga_url.format(slug)
 
-    @bypass_cf
     def get_latest_updates(self):
         """
         Returns recent manga
@@ -227,7 +225,6 @@ class Japscan(Server):
 
         return results
 
-    @bypass_cf
     def get_most_populars(self):
         """
         Returns TOP manga
@@ -252,7 +249,6 @@ class Japscan(Server):
 
         return results
 
-    @bypass_cf
     def search(self, term):
         r = self.session_post(self.api_search_url, data=dict(search=term), headers={
             'X-Requested-With': 'XMLHttpRequest',

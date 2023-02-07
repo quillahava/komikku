@@ -10,8 +10,10 @@ class Mangasorigines(Madara):
     name = 'Mangas Origines'
     lang = 'fr'
 
+    has_cf = True
+
     date_format = None
-    series_name = 'manga'
 
     base_url = 'https://mangas-origines.fr'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
+    chapter_url = base_url + '/manga/{manga_slug}/{chapter_slug}/'

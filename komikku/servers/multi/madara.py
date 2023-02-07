@@ -32,11 +32,11 @@ import requests
 from komikku.models import Settings
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
-from komikku.servers.headless_browser import bypass_cf
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_soup_element_inner_text
 from komikku.servers.utils import remove_emoji_from_string
+from komikku.webview import bypass_cf
 
 logger = logging.getLogger('komikku.servers.madara')
 
@@ -54,7 +54,7 @@ class Madara(Server):
         self.api_url = self.base_url + '/wp-admin/admin-ajax.php'
         self.manga_url = self.base_url + '/' + self.series_name + '/{0}/'
         if self.chapter_url is None:
-            self.chapter_url = self.base_url + '/' + self.series_name + '/{0}/{1}/?style=list'
+            self.chapter_url = self.base_url + '/' + self.series_name + '/{manga_slug}/{chapter_slug}/?style=list'
 
         if self.session is None and not self.has_cf:
             self.session = requests.Session()
@@ -223,7 +223,7 @@ class Madara(Server):
         Currently, only pages are expected.
         """
         r = self.session_get(
-            self.chapter_url.format(manga_slug, chapter_slug),
+            self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug),
             headers={
                 'Referer': self.manga_url.format(manga_slug),
             }
@@ -260,7 +260,7 @@ class Madara(Server):
         r = self.session_get(
             page['image'],
             headers={
-                'Referer': self.chapter_url.format(manga_slug, chapter_slug),
+                'Referer': self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug),
             }
         )
         if r.status_code != 200:

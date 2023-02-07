@@ -3,7 +3,9 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from functools import wraps
+from gettext import gettext as _
 import gi
+import inspect
 import logging
 import os
 import requests
@@ -11,6 +13,7 @@ import time
 
 gi.require_version('WebKit2', '5.0')
 
+from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import WebKit2
@@ -20,35 +23,31 @@ from komikku.servers.exceptions import CfBypassError
 from komikku.utils import get_cache_dir
 
 CF_RELOAD_MAX = 20
-logger = logging.getLogger('komikku.servers.headless_browser')
+DEBUG = False
+logger = logging.getLogger('komikku.webview')
 
 
-class HeadlessBrowser(Gtk.Window):
+class Webview(Gtk.ScrolledWindow):
     lock = False
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, window):
         self.__handlers_ids = []
-        self.debug = kwargs.pop('debug', False)
+        self.window = window
 
-        super().__init__(*args, **kwargs)
+        Gtk.ScrolledWindow.__init__(self)
 
-        self.scrolledwindow = Gtk.ScrolledWindow()
-        self.scrolledwindow.get_hscrollbar().hide()
-        self.scrolledwindow.get_vscrollbar().hide()
-
-        self.viewport = Gtk.Viewport()
-        self.scrolledwindow.set_child(self.viewport)
-        self.set_child(self.scrolledwindow)
+        self.get_hscrollbar().hide()
+        self.get_vscrollbar().hide()
 
         self.webview = WebKit2.WebView()
-        self.viewport.set_child(self.webview)
+        self.set_child(self.webview)
 
         self.settings = WebKit2.Settings()
         self.settings.set_enable_javascript(True)
         self.settings.set_enable_page_cache(False)
         self.settings.set_enable_frame_flattening(True)
         self.settings.set_enable_accelerated_2d_canvas(True)
-        self.settings.props.enable_developer_extras = self.debug
+        self.settings.set_enable_developer_extras(DEBUG)
 
         data_manager = WebKit2.WebsiteDataManager()
         data_manager.set_itp_enabled(False)
@@ -62,21 +61,16 @@ class HeadlessBrowser(Gtk.Window):
         )
         self.web_context.get_cookie_manager().set_accept_policy(WebKit2.CookieAcceptPolicy.ALWAYS)
 
-        if not self.debug:
-            # Make window almost invisible
-            self.set_decorated(False)
-            self.set_default_size(1, 1)
+        self.window.stack.add_named(self, 'webview')
 
     def close(self, blank=True):
-        logger.debug('WebKit2 | Closed')
-
         self.disconnect_all_signals()
 
         if blank:
             GLib.idle_add(self.webview.load_uri, 'about:blank')
-        self.hide()
 
         self.lock = False
+        logger.debug('Page closed')
 
     def connect_signal(self, *args):
         handler_id = self.webview.connect(*args)
@@ -88,6 +82,13 @@ class HeadlessBrowser(Gtk.Window):
 
         self.__handlers_ids = []
 
+    def navigate_back(self, source):
+        # Should not be used except for debug purpose
+        if source is None and self.window.page != 'webview':
+            return
+
+        getattr(self.window, self.window.previous_page).show(reset=False)
+
     def open(self, uri, user_agent=None, settings=None):
         if self.lock:
             return False
@@ -97,24 +98,26 @@ class HeadlessBrowser(Gtk.Window):
 
         self.lock = True
 
-        logger.debug('WebKit2 | Load page %s', uri)
+        logger.debug('Load page %s', uri)
 
         def do_load():
-            self.show()
-
-            if not self.debug:
-                # Make window almost invisible (part 2)
-                self.get_surface().lower()
-                self.minimize()
-
             self.webview.load_uri(uri)
 
         GLib.idle_add(do_load)
 
         return True
 
+    def show(self, transition=True, reset=False):
+        # Should not be used except for debug purpose
+        self.window.left_button.set_tooltip_text(_('Back'))
+        self.window.left_button.set_icon_name('go-previous-symbolic')
+        self.window.left_extra_button_stack.hide()
 
-headless_browser = HeadlessBrowser(debug=True)
+        self.window.right_button_stack.hide()
+
+        self.window.menu_button.hide()
+
+        self.window.show_page('webview', transition=transition)
 
 
 def bypass_cf(func):
@@ -122,18 +125,33 @@ def bypass_cf(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        server = args[0]
+        func_name = func.__name__
+        bound_args = inspect.signature(func).bind(*args, **kwargs)
+        args_dict = dict(bound_args.arguments)
+
+        server = args_dict['self']
 
         if not server.has_cf:
-            logger.debug('The class attribute `has_cf` must be True to use the @bypass_cf decorator')
             return func(*args, **kwargs)
+
+        if func_name == 'get_manga_chapter_data':
+            url = server.chapter_url.format(**args_dict)
+        elif func_name == 'get_manga_chapter_page_image' and 'url' in args_dict['page']:
+            url = args_dict['page']['url']
+            if not url.startswith('http'):
+                url = server.base_url + url
+        else:
+            url = server.base_url
+
+        webview = Gio.Application.get_default().window.webview
 
         if server.session is None:
             # Try loading a previous session
             server.load_session()
 
         if server.session:
-            # Locate cf cookie
+            logger.debug(f'{server.id}: Previous session found')
+            # Locate CF cookie
             bypassed = False
             for cookie in server.session.cookies:
                 if cookie.name == 'cf_clearance':
@@ -142,10 +160,16 @@ def bypass_cf(func):
                     break
 
             if bypassed:
+                logger.debug(f'{server.id}: Session has CF cookie. Checking...')
                 # Check session validity
-                r = server.session_get(server.base_url)
+                r = server.session_get(url)
                 if r.status_code == 200:
+                    logger.debug(f'{server.id}: Session OK')
                     return func(*args, **kwargs)
+                else:
+                    logger.debug(f'{server.id}: Session KO')
+            else:
+                logger.debug(f'{server.id}: Session has no CF cookie. Loading page in webview...')
 
         cf_reload_count = -1
         done = False
@@ -155,14 +179,17 @@ def bypass_cf(func):
         user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15'
 
         def load_page():
-            if not headless_browser.open(server.base_url, user_agent=user_agent):
+            if not webview.open(url, user_agent=user_agent):
                 return True
 
-            headless_browser.connect_signal('load-changed', on_load_changed)
-            headless_browser.connect_signal('load-failed', on_load_failed)
-            headless_browser.connect_signal('notify::title', on_title_changed)
+            webview.connect_signal('load-changed', on_load_changed)
+            webview.connect_signal('load-failed', on_load_failed)
+            webview.connect_signal('notify::title', on_title_changed)
 
-        def on_load_changed(webview, event):
+            if DEBUG:
+                webview.show()
+
+        def on_load_changed(_webview, event):
             nonlocal cf_reload_count
             nonlocal error
 
@@ -172,32 +199,69 @@ def bypass_cf(func):
             cf_reload_count += 1
             if cf_reload_count > CF_RELOAD_MAX:
                 error = 'Max CF reload exceeded'
-                headless_browser.close()
+                webview.close()
                 return
 
             # Detect end of CF challenge via JavaScript
             js = """
-                const checkCF = setInterval(() => {
+                function fireEvent(node, eventName) {
+                    // Make sure we use the ownerDocument from the provided node to avoid cross-window problems
+                    let doc;
+                    if (node.ownerDocument) {
+                        doc = node.ownerDocument;
+                    }
+                    else if (node.nodeType == 9) {
+                        // the node may be the document itself, nodeType 9 = DOCUMENT_NODE
+                        doc = node;
+                    }
+
+                    const event = doc.createEvent('MouseEvents');
+                     // All events created as bubbling and cancelable
+                    event.initEvent(eventName, true, true);
+                    // The second parameter says go ahead with the default action
+                    node.dispatchEvent(event, true);
+                };
+
+                let checkCF = setInterval(() => {
                     if (!document.getElementById('challenge-running')) {
-                        clearInterval(checkCF);
                         document.title = 'ready';
+                        clearInterval(checkCF);
+                    }
+                    else if (document.querySelector('input.pow-button')) {
+                        // button
+                        document.title = 'captcha1';
+                        fireEvent(document.querySelector('input.pow-button'), 'click');
+                    }
+                    else if (document.querySelector('iframe[id^="cf-chl-widget"]')) {
+                        // checkbox
+                        document.title = 'captcha2';
+                        document.querySelectorAll('iframe').forEach(item => {
+                            let check = item.contentWindow.document.body.querySelectorAll('.ctp-checkbox-label > input:nth-child(1)');
+                            if (check) {
+                                fireEvent(check, 'click');
+                            }
+                        });
                     }
                 }, 100);
             """
-            headless_browser.webview.run_javascript(js, None, None)
+            webview.webview.run_javascript(js, None, None)
 
-        def on_load_failed(_webview, _event, _uri, gerror):
+        def on_load_failed(_webview, _event, uri, _gerror):
             nonlocal error
 
-            error = f'Failed to load homepage: {server.base_url}'
+            error = f'Failed to load homepage: {uri}'
 
-            headless_browser.close()
+            webview.close()
 
-        def on_title_changed(webview, title):
-            if headless_browser.webview.props.title != 'ready':
+        def on_title_changed(_webview, title):
+            if webview.webview.props.title.startswith('captcha'):
+                logger.debug(f'{server.id}: Captcha `{webview.webview.props.title}` detected')
+
+            if webview.webview.props.title != 'ready':
                 return
 
-            cookie_manager = headless_browser.web_context.get_cookie_manager()
+            logger.debug(f'{server.id}: Page loaded, getting cookies...')
+            cookie_manager = webview.web_context.get_cookie_manager()
             cookie_manager.get_cookies(server.base_url, None, on_get_cookies_finish, None)
 
         def on_get_cookies_finish(cookie_manager, result, user_data):
@@ -219,77 +283,11 @@ def bypass_cf(func):
                 )
                 server.session.cookies.set_cookie(rcookie)
 
+            logger.debug(f'{server.id}: Webview cookies successully copied in requests session')
             server.save_session()
 
             done = True
-            headless_browser.close()
-
-        GLib.timeout_add(100, load_page)
-
-        while not done and error is None:
-            time.sleep(.1)
-
-        if error:
-            logger.warning(error)
-            raise CfBypassError
-
-        return func(*args, **kwargs)
-
-    return wrapper
-
-
-def bypass_cf_invisible_challenge(func):
-    """Allows to bypass CF invisible challenge using headless browser"""
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        """Decorator Wrapper function"""
-
-        server = args[0]
-        if server.session or not server.has_cf_invisible_challenge:
-            return func(*args, **kwargs)
-
-        done = False
-        error = None
-
-        def load_page():
-            if not headless_browser.open(server.base_url, user_agent=USER_AGENT):
-                return True
-
-            headless_browser.connect_signal('load-changed', on_load_changed)
-            headless_browser.connect_signal('load-failed', on_load_failed)
-
-        def on_load_changed(webview, event):
-            if event != WebKit2.LoadEvent.FINISHED:
-                return
-
-            cookie_manager = headless_browser.web_context.get_cookie_manager()
-            cookie_manager.get_cookies(server.base_url, None, on_get_cookies_finish, None)
-
-        def on_load_failed(_webview, _event, _uri, gerror):
-            nonlocal error
-
-            error = f'Failed to load homepage: {server.base_url}'
-            headless_browser.close()
-
-        def on_get_cookies_finish(cookie_manager, result, user_data):
-            nonlocal done
-
-            server.session = requests.Session()
-            server.session.headers.update({'User-Agent': USER_AGENT})
-
-            for cookie in cookie_manager.get_cookies_finish(result):
-                rcookie = requests.cookies.create_cookie(
-                    name=cookie.get_name(),
-                    value=cookie.get_value(),
-                    domain=cookie.get_domain(),
-                    path=cookie.get_path(),
-                    expires=cookie.get_expires().to_unix() if cookie.get_expires() else None,
-                )
-                server.session.cookies.set_cookie(rcookie)
-
-            done = True
-            headless_browser.close()
+            webview.close()
 
         GLib.timeout_add(100, load_page)
 
@@ -308,20 +306,24 @@ def bypass_cf_invisible_challenge(func):
 def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
     error = None
     html = None
+    webview = Gio.Application.get_default().window.webview
 
     def load_page():
-        if not headless_browser.open(url, user_agent=user_agent):
+        if not webview.open(url, user_agent=user_agent):
             return True
 
-        headless_browser.connect_signal('load-changed', on_load_changed)
-        headless_browser.connect_signal('load-failed', on_load_failed)
-        headless_browser.connect_signal('notify::title', on_title_changed)
+        webview.connect_signal('load-changed', on_load_changed)
+        webview.connect_signal('load-failed', on_load_failed)
+        webview.connect_signal('notify::title', on_title_changed)
 
-    def on_get_html_finish(webview, result, user_data=None):
+        if DEBUG:
+            webview.show()
+
+    def on_get_html_finish(_webview, result, user_data=None):
         nonlocal error
         nonlocal html
 
-        js_result = webview.run_javascript_finish(result)
+        js_result = webview.webview.run_javascript_finish(result)
         if js_result:
             js_value = js_result.get_js_value()
             if js_value:
@@ -330,7 +332,7 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
         if html is None:
             error = f'Failed to get chapter page html: {url}'
 
-        headless_browser.close()
+        webview.close()
 
     def on_load_changed(_webview, event):
         if event != WebKit2.LoadEvent.FINISHED:
@@ -338,26 +340,26 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
 
         if wait_js_code:
             # Wait that everything needed has been loaded
-            headless_browser.webview.run_javascript(wait_js_code, None, None, None)
+            webview.webview.run_javascript(wait_js_code, None, None, None)
         else:
-            headless_browser.webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
+            webview.webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
 
     def on_load_failed(_webview, _event, _uri, gerror):
         nonlocal error
 
         error = f'Failed to load chapter page: {url}'
 
-        headless_browser.close()
+        webview.close()
 
     def on_title_changed(_webview, _title):
         nonlocal error
 
-        if headless_browser.webview.props.title == 'ready':
+        if webview.webview.props.title == 'ready':
             # Everything we need has been loaded, we can retrieve page HTML
-            headless_browser.webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
-        elif headless_browser.webview.props.title == 'abort':
+            webview.webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
+        elif webview.webview.props.title == 'abort':
             error = f'Failed to get chapter page html: {url}'
-            headless_browser.close()
+            webview.close()
 
     GLib.timeout_add(100, load_page)
 

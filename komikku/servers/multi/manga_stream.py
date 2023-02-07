@@ -20,10 +20,10 @@ import requests
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
-from komikku.servers.headless_browser import bypass_cf
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_soup_element_inner_text
+from komikku.webview import bypass_cf
 
 
 class MangaStream(Server):
@@ -183,7 +183,7 @@ class MangaStream(Server):
         Currently, only pages are expected.
         """
         r = self.session_get(
-            self.chapter_url.format(manga_slug, chapter_slug),
+            self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug),
             headers={
                 'Referer': self.manga_url.format(manga_slug),
             })
@@ -243,13 +243,12 @@ class MangaStream(Server):
 
         return data
 
-    @bypass_cf
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
         Returns chapter page scan (image) content
         """
         headers = {
-            'Referer': self.chapter_url.format(manga_slug, chapter_slug),
+            'Referer': self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug),
         }
         if page['slug']:
             r = self.session_get(self.page_image_url.format(manga_slug, chapter_slug, page['slug']), headers=headers)

@@ -38,6 +38,7 @@ from komikku.preferences import Preferences
 from komikku.reader import Reader
 from komikku.servers.utils import get_allowed_servers_list
 from komikku.updater import Updater
+from komikku.webview import Webview
 
 CREDITS = dict(
     artists=(
@@ -360,6 +361,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.explorer = Explorer(self)
         self.history = History(self)
         self.preferences = Preferences(self)
+        self.webview = Webview(self)
 
         # Custom CSS
         css_provider = Gtk.CssProvider()
@@ -548,6 +550,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         elif self.page == 'preferences':
             self.preferences.navigate_back(source)
+
+        elif self.page == 'webview':
+            self.webview.navigate_back(source)
 
     def on_network_status_changed(self, monitor, _connected):
         self.network_available = monitor.get_connectivity() == Gio.NetworkConnectivity.FULL
