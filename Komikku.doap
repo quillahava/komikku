@@ -22,7 +22,7 @@
       <foaf:mbox rdf:resource="mailto:vfebvre@easter-eggs.com" />
       <foaf:account>
         <foaf:OnlineAccount>
-          <foaf:accountServiceHomepage rdf:resource="https://gitlab.gnome.org"/>
+          <foaf:accountServiceHomepage rdf:resource="https://gitlab.com"/>
           <foaf:accountName>valos</foaf:accountName>
         </foaf:OnlineAccount>
       </foaf:account>
