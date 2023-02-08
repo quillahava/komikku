@@ -460,12 +460,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Library] Improved thumbnails appearance</li>
-                <li>[Explorer] Various improvements in search</li>
-                <li>[Reader] LTR, RTL, vertical pager: Improved page transition animation</li>
-                <li>[Servers] Read Manga, AllHentai, Mint Manga, Self Manga: Update</li>
-                <li>[A11y] Fixed keyboard navigation and added missing buttons tooltips</li>
-                <li>[L10n] Update French and German translations</li>
+                <li>[UI] Use #f66151 color (orange) as app's accent color</li>
+                <li>[Shortcuts] Add <Ctrl+f> in History and Explorer => Servers (toggles search entry)</li>
+                <li>[Servers] Japscan: Update</li>
+                <li>[Servers] Manga-Scantrad: Update</li>
+                <li>[Servers] Raw Manga: Update</li>
+                <li>[Servers] Read Comic Online: Update</li>
+                <li>[L10n] Update French, German and Turkish translations</li>
             </ul>
         """)
 
