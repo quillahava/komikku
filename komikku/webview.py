@@ -8,6 +8,7 @@ import gi
 import inspect
 import logging
 import os
+import platform
 import requests
 import time
 
@@ -48,9 +49,6 @@ class Webview(Gtk.ScrolledWindow):
         self.settings.set_enable_frame_flattening(True)
         self.settings.set_enable_accelerated_2d_canvas(True)
         self.settings.set_enable_developer_extras(DEBUG)
-
-        data_manager = WebKit2.WebsiteDataManager()
-        data_manager.set_itp_enabled(False)
 
         self.web_context = self.webview.get_context()
         self.web_context.set_cache_model(WebKit2.CacheModel.DOCUMENT_VIEWER)
@@ -176,7 +174,8 @@ def bypass_cf(func):
         error = None
 
         # Gnome Web user agent
-        user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15'
+        cpu_arch = platform.machine()
+        user_agent = f'Mozilla/5.0 (X11; Linux {cpu_arch}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15'
 
         def load_page():
             if not webview.open(url, user_agent=user_agent):
