@@ -461,7 +461,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_release_notes("""
             <ul>
                 <li>[UI] Use #f66151 color (orange) as app's accent color</li>
-                <li>[Shortcuts] Add <Ctrl+f> in History and Explorer => Servers (toggles search entry)</li>
+                <li>[Shortcuts] Add &lt;Ctrl+f&gt; in History and Explorer => Servers (toggles search entry)</li>
                 <li>[Servers] Japscan: Update</li>
                 <li>[Servers] Manga-Scantrad: Update</li>
                 <li>[Servers] Raw Manga: Update</li>
