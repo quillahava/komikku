@@ -126,13 +126,10 @@ class ExplorerSearchPage:
             def toggle(button, _param):
                 self.search_filters[filter_['key']] = button.get_active()
 
-            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
-
             check_button = Gtk.CheckButton(label=filter_['name'], active=filter_['default'])
             check_button.connect('notify::active', toggle)
-            vbox.append(check_button)
 
-            return vbox
+            return check_button
 
         def build_entry(filter_):
             def on_text_changed(buf, _param):
@@ -148,7 +145,7 @@ class ExplorerSearchPage:
                 if button.get_active():
                     self.search_filters[filter_['key']] = key
 
-            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
             last = None
             for option in filter_['options']:
