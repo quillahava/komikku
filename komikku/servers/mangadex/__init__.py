@@ -34,6 +34,7 @@ class Mangadex(Server):
     name = SERVER_NAME
     lang = 'en'
     lang_code = 'en'
+    is_nsfw = True
     long_strip_genres = ['Long Strip', ]
 
     base_url = 'https://mangadex.org'

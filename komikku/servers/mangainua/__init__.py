@@ -18,6 +18,7 @@ class Mangainua(Server):
     id = 'mangainua'
     name = 'Manga/in/ua'
     lang = 'uk'
+    is_nsfw = True
 
     base_url = 'https://manga.in.ua'
     search_url = base_url + '/mangas/'

@@ -15,6 +15,7 @@ class Mangapill(Server):
     id = 'mangapill'
     name = 'Mangapill'
     lang = 'en'
+    is_nsfw = True
 
     base_url = 'https://mangapill.com'
     most_populars_url = base_url

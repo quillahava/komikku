@@ -9,6 +9,7 @@ class Toonily(Madara):
     id = 'toonily'
     name = 'Toonily'
     lang = 'en'
+    is_nsfw = True
 
     date_format = '%b %-d, %y'
     medium = None

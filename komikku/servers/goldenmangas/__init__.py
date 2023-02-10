@@ -15,6 +15,7 @@ class Goldenmangas(Server):
     id = 'goldenmangas'
     name = 'Golden Mangás'
     lang = 'pt_BR'
+    is_nsfw = True
 
     base_url = 'https://goldenmangas.top'
     search_url = base_url + '/mangabr'

@@ -9,6 +9,7 @@ class Apollcomics(Madara):
     id = 'apollcomics'
     name = 'Apoll Comics'
     lang = 'es'
+    is_nsfw = True
 
     base_url = 'https://apollcomics.xyz'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'

@@ -16,11 +16,12 @@ class Scanmanga(Server):
     id = 'scanmanga'
     name = SERVER_NAME
     lang = 'fr'
+    is_nsfw = True
     long_strip_genres = ['Webcomic', ]
 
     base_url = 'https://www.scan-manga.com'
     search_url = base_url + '/qsearch.json'
-    most_populars_url = base_url + '/TOP-Manga-Webtoon-7.html'
+    most_populars_url = base_url + '/TOP-Manga-Webtoon-24.html'
     manga_url = base_url + '{0}'
     chapter_url = base_url + '/lecture-en-ligne/{0}{1}.html'
     cover_url = base_url + '/img{0}'
