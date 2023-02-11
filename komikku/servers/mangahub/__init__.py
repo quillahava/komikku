@@ -35,6 +35,7 @@ class Mangahub(Server):
     id = 'mangahub'
     name = 'MangaHub'
     lang = 'en'
+    is_nsfw = True
     long_strip_genres = ['Webtoon', 'Webtoons', 'LONG STRIP', 'LONG STRIP ROMANCE', ]
 
     base_url = 'https://mangahub.io'
@@ -157,10 +158,10 @@ class Mangahub(Server):
         )
 
         pages = json.loads(r.json()['data']['chapter']['pages'])
-        for path in pages.values():
+        for name in pages['i']:
             data['pages'].append(dict(
-                slug=path,
-                image=None,
+                slug=None,
+                image=pages['p'] + name,
             ))
 
         return data
@@ -170,7 +171,7 @@ class Mangahub(Server):
         Returns chapter page scan (image) content
         """
         r = self.session_get(
-            self.image_url.format(page['slug']),
+            self.image_url.format(page['image']),
             headers={
                 'Accept': 'image/webp,image/*;q=0.8,*/*;q=0.5',
                 'Referer': self.chapter_url.format(manga_slug, chapter_slug),
@@ -186,7 +187,7 @@ class Mangahub(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=page['slug'].split('/')[-1],
+            name=page['image'].split('/')[-1],
         )
 
     def get_manga_url(self, slug, url):
@@ -195,17 +196,23 @@ class Mangahub(Server):
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self):
+        """
+        Returns latest manga
+        """
+        return self.search('', orderby='latest')
+
     def get_most_populars(self):
         """
-        Returns most popular manga list
+        Returns popular manga
         """
-        return self.search('', populars=True)
+        return self.search('', orderby='popular')
 
     @get_api_key
-    def search(self, term, populars=False):
-        if populars:
+    def search(self, term, orderby=None):
+        if orderby is not None:
             query = {
-                'query': '{latestPopular(x:m01){id,title,slug,image,latestChapter,unauthFile}}'
+                'query': '{search(x:m01,mod:%s,count:true,offset:0){rows{id,rank,title,slug,status,author,genres,image,latestChapter,unauthFile,createdDate},count}}' % orderby.upper()
             }
         else:
             query = {
@@ -222,16 +229,12 @@ class Mangahub(Server):
         if r.status_code != 200:
             return None
 
-        if populars:
-            data = r.json()['data']['latestPopular']
-        else:
-            data = r.json()['data']['search']['rows']
-
         results = []
-        for row in data:
+        for row in r.json()['data']['search']['rows']:
             results.append(dict(
                 slug=row['slug'],
                 name=row['title'],
+                cover=self.cover_url.format(row['image']),
             ))
 
         return results
