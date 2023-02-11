@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from abc import ABC
+from abc import abstractmethod
 from bs4 import BeautifulSoup
 from functools import cached_property
 import inspect
@@ -69,7 +71,7 @@ class CustomTimeout(TimeoutSauce):
 requests.adapters.TimeoutSauce = CustomTimeout
 
 
-class Server:
+class Server(ABC):
     id: str
     name: str
     lang: str
@@ -215,6 +217,84 @@ class Server:
 
         return expand_and_resize_cover(buffer), r.headers.get('ETag')
 
+    @abstractmethod
+    def get_manga_data(self, initial_data):
+        """This method must return a dictionary.
+
+        Data are usually obtained:
+        - by scrapping an HTML page
+        - or by parsing the response of a request to an API.
+
+        In most cases, the URL of the HTML page or the URL of the API endpoint
+        are forged using a slug provided by method `search` and available in `initial_data` argument.
+
+        By convention, returned dict must contain the following keys:
+        - name: Name of the manga
+        - authors: List of authors (str) [optional]
+        - scanlators: List of scanlators (str) [optional]
+        - genres: List of genres (str) [optional]
+        - status: Status of the manga (See database.Manga.STATUSES) [optional]
+        - synopsis: Synopsis of the manga [optional]
+        - chapters: List of chapters (See description below)
+        - server_id: The server ID
+        - cover: Absolute URL of the cover
+
+        By convention, a chapter is a dictionary which must contain the following keys:
+        - slug: A slug (str) allowing to forge HTML page URL of the chapter
+                (usually in conjunction with the manga slug)
+        - url: URL of chapter HTML page if `slug` is not usable or does not exist
+        - title: Title of the chapter
+        - date: Publish date of the chapter [optional]
+        - scanlators: List of scanlators (str) [optional]
+        """
+        pass
+
+    @abstractmethod
+    def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
+        """This method must return a list of pages.
+
+        Data are usually obtained:
+        - by scrapping an HTML page
+        - or by parsing the response of a request to an API.
+
+        The URL of the HTML page or the URL of the API endpoint are forged using 4 provided arguments.
+
+        By convention, each page is a dictionary which must contain one of the 3 keys `slug`, `image` or `url`:
+        - slug : A slug (str) allowing to forge image URL of the page
+                 (usually in conjunction with the manga slug and the chapter slug)
+        - image: Absolute or relative URL of the page image
+        - url: URL of the HTML page to scrape to get the URL of the page image
+
+        It's of course possible to add any other information if necessary
+        (an index for example to compute a better image filename).
+
+        The page data are passed to `get_manga_chapter_page_image` method.
+        """
+        pass
+
+    @abstractmethod
+    def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
+        """This method must return a dictionary with the following keys:
+
+        - buffer: Image buffer
+        - mime_type: Image MIME type
+        - name: Filename of the image
+
+        Depending on the server, we have:
+        - the slug or the URL of the image
+        - or the URL of the HTML page containing the image.
+
+        In the first case, we have the URL (or can forge it) so we can directly retrieve the image with a GET request.
+
+        In the second case, we must first retrieve the URL of the image by scraping the HTML page containing the image.
+        """
+        pass
+
+    @abstractmethod
+    def get_manga_url(self, slug, url):
+        """This method must return absolute URL of the manga"""
+        pass
+
     def is_long_strip(self, data):
         """
         Returns True if the manga is a long strip, False otherwise.
@@ -267,6 +347,26 @@ class Server:
         file_path = os.path.join(self.sessions_dir, '{0}.pickle'.format(get_server_main_id_by_id(self.id)))
         with open(file_path, 'wb') as f:
             pickle.dump(self.session, f)
+
+    @abstractmethod
+    def search(self, term=None):
+        """This method must return a dictionary.
+
+        Data are usually obtained:
+        - by scrapping an HTML page
+        - or by parsing the response of a request to an API.
+
+        By convention, returned dict must contain the following keys:
+        - slug: A slug (str) allowing to forge URL of the HTML page of the manga
+        - url: URL of manga HTML page if `slug` is not usable
+        - name: Name of the manga
+        - cover: Absolute URL of the manga cover [optional but recommanded for future developments]
+
+        It's of course possible to add any other information if necessary.
+
+        The data are passed to `get_manga_data` method.
+        """
+        pass
 
     def session_get(self, *args, **kwargs):
         try:
