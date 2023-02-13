@@ -523,6 +523,9 @@ class Pager(Adw.Bin, BasePager):
         if (state & modifiers) != 0:
             return Gdk.EVENT_PROPAGATE
 
+        if keyval == Gdk.KEY_space:
+            keyval = Gdk.KEY_Left if self.reader.reading_mode == 'right-to-left' else Gdk.KEY_Right
+
         if keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left, Gdk.KEY_Right, Gdk.KEY_KP_Right):
             # Hide mouse cursor when using keyboard navigation
             self.hide_cursor()

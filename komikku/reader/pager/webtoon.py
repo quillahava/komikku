@@ -283,7 +283,7 @@ class WebtoonPager(Adw.Bin, BasePager):
         if (state & modifiers) != 0:
             return Gdk.EVENT_PROPAGATE
 
-        if keyval in (Gdk.KEY_Down, Gdk.KEY_KP_Down, Gdk.KEY_Right, Gdk.KEY_KP_Right):
+        if keyval in (Gdk.KEY_Down, Gdk.KEY_KP_Down, Gdk.KEY_Right, Gdk.KEY_KP_Right, Gdk.KEY_space):
             self.hide_cursor()
             self.scroll_to_direction(Gtk.DirectionType.DOWN)
             return Gdk.EVENT_STOP
