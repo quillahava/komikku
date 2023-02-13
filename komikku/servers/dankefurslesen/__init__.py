@@ -9,6 +9,7 @@ class Dankefurslesen(Guya):
     id = 'dankefurslesen'
     name = 'Danke fürs Lesen'
     lang = 'en'
+    is_nsfw = True
 
     base_url = 'https://danke.moe'
     manga_url = base_url + '/read/manga/{0}/'

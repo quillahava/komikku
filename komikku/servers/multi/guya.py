@@ -90,6 +90,28 @@ class Guya(Server):
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self):
+        r = self.session_get(self.base_url + '/latest_chapters/')
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if not mime_type.startswith('text/html'):
+            return None
+
+        soup = BeautifulSoup(r.content, 'html.parser')
+
+        results = dict()
+        for a_element in soup.select('#chapterTable > tr > td:nth-child(2) > a'):
+            slug = a_element.get('href').split('/')[-2]
+            if slug not in results:
+                results[slug] = dict(
+                    slug=slug,
+                    name=a_element.text.strip(),
+                )
+
+        return results.values()
+
     def get_most_populars(self):
         return self.search('')
 

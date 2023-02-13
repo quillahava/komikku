@@ -14,12 +14,23 @@ def hachirumi_server():
     return Hachirumi()
 
 
-@test_steps('get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_latest_updates', 'get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_hachirumi(hachirumi_server):
-    # Get most populars (empty search)
-    print('Get most populars')
+    # Get latest updates
+    print('Get latest updates')
     try:
-        response = hachirumi_server.search('')
+        response = hachirumi_server.get_latest_updates()
+    except Exception as e:
+        slug = None
+        log_error_traceback(e)
+
+    assert response
+    yield
+
+    # Get most popular
+    print('Get most popular')
+    try:
+        response = hachirumi_server.get_most_populars()
     except Exception as e:
         slug = None
         log_error_traceback(e)

@@ -14,12 +14,23 @@ def dankefurslesen_server():
     return Dankefurslesen()
 
 
-@test_steps('get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_latest_updates', 'get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_dankefurslesen(dankefurslesen_server):
-    # Get most populars (empty search)
-    print('Get most populars')
+    # Get latest updates
+    print('Get latest updates')
     try:
-        response = dankefurslesen_server.search('')
+        response = dankefurslesen_server.get_latest_updates()
+    except Exception as e:
+        slug = None
+        log_error_traceback(e)
+
+    assert response
+    yield
+
+    # Get most popular
+    print('Get most popular')
+    try:
+        response = dankefurslesen_server.get_most_populars()
     except Exception as e:
         slug = None
         log_error_traceback(e)
