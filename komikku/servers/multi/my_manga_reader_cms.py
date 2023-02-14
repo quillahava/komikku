@@ -215,6 +215,31 @@ class MyMangaReaderCMS(Server):
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self):
+        """
+        Returns list of latest updated manga
+        """
+        r = self.session_get(
+            self.base_url,
+        )
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        for element in soup.select('.mangalist .manga-item'):
+            results.append(dict(
+                name=element.a.text.strip(),
+                slug=element.a.get('href').split('/')[-1],
+            ))
+
+        return results
+
     def get_most_populars(self):
         """
         Returns list of most viewed manga
