@@ -85,16 +85,15 @@ class Mangainua(Server):
 
         # Chapters
         for chapter in soup.find('div', class_='linkstocomicsblock').find_all('div', class_='ltcitems'):
-            if not chapter.find('a').get('class'):
-                url = chapter.find('a')['href']
-                slug = url.split('/')[-1].split('.')[0]
+            url = chapter.a['href']
+            slug = url.split('/')[-1].split('.')[0]
 
-                data['chapters'].append(dict(
-                    url=url,
-                    slug=slug,
-                    title=chapter.find('a').text.replace('НОВЕ', '')[1:],
-                    date=convert_date_string(chapter.find('div', class_='ltcright').text, '%d.%m.%Y'),
-                ))
+            data['chapters'].append(dict(
+                url=url,
+                slug=slug,
+                title=chapter.a.text.replace('НОВЕ', '')[1:],
+                date=convert_date_string(chapter.find('div', class_='ltcright').text, '%d.%m.%Y'),
+            ))
 
         return data
 
@@ -150,9 +149,9 @@ class Mangainua(Server):
         """
         return url
 
-    def get_most_populars(self):
+    def get_latest_updates(self):
         """
-        Returns most popular mangas (bayesian rating)
+        Returns latest updates
         """
         r = self.session_get(self.base_url)
         if r.status_code != 200:
@@ -161,13 +160,38 @@ class Mangainua(Server):
         soup = BeautifulSoup(r.text, features='lxml')
 
         results = []
-        for item in soup.find_all('div', class_='card card--big'):
-            url = item.find('a').get('href')
+        for element in soup.select('#site-content .card'):
+            a_element = element.select_one('.title a')
+            url = a_element.get('href')
             slug = url.split('/')[-1].split('.')[0]
             results.append(dict(
                 url=url,
                 slug=slug,  # unused
-                name=item.find('a').get('title'),
+                name=a_element.get('title'),
+                cover=self.base_url + element.header.img.get('data-src'),
+            ))
+
+        return results
+
+    def get_most_populars(self):
+        """
+        Returns most popular mangas
+        """
+        r = self.session_get(self.base_url)
+        if r.status_code != 200:
+            return None
+
+        soup = BeautifulSoup(r.text, features='lxml')
+
+        results = []
+        for a_element in soup.select('.slider .card > a'):
+            url = a_element.get('href')
+            slug = url.split('/')[-1].split('.')[0]
+            results.append(dict(
+                url=url,
+                slug=slug,  # unused
+                name=a_element.get('title'),
+                cover=self.base_url + a_element.header.figure.img.get('data-src'),
             ))
 
         return results
@@ -180,13 +204,16 @@ class Mangainua(Server):
         soup = BeautifulSoup(r.text, features='lxml')
 
         results = []
-        for item in soup.find_all('h3', class_='card__title'):
-            url = item.find('a').get('href')
+        for element in soup.select('.card--big'):
+            a_element = element.select_one('.title > a')
+            img_element = element.select_one('header > figure > img')
+            url = a_element.get('href')
             slug = url.split('/')[-1].split('.')[0]
             results.append(dict(
                 url=url,
                 slug=slug,  # unused
-                name=item.find('a').get('title'),
+                name=a_element.get('title'),
+                cover=self.base_url + img_element.get('src'),
             ))
 
         return results
