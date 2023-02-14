@@ -20,12 +20,15 @@ class Desu(Server):
     id = 'desu'
     name = SERVER_NAME
     lang = 'ru'
+    is_nsfw = True
 
     base_url = 'https://desu.me'
+    api_url = base_url + '/manga/api/'
+    api_latest_updates_url = base_url + '/manga/api?limit=50&order=updated'
+    api_most_populars_url = base_url + '/manga/api?limit=50&order=popular'
     api_manga_url = base_url + '/manga/api/{0}'
     api_chapter_url = base_url + '/manga/api/{0}/chapter/{1}'
     api_search_url = base_url + '/manga/api?limit=50&search={0}'
-    api_most_populars_url = base_url + '/manga/api?limit=50&order=popular'
 
     manga_title_css_selector = 'h1 > span.name'
 
@@ -133,20 +136,28 @@ class Desu(Server):
         """
         return url
 
+    def get_latest_updates(self):
+        """
+        Returns latest updated mangas
+        """
+        return self.search('', orderby='updated')
+
     def get_most_populars(self):
         """
         Returns most popular mangas (bayesian rating)
         """
-        r = self.session_get(self.api_most_populars_url)
-        if r.status_code != 200:
-            return None
+        return self.search('', orderby='popular')
 
-        resp_data = r.json()['response']
+    def search(self, term, orderby=None):
+        params = dict(
+            limit=50,
+        )
+        if orderby is not None:
+            params['order'] = orderby
+        else:
+            params['search'] = term
 
-        return [dict(slug=item['id'], name=item['russian']) for item in resp_data]
-
-    def search(self, term):
-        r = self.session_get(self.api_search_url.format(term))
+        r = self.session_get(self.api_url, params=params, headers={'Referer': self.base_url})
         if r.status_code != 200:
             return None
 
