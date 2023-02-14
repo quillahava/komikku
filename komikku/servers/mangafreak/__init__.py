@@ -10,6 +10,7 @@ from komikku.servers import Server
 from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
+from komikku.webview import bypass_cf
 
 logger = logging.getLogger('komikku.servers.mangafreak')
 
@@ -18,19 +19,24 @@ class Mangafreak(Server):
     id = 'mangafreak'
     name = 'MangaFreak'
     lang = 'en'
+    is_nsfw = True
 
-    base_url = 'https://w13.mangafreak.net'
-    search_url = base_url + '/Search/{0}'
+    has_cf = True
+
+    base_url = 'https://w14.mangafreak.net'
     most_populars_url = base_url
-    manga_url = base_url + '/Manga/{0}'
-    chapter_url = base_url + '/{0}'
-    image_url = 'https://images.mangafreak.net/mangas/{0}'
+    latest_updates_url = base_url + '/Latest_Releases'
+    search_url = base_url + '/Search/{term}'
+    manga_url = base_url + '/Manga/{slug}'
+    chapter_url = base_url + '/{chapter_slug}'
+    image_url = 'https://images.mangafreak.net/mangas/{slug}'
 
     def __init__(self):
         if self.session is None:
             self.session = requests.Session()
             self.session.headers.update({'User-Agent': USER_AGENT})
 
+    @bypass_cf
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -39,13 +45,12 @@ class Mangafreak(Server):
         """
         assert 'slug' in initial_data, 'Manga slug is missing in initial data'
 
-        r = self.session_get(self.manga_url.format(initial_data['slug']))
-        if r is None:
+        r = self.session_get(self.manga_url.format(slug=initial_data['slug']))
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'text/html':
+        if mime_type != 'text/html':
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -90,7 +95,7 @@ class Mangafreak(Server):
         data['synopsis'] = soup.find('div', class_='manga_series_description').p.text.strip()
 
         # Chapters
-        for tr_element in soup.find('div', class_='manga_series_list').find_all('tr')[1:]:
+        for tr_element in soup.find('div', class_='manga_series_list').find_all('tr'):
             tds_elements = tr_element.find_all('td')
 
             slug = tds_elements[0].a.get('href').split('/')[-1]
@@ -111,7 +116,7 @@ class Mangafreak(Server):
 
         Currently, only pages are expected.
         """
-        r = self.session_get(self.chapter_url.format(chapter_slug))
+        r = self.session_get(self.chapter_url.format(chapter_slug=chapter_slug))
         if r.status_code != 200:
             return None
 
@@ -137,9 +142,9 @@ class Mangafreak(Server):
         Returns chapter page scan (image) content
         """
         r = self.session_get(
-            self.image_url.format(page['slug']),
+            self.image_url.format(slug=page['slug']),
             headers={
-                'referer': self.chapter_url.format(chapter_slug)
+                'referer': self.chapter_url.format(chapter_slug=chapter_slug),
             }
         )
         if r.status_code != 200:
@@ -159,7 +164,33 @@ class Mangafreak(Server):
         """
         Returns manga absolute URL
         """
-        return self.manga_url.format(slug)
+        return self.manga_url.format(slug=slug)
+
+    def get_latest_updates(self):
+        """
+        Returns latest released
+        """
+        r = self.session_get(self.latest_updates_url)
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        for element in soup.select('.latest_releases_item'):
+            img_element = element.select_one('.latest_releases_item img')
+            a_element = element.select_one('.latest_releases_info a')
+            results.append(dict(
+                name=a_element.text.strip(),
+                slug=a_element.get('href').split('/')[-1],
+                cover=img_element.get('src'),
+            ))
+
+        return results
 
     def get_most_populars(self):
         """
@@ -176,16 +207,20 @@ class Mangafreak(Server):
         soup = BeautifulSoup(r.text, 'html.parser')
 
         results = []
-        for element in soup.find('div', class_='featured_list').find_all('div', class_='featured_item_info'):
+        for element in soup.select('.featured_item'):
+            img_element = element.select_one('.featured_item_image a img')
+            a_element = element.select_one('.featured_item_info a')
             results.append(dict(
-                name=element.a.text.strip(),
-                slug=element.a.get('href').split('/')[-1],
+                name=a_element.text.strip(),
+                slug=a_element.get('href').split('/')[-1],
+                cover=img_element.get('src'),
             ))
 
         return results
 
+    @bypass_cf
     def search(self, term):
-        r = self.session_get(self.search_url.format(term))
+        r = self.session_get(self.search_url.format(term=term))
         if r.status_code != 200:
             return None
 
@@ -198,10 +233,10 @@ class Mangafreak(Server):
         results = []
         for item in soup.find_all('div', class_='manga_search_item'):
             a_element = item.find('h3').a
-
             results.append(dict(
                 slug=a_element.get('href').strip().split('/')[-1],
                 name=a_element.text.strip(),
+                cover=item.span.a.img.get('src'),
             ))
 
         return results

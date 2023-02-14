@@ -132,12 +132,20 @@ def bypass_cf(func):
         if not server.has_cf:
             return func(*args, **kwargs)
 
-        if func_name == 'get_manga_chapter_data':
+        if func_name == 'get_manga_data':
+            url = server.manga_url.format(**args_dict['initial_data'])
+        elif func_name == 'get_manga_chapter_data':
             url = server.chapter_url.format(**args_dict)
         elif func_name == 'get_manga_chapter_page_image' and 'url' in args_dict['page']:
             url = args_dict['page']['url']
             if not url.startswith('http'):
                 url = server.base_url + url
+        elif func_name == 'latest_updates':
+            url = server.latest_updates_url
+        elif func_name == 'most_populars':
+            url = server.most_populars_url
+        elif func_name == 'search':
+            url = server.search_url.format(**args_dict)
         else:
             url = server.base_url
 
