@@ -16,7 +16,6 @@
 # ScanOnePiece [FR]
 
 from bs4 import BeautifulSoup
-from bs4 import Comment
 import re
 import requests
 from urllib.parse import urljoin
@@ -106,7 +105,7 @@ class MyMangaReaderCMS(Server):
         synopsis_element = soup.find('div', class_='well').p
         if synopsis_element.p:
             # Difference encountered on `mangasin` server
-            # Note: HTML is borken in this part, this is why we use html.parser above
+            # Note: HTML is broken in this part, this is why we use html.parser above
             # Anyway, the retrieved synopsis is not entirely correct, there is a surplus of text.
             synopsis_element = synopsis_element.p
         data['synopsis'] = synopsis_element.text.strip()
@@ -114,32 +113,31 @@ class MyMangaReaderCMS(Server):
         if alert_element:
             data['synopsis'] += '\n\n' + alert_element.text.strip()
 
-        # Chapters
-        elements = soup.find('ul', class_=re.compile(r'chapter.*')).find_all('li', recursive=False)
+        data['chapters'] = self.get_manga_chapters_data(soup)
+
+        return data
+
+    def get_manga_chapters_data(self, soup):
+        chapters = []
+        elements = soup.find('ul', class_=re.compile(r'chapter.*')).find_all('li')
         for element in reversed(elements):
             h5 = element.h5
             if not h5:
                 continue
 
-            if h5.daka:
-                # Difference encountered on `mangasin` server
-                slug = h5.daka.a.get('href').split('/')[-1]
-                title = '#{0} - {1}'.format(h5.a.get('data-number'), h5.daka.a.text.strip())
-                date = element.div.find(text=lambda text: isinstance(text, Comment))  # Date is located in a comment
-            else:
-                slug = h5.a.get('href').split('/')[-1]
-                title = h5.a.text.strip()
-                if h5.em and h5.em.text.strip():
-                    title = '{0}: {1}'.format(title, h5.em.text.strip())
-                date = element.div.div.text.strip()
+            slug = h5.a.get('href').split('/')[-1]
+            title = h5.a.text.strip()
+            if h5.em and h5.em.text.strip():
+                title = '{0}: {1}'.format(title, h5.em.text.strip())
+            date = element.div.div.text.strip()
 
-            data['chapters'].append(dict(
+            chapters.append(dict(
                 slug=slug,
                 date=convert_date_string(date, format='%d %b. %Y'),
                 title=title
             ))
 
-        return data
+        return chapters
 
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
