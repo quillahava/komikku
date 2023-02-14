@@ -14,8 +14,19 @@ def guya_server():
     return Guya()
 
 
-@test_steps('search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_guya(guya_server):
+    # Get most popular
+    print('Get most popular')
+    try:
+        response = guya_server.get_most_populars()
+    except Exception as e:
+        slug = None
+        log_error_traceback(e)
+
+    assert response
+    yield
+
     # Search
     print('Search')
     try:
@@ -38,6 +49,7 @@ def test_guya(guya_server):
         log_error_traceback(e)
 
     assert chapter_slug is not None
+    assert len(response['chapters']) > 0
     yield
 
     # Get chapter data
