@@ -18,6 +18,7 @@ class Mangapill(Server):
     is_nsfw = True
 
     base_url = 'https://mangapill.com'
+    latest_updates_url = base_url + '/chapters'
     most_populars_url = base_url
     search_url = base_url + '/search'
     manga_url = base_url + '/manga/{0}'
@@ -169,6 +170,32 @@ class Mangapill(Server):
         """
         return self.manga_url.format(url)
 
+    def get_latest_updates(self, type=None):
+        """
+        Returns latest updates
+        """
+        r = self.session_get(self.latest_updates_url)
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        for element in soup.select('.container .grid > div'):
+            a_element = element.select_one('a.text-secondary')
+            results.append(dict(
+                name=a_element.select_one('div:first-child').text.strip(),
+                url='/'.join(a_element.get('href').split('/')[-2:]),
+                slug=a_element.get('href').split('/')[-1],  # not used
+                cover=element.a.figure.img.get('data-src'),
+            ))
+
+        return results
+
     def get_most_populars(self, type=None):
         """
         Returns Trending mangas
@@ -184,11 +211,13 @@ class Mangapill(Server):
         soup = BeautifulSoup(r.text, 'html.parser')
 
         results = []
-        for a_element in soup.select_one('div.container:nth-child(4)').find_all('a', class_='mb-2'):
+        for element in soup.select('.container:nth-child(4) .grid > div'):
+            a_element = element.select_one('a.mb-2')
             results.append(dict(
                 name=a_element.select_one('div:first-child').text.strip(),
                 url='/'.join(a_element.get('href').split('/')[-2:]),
                 slug=a_element.get('href').split('/')[-1],  # not used
+                cover=element.a.figure.img.get('data-src'),
             ))
 
         return results
@@ -213,11 +242,13 @@ class Mangapill(Server):
         soup = BeautifulSoup(r.text, 'html.parser')
 
         results = []
-        for a_element in soup.select('div.container:nth-child(2) .grid:nth-child(3) a.mb-2'):
+        for element in soup.select('div.container:nth-child(2) .grid:nth-child(3) > div'):
+            a_element = element.select_one('a.mb-2')
             results.append(dict(
                 name=a_element.select_one('div:first-child').text.strip(),
                 url='/'.join(a_element.get('href').split('/')[-2:]),
                 slug=a_element.get('href').split('/')[-1],  # not used
+                cover=element.a.figure.img.get('data-src'),
             ))
 
         return results
