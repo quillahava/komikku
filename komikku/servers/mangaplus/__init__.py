@@ -63,6 +63,7 @@ class Mangaplus(Server):
     api_url = 'https://jumpg-webapi.tokyo-cdn.com/api'
     api_params_url = api_url + '/featured'
     api_search_url = api_url + '/title_list/all'
+    api_latest_updates_url = api_url + '/web/web_home?lang={0}'
     api_most_populars_url = api_url + '/title_list/ranking'
     api_manga_url = api_url + '/title_detail?title_id={0}'
     api_chapter_url = api_url + '/manga_viewer?chapter_id={0}&split=yes&img_quality=high'
@@ -83,12 +84,11 @@ class Mangaplus(Server):
         assert 'slug' in initial_data, 'Slug is missing in initial data'
 
         r = self.session_get(self.api_manga_url.format(initial_data['slug']))
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'application/octet-stream':
+        if mime_type != 'application/octet-stream':
             return None
 
         resp = MangaplusResponse.loads(r.content)
@@ -135,12 +135,11 @@ class Mangaplus(Server):
         Currently, only pages are expected.
         """
         r = self.session_get(self.api_chapter_url.format(chapter_slug))
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'application/octet-stream':
+        if mime_type != 'application/octet-stream':
             return None
 
         resp = MangaplusResponse.loads(r.content)
@@ -169,7 +168,7 @@ class Mangaplus(Server):
         Returns chapter page scan (image) content
         """
         r = self.session_get(page['image'])
-        if r is None or r.status_code != 200:
+        if r.status_code != 200:
             return None
 
         if page['encryption_key'] is not None:
@@ -198,17 +197,48 @@ class Mangaplus(Server):
         return self.manga_url.format(slug)
 
     @set_lang
+    def get_latest_updates(self):
+        """
+        Returns latest updates
+        """
+        r = self.session_get(self.api_latest_updates_url.format(LANGUAGES_CODES[self.lang]))
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'application/octet-stream':
+            return None
+
+        resp_data = MangaplusResponse.loads(r.content)
+        if resp_data.error:
+            return None
+
+        results = []
+        for group in resp_data.success.web_home_view.update_title_groups:
+            for update_title in group.titles:
+                title = update_title.title
+                if title.language != LanguageEnum.from_code(self.lang):
+                    continue
+
+                results.append(dict(
+                    slug=title.id,
+                    name=title.name,
+                    cover=title.portrait_image_url,
+                ))
+
+        return results
+
+    @set_lang
     def get_most_populars(self):
         """
         Returns hottest manga list
         """
         r = self.session_get(self.api_most_populars_url)
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'application/octet-stream':
+        if mime_type != 'application/octet-stream':
             return None
 
         resp_data = MangaplusResponse.loads(r.content)
@@ -231,12 +261,11 @@ class Mangaplus(Server):
     @set_lang
     def search(self, term):
         r = self.session_get(self.api_search_url)
-        if r is None:
+        if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-
-        if r.status_code != 200 or mime_type != 'application/octet-stream':
+        if mime_type != 'application/octet-stream':
             return None
 
         resp_data = MangaplusResponse.loads(r.content)
@@ -435,12 +464,32 @@ class TitlesRanking:
 
 @message
 @dataclass
+class UpdatedTitle:
+    title: Title = field(1, default=None)
+
+
+@message
+@dataclass
+class UpdatedTitleGroup:
+    group_name: str = field(1, default=None)
+    titles: List[UpdatedTitle] = field(2, default_factory=list)
+
+
+@message
+@dataclass
+class WebHomeView:
+    update_title_groups: List[UpdatedTitleGroup] = field(2, default_factory=list)
+
+
+@message
+@dataclass
 class SuccessResult:
     is_featured_updated: bool = field(1, default=False)
     titles_all: TitlesAll = field(5, default=None)
     titles_ranking: TitlesRanking = field(6, default=None)
     title_detail: TitleDetail = field(8, default=None)
     manga_viewer: MangaViewer = field(10, default=None)
+    web_home_view: WebHomeView = field(11, default=None)
 
 
 @message
