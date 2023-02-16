@@ -18,6 +18,7 @@ class Mangatube(Server):
     id = 'mangatube'
     name = 'Manga Tube'
     lang = 'de'
+    is_nsfw = True
 
     base_url = 'https://manga-tube.me'
     api_url = base_url + '/ajax'
@@ -233,6 +234,28 @@ class Mangatube(Server):
         """
         _manga_id, manga_slug = slug.split('-', 1)
         return self.manga_url.format(manga_slug)
+
+    def get_latest_updates(self, **kwargs):
+        r = self.session_get(self.base_url)
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.content, 'html.parser')
+
+        results = []
+        for element in soup.select('.series-update .series-update-wraper'):
+            a_element = element.select_one('.series-name')
+            results.append(dict(
+                slug='0-' + a_element.get('href').split('/')[-1],
+                name=a_element.text.strip(),
+                cover=element.select_one('.cover a img').get('data-original'),
+            ))
+
+        return results
 
     def get_most_populars(self, **kwargs):
         return self.search(populars=True)
