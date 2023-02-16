@@ -237,9 +237,26 @@ class Mangasee(Server):
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self):
+        results = []
+
+        if self.mangas is None:
+            if self.get_most_populars() is None:
+                return None
+
+        self.mangas = sorted(self.mangas, key=lambda m: m['lt'], reverse=True)
+
+        for manga in self.mangas:
+            results.append(dict(
+                name=manga['s'],
+                slug=manga['i'],
+            ))
+
+        return results
+
     def get_most_populars(self):
         """
-        Returns most popular mangas list
+        Returns most popular manga list
         """
         if self.mangas is None:
             r = self.session_get(self.search_url)
