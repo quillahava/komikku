@@ -17,4 +17,5 @@ class Mangasorigines(Madara):
 
     base_url = 'https://mangas-origines.fr'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
-    chapter_url = base_url + '/manga/{manga_slug}/{chapter_slug}/'
+    chapter_url = base_url + '/manga/{0}/{1}/'
+    bypass_cf_url = base_url + '/manga/111135-solo-leveling/'
