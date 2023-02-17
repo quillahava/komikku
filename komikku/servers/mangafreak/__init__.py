@@ -30,6 +30,7 @@ class Mangafreak(Server):
     manga_url = base_url + '/Manga/{slug}'
     chapter_url = base_url + '/{chapter_slug}'
     image_url = 'https://images.mangafreak.net/mangas/{slug}'
+    bypass_cf_url = base_url + '/Manga/One_Piece'
 
     def __init__(self):
         if self.session is None:
