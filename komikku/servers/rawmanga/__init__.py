@@ -15,7 +15,7 @@ class Rawmanga(MangaStream):
     base_url = 'https://mangaraw.org'
     search_url = base_url + '/ajax/search'
     manga_url = base_url + '/{0}'
-    chapter_url = base_url + '/{manga_slug}/{chapter_slug}'
+    chapter_url = base_url + '/{0}/{1}'
     page_image_url = base_url + '/viewer/{0}/{1}/{2}'
 
     name_selector = '.infox h1'

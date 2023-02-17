@@ -14,4 +14,4 @@ class Manga3asq(Madara):
 
     base_url = 'https://3asq.org'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
-    chapter_url = base_url + '/manga/{manga_slug}/{chapter_slug}/'
+    chapter_url = base_url + '/manga/{0}/{chapter_slug}/'

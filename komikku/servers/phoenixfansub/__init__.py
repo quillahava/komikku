@@ -13,7 +13,7 @@ class Phoenixfansub(MangaStream):
     base_url = 'https://phoenixfansub.com'
     search_url = base_url + '/manga/'
     manga_url = base_url + '/manga/{0}/'
-    chapter_url = base_url + '/{chapter_slug}/'  # manga slug is not used
+    chapter_url = base_url + '/{0}/'  # manga slug is not used
 
     name_selector = '.entry-title'
     thumbnail_selector = '.thumb img'

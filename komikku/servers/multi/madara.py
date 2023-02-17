@@ -54,7 +54,7 @@ class Madara(Server):
         self.api_url = self.base_url + '/wp-admin/admin-ajax.php'
         self.manga_url = self.base_url + '/' + self.series_name + '/{0}/'
         if self.chapter_url is None:
-            self.chapter_url = self.base_url + '/' + self.series_name + '/{manga_slug}/{chapter_slug}/?style=list'
+            self.chapter_url = self.base_url + '/' + self.series_name + '/{0}/{1}/?style=list'
 
         if self.session is None and not self.has_cf:
             self.session = requests.Session()
@@ -223,7 +223,7 @@ class Madara(Server):
         Currently, only pages are expected.
         """
         r = self.session_get(
-            self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug),
+            self.chapter_url.format(manga_slug, chapter_slug),
             headers={
                 'Referer': self.manga_url.format(manga_slug),
             }
@@ -260,7 +260,7 @@ class Madara(Server):
         r = self.session_get(
             page['image'],
             headers={
-                'Referer': self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug),
+                'Referer': self.chapter_url.format(manga_slug, chapter_slug),
             }
         )
         if r.status_code != 200:

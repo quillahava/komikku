@@ -28,7 +28,7 @@ class Japscan(Server):
     search_url = base_url + '/manga/'
     api_search_url = base_url + '/live-search/'
     manga_url = base_url + '/manga/{0}/'
-    chapter_url = base_url + '/lecture-en-ligne/{manga_slug}/{chapter_slug}/'
+    chapter_url = base_url + '/lecture-en-ligne/{0}/{1}/'
     page_url = '/lecture-en-ligne/{0}/{1}/{2}.html'
     cover_url = base_url + '{0}'
 
@@ -135,7 +135,7 @@ class Japscan(Server):
 
         Currently, only pages and scrambled are expected.
         """
-        html = get_page_html(self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug))
+        html = get_page_html(self.chapter_url.format(manga_slug, chapter_slug))
         soup = BeautifulSoup(html, 'lxml')
 
         if reader_element := soup.find(id='full-reader'):
@@ -180,7 +180,7 @@ class Japscan(Server):
         r = self.session_get(
             url,
             headers={
-                'Referer': self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug),
+                'Referer': self.chapter_url.format(manga_slug, chapter_slug),
             }
         )
         if r.status_code != 200:
