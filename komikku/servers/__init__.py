@@ -78,6 +78,7 @@ class Server(ABC):
 
     base_url = None
 
+    bypass_cf_url = None
     has_cf = False
     has_login = False
     headers = None

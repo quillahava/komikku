@@ -16,6 +16,7 @@ gi.require_version('WebKit2', '5.0')
 
 from gi.repository import Gio
 from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import WebKit2
 
@@ -23,17 +24,23 @@ from komikku.servers import USER_AGENT
 from komikku.servers.exceptions import CfBypassError
 from komikku.utils import get_cache_dir
 
-CF_RELOAD_MAX = 20
+CF_RELOAD_MAX = 5
 DEBUG = False
 logger = logging.getLogger('komikku.webview')
 
 
 class Webview(Gtk.ScrolledWindow):
+    __gsignals__ = {
+        'exited': (GObject.SIGNAL_RUN_FIRST, None, ()),
+    }
+
     lock = False
 
     def __init__(self, window):
         self.__handlers_ids = []
         self.window = window
+
+        self.title_label = self.window.webview_title_label
 
         Gtk.ScrolledWindow.__init__(self)
 
@@ -42,13 +49,6 @@ class Webview(Gtk.ScrolledWindow):
 
         self.webview = WebKit2.WebView()
         self.set_child(self.webview)
-
-        self.settings = WebKit2.Settings()
-        self.settings.set_enable_javascript(True)
-        self.settings.set_enable_page_cache(False)
-        self.settings.set_enable_frame_flattening(True)
-        self.settings.set_enable_accelerated_2d_canvas(True)
-        self.settings.set_enable_developer_extras(DEBUG)
 
         self.web_context = self.webview.get_context()
         self.web_context.set_cache_model(WebKit2.CacheModel.DOCUMENT_VIEWER)
@@ -81,9 +81,11 @@ class Webview(Gtk.ScrolledWindow):
         self.__handlers_ids = []
 
     def navigate_back(self, source):
-        # Should not be used except for debug purpose
         if source is None and self.window.page != 'webview':
             return
+
+        if source:
+            self.emit('exited')
 
         getattr(self.window, self.window.previous_page).show(reset=False)
 
@@ -91,8 +93,8 @@ class Webview(Gtk.ScrolledWindow):
         if self.lock:
             return False
 
-        self.settings.set_user_agent(user_agent or USER_AGENT)
-        self.settings.set_auto_load_images(settings.get('auto_load_images', False) if settings else False)
+        self.webview.get_settings().set_enable_developer_extras(DEBUG)
+        self.webview.get_settings().set_user_agent(user_agent or USER_AGENT)
 
         self.lock = True
 
@@ -106,7 +108,6 @@ class Webview(Gtk.ScrolledWindow):
         return True
 
     def show(self, transition=True, reset=False):
-        # Should not be used except for debug purpose
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.left_extra_button_stack.hide()
@@ -123,33 +124,14 @@ def bypass_cf(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        func_name = func.__name__
         bound_args = inspect.signature(func).bind(*args, **kwargs)
         args_dict = dict(bound_args.arguments)
 
         server = args_dict['self']
+        url = server.bypass_cf_url or server.base_url
 
         if not server.has_cf:
             return func(*args, **kwargs)
-
-        if func_name == 'get_manga_data':
-            url = server.manga_url.format(**args_dict['initial_data'])
-        elif func_name == 'get_manga_chapter_data':
-            url = server.chapter_url.format(**args_dict)
-        elif func_name == 'get_manga_chapter_page_image' and 'url' in args_dict['page']:
-            url = args_dict['page']['url']
-            if not url.startswith('http'):
-                url = server.base_url + url
-        elif func_name == 'latest_updates':
-            url = server.latest_updates_url
-        elif func_name == 'most_populars':
-            url = server.most_populars_url
-        elif func_name == 'search':
-            url = server.search_url.format(**args_dict)
-        else:
-            url = server.base_url
-
-        webview = Gio.Application.get_default().window.webview
 
         if server.session is None:
             # Try loading a previous session
@@ -180,6 +162,7 @@ def bypass_cf(func):
         cf_reload_count = -1
         done = False
         error = None
+        webview = Gio.Application.get_default().window.webview
 
         # Gnome Web user agent
         cpu_arch = platform.machine()
@@ -192,9 +175,6 @@ def bypass_cf(func):
             webview.connect_signal('load-changed', on_load_changed)
             webview.connect_signal('load-failed', on_load_failed)
             webview.connect_signal('notify::title', on_title_changed)
-
-            if DEBUG:
-                webview.show()
 
         def on_load_changed(_webview, event):
             nonlocal cf_reload_count
@@ -211,24 +191,6 @@ def bypass_cf(func):
 
             # Detect end of CF challenge via JavaScript
             js = """
-                function fireEvent(node, eventName) {
-                    // Make sure we use the ownerDocument from the provided node to avoid cross-window problems
-                    let doc;
-                    if (node.ownerDocument) {
-                        doc = node.ownerDocument;
-                    }
-                    else if (node.nodeType == 9) {
-                        // the node may be the document itself, nodeType 9 = DOCUMENT_NODE
-                        doc = node;
-                    }
-
-                    const event = doc.createEvent('MouseEvents');
-                     // All events created as bubbling and cancelable
-                    event.initEvent(eventName, true, true);
-                    // The second parameter says go ahead with the default action
-                    node.dispatchEvent(event, true);
-                };
-
                 let checkCF = setInterval(() => {
                     if (!document.getElementById('challenge-running')) {
                         document.title = 'ready';
@@ -236,18 +198,11 @@ def bypass_cf(func):
                     }
                     else if (document.querySelector('input.pow-button')) {
                         // button
-                        document.title = 'captcha1';
-                        fireEvent(document.querySelector('input.pow-button'), 'click');
+                        document.title = 'captcha1 ' + new Date().getSeconds();
                     }
                     else if (document.querySelector('iframe[id^="cf-chl-widget"]')) {
-                        // checkbox
-                        document.title = 'captcha2';
-                        document.querySelectorAll('iframe').forEach(item => {
-                            let check = item.contentWindow.document.body.querySelectorAll('.ctp-checkbox-label > input:nth-child(1)');
-                            if (check) {
-                                fireEvent(check, 'click');
-                            }
-                        });
+                        // checkbox in an iframe
+                        document.title = 'captcha2 ' + new Date().getSeconds();
                     }
                 }, 100);
             """
@@ -256,13 +211,16 @@ def bypass_cf(func):
         def on_load_failed(_webview, _event, uri, _gerror):
             nonlocal error
 
-            error = f'Failed to load homepage: {uri}'
+            error = f'CF challenge bypass failure: {uri}'
 
             webview.close()
 
         def on_title_changed(_webview, title):
             if webview.webview.props.title.startswith('captcha'):
                 logger.debug(f'{server.id}: Captcha `{webview.webview.props.title}` detected')
+                # Show webview, user must complete a CAPTCHA
+                webview.title_label.set_text(_('Please complete CAPTCHA'))
+                webview.show()
 
             if webview.webview.props.title != 'ready':
                 return
@@ -270,6 +228,9 @@ def bypass_cf(func):
             logger.debug(f'{server.id}: Page loaded, getting cookies...')
             cookie_manager = webview.web_context.get_cookie_manager()
             cookie_manager.get_cookies(server.base_url, None, on_get_cookies_finish, None)
+
+            # Exit from webview
+            webview.navigate_back(None)
 
         def on_get_cookies_finish(cookie_manager, result, user_data):
             nonlocal done
@@ -296,6 +257,14 @@ def bypass_cf(func):
             done = True
             webview.close()
 
+        def on_webview_exited(_webview):
+            nonlocal error
+
+            error = 'CF challenge bypass aborted'
+
+            webview.close()
+
+        webview.connect('exited', on_webview_exited)
         GLib.timeout_add(100, load_page)
 
         while not done and error is None:
