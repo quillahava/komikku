@@ -61,6 +61,7 @@ def test_phoenixscans(phoenixscans_server):
         log_error_traceback(e)
 
     assert chapter_url is not None
+    assert len(response['chapters']) > 0
     yield
 
     # Get chapter data

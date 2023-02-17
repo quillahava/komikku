@@ -25,6 +25,7 @@ class Readcomiconline(Server):
     lang = 'en'
 
     base_url = 'https://readcomiconline.li'
+    latest_updates_url = base_url + '/ComicList/LatestUpdate'
     most_populars_url = base_url + '/ComicList/MostPopular'
     search_url = base_url + '/Search/SearchSuggest'
     manga_url = base_url + '/Comic/{0}'
@@ -171,13 +172,13 @@ class Readcomiconline(Server):
         """
         return self.manga_url.format(slug)
 
-    def get_most_populars(self):
-        """
-        Returns most popular comics list
-        """
+    def get_manga_list(self, orderby):
         results = []
 
-        r = self.session.get(self.most_populars_url)
+        if orderby == 'populars':
+            r = self.session.get(self.most_populars_url)
+        else:
+            r = self.session.get(self.latest_updates_url)
         if r.status_code != 200:
             return None
 
@@ -195,6 +196,18 @@ class Readcomiconline(Server):
             ))
 
         return results
+
+    def get_latest_updates(self):
+        """
+        Returns latest updates
+        """
+        return self.get_manga_list(orderby='latest')
+
+    def get_most_populars(self):
+        """
+        Returns most popular comics
+        """
+        return self.get_manga_list(orderby='populars')
 
     def search(self, term):
         results = []

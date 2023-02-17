@@ -61,6 +61,7 @@ def test_rawkuma(rawkuma_server):
         log_error_traceback(e)
 
     assert chapter_slug is not None
+    assert len(response['chapters']) > 0
     yield
 
     # Get chapter data
