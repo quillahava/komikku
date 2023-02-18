@@ -26,7 +26,7 @@ class Remanga(Server):
     chapter_url = base_url + '/manga/{0}/{1}'
     api_base_url = 'https://api.xn--80aaig9ahr.xn--c1avg'
     api_search_url = api_base_url + '/api/search/'
-    api_most_populars_url = api_base_url + '/api/search/catalog/'
+    api_manga_list_url = api_base_url + '/api/search/catalog/'
     api_manga_url = api_base_url + '/api/titles/{0}/'
     api_chapters_url = api_base_url + '/api/titles/chapters/'
 
@@ -182,14 +182,11 @@ class Remanga(Server):
         """
         return self.manga_url.format(slug)
 
-    def get_most_populars(self):
-        """
-        Returns most popular mangas (bayesian rating)
-        """
+    def get_manga_list(self, orderby):
         r = self.session_get(
-            self.api_most_populars_url,
+            self.api_manga_list_url,
             params={
-                'ordering': '-rating',
+                'ordering': '-rating' if orderby == 'populars' else '-chapter_date',
                 'count': 50,
             },
             headers={
@@ -201,6 +198,18 @@ class Remanga(Server):
 
         resp_data = r.json()['content']
         return [dict(slug=item['dir'], name=item['rus_name']) for item in resp_data]
+
+    def get_latest_updates(self):
+        """
+        Returns latest updates
+        """
+        return self.get_manga_list(orderby='latest')
+
+    def get_most_populars(self):
+        """
+        Returns most popular mangas
+        """
+        return self.get_manga_list(orderby='populars')
 
     def search(self, term):
         r = self.session_get(
