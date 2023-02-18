@@ -484,9 +484,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
         if self.page == 'reader' and self.reader.pager:
             self.reader.pager.resize_pages()
 
-    def on_key_pressed(self, _controller, keyval, _keycode, _state):
+    def on_key_pressed(self, _controller, keyval, _keycode, state):
         """
-        Go back navigation with <Escape> key:
+        Go back navigation with <Escape> and <Alt+Left> keys:
         - Library <- Manga <- Reader
         - Library <- History <- Reader
         - Library <- History <- Card <- Reader
@@ -498,7 +498,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
         - Exit selection mode: Library, Card chapters, Download Manager
         - Exit search mode: Library, Explorer 'servers' and 'search' pages, History
         """
-        if keyval == Gdk.KEY_Escape:
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
+
+        if keyval == Gdk.KEY_Escape or (modifiers == Gdk.ModifierType.ALT_MASK and keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left)):
             self.on_left_button_clicked()
             return Gdk.EVENT_STOP
 
