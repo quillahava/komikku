@@ -462,14 +462,19 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[UI] Use #f66151 color (orange) as app's accent color</li>
-                <li>[Shortcuts] Add &lt;Ctrl+f&gt; in History and Explorer => Servers (toggles search entry)</li>
-                <li>[Servers] Japscan: Update</li>
-                <li>[Servers] Manga-Scantrad: Update</li>
-                <li>[Servers] Raw Manga: Update</li>
-                <li>[Servers] Read Comic Online: Update</li>
-                <li>[L10n] Update French, German and Turkish translations</li>
+                <li>[UI] Added ability to go back with &lt;ALT+Left&gt; key</li>
+                <li>[Reader] Added ability to navigate foward with &lt;SPACE&gt; key</li>
+                <li>[Servers] Guya.moe: Update</li>
+                <li>[Servers] Manga/in/ua: Update</li>
+                <li>[Servers] MangaFreak: Update</li>
+                <li>[Servers] MangaHub: Update</li>
+                <li>[Servers] MangaLib: Update</li>
+                <li>[Servers] Mangas Origines: Update</li>
+                <li>[Servers] Mangas.in: Update</li>
+                <li>[Servers] Read Manga: Update</li>
+                <li>[L10n] Updated French translation</li>
             </ul>
+            <p>Beware, all servers that contain explicit sexual content or nudity, such as hentai, ecchi and yaoi/yuri are now tagged NSFW.</p>
         """)
 
         window.add_link(_('Join Chat'), 'https://matrix.to/#/#komikku-gnome:matrix.org')

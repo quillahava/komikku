@@ -91,6 +91,24 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.12.0" date="2023-02-18">
+            <description>
+                <ul>
+                    <li>[UI] Added ability to go back with &lt;ALT+Left&gt; key</li>
+                    <li>[Reader] Added ability to navigate foward with &lt;SPACE&gt; key</li>
+                    <li>[Servers] Guya.moe: Update</li>
+                    <li>[Servers] Manga/in/ua: Update</li>
+                    <li>[Servers] MangaFreak: Update</li>
+                    <li>[Servers] MangaHub: Update</li>
+                    <li>[Servers] MangaLib: Update</li>
+                    <li>[Servers] Mangas Origines: Update</li>
+                    <li>[Servers] Mangas.in: Update</li>
+                    <li>[Servers] Read Manga: Update</li>
+                    <li>[L10n] Updated French translation</li>
+                </ul>
+                <p>Beware, all servers that contain explicit sexual content or nudity, such as hentai, ecchi and yaoi/yuri are now tagged NSFW.</p>
+            </description>
+        </release>
         <release version="1.11.1" date="2023-02-08">
             <description>
                 <ul>
