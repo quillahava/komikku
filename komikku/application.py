@@ -462,7 +462,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[UI] Added ability to go back with &lt;ALT+Left&gt; key</li>
+                <li>[UI] Added ability to go back with &lt;ALT+Left&gt; shortcut</li>
                 <li>[Reader] Added ability to navigate foward with &lt;SPACE&gt; key</li>
                 <li>[Servers] Guya.moe: Update</li>
                 <li>[Servers] Manga/in/ua: Update</li>
