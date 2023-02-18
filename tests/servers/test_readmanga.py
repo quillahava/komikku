@@ -81,6 +81,7 @@ def test_allhentai(allhentai_server):
         log_error_traceback(e)
 
     assert chapter_slug is not None
+    assert len(response['chapters']) > 0
     yield
 
     # Get chapter data
@@ -153,6 +154,7 @@ def test_mintmanga(mintmanga_server):
         log_error_traceback(e)
 
     assert chapter_slug is not None
+    assert len(response['chapters']) > 0
     yield
 
     # Get chapter data
@@ -225,6 +227,7 @@ def test_readmanga(readmanga_server):
         log_error_traceback(e)
 
     assert chapter_slug is not None
+    assert len(response['chapters']) > 0
     yield
 
     # Get chapter data
@@ -297,6 +300,7 @@ def test_selfmanga(selfmanga_server):
         log_error_traceback(e)
 
     assert chapter_slug is not None
+    assert len(response['chapters']) > 0
     yield
 
     # Get chapter data

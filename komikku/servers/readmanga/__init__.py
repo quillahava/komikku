@@ -22,8 +22,8 @@ class Readmanga(Server):
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
-    pages_js_start = 'rm_h.initReader'
-    pages_js_offset = 17
+    pages_js_start = 'rm_h.readerInit'
+    pages_js_offset = 19
 
     def __init__(self):
         if self.session is None:
@@ -280,6 +280,3 @@ class Selfmanga(Readmanga):
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
-
-    pages_js_start = 'rm_h.readerInit'
-    pages_js_offset = 19
