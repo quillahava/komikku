@@ -24,9 +24,7 @@ class Tapas(Server):
     lang = 'en'
 
     base_url = 'https://tapas.io'
-    # g=0 is all genres, no parameter means looking only for romances
-    # F2R means only comics available for free, TODO: premium support
-    most_populars_url = base_url + '/comics?g=0&f=F2R'
+    manga_list_url = base_url + '/comics'
     search_url = base_url + '/search'
     manga_url = base_url + '/series/{0}'
     manga_info_url = base_url + '/series/{0}/info'
@@ -148,8 +146,15 @@ class Tapas(Server):
         """
         return self.manga_url.format(slug)
 
-    def get_most_populars(self):
-        r = self.session_get(self.most_populars_url)
+    def get_manga_list(self, orderby):
+        # g=0 is all genres, no parameter means looking only for romances
+        # F2R means only comics available for free, TODO: premium support
+        params = dict(
+            g=0,
+            f='F2R',
+            b=orderby,
+        )
+        r = self.session_get(self.manga_list_url, params=params)
         if r.status_code != 200:
             return None
 
@@ -168,6 +173,12 @@ class Tapas(Server):
             ))
 
         return results
+
+    def get_latest_updates(self):
+        return self.get_manga_list(orderby='FRESH')
+
+    def get_most_populars(self):
+        return self.get_manga_list(orderby='POPULAR')
 
     def resolve_chapters(self, manga_slug, page=1):
         r = self.session_get(

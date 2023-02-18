@@ -14,8 +14,19 @@ def tapas_server():
     return Tapas()
 
 
-@test_steps('get_most_popular', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
+@test_steps('get_latest_updates', 'get_most_popular', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_tapas(tapas_server):
+    # Get latest updates
+    print('Get latest updates')
+    try:
+        response = tapas_server.get_latest_updates()
+    except Exception as e:
+        response = None
+        log_error_traceback(e)
+
+    assert response is not None
+    yield
+
     # Get most popular
     print('Get most popular')
     try:
@@ -49,6 +60,7 @@ def test_tapas(tapas_server):
         log_error_traceback(e)
 
     assert chapter_slug is not None
+    assert len(response['chapters']) > 0
     yield
 
     # Get chapter data
