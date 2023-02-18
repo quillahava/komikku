@@ -24,6 +24,7 @@ class Xoxocomics(Server):
     lang = 'en'
 
     base_url = 'https://xoxocomics.com'
+    latest_updates_url = base_url + '/comic-updates'
     most_populars_url = base_url + '/popular-comics'
     search_url = base_url + '/ajax/search'
     manga_url = base_url + '/comic/{0}?page={1}'
@@ -168,6 +169,30 @@ class Xoxocomics(Server):
         Returns comic absolute URL
         """
         return self.manga_url.format(slug, 1)
+
+    def get_latest_updates(self):
+        """
+        Returns latest updates
+        """
+        results = []
+
+        r = self.session.get(self.latest_updates_url)
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.content, 'html.parser')
+
+        for a_element in soup.select('.list-chapter .row h3 > a'):
+            results.append(dict(
+                name=a_element.text.strip(),
+                slug=a_element.get('href').split('/')[-1],
+            ))
+
+        return results
 
     def get_most_populars(self):
         """

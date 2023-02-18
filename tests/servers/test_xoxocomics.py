@@ -14,15 +14,27 @@ def xoxocomics_server():
     return Xoxocomics()
 
 
-@test_steps('get_most_populars', 'search', 'get_manga_data', 'get_manga_chapter_data', 'get_manga_chapter_page_image')
+@test_steps('get_latest_updates', 'get_most_populars', 'search', 'get_manga_data', 'get_manga_chapter_data', 'get_manga_chapter_page_image')
 def test_xoxocomics(xoxocomics_server):
+    # Get latest updates
+    print('Get latest updates')
+    try:
+        response = xoxocomics_server.get_latest_updates()
+    except Exception as e:
+        response = None
+        log_error_traceback(e)
+
+    assert response is not None
+    yield
+
     # Get Most Popular
-    print('Get most populars')
+    print('Get most popular')
     try:
         response = xoxocomics_server.get_most_populars()
     except Exception as e:
         response = None
         log_error_traceback(e)
+
     assert response is not None
     yield
 
@@ -34,6 +46,7 @@ def test_xoxocomics(xoxocomics_server):
     except Exception as e:
         slug = None
         log_error_traceback(e)
+
     assert slug is not None
     yield
 
@@ -47,6 +60,7 @@ def test_xoxocomics(xoxocomics_server):
         log_error_traceback(e)
 
     assert chapter_slug is not None
+    assert len(response['chapters']) > 0
     yield
 
     # Get chapter data
