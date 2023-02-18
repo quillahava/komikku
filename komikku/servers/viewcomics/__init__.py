@@ -20,6 +20,7 @@ class Viewcomics(Server):
 
     base_url = 'https://viewcomics.me'
     search_url = base_url + '/search'
+    latest_updates_url = base_url + '/comic-updates'
     most_populars_url = base_url + '/popular-comics'
     manga_url = base_url + '/comic/{0}'
     chapter_url = base_url + '/{0}/{1}/full'
@@ -150,6 +151,34 @@ class Viewcomics(Server):
         Returns comic absolute URL
         """
         return self.manga_url.format(slug)
+
+    def get_latest_updates(self):
+        """
+        Returns latest updates
+        """
+        r = self.session_get(
+            self.latest_updates_url,
+            headers={
+                'referer': self.base_url,
+            }
+        )
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        for a_element in soup.select('.line-list > li > a'):
+            results.append(dict(
+                slug=a_element.get('href').split('/')[-1],
+                name=a_element.text.strip(),
+            ))
+
+        return results
 
     def get_most_populars(self):
         """
