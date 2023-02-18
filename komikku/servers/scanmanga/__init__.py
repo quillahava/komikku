@@ -20,8 +20,9 @@ class Scanmanga(Server):
     long_strip_genres = ['Webcomic', ]
 
     base_url = 'https://www.scan-manga.com'
-    search_url = base_url + '/qsearch.json'
+    latest_updates_url = base_url + '/?po'
     most_populars_url = base_url + '/TOP-Manga-Webtoon-24.html'
+    search_url = base_url + '/qsearch.json'
     manga_url = base_url + '{0}'
     chapter_url = base_url + '/lecture-en-ligne/{0}{1}.html'
     cover_url = base_url + '/img{0}'
@@ -206,6 +207,34 @@ class Scanmanga(Server):
         Returns manga absolute URL
         """
         return self.manga_url.format(url)
+
+    def get_latest_updates(self):
+        """
+        Returns latest updates
+        """
+        r = self.session_get(self.latest_updates_url)
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        for a_element in soup.select('#content_news .nom_manga'):
+            name = a_element.text.strip()
+            if 'Novel' in name:
+                continue
+
+            results.append(dict(
+                name=name,
+                slug=a_element.get('href').split('/')[-1].replace('.html', ''),
+                url=a_element.get('href').replace(self.base_url, ''),
+            ))
+
+        return results
 
     def get_most_populars(self):
         """
