@@ -44,3 +44,4 @@ komikku/servers/multi/manga_stream.py
 komikku/servers/readmanhwa/__init__.py
 komikku/updater.py
 komikku/utils.py
+komikku/webview.py
