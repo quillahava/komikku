@@ -184,6 +184,9 @@ class Preferences(Adw.Bin):
         else:
             self.settings.nsfw_content = False
 
+        # Update Servers settings subpage
+        self.servers_settings_subpage.populate()
+
     def on_page_changed(self, _deck, _child):
         if self.leaflet.get_visible_child_name() != 'subpages':
             self.viewswitchertitle.set_subtitle('')
@@ -450,6 +453,7 @@ class PreferencesServersSettingsSubpage:
                     main_id=main_id,
                     name=server_data['name'],
                     module=server_data['module'],
+                    is_nsfw=server_data['is_nsfw'],
                     langs=[],
                 )
 
@@ -461,12 +465,13 @@ class PreferencesServersSettingsSubpage:
                 continue
 
             server_class = getattr(server_data['module'], server_data['main_id'].capitalize())
-            has_login = getattr(server_class, 'has_login')
-
             server_settings = settings.get(server_main_id)
-            server_enabled = server_settings is None or server_settings['enabled'] is True
 
-            if len(server_data['langs']) > 1 or has_login:
+            server_allowed = not server_data['is_nsfw'] or (server_data['is_nsfw'] and self.settings.nsfw_content)
+            server_enabled = server_settings is None or server_settings['enabled'] is True
+            server_has_login = getattr(server_class, 'has_login')
+
+            if len(server_data['langs']) > 1 or server_has_login:
                 vbox = Gtk.Box(
                     orientation=Gtk.Orientation.VERTICAL,
                     margin_start=12, margin_top=6, margin_end=12, margin_bottom=6,
@@ -475,7 +480,10 @@ class PreferencesServersSettingsSubpage:
 
                 expander_row = Adw.ExpanderRow()
                 expander_row.set_title(html_escape(server_data['name']))
+                if server_data['is_nsfw']:
+                    expander_row.set_subtitle('18+')
                 expander_row.set_enable_expansion(server_enabled)
+                expander_row.set_sensitive(server_allowed)
                 expander_row.connect('notify::enable-expansion', self.on_server_activated, server_main_id)
                 expander_row.add_row(vbox)
 
@@ -497,7 +505,7 @@ class PreferencesServersSettingsSubpage:
 
                         vbox.append(hbox)
 
-                if has_login:
+                if server_has_login:
                     box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, margin_top=12, margin_bottom=12, spacing=12)
                     vbox.append(box)
 
@@ -566,9 +574,12 @@ class PreferencesServersSettingsSubpage:
             else:
                 action_row = Adw.ActionRow()
                 action_row.set_title(html_escape(server_data['name']))
+                if server_data['is_nsfw']:
+                    action_row.set_subtitle('18+')
+                action_row.set_sensitive(server_allowed)
 
                 switch = Gtk.Switch.new()
-                switch.set_active(server_enabled)
+                switch.set_active(server_enabled and server_allowed)
                 switch.set_valign(Gtk.Align.CENTER)
                 switch.set_halign(Gtk.Align.CENTER)
                 switch.connect('notify::active', self.on_server_activated, server_main_id)

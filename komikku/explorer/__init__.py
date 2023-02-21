@@ -108,9 +108,9 @@ class Explorer(Gtk.Stack):
 
         if data['id'] != 'local':
             title = data['name']
-            if data['is_nsfw']:
-                title += ' (NSFW)'
             subtitle = LANGUAGES[data['lang']]
+            if data['is_nsfw']:
+                subtitle += ' 18+'
         else:
             title = _('Local')
             subtitle = _('Comics stored locally as archives in CBZ/CBR formats')

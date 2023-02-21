@@ -267,9 +267,9 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                             </child>
                             <child>
                               <object class="AdwActionRow">
-                                <property name="title" translatable="yes">NSFW Content</property>
+                                <property name="title" translatable="yes">NSFW Content (18+)</property>
                                 <property name="activatable_widget">nsfw_content_switch</property>
-                                <property name="subtitle" translatable="yes">Whether to enable servers with NSFW only content</property>
+                                <property name="subtitle" translatable="yes">Whether to enable servers with NSFW content</property>
                                 <child>
                                   <object class="GtkSwitch" id="nsfw_content_switch">
                                     <property name="halign">center</property>

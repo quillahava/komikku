@@ -115,13 +115,6 @@ class ExplorerServersPage:
 
         pinned_servers = Settings.get_default().pinned_servers
 
-        servers_ids = [server_data['id'] for server_data in self.servers]
-        for pinned_server in pinned_servers[:]:
-            if pinned_server not in servers_ids:
-                # Pinned server no longer belongs to the allowed servers
-                pinned_servers.remove(pinned_server)
-                Settings.get_default().remove_pinned_server(pinned_server)
-
         if len(pinned_servers) == 0:
             self.pinned_listbox.hide()
             return
