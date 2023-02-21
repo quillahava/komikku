@@ -461,20 +461,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_debug_info(debug_info.generate())
 
         window.set_release_notes("""
-            <ul>
-                <li>[UI] Added ability to go back with &lt;ALT+Left&gt; shortcut</li>
-                <li>[Reader] Added ability to navigate foward with &lt;SPACE&gt; key</li>
-                <li>[Servers] Guya.moe: Update</li>
-                <li>[Servers] Manga/in/ua: Update</li>
-                <li>[Servers] MangaFreak: Update</li>
-                <li>[Servers] MangaHub: Update</li>
-                <li>[Servers] MangaLib: Update</li>
-                <li>[Servers] Mangas Origines: Update</li>
-                <li>[Servers] Mangas.in: Update</li>
-                <li>[Servers] Read Manga: Update</li>
-                <li>[L10n] Updated French translation</li>
-            </ul>
-            <p>Beware, all servers that contain explicit sexual content or nudity, such as hentai, ecchi and yaoi/yuri are now tagged NSFW.</p>
+            <p>Bugfix release</p>
+            <p>Fixed a bug that caused the loss of some pinned servers in the explorer (it's certainly too late for those who have updated to version 1.12.0).</p>
+            <p>BEWARE, since 1.12.0, all servers that contain explicit sexual content or nudity, such as hentai, mature, ecchi or yaoi/yuri are now tagged NSFW (18+).</p>
         """)
 
         window.add_link(_('Join Chat'), 'https://matrix.to/#/#komikku-gnome:matrix.org')

@@ -91,6 +91,13 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.12.1" date="2023-02-21">
+            <description>
+                <p>Bugfix release</p>
+                <p>Fixed a bug that caused the loss of some pinned servers in the explorer (it's certainly too late for those who have updated to version 1.12.0).</p>
+                <p>BEWARE, since 1.12.0, all servers that contain explicit sexual content or nudity, such as hentai, mature, ecchi or yaoi/yuri are now tagged NSFW (18+).</p>
+            </description>
+        </release>
         <release version="1.12.0" date="2023-02-18">
             <description>
                 <ul>
