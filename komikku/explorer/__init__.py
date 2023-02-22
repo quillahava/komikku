@@ -109,8 +109,6 @@ class Explorer(Gtk.Stack):
         if data['id'] != 'local':
             title = data['name']
             subtitle = LANGUAGES[data['lang']]
-            if data['is_nsfw']:
-                subtitle += ' 18+'
         else:
             title = _('Local')
             subtitle = _('Comics stored locally as archives in CBZ/CBR formats')
@@ -120,12 +118,22 @@ class Explorer(Gtk.Stack):
         label.set_text(title)
         vbox.append(label)
 
+        subtitle_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+
         label = Gtk.Label(xalign=0)
         label.set_wrap(True)
         label.set_text(subtitle)
         label.add_css_class('subtitle')
-        vbox.append(label)
+        subtitle_box.append(label)
 
+        if data['is_nsfw']:
+            label = Gtk.Label(xalign=0)
+            label.set_markup('<b>' + _('18+') + '</b>')
+            label.add_css_class('subtitle')
+            label.add_css_class('accent')
+            subtitle_box.append(label)
+
+        vbox.append(subtitle_box)
         box.append(vbox)
 
         if self.search_page.global_search_mode:

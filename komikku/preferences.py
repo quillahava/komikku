@@ -481,7 +481,7 @@ class PreferencesServersSettingsSubpage:
                 expander_row = Adw.ExpanderRow()
                 expander_row.set_title(html_escape(server_data['name']))
                 if server_data['is_nsfw']:
-                    expander_row.set_subtitle('18+')
+                    expander_row.set_subtitle(_('18+'))
                 expander_row.set_enable_expansion(server_enabled)
                 expander_row.set_sensitive(server_allowed)
                 expander_row.connect('notify::enable-expansion', self.on_server_activated, server_main_id)
@@ -575,7 +575,7 @@ class PreferencesServersSettingsSubpage:
                 action_row = Adw.ActionRow()
                 action_row.set_title(html_escape(server_data['name']))
                 if server_data['is_nsfw']:
-                    action_row.set_subtitle('18+')
+                    action_row.set_subtitle(_('18+'))
                 action_row.set_sensitive(server_allowed)
 
                 switch = Gtk.Switch.new()
