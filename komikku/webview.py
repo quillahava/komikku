@@ -47,10 +47,10 @@ class Webview(Gtk.ScrolledWindow):
         self.get_hscrollbar().hide()
         self.get_vscrollbar().hide()
 
-        self.webview = WebKit2.WebView()
-        self.set_child(self.webview)
+        self.webkit_webview = WebKit2.WebView()
+        self.set_child(self.webkit_webview)
 
-        self.web_context = self.webview.get_context()
+        self.web_context = self.webkit_webview.get_context()
         self.web_context.set_cache_model(WebKit2.CacheModel.DOCUMENT_VIEWER)
         self.web_context.set_tls_errors_policy(WebKit2.TLSErrorsPolicy.IGNORE)
         self.web_context.get_cookie_manager().set_persistent_storage(
@@ -65,18 +65,18 @@ class Webview(Gtk.ScrolledWindow):
         self.disconnect_all_signals()
 
         if blank:
-            GLib.idle_add(self.webview.load_uri, 'about:blank')
+            GLib.idle_add(self.webkit_webview.load_uri, 'about:blank')
 
         self.lock = False
         logger.debug('Page closed')
 
     def connect_signal(self, *args):
-        handler_id = self.webview.connect(*args)
+        handler_id = self.webkit_webview.connect(*args)
         self.__handlers_ids.append(handler_id)
 
     def disconnect_all_signals(self):
         for handler_id in self.__handlers_ids:
-            self.webview.disconnect(handler_id)
+            self.webkit_webview.disconnect(handler_id)
 
         self.__handlers_ids = []
 
@@ -93,15 +93,16 @@ class Webview(Gtk.ScrolledWindow):
         if self.lock:
             return False
 
-        self.webview.get_settings().set_enable_developer_extras(DEBUG)
-        self.webview.get_settings().set_user_agent(user_agent or USER_AGENT)
+        self.webkit_webview.get_settings().set_enable_developer_extras(DEBUG)
+        self.webkit_webview.get_settings().set_user_agent(user_agent or USER_AGENT)
+        self.webkit_webview.get_settings().set_auto_load_images(True)
 
         self.lock = True
 
         logger.debug('Load page %s', uri)
 
         def do_load():
-            self.webview.load_uri(uri)
+            self.webkit_webview.load_uri(uri)
 
         GLib.idle_add(do_load)
 
@@ -176,9 +177,16 @@ def bypass_cf(func):
             webview.connect_signal('load-failed', on_load_failed)
             webview.connect_signal('notify::title', on_title_changed)
 
-        def on_load_changed(_webview, event):
+        def on_load_changed(_webkit_webview, event):
             nonlocal cf_reload_count
             nonlocal error
+
+            if event != WebKit2.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
+                # Challenge has been passed
+                # Disable images auto-load
+                webview.webkit_webview.get_settings().set_auto_load_images(False)
+                # Notify user that is must wait (page load finish)
+                webview.window.show_notification(_('Success, challenge solved, please wait…'))
 
             if event != WebKit2.LoadEvent.FINISHED:
                 return
@@ -198,31 +206,31 @@ def bypass_cf(func):
                     }
                     else if (document.querySelector('input.pow-button')) {
                         // button
-                        document.title = 'captcha1 ' + new Date().getSeconds();
+                        document.title = 'captcha 1';
                     }
                     else if (document.querySelector('iframe[id^="cf-chl-widget"]')) {
                         // checkbox in an iframe
-                        document.title = 'captcha2 ' + new Date().getSeconds();
+                        document.title = 'captcha 2';
                     }
                 }, 100);
             """
-            webview.webview.run_javascript(js, None, None)
+            webview.webkit_webview.run_javascript(js, None, None)
 
-        def on_load_failed(_webview, _event, uri, _gerror):
+        def on_load_failed(_webkit_webview, _event, uri, _gerror):
             nonlocal error
 
             error = f'CF challenge bypass failure: {uri}'
 
             webview.close()
 
-        def on_title_changed(_webview, title):
-            if webview.webview.props.title.startswith('captcha'):
-                logger.debug(f'{server.id}: Captcha `{webview.webview.props.title}` detected')
+        def on_title_changed(_webkit_webview, title):
+            if webview.webkit_webview.props.title.startswith('captcha'):
+                logger.debug(f'{server.id}: Captcha `{webview.webkit_webview.props.title}` detected')
                 # Show webview, user must complete a CAPTCHA
                 webview.title_label.set_text(_('Please complete CAPTCHA'))
                 webview.show()
 
-            if webview.webview.props.title != 'ready':
+            if webview.webkit_webview.props.title != 'ready':
                 return
 
             logger.debug(f'{server.id}: Page loaded, getting cookies...')
@@ -257,7 +265,7 @@ def bypass_cf(func):
             done = True
             webview.close()
 
-        def on_webview_exited(_webview):
+        def on_webview_exited(_webkit_webview):
             nonlocal error
 
             error = 'CF challenge bypass aborted'
@@ -295,11 +303,11 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
         if DEBUG:
             webview.show()
 
-    def on_get_html_finish(_webview, result, user_data=None):
+    def on_get_html_finish(_webkit_webview, result, user_data=None):
         nonlocal error
         nonlocal html
 
-        js_result = webview.webview.run_javascript_finish(result)
+        js_result = webview.webkit_webview.run_javascript_finish(result)
         if js_result:
             js_value = js_result.get_js_value()
             if js_value:
@@ -310,30 +318,30 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
 
         webview.close()
 
-    def on_load_changed(_webview, event):
+    def on_load_changed(_webkit_webview, event):
         if event != WebKit2.LoadEvent.FINISHED:
             return
 
         if wait_js_code:
             # Wait that everything needed has been loaded
-            webview.webview.run_javascript(wait_js_code, None, None, None)
+            webview.webkit_webview.run_javascript(wait_js_code, None, None, None)
         else:
-            webview.webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
+            webview.webkit_webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
 
-    def on_load_failed(_webview, _event, _uri, gerror):
+    def on_load_failed(_webkit_webview, _event, _uri, gerror):
         nonlocal error
 
         error = f'Failed to load chapter page: {url}'
 
         webview.close()
 
-    def on_title_changed(_webview, _title):
+    def on_title_changed(_webkit_webview, _title):
         nonlocal error
 
-        if webview.webview.props.title == 'ready':
+        if webview.webkit_webview.props.title == 'ready':
             # Everything we need has been loaded, we can retrieve page HTML
-            webview.webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
-        elif webview.webview.props.title == 'abort':
+            webview.webkit_webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
+        elif webview.webkit_webview.props.title == 'abort':
             error = f'Failed to get chapter page html: {url}'
             webview.close()
 
