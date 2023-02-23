@@ -1,7 +1,8 @@
-# <a href="https://valos.gitlab.io/Komikku/"><img height="88" src="data/icons/info.febvre.Komikku.svg" />Komikku</a>
+# <a href="https://apps.gnome.org/app/info.febvre.Komikku/"><img height="88" src="data/icons/info.febvre.Komikku.svg" />Komikku</a>
 
-[![pipeline status](https://gitlab.com/valos/Komikku/badges/main/pipeline.svg)](https://gitlab.com/valos/Komikku/-/pipelines)
-[![Please do not theme this app](https://stopthemingmy.app/badge.svg)](https://stopthemingmy.app)
+[![](https://circle.gnome.org/assets/button/badge.svg)](https://apps.gnome.org/app/info.febvre.Komikku/)
+[![](https://stopthemingmy.app/badge.svg)](https://stopthemingmy.app)
+[![Pipeline status](https://gitlab.com/valos/Komikku/badges/main/pipeline.svg)](https://gitlab.com/valos/Komikku/-/pipelines)
 [![Donate using Liberapay](https://img.shields.io/liberapay/receives/valos.svg?logo=liberapay)](https://en.liberapay.com/valos/donate)
 
 __Komikku__ is a manga reader for [GNOME](https://www.gnome.org). It focuses on providing a clean, intuitive and adaptive interface.
