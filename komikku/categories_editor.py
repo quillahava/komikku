@@ -77,8 +77,9 @@ class CategoriesEditor(Gtk.ScrolledWindow):
         self.window.confirm(
             _('Delete?'),
             _('Are you sure you want to delete\n"{0}" category?').format(row.category.label),
+            _('Delete'),
             confirm_callback,
-            response_appearance=Adw.ResponseAppearance.DESTRUCTIVE
+            confirm_appearance=Adw.ResponseAppearance.DESTRUCTIVE
         )
 
     def on_category_edit_mode_changed(self, row, active):

@@ -379,7 +379,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.library.show()
         GLib.idle_add(self.library.populate)
 
-    def confirm(self, title, message, confirm_callback, cancel_callback=None, response_appearance=None):
+    def confirm(self, title, message, confirm_label, confirm_callback, confirm_appearance=None, cancel_callback=None):
         def on_response(dialog, response_id):
             if response_id == 'yes':
                 confirm_callback()
@@ -392,12 +392,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
         dialog.set_body(message)
 
         dialog.add_response('cancel', _('Cancel'))
-        dialog.add_response('yes', _('Yes'))
+        dialog.add_response('yes', confirm_label)
 
         dialog.set_close_response('cancel')
         dialog.set_default_response('cancel')
-        if response_appearance is not None:
-            dialog.set_response_appearance('yes', response_appearance)
+        if confirm_appearance is not None:
+            dialog.set_response_appearance('yes', confirm_appearance)
 
         dialog.connect('response', on_response)
         dialog.present()
@@ -661,6 +661,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
                 self.confirm(
                     _('Quit?'),
                     '\n'.join(message),
+                    _('Quit'),
                     confirm_callback
                 )
             else:

@@ -121,6 +121,7 @@ class Preferences(Adw.Bin):
             self.window.confirm(
                 _('Disable animations?'),
                 _('Are you sure you want to disable animations?\n\nThe gesture navigation in the reader will not work properly anymore.'),
+                _('Disable'),
                 on_confirm,
                 cancel_callback=on_cancel
             )
