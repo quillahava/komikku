@@ -533,14 +533,14 @@ class Pager(Adw.Bin, BasePager):
             hadj = page.scrolledwindow.get_hadjustment()
 
             if keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left):
-                if hadj.get_value() == 0 and self.zoom['active'] is False:
+                if hadj.get_value() == 0 and self.interactive:
                     self.scroll_to_direction('left')
                     return Gdk.EVENT_STOP
 
                 page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_LEFT, False)
                 return Gdk.EVENT_STOP
 
-            if hadj.get_value() + hadj.get_page_size() == hadj.get_upper() and self.zoom['active'] is False:
+            if hadj.get_value() + hadj.get_page_size() == hadj.get_upper() and self.interactive:
                 self.scroll_to_direction('right')
                 return Gdk.EVENT_STOP
 
@@ -611,16 +611,19 @@ class Pager(Adw.Bin, BasePager):
         GLib.idle_add(self.update, page, index)
         GLib.timeout_add(100, self.save_progress, page)
 
-    def on_page_edge_overshotted(self, _page, position):
+    def on_page_edge_overshotted(self, _scrolledwindow, position):
         if not self.interactive:
             return
 
         # When page is scrollable, scroll events are consumed, so we must manage page changes in place of Adw.Carousel
-        if self.reader.reading_mode == 'right-to-left':
-            self.scroll_to_direction('left' if position in (Gtk.PositionType.LEFT, Gtk.PositionType.BOTTOM) else 'right')
-
-        elif self.reader.reading_mode in ('left-to-right', 'vertical'):
-            self.scroll_to_direction('left' if position in (Gtk.PositionType.LEFT, Gtk.PositionType.TOP) else 'right')
+        if self.reader.reading_mode in ('right-to-left', 'left-to-right'):
+            # RTL/LTR
+            if position in (Gtk.PositionType.LEFT, Gtk.PositionType.RIGHT):
+                self.scroll_to_direction('left' if position == Gtk.PositionType.LEFT else 'right')
+        else:
+            # Vertical
+            if position in (Gtk.PositionType.TOP, Gtk.PositionType.BOTTOM):
+                self.scroll_to_direction('left' if position == Gtk.PositionType.TOP else 'right')
 
     def on_page_rendered(self, page, retry):
         if page.status == 'disposed':
@@ -640,30 +643,42 @@ class Pager(Adw.Bin, BasePager):
             return Gdk.EVENT_STOP
 
         page = self.current_page
-        if page and page.scrollable:
+        if page.scrollable:
             # Page is scrollable (horizontally or vertically)
+
             # Scroll events are consumed, so we must manage page changes in place of Adw.Carousel
             # In the scroll axis, page changes will be handled via 'edge-overshot' page event
 
             if page.hscrollable and not page.vscrollable and dy:
-                # Use vertical scroll event to scroll horizontally in page
                 if self.reader.reading_mode == 'right-to-left':
+                    # Use vertical scroll event to scroll horizontally in page
                     page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_LEFT if dy > 0 else Gtk.ScrollType.STEP_RIGHT, False)
+                    return Gdk.EVENT_STOP
 
-                elif self.reader.reading_mode in ('left-to-right', 'vertical'):
+                elif self.reader.reading_mode == 'left-to-right':
+                    # Use vertical scroll event to scroll horizontally in page
                     page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_RIGHT if dy > 0 else Gtk.ScrollType.STEP_LEFT, False)
+                    return Gdk.EVENT_STOP
+
+                elif self.reader.reading_mode == 'vertical' and dx == 0:
+                    # Allow vertical navigation when page is horizontally scrollable
+                    self.scroll_to_direction('left' if dy < 0 else 'right')
+                    return Gdk.EVENT_STOP
 
             elif page.vscrollable and not page.hscrollable and dx:
-                # Scroll events are consumed, so we must manage page changes in place of Adw.Carousel
-                if self.reader.reading_mode in ('right-to-left', 'left-to-right'):
+                if self.reader.reading_mode in ('right-to-left', 'left-to-right') and dy == 0:
+                    # Allow horizontal navigation when page is vertically scrollable
                     self.scroll_to_direction('left' if dx < 0 else 'right')
+                    return Gdk.EVENT_STOP
 
-        elif self.reader.reading_mode == 'right-to-left' and dy:
+        else:
             # Page is not scrollable
-            # Navigation must be inverted in RTL reading mode
-            # Do page change in the place of Adw.carousel
-            self.scroll_to_direction('left' if dy > 0 else 'right')
-            return Gdk.EVENT_STOP
+
+            if self.reader.reading_mode == 'right-to-left' and dy and dx == 0:
+                # Navigation must be inverted in RTL reading mode
+                # Do page change in the place of Adw.carousel
+                self.scroll_to_direction('left' if dy > 0 else 'right')
+                return Gdk.EVENT_STOP
 
         return Gdk.EVENT_PROPAGATE
 
@@ -672,13 +687,13 @@ class Pager(Adw.Bin, BasePager):
 
         if x < self.reader.size.width / 3:
             # 1st third of the page
-            if self.zoom['active']:
+            if not self.interactive:
                 return False
 
             self.scroll_to_direction('left')
         elif x > 2 * self.reader.size.width / 3:
             # Last third of the page
-            if self.zoom['active']:
+            if not self.interactive:
                 return False
 
             self.scroll_to_direction('right')
