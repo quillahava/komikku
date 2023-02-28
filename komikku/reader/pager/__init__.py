@@ -338,18 +338,8 @@ class Pager(Adw.Bin, BasePager):
 
             self.carousel.get_nth_page(0).dispose()
 
-    def adjust_page_position(self, page, direction=None):
+    def adjust_page_placement(self, page):
         # Only if page is scrollable
-        #
-        # 1. When rendering a page (no direction):
-        #   - In RTL reading mode: picture must be positioned at the top/right
-        #   - Otherwise positioned at the top/left
-        # 2. During navigation:
-        #   - In RTL/LTR reading modes: picture must be positioned at the top/right when navigating to the left
-        #   - In Vertical reading mode: picture must be positioned at the bottom when navigating upwards
-        #   - In Vertical reading mode: picture must be centered horizontally
-        #   - Otherwise positioned at the top/left
-
         if not page.scrollable:
             return
 
@@ -358,10 +348,11 @@ class Pager(Adw.Bin, BasePager):
         else:
             adj = page.scrolledwindow.get_hadjustment()
 
-        if (direction is None and self.reader.reading_mode == 'right-to-left') or direction == 'left':
-            adj.set_value(adj.get_upper() - adj.get_page_size())
-        else:
+        pages = list(self.pages)
+        if pages.index(page) > pages.index(self.current_page):
             adj.set_value(0)
+        else:
+            adj.set_value(adj.get_upper() - adj.get_page_size())
 
         if self.reader.reading_mode == 'vertical':
             # Center page horizontally
@@ -596,8 +587,6 @@ class Pager(Adw.Bin, BasePager):
             return
 
         if index != 1:
-            self.adjust_page_position(page, 'left' if index == 0 else 'right')
-
             if self.autohide_controls:
                 # Hide controls
                 self.reader.toggle_controls(False)
@@ -630,7 +619,7 @@ class Pager(Adw.Bin, BasePager):
             return
 
         if not retry:
-            GLib.idle_add(self.adjust_page_position, page)
+            GLib.idle_add(self.adjust_page_placement, page)
             return
 
         self.on_page_changed(None, self.carousel.get_position())
@@ -711,7 +700,7 @@ class Pager(Adw.Bin, BasePager):
         self.carousel.reorder(right_page, 0)
 
         for page in self.pages:
-            self.adjust_page_position(page)
+            self.adjust_page_placement(page)
 
     def scroll_to_direction(self, direction, autohide_controls=True):
         position = self.carousel.get_position()
