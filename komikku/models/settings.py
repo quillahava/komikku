@@ -422,6 +422,14 @@ class Settings(Gio.Settings):
         self.set_boolean('update-at-startup', state)
 
     @property
+    def window_maximized_state(self):
+        return self.get_boolean('window-maximized-state')
+
+    @window_maximized_state.setter
+    def window_maximized_state(self, state):
+        self.set_boolean('window-maximized-state', state)
+
+    @property
     def window_size(self):
         """Return the window's size"""
         return tuple(self.get_value('window-size'))

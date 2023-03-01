@@ -325,8 +325,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.download_manager.add_actions()
 
     def assemble_window(self):
-        # Set window size: default or saved size
+        # Restore window previous state (width/height and maximized) or use default
         self.set_default_size(*Settings.get_default().window_size)
+        if Settings.get_default().window_maximized_state:
+            self.maximize()
+
         self.set_size_request(360, -1)
         self.mobile_width = self.get_width() <= MOBILE_WIDTH_BREAKPOINT
 
@@ -672,7 +675,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
         do_quit()
 
     def save_window_size(self):
-        if not self.is_maximized() and not self.is_fullscreen():
+        if self.is_fullscreen():
+            return
+
+        Settings.get_default().window_maximized_state = self.is_maximized()
+
+        if not self.is_maximized():
             size = self.get_default_size()
             Settings.get_default().window_size = [size.width, size.height]
 

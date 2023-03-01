@@ -29,6 +29,11 @@
             <summary>Window Size</summary>
             <description>Remember the window size</description>
         </key>
+        <key type="b" name="window-maximized-state">
+            <default>false</default>
+            <summary>Window Maximized State</summary>
+            <description>Maximized state of the window</description>
+        </key>
 
         <!-- Downloader -->
         <key type="b" name="downloader-state">
