@@ -189,6 +189,15 @@ class Settings(Gio.Settings):
             self.set_enum('library-display-mode', 1)
 
     @property
+    def library_selected_filters(self):
+        return set(self.get_value('library-selected-filters'))
+
+    @library_selected_filters.setter
+    def library_selected_filters(self, filters):
+        filters = GLib.Variant('as', filters)
+        self.set_value('library-selected-filters', filters)
+
+    @property
     def library_servers_logo(self):
         return self.get_boolean('library-servers-logo')
 

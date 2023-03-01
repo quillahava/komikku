@@ -31,7 +31,7 @@ from komikku.utils import create_paintable_from_resource
 
 class Library:
     page = None
-    search_menu_filters = {}
+    selected_filters = []
     selection_mode = False
     selection_mode_range = False
     selection_mode_last_thumbnail_index = None
@@ -43,6 +43,8 @@ class Library:
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/library_search.xml')
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/library_selection_mode.xml')
 
+        self.selected_filters = Settings.get_default().library_selected_filters
+
         self.title_label = self.window.library_title_label
         self.stack = self.window.library_stack
 
@@ -51,6 +53,8 @@ class Library:
         self.searchbar_separator = self.window.library_searchbar_separator
         self.search_menu_button = self.window.library_search_menu_button
         self.search_menu_button.set_menu_model(self.builder.get_object('menu-library-search'))
+        if self.selected_filters:
+            self.search_menu_button.add_css_class('accent')
         self.search_entry = self.window.library_searchentry
         self.search_entry.connect('activate', self.on_search_entry_activated)
         self.search_entry.connect('changed', self.search)
@@ -137,11 +141,11 @@ class Library:
                 ret = ret or term in [genre.lower() for genre in manga.genres]
 
                 # Optional menu filters
-                if ret and self.search_menu_filters.get('downloaded'):
+                if ret and 'downloaded' in self.selected_filters:
                     ret = manga.nb_downloaded_chapters > 0
-                if ret and self.search_menu_filters.get('unread'):
+                if ret and 'unread' in self.selected_filters:
                     ret = manga.nb_unread_chapters > 0
-                if ret and self.search_menu_filters.get('recents'):
+                if ret and 'recents' in self.selected_filters:
                     ret = manga.nb_recent_chapters > 0
 
             if not ret and thumbnail._selected:
@@ -193,15 +197,21 @@ class Library:
         self.window.application.add_action(history_action)
 
         # Search menu actions
-        search_downloaded_action = Gio.SimpleAction.new_stateful('library.search.downloaded', None, GLib.Variant('b', False))
+        search_downloaded_action = Gio.SimpleAction.new_stateful(
+            'library.search.downloaded', None, GLib.Variant('b', 'downloaded' in self.selected_filters)
+        )
         search_downloaded_action.connect('change-state', self.on_search_menu_action_changed)
         self.window.application.add_action(search_downloaded_action)
 
-        search_unread_action = Gio.SimpleAction.new_stateful('library.search.unread', None, GLib.Variant('b', False))
+        search_unread_action = Gio.SimpleAction.new_stateful(
+            'library.search.unread', None, GLib.Variant('b', 'unread' in self.selected_filters)
+        )
         search_unread_action.connect('change-state', self.on_search_menu_action_changed)
         self.window.application.add_action(search_unread_action)
 
-        search_recents_action = Gio.SimpleAction.new_stateful('library.search.recents', None, GLib.Variant('b', False))
+        search_recents_action = Gio.SimpleAction.new_stateful(
+            'library.search.recents', None, GLib.Variant('b', 'recents' in self.selected_filters)
+        )
         search_recents_action.connect('change-state', self.on_search_menu_action_changed)
         self.window.application.add_action(search_recents_action)
 
@@ -480,9 +490,15 @@ class Library:
     def on_search_menu_action_changed(self, action, variant):
         value = variant.get_boolean()
         action.set_state(GLib.Variant('b', value))
+        name = action.props.name.split('.')[-1]
 
-        self.search_menu_filters[action.props.name.split('.')[-1]] = value
-        if sum(self.search_menu_filters.values()):
+        if value:
+            self.selected_filters.add(name)
+        else:
+            self.selected_filters.remove(name)
+        Settings.get_default().library_selected_filters = self.selected_filters
+
+        if self.selected_filters:
             self.search_menu_button.add_css_class('accent')
         else:
             self.search_menu_button.remove_css_class('accent')
