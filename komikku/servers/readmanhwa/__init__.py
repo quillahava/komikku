@@ -24,7 +24,7 @@ class Readmanhwa(Server):
     id = 'readmanhwa'
     name = SERVER_NAME
     lang = 'en'
-    is_nsfw = True
+    is_nsfw_only = True
     long_strip_genres = ['Webtoons', ]
 
     base_url = 'https://www.readmanhwa.com'

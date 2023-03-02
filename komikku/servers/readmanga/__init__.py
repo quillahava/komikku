@@ -247,7 +247,7 @@ class Readmanga(Server):
 class Allhentai(Readmanga):
     id = 'allhentai:readmanga'
     name = 'AllHentai'
-    is_nsfw = True
+    is_nsfw_only = True
 
     base_url = 'http://2023.allhen.online'
     search_url = base_url + '/search/advanced'

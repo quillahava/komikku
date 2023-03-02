@@ -83,6 +83,7 @@ class Server(ABC):
     has_login = False
     headers = None
     is_nsfw = False
+    is_nsfw_only = False
     long_strip_genres = []
     manga_title_css_selector = None  # Used to extract manga title in a manga URL
     true_search = True  # If False, hide search in Explorer search page (XKCD, DBM, pepper&carotte…)

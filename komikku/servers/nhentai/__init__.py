@@ -20,7 +20,7 @@ class Nhentai(Server):
     name = SERVER_NAME
     lang = 'en'
     lang_code = 'english'
-    is_nsfw = True
+    is_nsfw_only = True
     status = 'disabled'  # Use Cloudflare with version 2 challenge
 
     base_url = 'https://nhentai.net'

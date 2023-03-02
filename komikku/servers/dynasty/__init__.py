@@ -21,6 +21,7 @@ class Dynasty(Server):
     lang = 'en'
     id = 'dynasty'
     name = 'Dynasty Reader'
+    is_nsfw = True
     long_strip_genres = ['Long strip', ]
 
     base_url = 'https://dynasty-scans.com'

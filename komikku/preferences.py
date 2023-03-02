@@ -39,6 +39,7 @@ class Preferences(Adw.Bin):
     update_at_startup_switch = Gtk.Template.Child('update_at_startup_switch')
     new_chapters_auto_download_switch = Gtk.Template.Child('new_chapters_auto_download_switch')
     nsfw_content_switch = Gtk.Template.Child('nsfw_content_switch')
+    nsfw_only_content_switch = Gtk.Template.Child('nsfw_only_content_switch')
     servers_languages_actionrow = Gtk.Template.Child('servers_languages_actionrow')
     servers_languages_subpage_group = Gtk.Template.Child('servers_languages_subpage_group')
     servers_settings_actionrow = Gtk.Template.Child('servers_settings_actionrow')
@@ -188,6 +189,15 @@ class Preferences(Adw.Bin):
         # Update Servers settings subpage
         self.servers_settings_subpage.populate()
 
+    def on_nsfw_only_content_changed(self, switch_button, _gparam):
+        if switch_button.get_active():
+            self.settings.nsfw_only_content = True
+        else:
+            self.settings.nsfw_only_content = False
+
+        # Update Servers settings subpage
+        self.servers_settings_subpage.populate()
+
     def on_page_changed(self, _deck, _child):
         if self.leaflet.get_visible_child_name() != 'subpages':
             self.viewswitchertitle.set_subtitle('')
@@ -301,6 +311,10 @@ class Preferences(Adw.Bin):
         # NSFW content
         self.nsfw_content_switch.set_active(self.settings.nsfw_content)
         self.nsfw_content_switch.connect('notify::active', self.on_nsfw_content_changed)
+
+        # NSFW only content
+        self.nsfw_only_content_switch.set_active(self.settings.nsfw_only_content)
+        self.nsfw_only_content_switch.connect('notify::active', self.on_nsfw_only_content_changed)
 
         #
         # Reader
@@ -455,6 +469,7 @@ class PreferencesServersSettingsSubpage:
                     name=server_data['name'],
                     module=server_data['module'],
                     is_nsfw=server_data['is_nsfw'],
+                    is_nsfw_only=server_data['is_nsfw_only'],
                     langs=[],
                 )
 
@@ -469,6 +484,7 @@ class PreferencesServersSettingsSubpage:
             server_settings = settings.get(server_main_id)
 
             server_allowed = not server_data['is_nsfw'] or (server_data['is_nsfw'] and self.settings.nsfw_content)
+            server_allowed &= not server_data['is_nsfw_only'] or (server_data['is_nsfw_only'] and self.settings.nsfw_only_content)
             server_enabled = server_settings is None or server_settings['enabled'] is True
             server_has_login = getattr(server_class, 'has_login')
 
@@ -481,7 +497,7 @@ class PreferencesServersSettingsSubpage:
 
                 expander_row = Adw.ExpanderRow()
                 expander_row.set_title(html_escape(server_data['name']))
-                if server_data['is_nsfw']:
+                if server_data['is_nsfw'] or server_data['is_nsfw_only']:
                     expander_row.set_subtitle(_('18+'))
                 expander_row.set_enable_expansion(server_enabled)
                 expander_row.set_sensitive(server_allowed)
@@ -575,7 +591,7 @@ class PreferencesServersSettingsSubpage:
             else:
                 action_row = Adw.ActionRow()
                 action_row.set_title(html_escape(server_data['name']))
-                if server_data['is_nsfw']:
+                if server_data['is_nsfw'] or server_data['is_nsfw_only']:
                     action_row.set_subtitle(_('18+'))
                 action_row.set_sensitive(server_allowed)
 

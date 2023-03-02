@@ -238,7 +238,7 @@ class Hentailib(Mangalib):
     id = 'hentailib:mangalib'
     name = 'HentaiLib'
     lang = 'ru'
-    is_nsfw = True
+    is_nsfw_only = True
     status = 'disabled'
 
     base_url = 'https://hentailib.me'

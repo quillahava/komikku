@@ -122,6 +122,11 @@
         <key type="b" name="nsfw-content">
             <default>false</default>
             <summary>NSFW Content</summary>
+            <description>Whether to enable servers with NSFW content</description>
+        </key>
+        <key type="b" name="nsfw-only-content">
+            <default>false</default>
+            <summary>NSFW Only Content</summary>
             <description>Whether to enable servers with NSFW only content</description>
         </key>
 
