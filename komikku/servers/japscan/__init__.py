@@ -24,7 +24,7 @@ class Japscan(Server):
 
     has_cf = True
 
-    base_url = 'https://www.japscan.me'
+    base_url = 'https://www.japscan.lol'
     search_url = base_url + '/manga/'
     api_search_url = base_url + '/live-search/'
     manga_url = base_url + '/manga/{0}/'
