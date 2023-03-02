@@ -9,8 +9,9 @@ class Mangaowl(Madara):
     id = 'mangaowl'
     name = 'Mangaowl'
     lang = 'en'
+    is_nsfw = True
 
-    series_name = 'taekook'  # This value changes regularly!
+    series_name = 'taekookieee'  # This value changes regularly!
 
     base_url = 'https://mangaowl.io'
-    chapters_url = base_url + '/taekook/{0}/ajax/chapters/'
+    chapters_url = base_url + '/taekookieee/{0}/ajax/chapters/'
