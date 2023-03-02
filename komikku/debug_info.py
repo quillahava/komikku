@@ -84,6 +84,8 @@ class DebugInfo:
             info['renderer'] = renderer
 
         info['animations'] = Gtk.Settings.get_default().get_property('gtk-enable-animations')
+        info['theme'] = Gtk.Settings.get_default().get_property('gtk-theme-name')
+        info['icon-theme'] = Gtk.Settings.get_default().get_property('gtk-icon-theme-name')
 
         gsk_renderer.unrealize()
         surface.destroy()
@@ -149,6 +151,8 @@ class DebugInfo:
         info += f"- GDK backend: {gtk_info['backend']}\n"
         info += f"- GSK renderer: {gtk_info['renderer']}\n"
         info += f"- Animations: {gtk_info['animations']}\n"
+        info += f"- Theme: {gtk_info['theme']}\n"
+        info += f"- Icon theme: {gtk_info['icon-theme']}\n"
         info += '\n'
 
         info += 'Python:\n'
