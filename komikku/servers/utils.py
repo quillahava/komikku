@@ -122,6 +122,8 @@ def get_allowed_servers_list(settings):
 
         if settings.nsfw_content is False and server_data['is_nsfw']:
             continue
+        if settings.nsfw_only_content is False and server_data['is_nsfw_only']:
+            continue
 
         servers.append(server_data)
 
@@ -245,6 +247,7 @@ def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
                     lang=obj.lang,
                     has_login=obj.has_login,
                     is_nsfw=obj.is_nsfw,
+                    is_nsfw_only=obj.is_nsfw_only,
                     class_name=get_server_class_name_by_id(obj.id),
                     logo_path=logo_path if os.path.exists(logo_path) else None,
                     module=module,
