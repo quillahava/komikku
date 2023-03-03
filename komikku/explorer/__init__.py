@@ -228,12 +228,12 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.hide()
+        self.window.left_extra_button_stack.set_visible(False)
 
         self.window.right_button_stack.set_visible_child_name('explorer.servers')
-        self.window.right_button_stack.show()
+        self.window.right_button_stack.set_visible(True)
 
-        self.window.menu_button.hide()
+        self.window.menu_button.set_visible(False)
 
         self.window.show_page('explorer', transition=transition)
 
@@ -256,9 +256,9 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
         if name == 'servers' or (name == 'search' and not self.search_page.global_search_mode and self.server.id != 'local'):
             self.window.right_button_stack.set_visible_child_name('explorer.' + name)
-            self.window.right_button_stack.show()
+            self.window.right_button_stack.set_visible(True)
         else:
             # `Search` (in global mode), Search when server is local and `Card` pages doesn't have a right button in headerbar
-            self.window.right_button_stack.hide()
+            self.window.right_button_stack.set_visible(False)
 
         self.page = name

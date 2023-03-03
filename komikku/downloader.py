@@ -334,8 +334,8 @@ class DownloadManager(Gtk.Box):
     def enter_selection_mode(self):
         self.window.left_button.set_label(_('Cancel'))
         self.window.left_button.set_tooltip_text(_('Cancel'))
-        self.window.right_button_stack.hide()
-        self.window.menu_button.hide()
+        self.window.right_button_stack.set_visible(False)
+        self.window.menu_button.set_visible(False)
 
         self.selection_mode = True
 
@@ -345,8 +345,8 @@ class DownloadManager(Gtk.Box):
     def leave_selection_mode(self):
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.right_button_stack.show()
-        self.window.menu_button.show()
+        self.window.right_button_stack.set_visible(True)
+        self.window.menu_button.set_visible(True)
 
         self.selection_mode = False
 
@@ -471,9 +471,9 @@ class DownloadManager(Gtk.Box):
         number = len(self.listbox.get_selected_rows())
         if number:
             self.subtitle_label.set_label(n_('{0} selected', '{0} selected', number).format(number))
-            self.subtitle_label.show()
+            self.subtitle_label.set_visible(True)
         else:
-            self.subtitle_label.hide()
+            self.subtitle_label.set_visible(False)
 
     @if_network_available
     def on_start_stop_button_clicked(self, _button):
@@ -524,7 +524,7 @@ class DownloadManager(Gtk.Box):
 
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.hide()
+        self.window.left_extra_button_stack.set_visible(False)
 
         self.window.right_button_stack.set_visible_child_name('download_manager')
 
@@ -539,19 +539,19 @@ class DownloadManager(Gtk.Box):
             return
 
         if self.listbox.get_first_child() is not None:
-            self.window.right_button_stack.show()
+            self.window.right_button_stack.set_visible(True)
             if self.downloader.running:
                 self.start_stop_button.get_first_child().set_from_icon_name('media-playback-stop-symbolic')
             else:
                 self.start_stop_button.get_first_child().set_from_icon_name('media-playback-start-symbolic')
 
             self.start_stop_button.set_sensitive(True)
-            self.start_stop_button.show()
-            self.window.menu_button.show()
+            self.start_stop_button.set_visible(True)
+            self.window.menu_button.set_visible(True)
         else:
             # No downloads
-            self.window.right_button_stack.hide()
-            self.window.menu_button.hide()
+            self.window.right_button_stack.set_visible(False)
+            self.window.menu_button.set_visible(False)
 
     def update_row(self, _downloader, download, chapter):
         chapter_id = chapter.id if chapter is not None else download.chapter.id

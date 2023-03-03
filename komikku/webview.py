@@ -44,8 +44,8 @@ class Webview(Gtk.ScrolledWindow):
 
         Gtk.ScrolledWindow.__init__(self)
 
-        self.get_hscrollbar().hide()
-        self.get_vscrollbar().hide()
+        self.get_hscrollbar().set_visible(False)
+        self.get_vscrollbar().set_visible(False)
 
         self.webkit_webview = WebKit2.WebView()
         self.set_child(self.webkit_webview)
@@ -111,11 +111,11 @@ class Webview(Gtk.ScrolledWindow):
     def show(self, transition=True, reset=False):
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.hide()
+        self.window.left_extra_button_stack.set_visible(False)
 
-        self.window.right_button_stack.hide()
+        self.window.right_button_stack.set_visible(False)
 
-        self.window.menu_button.hide()
+        self.window.menu_button.set_visible(False)
 
         self.window.show_page('webview', transition=transition)
 

@@ -203,7 +203,7 @@ class Reader:
             self.pager = None
 
         self.controls.hide()
-        self.page_numbering_label.hide()
+        self.page_numbering_label.set_visible(False)
         self.window.set_unfullscreen()
 
     def on_page_numbering_changed(self, action, variant):
@@ -211,9 +211,9 @@ class Reader:
         self.manga.update(dict(page_numbering=value))
         self.set_action_page_numbering()
         if value and self.page_numbering_defined and not self.controls.is_visible:
-            self.page_numbering_label.show()
+            self.page_numbering_label.set_visible(True)
         else:
-            self.page_numbering_label.hide()
+            self.page_numbering_label.set_visible(False)
 
     def on_reading_mode_changed(self, action, variant):
         value = variant.get_string()
@@ -357,9 +357,9 @@ class Reader:
 
     def show(self, reset=True):
         self.window.right_button_stack.set_visible_child_name('reader')
-        self.window.right_button_stack.show()
+        self.window.right_button_stack.set_visible(True)
         self.window.menu_button.set_icon_name('view-more-symbolic')
-        self.window.menu_button.show()
+        self.window.menu_button.set_visible(True)
 
         self.window.show_page('reader')
 
@@ -369,11 +369,11 @@ class Reader:
 
         if visible:
             self.controls.show()
-            self.page_numbering_label.hide()
+            self.page_numbering_label.set_visible(False)
         else:
             self.controls.hide()
             if self.page_numbering and self.page_numbering_defined:
-                self.page_numbering_label.show()
+                self.page_numbering_label.set_visible(True)
 
     def update_page_numbering(self, number=None, total=None):
         if number and total:
@@ -381,12 +381,12 @@ class Reader:
             self.page_numbering_defined = True
 
             if self.page_numbering and not self.controls.is_visible:
-                self.page_numbering_label.show()
+                self.page_numbering_label.set_visible(True)
             else:
-                self.page_numbering_label.hide()
+                self.page_numbering_label.set_visible(False)
         else:
             self.page_numbering_defined = False
-            self.page_numbering_label.hide()
+            self.page_numbering_label.set_visible(False)
 
     def update_title(self, chapter):
         # Set title & subtitle (headerbar)

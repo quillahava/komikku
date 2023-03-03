@@ -38,8 +38,8 @@ class WebtoonPager(Adw.Bin, BasePager):
         self.set_child(self.clamp)
 
         self.scrolledwindow = Gtk.ScrolledWindow()
-        self.scrolledwindow.get_hscrollbar().hide()
-        self.scrolledwindow.get_vscrollbar().hide()
+        self.scrolledwindow.get_hscrollbar().set_visible(False)
+        self.scrolledwindow.get_vscrollbar().set_visible(False)
         self.scrolledwindow.set_kinetic_scrolling(True)
         self.vadj = self.scrolledwindow.get_vadjustment()
         self.clamp.set_child(self.scrolledwindow)

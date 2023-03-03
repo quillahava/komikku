@@ -71,7 +71,7 @@ class History(Gtk.Box):
 
         if ret:
             # As soon as a row is visible, made grand parent date_box visible
-            GLib.idle_add(row.get_parent().get_parent().show)
+            GLib.idle_add(row.get_parent().get_parent().set_visible, True)
 
         return ret
 
@@ -199,7 +199,7 @@ class History(Gtk.Box):
             listbox = date_box.get_last_child()
             listbox.invalidate_filter()
             # Hide date_box, will be shown if a least one row of listbox is not filtered
-            date_box.hide()
+            date_box.set_visible(False)
 
     def show(self, transition=True, reset=True):
         if reset:
@@ -207,12 +207,12 @@ class History(Gtk.Box):
 
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.hide()
+        self.window.left_extra_button_stack.set_visible(False)
 
         self.window.right_button_stack.set_visible_child_name('history')
-        self.window.right_button_stack.show()
+        self.window.right_button_stack.set_visible(True)
 
-        self.window.menu_button.hide()
+        self.window.menu_button.set_visible(False)
 
         self.window.show_page('history', transition=transition)
 

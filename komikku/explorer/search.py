@@ -89,7 +89,7 @@ class ExplorerSearchPage:
         return True
 
     def clear_latest_updates(self):
-        self.latest_updates_listbox.hide()
+        self.latest_updates_listbox.set_visible(False)
 
         child = self.latest_updates_listbox.get_first_child()
         while child:
@@ -98,7 +98,7 @@ class ExplorerSearchPage:
             child = next_child
 
     def clear_most_populars(self):
-        self.most_populars_listbox.hide()
+        self.most_populars_listbox.set_visible(False)
 
         child = self.most_populars_listbox.get_first_child()
         while child:
@@ -107,7 +107,7 @@ class ExplorerSearchPage:
             child = next_child
 
     def clear_search_results(self):
-        self.search_listbox.hide()
+        self.search_listbox.set_visible(False)
 
         child = self.search_listbox.get_first_child()
         while child:
@@ -256,7 +256,7 @@ class ExplorerSearchPage:
             if not self.can_page_be_updated_with_results('latest_updates', server_id):
                 return
 
-            self.latest_updates_listbox.show()
+            self.latest_updates_listbox.set_visible(True)
 
             for item in results:
                 row = Gtk.ListBoxRow()
@@ -318,7 +318,7 @@ class ExplorerSearchPage:
             if not self.can_page_be_updated_with_results('most_populars', server_id):
                 return
 
-            self.most_populars_listbox.show()
+            self.most_populars_listbox.set_visible(True)
 
             for item in results:
                 row = Gtk.ListBoxRow()
@@ -406,7 +406,7 @@ class ExplorerSearchPage:
             if not self.can_page_be_updated_with_results('search', server_id):
                 return
 
-            self.search_listbox.show()
+            self.search_listbox.set_visible(True)
 
             for item in results:
                 row = Gtk.ListBoxRow()
@@ -591,7 +591,7 @@ class ExplorerSearchPage:
         self.stop_search_global = False
         self.search_stack.set_visible_child_name('results')
         self.search_listbox.set_sort_func(sort_results)
-        self.search_listbox.show()
+        self.search_listbox.set_visible(True)
 
         thread = threading.Thread(target=run, args=(self.parent.servers_page.servers, ))
         thread.daemon = True

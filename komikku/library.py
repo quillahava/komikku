@@ -339,9 +339,9 @@ class Library:
         self.window.left_button.set_label(_('Cancel'))
         self.window.left_button.set_tooltip_text(_('Cancel'))
         # Hide search button: disable search
-        self.window.right_button_stack.hide()
+        self.window.right_button_stack.set_visible(False)
 
-        self.window.menu_button.hide()
+        self.window.menu_button.set_visible(False)
 
         self.selection_mode = True
 
@@ -352,9 +352,9 @@ class Library:
         self.window.left_button.set_icon_name('list-add-symbolic')
         if self.page == 'flowbox':
             # Show search button: re-enable search
-            self.window.right_button_stack.show()
+            self.window.right_button_stack.set_visible(True)
 
-        self.window.menu_button.show()
+        self.window.menu_button.set_visible(True)
 
         self.selection_mode = False
 
@@ -526,14 +526,14 @@ class Library:
 
         if len(mangas_rows) == 0:
             # Update start page title, hide loading progress bar and show 'Discover' button
-            self.window.start_page_progressbar.hide()
+            self.window.start_page_progressbar.set_visible(False)
             self.window.start_page_title_label.set_text(_('Welcome to Komikku'))
-            self.window.start_page_discover_button.show()
+            self.window.start_page_discover_button.set_visible(True)
             return
 
-        self.window.start_page_progressbar.show()
+        self.window.start_page_progressbar.set_visible(True)
         self.window.start_page_title_label.set_text(_('Loading…'))
-        self.window.start_page_discover_button.hide()
+        self.window.start_page_discover_button.set_visible(False)
 
         # Clear library flowbox
         thumbnail = self.flowbox.get_first_child()
@@ -602,12 +602,12 @@ class Library:
 
         self.window.left_button.set_tooltip_text(_('Add new comic'))
         self.window.left_button.set_icon_name('list-add-symbolic')
-        self.window.left_extra_button_stack.show()
+        self.window.left_extra_button_stack.set_visible(True)
 
         self.update_headerbar_buttons()
 
         self.window.menu_button.set_icon_name('open-menu-symbolic')
-        self.window.menu_button.show()
+        self.window.menu_button.set_visible(True)
 
         self.window.show_page('library', True)
 
@@ -654,12 +654,12 @@ class Library:
 
     def update_headerbar_buttons(self):
         if self.page == 'flowbox':
-            self.flap_reveal_button.show()
-            self.window.right_button_stack.show()
+            self.flap_reveal_button.set_visible(True)
+            self.window.right_button_stack.set_visible(True)
             self.window.right_button_stack.set_visible_child_name('library')
         else:
-            self.flap_reveal_button.hide()
-            self.window.right_button_stack.hide()
+            self.flap_reveal_button.set_visible(False)
+            self.window.right_button_stack.set_visible(False)
 
     def update_selected(self, _action, _param):
         self.window.updater.add([thumbnail.manga for thumbnail in self.flowbox.get_selected_children()])
@@ -792,10 +792,7 @@ class CategoriesList:
 
         self.clear()
 
-        if self.edit_mode:
-            self.edit_mode_buttonbox.show()
-        else:
-            self.edit_mode_buttonbox.hide()
+        self.edit_mode_buttonbox.set_visible(self.edit_mode)
 
         if categories:
             self.stack.set_visible_child_name('list')

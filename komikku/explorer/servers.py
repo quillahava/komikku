@@ -87,9 +87,9 @@ class ExplorerServersPage:
 
     def on_search_mode_toggled(self, _searchbar, _gparam):
         if self.searchbar.get_search_mode():
-            self.pinned_listbox.hide()
+            self.pinned_listbox.set_visible(False)
         elif len(Settings.get_default().pinned_servers):
-            self.pinned_listbox.show()
+            self.pinned_listbox.set_visible(True)
 
     def on_searchentry_activated(self, _entry):
         if not self.searchbar.get_search_mode():
@@ -116,7 +116,7 @@ class ExplorerServersPage:
         pinned_servers = Settings.get_default().pinned_servers
 
         if len(pinned_servers) == 0:
-            self.pinned_listbox.hide()
+            self.pinned_listbox.set_visible(False)
             return
 
         # Add header
@@ -135,7 +135,7 @@ class ExplorerServersPage:
             row = self.parent.build_server_row(server_data)
             self.pinned_listbox.append(row)
 
-        self.pinned_listbox.show()
+        self.pinned_listbox.set_visible(True)
 
     def populate(self, servers=None):
         if not servers:
@@ -144,7 +144,7 @@ class ExplorerServersPage:
             self.preselection = False
         else:
             self.servers = servers
-            self.pinned_listbox.hide()
+            self.pinned_listbox.set_visible(False)
             self.preselection = True
 
         row = self.listbox.get_first_child()

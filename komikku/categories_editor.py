@@ -126,11 +126,11 @@ class CategoriesEditor(Gtk.ScrolledWindow):
 
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.hide()
+        self.window.left_extra_button_stack.set_visible(False)
 
-        self.window.right_button_stack.hide()
+        self.window.right_button_stack.set_visible(False)
 
-        self.window.menu_button.hide()
+        self.window.menu_button.set_visible(False)
 
         self.window.show_page('categories_editor', transition=transition)
 
@@ -197,7 +197,7 @@ class CategoryRow(Gtk.ListBoxRow):
         self.cancel_button = Gtk.Button.new_from_icon_name('edit-undo-symbolic')
         self.cancel_button.set_tooltip_text(_('Cancel'))
         self.cancel_button.set_valign(Gtk.Align.CENTER)
-        self.cancel_button.hide()
+        self.cancel_button.set_visible(False)
         self.cancel_button.connect('clicked', self.set_edit_mode, False)
         self.box.append(self.cancel_button)
 
@@ -205,28 +205,28 @@ class CategoryRow(Gtk.ListBoxRow):
         self.save_button.set_tooltip_text(_('Save'))
         self.save_button.set_valign(Gtk.Align.CENTER)
         self.save_button.add_css_class('suggested-action')
-        self.save_button.hide()
+        self.save_button.set_visible(False)
         self.box.append(self.save_button)
 
         self.set_child(self.box)
 
     def set_edit_mode(self, _button=None, active=False):
         if active:
-            self.label_box.hide()
+            self.label_box.set_visible(False)
             self.edit_entry.set_text(self.category.label)
-            self.edit_entry.show()
-            self.delete_button.hide()
-            self.edit_button.hide()
-            self.cancel_button.show()
-            self.save_button.show()
+            self.edit_entry.set_visible(True)
+            self.delete_button.set_visible(False)
+            self.edit_button.set_visible(False)
+            self.cancel_button.set_visible(True)
+            self.save_button.set_visible(True)
         else:
-            self.label_box.show()
+            self.label_box.set_visible(True)
             self.edit_entry.set_text('')
-            self.edit_entry.hide()
-            self.delete_button.show()
-            self.edit_button.show()
-            self.cancel_button.hide()
-            self.save_button.hide()
+            self.edit_entry.set_visible(False)
+            self.delete_button.set_visible(True)
+            self.edit_button.set_visible(True)
+            self.cancel_button.set_visible(False)
+            self.save_button.set_visible(False)
 
         self.emit('edit-mode-changed', active)
 

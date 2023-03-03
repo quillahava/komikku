@@ -374,11 +374,11 @@ class Preferences(Adw.Bin):
     def show(self, transition=True):
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.hide()
+        self.window.left_extra_button_stack.set_visible(False)
 
-        self.window.right_button_stack.hide()
+        self.window.right_button_stack.set_visible(False)
 
-        self.window.menu_button.hide()
+        self.window.menu_button.set_visible(False)
 
         # Update maximum value of clamp size adjustment
         self.clamp_size_adjustment.set_upper(self.window.monitor.props.geometry.width)
@@ -623,7 +623,7 @@ class PreferencesServersSettingsSubpage:
             address = None
             server = server_class(username=username, password=password)
 
-        button.icon.show()
+        button.icon.set_visible(True)
         if server.logged_in:
             button.icon.set_from_icon_name('object-select-symbolic')
             if self.keyring_helper.is_disabled or plaintext_checkbutton is not None and not plaintext_checkbutton.get_active():

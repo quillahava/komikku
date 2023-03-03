@@ -74,8 +74,8 @@ class Card:
 
         self.window.left_button.set_label(_('Cancel'))
         self.window.left_button.set_tooltip_text(_('Cancel'))
-        self.window.right_button_stack.hide()
-        self.window.menu_button.hide()
+        self.window.right_button_stack.set_visible(False)
+        self.window.menu_button.set_visible(False)
 
         self.selection_mode = True
         self.chapters_list.enter_selection_mode()
@@ -102,8 +102,8 @@ class Card:
     def leave_selection_mode(self, _param=None):
         self.window.left_button.set_icon_name('go-previous-symbolic')
         self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.right_button_stack.show()
-        self.window.menu_button.show()
+        self.window.right_button_stack.set_visible(True)
+        self.window.menu_button.set_visible(True)
 
         self.chapters_list.leave_selection_mode()
         self.selection_mode = False
@@ -195,13 +195,13 @@ class Card:
 
         self.window.left_button.set_tooltip_text(_('Back'))
         self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.hide()
+        self.window.left_extra_button_stack.set_visible(False)
 
         self.window.right_button_stack.set_visible_child_name('card')
-        self.window.right_button_stack.show()
+        self.window.right_button_stack.set_visible(True)
 
         self.window.menu_button.set_icon_name('view-more-symbolic')
-        self.window.menu_button.show()
+        self.window.menu_button.set_visible(True)
 
         self.open_in_browser_action.set_enabled(self.manga.server_id != 'local')
 
@@ -805,10 +805,10 @@ class ChaptersListRow(Gtk.Box):
 
         if self.chapter.scanlators:
             self.scanlators_label.set_markup(html_escape(', '.join(self.chapter.scanlators)))
-            self.scanlators_label.show()
+            self.scanlators_label.set_visible(True)
         else:
             self.scanlators_label.set_text('')
-            self.scanlators_label.hide()
+            self.scanlators_label.set_visible(False)
 
         #
         # Recent badge, date, download status, page counter
@@ -816,10 +816,10 @@ class ChaptersListRow(Gtk.Box):
         show_secondary_hbox = False
 
         if self.chapter.recent == 1:
-            self.badge_label.show()
+            self.badge_label.set_visible(True)
             show_secondary_hbox = True
         else:
-            self.badge_label.hide()
+            self.badge_label.set_visible(False)
 
         # Date + Download status (text or progress bar)
         download_status = None
@@ -842,16 +842,16 @@ class ChaptersListRow(Gtk.Box):
         if download_status == 'downloading':
             show_secondary_hbox = True
             self.subtitle_label.set_hexpand(False)
-            self.download_progress_progressbar.show()
-            self.download_stop_button.show()
-            self.read_progress_label.hide()
+            self.download_progress_progressbar.set_visible(True)
+            self.download_stop_button.set_visible(True)
+            self.read_progress_label.set_visible(False)
 
             # Set download progress
             self.download_progress_progressbar.set_fraction(item.download.percent / 100)
         else:
             self.subtitle_label.set_hexpand(True)
-            self.download_progress_progressbar.hide()
-            self.download_stop_button.hide()
+            self.download_progress_progressbar.set_visible(False)
+            self.download_stop_button.set_visible(False)
 
             # Read progress: nb read / nb pages
             if not self.chapter.read:
@@ -861,18 +861,18 @@ class ChaptersListRow(Gtk.Box):
                     # Nb read / nb pages
                     nb_pages = len(self.chapter.pages) if self.chapter.pages else '?'
                     self.read_progress_label.set_text(f'{self.chapter.last_page_read_index + 1}/{nb_pages}')
-                    self.read_progress_label.show()
+                    self.read_progress_label.set_visible(True)
                 elif text:
-                    self.read_progress_label.hide()
+                    self.read_progress_label.set_visible(False)
             elif text:
-                self.read_progress_label.hide()
+                self.read_progress_label.set_visible(False)
 
         if show_secondary_hbox:
-            self.secondary_hbox.show()
+            self.secondary_hbox.set_visible(True)
             self.primary_hbox.props.margin_top = 6
             self.primary_hbox.props.margin_bottom = 6
         else:
-            self.secondary_hbox.hide()
+            self.secondary_hbox.set_visible(False)
             # Increase top and bottom margins so that all rows have the same height
             self.primary_hbox.props.margin_top = 17
             self.primary_hbox.props.margin_bottom = 16
@@ -1007,23 +1007,23 @@ class InfoBox:
 
         if manga.genres:
             self.genres_label.set_markup(html_escape(', '.join(manga.genres)))
-            self.genres_label.get_parent().get_parent().show()
+            self.genres_label.get_parent().get_parent().set_visible(True)
         else:
-            self.genres_label.get_parent().get_parent().hide()
+            self.genres_label.get_parent().get_parent().set_visible(False)
 
         if manga.scanlators:
             self.scanlators_label.set_markup(html_escape(', '.join(manga.scanlators)))
-            self.scanlators_label.get_parent().get_parent().show()
+            self.scanlators_label.get_parent().get_parent().set_visible(True)
         else:
-            self.scanlators_label.get_parent().get_parent().hide()
+            self.scanlators_label.get_parent().get_parent().set_visible(False)
 
         self.chapters_label.set_markup(str(len(manga.chapters)))
 
         if manga.last_update:
             self.last_update_label.set_markup(manga.last_update.strftime(_('%m/%d/%Y')))
-            self.last_update_label.get_parent().get_parent().show()
+            self.last_update_label.get_parent().get_parent().set_visible(True)
         else:
-            self.last_update_label.get_parent().get_parent().hide()
+            self.last_update_label.get_parent().get_parent().set_visible(False)
 
         self.set_disk_usage()
 
