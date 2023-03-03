@@ -256,6 +256,27 @@ class Local(Server):
     def get_manga_url(self, slug, url):
         return None
 
+    def get_latest_updates(self):
+        """
+        Returns list of latest updates manga
+        """
+        dir_path = os.path.join(get_data_dir(), self.id)
+
+        result = {}
+        for name in os.listdir(dir_path):
+            manga_folder = os.path.join(dir_path, name)
+
+            if not os.path.isdir(manga_folder):
+                continue
+
+            result[os.path.getmtime(manga_folder)] = dict(
+                slug=name,
+                name=name,
+            )
+
+        # sorted(dict) returns the keys of the dict in order
+        return [result[modification_date] for modification_date in reversed(sorted(result))]
+
     def search(self, term):
         dir_path = os.path.join(get_data_dir(), self.id)
 
