@@ -464,9 +464,17 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_debug_info(debug_info.generate())
 
         window.set_release_notes("""
-            <p>Bugfix release</p>
-            <p>Fixed a bug that caused the loss of some pinned servers in the explorer (it's certainly too late for those who have updated to version 1.12.0).</p>
-            <p>BEWARE, since 1.12.0, all servers that contain explicit sexual content or nudity, such as hentai, mature, ecchi or yaoi/yuri are now tagged NSFW (18+).</p>
+            <ul>
+                <li>[UX] Previous maximized state of window is now saved and restored when application starts</li>
+                <li>[Library] Previous selected filters are now saved and restored when application starts</li>
+                <li>[Preferences] Library: Added new `NSFW Only Content` setting</li>
+                <li>[Reader] RTL/LTR/Vertical pager: Improved placement of pages when they are scrollable</li>
+                <li>[Servers] Local: Added `Latest Updates`</li>
+                <li>[Servers] Mangaowl: Update</li>
+                <li>[L10n] Updated French translation</li>
+            </ul>
+            <p>Last week, Komikku joined GNOME Circle 🎉</p>
+            <p>Happy reading.</p>
         """)
 
         window.add_link(_('Join Chat'), 'https://matrix.to/#/#komikku-gnome:matrix.org')

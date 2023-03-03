@@ -91,6 +91,21 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.13.0" date="2023-03-03">
+            <description>
+                <ul>
+                    <li>[UX] Previous maximized state of window is now saved and restored when application starts</li>
+                    <li>[Library] Previous selected filters are now saved and restored when application starts</li>
+                    <li>[Preferences] Library: Added new `NSFW Only Content` setting</li>
+                    <li>[Reader] RTL/LTR/Vertical pager: Improved placement of pages when they are scrollable</li>
+                    <li>[Servers] Local: Added `Latest Updates`</li>
+                    <li>[Servers] Mangaowl: Update</li>
+                    <li>[L10n] Updated French translation</li>
+                </ul>
+                <p>Last week, Komikku joined GNOME Circle 🎉</p>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.12.1" date="2023-02-21">
             <description>
                 <p>Bugfix release</p>
