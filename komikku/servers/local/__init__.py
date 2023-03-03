@@ -258,7 +258,7 @@ class Local(Server):
 
     def get_latest_updates(self):
         """
-        Returns list of latest updates manga
+        Returns list of latest updated manga
         """
         dir_path = os.path.join(get_data_dir(), self.id)
 
@@ -274,8 +274,7 @@ class Local(Server):
                 name=name,
             )
 
-        # sorted(dict) returns the keys of the dict in order
-        return [result[modification_date] for modification_date in reversed(sorted(result))]
+        return [item for key, item in sorted(result.items(), reverse=True)][:100]
 
     def search(self, term):
         dir_path = os.path.join(get_data_dir(), self.id)
