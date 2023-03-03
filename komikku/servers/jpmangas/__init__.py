@@ -9,6 +9,7 @@ class Jpmangas(MyMangaReaderCMS):
     id = 'jpmangas'
     name = 'Jpmangas'
     lang = 'fr'
+    is_nsfw = True
 
     base_url = 'https://jpmangas.cc'
     search_url = base_url + '/search'

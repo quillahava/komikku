@@ -15,6 +15,7 @@ class Readmanga(Server):
     id = 'readmanga'
     name = 'Read Manga'
     lang = 'ru'
+    is_nsfw = True
 
     base_url = 'https://readmanga.live'
     search_url = base_url + '/search/advancedResults'
@@ -247,6 +248,7 @@ class Readmanga(Server):
 class Allhentai(Readmanga):
     id = 'allhentai:readmanga'
     name = 'AllHentai'
+    is_nsfw = False
     is_nsfw_only = True
 
     base_url = 'http://2023.allhen.online'
@@ -260,6 +262,7 @@ class Allhentai(Readmanga):
 class Mintmanga(Readmanga):
     id = 'mintmanga:readmanga'
     name = 'Mint Manga'
+    is_nsfw = True
 
     # 16
     base_url = 'https://mintmanga.live'
@@ -273,6 +276,7 @@ class Mintmanga(Readmanga):
 class Selfmanga(Readmanga):
     id = 'selfmanga:readmanga'
     name = 'Self Manga'
+    is_nsfw = True
 
     base_url = 'https://selfmanga.live'
     search_url = base_url + '/search/advancedResults'

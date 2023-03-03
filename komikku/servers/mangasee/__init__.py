@@ -26,6 +26,7 @@ class Mangasee(Server):
     id = 'mangasee'
     name = 'MangaSee'
     lang = 'en'
+    is_nsfw = True
 
     base_url = 'https://mangasee123.com'
     search_url = base_url + '/search/'

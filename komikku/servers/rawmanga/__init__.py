@@ -9,6 +9,7 @@ class Rawmanga(MangaStream):
     id = 'rawmanga'
     name = 'Raw Manga 生漫画'
     lang = 'ja'
+    is_nsfw = True
 
     has_cf = True
 

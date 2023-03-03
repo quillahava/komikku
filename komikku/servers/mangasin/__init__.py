@@ -14,6 +14,7 @@ class Mangasin(MyMangaReaderCMS):
     id = 'mangasin'
     name = 'Mangas.in (Mangas.pw)'
     lang = 'es'
+    is_nsfw = True
 
     search_query_param = 'q'
 

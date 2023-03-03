@@ -34,6 +34,7 @@ class Mangakawaii(Server):
     id = 'mangakawaii'
     name = SERVER_NAME
     lang = 'fr'
+    is_nsfw = True
     long_strip_genres = ['Webtoon', ]
 
     base_url = 'https://www.mangakawaii.io'

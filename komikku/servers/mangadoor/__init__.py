@@ -9,6 +9,7 @@ class Mangadoor(MyMangaReaderCMS):
     id = 'mangadoor'
     name = 'Mangadoor'
     lang = 'es'
+    is_nsfw = True
 
     base_url = 'https://mangadoor.com'
     search_url = base_url + '/search'

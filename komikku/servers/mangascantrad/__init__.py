@@ -9,6 +9,7 @@ class Mangascantrad(Madara):
     id = 'mangascantrad'
     name = 'Manga-Scantrad'
     lang = 'fr'
+    is_nsfw = True
 
     has_cf = True
 

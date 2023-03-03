@@ -9,6 +9,7 @@ class Lelscanvf(MyMangaReaderCMS):
     id = 'lelscanvf'
     name = 'Lelscan-VF'
     lang = 'fr'
+    is_nsfw = True
 
     base_url = 'https://lelscanvf.com'
     search_url = base_url + '/search'

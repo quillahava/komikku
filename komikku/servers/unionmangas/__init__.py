@@ -16,6 +16,7 @@ class Unionmangas(Server):
     id = 'unionmangas'
     name = 'Union Mangás'
     lang = 'pt'
+    is_nsfw = True
     long_strip_genres = ['Webtoon', ]
 
     base_url = 'https://unionleitor.top'

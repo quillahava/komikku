@@ -18,6 +18,7 @@ class Ninemanga(Server):
     id = 'ninemanga'
     name = 'Nine Manga'
     lang = 'en'
+    is_nsfw = True
 
     base_url = 'https://www.ninemanga.com'
     search_url = base_url + '/search/ajax/'

@@ -9,5 +9,6 @@ class Gtotgs(PizzaReader):
     id = 'gtotgs'
     name = 'GTO TGS'
     lang = 'it'
+    is_nsfw = True
 
     base_url = 'https://reader.gtothegreatsite.net'

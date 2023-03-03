@@ -9,6 +9,7 @@ class Rawkuma(MangaStream):
     id = 'rawkuma'
     name = 'Rawkuma'
     lang = 'ja'
+    is_nsfw = True
 
     base_url = 'https://rawkuma.com'
     search_url = base_url + '/manga/'

@@ -16,6 +16,7 @@ class Mangaworld(Server):
     id = 'mangaworld'
     name = 'MangaWorld'
     lang = 'it'
+    is_nsfw = True
 
     base_url = 'https://mangaworld.so'
     search_url = base_url + '/archive'

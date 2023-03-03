@@ -22,6 +22,7 @@ class Xoxocomics(Server):
     id = 'xoxocomics'
     name = 'Xoxocomics'
     lang = 'en'
+    is_nsfw = True
 
     base_url = 'https://xoxocomics.com'
     latest_updates_url = base_url + '/comic-updates'

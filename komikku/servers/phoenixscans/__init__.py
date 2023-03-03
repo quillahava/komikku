@@ -9,5 +9,6 @@ class Phoenixscans(PizzaReader):
     id = 'phoenixscans'
     name = 'Phoenix Scans'
     lang = 'it'
+    is_nsfw = True
 
     base_url = 'https://www.phoenixscans.com'

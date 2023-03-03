@@ -17,6 +17,7 @@ class Viewcomics(Server):
     id = 'viewcomics'
     name = SERVER_NAME
     lang = 'en'
+    is_nsfw = True
 
     base_url = 'https://viewcomics.me'
     search_url = base_url + '/search'

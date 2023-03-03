@@ -23,6 +23,7 @@ class Readcomiconline(Server):
     id = 'readcomiconline'
     name = 'Read Comic Online'
     lang = 'en'
+    is_nsfw = True
 
     base_url = 'https://readcomiconline.li'
     latest_updates_url = base_url + '/ComicList/LatestUpdate'

@@ -9,6 +9,7 @@ class Manhuaus(Madara):
     id = 'manhuaus'
     name = 'Manhuaus'
     lang = 'en'
+    is_nsfw = True
 
     base_url = 'https://manhuaus.com'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
