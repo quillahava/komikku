@@ -120,7 +120,7 @@
             <description>Automatically detect long vertical strip when possible (only on supported servers)</description>
         </key>
         <key type="b" name="nsfw-content">
-            <default>false</default>
+            <default>true</default>
             <summary>NSFW Content</summary>
             <description>Whether to enable servers with NSFW content</description>
         </key>
