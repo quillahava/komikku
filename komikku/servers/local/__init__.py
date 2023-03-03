@@ -280,7 +280,7 @@ class Local(Server):
         dir_path = os.path.join(get_data_dir(), self.id)
 
         result = []
-        for name in os.listdir(dir_path):
+        for name in sorted(os.listdir(dir_path)):
             if not os.path.isdir(os.path.join(dir_path, name)):
                 continue
 
