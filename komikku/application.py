@@ -352,6 +352,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.add_controller(self.controller_key)
         self.controller_key.connect('key-pressed', self.on_key_pressed)
 
+        self.gesture_click = Gtk.GestureClick.new()
+        self.gesture_click.set_button(0)
+        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.add_controller(self.gesture_click)
+        self.gesture_click.connect('pressed', self.on_button_clicked)
+
         self.connect('close-request', self.quit)
         self.headerbar_revealer.connect('notify::child-revealed', self.on_headerbar_toggled)
 
@@ -485,24 +491,20 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_transient_for(self)
         window.present()
 
+    def on_button_clicked(self, _gesture, _n_press, _x, _y):
+        button = self.gesture_click.get_current_button()
+        if button == 8:
+            # Back button
+            self.on_left_button_clicked()
+            return Gdk.EVENT_STOP
+
+        return Gdk.EVENT_PROPAGATE
+
     def on_headerbar_toggled(self, *args):
         if self.page == 'reader' and self.reader.pager:
             self.reader.pager.resize_pages()
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
-        """
-        Go back navigation with <Escape> and <Alt+Left> keys:
-        - Library <- Manga <- Reader
-        - Library <- History <- Reader
-        - Library <- History <- Card <- Reader
-
-        - Explorer: Library <- Servers <- Search <- Card
-        - Preferences: Library <- Page <- Subpage
-        - Categories Editor: Library <-
-
-        - Exit selection mode: Library, Card chapters, Download Manager
-        - Exit search mode: Library, Explorer 'servers' and 'search' pages, History
-        """
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
 
         if keyval == Gdk.KEY_Escape or (modifiers == Gdk.ModifierType.ALT_MASK and keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left)):
@@ -512,11 +514,26 @@ class ApplicationWindow(Adw.ApplicationWindow):
         return Gdk.EVENT_PROPAGATE
 
     def on_left_button_clicked(self, action_or_button=None, _param=None):
+        """
+        Go back navigation with <Escape> or <Alt+Left> keys and mouse Back button:
+        - Library <- Categories Editor
+        - Library <- Download Manager
+        - Library <- Explorer (Servers) <- Search <- Card
+        - Library <- History <- Reader
+        - Library <- History <- Manga Card <- Reader
+        - Library <- Manga Card <- Reader
+        - Library <- Preferences <- Subpage
+
+        - Exit selection mode: Library, Card chapters, Download Manager
+        - Exit search mode: Library, Explorer 'Servers' and 'Search' pages, History
+        """
+
         if type(action_or_button) is Gio.SimpleAction:
             source = 'shortcut'
         elif type(action_or_button) is Gtk.Button:
             source = 'click'
         else:
+            # <Escape> key or mouse Back button
             source = 'esc-key'
 
         if self.page == 'library':
