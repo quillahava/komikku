@@ -8,6 +8,7 @@ import natsort
 import time
 
 from gi.repository import Adw
+from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
@@ -753,17 +754,11 @@ class ChaptersListRow(Gtk.Box):
         self.menubutton.set_menu_model(self.menubutton_model)
         self.menubutton.get_popover().connect('show', self.update_menu)
 
-        # Gesture to detect click on mouse button 3 and enter in selection mode
-        self.gesture_right_click = Gtk.GestureClick.new()
-        self.gesture_right_click.set_button(3)
-        self.add_controller(self.gesture_right_click)
-        self.gesture_right_click.connect('released', self.on_right_button_clicked)
-
-        # Gesture to detect mouse button 1 click event and store row position
-        self.gesture_left_click = Gtk.GestureClick.new()
-        self.gesture_left_click.set_button(1)
-        self.add_controller(self.gesture_left_click)
-        self.gesture_left_click.connect('pressed', self.on_left_button_clicked)
+        # Gesture to detect click
+        self.gesture_click = Gtk.GestureClick.new()
+        self.gesture_click.set_button(0)
+        self.add_controller(self.gesture_click)
+        self.gesture_click.connect('released', self.on_button_clicked)
 
     @property
     def position(self):
@@ -775,15 +770,22 @@ class ChaptersListRow(Gtk.Box):
 
         return position
 
-    def on_left_button_clicked(self, _gesture, n_press, _x, _y):
-        self.card.chapters_list.selection_click_position = self.position
+    def on_button_clicked(self, _gesture, n_press, _x, _y):
+        button = self.gesture_click.get_current_button()
+        if button == 1 and self.card.selection_mode:
+            # Left button
+            # Store row position
+            self.card.chapters_list.selection_click_position = self.position
+            return Gdk.EVENT_STOP
 
-    def on_right_button_clicked(self, _gesture, _n_press, _x, _y):
-        if self.card.selection_mode:
-            return
+        elif button == 3 and not self.card.selection_mode:
+            # Right button
+            # Store row position and enter selection mode
+            self.card.chapters_list.selection_click_position = self.position
+            self.card.enter_selection_mode()
+            return Gdk.EVENT_STOP
 
-        self.card.chapters_list.selection_click_position = self.position
-        self.card.enter_selection_mode()
+        return Gdk.EVENT_PROPAGATE
 
     def populate(self, item: ChapterItemWrapper, update=False):
         self.chapter = item.chapter
