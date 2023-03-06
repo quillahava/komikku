@@ -405,6 +405,13 @@ class Mangadex_es(Mangadex):
     lang_code = 'es'
 
 
+class Mangadex_es_419(Mangadex):
+    id = 'mangadex_es_419'
+    name = SERVER_NAME
+    lang = 'es_419'
+    lang_code = 'es-la'
+
+
 class Mangadex_fr(Mangadex):
     id = 'mangadex_fr'
     name = SERVER_NAME

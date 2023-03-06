@@ -29,6 +29,7 @@ LANGUAGES = dict(
     de='Deutsch',
     en='English',
     es='Español',
+    es_419='Español (Latinoamérica)',
     fr='Français',
     it='Italiano',
     nl='Nederlands',
