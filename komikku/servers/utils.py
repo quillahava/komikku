@@ -117,8 +117,11 @@ def get_allowed_servers_list(settings):
             continue
 
         server_settings = servers_settings.get(get_server_main_id_by_id(server_data['id']))
-        if server_settings is not None and (not server_settings['enabled'] or server_settings['langs'].get(server_data['lang']) is False):
-            continue
+        if server_settings is not None:
+            if (not server_settings['enabled']
+                    or (len(servers_languages) > 1 and server_settings['langs'].get(server_data['lang']) is False)):
+                # Server is disabled or several languages are selected and server language is disabled
+                continue
 
         if settings.nsfw_content is False and server_data['is_nsfw']:
             continue
