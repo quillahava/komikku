@@ -3,6 +3,7 @@
 [![](https://circle.gnome.org/assets/button/badge.svg)](https://apps.gnome.org/app/info.febvre.Komikku/)
 [![](https://stopthemingmy.app/badge.svg)](https://stopthemingmy.app)
 [![Pipeline status](https://gitlab.com/valos/Komikku/badges/main/pipeline.svg)](https://gitlab.com/valos/Komikku/-/pipelines)
+[![Translation status](https://hosted.weblate.org/widgets/komikku/-/main/svg-badge.svg)](https://hosted.weblate.org/engage/komikku/)
 [![Donate using Liberapay](https://img.shields.io/liberapay/receives/valos.svg?logo=liberapay)](https://en.liberapay.com/valos/donate)
 
 __Komikku__ is a manga reader for [GNOME](https://www.gnome.org). It focuses on providing a clean, intuitive and adaptive interface.
@@ -67,6 +68,8 @@ Please follow our [contributing guidelines](CONTRIBUTING.md).
 ### Translations
 
 Helping to translate __Komikku__ or add support to a new language is very welcome.
+
+[![Translation status](https://hosted.weblate.org/widgets/komikku/-/main/multi-auto.svg)](https://hosted.weblate.org/engage/komikku/)
 
 ### Code of Conduct
 We follow the [GNOME Code of Conduct](/CODE_OF_CONDUCT.md).
