@@ -28,6 +28,7 @@ LANGUAGES = dict(
     cs='Čeština',
     de='Deutsch',
     en='English',
+    eo='Espéranto',
     es='Español',
     es_419='Español (Latinoamérica)',
     fr='Français',

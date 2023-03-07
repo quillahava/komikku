@@ -14,6 +14,7 @@ LANGUAGES_CODES = dict(
     cs='cs',
     de='de',
     en='en',
+    eo='eo',
     es='es',
     fr='fr',
     id='id',
@@ -197,6 +198,12 @@ class Peppercarrot_de(Peppercarrot):
     id = 'peppercarrot_de'
     name = SERVER_NAME
     lang = 'de'
+
+
+class Peppercarrot_eo(Peppercarrot):
+    id = 'peppercarrot_eo'
+    name = SERVER_NAME
+    lang = 'eo'
 
 
 class Peppercarrot_es(Peppercarrot):
