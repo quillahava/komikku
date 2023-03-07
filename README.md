@@ -67,7 +67,7 @@ Please follow our [contributing guidelines](CONTRIBUTING.md).
 
 ### Translations
 
-Helping to translate __Komikku__ or add support to a new language is very welcome.
+If you'd like to help translating __Komikku__ into your language, please head over to [Weblate](https://hosted.weblate.org/engage/komikku/).
 
 [![Translation status](https://hosted.weblate.org/widgets/komikku/-/main/multi-auto.svg)](https://hosted.weblate.org/engage/komikku/)
 
