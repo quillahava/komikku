@@ -17,3 +17,4 @@ class Mangascantrad(Madara):
 
     base_url = 'https://manga-scantrad.io'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
+    bypass_cf_url = base_url + '/manga/tales-of-demons-and-gods-scan-fr/'
