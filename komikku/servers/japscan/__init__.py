@@ -31,6 +31,7 @@ class Japscan(Server):
     chapter_url = base_url + '/lecture-en-ligne/{0}/{1}/'
     page_url = '/lecture-en-ligne/{0}/{1}/{2}.html'
     cover_url = base_url + '{0}'
+    bypass_cf_url = base_url + '/lecture-en-ligne/one-piece/1070/1.html'
 
     def __init__(self):
         self.session = None
@@ -39,6 +40,7 @@ class Japscan(Server):
     def get_manga_initial_data_from_url(cls, url):
         return dict(slug=url.split('/')[-2])
 
+    @bypass_cf
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -202,6 +204,7 @@ class Japscan(Server):
         """
         return self.manga_url.format(slug)
 
+    @bypass_cf
     def get_latest_updates(self):
         """
         Returns recent manga
@@ -225,6 +228,7 @@ class Japscan(Server):
 
         return results
 
+    @bypass_cf
     def get_most_populars(self):
         """
         Returns TOP manga
@@ -249,6 +253,7 @@ class Japscan(Server):
 
         return results
 
+    @bypass_cf
     def search(self, term):
         r = self.session_post(self.api_search_url, data=dict(search=term), headers={
             'X-Requested-With': 'XMLHttpRequest',
