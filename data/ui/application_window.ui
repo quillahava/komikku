@@ -212,7 +212,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="webview_title_label">
-                                <property name="label" translatable="yes">Download Manager</property>
                                 <property name="ellipsize">end</property>
                                 <property name="single_line_mode">1</property>
                                 <style>
