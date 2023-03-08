@@ -20,12 +20,13 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import WebKit2
 
-from komikku.servers import USER_AGENT
 from komikku.servers.exceptions import CfBypassError
 from komikku.utils import get_cache_dir
 
 CF_RELOAD_MAX = 5
 DEBUG = False
+USER_AGENT = f'Mozilla/5.0 (X11; Linux {platform.machine()}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15'
+
 logger = logging.getLogger('komikku.webview')
 
 
@@ -41,6 +42,7 @@ class Webview(Gtk.ScrolledWindow):
         self.window = window
 
         self.title_label = self.window.webview_title_label
+        self.subtitle_label = self.window.webview_subtitle_label
 
         Gtk.ScrolledWindow.__init__(self)
 
@@ -183,10 +185,12 @@ def bypass_cf(func):
 
             if event != WebKit2.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
                 # Challenge has been passed
+
                 # Disable images auto-load
                 webview.webkit_webview.get_settings().set_auto_load_images(False)
-                # Notify user that is must wait (page load finish)
-                webview.window.show_notification(_('Success, challenge solved, please wait…'))
+
+                # Exit from webview
+                webview.navigate_back(None)
 
             if event != WebKit2.LoadEvent.FINISHED:
                 return
@@ -228,6 +232,7 @@ def bypass_cf(func):
                 logger.debug(f'{server.id}: Captcha `{webview.webkit_webview.props.title}` detected')
                 # Show webview, user must complete a CAPTCHA
                 webview.title_label.set_text(_('Please complete CAPTCHA'))
+                webview.subtitle_label.set_text(server.name)
                 webview.show()
 
             if webview.webkit_webview.props.title != 'ready':
@@ -236,9 +241,6 @@ def bypass_cf(func):
             logger.debug(f'{server.id}: Page loaded, getting cookies...')
             cookie_manager = webview.web_context.get_cookie_manager()
             cookie_manager.get_cookies(server.base_url, None, on_get_cookies_finish, None)
-
-            # Exit from webview
-            webview.navigate_back(None)
 
         def on_get_cookies_finish(cookie_manager, result, user_data):
             nonlocal done
