@@ -427,7 +427,7 @@ class Library:
 
                 while walk_index != last_index:
                     walk_thumbnail = self.flowbox.get_child_at_index(walk_index)
-                    if walk_thumbnail and not walk_thumbnail._selected:
+                    if walk_thumbnail and not walk_thumbnail._selected and not walk_thumbnail._filtered:
                         self.flowbox.select_child(walk_thumbnail)
                         walk_thumbnail._selected = True
 
