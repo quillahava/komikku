@@ -683,7 +683,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                                     <child>
                                                       <object class="GtkPicture" id="card_cover_image">
                                                         <property name="can-shrink">0</property>
-                                                        <property name="keep-aspect-ratio">0</property>
                                                         <property name="halign">center</property>
                                                         <property name="valign">center</property>
                                                         <style>

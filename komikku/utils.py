@@ -488,8 +488,6 @@ class Picture(Gtk.Picture):
         super().__init__()
 
         self.set_can_shrink(False)
-        self.set_keep_aspect_ratio(True)
-
         self.set_paintable(pixbuf)
 
     @classmethod
@@ -533,8 +531,6 @@ class PictureAnimation(Gtk.Picture):
         super().__init__()
 
         self.set_can_shrink(False)
-        self.set_keep_aspect_ratio(True)
-
         self.set_paintable(pixbuf)
 
     @classmethod

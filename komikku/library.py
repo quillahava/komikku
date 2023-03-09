@@ -861,7 +861,6 @@ class Thumbnail(Gtk.FlowBoxChild):
         self.picture = Gtk.Picture()
         self.picture.add_css_class('cover-dropshadow')
         self.picture.set_can_shrink(False)
-        self.picture.set_keep_aspect_ratio(False)
         self.picture.set_paintable(ThumbnailCover(manga))
 
         if Settings.get_default().library_display_mode == 'grid-compact':
