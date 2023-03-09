@@ -472,15 +472,16 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[UX] Previous maximized state of window is now saved and restored when application starts</li>
-                <li>[Library] Previous selected filters are now saved and restored when application starts</li>
-                <li>[Preferences] Library: Added new `NSFW Only Content` setting</li>
-                <li>[Reader] RTL/LTR/Vertical pager: Improved placement of pages when they are scrollable</li>
-                <li>[Servers] Local: Added `Latest Updates`</li>
-                <li>[Servers] Mangaowl: Update</li>
-                <li>[L10n] Updated French translation</li>
+                <li>[UX] Added possibility to go back with mouse Back button</li>
+                <li>[Library] Fixed range selection mode</li>
+                <li>[Servers] Added FMTEAM [FR] (Scantrad France sucessor)</li>
+                <li>[Servers] MangaDex: Added `Español (Latinoamérica)` language</li>
+                <li>[Servers] Pepper&amp;Carrot: Added `Espéranto` language</li>
+                <li>[Servers] JapScan: Update</li>
+                <li>[Servers] Manga-Scantrad: Update</li>
+                <li>[Servers] Scantrad France: Disable</li>
+                <li>[Servers] Le Cercle du Scan: Added `Latest Updates`</li>
             </ul>
-            <p>Last week, Komikku joined GNOME Circle 🎉</p>
             <p>Happy reading.</p>
         """)
 
