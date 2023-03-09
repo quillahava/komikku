@@ -758,7 +758,7 @@ class ChaptersListRow(Gtk.Box):
         self.gesture_click = Gtk.GestureClick.new()
         self.gesture_click.set_button(0)
         self.add_controller(self.gesture_click)
-        self.gesture_click.connect('released', self.on_button_clicked)
+        self.gesture_click.connect('pressed', self.on_button_clicked)
 
     @property
     def position(self):
@@ -772,7 +772,7 @@ class ChaptersListRow(Gtk.Box):
 
     def on_button_clicked(self, _gesture, n_press, _x, _y):
         button = self.gesture_click.get_current_button()
-        if button == 1 and self.card.selection_mode:
+        if button == 1:
             # Left button
             # Store row position
             self.card.chapters_list.selection_click_position = self.position
