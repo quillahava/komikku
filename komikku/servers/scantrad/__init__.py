@@ -14,11 +14,17 @@ from komikku.servers.utils import get_soup_element_inner_text
 
 SERVER_NAME = 'Scantrad France'
 
+#
+# BEWARE: Scantrad France server is disabled
+# Dead since 03/2023
+#
+
 
 class Scantrad(Server):
     id = 'scantrad'
     name = SERVER_NAME
     lang = 'fr'
+    status = 'disabled'
 
     base_url = 'https://scantrad.net'
     search_url = base_url
