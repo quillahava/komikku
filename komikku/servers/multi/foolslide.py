@@ -251,6 +251,29 @@ class FoOlSlide(Server):
 
         return results
 
+    def get_latest_updates(self):
+        """
+        Returns latest updates
+        """
+        r = self.session_get(self.base_url)
+        if r.status_code != 200:
+            return None
+
+        mime_type = get_buffer_mime_type(r.content)
+        if mime_type != 'text/html':
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        for a_element in soup.select('.group > .title > a'):
+            results.append(dict(
+                slug=a_element.get('href').split('/')[-2],
+                name=a_element.text.strip(),
+            ))
+
+        return results
+
     def get_most_populars(self):
         """
         Returns list of all mangas
