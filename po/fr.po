@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-03 01:49+0100\n"
-"PO-Revision-Date: 2023-03-03 08:43+0000\n"
-"Last-Translator: Valéry Febvre <vfebvre@easter-eggs.com>\n"
+"PO-Revision-Date: 2023-03-04 22:41+0000\n"
+"Last-Translator: \"J. Lavoie\" <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/komikku/main/fr/>"
 "\n"
 "Language: fr\n"
@@ -80,7 +80,7 @@ msgstr "Modes clair et sombre"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:84
 msgid "@authorfullname@"
-msgstr ""
+msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:96
 msgid "Bugfix release"
@@ -2210,7 +2210,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.desktop.in:4
 msgid "@description@"
-msgstr ""
+msgstr "@description@"
 
 #: ../data/info.febvre.Komikku.desktop.in:13
 msgid ""
