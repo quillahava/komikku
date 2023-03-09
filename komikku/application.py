@@ -226,6 +226,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
     history_search_button = Gtk.Template.Child('history_search_button')
 
     webview_title_label = Gtk.Template.Child('webview_title_label')
+    webview_subtitle_label = Gtk.Template.Child('webview_subtitle_label')
 
     notification_timer = None
     notification_label = Gtk.Template.Child('notification_label')
