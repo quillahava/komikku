@@ -9,19 +9,15 @@ from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 
-#
-# Server site has been rewritten, an important update is necessary
-#
-
 
 class Zeroscans(Server):
     id = 'zeroscans'
     name = 'Zero Scans'
     lang = 'en'
-    status = 'disabled'
 
     base_url = 'https://zeroscans.com'
     api_url = base_url + '/swordflake'
+    api_latest_updates_url = api_url + '/new-chapters'
     api_search_url = api_url + '/comics'
     api_manga_url = api_url + '/comic/{0}'
     api_chapter_url = api_url + '/comic/{0}/chapters/{1}'
@@ -45,6 +41,7 @@ class Zeroscans(Server):
 
         resp_data = r.json()['data']
 
+        initial_data.pop('view_count', None)
         data = initial_data.copy()
         data.update(dict(
             name=resp_data['name'],
@@ -149,6 +146,28 @@ class Zeroscans(Server):
         """
         return self.manga_url.format(slug)
 
+    def get_latest_updates(self):
+        r = self.session_get(self.api_latest_updates_url)
+        if r.status_code != 200:
+            return None
+
+        data = r.json()
+
+        result = []
+        slugs = []
+        for item in data['all']:
+            if item['slug'] in slugs:
+                continue
+
+            result.append(dict(
+                name=item['name'],
+                slug=item['slug'],
+                cover=item['cover'].get('vertical') or item['cover'].get('horizontal'),
+            ))
+            slugs.append(item['slug'])
+
+        return result
+
     def get_most_populars(self):
         return self.search('', True)
 
@@ -163,7 +182,6 @@ class Zeroscans(Server):
 
         data = data['data']
 
-        # Available keys in data: 'comics', 'genres', 'statuses', 'rankings'
         result = []
         for item in data['comics']:
             if not most_populars and term.lower() not in item['name'].lower():
@@ -172,9 +190,8 @@ class Zeroscans(Server):
             result.append(dict(
                 name=item['name'],
                 slug=item['slug'],
-                # id=item['id'],
-                # view_count=item['view_count'],
-                # rating=item['rating'],
+                cover=item['cover']['horizontal'],
+                view_count=item['view_count'],
             ))
 
         if most_populars:
