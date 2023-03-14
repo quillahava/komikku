@@ -154,7 +154,7 @@ class Komga(Server):
             )
 
             if item.get('readProgress'):
-                last_modified = datetime.fromisoformat(item['readProgress']['lastModified'])
+                last_modified = datetime.strptime(item['readProgress']['lastModified'], '%Y-%m-%dT%H:%M:%SZ')
                 if not last_read or last_modified > last_read:
                     last_read = last_modified
                     chapter_data.update(dict(
