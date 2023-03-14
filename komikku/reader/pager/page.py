@@ -35,6 +35,7 @@ class Page(Gtk.Overlay):
         self.init_height = None
         self.path = None
         self.picture = None
+        self.retry_button = None
 
         self._status = None    # rendering, rendered, offlimit, disposed
         self.error = None      # connection error, server error, corrupt file error
@@ -94,12 +95,12 @@ class Page(Gtk.Overlay):
         self.status = 'disposed'
         self.get_parent().remove(self)
 
-    def on_button_retry_clicked(self, button):
-        self.remove_overlay(button)
-
+    def on_button_retry_clicked(self, _button):
         self.chapter = self.init_chapter
         self.index = self.init_index
         self.picture = None
+
+        self.retry_button.set_visible(False)
 
         self.render(retry=True)
 
@@ -109,6 +110,8 @@ class Page(Gtk.Overlay):
 
             if error_code in ('connection', 'server'):
                 on_error(error_code, error_message)
+                if retry:
+                    return
             elif error_code == 'offlimit':
                 self.status = 'offlimit'
                 return
@@ -294,17 +297,20 @@ class Page(Gtk.Overlay):
                 self.scrolledwindow.props.can_target = False
 
     def show_retry_button(self):
-        btn = Gtk.Button()
-        btn.add_css_class('suggested-action')
-        btn.set_valign(Gtk.Align.CENTER)
-        btn.set_halign(Gtk.Align.CENTER)
-        btn.connect('clicked', self.on_button_retry_clicked)
+        if self.retry_button is None:
+            self.retry_button = Gtk.Button()
+            self.retry_button.add_css_class('suggested-action')
+            self.retry_button.set_valign(Gtk.Align.CENTER)
+            self.retry_button.set_halign(Gtk.Align.CENTER)
+            self.retry_button.connect('clicked', self.on_button_retry_clicked)
 
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        icon = Gtk.Image.new_from_icon_name('view-refresh-symbolic')
-        icon.set_icon_size(Gtk.IconSize.LARGE)
-        vbox.append(icon)
-        vbox.append(Gtk.Label(label=_('Retry')))
-        btn.set_child(vbox)
+            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+            icon = Gtk.Image.new_from_icon_name('view-refresh-symbolic')
+            icon.set_icon_size(Gtk.IconSize.LARGE)
+            vbox.append(icon)
+            vbox.append(Gtk.Label(label=_('Retry')))
+            self.retry_button.set_child(vbox)
 
-        self.add_overlay(btn)
+            self.add_overlay(self.retry_button)
+
+        self.retry_button.set_visible(True)
