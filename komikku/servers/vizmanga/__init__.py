@@ -1,4 +1,6 @@
 from PIL import Image
+import urllib.parse
+import piexif
 from bs4 import BeautifulSoup
 import re
 
@@ -20,6 +22,7 @@ class Vizmanga(Server):
     login_url = base_url + '/account/try_login'
     refresh_login_url = base_url + '/account/refresh_login_links'
     api_series_url = base_url + '/shonenjump'
+    api_series_search_url = base_url + '/search?search={}'
     api_chapters_url = base_url + '/shonenjump/chapters/{}'
     api_chapter_data_url = base_url + '/manga/get_manga_url?device_id=3&manga_id={}&page={}'
     api_chapter_url = base_url + '/shonenjump/{}-chapter-{}/chapter/{}'
@@ -30,6 +33,8 @@ class Vizmanga(Server):
     headers = {
         'Referer': 'https://www.viz.com',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=1.0,image/webp,image/apng,*/*;q=1.0',
+        'User-Agent': 'any'
+
     }
 
     def __init__(self, username=None, password=None):
@@ -46,7 +51,7 @@ class Vizmanga(Server):
         assert 'slug' in initial_data, 'Manga slug is missing in initial data'
 
         self.refresh_login()
-        r = self.session_get(self.api_chapters_url.format(initial_data['slug']))
+        r = self.session_get(self.api_chapters_url.format(initial_data['slug']), headers=self.headers)
         soup = BeautifulSoup(r.content, 'lxml')
 
         authors = []
@@ -131,7 +136,7 @@ class Vizmanga(Server):
     def _get_chapter_url(self, chapter_slug, i):
         url = self.api_chapter_data_url.format(chapter_slug, i)
 
-        r = self.session_get(url)
+        r = self.session_get(url, headers=self.headers)
         return r.text.strip()
 
     @do_login
@@ -139,7 +144,7 @@ class Vizmanga(Server):
         """
         Returns chapter page scan (image) content
         """
-        r = self.session_get(page['image'])
+        r = self.session_get(page['image'], headers=self.headers)
         real_img_url = r.text.strip()
 
         r = self.session_get(real_img_url, stream=True)
@@ -170,14 +175,20 @@ class Vizmanga(Server):
         """
         Returns full list of manga sorted by rank
         """
-        r = self.session_get(self.api_series_url)
+        r = self.session_get(self.api_series_url, headers=self.headers)
+        return self._parse_page(r)
+
+    def _parse_page(self, r, classes='o_chapters-link'):
+        """
+        Returns full list of manga sorted by rank
+        """
 
         soup = BeautifulSoup(r.content, 'lxml')
-        divs = soup.findAll('a', {'class': 'disp-bl pad-b-rg pos-r bg-off-black color-white hover-bg-red'})
+        divs = soup.findAll('a', {'class': f'disp-bl color-white {classes}'})
         result = []
         for div in divs:
             slug = div['href'].split('/')[-1]
-            name = div.find('div', {'class', 'pad-x-rg pad-t-rg pad-b-sm type-sm type-rg--sm type-md--lg type-center line-solid'}).getText().strip()
+            name = next(iter(div.find_all('div', {'class', re.compile('pad-x-rg.*type-sm type-rg--sm type-md--lg type-center.*')}))).getText().strip()
             cover_url = div.find('img')['data-original']
             result.append({
                 'slug': slug,
@@ -188,12 +199,12 @@ class Vizmanga(Server):
         return result
 
     def get_token(self):
-        auth_token = self.session_get(self.refresh_login_url)
+        auth_token = self.session_get(self.refresh_login_url, headers=self.headers)
         token = re.search(r'AUTH_TOKEN\s*=\s*"(.+?)"', auth_token.text)
         return token.group(1)
 
     def refresh_login(self):
-        r = self.session_get(self.refresh_login_url)
+        r = self.session_get(self.refresh_login_url, headers=self.headers)
         soup = BeautifulSoup(r.content, 'lxml')
         return bool(soup.select('.o_profile-link'))
 
@@ -207,6 +218,7 @@ class Vizmanga(Server):
 
         r = self.session_post(
             self.login_url,
+            headers=self.headers,
             data={
                 'login': username,
                 'pass': password,
@@ -216,20 +228,23 @@ class Vizmanga(Server):
         self.save_session()
         return r.status_code == 200
 
+    @do_login
     def search(self, term):
-        term_lower = term.lower()
-        return list(filter(lambda x: term_lower in x['name'].lower(), self.get_most_populars()))
+        term_lower = urllib.parse.quote_plus(term.lower())
+        r = self.session_get(self.api_series_search_url.format(term_lower), headers=self.headers)
+        return list(self._parse_page(r, classes='o_property-link'))
 
     @staticmethod
     def solve_image(orig: Image) -> Image.Image:
+        exif = piexif.load(orig.info["exif"])
+
         new_size = (orig.size[0] - 90, orig.size[1] - 140)
         ref = Image.new(orig.mode, new_size)  # type: Image.Image
         ref.paste(orig)
 
         _key = 42016
-        exif = orig.getexif()
-        key = [int(i, 16) for i in exif[_key].split(':')]
-        width, height = exif[256], exif[257]
+        key = [int(i, 16) for i in exif['Exif'][_key].decode('ascii').split(':')]
+        width, height = exif['0th'][256], exif['0th'][257]
 
         small_width = int(width / 10)
         small_height = int(height / 15)
