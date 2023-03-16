@@ -266,11 +266,16 @@ class FoOlSlide(Server):
         soup = BeautifulSoup(r.text, 'html.parser')
 
         results = []
+        slugs = []
         for a_element in soup.select('.group > .title > a'):
+            slug = a_element.get('href').split('/')[-2]
+            if slug in slugs:
+                continue
             results.append(dict(
-                slug=a_element.get('href').split('/')[-2],
+                slug=slug,
                 name=a_element.text.strip(),
             ))
+            slugs.append(slug)
 
         return results
 
