@@ -273,8 +273,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
     @property
     def monitor(self):
-        surface = self.get_native().get_surface()
-        return surface.get_display().get_monitor_at_surface(surface)
+        return self.get_display().get_monitor_at_surface(self.get_native().get_surface())
 
     def add_accelerators(self):
         self.application.set_accels_for_action('app.add', ['<Primary>plus'])
@@ -472,15 +471,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[UX] Added possibility to go back with mouse Back button</li>
-                <li>[Library] Fixed range selection mode</li>
-                <li>[Servers] Added FMTEAM [FR] (Scantrad France sucessor)</li>
-                <li>[Servers] MangaDex: Added `Español (Latinoamérica)` language</li>
-                <li>[Servers] Pepper&amp;Carrot: Added `Espéranto` language</li>
-                <li>[Servers] JapScan: Update</li>
-                <li>[Servers] Manga-Scantrad: Update</li>
-                <li>[Servers] Scantrad France: Disable</li>
-                <li>[Servers] Le Cercle du Scan: Added `Latest Updates`</li>
+                <li>[Reader] Webtoon pager: Removed unwanted scrolling when clicking on 'Retry' button of a page</li>
+                <li>[Servers] FMTEAM: Fixed logo</li>
+                <li>[Servers] Komga: Update</li>
+                <li>[Servers] Viz: Update</li>
+                <li>[Servers] Zero Scans: Reactivation</li>
             </ul>
             <p>Happy reading.</p>
         """)

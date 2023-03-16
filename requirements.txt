@@ -6,6 +6,7 @@ emoji
 keyring >= 21.6.0
 lxml
 natsort
+piexif
 Pillow
 pure-protobuf
 PyGObject

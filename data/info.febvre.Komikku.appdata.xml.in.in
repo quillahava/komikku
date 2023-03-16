@@ -91,6 +91,18 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.15.0" date="2023-03-16">
+            <description>
+                <ul>
+                    <li>[Reader] Webtoon pager: Removed unwanted scrolling when clicking on 'Retry' button of a page</li>
+                    <li>[Servers] FMTEAM: Fixed logo</li>
+                    <li>[Servers] Komga: Update</li>
+                    <li>[Servers] Viz: Update</li>
+                    <li>[Servers] Zero Scans: Reactivation</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.14.0" date="2023-03-10">
             <description>
                 <ul>
