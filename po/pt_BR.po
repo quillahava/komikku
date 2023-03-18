@@ -2,21 +2,22 @@
 # Copyright (C) 2023 THE Komikku'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Komikku package.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2022-2023.
-#
+# Infinitive Witch <infinitivewitch@disroot.org>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-03 01:49+0100\n"
-"PO-Revision-Date: 2023-01-02 10:58-0300\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
-"Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao>\n"
+"PO-Revision-Date: 2023-03-20 14:36+0000\n"
+"Last-Translator: Infinitive Witch <infinitivewitch@disroot.org>\n"
+"Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
+"komikku/main/pt_BR/>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 42.0\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -27,10 +28,13 @@ msgid ""
 "With its simple, elegant and adaptive interface, this manga reader allows "
 "you to search, sort and read all your favorite manga with ease."
 msgstr ""
+"Com sua interface simples, elegante e adaptável, este leitor de mangá "
+"permite que você pesquise, classifique e leia com facilidade todos os seus "
+"mangás favoritos."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
 msgid "Why you will love Komikku?"
-msgstr ""
+msgstr "Por que você vai amar o Komikku?"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
@@ -81,35 +85,44 @@ msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:96
 msgid "Bugfix release"
-msgstr ""
+msgstr "Lançamento de Correção de Bugs"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 msgid ""
 "Fixed a bug that caused the loss of some pinned servers in the explorer "
 "(it's certainly too late for those who have updated to version 1.12.0)."
 msgstr ""
+"Corrigido um bug que causou a perda de alguns servidores fixados no "
+"explorador (certamente é tarde demais para aqueles que atualizaram para a "
+"versão 1.12.0)."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:98
 msgid ""
 "BEWARE, since 1.12.0, all servers that contain explicit sexual content or "
 "nudity, such as hentai, mature, ecchi or yaoi/yuri are now tagged NSFW (18+)."
 msgstr ""
+"ATENÇÃO, desde 1.12.0, todos os servidores que contém conteúdo sexual "
+"explícito ou nudez, como hentai, conteúdo maduro, ecchi ou yaoi/yuri são "
+"agora marcados com NSFW (18+)."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[UI] Added ability to go back with &lt;ALT+Left&gt; shortcut"
 msgstr ""
+"[UI] Acrescenta habilidade de retornar com o atalho &lt;ALT+Esquerda&gt;"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid "[Reader] Added ability to navigate foward with &lt;SPACE&gt; key"
 msgstr ""
+"[Leitor] Acrescenta a habilidade de navegar adiante com o atalho "
+"&lt;SPACE&gt;"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Servers] Guya.moe: Update"
-msgstr ""
+msgstr "[Servidores] Guya.moe: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Servers] Manga/in/ua: Update"
-msgstr ""
+msgstr "[Servidores] Manga/in/ua: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:359
@@ -124,7 +137,7 @@ msgstr "[Servidores] MangaHub: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "[Servers] MangaLib: Update"
-msgstr ""
+msgstr "[Servidores] MangaLib: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:282
@@ -151,36 +164,40 @@ msgstr "[Servidores] Read Manga: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:114
 msgid "[L10n] Updated French translation"
-msgstr ""
+msgstr "[L10n] Tradução francesa atualizada"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:116
 msgid ""
 "Beware, all servers that contain explicit sexual content or nudity, such as "
 "hentai, ecchi and yaoi/yuri are now tagged NSFW."
 msgstr ""
+"Cuidado, todos os servidores que contêm conteúdo sexual explícito ou nudez, "
+"tais como hentai, ecchi e yaoi/yuri são agora marcados com NSFW."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:122
 msgid "[UI] Use #f66151 color (orange) as app's accent color"
-msgstr ""
+msgstr "[UI] Usa a cor #f66151 (laranja) como cor de destaque do aplicativo"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:123
 msgid ""
 "[Shortcuts] Add &lt;Ctrl+f&gt; in History and Explorer =&gt; Servers "
 "(toggles search entry)"
 msgstr ""
+"[Atalhos] Acrescenta &lt;Ctrl+f&gt; no Histórico e Explorador =&gt; "
+"Servidores (alterna conteúdo da pesquisa)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:124
 msgid "[Servers] Japscan: Update"
-msgstr ""
+msgstr "[Servidores] Japscan: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:125
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:178
 msgid "[Servers] Manga-Scantrad: Update"
-msgstr ""
+msgstr "[Servidores] Manga-Scantrad: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:126
 msgid "[Servers] Raw Manga: Update"
-msgstr ""
+msgstr "[Servidores] Raw Manga: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:127
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:310
@@ -191,27 +208,30 @@ msgstr "[Servidores] Read Comic Online: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:128
 msgid "[L10n] Update French, German and Turkish translations"
-msgstr ""
+msgstr "[L10n] Atualização das traduções em francês, alemão e turco"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:135
 msgid "[Library] Improved thumbnails appearance"
-msgstr ""
+msgstr "[Biblioteca] Melhoria da aparência das miniaturas"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
 msgid "[Explorer] Various improvements in search"
-msgstr ""
+msgstr "[Explorador] Várias melhorias na busca"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:137
 msgid "[Reader] LTR, RTL, vertical pager: Improved page transition animation"
 msgstr ""
+"[Leitor] LTR, RTL, pager vertical: Animação de transição de página melhorada"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:138
 msgid "[Servers] Read Manga, AllHentai, Mint Manga, Self Manga: Update"
-msgstr ""
+msgstr "[Servidores] Read Manga, AllHentai, Mint Manga, Self Manga: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:139
 msgid "[A11y] Fixed keyboard navigation and added missing buttons tooltips"
 msgstr ""
+"[A11y] Corrige navegação pelo teclado e acrescenta botões de ferramentas "
+"ausentes"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:140
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:270
@@ -222,84 +242,90 @@ msgstr "[L10n] Atualiza as traduções para francês e alemão"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:147
 msgid "[Reader] LTR, RTL, vertical pager: Added 2-finger zoom gesture"
-msgstr ""
+msgstr "[Leitor] LTR, RTL, pager vertical: Acrescenta gesto de zoom de 2 dedos"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:148
 msgid ""
 "[Reader] LTR, RTL, vertical pager: Improved double-tap zoom on touchscreens"
 msgstr ""
+"[Leitor] LTR, RTL, pager vertical: Melhoria do zoom de duplo toque nas telas "
+"sensíveis ao toque"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:149
 msgid ""
 "[Reader] LTR, RTL, vertical pager: Fixed page scrolling when scaling is "
 "`Original Size`"
 msgstr ""
+"[Leitor] LTR, RTL, pager vertical: Corrige rolagem de página quando a escala "
+"é `Tamanho Original`"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:150
 msgid "[Servers] Add Toonily [EN]"
-msgstr ""
+msgstr "[Servidores] Acrescenta Toonily [EN]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:151
 msgid "[Servers] Dynasty: Update"
-msgstr ""
+msgstr "[Servidores] Dynasty: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:152
 msgid "[Servers] Golden Mangás: Update"
-msgstr ""
+msgstr "[Servidores] Golden Mangás: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:153
 msgid "[Servers] Local: Repair"
-msgstr ""
+msgstr "[Servidores] Local: Correção"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:160
 msgid "[Servers] Add Bilibili Comics ES, FR, ID"
-msgstr ""
+msgstr "[Servidores] Acrescenta Bilibili Comics ES, FR, ID"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:161
 msgid "[Servers] Add Golden Mangás [pt_BR]"
-msgstr ""
+msgstr "[Servidores] Acrescenta Golden Mangás [pt_BR]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:162
 msgid "[Servers] Add MangaWorld [IT]"
-msgstr ""
+msgstr "[Servidores] Acrescenta MangaWorld [IT]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:163
 msgid "[Servers] Add Mangalek [AR]"
-msgstr ""
+msgstr "[Servidores] Acrescenta Mangalek [AR]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:164
 msgid "[Servers] 3asq: Update"
-msgstr ""
+msgstr "[Servidores] 3asq: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:165
 msgid "[Servers] Colored Manga: Update"
-msgstr ""
+msgstr "[Servidores] Colored Manga: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:166
 msgid "Brings new Brazilian Portuguese, French and German translations"
-msgstr ""
+msgstr "Traz novas traduções para o português brasileiro, francês e alemão"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:173
 msgid ""
 "[Explorer] Add `Latest Updates` (not available for all compatible servers "
 "yet)"
 msgstr ""
+"[Explorador] Acrescenta `Últimas Atualizações` (ainda não disponível para "
+"todos os servidores compatíveis)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:174
 msgid "[Servers] Add Reaper Scans AR, FR, ID and TR"
-msgstr ""
+msgstr "[Servidores] Acrescenta Reaper Scans AR, FR, ID and TR"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:175
 msgid "[Servers] Re-enables Tutto Anime Manga (TAM) [IT]"
-msgstr ""
+msgstr "[Servidores] Reativa Tutto Anime Manga (TAM) [IT]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:176
 msgid "[Servers] Atikrost: Update"
-msgstr ""
+msgstr "[Servidores] Atikrost: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:177
 msgid "[Servers] LeviatanScans [EN]: Update"
-msgstr ""
+msgstr "[Servidores] LeviatanScans [EN]: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:179
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:398
@@ -318,11 +344,11 @@ msgstr "[Servidores] Mangaowl: Atualização"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:181
 msgid "Brings new French and Brazilian Portuguese translations"
-msgstr ""
+msgstr "Traz novas traduções em francês e português do Brasil"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:183
 msgid "Happy reading and merry christmas."
-msgstr ""
+msgstr "Feliz leitura e feliz natal."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:188
 msgid "Bug-fix release:"
@@ -2171,7 +2197,7 @@ msgstr "Histórico"
 
 #: ../data/ui/application_window.ui:211
 msgid "Webview"
-msgstr ""
+msgstr "Webview"
 
 #: ../data/ui/application_window.ui:237
 msgid "Toggle category sidebar"
@@ -2262,7 +2288,7 @@ msgstr "Novo"
 
 #: ../data/ui/categories_editor.ui:48
 msgid "Add"
-msgstr ""
+msgstr "Acrescentar"
 
 #: ../data/ui/download_manager.ui:61
 msgid "No downloads"
@@ -2274,7 +2300,7 @@ msgstr "Pesquisa por servidores por nome ou idioma"
 
 #: ../data/ui/explorer.ui:245
 msgid "Most Popular"
-msgstr ""
+msgstr "Mais Popular"
 
 #: ../data/ui/explorer.ui:335
 msgid "Latest Updates"
@@ -2533,15 +2559,15 @@ msgstr "Detecta automaticamente faixa vertical longa quando possível"
 
 #: ../data/ui/preferences.ui:270
 msgid "NSFW Content (18+)"
-msgstr ""
+msgstr "Conteúdo NSFW (18+)"
 
 #: ../data/ui/preferences.ui:272
 msgid "Whether to enable servers with NSFW content"
-msgstr ""
+msgstr "Se deseja habilitar servidores com conteúdo NSFW"
 
 #: ../data/ui/preferences.ui:284
 msgid "NSFW Only Content (18+)"
-msgstr ""
+msgstr "Conteúdo somente NSFW (18+)"
 
 #: ../data/ui/preferences.ui:286
 msgid "Whether to enable servers with NSFW only content"
@@ -2775,7 +2801,7 @@ msgstr "Sair?"
 
 #: ../komikku/application.py:675
 msgid "Quit"
-msgstr ""
+msgstr "Sair"
 
 #: ../komikku/card.py:96
 #, python-brace-format
@@ -2867,7 +2893,7 @@ msgstr "Excluir"
 
 #: ../komikku/categories_editor.py:192
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: ../komikku/categories_editor.py:205 ../komikku/reader/__init__.py:282
 msgid "Save"
@@ -2902,7 +2928,7 @@ msgstr "18+"
 
 #: ../komikku/explorer/__init__.py:151
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 #: ../komikku/explorer/__init__.py:156
 msgid ""
@@ -2933,7 +2959,7 @@ msgstr "Abre a pasta local"
 
 #: ../komikku/explorer/__init__.py:177
 msgid "Toggle pinned status"
-msgstr ""
+msgstr "Alternar o status de fixado"
 
 #: ../komikku/explorer/card.py:82
 #, python-brace-format
@@ -2971,15 +2997,15 @@ msgstr "Nenhuma atualização mais recente encontrada"
 #: ../komikku/explorer/search.py:293 ../komikku/explorer/search.py:355
 #: ../komikku/explorer/search.py:445 ../komikku/explorer/search.py:454
 msgid "A request is already in progress."
-msgstr ""
+msgstr "Uma solicitação já está em andamento."
 
 #: ../komikku/explorer/search.py:342
 msgid "Oops, failed to retrieve most popular."
-msgstr ""
+msgstr "Oops, falha ao recuperar o mais popular."
 
 #: ../komikku/explorer/search.py:346
 msgid "No Most Popular Found"
-msgstr ""
+msgstr "Não foi encontrado o Mais Popular"
 
 #: ../komikku/explorer/search.py:430 ../komikku/explorer/search.py:516
 msgid "Oops, search failed. Please try again."
@@ -2999,15 +3025,15 @@ msgstr "Nenhum resultado"
 
 #: ../komikku/explorer/search.py:617
 msgid "Search {}"
-msgstr ""
+msgstr "Busca {}"
 
 #: ../komikku/explorer/search.py:619
 msgid "Search by name in the server catalog"
-msgstr ""
+msgstr "Busca pelo nome no catálogo do servidor"
 
 #: ../komikku/explorer/search.py:621
 msgid "Empty search is allowed."
-msgstr ""
+msgstr "A busca vazia é permitida."
 
 #: ../komikku/explorer/search.py:623
 msgid ""
@@ -3015,10 +3041,13 @@ msgid ""
 "following format:\n"
 "id:<id from comic URL>"
 msgstr ""
+"Alternativamente, se você não conseguir encontrar pelo nome, você pode "
+"procurar usando o seguinte formato:\n"
+"id:<id da URL>"
 
 #: ../komikku/explorer/search.py:626
 msgid "This server accepts search filters."
-msgstr ""
+msgstr "Este servidor aceita filtros de busca."
 
 #: ../komikku/explorer/search.py:642
 msgid "Global Search"
@@ -3026,11 +3055,11 @@ msgstr "Pesquisa global"
 
 #: ../komikku/explorer/search.py:644
 msgid "Search across all servers"
-msgstr ""
+msgstr "Buscar em todos os servidores"
 
 #: ../komikku/explorer/search.py:646
 msgid "Search by name globally across all the servers you have enabled"
-msgstr ""
+msgstr "Busca por nome globalmente em todos os servidores que você habilitou"
 
 #: ../komikku/explorer/servers.py:73 ../komikku/explorer/servers.py:166
 msgid "Other"
@@ -3155,7 +3184,7 @@ msgstr ""
 
 #: ../komikku/preferences.py:125
 msgid "Disable"
-msgstr ""
+msgstr "Desativar"
 
 #: ../komikku/preferences.py:425
 msgid "Servers Languages"
@@ -3271,19 +3300,19 @@ msgstr "Repetir"
 
 #: ../komikku/servers/bilibili/__init__.py:34
 msgid "Price"
-msgstr ""
+msgstr "Preço"
 
 #: ../komikku/servers/bilibili/__init__.py:35
 msgid "Filter by price"
-msgstr ""
+msgstr "Filtrar por preço"
 
 #: ../komikku/servers/bilibili/__init__.py:40
 msgid "Free"
-msgstr ""
+msgstr "Grátis"
 
 #: ../komikku/servers/bilibili/__init__.py:41
 msgid "Paid"
-msgstr ""
+msgstr "Pago"
 
 #: ../komikku/servers/dynasty/__init__.py:38
 msgid "Categories"
@@ -3292,7 +3321,7 @@ msgstr "Categorias"
 #: ../komikku/servers/dynasty/__init__.py:39
 #: ../komikku/servers/mangaworld/__init__.py:31
 msgid "Filter by types"
-msgstr ""
+msgstr "Filtrar por tipos"
 
 #: ../komikku/servers/dynasty/__init__.py:42
 msgid "Anthology"
@@ -3358,7 +3387,7 @@ msgstr "Classificação"
 
 #: ../komikku/servers/mangadex/__init__.py:60
 msgid "Filter by content ratings"
-msgstr ""
+msgstr "Filtrar por classificação de conteúdo"
 
 #: ../komikku/servers/mangadex/__init__.py:63
 msgid "Safe"
@@ -3386,7 +3415,7 @@ msgstr "Tipo"
 #: ../komikku/servers/mangapill/__init__.py:32
 #: ../komikku/servers/multi/manga_stream.py:49
 msgid "Filter by type"
-msgstr ""
+msgstr "Filtrar por tipo"
 
 #: ../komikku/servers/mangapill/__init__.py:37
 #: ../komikku/servers/mangatube/__init__.py:38
@@ -3466,11 +3495,11 @@ msgstr "Estado"
 
 #: ../komikku/servers/mangaworld/__init__.py:46
 msgid "Filter by statuses"
-msgstr ""
+msgstr "Filtrar por status"
 
 #: ../komikku/servers/mangaworld/__init__.py:53
 msgid "Canceled"
-msgstr ""
+msgstr "Cancelado"
 
 #: ../komikku/servers/multi/madara.py:362
 #: ../komikku/servers/readmanhwa/__init__.py:44
@@ -3524,11 +3553,11 @@ msgstr "Sem conexão com a Internet, tempo limite excedido ou servidor inativo"
 
 #: ../komikku/webview.py:189
 msgid "Success, challenge solved, please wait…"
-msgstr ""
+msgstr "Sucesso, desafio resolvido, por favor aguarde…"
 
 #: ../komikku/webview.py:230
 msgid "Please complete CAPTCHA"
-msgstr ""
+msgstr "Por favor complete o CAPTCHA"
 
 #~ msgid "Yes"
 #~ msgstr "Sim"
