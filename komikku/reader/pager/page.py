@@ -93,6 +93,8 @@ class Page(Gtk.Overlay):
 
     def dispose(self):
         self.status = 'disposed'
+        if self.picture:
+            self.picture.dispose()
         self.get_parent().remove(self)
 
     def on_button_retry_clicked(self, _button):

@@ -531,6 +531,9 @@ class Picture(Gtk.Picture):
     def width(self):
         return self.props.paintable.width
 
+    def dispose(self):
+        self.set_paintable(None)
+
     def resize(self, width, height, cropped=False):
         self.props.paintable.resize(width, height, cropped)
 
@@ -565,6 +568,9 @@ class PictureAnimation(Gtk.Picture):
     @property
     def width(self):
         return self.props.paintable.width
+
+    def dispose(self):
+        self.set_paintable(None)
 
     def resize(self, width, height, _cropped=False):
         self.props.paintable.resize(width, height)
@@ -606,6 +612,13 @@ class PictureSubdivided(Gtk.Box):
     @classmethod
     def new_from_file(cls, path):
         return cls(path, Pixbuf.new_from_file(path))
+
+    def dispose(self):
+        picture = self.get_first_child()
+        while picture:
+            next_picture = picture.get_next_sibling()
+            picture.set_pixbuf(None)
+            picture = next_picture
 
     def resize(self, width, height, _cropped=False):
         self.width = width
