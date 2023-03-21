@@ -269,6 +269,9 @@ class Webtoon(Server):
 
         results = []
         for li_element in soup.find('ul', class_='lst_type1').find_all('li'):
+            if not li_element.a:
+                continue
+
             split_url = urlsplit(li_element.a.get('href'))
             url = '{0}?{1}'.format(split_url.path, split_url.query)
             slug = split_url.query.split('=')[-1]
