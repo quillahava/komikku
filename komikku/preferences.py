@@ -8,10 +8,13 @@ from gi.repository import Adw
 from gi.repository import Gtk
 
 from komikku.models import Settings
+from komikku.models.database import clear_cached_data
 from komikku.models.keyring import KeyringHelper
 from komikku.servers import LANGUAGES
 from komikku.servers.utils import get_server_main_id_by_id
 from komikku.servers.utils import get_servers_list
+from komikku.utils import folder_size
+from komikku.utils import get_cached_data_dir
 from komikku.utils import html_escape
 
 
@@ -55,6 +58,8 @@ class Preferences(Adw.Bin):
     page_numbering_switch = Gtk.Template.Child('page_numbering_switch')
     fullscreen_switch = Gtk.Template.Child('fullscreen_switch')
 
+    clear_cached_data_actionrow = Gtk.Template.Child('clear_cached_data_actionrow')
+    clear_cached_data_on_app_close_switch = Gtk.Template.Child('clear_cached_data_on_app_close_switch')
     credentials_storage_plaintext_fallback_switch = Gtk.Template.Child('credentials_storage_plaintext_fallback_switch')
     disable_animations_switch = Gtk.Template.Child('disable_animations_switch')
 
@@ -100,6 +105,32 @@ class Preferences(Adw.Bin):
 
     def on_clamp_size_changed(self, adjustment):
         self.settings.clamp_size = int(adjustment.get_value())
+
+    def on_clear_cached_data_activated(self, _actionrow):
+        # Clear cached data of manga not in library
+        # If a manga is being read, it must be excluded
+
+        def confirm_callback():
+            manga_in_use = None
+            if self.window.previous_page in ('card', 'reader') and not self.window.card.manga.in_library:
+                manga_in_use = self.window.card.manga
+
+            clear_cached_data(manga_in_use)
+            self.update_cached_data_size()
+
+            if self.window.previous_page == 'history':
+                self.window.history.populate()
+
+        self.window.confirm(
+            _('Clear?'),
+            _('Are you sure you want to clear chapters cache and database?'),
+            _('Clear'),
+            confirm_callback,
+            confirm_appearance=Adw.ResponseAppearance.DESTRUCTIVE
+        )
+
+    def on_clear_cached_data_on_app_close_changed(self, switch_button, _gparam):
+        self.settings.clear_cached_data_on_app_close = switch_button.get_active()
 
     def on_credentials_storage_plaintext_fallback_changed(self, switch_button, _gparam):
         self.settings.credentials_storage_plaintext_fallback = switch_button.get_active()
@@ -356,6 +387,13 @@ class Preferences(Adw.Bin):
         # Advanced
         #
 
+        # Clear chapters cache and database
+        self.clear_cached_data_actionrow.connect('activated', self.on_clear_cached_data_activated)
+
+        # Clear chapters cache and database on app close
+        self.clear_cached_data_on_app_close_switch.set_active(self.settings.clear_cached_data_on_app_close)
+        self.clear_cached_data_on_app_close_switch.connect('notify::active', self.on_clear_cached_data_on_app_close_changed)
+
         # Credentials storage: allow plaintext as fallback
         self.credentials_storage_plaintext_fallback_switch.set_active(self.settings.credentials_storage_plaintext_fallback)
         self.credentials_storage_plaintext_fallback_switch.connect('notify::active', self.on_credentials_storage_plaintext_fallback_changed)
@@ -383,8 +421,13 @@ class Preferences(Adw.Bin):
         # Update maximum value of clamp size adjustment
         self.clamp_size_adjustment.set_upper(self.window.monitor.props.geometry.width)
 
+        self.update_cached_data_size()
+
         self.pages_stack.set_visible_child_name('general')
         self.window.show_page('preferences', transition=transition)
+
+    def update_cached_data_size(self):
+        self.clear_cached_data_actionrow.set_subtitle(folder_size(get_cached_data_dir()) or '-')
 
 
 class PreferencesServersLanguagesSubpage:

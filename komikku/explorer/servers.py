@@ -81,7 +81,7 @@ class ExplorerServersPage:
     def on_server_clicked(self, listbox, row):
         self.parent.server = getattr(row.server_data['module'], row.server_data['class_name'])()
         if self.preselection and hasattr(row, 'manga_data'):
-            self.parent.card_page.populate(row.manga_data)
+            self.parent.search_page.show_manga_card(row.manga_data)
         else:
             self.parent.show_page('search')
 
@@ -171,9 +171,9 @@ class ExplorerServersPage:
             self.listbox.append(row)
 
         if self.preselection and len(self.servers) == 1:
-            row = self.listbox.get_children()[1]
+            row = self.listbox.get_first_child().get_next_sibling()
             self.parent.server = getattr(row.server_data['module'], row.server_data['class_name'])()
-            self.card_page.populate(row.manga_data)
+            self.parent.search_page.show_manga_card(row.manga_data)
         else:
             self.parent.show_page(self.parent.page)
 

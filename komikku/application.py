@@ -34,6 +34,7 @@ from komikku.library import Library
 from komikku.models import backup_db
 from komikku.models import init_db
 from komikku.models import Settings
+from komikku.models.database import clear_cached_data
 from komikku.preferences import Preferences
 from komikku.reader import Reader
 from komikku.servers.utils import get_allowed_servers_list
@@ -189,8 +190,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
     library_selection_mode_actionbar = Gtk.Template.Child('library_selection_mode_actionbar')
     library_selection_mode_menubutton = Gtk.Template.Child('library_selection_mode_menubutton')
 
-    card_resume_button = Gtk.Template.Child('card_resume_button')
-    card_resume2_button = Gtk.Template.Child('card_resume2_button')
     card_viewswitchertitle = Gtk.Template.Child('card_viewswitchertitle')
     card_viewswitcherbar = Gtk.Template.Child('card_viewswitcherbar')
     card_stack = Gtk.Template.Child('card_stack')
@@ -199,11 +198,15 @@ class ApplicationWindow(Adw.ApplicationWindow):
     card_chapters_listview = Gtk.Template.Child('card_chapters_listview')
     card_chapters_selection_mode_actionbar = Gtk.Template.Child('card_chapters_selection_mode_actionbar')
     card_chapters_selection_mode_menubutton = Gtk.Template.Child('card_chapters_selection_mode_menubutton')
-    card_name_label = Gtk.Template.Child('card_name_label')
-    card_cover_image = Gtk.Template.Child('card_cover_image')
     card_cover_box = Gtk.Template.Child('card_cover_box')
+    card_cover_image = Gtk.Template.Child('card_cover_image')
+    card_name_label = Gtk.Template.Child('card_name_label')
     card_authors_label = Gtk.Template.Child('card_authors_label')
     card_status_server_label = Gtk.Template.Child('card_status_server_label')
+    card_buttons_box = Gtk.Template.Child('card_buttons_box')
+    card_add_button = Gtk.Template.Child('card_add_button')
+    card_resume_button = Gtk.Template.Child('card_resume_button')
+    card_resume2_button = Gtk.Template.Child('card_resume2_button')
     card_genres_label = Gtk.Template.Child('card_genres_label')
     card_scanlators_label = Gtk.Template.Child('card_scanlators_label')
     card_chapters_label = Gtk.Template.Child('card_chapters_label')
@@ -546,8 +549,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
             if self.card.selection_mode:
                 self.card.leave_selection_mode()
             else:
-                self.library.show(invalidate_sort=True)
-                self.library.update_thumbnail(self.card.manga)
+                if self.card.origin_page == 'explorer':
+                    self.explorer.show(reset=False)
+                else:
+                    self.library.show(invalidate_sort=True)
+                    self.library.update_thumbnail(self.card.manga)
 
         elif self.page == 'reader':
             self.reader.on_navigate_back()
@@ -638,7 +644,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
             self.library.on_resize()
             self.card.on_resize()
-            self.explorer.on_resize()
             if self.page == 'reader':
                 self.reader.on_resize()
 
@@ -659,6 +664,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
     def quit(self, *args, force=False):
         def do_quit():
             self.save_window_size()
+            if Settings.get_default().clear_cached_data_on_app_close:
+                clear_cached_data()
             backup_db()
 
             self.application.quit()

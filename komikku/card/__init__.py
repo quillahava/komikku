@@ -19,6 +19,7 @@ from komikku.utils import html_escape
 
 class Card:
     manga = None
+    origin_page = None
     selection_mode = False
 
     def __init__(self, window):
@@ -77,8 +78,12 @@ class Card:
         self.viewswitcherbar.set_reveal(False)
 
     def init(self, manga, transition=True, show=True):
-        # Default page is `Info` page except when we come from Explorer
-        self.stack.set_visible_child_name('chapters' if self.window.page == 'explorer' else 'info')
+        # Default page is `Info`
+        self.stack.set_visible_child_name('info')
+        self.origin_page = self.window.page
+
+        # Hide Categories if manga is not in Library
+        self.stack.get_page(self.stack.get_child_by_name('categories')).set_visible(manga.in_library)
 
         self.manga = manga
         # Unref chapters to force a reload
@@ -104,6 +109,15 @@ class Card:
         self.viewswitchertitle.set_view_switcher_enabled(True)
         self.viewswitcherbar.set_reveal(True)
         self.viewswitchertitle.set_subtitle('')
+
+    def on_add_button_clicked(self, _button):
+        # Show categories
+        self.stack.get_page(self.stack.get_child_by_name('categories')).set_visible(True)
+        # Hide Add to Library button
+        self.info_box.add_button.set_visible(False)
+        # Update manga
+        self.manga.add_in_library()
+        self.window.library.on_manga_added(self.manga)
 
     def on_delete_menu_clicked(self, action, param):
         self.window.library.delete_mangas([self.manga, ])
@@ -133,7 +147,7 @@ class Card:
     def on_resize(self):
         self.info_box.on_resize()
 
-    def on_resume_button_clicked(self, widget):
+    def on_resume_button_clicked(self, _button):
         chapters = []
         for i in range(self.chapters_list.list_model.get_n_items()):
             chapters.append(self.chapters_list.list_model.get_item(i).chapter)
@@ -211,10 +225,12 @@ class InfoBox:
         self.window = card.window
 
         self.cover_box = self.window.card_cover_box
-        self.name_label = self.window.card_name_label
         self.cover_image = self.window.card_cover_image
+        self.name_label = self.window.card_name_label
         self.authors_label = self.window.card_authors_label
         self.status_server_label = self.window.card_status_server_label
+        self.buttons_box = self.window.card_buttons_box
+        self.add_button = self.window.card_add_button
         self.resume2_button = self.window.card_resume2_button
         self.genres_label = self.window.card_genres_label
         self.scanlators_label = self.window.card_scanlators_label
@@ -223,6 +239,7 @@ class InfoBox:
         self.synopsis_label = self.window.card_synopsis_label
         self.size_on_disk_label = self.window.card_size_on_disk_label
 
+        self.add_button.connect('clicked', self.card.on_add_button_clicked)
         self.resume2_button.connect('clicked', self.card.on_resume_button_clicked)
 
         self.adapt_to_width()
@@ -241,7 +258,8 @@ class InfoBox:
             self.authors_label.props.halign = Gtk.Align.CENTER
             self.authors_label.props.justify = Gtk.Justification.CENTER
 
-            self.resume2_button.props.halign = Gtk.Align.CENTER
+            self.buttons_box.set_orientation(Gtk.Orientation.VERTICAL)
+            self.buttons_box.props.halign = Gtk.Align.CENTER
         else:
             self.cover_box.set_orientation(Gtk.Orientation.HORIZONTAL)
             self.cover_box.props.spacing = 24
@@ -255,7 +273,8 @@ class InfoBox:
             self.authors_label.props.halign = Gtk.Align.START
             self.authors_label.props.justify = Gtk.Justification.LEFT
 
-            self.resume2_button.props.halign = Gtk.Align.START
+            self.buttons_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+            self.buttons_box.props.halign = Gtk.Align.START
 
     def on_resize(self):
         self.adapt_to_width()
@@ -294,6 +313,8 @@ class InfoBox:
                     html_escape(_('Local'))
                 )
             )
+
+        self.add_button.set_visible(not manga.in_library)
 
         if manga.genres:
             self.genres_label.set_markup(html_escape(', '.join(manga.genres)))

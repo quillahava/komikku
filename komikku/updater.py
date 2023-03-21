@@ -176,7 +176,7 @@ class Updater(GObject.GObject):
             self.update_at_startup_done = True
 
         db_conn = create_db_connection()
-        rows = db_conn.execute('SELECT * FROM mangas ORDER BY last_read DESC').fetchall()
+        rows = db_conn.execute('SELECT * FROM mangas WHERE in_library = 1 ORDER BY last_read DESC').fetchall()
         db_conn.close()
 
         for row in rows:

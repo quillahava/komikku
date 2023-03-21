@@ -4,7 +4,7 @@
 
 import datetime
 from enum import IntEnum
-from functools import lru_cache
+from functools import cache
 from gettext import gettext as _
 import importlib
 import json
@@ -21,13 +21,14 @@ from komikku.servers.utils import get_server_class_name_by_id
 from komikku.servers.utils import get_server_dir_name_by_id
 from komikku.servers.utils import get_server_module_name_by_id
 from komikku.servers.utils import unscramble_image
+from komikku.utils import get_cached_data_dir
 from komikku.utils import get_data_dir
 from komikku.utils import is_flatpak
 from komikku.utils import trunc_filename
 
 logger = logging.getLogger('komikku')
 
-VERSION = 11
+VERSION = 12
 
 
 def adapt_json(data):
@@ -70,6 +71,30 @@ def check_db():
     return ret
 
 
+def clear_cached_data(manga_in_use=None):
+    # Clear chapters cache
+    cache_dir_path = get_cached_data_dir()
+    for server_name in os.listdir(cache_dir_path):
+        server_dir_path = os.path.join(cache_dir_path, server_name)
+        if manga_in_use and manga_in_use.path.startswith(server_dir_path):
+            for manga_name in os.listdir(server_dir_path):
+                manga_dir_path = os.path.join(server_dir_path, manga_name)
+                if manga_dir_path != manga_in_use.path:
+                    shutil.rmtree(manga_dir_path)
+        else:
+            shutil.rmtree(server_dir_path)
+
+    # Clear database
+    db_conn = create_db_connection()
+    with db_conn:
+        if manga_in_use:
+            db_conn.execute('DELETE FROM mangas WHERE in_library != 1 AND id != ?', (manga_in_use.id, ))
+        else:
+            db_conn.execute('DELETE FROM mangas WHERE in_library != 1')
+
+    db_conn.close()
+
+
 def create_db_connection():
     con = sqlite3.connect(get_db_path(), detect_types=sqlite3.PARSE_DECLTYPES)
     if con is None:
@@ -96,7 +121,7 @@ def execute_sql(conn, sql):
         return False
 
 
-@lru_cache(maxsize=None)
+@cache
 def get_db_path():
     app_profile = Gio.Application.get_default().profile
 
@@ -111,7 +136,7 @@ def get_db_path():
     return os.path.join(get_data_dir(), name)
 
 
-@lru_cache(maxsize=None)
+@cache
 def get_db_backup_path():
     app_profile = Gio.Application.get_default().profile
 
@@ -136,6 +161,7 @@ def init_db():
         slug text NOT NULL,
         url text, -- only used in case slug can't be used to forge the url
         server_id text NOT NULL,
+        in_library integer,
         name text NOT NULL,
         authors json,
         scanlators json,
@@ -322,6 +348,12 @@ def init_db():
 
                 db_conn.execute('PRAGMA user_version = {0}'.format(11))
 
+        if 0 < db_version <= 11:
+            # Version 1.16.0
+            execute_sql(db_conn, 'ALTER TABLE mangas ADD COLUMN in_library integer;')
+            execute_sql(db_conn, 'UPDATE mangas SET in_library = 1;')
+            db_conn.execute('PRAGMA user_version = {0}'.format(12))
+
         print('DB version', db_conn.execute('PRAGMA user_version').fetchone()[0])
 
         db_conn.close()
@@ -444,6 +476,7 @@ class Manga:
 
         # Fill data with internal data
         data.update(dict(
+            in_library=0,
             # Add fake last_read date: allows to display recently added manga at the top of the library
             last_read=datetime.datetime.utcnow(),
         ))
@@ -556,7 +589,10 @@ class Manga:
 
     @property
     def path(self):
-        return os.path.join(get_data_dir(), self.dir_name, trunc_filename(self.name))
+        if self.in_library:
+            return os.path.join(get_data_dir(), self.dir_name, trunc_filename(self.name))
+        else:
+            return os.path.join(get_cached_data_dir(), self.dir_name, trunc_filename(self.name))
 
     @property
     def server(self):
@@ -592,6 +628,11 @@ class Manga:
                 fp.write(etag)
         elif os.path.exists(cover_etag_fs_path):
             os.remove(cover_etag_fs_path)
+
+    def add_in_library(self):
+        old_path = self.path
+        self.update(dict(in_library=True))
+        shutil.move(old_path, self.path)
 
     def delete(self):
         db_conn = create_db_connection()
@@ -663,8 +704,6 @@ class Manga:
     def update_full(self):
         """
         Updates manga
-
-        Fetches and saves data available in manga's HTML page on server
 
         :return: True on success False otherwise, recent chapters IDs, number of deleted chapters
         :rtype: tuple

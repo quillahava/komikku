@@ -178,6 +178,10 @@
         </key>
 
         <!-- Preferences: Advanced -->
+        <key type="b" name="clear-cached-data-on-app-close">
+            <default>true</default>
+            <summary>Clear chapters cache and database on application close</summary>
+        </key>
         <key type="b" name="credentials-storage-plaintext-fallback">
             <default>false</default>
             <summary>Allow plaintext storage as fallback</summary>

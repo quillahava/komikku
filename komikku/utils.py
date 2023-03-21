@@ -3,7 +3,7 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 import datetime
-from functools import lru_cache
+from functools import cache
 from functools import wraps
 from gettext import gettext as _
 import gi
@@ -160,7 +160,7 @@ def folder_size(path):
     return res.stdout.split()[0].decode()
 
 
-@lru_cache(maxsize=None)
+@cache
 def get_cache_dir():
     cache_dir_path = GLib.get_user_cache_dir()
 
@@ -175,7 +175,16 @@ def get_cache_dir():
     return cache_dir_path
 
 
-@lru_cache(maxsize=None)
+@cache
+def get_cached_data_dir():
+    cached_data_dir_path = os.path.join(get_cache_dir(), 'tmp')
+    if not os.path.exists(cached_data_dir_path):
+        os.mkdir(cached_data_dir_path)
+
+    return cached_data_dir_path
+
+
+@cache
 def get_data_dir():
     data_dir_path = GLib.get_user_data_dir()
     app_profile = Gio.Application.get_default().profile

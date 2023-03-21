@@ -96,6 +96,14 @@ class Settings(Gio.Settings):
         self.set_value('clamp-size', size)
 
     @property
+    def clear_cached_data_on_app_close(self):
+        return self.get_boolean('clear-cached-data-on-app-close')
+
+    @clear_cached_data_on_app_close.setter
+    def clear_cached_data_on_app_close(self, state):
+        self.set_boolean('clear-cached-data-on-app-close', state)
+
+    @property
     def credentials_storage_plaintext_fallback(self):
         return self.get_boolean('credentials-storage-plaintext-fallback')
 

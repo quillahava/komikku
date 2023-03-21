@@ -11,6 +11,9 @@ from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Pango
 
+from komikku.models import create_db_connection
+from komikku.models import Manga
+from komikku.models import Settings
 from komikku.servers import LANGUAGES
 from komikku.utils import html_escape
 from komikku.utils import log_error_traceback
@@ -209,7 +212,7 @@ class ExplorerSearchPage:
         if self.global_search_mode:
             self.parent.server = getattr(row.server_data['module'], row.server_data['class_name'])()
 
-        self.parent.card_page.populate(row.manga_data)
+        self.show_manga_card(row.manga_data)
 
     def on_page_changed(self, _stack, _param):
         self.page = self.stack.props.visible_child_name
@@ -379,7 +382,7 @@ class ExplorerSearchPage:
             if not slug:
                 return
 
-            self.parent.card_page.populate(dict(slug=slug))
+            self.show_manga_card(dict(slug=slug))
             return
 
         # Disallow empty search except for 'Local' server
@@ -655,6 +658,77 @@ id:<id from comic URL>""")
         # To be sure to be notify on next page change
         self.stack.set_visible_child_name('search')
         GLib.idle_add(self.stack.set_visible_child_name, start_page)
+
+    def show_manga_card(self, manga_data):
+        def run_get(server, initial_data):
+            try:
+                manga_data = self.parent.server.get_manga_data(initial_data)
+
+                if manga_data is not None:
+                    GLib.idle_add(complete_get, manga_data, server)
+                else:
+                    GLib.idle_add(error, server)
+            except Exception as e:
+                user_error_message = log_error_traceback(e)
+                GLib.idle_add(error, server, user_error_message)
+
+        def run_update(server, manga_id):
+            manga = Manga.get(manga_id, server)
+            try:
+                status, _recent_chapters_ids, _nb_deleted_chapters, _synced = manga.update_full()
+                if status is True:
+                    GLib.idle_add(complete_update, manga, server)
+                else:
+                    GLib.idle_add(error, server)
+            except Exception as e:
+                user_error_message = log_error_traceback(e)
+                GLib.idle_add(error, server, user_error_message)
+
+        def complete_get(manga_data, server):
+            if server != self.parent.server:
+                return False
+
+            self.window.activity_indicator.stop()
+
+            manga = Manga.new(manga_data, self.parent.server, Settings.get_default().long_strip_detection)
+
+            self.window.card.init(manga)
+
+        def complete_update(manga, server):
+            if server != self.parent.server:
+                return False
+
+            self.window.activity_indicator.stop()
+
+            self.window.card.init(manga)
+
+        def error(server, message=None):
+            if server != self.parent.server:
+                return False
+
+            self.window.activity_indicator.stop()
+
+            self.window.show_notification(message or _("Oops, failed to retrieve manga's information."), 2)
+
+            return False
+
+        self.window.activity_indicator.start()
+
+        # Check if selected manga is already in database
+        db_conn = create_db_connection()
+        record = db_conn.execute(
+            'SELECT * FROM mangas WHERE slug = ? AND server_id = ?',
+            (manga_data['slug'], self.parent.server.id)
+        ).fetchone()
+        db_conn.close()
+
+        if record:
+            thread = threading.Thread(target=run_update, args=(self.parent.server, record['id'], ))
+        else:
+            thread = threading.Thread(target=run_get, args=(self.parent.server, manga_data, ))
+
+        thread.daemon = True
+        thread.start()
 
 
 def get_server_default_search_filters(server):

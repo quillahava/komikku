@@ -401,9 +401,9 @@ class Library:
         return Gdk.EVENT_PROPAGATE
 
     def on_manga_added(self, manga):
-        """Called from 'Explorer' when user clicks on [+] button"""
+        """Called from 'Card' when user clicks on `+ Add to Library` button"""
         db_conn = create_db_connection()
-        nb_mangas = db_conn.execute('SELECT count(*) FROM mangas').fetchone()[0]
+        nb_mangas = db_conn.execute('SELECT count(*) FROM mangas WHERE in_library = 1').fetchone()[0]
         db_conn.close()
 
         if nb_mangas == 1:
@@ -516,7 +516,7 @@ class Library:
 
         self.update_subtitle(db_conn=db_conn)
 
-        mangas_rows = db_conn.execute('SELECT id FROM mangas ORDER BY last_read DESC').fetchall()
+        mangas_rows = db_conn.execute('SELECT id FROM mangas WHERE in_library = 1 ORDER BY last_read DESC').fetchall()
         db_conn.close()
 
         if len(mangas_rows) == 0:

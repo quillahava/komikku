@@ -7,7 +7,7 @@ from bs4 import NavigableString
 import dateparser
 import datetime
 import emoji
-from functools import lru_cache
+from functools import cache
 from functools import wraps
 import importlib
 import inspect
@@ -193,7 +193,7 @@ def get_server_module_name_by_id(id):
     return id.split(':')[-1].split('_')[0]
 
 
-@lru_cache(maxsize=None)
+@cache
 def get_servers_list(include_disabled=False, order_by=('lang', 'name')):
     def iter_namespace(ns_pkg):
         # Specifying the second argument (prefix) to iter_modules makes the

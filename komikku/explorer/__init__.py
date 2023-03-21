@@ -7,7 +7,6 @@ from gettext import gettext as _
 from gi.repository import Gtk
 from gi.repository import Pango
 
-from komikku.explorer.card import ExplorerCardPage
 from komikku.explorer.search import ExplorerSearchPage
 from komikku.explorer.servers import ExplorerServersPage
 from komikku.models import Settings
@@ -48,18 +47,6 @@ class Explorer(Gtk.Stack):
     search_page_latest_updates_no_results_status_page = Gtk.Template.Child('search_page_latest_updates_no_results_status_page')
     search_page_latest_updates_spinner = Gtk.Template.Child('search_page_latest_updates_spinner')
 
-    card_page_cover_box = Gtk.Template.Child('card_page_cover_box')
-    card_page_cover_image = Gtk.Template.Child('card_page_cover_image')
-    card_page_name_label = Gtk.Template.Child('card_page_name_label')
-    card_page_authors_label = Gtk.Template.Child('card_page_authors_label')
-    card_page_status_server_label = Gtk.Template.Child('card_page_status_server_label')
-    card_page_add_read_button = Gtk.Template.Child('card_page_add_read_button')
-    card_page_genres_label = Gtk.Template.Child('card_page_genres_label')
-    card_page_scanlators_label = Gtk.Template.Child('card_page_scanlators_label')
-    card_page_chapters_label = Gtk.Template.Child('card_page_chapters_label')
-    card_page_last_chapter_label = Gtk.Template.Child('card_page_last_chapter_label')
-    card_page_synopsis_label = Gtk.Template.Child('card_page_synopsis_label')
-
     def __init__(self, window):
         Gtk.Stack.__init__(self)
 
@@ -68,14 +55,8 @@ class Explorer(Gtk.Stack):
 
         self.servers_page = ExplorerServersPage(self)
         self.search_page = ExplorerSearchPage(self)
-        self.card_page = ExplorerCardPage(self)
 
         self.window.stack.add_named(self, 'explorer')
-
-        self.adapt_to_width()
-
-    def adapt_to_width(self):
-        self.card_page.adapt_to_width()
 
     def build_server_row(self, data):
         # Used in `servers` and `search` (global search) pages
@@ -206,17 +187,6 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
             self.show_page('servers')
 
-        elif self.page == 'card':
-            self.card_page.manga_slug = None
-
-            if self.servers_page.preselection:
-                self.show_page('servers')
-            else:
-                self.show_page('search')
-
-    def on_resize(self):
-        self.adapt_to_width()
-
     def show(self, transition=True, servers=None, reset=True):
         if reset:
             self.server = None
@@ -238,6 +208,7 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
         self.window.show_page('explorer', transition=transition)
 
     def show_page(self, name):
+        self.window.activity_indicator.stop()
         self.title_stack.set_visible_child_name(name)
         self.set_visible_child_name(name)
 
@@ -251,14 +222,11 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
             if self.page == 'servers':
                 self.search_page.show()
 
-        elif name == 'card':
-            self.card_page.show()
-
         if name == 'servers' or (name == 'search' and not self.search_page.global_search_mode and self.server.id != 'local'):
             self.window.right_button_stack.set_visible_child_name('explorer.' + name)
             self.window.right_button_stack.set_visible(True)
         else:
-            # `Search` (in global mode), Search when server is local and `Card` pages doesn't have a right button in headerbar
+            # `Search` page in global mode or when server is Local don't have a right button in headerbar
             self.window.right_button_stack.set_visible(False)
 
         self.page = name
