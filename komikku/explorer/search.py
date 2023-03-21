@@ -15,7 +15,6 @@ from komikku.models import create_db_connection
 from komikku.models import Manga
 from komikku.models import Settings
 from komikku.servers import LANGUAGES
-from komikku.utils import html_escape
 from komikku.utils import log_error_traceback
 
 
@@ -619,15 +618,14 @@ class ExplorerSearchPage:
             if has_search:
                 self.searchentry.props.placeholder_text = _('Search {}').format(self.parent.server.name)
                 self.searchentry.set_text('')
-                self.search_intro_status_page.set_title(_('Search by name in the server catalog'))
+                self.search_intro_status_page.set_title(_('Search for Reading'))
                 if self.parent.server.id == 'local':
                     description = _('Empty search is allowed.')
                 else:
-                    description = _("""Alternatively, if you cannot find by name, you can look up using the following format:
-id:<id from comic URL>""")
-                if self.search_filters:
-                    description += '\n\n' + _('This server accepts search filters.')
-                self.search_intro_status_page.set_description(html_escape(description))
+                    description = _("""Alternatively, you can look up specific comics using the syntax:
+
+<b>id:ID from comic URL</b>""")
+                self.search_intro_status_page.set_description(description)
                 self.search_stack.set_visible_child_name('intro')
 
             if has_search:

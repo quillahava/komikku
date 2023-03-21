@@ -25,6 +25,10 @@ install_data (
 )
 
 install_data (
+    'computer-fail-symbolic.svg',
+    install_dir: symbolic_dir
+)
+install_data (
     'explore-symbolic.svg',
     install_dir: symbolic_dir
 )

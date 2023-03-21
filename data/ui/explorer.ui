@@ -193,6 +193,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                             <property name="name">no_results</property>
                                             <property name="child">
                                               <object class="AdwStatusPage" id="search_page_search_no_results_status_page">
+                                                <property name="icon-name">computer-fail-symbolic</property>
                                               </object>
                                             </property>
                                           </object>
@@ -223,6 +224,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                             <property name="name">intro</property>
                                             <property name="child">
                                               <object class="AdwStatusPage" id="search_page_search_intro_status_page">
+                                                <property name="icon-name">system-search-symbolic</property>
                                               </object>
                                             </property>
                                           </object>
@@ -284,6 +286,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                         <property name="name">no_results</property>
                                         <property name="child">
                                           <object class="AdwStatusPage" id="search_page_most_populars_no_results_status_page">
+                                            <property name="icon-name">computer-fail-symbolic</property>
                                             <property name="child">
                                               <object class="GtkButton">
                                                 <property name="label" translatable="yes">Retry</property>
@@ -374,6 +377,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                         <property name="name">no_results</property>
                                         <property name="child">
                                           <object class="AdwStatusPage" id="search_page_latest_updates_no_results_status_page">
+                                            <property name="icon-name">computer-fail-symbolic</property>
                                             <property name="child">
                                               <object class="GtkButton">
                                                 <property name="label" translatable="yes">Retry</property>
