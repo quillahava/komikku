@@ -79,6 +79,7 @@ CREDITS = dict(
         'GrownNed (Russian)',
         'Mek101 (Italian)',
         'VaGNaroK (Brazilian Portuguese)',
+        'Infinitive Witch (Brazilian Portuguese)',
     ),
 )
 
