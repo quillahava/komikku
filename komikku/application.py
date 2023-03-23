@@ -474,11 +474,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] Webtoon pager: Removed unwanted scrolling when clicking on 'Retry' button of a page</li>
-                <li>[Servers] FMTEAM: Fixed logo</li>
-                <li>[Servers] Komga: Update</li>
-                <li>[Servers] Viz: Update</li>
-                <li>[Servers] Zero Scans: Reactivation</li>
+                <li>[Explorer] Added ability to read from search results (new settings have been added in Preferences to manage cached data)</li>
+                <li>[Reader] Fixed memory leaks</li>
+                <li>[Servers] WEBTOON: Update</li>
+                <li>[L10n] New Finnish and Indonesian translations</li>
+                <li>[L10n] Update Portuguese (Brazil) and Spanish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)
