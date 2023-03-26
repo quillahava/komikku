@@ -8,8 +8,14 @@ import platform
 
 gi.require_version('Adw', '1')
 gi.require_version('Gtk', '4.0')
-gi.require_version('WebKit2', '5.0')
 gi.require_version('Soup', '3.0')
+
+try:
+    gi.require_version('WebKit', '6.0')
+    from gi.repository import WebKit
+except ValueError:
+    gi.require_version('WebKit2', '5.0')
+    from gi.repository import WebKit2 as WebKit
 
 from gi.repository import Adw
 from gi.repository import Gdk
@@ -17,7 +23,6 @@ from gi.repository import GLib
 from gi.repository import Gsk
 from gi.repository import Gtk
 from gi.repository import Soup
-from gi.repository import WebKit2
 
 from komikku.models.database import VERSION as DB_VERSION
 from komikku.utils import check_cmdline_tool
@@ -120,7 +125,7 @@ class DebugInfo:
         info += f'- GLib: {GLib.MAJOR_VERSION}.{GLib.MINOR_VERSION}.{GLib.MICRO_VERSION}\n'
         info += f'- GTK: {Gtk.MAJOR_VERSION}.{Gtk.MINOR_VERSION}.{Gtk.MICRO_VERSION}\n'
         info += f'- Awaita: {Adw.MAJOR_VERSION}.{Adw.MINOR_VERSION}.{Adw.MICRO_VERSION}\n'
-        info += f'- WebKitGTK: {WebKit2.MAJOR_VERSION}.{WebKit2.MINOR_VERSION}.{WebKit2.MICRO_VERSION}\n'
+        info += f'- WebKitGTK: {WebKit.MAJOR_VERSION}.{WebKit.MINOR_VERSION}.{WebKit.MICRO_VERSION}\n'
         info += f'- Soup: {Soup.MAJOR_VERSION}.{Soup.MINOR_VERSION}.{Soup.MICRO_VERSION}\n'
         info += '\n'
 
@@ -128,7 +133,7 @@ class DebugInfo:
         info += f'- GLib: {GLib.glib_version[0]}.{GLib.glib_version[1]}.{GLib.glib_version[2]}\n'
         info += f'- GTK: {Gtk.get_major_version()}.{Gtk.get_minor_version()}.{Gtk.get_micro_version()}\n'
         info += f'- Awaita: {Adw.get_major_version()}.{Adw.get_minor_version()}.{Adw.get_micro_version()}\n'
-        info += f'- WebKitGTK: {WebKit2.get_major_version()}.{WebKit2.get_minor_version()}.{WebKit2.get_micro_version()}\n'
+        info += f'- WebKitGTK: {WebKit.get_major_version()}.{WebKit.get_minor_version()}.{WebKit.get_micro_version()}\n'
         info += f'- Soup: {Soup.get_major_version()}.{Soup.get_minor_version()}.{Soup.get_micro_version()}\n'
         info += '\n'
 

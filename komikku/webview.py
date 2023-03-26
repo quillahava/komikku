@@ -12,13 +12,19 @@ import platform
 import requests
 import time
 
-gi.require_version('WebKit2', '5.0')
+try:
+    gi.require_version('WebKit', '6.0')
+    from gi.repository import WebKit
+    IS_WEBKITGTK6 = True
+except ValueError:
+    gi.require_version('WebKit2', '5.0')
+    from gi.repository import WebKit2 as WebKit
+    IS_WEBKITGTK6 = False
 
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository import WebKit2
 
 from komikku.servers.exceptions import CfBypassError
 from komikku.utils import get_cache_dir
@@ -49,17 +55,20 @@ class Webview(Gtk.ScrolledWindow):
         self.get_hscrollbar().set_visible(False)
         self.get_vscrollbar().set_visible(False)
 
-        self.webkit_webview = WebKit2.WebView()
+        self.webkit_webview = WebKit.WebView()
         self.set_child(self.webkit_webview)
 
-        self.web_context = self.webkit_webview.get_context()
-        self.web_context.set_cache_model(WebKit2.CacheModel.DOCUMENT_VIEWER)
-        self.web_context.set_tls_errors_policy(WebKit2.TLSErrorsPolicy.IGNORE)
-        self.web_context.get_cookie_manager().set_persistent_storage(
+        self.webkit_webview.get_context().set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER)
+        if IS_WEBKITGTK6:
+            self.session_or_context = self.webkit_webview.get_network_session()
+        else:
+            self.session_or_context = self.webkit_webview.get_context()
+        self.session_or_context.set_tls_errors_policy(WebKit.TLSErrorsPolicy.IGNORE)
+        self.session_or_context.get_cookie_manager().set_persistent_storage(
             os.path.join(get_cache_dir(), 'WebKitPersistentStorage.sqlite'),
-            WebKit2.CookiePersistentStorage.SQLITE
+            WebKit.CookiePersistentStorage.SQLITE
         )
-        self.web_context.get_cookie_manager().set_accept_policy(WebKit2.CookieAcceptPolicy.ALWAYS)
+        self.session_or_context.get_cookie_manager().set_accept_policy(WebKit.CookieAcceptPolicy.ALWAYS)
 
         self.window.stack.add_named(self, 'webview')
 
@@ -183,7 +192,7 @@ def bypass_cf(func):
             nonlocal cf_reload_count
             nonlocal error
 
-            if event != WebKit2.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
+            if event != WebKit.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
                 # Challenge has been passed
 
                 # Disable images auto-load
@@ -192,7 +201,7 @@ def bypass_cf(func):
                 # Exit from webview
                 webview.navigate_back(None)
 
-            if event != WebKit2.LoadEvent.FINISHED:
+            if event != WebKit.LoadEvent.FINISHED:
                 return
 
             cf_reload_count += 1
@@ -239,7 +248,7 @@ def bypass_cf(func):
                 return
 
             logger.debug(f'{server.id}: Page loaded, getting cookies...')
-            cookie_manager = webview.web_context.get_cookie_manager()
+            cookie_manager = webview.session_or_context.get_cookie_manager()
             cookie_manager.get_cookies(server.base_url, None, on_get_cookies_finish, None)
 
         def on_get_cookies_finish(cookie_manager, result, user_data):
@@ -321,7 +330,7 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
         webview.close()
 
     def on_load_changed(_webkit_webview, event):
-        if event != WebKit2.LoadEvent.FINISHED:
+        if event != WebKit.LoadEvent.FINISHED:
             return
 
         if wait_js_code:
