@@ -10,19 +10,18 @@ gi.require_version('Adw', '1')
 gi.require_version('Gtk', '4.0')
 gi.require_version('Soup', '3.0')
 
-try:
-    gi.require_version('WebKit', '6.0')
-    from gi.repository import WebKit
-except ValueError:
-    gi.require_version('WebKit2', '5.0')
-    from gi.repository import WebKit2 as WebKit
-
 from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import Gsk
 from gi.repository import Gtk
 from gi.repository import Soup
+try:
+    gi.require_version('WebKit', '6.0')
+    from gi.repository import WebKit
+except ValueError:
+    gi.require_version('WebKit2', '5.0')
+    from gi.repository import WebKit2 as WebKit
 
 from komikku.models.database import VERSION as DB_VERSION
 from komikku.utils import check_cmdline_tool

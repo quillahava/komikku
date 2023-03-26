@@ -62,7 +62,7 @@ Komikku can be built in a Python virtual environment. However, some tools and de
     # Install system dependencies
     apt install make meson gettext appstream-util desktop-file-utils
     apt install python3 python3-dev python3-venv
-    apt install libadwaita-1-dev libcairo2-dev libnotify-dev libmagic1 libwebkit2gtk-5.0-0
+    apt install libadwaita-1-dev libcairo2-dev libnotify-dev libmagic1 libwebkitgtk-6.0-4
     ```
 
 2. Clone the repository:

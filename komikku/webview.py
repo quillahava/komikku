@@ -12,6 +12,10 @@ import platform
 import requests
 import time
 
+from gi.repository import Gio
+from gi.repository import GLib
+from gi.repository import GObject
+from gi.repository import Gtk
 try:
     gi.require_version('WebKit', '6.0')
     from gi.repository import WebKit
@@ -20,11 +24,6 @@ except ValueError:
     gi.require_version('WebKit2', '5.0')
     from gi.repository import WebKit2 as WebKit
     IS_WEBKITGTK6 = False
-
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
 
 from komikku.servers.exceptions import CfBypassError
 from komikku.utils import get_cache_dir
@@ -227,7 +226,10 @@ def bypass_cf(func):
                     }
                 }, 100);
             """
-            webview.webkit_webview.run_javascript(js, None, None)
+            if IS_WEBKITGTK6:
+                webview.webkit_webview.evaluate_javascript(js, -1)
+            else:
+                webview.webkit_webview.run_javascript(js, None, None)
 
         def on_load_failed(_webkit_webview, _event, uri, _gerror):
             nonlocal error
@@ -318,11 +320,16 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
         nonlocal error
         nonlocal html
 
-        js_result = webview.webkit_webview.run_javascript_finish(result)
-        if js_result:
-            js_value = js_result.get_js_value()
-            if js_value:
-                html = js_value.to_string()
+        if IS_WEBKITGTK6:
+            js_result = webview.webkit_webview.evaluate_javascript_finish(result)
+            if js_result:
+                html = js_result.to_string()
+        else:
+            js_result = webview.webkit_webview.run_javascript_finish(result)
+            if js_result:
+                js_value = js_result.get_js_value()
+                if js_value:
+                    html = js_value.to_string()
 
         if html is None:
             error = f'Failed to get chapter page html: {url}'
@@ -335,9 +342,15 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
 
         if wait_js_code:
             # Wait that everything needed has been loaded
-            webview.webkit_webview.run_javascript(wait_js_code, None, None, None)
+            if IS_WEBKITGTK6:
+                webview.webkit_webview.evaluate_javascript(wait_js_code, -1)
+            else:
+                webview.webkit_webview.run_javascript(wait_js_code, None, None, None)
         else:
-            webview.webkit_webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
+            if IS_WEBKITGTK6:
+                webview.webkit_webview.evaluate_javascript('document.documentElement.outerHTML', -1, None, None, None, on_get_html_finish)
+            else:
+                webview.webkit_webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
 
     def on_load_failed(_webkit_webview, _event, _uri, gerror):
         nonlocal error
@@ -351,7 +364,11 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
 
         if webview.webkit_webview.props.title == 'ready':
             # Everything we need has been loaded, we can retrieve page HTML
-            webview.webkit_webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
+            if IS_WEBKITGTK6:
+                webview.webkit_webview.evaluate_javascript('document.documentElement.outerHTML', -1, None, None, None, on_get_html_finish)
+            else:
+                webview.webkit_webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
+
         elif webview.webkit_webview.props.title == 'abort':
             error = f'Failed to get chapter page html: {url}'
             webview.close()
