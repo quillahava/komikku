@@ -3,36 +3,31 @@
 # Author: Liliana Prikler <liliana.prikler@gmail.com>
 
 from bs4 import BeautifulSoup
-import cloudscraper
 import json
 
 from komikku.servers import Server
-from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
+from komikku.webview import bypass_cf
 
 IMAGES_EXTS = dict(g='gif', j='jpg', p='png')
-SERVER_NAME = 'NHentai'
 
 
 class Nhentai(Server):
     id = 'nhentai'
-    name = SERVER_NAME
+    name = 'NHentai'
     lang = 'en'
     lang_code = 'english'
     is_nsfw_only = True
-    status = 'disabled'  # Use Cloudflare with version 2 challenge
+
+    has_cf = True
 
     base_url = 'https://nhentai.net'
     search_url = base_url + '/search'
     manga_url = base_url + '/g/{0}'
     page_image_url = 'https://i.nhentai.net/galleries/{0}/{1}'
 
-    def __init__(self):
-        if self.session is None:
-            self.session = cloudscraper.create_scraper()
-            self.session.headers.update({'user-agent': USER_AGENT})
-
+    @bypass_cf
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -89,6 +84,7 @@ class Nhentai(Server):
 
         return data
 
+    @bypass_cf
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
         Returns manga chapter data by scraping chapter HTML page content
@@ -151,12 +147,6 @@ class Nhentai(Server):
         """
         return self.manga_url.format(slug)
 
-    def get_most_populars(self):
-        """
-        Returns most popular mangas (bayesian rating)
-        """
-        return self._search_common({'q': 'language:' + self.lang_code, 'sort': 'popular'})
-
     def _search_common(self, params):
         r = self.session_get(self.search_url, params=params)
 
@@ -173,13 +163,21 @@ class Nhentai(Server):
                         slug=a_element.get('href').rstrip('/').split('/')[-1],
                         name=caption_element.text.strip(),
                     ))
-
-                return results
             except Exception:
                 return None
+            else:
+                return results
 
         return None
 
+    @bypass_cf
+    def get_most_populars(self):
+        """
+        Returns most popular mangas (bayesian rating)
+        """
+        return self._search_common({'q': 'language:' + self.lang_code, 'sort': 'popular'})
+
+    @bypass_cf
     def search(self, term):
         term = term + ' language:' + self.lang_code
         return self._search_common({'q': term})
