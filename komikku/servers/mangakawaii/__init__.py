@@ -380,10 +380,10 @@ class Mangakawaii(Server):
                         slug=item['slug'],
                         name=item['value'],
                     ))
-
-                return results
             except Exception:
                 return None
+            else:
+                return results
 
         return None
 

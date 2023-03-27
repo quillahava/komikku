@@ -62,8 +62,8 @@ def check_db():
             fk_violations = len(db_conn.execute('PRAGMA foreign_key_check').fetchall())
 
             ret = res[0] == 'ok' and fk_violations == 0
-        except sqlite3.DatabaseError as e:
-            logger.error(e)
+        except sqlite3.DatabaseError:
+            logger.exception('Failed to check DB')
             ret = False
 
         db_conn.close()
@@ -115,10 +115,11 @@ def execute_sql(conn, sql):
         c.execute(sql)
         conn.commit()
         c.close()
-        return True
     except Exception as e:
         print('SQLite-error:', e)
         return False
+    else:
+        return True
 
 
 @cache
@@ -375,10 +376,11 @@ def delete_rows(db_conn, table, ids):
 
     try:
         db_conn.executemany(sql, seq)
-        return True
     except Exception as e:
         print('SQLite-error:', e, ids)
         return False
+    else:
+        return True
 
 
 def insert_row(db_conn, table, data):
@@ -387,10 +389,11 @@ def insert_row(db_conn, table, data):
             'INSERT INTO {0} ({1}) VALUES ({2})'.format(table, ', '.join(data.keys()), ', '.join(['?'] * len(data))),
             tuple(data.values())
         )
-        return cursor.lastrowid
     except Exception as e:
         print('SQLite-error:', e, data)
         return None
+    else:
+        return cursor.lastrowid
 
 
 def insert_rows(db_conn, table, data):
@@ -402,10 +405,11 @@ def insert_rows(db_conn, table, data):
 
     try:
         db_conn.executemany(sql, seq)
-        return True
     except Exception as e:
         print('SQLite-error:', e, data)
         return False
+    else:
+        return True
 
 
 def update_row(db_conn, table, id, data):
@@ -414,10 +418,11 @@ def update_row(db_conn, table, id, data):
             'UPDATE {0} SET {1} WHERE id = ?'.format(table, ', '.join(k + ' = ?' for k in data)),
             tuple(data.values()) + (id,)
         )
-        return True
     except Exception as e:
         print('SQLite-error:', e, data)
         return False
+    else:
+        return True
 
 
 def update_rows(db_conn, table, ids, data):
@@ -429,10 +434,11 @@ def update_rows(db_conn, table, ids, data):
 
     try:
         db_conn.executemany(sql, seq)
-        return True
     except Exception as e:
         print('SQLite-error:', e, data)
         return False
+    else:
+        return True
 
 
 class Manga:

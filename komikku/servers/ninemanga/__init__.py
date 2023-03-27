@@ -245,10 +245,10 @@ class Ninemanga(Server):
                         slug=item[2],
                         name=item[1],
                     ))
-
-                return results
             except Exception:
                 return None
+            else:
+                return results
 
         return None
 

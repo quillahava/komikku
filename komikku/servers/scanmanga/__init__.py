@@ -297,9 +297,9 @@ class Scanmanga(Server):
                         name=item[0],
                         cover=self.cover_url.format(item[4]),
                     ))
-
-                return results
             except Exception:
                 return None
+            else:
+                return results
 
         return None

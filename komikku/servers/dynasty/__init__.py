@@ -338,10 +338,10 @@ class Dynasty(Server):
                         slug=a_element.get('href').lstrip('/'),
                         name=a_element.text.strip(),
                     ))
-
-            return results
         except Exception:
             return None
+        else:
+            return results
 
     def get_latest_updates(self, classes=None, with_tags='', without_tags=''):
         with_tags = [t.strip() for t in with_tags.split(',') if t]

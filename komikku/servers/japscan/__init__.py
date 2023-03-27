@@ -273,10 +273,10 @@ class Japscan(Server):
                         slug=item['url'].split('/')[-2],
                         name=item['name'],
                     ))
-
-                return results
             except Exception:
                 pass
+            else:
+                return results
 
         # Use DuckDuckGo Lite as fallback
         results = []

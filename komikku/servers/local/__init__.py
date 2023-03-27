@@ -39,7 +39,7 @@ class Archive:
             elif rarfile.is_rarfile(path):
                 self.obj = CBR(path)
         except Exception:
-            logger.error(f'Bad/corrupt archive: {path}')
+            logger.exception(f'Bad/corrupt archive: {path}')
             raise ArchiveError
 
     def __enter__(self):
@@ -104,12 +104,12 @@ class CBR:
         except rarfile.NoRarEntry as e:
             logger.info(f'{self.path}: {e}')
             return None
-        except rarfile.RarCannotExec as e:
-            logger.error(e)
+        except rarfile.RarCannotExec:
+            logger.exception('Failed to execute unrar command')
             raise ArchiveUnrarMissingError
         except Exception as e:
             logger.info(f'{self.path}: {e}')
-            raise ServerException(e)
+            raise ServerException(e) from e
 
 
 class CBZ:
@@ -133,7 +133,7 @@ class CBZ:
             return None
         except Exception as e:
             logger.info(f'{self.path}: {e}')
-            raise ServerException(e)
+            raise ServerException(e) from e
 
 
 class Local(Server):
@@ -211,8 +211,8 @@ class Local(Server):
                                 path=path,
                                 name=names[0],
                             )
-                except Exception as e:
-                    logger.error(e)
+                except Exception:
+                    logger.exception(f'Failed to retrieve chapters of {data["name"]}')
 
         return data
 

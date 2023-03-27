@@ -38,10 +38,10 @@ def check_cmdline_tool(cmd):
     try:
         p = subprocess.Popen(cmd, bufsize=0, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
         out, _ = p.communicate()
-
-        return p.returncode == 0, out.decode('utf-8').strip()
     except Exception:
         return False, None
+    else:
+        return p.returncode == 0, out.decode('utf-8').strip()
 
 
 def create_picture_from_data(data, static_animation=False, subdivided=False):

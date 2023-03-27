@@ -296,10 +296,10 @@ class MyMangaReaderCMS(Server):
                         slug=item['data'],
                         name=item['value'],
                     ))
-
-                return results
             except Exception:
                 return None
+            else:
+                return results
 
         return None
 

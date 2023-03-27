@@ -77,7 +77,7 @@ class Mangalib(Server):
                 data['authors'] = [
                     author.text.strip()
                     for author in value_element.find_all('a')
-                    if not author.text.strip() in data['authors']
+                    if author.text.strip() not in data['authors']
                 ]
             elif label.startswith('Переводчик'):
                 data['scanlators'] = [scanlator.text.strip() for scanlator in value_element.find_all('a')]
