@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: ISO-morphism <me@iso-morphism.name>
 
-import cloudscraper
 from functools import wraps
 import json
 import logging
+import requests
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
@@ -50,7 +50,7 @@ class Mangahub(Server):
         self.api_key = None
 
         if self.session is None:
-            self.session = cloudscraper.create_scraper()
+            self.session = requests.Session()
             self.session.headers = {
                 'User-Agent': USER_AGENT,
             }

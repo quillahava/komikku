@@ -1,6 +1,5 @@
 beautifulsoup4
 brotli
-cloudscraper
 dateparser >= 1.1.4
 emoji
 keyring >= 21.6.0
@@ -12,4 +11,5 @@ pure-protobuf
 PyGObject
 python_magic
 rarfile
+requests
 Unidecode

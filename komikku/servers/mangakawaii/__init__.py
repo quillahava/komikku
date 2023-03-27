@@ -3,7 +3,6 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from bs4 import BeautifulSoup
-import cloudscraper
 from functools import wraps
 import json
 import requests
@@ -53,7 +52,7 @@ class Mangakawaii(Server):
 
     def __init__(self):
         if self.session is None:
-            self.session = cloudscraper.create_scraper()
+            self.session = requests.Session()
             cookie = requests.cookies.create_cookie(
                 name='mk_search_type',
                 value='manga',
