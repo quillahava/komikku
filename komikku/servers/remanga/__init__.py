@@ -5,6 +5,7 @@
 import logging
 import re
 import requests
+from urllib.parse import urlparse
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
@@ -21,7 +22,7 @@ class Remanga(Server):
     name = 'Remanga'
     lang = 'ru'
 
-    base_url = 'https://xn--80aaig9ahr.xn--c1avg'
+    base_url = 'https://xn--80aaig9ahr.xn--c1avg/'
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/{1}'
     api_base_url = 'https://api.xn--80aaig9ahr.xn--c1avg'
@@ -34,8 +35,11 @@ class Remanga(Server):
         if self.session is None:
             self.session = requests.Session()
             self.session.headers = {
+                'Host': urlparse(self.base_url).netloc,
+                'Referer': self.base_url,
                 'User-Agent': USER_AGENT,
             }
+            self.session_get(self.base_url)
 
     def get_manga_data(self, initial_data):
         """
@@ -162,7 +166,12 @@ class Remanga(Server):
         """
         Returns chapter page scan (image) content
         """
-        r = self.session_get(page['image'], headers={'Referer': self.chapter_url.format(manga_slug, chapter_slug)})
+        r = self.session_get(
+            page['image'],
+            headers={
+                'Host': urlparse(page['image']).netloc,
+            }
+        )
         if r.status_code != 200:
             return None
 
@@ -186,11 +195,13 @@ class Remanga(Server):
         r = self.session_get(
             self.api_manga_list_url,
             params={
-                'ordering': '-rating' if orderby == 'populars' else '-chapter_date',
                 'count': 50,
+                'exclude_bookmarks': '',
+                'ordering': '-views' if orderby == 'populars' else '-chapter_date',
+                'page': 1,
             },
             headers={
-                'content-type': 'application/json',
+                'Content-Type': 'application/json',
             }
         )
         if r.status_code != 200:
