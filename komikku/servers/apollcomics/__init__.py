@@ -11,5 +11,5 @@ class Apollcomics(Madara):
     lang = 'es'
     is_nsfw = True
 
-    base_url = 'https://apollcomics.xyz'
+    base_url = 'https://apollcomics.com'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
