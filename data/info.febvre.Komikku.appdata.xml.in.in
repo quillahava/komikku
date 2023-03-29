@@ -91,6 +91,22 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.17.0" date="2023-03-29">
+            <description>
+                <ul>
+                    <li>[Servers] NHentai: Reactivation</li>
+                    <li>[Servers] 3asq: Update</li>
+                    <li>[Servers] Apoll Comics: Update</li>
+                    <li>[Servers] Asura Scans [EN/TR]: Update</li>
+                    <li>[Servers] Phoenix Fansub: Update</li>
+                    <li>[Servers] Rawkuma: Update</li>
+                    <li>[Servers] Remanga: Update</li>
+                    <li>[L10n] Update Dutch, Finnish, Indonesian, Portuguese (Brazil), Russian and Spanish translations</li>
+                    <li>Switch to GNOME 44 runtime: GTK 4.10.1, Adwaita 1.3.1, WebKitGTK 6.0</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.16.0" date="2023-03-24">
             <description>
                 <ul>

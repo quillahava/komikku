@@ -71,15 +71,18 @@ CREDITS = dict(
         'Valéry Febvre (French)',
         'Óscar Fernández Díaz (Spanish)',
         'Rafael Fontenelle (Brazilian Portuguese)',
+        'Jiri Grönroos (Finnish)',
         'Mariusz Kurek (Polish)',
         'Liliana Prikler (German)',
+        'Alifiyan Rosyidi (Indonesian)',
         'Heimen Stoffels (Dutch)',
         'Irénée Thirion (French)',
         'Sabri Ünal (Turkish)',
         'GrownNed (Russian)',
-        'Mek101 (Italian)',
-        'VaGNaroK (Brazilian Portuguese)',
         'Infinitive Witch (Brazilian Portuguese)',
+        'Mek101 (Italian)',
+        'Shima (Russian)',
+        'VaGNaroK (Brazilian Portuguese)',
     ),
 )
 
@@ -475,11 +478,15 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Explorer] Added ability to read from search results (new settings have been added in Preferences to manage cached data)</li>
-                <li>[Reader] Fixed memory leaks</li>
-                <li>[Servers] WEBTOON: Update</li>
-                <li>[L10n] New Finnish and Indonesian translations</li>
-                <li>[L10n] Update Portuguese (Brazil) and Spanish translations</li>
+                <li>[Servers] NHentai: Reactivation</li>
+                <li>[Servers] 3asq: Update</li>
+                <li>[Servers] Apoll Comics: Update</li>
+                <li>[Servers] Asura Scans [EN/TR]: Update</li>
+                <li>[Servers] Phoenix Fansub: Update</li>
+                <li>[Servers] Rawkuma: Update</li>
+                <li>[Servers] Remanga: Update</li>
+                <li>[L10n] Update Dutch, Finnish, Indonesian, Portuguese (Brazil), Russian and Spanish translations</li>
+                <li>Switch to GNOME 44 runtime: GTK 4.10.1, Adwaita 1.3.1, WebKitGTK 6.0</li>
             </ul>
             <p>Happy reading.</p>
         """)
