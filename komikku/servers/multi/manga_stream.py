@@ -183,7 +183,7 @@ class MangaStream(Server):
         Currently, only pages are expected.
         """
         r = self.session_get(
-            self.chapter_url.format(manga_slug, chapter_slug),
+            self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug),
             headers={
                 'Referer': self.manga_url.format(manga_slug),
             })
@@ -248,7 +248,7 @@ class MangaStream(Server):
         Returns chapter page scan (image) content
         """
         headers = {
-            'Referer': self.chapter_url.format(manga_slug, chapter_slug),
+            'Referer': self.chapter_url.format(manga_slug=manga_slug, chapter_slug=chapter_slug),
         }
         if page['slug']:
             r = self.session_get(self.page_image_url.format(manga_slug, chapter_slug, page['slug']), headers=headers)
