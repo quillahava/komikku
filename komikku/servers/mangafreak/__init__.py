@@ -23,7 +23,7 @@ class Mangafreak(Server):
 
     has_cf = True
 
-    base_url = 'https://w14.mangafreak.net'
+    base_url = 'https://w15.mangafreak.net'
     most_populars_url = base_url
     latest_updates_url = base_url + '/Latest_Releases'
     search_url = base_url + '/Search/{term}'
@@ -70,7 +70,7 @@ class Mangafreak(Server):
         details_container_element = soup.find('div', class_='manga_series_data')
 
         # Name & cover
-        data['name'] = details_container_element.h5.text.strip()
+        data['name'] = details_container_element.h1.text.strip()
         data['cover'] = soup.find('div', class_='manga_series_image').img.get('src')
 
         # Details
