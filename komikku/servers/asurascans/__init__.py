@@ -13,7 +13,7 @@ class Asurascans(MangaStream):
     base_url = 'https://www.asurascans.com'
     search_url = base_url + '/manga/'
     manga_url = base_url + '/manga/{0}/'
-    chapter_url = base_url + '/{0}/'  # manga slug is not used
+    chapter_url = base_url + '/{chapter_slug}/'  # manga slug is not used
 
     name_selector = '.entry-title'
     thumbnail_selector = '.thumb img'
@@ -34,7 +34,7 @@ class Asurascans_tr(MangaStream):
     base_url = 'https://asurascanstr.com'
     search_url = base_url + '/manga/'
     manga_url = base_url + '/manga/{0}/'
-    chapter_url = base_url + '/{0}/'  # manga slug is not used
+    chapter_url = base_url + '/{chapter_slug}/'  # manga slug is not used
 
     name_selector = '.entry-title'
     thumbnail_selector = '.thumb img'
