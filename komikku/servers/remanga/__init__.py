@@ -39,7 +39,6 @@ class Remanga(Server):
                 'Referer': self.base_url,
                 'User-Agent': USER_AGENT,
             }
-            self.session_get(self.base_url)
 
     def get_manga_data(self, initial_data):
         """
