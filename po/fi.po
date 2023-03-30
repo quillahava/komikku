@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.12.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-23 00:51+0100\n"
-"PO-Revision-Date: 2023-03-25 23:38+0000\n"
+"PO-Revision-Date: 2023-03-31 06:40+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/komikku/main/fi/>"
 "\n"
@@ -3058,11 +3058,11 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:455
 msgid "Clear chapters cache and database"
-msgstr ""
+msgstr "Tyhjennä kappaleiden välimuisti ja tietokanta"
 
 #: ../data/ui/preferences.ui:461
 msgid "Clear chapters cache and database on application close"
-msgstr ""
+msgstr "Tyhjennä kappaleiden välimuisti ja tietokanta sovelluksen sulkeutuessa"
 
 #: ../data/ui/preferences.ui:451
 msgid "Credentials storage"
@@ -3420,7 +3420,7 @@ msgstr "Etsi {}"
 
 #: ../komikku/explorer/search.py:621
 msgid "Search for Reading"
-msgstr ""
+msgstr "Etsi lukemista"
 
 #: ../komikku/explorer/search.py:621
 msgid "Empty search is allowed."
@@ -3559,15 +3559,15 @@ msgstr "Asetukset"
 
 #: ../komikku/preferences.py:125
 msgid "Clear?"
-msgstr ""
+msgstr "Tyhjennetäänkö?"
 
 #: ../komikku/preferences.py:126
 msgid "Are you sure you want to clear chapters cache and database?"
-msgstr ""
+msgstr "Haluatko varmasti tyhjentää kappaleiden välimuistin ja tietokannan?"
 
 #: ../komikku/preferences.py:127
 msgid "Clear"
-msgstr ""
+msgstr "Tyhjennä"
 
 #: ../komikku/preferences.py:123
 msgid "Disable animations?"
