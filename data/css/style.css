@@ -13,8 +13,6 @@ headerbar label {
 searchbar > revealer > box {
     padding-left: 0px;
     padding-right: 0px;
-    margin-left: -6px;
-    margin-right: -6px;
 }
 
 .suggested2-action {
