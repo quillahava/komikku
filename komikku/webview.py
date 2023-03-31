@@ -11,26 +11,21 @@ import os
 import platform
 import requests
 import time
+import tzlocal
+
+gi.require_version('WebKit', '6.0')
 
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-try:
-    gi.require_version('WebKit', '6.0')
-    from gi.repository import WebKit
-    IS_WEBKITGTK6 = True
-except ValueError:
-    gi.require_version('WebKit2', '5.0')
-    from gi.repository import WebKit2 as WebKit
-    IS_WEBKITGTK6 = False
+from gi.repository import WebKit
 
 from komikku.servers.exceptions import CfBypassError
 from komikku.utils import get_cache_dir
 
 CF_RELOAD_MAX = 5
 DEBUG = False
-USER_AGENT = f'Mozilla/5.0 (X11; Linux {platform.machine()}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15'
 
 logger = logging.getLogger('komikku.webview')
 
@@ -41,6 +36,7 @@ class Webview(Gtk.ScrolledWindow):
     }
 
     lock = False
+    user_agent = None
 
     def __init__(self, window):
         self.__handlers_ids = []
@@ -54,21 +50,41 @@ class Webview(Gtk.ScrolledWindow):
         self.get_hscrollbar().set_visible(False)
         self.get_vscrollbar().set_visible(False)
 
-        self.webkit_webview = WebKit.WebView()
-        self.set_child(self.webkit_webview)
+        # User agent: Gnome Web like
+        cpu_arch = platform.machine()
+        session_type = GLib.getenv('XDG_SESSION_TYPE').capitalize()
+        system = GLib.get_os_info('NAME')
 
-        self.webkit_webview.get_context().set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER)
-        if IS_WEBKITGTK6:
-            self.session_or_context = self.webkit_webview.get_network_session()
-        else:
-            self.session_or_context = self.webkit_webview.get_context()
-        self.session_or_context.set_tls_errors_policy(WebKit.TLSErrorsPolicy.IGNORE)
-        self.session_or_context.get_cookie_manager().set_persistent_storage(
-            os.path.join(get_cache_dir(), 'WebKitPersistentStorage.sqlite'),
+        custom_part = f'{session_type}; {system}; Linux {cpu_arch}'
+        self.user_agent = f'Mozilla/5.0 ({custom_part}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15'
+
+        # WebKit WebView
+        self.settings = WebKit.Settings.new()
+        self.settings.set_enable_developer_extras(DEBUG)
+        self.settings.set_enable_webgl(True)
+        self.settings.set_enable_media_stream(True)
+
+        self.web_context = WebKit.WebContext(time_zone_override=tzlocal.get_localzone_name())
+        self.web_context.set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER)
+
+        self.network_session = WebKit.NetworkSession.new(
+            os.path.join(get_cache_dir(), 'webview', 'data'),
+            os.path.join(get_cache_dir(), 'webview', 'cache')
+        )
+        self.network_session.set_tls_errors_policy(WebKit.TLSErrorsPolicy.IGNORE)
+        self.network_session.get_cookie_manager().set_persistent_storage(
+            os.path.join(get_cache_dir(), 'webview', 'cookies.sqlite'),
             WebKit.CookiePersistentStorage.SQLITE
         )
-        self.session_or_context.get_cookie_manager().set_accept_policy(WebKit.CookieAcceptPolicy.ALWAYS)
+        self.network_session.get_cookie_manager().set_accept_policy(WebKit.CookieAcceptPolicy.ALWAYS)
 
+        self.webkit_webview = WebKit.WebView(
+            web_context=self.web_context,
+            network_session=self.network_session,
+            settings=self.settings
+        )
+
+        self.set_child(self.webkit_webview)
         self.window.stack.add_named(self, 'webview')
 
     def close(self, blank=True):
@@ -103,8 +119,7 @@ class Webview(Gtk.ScrolledWindow):
         if self.lock:
             return False
 
-        self.webkit_webview.get_settings().set_enable_developer_extras(DEBUG)
-        self.webkit_webview.get_settings().set_user_agent(user_agent or USER_AGENT)
+        self.webkit_webview.get_settings().set_user_agent(user_agent or self.user_agent)
         self.webkit_webview.get_settings().set_auto_load_images(True)
 
         self.lock = True
@@ -175,12 +190,8 @@ def bypass_cf(func):
         error = None
         webview = Gio.Application.get_default().window.webview
 
-        # Gnome Web user agent
-        cpu_arch = platform.machine()
-        user_agent = f'Mozilla/5.0 (X11; Linux {cpu_arch}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15'
-
         def load_page():
-            if not webview.open(url, user_agent=user_agent):
+            if not webview.open(url):
                 return True
 
             webview.connect_signal('load-changed', on_load_changed)
@@ -226,10 +237,7 @@ def bypass_cf(func):
                     }
                 }, 100);
             """
-            if IS_WEBKITGTK6:
-                webview.webkit_webview.evaluate_javascript(js, -1)
-            else:
-                webview.webkit_webview.run_javascript(js, None, None)
+            webview.webkit_webview.evaluate_javascript(js, -1)
 
         def on_load_failed(_webkit_webview, _event, uri, _gerror):
             nonlocal error
@@ -250,14 +258,13 @@ def bypass_cf(func):
                 return
 
             logger.debug(f'{server.id}: Page loaded, getting cookies...')
-            cookie_manager = webview.session_or_context.get_cookie_manager()
-            cookie_manager.get_cookies(server.base_url, None, on_get_cookies_finish, None)
+            webview.network_session.get_cookie_manager().get_cookies(server.base_url, None, on_get_cookies_finish, None)
 
         def on_get_cookies_finish(cookie_manager, result, user_data):
             nonlocal done
 
             server.session = requests.Session()
-            server.session.headers.update({'User-Agent': user_agent})
+            server.session.headers.update({'User-Agent': webview.user_agent})
 
             # Copy libsoup cookies in session cookies jar
             for cookie in cookie_manager.get_cookies_finish(result):
@@ -320,16 +327,9 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
         nonlocal error
         nonlocal html
 
-        if IS_WEBKITGTK6:
-            js_result = webview.webkit_webview.evaluate_javascript_finish(result)
-            if js_result:
-                html = js_result.to_string()
-        else:
-            js_result = webview.webkit_webview.run_javascript_finish(result)
-            if js_result:
-                js_value = js_result.get_js_value()
-                if js_value:
-                    html = js_value.to_string()
+        js_result = webview.webkit_webview.evaluate_javascript_finish(result)
+        if js_result:
+            html = js_result.to_string()
 
         if html is None:
             error = f'Failed to get chapter page html: {url}'
@@ -342,15 +342,9 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
 
         if wait_js_code:
             # Wait that everything needed has been loaded
-            if IS_WEBKITGTK6:
-                webview.webkit_webview.evaluate_javascript(wait_js_code, -1)
-            else:
-                webview.webkit_webview.run_javascript(wait_js_code, None, None, None)
+            webview.webkit_webview.evaluate_javascript(wait_js_code, -1)
         else:
-            if IS_WEBKITGTK6:
-                webview.webkit_webview.evaluate_javascript('document.documentElement.outerHTML', -1, None, None, None, on_get_html_finish)
-            else:
-                webview.webkit_webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
+            webview.webkit_webview.evaluate_javascript('document.documentElement.outerHTML', -1, None, None, None, on_get_html_finish)
 
     def on_load_failed(_webkit_webview, _event, _uri, gerror):
         nonlocal error
@@ -364,10 +358,7 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
 
         if webview.webkit_webview.props.title == 'ready':
             # Everything we need has been loaded, we can retrieve page HTML
-            if IS_WEBKITGTK6:
-                webview.webkit_webview.evaluate_javascript('document.documentElement.outerHTML', -1, None, None, None, on_get_html_finish)
-            else:
-                webview.webkit_webview.run_javascript('document.documentElement.outerHTML', None, on_get_html_finish, None)
+            webview.webkit_webview.evaluate_javascript('document.documentElement.outerHTML', -1, None, None, None, on_get_html_finish)
 
         elif webview.webkit_webview.props.title == 'abort':
             error = f'Failed to get chapter page html: {url}'

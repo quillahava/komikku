@@ -9,6 +9,7 @@ import platform
 gi.require_version('Adw', '1')
 gi.require_version('Gtk', '4.0')
 gi.require_version('Soup', '3.0')
+gi.require_version('WebKit', '6.0')
 
 from gi.repository import Adw
 from gi.repository import Gdk
@@ -16,12 +17,7 @@ from gi.repository import GLib
 from gi.repository import Gsk
 from gi.repository import Gtk
 from gi.repository import Soup
-try:
-    gi.require_version('WebKit', '6.0')
-    from gi.repository import WebKit
-except ValueError:
-    gi.require_version('WebKit2', '5.0')
-    from gi.repository import WebKit2 as WebKit
+from gi.repository import WebKit
 
 from komikku.models.database import VERSION as DB_VERSION
 from komikku.utils import check_cmdline_tool
@@ -29,9 +25,9 @@ from komikku.utils import check_cmdline_tool
 
 class DebugInfo:
     def __init__(self, app):
-        self.version = app.version
-        self.profile = app.profile
         self.app_id = app.application_id
+        self.profile = app.profile
+        self.version = app.version
 
     def get_flatpak_info(self):
         path = os.path.join(GLib.get_user_runtime_dir(), 'flatpak-info')
@@ -139,6 +135,7 @@ class DebugInfo:
         info += 'System:\n'
         info += f'- Name: {GLib.get_os_info("NAME")}\n'
         info += f'- Version: {GLib.get_os_info("VERSION") or "N/A"}\n'
+        info += f"- CPU arch: {platform.machine()}\n"
         info += '\n'
 
         if flatpak_info := self.get_flatpak_info():
