@@ -18,4 +18,4 @@ class Mangasorigines(Madara):
     base_url = 'https://mangas-origines.fr'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
     chapter_url = base_url + '/manga/{0}/{1}/'
-    bypass_cf_url = base_url + '/manga/111135-solo-leveling/'
+    bypass_cf_url = base_url + '/manga/sakamoto-days/'
