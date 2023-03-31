@@ -478,15 +478,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Servers] NHentai: Reactivation</li>
-                <li>[Servers] 3asq: Update</li>
-                <li>[Servers] Apoll Comics: Update</li>
-                <li>[Servers] Asura Scans [EN/TR]: Update</li>
-                <li>[Servers] Phoenix Fansub: Update</li>
-                <li>[Servers] Rawkuma: Update</li>
-                <li>[Servers] Remanga: Update</li>
-                <li>[L10n] Update Dutch, Finnish, Indonesian, Portuguese (Brazil), Russian and Spanish translations</li>
-                <li>Switch to GNOME 44 runtime: GTK 4.10.1, Adwaita 1.3.1, WebKitGTK 6.0</li>
+                <li>Fixed search entries appearance</li>
+                <li>Fixed webview</li>
+                <li>[Servers] Manga Freak: Update</li>
+                <li>[L10n] Updated Finnish translation</li>
             </ul>
             <p>Happy reading.</p>
         """)

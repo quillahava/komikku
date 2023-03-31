@@ -91,6 +91,17 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.17.1" date="2023-03-31">
+            <description>
+                <ul>
+                    <li>Fixed search entries appearance</li>
+                    <li>Fixed webview</li>
+                    <li>[Servers] Manga Freak: Update</li>
+                    <li>[L10n] Updated Finnish translation</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.17.0" date="2023-03-29">
             <description>
                 <ul>
