@@ -3,7 +3,6 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from gettext import gettext as _
-import time
 
 from gi.repository import Gio
 from gi.repository import GLib
@@ -135,8 +134,8 @@ class Card:
             self.info_box.populate()
 
     def on_open_in_browser_menu_clicked(self, action, param):
-        if url := self.manga.server.get_manga_url(self.manga.slug, self.manga.url):
-            Gtk.show_uri(None, url, time.time())
+        if uri := self.manga.server.get_manga_url(self.manga.slug, self.manga.url):
+            Gtk.UriLauncher.new(uri=uri).launch()
         else:
             self.window.show_notification(_('Failed to get manga URL'))
 

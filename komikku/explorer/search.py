@@ -4,7 +4,6 @@
 
 from gettext import gettext as _
 import threading
-import time
 
 from gi.repository import Adw
 from gi.repository import GLib
@@ -227,7 +226,7 @@ class ExplorerSearchPage:
 
     def on_server_website_button_clicked(self, _button):
         if self.parent.server.base_url:
-            Gtk.show_uri(None, self.parent.server.base_url, time.time())
+            Gtk.UriLauncher.new(uri=self.parent.server.base_url).launch()
         else:
             self.window.show_notification(_('Oops, server website URL is unknown.'), 2)
 

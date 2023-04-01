@@ -269,44 +269,36 @@ class Reader:
         if page.status != 'rendered' or page.error is not None:
             return
 
-        extension = get_file_mime_type(page.path).split('/')[-1]
-        filename = f'{self.manga.name}_{page.chapter.title}_{str(page.index + 1)}.{extension}'
-
-        success = False
-        xdg_pictures_dir = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES)
-        if not is_flatpak():
-            chooser = Gtk.FileChooserNative(
-                title=_('Please choose a file'),
-                transient_for=self.window,
-                action=Gtk.FileChooserAction.SAVE,
-                accept_label=_('Save'),
-                cancel_label=_('Cancel')
-            )
-            chooser.set_current_name(filename)
-            if xdg_pictures_dir is not None:
-                chooser.set_current_folder(Gio.File.new_for_path(xdg_pictures_dir))
-
-            def on_response(_native, response):
-                if response == Gtk.ResponseType.ACCEPT:
-                    dest_path = chooser.get_file().get_path()
-                    shutil.copy(page.path, dest_path)
-                    self.window.show_notification(
-                        _('Page successfully saved to {0}').format(dest_path.replace(os.path.expanduser('~'), '~')))
-
-                chooser.destroy()
-
-            chooser.connect('response', on_response)
-            chooser.show()
-        else:
-            if xdg_pictures_dir:
-                dest_path = os.path.join(xdg_pictures_dir, filename)
-                success = True
-            else:
-                self.window.show_notification(_('Failed to save page: missing permission to access the XDG pictures directory'))
-
-        if success:
+        def do_save(dest_path):
             shutil.copy(page.path, dest_path)
             self.window.show_notification(_('Page successfully saved to {0}').format(dest_path.replace(os.path.expanduser('~'), '~')))
+
+        def on_ready(dialog, result):
+            try:
+                gfile = dialog.save_finish(result)
+            except GLib.GError:
+                # Cancel
+                gfile = None
+
+            if gfile:
+                do_save(gfile.get_path())
+
+        extension = get_file_mime_type(page.path).split('/')[-1]
+        filename = f'{self.manga.name}_{page.chapter.title}_{str(page.index + 1)}.{extension}'
+        xdg_pictures_dir = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES)
+
+        if not is_flatpak():
+            dialog = Gtk.FileDialog(modal=True)
+            dialog.set_initial_name(filename)
+            if xdg_pictures_dir is not None:
+                dialog.set_initial_folder(Gio.File.new_for_path(xdg_pictures_dir))
+
+            dialog.save(self.window, None, on_ready)
+        else:
+            if xdg_pictures_dir is not None:
+                do_save(os.path.join(xdg_pictures_dir, filename))
+            else:
+                self.window.show_notification(_('Failed to save page: missing permission to access the XDG pictures directory'))
 
     def set_action_background_color(self):
         self.background_color_action.set_state(GLib.Variant('s', self.background_color))
