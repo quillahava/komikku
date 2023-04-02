@@ -291,8 +291,7 @@ class Pager(Adw.Bin, BasePager):
 
     @property
     def page_change_in_progress(self):
-        progress = self.carousel.get_progress()
-        return int(progress) != progress
+        return self.carousel.get_progress() != 1
 
     @property
     def pages(self):
@@ -506,7 +505,6 @@ class Pager(Adw.Bin, BasePager):
         if self.window.page != 'reader':
             return Gdk.EVENT_PROPAGATE
 
-        page = self.current_page
         if self.page_change_in_progress:
             return Gdk.EVENT_PROPAGATE
 
@@ -517,6 +515,7 @@ class Pager(Adw.Bin, BasePager):
         if keyval == Gdk.KEY_space:
             keyval = Gdk.KEY_Left if self.reader.reading_mode == 'right-to-left' else Gdk.KEY_Right
 
+        page = self.current_page
         if keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left, Gdk.KEY_Right, Gdk.KEY_KP_Right):
             # Hide mouse cursor when using keyboard navigation
             self.hide_cursor()
@@ -628,9 +627,6 @@ class Pager(Adw.Bin, BasePager):
         if not self.interactive:
             return Gdk.EVENT_PROPAGATE
 
-        if self.page_change_in_progress:
-            return Gdk.EVENT_STOP
-
         page = self.current_page
         if page.scrollable:
             # Page is scrollable (horizontally or vertically)
@@ -703,6 +699,9 @@ class Pager(Adw.Bin, BasePager):
             self.adjust_page_placement(page)
 
     def scroll_to_direction(self, direction, autohide_controls=True):
+        if self.page_change_in_progress:
+            return
+
         position = self.carousel.get_position()
         page = None
 
