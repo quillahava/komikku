@@ -516,7 +516,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                               <attribute name="weight" value="bold"></attribute>
                                             </attributes>
                                             <style>
-                                              <class name="large-title"/>
+                                              <class name="title-1"/>
                                             </style>
                                           </object>
                                         </child>
