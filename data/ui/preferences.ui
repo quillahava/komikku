@@ -509,7 +509,7 @@ NOTE: Requires more CPU usage and can cause rendering and animation slowdowns, e
                             </child>
                             <child>
                               <object class="GtkLabel">
-                                <property name="label" translatable="yes">This tweak is only intended for users who do not use the GNOME desktop environment and therefore cannot disable animations globally via GNOME Settings (Accessibility ⇨ Seeing ⇨ Enable Animations).</property>
+                                <property name="label" translatable="yes">This tweak is only intended for users who do not use the GNOME desktop environment and therefore cannot disable animations globally via GNOME Settings (Accessibility ⇨ Seeing ⇨ Reduce Animation).</property>
                                 <property name="wrap">1</property>
                                 <property name="margin-top">12</property>
                                 <style>
