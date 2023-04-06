@@ -2941,21 +2941,25 @@ msgstr "URL inválida {}, não tratada por nenhum servidor."
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../komikku/application.py:497
+#: ../komikku/application.py:494
 msgid "Join Chat"
 msgstr "Entrar no chat"
 
-#: ../komikku/application.py:498
+#: ../komikku/application.py:495
 msgid "Sponsor via Ko-fi"
 msgstr "Patrocinar via Ko-fi"
 
-#: ../komikku/application.py:499
+#: ../komikku/application.py:496
 msgid "Sponsor via Liberapay"
 msgstr "Patrocinar via Liberapay"
 
-#: ../komikku/application.py:500
+#: ../komikku/application.py:497
 msgid "Sponsor via Paypal"
 msgstr "Patrocinar via Paypal"
+
+#: ../komikku/application.py:693
+msgid "Are you sure you want to quit?"
+msgstr "Tem certeza que quer sair?"
 
 #: ../komikku/application.py:696
 msgid "Are you sure you want to quit?"
@@ -3667,19 +3671,19 @@ msgstr "Conteúdo NSFW"
 msgid "Whether to show manga containing NSFW content"
 msgstr "Se deve mostrar mangá com conteúdo NSFW"
 
-#: ../komikku/updater.py:96
+#: ../komikku/updater.py:98
 msgid "Library update completed with errors"
 msgstr "Atualização da biblioteca concluída com erros"
 
-#: ../komikku/updater.py:98
+#: ../komikku/updater.py:100
 msgid "Library update completed"
 msgstr "Atualização da biblioteca concluída"
 
-#: ../komikku/updater.py:101
+#: ../komikku/updater.py:103
 msgid "Update completed with errors"
 msgstr "Atualização concluída com erros"
 
-#: ../komikku/updater.py:103
+#: ../komikku/updater.py:105
 msgid "Update completed"
 msgstr "Atualização completa"
 
