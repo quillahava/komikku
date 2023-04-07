@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the Komikku package.
 # Óscar Fernández Díaz <oscfdezdz@tuta.io>, 2021-2022.
 # Óscar Fernández Díaz <oscfdezdz@users.noreply.hosted.weblate.org>, 2023.
+# gallegonovato <fran-carro@hotmail.es>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 0.30.0\n"
@@ -85,19 +86,19 @@ msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 msgid "Fixed search entries appearance"
-msgstr ""
+msgstr "Corregida la apariencia de las entradas de búsqueda"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:98
 msgid "Fixed webview"
-msgstr ""
+msgstr "Corregido webview"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:99
 msgid "[Servers] Manga Freak: Update"
-msgstr ""
+msgstr "[Servidores] Manga Freak: Actualizados"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:100
 msgid "[L10n] Updated Finnish translation"
-msgstr ""
+msgstr "[L10n] Traducción al Finés actualizada"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:118
@@ -110,7 +111,7 @@ msgstr "Feliz lectura."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 msgid "[Servers] NHentai: Reactivation"
-msgstr ""
+msgstr "[Servidores] NHentai: Reactivados"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:109
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:246
@@ -151,32 +152,40 @@ msgid ""
 "[L10n] Update Dutch, Finnish, Indonesian, Portuguese (Brazil), Russian and "
 "Spanish translations"
 msgstr ""
+"[L10n] Actualización de las traducciones al Neerlandés, Finés, Indonesio, "
+"Portugués (Brasil), Ruso y Español"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:116
 msgid "Switch to GNOME 44 runtime: GTK 4.10.1, Adwaita 1.3.1, WebKitGTK 6.0"
 msgstr ""
+"Cambie al tiempo de ejecución de GNOME 44: GTK 4.10.1, Adwaita 1.3.1, "
+"WebKitGTK 6.0"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:124
 msgid ""
 "[Explorer] Added ability to read from search results (new settings have been "
 "added in Preferences to manage cached data)"
 msgstr ""
+"[Explorador] Se ha añadido la posibilidad de leer los resultados de las "
+"búsquedas (se han añadido nuevos ajustes en Preferencias para gestionar los "
+"datos almacenados en caché)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:125
 msgid "[Reader] Fixed memory leaks"
-msgstr ""
+msgstr "[Lector] Solucionado el consumo de memoria"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:126
 msgid "[Servers] WEBTOON: Update"
-msgstr ""
+msgstr "[Servidores] WEBTOON: Actualizados"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:127
 msgid "[L10n] New Finnish and Indonesian translations"
-msgstr ""
+msgstr "[L10n] Nuevas traducciones al Finés y al Indonesio"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:128
 msgid "[L10n] Update Portuguese (Brazil) and Spanish translations"
 msgstr ""
+"[L10n] Actualización de las traducciones al Portugués (Brasil) y al Español"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
 msgid ""
@@ -2864,6 +2873,10 @@ msgid ""
 "environment and therefore cannot disable animations globally via GNOME "
 "Settings (Accessibility ⇨ Seeing ⇨ Reduce Animation)."
 msgstr ""
+"Este ajuste sólo está pensado para usuarios que no utilicen el entorno de "
+"escritorio GNOME y, por tanto, no puedan desactivar las animaciones "
+"globalmente a través de la Configuración de GNOME (Accesibilidad ⇨ Ver ⇨ "
+"Reducir animación)."
 
 #: ../data/ui/shortcuts_overview.ui:30
 msgctxt "Shortcut window description"
