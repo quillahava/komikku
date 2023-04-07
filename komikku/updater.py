@@ -6,9 +6,9 @@ from gettext import gettext as _
 from gettext import ngettext as n_
 import threading
 
+from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
-from gi.repository import Notify
 
 from komikku.utils import log_error_traceback
 from komikku.models import create_db_connection
@@ -47,26 +47,21 @@ class Updater(GObject.GObject):
 
     @if_network_available
     def start(self):
-        notification = None
-
-        def show_notification(summary, body='', new=False):
-            nonlocal notification
-
-            if notification is None:
-                # Use in-app notification
-                self.window.show_notification(f'{summary}\n{body}' if body else summary)
+        def show_notification(id, title, body=None):
+            if Settings.get_default().desktop_notifications:
+                notification = Gio.Notification.new(title)
+                notification.set_priority(Gio.NotificationPriority.HIGH)
+                if body:
+                    notification.set_body(body)
+                self.window.application.send_notification(id, notification)
             else:
-                if new:
-                    notification = Notify.Notification.new(summary, body)
-                    notification.set_timeout(Notify.EXPIRES_DEFAULT)
-                else:
-                    notification.update(summary, body)
-
-                notification.show()
+                # Use in-app notification
+                self.window.show_notification(f'{title}\n{body}' if body else title)
 
         def run():
-            total_recent_chapters = 0
+            total_chapters = 0
             total_errors = 0
+            total_successes = 0
 
             while self.queue:
                 if self.stop_flag is True:
@@ -79,7 +74,10 @@ class Updater(GObject.GObject):
                 try:
                     status, recent_chapters_ids, nb_deleted_chapters, synced = manga.update_full()
                     if status is True:
-                        total_recent_chapters += len(recent_chapters_ids)
+                        nb_chapters = len(recent_chapters_ids)
+                        if nb_chapters > 0:
+                            total_chapters += nb_chapters
+                            total_successes += 1
                         GLib.idle_add(complete, manga, recent_chapters_ids, nb_deleted_chapters, synced)
                     else:
                         total_errors += 1
@@ -95,37 +93,35 @@ class Updater(GObject.GObject):
             if self.update_library_flag:
                 self.update_library_flag = False
                 if total_errors > 0:
-                    summary = _('Library update completed with errors')
+                    title = _('Library update completed with errors')
                 else:
-                    summary = _('Library update completed')
+                    title = _('Library update completed')
             else:
                 if total_errors > 0:
-                    summary = _('Update completed with errors')
+                    title = _('Update completed with errors')
                 else:
-                    summary = _('Update completed')
+                    title = _('Update completed')
 
-            if total_recent_chapters > 0:
-                message = n_('{0} new chapter found', '{0} new chapters found', total_recent_chapters).format(total_recent_chapters)
+            messages = []
+            if total_chapters > 0:
+                messages.append(n_('{0} successful update', '{0} successful updates', total_successes).format(total_successes))
+                messages.append(n_('{0} new chapter', '{0} new chapters', total_chapters).format(total_chapters))
             else:
-                message = _('No new chapter found')
+                messages.append(_('No new chapters'))
 
             if total_errors > 0:
-                message = n_('{0}\n{1} error encountered', '{0}\n{1} errors encountered', total_errors).format(
-                    message,
-                    total_errors
-                )
+                messages.append(n_('{0} update failed', '{0} updates failed', total_errors).format(total_errors))
 
-            GLib.timeout_add(2000, show_notification, summary, message, True)
+            GLib.timeout_add(2000, show_notification, 'updater.0', title, '\n'.join(messages))
 
         def complete(manga, recent_chapters_ids, nb_deleted_chapters, synced):
             nb_recent_chapters = len(recent_chapters_ids)
 
             if nb_recent_chapters > 0:
                 show_notification(
+                    f'updater.{manga.id}',
                     manga.name,
-                    n_('{0} new chapter has been found', '{0} new chapters have been found', nb_recent_chapters).format(
-                        nb_recent_chapters
-                    )
+                    n_('{0} new chapter', '{0} new chapters', nb_recent_chapters).format(nb_recent_chapters)
                 )
 
                 # Auto download new chapters
@@ -138,21 +134,22 @@ class Updater(GObject.GObject):
             return False
 
         def error(manga, message=None):
-            show_notification(manga.name, message or _('Oops, update has failed. Please try again.'))
+            show_notification(
+                f'updater.{manga.id}',
+                manga.name,
+                message or _('Oops, update has failed. Please try again.')
+            )
 
             return False
 
         if self.running or len(self.queue) == 0:
             return
 
-        if Settings.get_default().desktop_notifications:
-            notification = Notify.Notification.new('')
-            notification.set_timeout(Notify.EXPIRES_DEFAULT)
-
         if self.update_library_flag:
-            show_notification(_('Library update started'))
+            title = _('Library update started')
         else:
-            show_notification(_('Update started'))
+            title = _('Update started')
+        show_notification('updater.0', title)
 
         self.running = True
         self.stop_flag = False
