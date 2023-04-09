@@ -120,6 +120,8 @@ class MangaStream(Server):
         data['cover'] = soup.select_one(self.thumbnail_selector).get('data-src')
         if not data['cover']:
             data['cover'] = soup.select_one(self.thumbnail_selector).get('src')
+            if not data['cover'].startswith('http'):
+                data['cover'] = f'https:{data["cover"]}'
 
         # Details
         data['authors'] = list({get_soup_element_inner_text(element) for element in soup.select(self.authors_selector)})
@@ -226,6 +228,8 @@ class MangaStream(Server):
                     image = img_element.get('data-src')
                     if not image:
                         image = img_element.get('src')
+                        if not image.startswith('http'):
+                            image = f'https:{image}'
                     if image.split('/')[-1] in self.ignored_pages:
                         continue
 
