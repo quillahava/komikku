@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-04 02:20+0200\n"
+"POT-Creation-Date: 2023-04-10 23:15+0200\n"
 "PO-Revision-Date: 2023-03-25 23:38+0000\n"
 "Last-Translator: shima <hakase446@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/"
@@ -2789,54 +2789,54 @@ msgctxt "Shortcut window description"
 msgid "Select all downloads"
 msgstr ""
 
-#: ../komikku/application.py:125
+#: ../komikku/application.py:127
 msgid "Multiple URLs not supported"
 msgstr ""
 
-#: ../komikku/application.py:141
+#: ../komikku/application.py:143
 msgid "Invalid URL {}, not handled by any server."
 msgstr ""
 
-#: ../komikku/application.py:407 ../komikku/card/__init__.py:68
+#: ../komikku/application.py:410 ../komikku/card/__init__.py:68
 #: ../komikku/card/__init__.py:69 ../komikku/categories_editor.py:198
-#: ../komikku/downloader.py:332 ../komikku/downloader.py:333
+#: ../komikku/downloader.py:335 ../komikku/downloader.py:336
 #: ../komikku/library/__init__.py:334 ../komikku/library/__init__.py:335
 msgid "Cancel"
 msgstr ""
 
-#: ../komikku/application.py:494
+#: ../komikku/application.py:497
 msgid "Join Chat"
 msgstr ""
 
-#: ../komikku/application.py:495
+#: ../komikku/application.py:498
 msgid "Sponsor via Ko-fi"
 msgstr ""
 
-#: ../komikku/application.py:496
+#: ../komikku/application.py:499
 msgid "Sponsor via Liberapay"
 msgstr ""
 
-#: ../komikku/application.py:497
+#: ../komikku/application.py:500
 msgid "Sponsor via Paypal"
 msgstr ""
 
-#: ../komikku/application.py:693
+#: ../komikku/application.py:696
 msgid "Are you sure you want to quit?"
 msgstr "Вы уверены что хотите выйти?"
 
-#: ../komikku/application.py:696
+#: ../komikku/application.py:699
 msgid "Some chapters are currently being downloaded."
 msgstr "Некоторые главы загружаются прямо сейчас."
 
-#: ../komikku/application.py:698
+#: ../komikku/application.py:701
 msgid "Some mangas are currently being updated."
 msgstr "Некоторые манги обновляются прямо сейчас."
 
-#: ../komikku/application.py:702
+#: ../komikku/application.py:705
 msgid "Quit?"
 msgstr "Выйти?"
 
-#: ../komikku/application.py:704
+#: ../komikku/application.py:707
 msgid "Quit"
 msgstr ""
 
@@ -2852,8 +2852,8 @@ msgstr ""
 "Пожалуйста, переключитесь на другой источник."
 
 #: ../komikku/card/__init__.py:101 ../komikku/card/__init__.py:202
-#: ../komikku/categories_editor.py:127 ../komikku/downloader.py:344
-#: ../komikku/downloader.py:522 ../komikku/explorer/__init__.py:199
+#: ../komikku/categories_editor.py:127 ../komikku/downloader.py:347
+#: ../komikku/downloader.py:525 ../komikku/explorer/__init__.py:199
 #: ../komikku/history.py:208 ../komikku/preferences.py:413
 #: ../komikku/webview.py:137
 msgid "Back"
@@ -2931,21 +2931,21 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../komikku/downloader.py:205
+#: ../komikku/downloader.py:207
 msgid "Download completed"
 msgstr "Загрузка завершена"
 
-#: ../komikku/downloader.py:206 ../komikku/downloader.py:234
+#: ../komikku/downloader.py:208 ../komikku/downloader.py:237
 #, python-brace-format
 msgid "[{0}] Chapter {1}"
 msgstr "[{0}] Глава {1}"
 
-#: ../komikku/downloader.py:228
+#: ../komikku/downloader.py:231
 #, python-brace-format
 msgid "{0}/{1} pages downloaded"
 msgstr "{0}/{1} страниц загружено"
 
-#: ../komikku/downloader.py:230
+#: ../komikku/downloader.py:233
 msgid "error"
 msgstr "ошибка"
 
@@ -3496,27 +3496,27 @@ msgstr "NSFW-контент"
 msgid "Whether to show manga containing NSFW content"
 msgstr "Можно ли показывать мангу, содержащую NSFW-контент"
 
-#: ../komikku/updater.py:98
+#: ../komikku/updater.py:96
 msgid "Library update completed with errors"
 msgstr "Обновление библиотеки завершено с ошибками"
 
-#: ../komikku/updater.py:100
+#: ../komikku/updater.py:98
 msgid "Library update completed"
 msgstr "Обновление библиотеки завершено"
 
-#: ../komikku/updater.py:103
+#: ../komikku/updater.py:101
 msgid "Update completed with errors"
 msgstr "Обновление завершено с ошибками"
 
-#: ../komikku/updater.py:105
+#: ../komikku/updater.py:103
 msgid "Update completed"
 msgstr "Обновление завершено"
 
 #: ../komikku/updater.py:110
-msgid "No new chapter found"
-msgstr "Новых глав не найдено"
+msgid "No new chapters"
+msgstr ""
 
-#: ../komikku/updater.py:141
+#: ../komikku/updater.py:140
 msgid "Oops, update has failed. Please try again."
 msgstr "Упс, обновление не удалось. Попробуйте ещё раз."
 
@@ -3539,6 +3539,9 @@ msgstr "Нет подключения к Интернету, тайм-аут и�
 #: ../komikku/webview.py:253
 msgid "Please complete CAPTCHA"
 msgstr "Пожалуйста, заполните капчу"
+
+#~ msgid "No new chapter found"
+#~ msgstr "Новых глав не найдено"
 
 #, python-brace-format
 #~ msgid "{0} manga added"
