@@ -23,8 +23,10 @@ class Readmanga(Server):
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
+
     pages_js_start = 'rm_h.readerInit'
     pages_js_offset = 19
+    remove_image_url_qs = True
 
     def __init__(self):
         if self.session is None:
@@ -156,6 +158,8 @@ class Readmanga(Server):
                     if not url.startswith('http'):
                         # Required by AllHentai
                         url = self.base_url.split('://')[0] + ':' + url
+                    if self.remove_image_url_qs:
+                        url = url.split('?')[0]
 
                     data['pages'].append(dict(
                         slug=None,
@@ -170,7 +174,10 @@ class Readmanga(Server):
         """
         Returns chapter page scan (image) content
         """
-        r = self.session_get(page['image'])
+        r = self.session_get(
+            page['image'],
+            headers={'Referer': self.base_url}
+        )
         if r.status_code != 200:
             return None
 
@@ -250,6 +257,7 @@ class Allhentai(Readmanga):
     name = 'AllHentai'
     is_nsfw = False
     is_nsfw_only = True
+    # FIXME: requires to be logged in
 
     base_url = 'http://2023.allhen.online'
     search_url = base_url + '/search/advanced'
@@ -257,6 +265,8 @@ class Allhentai(Readmanga):
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
+
+    remove_image_url_qs = False
 
 
 class Mintmanga(Readmanga):
@@ -272,6 +282,8 @@ class Mintmanga(Readmanga):
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
 
+    remove_image_url_qs = False
+
 
 class Selfmanga(Readmanga):
     id = 'selfmanga:readmanga'
@@ -284,3 +296,5 @@ class Selfmanga(Readmanga):
     most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
+
+    remove_image_url_qs = False
