@@ -2,6 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Komikku package.
 # Alifiyan Rosyidi <hello@ar14.works>, 2023.
+# Alim Satria <alimsatria2017@mail.ugm.ac.id>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.12.1\n"
@@ -20,7 +21,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
-msgstr "Baca manga favorit Anda"
+msgstr "Baca manga favoritmu"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:13
 msgid ""
@@ -28,12 +29,12 @@ msgid ""
 "you to search, sort and read all your favorite manga with ease."
 msgstr ""
 "Dengan antarmuka yang sederhana, elegan dan adaptif, pembaca manga ini "
-"memungkinkan Anda untuk mencari, menyortir dan membaca semua manga favorit "
-"Anda dengan mudah."
+"memungkinkan kamu untuk mencari, memilih dan membaca semua manga favoritmu "
+"dengan mudah."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
 msgid "Why you will love Komikku?"
-msgstr "Mengapa Anda akan mencintai Komikku?"
+msgstr "Mengapa kamu akan suka Komikku?"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
@@ -54,21 +55,21 @@ msgid ""
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
 "wheel, 2-fingers swipe gesture (touchpad), swipe gesture (touch screen)"
 msgstr ""
-"Mendukung banyak tipe navigasi: tombol panah keyboard, navigasi kanan dan "
-"kiri via klik mouse atau tap pada touchpad/layar sentuh, mouse wheel, gesek "
-"dua jari (touchpad), dan gesek pada layar sentuh"
+"Mendukung beberapa tipe navigasi: tombol panah keyboard, navigasi kanan dan "
+"kiri via klik mouse atau ketukan pada (bidang /layar sentuh), roda tetikus, "
+"gulir dua jari (bidang sentuh), dan gulir (layar sentuh)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:21
 msgid "Categories to organize your library"
-msgstr "Kategori untuk mengelola pustaka Anda"
+msgstr "Kategori untuk mengelola pustakamu"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:22
 msgid "Automatic update of manga"
-msgstr "Pembaruan manga otomatis"
+msgstr "Pembaruan manga secara otomatis"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:23
 msgid "Automatic download of new chapters"
-msgstr "Unduh bab baru secara otomatis"
+msgstr "Pengunduhan otomatis bab baru"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:24
 msgid "Reading history"
@@ -84,19 +85,19 @@ msgstr "@namalengkappenulis@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 msgid "Fixed search entries appearance"
-msgstr ""
+msgstr "Perbaikan tampilan entri pencarian"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:98
 msgid "Fixed webview"
-msgstr ""
+msgstr "Perbaikan WebView"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:99
 msgid "[Servers] Manga Freak: Update"
-msgstr ""
+msgstr "[Server] Manga Freak: Pembaruan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:100
 msgid "[L10n] Updated Finnish translation"
-msgstr ""
+msgstr "[L10n] Pembaruan terjemahan bahasa Finlandia"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:118
@@ -109,18 +110,18 @@ msgstr "Selamat membaca."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 msgid "[Servers] NHentai: Reactivation"
-msgstr ""
+msgstr "[Server] NHentai : aktivasi kembali"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:109
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:246
 msgid "[Servers] 3asq: Update"
-msgstr "[Server] 3asq: Diperbarui"
+msgstr "[Server] 3asq: Pembaruan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:298
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:453
 msgid "[Servers] Apoll Comics: Update"
-msgstr "[Server] Apoll Comics: Diperbarui"
+msgstr "[Server] Apoll Comics : Pembaruan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:495
@@ -131,80 +132,85 @@ msgstr "[Server] Asura Scans [EN/TR]: Diperbarui"
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:409
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:513
 msgid "[Servers] Phoenix Fansub: Update"
-msgstr "[Server] Phoenix Fansub: Diperbarui"
+msgstr "[Server] Phoenix Fansub: Pembaruan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:410
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:427
 msgid "[Servers] Rawkuma: Update"
-msgstr "[Server] Rawkuma: Diperbarui"
+msgstr "[Server] Rawkuma: Pembaruan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:114
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:305
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:366
 msgid "[Servers] Remanga: Update"
-msgstr "[Server] Remanga: Diperbarui"
+msgstr "[Server] Remanga: Pembaruan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
 msgid ""
 "[L10n] Update Dutch, Finnish, Indonesian, Portuguese (Brazil), Russian and "
 "Spanish translations"
 msgstr ""
+"[L10n] Pembaruan terjemaham Bahasa Belanda, Finlandia, Indonesia, Portugis "
+"(Brasil), Rusia, dan Spanyol"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:116
 msgid "Switch to GNOME 44 runtime: GTK 4.10.1, Adwaita 1.3.1, WebKitGTK 6.0"
-msgstr ""
+msgstr "Beralih ke runtime GNOME 44: GTK 4.10.1, Adwaita 1.3.1, WebKitGTK 6.0"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:124
 msgid ""
 "[Explorer] Added ability to read from search results (new settings have been "
 "added in Preferences to manage cached data)"
 msgstr ""
+"[Penjelajah] Menambahkan kemampuan untuk membaca dari hasil pencarian ("
+"pengaturan baru telah ditambahkan di Preferensi untuk mengelola data yang "
+"tersimpan)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:125
 msgid "[Reader] Fixed memory leaks"
-msgstr ""
+msgstr "[Pembaca] Memperbaiki kebocoran memori"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:126
 msgid "[Servers] WEBTOON: Update"
-msgstr ""
+msgstr "[Server] WEBTOON: Pembaruan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:127
 msgid "[L10n] New Finnish and Indonesian translations"
-msgstr ""
+msgstr "[L10n] Terjemahan baru bahasa Finlandia dan Indonesia"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:128
 msgid "[L10n] Update Portuguese (Brazil) and Spanish translations"
-msgstr ""
+msgstr "[L10n] Perbaruan terjemahan bahasa Portugis (Brasil) dan Spanyol"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
 msgid ""
 "[Reader] Webtoon pager: Removed unwanted scrolling when clicking on 'Retry' "
 "button of a page"
 msgstr ""
-"[Pembaca] Pemisah Halaman Webtoon: Pengguliran yang tidak diinginkan saat "
-"klik tombol 'Coba Lagi' pada halaman kini telah diperbaiki"
+"[Pembaca]Pager Webtoon: Menghapus pengguliran yang tidak diinginkan saat "
+"menekan tombol 'Coba Lagi' pada halaman"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:137
 msgid "[Servers] FMTEAM: Fixed logo"
-msgstr "[Server] FMTEAM: Logo diperbaiki"
+msgstr "[Server] FMTEAM: Perbaikan logo"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:138
 msgid "[Servers] Komga: Update"
-msgstr "[Server] Komga: Diperbarui"
+msgstr "[Server] Komga: Pembaruan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:139
 msgid "[Servers] Viz: Update"
-msgstr "[Server] Viz: Diperbarui"
+msgstr "[Server] Viz : Pembaruan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:140
 msgid "[Servers] Zero Scans: Reactivation"
-msgstr "[Server] Zero Scans: Diaktifkan ulang"
+msgstr "[Server] Zero Scans: Aktivasi kembali"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:148
 msgid "[UX] Added possibility to go back with mouse Back button"
 msgstr ""
-"[UX] Menambahkan kapabilitas untuk kembali dengan tombol Kembali pada mouse"
+"[UX] Menambahkan kapabilitas untuk kembali dengan tombol kembali pada tetikus"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:149
 msgid "[Library] Fixed range selection mode"
@@ -254,20 +260,22 @@ msgid ""
 "[Library] Previous selected filters are now saved and restored when "
 "application starts"
 msgstr ""
+"[Pustaka] Pengaturan pilah sebelumnya akan tesimpan dan dimuat ketika "
+"aplikasi dijalankan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:166
 msgid "[Preferences] Library: Added new `NSFW Only Content` setting"
-msgstr ""
+msgstr "[Pengaturan] Pustaka : Menambahkan pengaturan baru 'Khusus Konten NSFW'"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:167
 msgid ""
 "[Reader] RTL/LTR/Vertical pager: Improved placement of pages when they are "
 "scrollable"
-msgstr ""
+msgstr "[Reader] RTL/LTR/Vertical pager : Perbaikan penempatan laman saat gulir"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:168
 msgid "[Servers] Local: Added `Latest Updates`"
-msgstr ""
+msgstr "[Server] lokal : Menambahkan 'Pemutakhiran terbaru'"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:169
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:262
@@ -283,7 +291,7 @@ msgstr "[L10n] Terjemahan Bahasa Prancis diperbarui"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:172
 msgid "Last week, Komikku joined GNOME Circle 🎉"
-msgstr ""
+msgstr "Minggu kemarin, Komiku tergabung dalam GNOME Circle 🎉"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:178
 msgid "Bugfix release"
@@ -3423,7 +3431,7 @@ msgstr "Tidak ada lagi."
 
 #: ../komikku/servers/mangadex/__init__.py:59
 msgid "Rating"
-msgstr "Rating"
+msgstr "Peringkat"
 
 #: ../komikku/servers/mangadex/__init__.py:60
 msgid "Filter by content ratings"
@@ -3472,7 +3480,7 @@ msgstr "Novel"
 #: ../komikku/servers/mangatube/__init__.py:43
 #: ../komikku/servers/mangaworld/__init__.py:37
 msgid "One Shot"
-msgstr "One Shot"
+msgstr "Sekali Baca"
 
 #: ../komikku/servers/mangapill/__init__.py:40
 msgid "Doujinshi"
@@ -3511,7 +3519,7 @@ msgstr "Komik"
 
 #: ../komikku/servers/mangatube/__init__.py:44
 msgid "Light Novel"
-msgstr "Light Novel"
+msgstr "Novel Ringan"
 
 #: ../komikku/servers/mangatube/__init__.py:50
 msgid "Age Rating"
