@@ -75,11 +75,15 @@ CREDITS = dict(
         'Mariusz Kurek (Polish)',
         'Liliana Prikler (German)',
         'Alifiyan Rosyidi (Indonesian)',
+        'Silvério Santos (Portuguese)',
+        'Alim Satria (Indonesian)',
         'Heimen Stoffels (Dutch)',
         'Irénée Thirion (French)',
         'Sabri Ünal (Turkish)',
+        'Gallegonovato (Spanish)',
         'GrownNed (Russian)',
         'Infinitive Witch (Brazilian Portuguese)',
+        'CakesTwix (Ukrainian)',
         'Mek101 (Italian)',
         'Shima (Russian)',
         'VaGNaroK (Brazilian Portuguese)',
@@ -478,10 +482,15 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>Fixed search entries appearance</li>
-                <li>Fixed webview</li>
-                <li>[Servers] Manga Freak: Update</li>
-                <li>[L10n] Updated Finnish translation</li>
+                <li>[Reader] RTL/LTR/Vertical pager: Fixed touchpad 2-fingers swipe gesture (Wayland only)</li>
+                <li>[Updater] Slightly improves notifications</li>
+                <li>[Servers] Added Little Garden [FR]</li>
+                <li>[Servers] Desu: Update</li>
+                <li>[Servers] Rawkuma: Update</li>
+                <li>[Servers] View Comics: Update</li>
+                <li>[Servers] Read Manga: Update</li>
+                <li>[L10n] Added Portuguese and Ukrainian translations</li>
+                <li>[L10n] Updated French, German, Portuguese (Brazil) and Spanish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)

@@ -91,6 +91,22 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.18.0" date="2023-04-11">
+            <description>
+                <ul>
+                    <li>[Reader] RTL/LTR/Vertical pager: Fixed touchpad 2-fingers swipe gesture (Wayland only)</li>
+                    <li>[Updater] Slightly improves notifications</li>
+                    <li>[Servers] Added Little Garden [FR]</li>
+                    <li>[Servers] Desu: Update</li>
+                    <li>[Servers] Rawkuma: Update</li>
+                    <li>[Servers] View Comics: Update</li>
+                    <li>[Servers] Read Manga: Update</li>
+                    <li>[L10n] Added Portuguese and Ukrainian translations</li>
+                    <li>[L10n] Updated French, German, Portuguese (Brazil) and Spanish translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.17.1" date="2023-03-31">
             <description>
                 <ul>
