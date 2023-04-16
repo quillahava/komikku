@@ -247,6 +247,7 @@ class MangaStream(Server):
 
         return data
 
+    @bypass_cf
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
         Returns chapter page scan (image) content
