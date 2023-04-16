@@ -214,9 +214,9 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
             snapshot.append_layout(layout, text_color)
             snapshot.restore()
 
-        draw_badge(self.nb_unread_chapters, '#3584e4')      # @blue_3
-        draw_badge(self.nb_downloaded_chapters, '#9141ac')  # @purple_3
-        draw_badge(self.nb_recent_chapters, '#2ec27e')      # @green_4
+        draw_badge(self.nb_unread_chapters, '#62a0ea')      # @blue_2
+        draw_badge(self.nb_downloaded_chapters, '#f68276')
+        draw_badge(self.nb_recent_chapters, '#33d17a')      # @green_3
 
         # Drow server logo (top left corner)
         if self.server_logo_texture:
