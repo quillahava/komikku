@@ -16,6 +16,15 @@ class Leviatanscans(Madara):
     series_name = 'home/manga'  # This value changes regularly!
 
     base_url = 'https://en.leviatanscans.com'
+    chapters_url = base_url + '/home/manga/{0}/ajax/chapters/'
+
+
+class Leviatanscans_es(Madara):
+    id = 'leviatanscans_es'
+    name = 'Escaneos de Leviatan'
+    lang = 'es'
+
+    base_url = 'https://es.leviatanscans.com'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
 
 
