@@ -197,6 +197,10 @@ class Madara(Server):
 
         elements = soup.find_all('li', class_='wp-manga-chapter')
         for element in reversed(elements):
+            if element.select_one('i.fa-lock'):
+                # Skip premium chapter (LeviatanScans ES for ex.)
+                continue
+
             a_element = element.a
             date_element = element.find(class_='chapter-release-date').extract()
             if view_element := element.find(class_='view'):
