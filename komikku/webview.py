@@ -209,6 +209,7 @@ def bypass_cf(func):
                 webview.webkit_webview.get_settings().set_auto_load_images(False)
 
                 # Exit from webview
+                # Webview should not be closed, we need to store cookies first
                 webview.navigate_back(None)
 
             if event != WebKit.LoadEvent.FINISHED:
@@ -218,6 +219,7 @@ def bypass_cf(func):
             if cf_reload_count > CF_RELOAD_MAX:
                 error = 'Max CF reload exceeded'
                 webview.close()
+                webview.navigate_back(None)
                 return
 
             # Detect end of CF challenge via JavaScript
@@ -245,6 +247,7 @@ def bypass_cf(func):
             error = f'CF challenge bypass failure: {uri}'
 
             webview.close()
+            webview.navigate_back(None)
 
         def on_title_changed(_webkit_webview, title):
             if webview.webkit_webview.props.title.startswith('captcha'):
