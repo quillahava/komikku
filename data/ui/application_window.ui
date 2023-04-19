@@ -733,32 +733,32 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                                             <property name="orientation">horizontal</property>
                                                             <child>
                                                               <object class="GtkButton" id="card_add_button">
-                                                                <property name="halign">center</property>
+                                                                <property name="halign">fill</property>
                                                                 <property name="child">
                                                                   <object class="AdwButtonContent">
+                                                                    <property name="halign">center</property>
                                                                     <property name="label" translatable="yes">Add to Library</property>
                                                                     <property name="icon-name">list-add-symbolic</property>
                                                                   </object>
                                                                 </property>
                                                                 <style>
                                                                   <class name="pill"/>
-                                                                  <class name="opaque"/>
-                                                                  <class name="suggested2-action"/>
+                                                                  <class name="suggested-action"/>
                                                                 </style>
                                                               </object>
                                                             </child>
                                                             <child>
                                                               <object class="GtkButton" id="card_resume2_button">
-                                                                <property name="halign">center</property>
+                                                                <property name="halign">fill</property>
                                                                 <property name="child">
                                                                   <object class="AdwButtonContent">
+                                                                    <property name="halign">center</property>
                                                                     <property name="label" translatable="yes">Resume</property>
                                                                     <property name="icon-name">media-playback-start-symbolic</property>
                                                                   </object>
                                                                 </property>
                                                                 <style>
                                                                   <class name="pill"/>
-                                                                  <class name="suggested-action"/>
                                                                 </style>
                                                               </object>
                                                             </child>

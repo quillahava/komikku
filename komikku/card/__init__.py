@@ -114,6 +114,7 @@ class Card:
         self.stack.get_page(self.stack.get_child_by_name('categories')).set_visible(True)
         # Hide Add to Library button
         self.info_box.add_button.set_visible(False)
+        self.info_box.resume2_button.add_css_class('suggested-action')
         # Update manga
         self.manga.add_in_library()
         self.window.library.on_manga_added(self.manga)
@@ -258,6 +259,7 @@ class InfoBox:
             self.authors_label.props.justify = Gtk.Justification.CENTER
 
             self.buttons_box.set_orientation(Gtk.Orientation.VERTICAL)
+            self.buttons_box.props.spacing = 18
             self.buttons_box.props.halign = Gtk.Align.CENTER
         else:
             self.cover_box.set_orientation(Gtk.Orientation.HORIZONTAL)
@@ -273,6 +275,7 @@ class InfoBox:
             self.authors_label.props.justify = Gtk.Justification.LEFT
 
             self.buttons_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+            self.buttons_box.props.spacing = 12
             self.buttons_box.props.halign = Gtk.Align.START
 
     def on_resize(self):
@@ -313,7 +316,12 @@ class InfoBox:
                 )
             )
 
-        self.add_button.set_visible(not manga.in_library)
+        if manga.in_library:
+            self.add_button.set_visible(False)
+            self.resume2_button.add_css_class('suggested-action')
+        else:
+            self.add_button.set_visible(True)
+            self.resume2_button.remove_css_class('suggested-action')
 
         if manga.genres:
             self.genres_label.set_markup(html_escape(', '.join(manga.genres)))
