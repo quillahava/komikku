@@ -104,20 +104,44 @@ class Settings(Gio.Settings):
         self.set_boolean('clear-cached-data-on-app-close', state)
 
     @property
+    def color_scheme(self):
+        """Return the color scheme"""
+        value = self.color_scheme_value
+
+        if value == 0:
+            return 'light'
+        if value == 1:
+            return 'dark'
+        if value == 2:
+            return 'default'
+
+    @property
+    def color_scheme_value(self):
+        """Return the color scheme value"""
+        return self.get_enum('color-scheme')
+
+    @color_scheme.setter
+    def color_scheme(self, scheme):
+        """
+        Set the color scheme
+
+        :param scheme: a color scheme
+        :type scheme: string
+        """
+        if scheme == 'light':
+            self.set_enum('color-scheme', 0)
+        elif scheme == 'dark':
+            self.set_enum('color-scheme', 1)
+        elif scheme == 'default':
+            self.set_enum('color-scheme', 2)
+
+    @property
     def credentials_storage_plaintext_fallback(self):
         return self.get_boolean('credentials-storage-plaintext-fallback')
 
     @credentials_storage_plaintext_fallback.setter
     def credentials_storage_plaintext_fallback(self, state):
         self.set_boolean('credentials-storage-plaintext-fallback', state)
-
-    @property
-    def dark_theme(self):
-        return self.get_boolean('dark-theme')
-
-    @dark_theme.setter
-    def dark_theme(self, state):
-        self.set_boolean('dark-theme', state)
 
     @property
     def disable_animations(self):

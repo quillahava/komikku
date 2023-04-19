@@ -30,7 +30,7 @@ class Preferences(Adw.Bin):
     subpages_stack = Gtk.Template.Child('subpages_stack')
     viewswitcherbar = Gtk.Template.Child('viewswitcherbar')
 
-    theme_switch = Gtk.Template.Child('theme_switch')
+    color_scheme_row = Gtk.Template.Child('color_scheme_row')
     night_light_switch = Gtk.Template.Child('night_light_switch')
     desktop_notifications_switch = Gtk.Template.Child('desktop_notifications_switch')
 
@@ -102,6 +102,18 @@ class Preferences(Adw.Bin):
 
     def on_borders_crop_changed(self, switch_button, _gparam):
         self.settings.borders_crop = switch_button.get_active()
+
+    def on_color_scheme_changed(self, row, _gparam):
+        index = row.get_selected()
+
+        if index == 0:
+            self.settings.color_scheme = 'light'
+        elif index == 1:
+            self.settings.color_scheme = 'dark'
+        elif index == 2:
+            self.settings.color_scheme = 'default'
+
+        self.window.init_theme()
 
     def on_clamp_size_changed(self, adjustment):
         self.settings.clamp_size = int(adjustment.get_value())
@@ -263,11 +275,6 @@ class Preferences(Adw.Bin):
         elif index == 3:
             self.settings.scaling = 'original'
 
-    def on_theme_changed(self, switch_button, _gparam):
-        self.settings.dark_theme = switch_button.get_active()
-
-        self.window.init_theme()
-
     def on_update_at_startup_changed(self, switch_button, _gparam):
         if switch_button.get_active():
             self.settings.update_at_startup = True
@@ -282,9 +289,14 @@ class Preferences(Adw.Bin):
         # General
         #
 
-        # Dark theme
-        self.theme_switch.set_active(self.settings.dark_theme)
-        self.theme_switch.connect('notify::active', self.on_theme_changed)
+        # Theme
+        if not Adw.StyleManager.get_default().get_system_supports_color_schemes():
+            # System doesn't support color schemes
+            self.color_scheme_row.get_model().remove(2)
+            if self.settings.color_scheme == 'default':
+                self.settings.color_scheme = 'light'
+        self.color_scheme_row.set_selected(self.settings.color_scheme_value)
+        self.color_scheme_row.connect('notify::selected', self.on_color_scheme_changed)
 
         # Night light
         self.night_light_switch.set_active(self.settings.night_light)

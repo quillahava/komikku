@@ -733,7 +733,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                                             <property name="orientation">horizontal</property>
                                                             <child>
                                                               <object class="GtkButton" id="card_add_button">
-                                                                <property name="halign">fill</property>
                                                                 <property name="child">
                                                                   <object class="AdwButtonContent">
                                                                     <property name="halign">center</property>
@@ -749,7 +748,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                                             </child>
                                                             <child>
                                                               <object class="GtkButton" id="card_resume2_button">
-                                                                <property name="halign">fill</property>
                                                                 <property name="child">
                                                                   <object class="AdwButtonContent">
                                                                     <property name="halign">center</property>

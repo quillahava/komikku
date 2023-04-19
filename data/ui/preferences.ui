@@ -42,16 +42,17 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                         <child>
                           <object class="AdwPreferencesGroup">
                             <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Dark Theme</property>
-                                <property name="activatable_widget">theme_switch</property>
-                                <property name="subtitle" translatable="yes">Use dark GTK theme</property>
-                                <child>
-                                  <object class="GtkSwitch" id="theme_switch">
-                                    <property name="halign">center</property>
-                                    <property name="valign">center</property>
+                              <object class="AdwComboRow" id="color_scheme_row">
+                                <property name="title" translatable="yes">Theme</property>
+                                <property name="model">
+                                  <object class="GtkStringList">
+                                    <items>
+                                      <item translatable="yes">Light</item>
+                                      <item translatable="yes">Dark</item>
+                                      <item translatable="yes">Follow System</item>
+                                    </items>
                                   </object>
-                                </child>
+                                </property>
                               </object>
                             </child>
                             <child>

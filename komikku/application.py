@@ -435,12 +435,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
     def init_theme(self):
         def set_color_scheme():
-            if not Adw.StyleManager.get_default().get_system_supports_color_schemes():
-                return
-
-            if (self._night_light_proxy.get_cached_property('NightLightActive') and Settings.get_default().night_light) \
-                    or Settings.get_default().dark_theme:
+            if ((self._night_light_proxy.get_cached_property('NightLightActive') and Settings.get_default().night_light)
+                    or Settings.get_default().color_scheme == 'dark'):
                 color_scheme = Adw.ColorScheme.FORCE_DARK
+            elif Settings.get_default().color_scheme == 'light':
+                color_scheme = Adw.ColorScheme.FORCE_LIGHT
             else:
                 color_scheme = Adw.ColorScheme.DEFAULT
 

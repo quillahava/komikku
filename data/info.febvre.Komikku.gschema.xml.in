@@ -6,6 +6,15 @@
         <value nick="gray" value="2" />
         <value nick="system-style" value="3" />
     </enum>
+    <enum id="@appid@.ColorScheme">
+        <value nick="light" value="0" />
+        <value nick="dark" value="1" />
+        <value nick="default" value="2" />
+    </enum>
+    <enum id="@appid@.LibraryDisplayMode">
+        <value nick="grid" value="0" />
+        <value nick="grid-compact" value="1" />
+    </enum>
     <enum id="@appid@.ReadingMode">
         <value nick="--" value="-1" />
         <value nick="right-to-left" value="0" />
@@ -18,10 +27,6 @@
         <value nick="width" value="1" />
         <value nick="height" value="2" />
         <value nick="original" value="3" />
-    </enum>
-    <enum id="@appid@.LibraryDisplayMode">
-        <value nick="grid" value="0" />
-        <value nick="grid-compact" value="1" />
     </enum>
     <schema path="/@apppath@/" id="@appid@" gettext-domain="@projectname@">
         <key type="ai" name="window-size">
@@ -62,10 +67,10 @@
         </key>
 
         <!-- Preferences: General -->
-        <key type="b" name="dark-theme">
-            <default>false</default>
-            <summary>Dark Theme</summary>
-            <description>Use the dark variant of your GTK theme. Please note that not every GTK theme has a dark variant.</description>
+        <key enum="@appid@.ColorScheme" name="color-scheme">
+            <default>"default"</default>
+            <summary>Theme</summary>
+            <description>Preferred color scheme</description>
         </key>
         <key type="b" name="night-light">
             <default>false</default>
