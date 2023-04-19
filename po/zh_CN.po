@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 01:54+0200\n"
+"POT-Creation-Date: 2023-04-20 01:12+0200\n"
 "PO-Revision-Date: 2022-12-11 21:04+0800\n"
 "Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
 "Language-Team: \n"
@@ -2214,7 +2214,7 @@ msgstr ""
 msgid "Download Manager"
 msgstr "下载管理器"
 
-#: ../data/ui/application_window.ui:159 ../data/ui/preferences.ui:231
+#: ../data/ui/application_window.ui:159 ../data/ui/preferences.ui:232
 msgid "Servers"
 msgstr "服务器"
 
@@ -2227,7 +2227,7 @@ msgid "Toggle category sidebar"
 msgstr "开关类别侧边栏"
 
 #: ../data/ui/application_window.ui:252 ../data/ui/application_window.ui:466
-#: ../data/ui/application_window.ui:1070
+#: ../data/ui/application_window.ui:1068
 #: ../data/ui/card_chapters_list_row.ui:44
 msgid "Menu"
 msgstr "菜单"
@@ -2261,7 +2261,7 @@ msgid "Search by name, server or genre"
 msgstr "按名称、服务器或流派搜索"
 
 #: ../data/ui/application_window.ui:445 ../data/ui/menu/card.xml:11
-#: ../data/ui/preferences.ui:198
+#: ../data/ui/preferences.ui:199
 msgid "Update"
 msgstr "更新"
 
@@ -2281,31 +2281,31 @@ msgstr "提示"
 msgid "Add to Library"
 msgstr "添加到漫画库"
 
-#: ../data/ui/application_window.ui:777
+#: ../data/ui/application_window.ui:775
 msgid "Details"
 msgstr "详情"
 
-#: ../data/ui/application_window.ui:809
+#: ../data/ui/application_window.ui:807
 msgid "Genres"
 msgstr "流派"
 
-#: ../data/ui/application_window.ui:847
+#: ../data/ui/application_window.ui:845
 msgid "Scanlators"
 msgstr "扫描仪"
 
-#: ../data/ui/application_window.ui:920
+#: ../data/ui/application_window.ui:918
 msgid "Last Update"
 msgstr "最后更新"
 
-#: ../data/ui/application_window.ui:957
+#: ../data/ui/application_window.ui:955
 msgid "Size on Disk"
 msgstr "占用空间"
 
-#: ../data/ui/application_window.ui:988
+#: ../data/ui/application_window.ui:986
 msgid "Synopsis"
 msgstr "摘要"
 
-#: ../data/ui/application_window.ui:1120 ../data/ui/categories_editor.ui:85
+#: ../data/ui/application_window.ui:1118 ../data/ui/categories_editor.ui:85
 msgid "No categories"
 msgstr "无类别"
 
@@ -2398,23 +2398,23 @@ msgstr "快捷键"
 msgid "About Komikku"
 msgstr "关于 Komikku"
 
-#: ../data/ui/menu/reader.xml:7 ../data/ui/preferences.ui:314
+#: ../data/ui/menu/reader.xml:7 ../data/ui/preferences.ui:315
 msgid "Reading Mode"
 msgstr "阅读模式"
 
-#: ../data/ui/menu/reader.xml:12 ../data/ui/preferences.ui:318
+#: ../data/ui/menu/reader.xml:12 ../data/ui/preferences.ui:319
 msgid "⬅ Right to Left"
 msgstr "⬅ 从右至左"
 
-#: ../data/ui/menu/reader.xml:17 ../data/ui/preferences.ui:319
+#: ../data/ui/menu/reader.xml:17 ../data/ui/preferences.ui:320
 msgid "➡ Left to Right"
 msgstr "➡ 从左至右"
 
-#: ../data/ui/menu/reader.xml:22 ../data/ui/preferences.ui:320
+#: ../data/ui/menu/reader.xml:22 ../data/ui/preferences.ui:321
 msgid "⬇ Vertical"
 msgstr "⬇ 垂直"
 
-#: ../data/ui/menu/reader.xml:27 ../data/ui/preferences.ui:321
+#: ../data/ui/menu/reader.xml:27 ../data/ui/preferences.ui:322
 msgid "⬇ Webtoon"
 msgstr "⬇ Webtoon"
 
@@ -2422,39 +2422,39 @@ msgstr "⬇ Webtoon"
 msgid "Type of Scaling"
 msgstr "缩放类型"
 
-#: ../data/ui/menu/reader.xml:40 ../data/ui/preferences.ui:353
+#: ../data/ui/menu/reader.xml:40 ../data/ui/preferences.ui:354
 msgid "Adapt to Screen"
 msgstr "适应屏幕"
 
-#: ../data/ui/menu/reader.xml:45 ../data/ui/preferences.ui:354
+#: ../data/ui/menu/reader.xml:45 ../data/ui/preferences.ui:355
 msgid "Adapt to Width"
 msgstr "适应宽度"
 
-#: ../data/ui/menu/reader.xml:50 ../data/ui/preferences.ui:355
+#: ../data/ui/menu/reader.xml:50 ../data/ui/preferences.ui:356
 msgid "Adapt to Height"
 msgstr "适应高度"
 
-#: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:356
+#: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:357
 msgid "Original Size"
 msgstr "原始大小"
 
-#: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:378
+#: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:379
 msgid "Background Color"
 msgstr "背景色"
 
-#: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:382
+#: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:383
 msgid "White"
 msgstr "白色"
 
-#: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:383
+#: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:384
 msgid "Gray"
 msgstr "灰色"
 
-#: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:384
+#: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:385
 msgid "Black"
 msgstr "黑色"
 
-#: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:385
+#: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:386
 msgid "System Style"
 msgstr "系统样式"
 
@@ -2479,156 +2479,164 @@ msgid "General"
 msgstr "通用"
 
 #: ../data/ui/preferences.ui:46
-msgid "Dark Theme"
-msgstr "暗色主题"
+msgid "Theme"
+msgstr ""
 
-#: ../data/ui/preferences.ui:48
-msgid "Use dark GTK theme"
-msgstr "使用暗色主题"
+#: ../data/ui/preferences.ui:50
+msgid "Light"
+msgstr ""
 
-#: ../data/ui/preferences.ui:59
+#: ../data/ui/preferences.ui:51
+msgid "Dark"
+msgstr ""
+
+#: ../data/ui/preferences.ui:52
+msgid "Follow System"
+msgstr ""
+
+#: ../data/ui/preferences.ui:60
 msgid "Night Light"
 msgstr "夜灯"
 
-#: ../data/ui/preferences.ui:61
+#: ../data/ui/preferences.ui:62
 msgid "Automatically enable dark theme at night"
 msgstr "夜晚自动启用暗色主题"
 
-#: ../data/ui/preferences.ui:72
+#: ../data/ui/preferences.ui:73
 msgid "Desktop Notifications"
 msgstr "桌面通知"
 
-#: ../data/ui/preferences.ui:74
+#: ../data/ui/preferences.ui:75
 msgid "Use desktop notifications for downloads and library updates"
 msgstr "使用下载和收藏库更新的桌面通知"
 
-#: ../data/ui/preferences.ui:92 ../data/ui/preferences.ui:96
+#: ../data/ui/preferences.ui:93 ../data/ui/preferences.ui:97
 msgid "Library"
 msgstr "收藏库"
 
-#: ../data/ui/preferences.ui:99
+#: ../data/ui/preferences.ui:100
 msgid "Display"
 msgstr "显示"
 
-#: ../data/ui/preferences.ui:102
+#: ../data/ui/preferences.ui:103
 msgid "Display Mode"
 msgstr "显示模式"
 
-#: ../data/ui/preferences.ui:106
+#: ../data/ui/preferences.ui:107
 msgid "Grid"
 msgstr "网格"
 
-#: ../data/ui/preferences.ui:107
+#: ../data/ui/preferences.ui:108
 msgid "Compact Grid"
 msgstr "紧凑网格"
 
-#: ../data/ui/preferences.ui:115
+#: ../data/ui/preferences.ui:116
 msgid "Servers Logo"
 msgstr "服务器标志"
 
-#: ../data/ui/preferences.ui:117
+#: ../data/ui/preferences.ui:118
 msgid "Display servers logo"
 msgstr "显示服务器标志"
 
-#: ../data/ui/preferences.ui:128
+#: ../data/ui/preferences.ui:129
 msgid "Badges"
 msgstr "徽章"
 
-#: ../data/ui/preferences.ui:131
+#: ../data/ui/preferences.ui:132
 msgid "Number of Unread Chapters"
 msgstr "未读章节的数字"
 
-#: ../data/ui/preferences.ui:152
+#: ../data/ui/preferences.ui:153
 msgid "Number of Downloaded Chapters"
 msgstr "已下载章节的数字"
 
-#: ../data/ui/preferences.ui:173
+#: ../data/ui/preferences.ui:174
 msgid "Number of Recent and Unread Chapters"
 msgstr "最近和未读章节的数字"
 
-#: ../data/ui/preferences.ui:201
+#: ../data/ui/preferences.ui:202
 msgid "Update at Startup"
 msgstr "启动时更新"
 
-#: ../data/ui/preferences.ui:203
+#: ../data/ui/preferences.ui:204
 msgid "Automatically update library at startup"
 msgstr "启动时自动更新收藏库"
 
-#: ../data/ui/preferences.ui:215
+#: ../data/ui/preferences.ui:216
 msgid "Auto Download of New Chapters"
 msgstr "自动下载新章节"
 
-#: ../data/ui/preferences.ui:217
+#: ../data/ui/preferences.ui:218
 msgid "Automatically download new chapters"
 msgstr "自动地下载新的章节"
 
-#: ../data/ui/preferences.ui:235
+#: ../data/ui/preferences.ui:236
 msgid "Restrict servers to selected languages"
 msgstr "限制服务器为所选语言"
 
-#: ../data/ui/preferences.ui:246
+#: ../data/ui/preferences.ui:247
 msgid "Enable/disable and configure servers"
 msgstr "启用/禁用和配置服务器"
 
-#: ../data/ui/preferences.ui:256
+#: ../data/ui/preferences.ui:257
 msgid "Long Strip Detection"
 msgstr "长幅检测"
 
-#: ../data/ui/preferences.ui:258
+#: ../data/ui/preferences.ui:259
 msgid "Automatically detect long vertical strip when possible"
 msgstr "尽可能地自动检测竖长画幅"
 
-#: ../data/ui/preferences.ui:270
+#: ../data/ui/preferences.ui:271
 msgid "NSFW Content (18+)"
 msgstr ""
 
-#: ../data/ui/preferences.ui:272
+#: ../data/ui/preferences.ui:273
 msgid "Whether to enable servers with NSFW content"
 msgstr ""
 
-#: ../data/ui/preferences.ui:284
+#: ../data/ui/preferences.ui:285
 msgid "NSFW Only Content (18+)"
 msgstr ""
 
-#: ../data/ui/preferences.ui:286
+#: ../data/ui/preferences.ui:287
 msgid "Whether to enable servers with NSFW only content"
 msgstr "是否启用只包含工作场所不宜内容的服务器"
 
-#: ../data/ui/preferences.ui:305 ../data/ui/preferences.ui:309
+#: ../data/ui/preferences.ui:306 ../data/ui/preferences.ui:310
 msgid "Reader"
 msgstr "阅读器"
 
-#: ../data/ui/preferences.ui:329
+#: ../data/ui/preferences.ui:330
 msgid "Maximum Width"
 msgstr "最大宽度"
 
-#: ../data/ui/preferences.ui:330
+#: ../data/ui/preferences.ui:331
 msgid ""
 "Constrain reader's width to a given maximum size (Webtoon reading mode only)"
 msgstr "将阅读器的宽度限制为给定的最大尺寸（仅限 Webtoon 阅读模式）"
 
-#: ../data/ui/preferences.ui:348
+#: ../data/ui/preferences.ui:349
 msgid "Scaling"
 msgstr "缩放"
 
-#: ../data/ui/preferences.ui:349
+#: ../data/ui/preferences.ui:350
 msgid "Type of scaling to adapt image"
 msgstr "图像调整的缩放类型"
 
-#: ../data/ui/preferences.ui:364
+#: ../data/ui/preferences.ui:365
 msgid "Landscape Pages Zoom"
 msgstr "横幅缩放"
 
-#: ../data/ui/preferences.ui:366
+#: ../data/ui/preferences.ui:367
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
 msgstr "当页面为横向时缩放页面以适应高度（仅用于适应屏幕缩放）"
 
-#: ../data/ui/preferences.ui:393
+#: ../data/ui/preferences.ui:394
 msgid "Borders Crop"
 msgstr "边框裁减"
 
-#: ../data/ui/preferences.ui:395
+#: ../data/ui/preferences.ui:396
 msgid ""
 "Crop white borders of images\n"
 "\n"
@@ -2639,69 +2647,69 @@ msgstr ""
 "\n"
 "注意：需要使用更多 CPU 资源且可能引起渲染和动画变慢，特别是对移动设备。"
 
-#: ../data/ui/preferences.ui:409
+#: ../data/ui/preferences.ui:410
 msgid "Page Numbering"
 msgstr "页码"
 
-#: ../data/ui/preferences.ui:411
+#: ../data/ui/preferences.ui:412
 msgid "Hide the page numbering at the bottom of the screen while reading"
 msgstr "阅读时隐藏屏幕底部的页码"
 
-#: ../data/ui/preferences.ui:423
+#: ../data/ui/preferences.ui:424
 msgid "Fullscreen"
 msgstr "全屏"
 
-#: ../data/ui/preferences.ui:425
+#: ../data/ui/preferences.ui:426
 msgid "Automatically enter fullscreen mode"
 msgstr "自动进入全屏模式"
 
-#: ../data/ui/preferences.ui:444 ../data/ui/preferences.ui:448
+#: ../data/ui/preferences.ui:445 ../data/ui/preferences.ui:449
 msgid "Advanced"
 msgstr "高级"
 
-#: ../data/ui/preferences.ui:451
+#: ../data/ui/preferences.ui:452
 msgid "Data"
 msgstr ""
 
-#: ../data/ui/preferences.ui:452
+#: ../data/ui/preferences.ui:453
 msgid "Data not saved in the library"
 msgstr ""
 
-#: ../data/ui/preferences.ui:455
+#: ../data/ui/preferences.ui:456
 msgid "Clear chapters cache and database"
 msgstr ""
 
-#: ../data/ui/preferences.ui:461
+#: ../data/ui/preferences.ui:462
 msgid "Clear chapters cache and database on application close"
 msgstr ""
 
-#: ../data/ui/preferences.ui:476
+#: ../data/ui/preferences.ui:477
 msgid "Credentials storage"
 msgstr "凭据存储"
 
-#: ../data/ui/preferences.ui:479
+#: ../data/ui/preferences.ui:480
 msgid "Allow plaintext storage as fallback"
 msgstr "允许纯文本存储作为后备"
 
-#: ../data/ui/preferences.ui:481
+#: ../data/ui/preferences.ui:482
 msgid "Used when no keyring backends are found"
 msgstr "在没有找到密钥环后端时使用"
 
-#: ../data/ui/preferences.ui:495
+#: ../data/ui/preferences.ui:496
 msgid "Tweaks"
 msgstr ""
 
-#: ../data/ui/preferences.ui:498
+#: ../data/ui/preferences.ui:499
 msgid "Disable Animations"
 msgstr ""
 
-#: ../data/ui/preferences.ui:500
+#: ../data/ui/preferences.ui:501
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
 msgstr ""
 
-#: ../data/ui/preferences.ui:512
+#: ../data/ui/preferences.ui:513
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot disable animations globally via GNOME "
@@ -2793,39 +2801,39 @@ msgstr "无效的 URL {}，任何服务器都不能处理。"
 msgid "Cancel"
 msgstr "取消"
 
-#: ../komikku/application.py:498
+#: ../komikku/application.py:505
 msgid "Join Chat"
 msgstr "加入聊天"
 
-#: ../komikku/application.py:499
+#: ../komikku/application.py:506
 msgid "Sponsor via Ko-fi"
 msgstr "通过 Ko-fi 支持"
 
-#: ../komikku/application.py:500
+#: ../komikku/application.py:507
 msgid "Sponsor via Liberapay"
 msgstr "通过 Liberapay 支持"
 
-#: ../komikku/application.py:501
+#: ../komikku/application.py:508
 msgid "Sponsor via Paypal"
 msgstr "通过 Paypal 支持"
 
-#: ../komikku/application.py:697
+#: ../komikku/application.py:704
 msgid "Are you sure you want to quit?"
 msgstr "你确定要退出吗？"
 
-#: ../komikku/application.py:700
+#: ../komikku/application.py:707
 msgid "Some chapters are currently being downloaded."
 msgstr "当前有些章节正在下载中。"
 
-#: ../komikku/application.py:702
+#: ../komikku/application.py:709
 msgid "Some mangas are currently being updated."
 msgstr "当前有些漫画正在更新中。"
 
-#: ../komikku/application.py:706
+#: ../komikku/application.py:713
 msgid "Quit?"
 msgstr "退出？"
 
-#: ../komikku/application.py:708
+#: ../komikku/application.py:715
 msgid "Quit"
 msgstr ""
 
@@ -2840,35 +2848,35 @@ msgstr ""
 "有 {0} 个服务器不再支持。\n"
 "请切换到其他服务器。"
 
-#: ../komikku/card/__init__.py:101 ../komikku/card/__init__.py:202
+#: ../komikku/card/__init__.py:101 ../komikku/card/__init__.py:203
 #: ../komikku/categories_editor.py:127 ../komikku/downloader.py:347
 #: ../komikku/downloader.py:525 ../komikku/explorer/__init__.py:199
-#: ../komikku/history.py:208 ../komikku/preferences.py:413
+#: ../komikku/history.py:208 ../komikku/preferences.py:425
 #: ../komikku/webview.py:137
 msgid "Back"
 msgstr "返回"
 
-#: ../komikku/card/__init__.py:129
+#: ../komikku/card/__init__.py:130
 msgid "Read progress synchronization with server completed successfully"
 msgstr "已成功完成与服务器的阅读进度同步"
 
-#: ../komikku/card/__init__.py:140
+#: ../komikku/card/__init__.py:141
 msgid "Failed to get manga URL"
 msgstr "获取漫画 URL 失败"
 
-#: ../komikku/card/__init__.py:296
+#: ../komikku/card/__init__.py:299
 msgid "Unknown author"
 msgstr "位置作者"
 
-#: ../komikku/card/__init__.py:302 ../komikku/card/__init__.py:311
+#: ../komikku/card/__init__.py:305 ../komikku/card/__init__.py:314
 msgid "Unknown status"
 msgstr "未知状态"
 
-#: ../komikku/card/__init__.py:312 ../komikku/explorer/__init__.py:94
+#: ../komikku/card/__init__.py:315 ../komikku/explorer/__init__.py:94
 msgid "Local"
 msgstr "本地"
 
-#: ../komikku/card/__init__.py:333 ../komikku/card/chapters_list.py:586
+#: ../komikku/card/__init__.py:341 ../komikku/card/chapters_list.py:586
 msgid "%m/%d/%Y"
 msgstr "%Y/%d/%m"
 
@@ -2876,23 +2884,23 @@ msgstr "%Y/%d/%m"
 msgid "Failed to update chapters reading status"
 msgstr "更新章节阅读状态失败"
 
-#: ../komikku/card/chapters_list.py:645 ../komikku/library/__init__.py:321
+#: ../komikku/card/chapters_list.py:643 ../komikku/library/__init__.py:321
 msgid "Download"
 msgstr "下载"
 
-#: ../komikku/card/chapters_list.py:649
+#: ../komikku/card/chapters_list.py:647
 msgid "Clear and Reset"
 msgstr "清除并重置"
 
-#: ../komikku/card/chapters_list.py:657
+#: ../komikku/card/chapters_list.py:656
 msgid "Mark as Read"
 msgstr "标记为已读"
 
-#: ../komikku/card/chapters_list.py:661
+#: ../komikku/card/chapters_list.py:660
 msgid "Mark as Unread"
 msgstr "标记为未读"
 
-#: ../komikku/card/chapters_list.py:665
+#: ../komikku/card/chapters_list.py:664
 msgid "Mark Previous Chapters as Read"
 msgstr "标记前一章为已读"
 
@@ -2944,8 +2952,8 @@ msgstr "错误"
 msgid "Comics stored locally as archives in CBZ/CBR formats"
 msgstr "以 CBZ/CBR 归档格式本地存储的漫画"
 
-#: ../komikku/explorer/__init__.py:112 ../komikku/preferences.py:544
-#: ../komikku/preferences.py:638 ../komikku/servers/mangatube/__init__.py:57
+#: ../komikku/explorer/__init__.py:112 ../komikku/preferences.py:556
+#: ../komikku/preferences.py:650 ../komikku/servers/mangatube/__init__.py:57
 msgid "18+"
 msgstr ""
 
@@ -3169,74 +3177,74 @@ msgstr "下载错误"
 msgid "Preferences"
 msgstr "首选项"
 
-#: ../komikku/preferences.py:125
+#: ../komikku/preferences.py:137
 msgid "Clear?"
 msgstr ""
 
-#: ../komikku/preferences.py:126
+#: ../komikku/preferences.py:138
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
 
-#: ../komikku/preferences.py:127
+#: ../komikku/preferences.py:139
 msgid "Clear"
 msgstr ""
 
-#: ../komikku/preferences.py:154
+#: ../komikku/preferences.py:166
 msgid "Disable animations?"
 msgstr ""
 
-#: ../komikku/preferences.py:155
+#: ../komikku/preferences.py:167
 msgid ""
 "Are you sure you want to disable animations?\n"
 "\n"
 "The gesture navigation in the reader will not work properly anymore."
 msgstr ""
 
-#: ../komikku/preferences.py:156
+#: ../komikku/preferences.py:168
 msgid "Disable"
 msgstr ""
 
-#: ../komikku/preferences.py:468
+#: ../komikku/preferences.py:480
 msgid "Servers Languages"
 msgstr "服务器语言"
 
-#: ../komikku/preferences.py:572
+#: ../komikku/preferences.py:584
 msgid "User Account"
 msgstr "用户帐号"
 
-#: ../komikku/preferences.py:580
+#: ../komikku/preferences.py:592
 msgid "Address"
 msgstr "地址"
 
-#: ../komikku/preferences.py:586
+#: ../komikku/preferences.py:598
 msgid "Username"
 msgstr "用户名"
 
-#: ../komikku/preferences.py:590
+#: ../komikku/preferences.py:602
 msgid "Password"
 msgstr "密码"
 
-#: ../komikku/preferences.py:602
+#: ../komikku/preferences.py:614
 msgid "System keyring service is disabled. Credential cannot be saved."
 msgstr "系统密钥环服务已禁用。凭据无法保存。"
 
-#: ../komikku/preferences.py:607
+#: ../komikku/preferences.py:619
 msgid ""
 "No keyring backends were found to store credential. Use plaintext storage as "
 "fallback."
 msgstr "没有找到凭据后端来储存凭据。使用纯文本存储作为后备。"
 
-#: ../komikku/preferences.py:612
+#: ../komikku/preferences.py:624
 msgid ""
 "No keyring backends were found to store credential. Plaintext storage will "
 "be used as fallback."
 msgstr "没有找到凭据后端来储存凭据。将使用后备的纯文本存储。"
 
-#: ../komikku/preferences.py:620
+#: ../komikku/preferences.py:632
 msgid "Test"
 msgstr "测试"
 
-#: ../komikku/preferences.py:652
+#: ../komikku/preferences.py:664
 msgid "Servers Settings"
 msgstr "服务器设置"
 
@@ -3487,12 +3495,12 @@ msgstr ""
 msgid "Canceled"
 msgstr ""
 
-#: ../komikku/servers/multi/madara.py:362
+#: ../komikku/servers/multi/madara.py:366
 #: ../komikku/servers/readmanhwa/__init__.py:44
 msgid "NSFW Content"
 msgstr "工作场所不宜内容"
 
-#: ../komikku/servers/multi/madara.py:363
+#: ../komikku/servers/multi/madara.py:367
 #: ../komikku/servers/readmanhwa/__init__.py:45
 msgid "Whether to show manga containing NSFW content"
 msgstr "是否显示包含工作场所不宜内容的漫画"
@@ -3529,17 +3537,23 @@ msgstr "已开始收藏库更新"
 msgid "Update started"
 msgstr "已开始更新"
 
-#: ../komikku/utils.py:235
+#: ../komikku/utils.py:256
 msgid "You are currently offline"
 msgstr "你当前处于离线"
 
-#: ../komikku/utils.py:251
+#: ../komikku/utils.py:272
 msgid "No Internet connection, timeout or server down"
 msgstr "无网络连接，超时或者服务器下线"
 
-#: ../komikku/webview.py:253
+#: ../komikku/webview.py:256
 msgid "Please complete CAPTCHA"
 msgstr ""
+
+#~ msgid "Dark Theme"
+#~ msgstr "暗色主题"
+
+#~ msgid "Use dark GTK theme"
+#~ msgstr "使用暗色主题"
 
 #~ msgid "No new chapter found"
 #~ msgstr "未找到新章节"

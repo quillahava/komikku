@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 01:54+0200\n"
+"POT-Creation-Date: 2023-04-20 01:12+0200\n"
 "PO-Revision-Date: 2023-01-27 22:16+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
@@ -2198,7 +2198,7 @@ msgstr ""
 msgid "Download Manager"
 msgstr "İndirme Yöneticisi"
 
-#: ../data/ui/application_window.ui:159 ../data/ui/preferences.ui:231
+#: ../data/ui/application_window.ui:159 ../data/ui/preferences.ui:232
 msgid "Servers"
 msgstr "Sunucular"
 
@@ -2211,7 +2211,7 @@ msgid "Toggle category sidebar"
 msgstr "Kategori kenar çubuğu aç/kapat"
 
 #: ../data/ui/application_window.ui:252 ../data/ui/application_window.ui:466
-#: ../data/ui/application_window.ui:1070
+#: ../data/ui/application_window.ui:1068
 #: ../data/ui/card_chapters_list_row.ui:44
 msgid "Menu"
 msgstr "Menü"
@@ -2245,7 +2245,7 @@ msgid "Search by name, server or genre"
 msgstr "Ada, sunucuya veya türe göre ara"
 
 #: ../data/ui/application_window.ui:445 ../data/ui/menu/card.xml:11
-#: ../data/ui/preferences.ui:198
+#: ../data/ui/preferences.ui:199
 msgid "Update"
 msgstr "Güncelle"
 
@@ -2265,31 +2265,31 @@ msgstr "Bilgi"
 msgid "Add to Library"
 msgstr "Kitaplığa Ekle"
 
-#: ../data/ui/application_window.ui:777
+#: ../data/ui/application_window.ui:775
 msgid "Details"
 msgstr "Ayrıntılar"
 
-#: ../data/ui/application_window.ui:809
+#: ../data/ui/application_window.ui:807
 msgid "Genres"
 msgstr "Türler"
 
-#: ../data/ui/application_window.ui:847
+#: ../data/ui/application_window.ui:845
 msgid "Scanlators"
 msgstr "Çevirenler"
 
-#: ../data/ui/application_window.ui:920
+#: ../data/ui/application_window.ui:918
 msgid "Last Update"
 msgstr "Son Güncelleme"
 
-#: ../data/ui/application_window.ui:957
+#: ../data/ui/application_window.ui:955
 msgid "Size on Disk"
 msgstr "Diskteki Boyutu"
 
-#: ../data/ui/application_window.ui:988
+#: ../data/ui/application_window.ui:986
 msgid "Synopsis"
 msgstr "Özet"
 
-#: ../data/ui/application_window.ui:1120 ../data/ui/categories_editor.ui:85
+#: ../data/ui/application_window.ui:1118 ../data/ui/categories_editor.ui:85
 msgid "No categories"
 msgstr "Kategori yok"
 
@@ -2382,23 +2382,23 @@ msgstr "Klavye Kısayolları"
 msgid "About Komikku"
 msgstr "Komikku Hakkında"
 
-#: ../data/ui/menu/reader.xml:7 ../data/ui/preferences.ui:314
+#: ../data/ui/menu/reader.xml:7 ../data/ui/preferences.ui:315
 msgid "Reading Mode"
 msgstr "Okuma Kipi"
 
-#: ../data/ui/menu/reader.xml:12 ../data/ui/preferences.ui:318
+#: ../data/ui/menu/reader.xml:12 ../data/ui/preferences.ui:319
 msgid "⬅ Right to Left"
 msgstr "⬅ Sağdan Sola"
 
-#: ../data/ui/menu/reader.xml:17 ../data/ui/preferences.ui:319
+#: ../data/ui/menu/reader.xml:17 ../data/ui/preferences.ui:320
 msgid "➡ Left to Right"
 msgstr "➡ Soldan Sağa"
 
-#: ../data/ui/menu/reader.xml:22 ../data/ui/preferences.ui:320
+#: ../data/ui/menu/reader.xml:22 ../data/ui/preferences.ui:321
 msgid "⬇ Vertical"
 msgstr "⬇ Dikey"
 
-#: ../data/ui/menu/reader.xml:27 ../data/ui/preferences.ui:321
+#: ../data/ui/menu/reader.xml:27 ../data/ui/preferences.ui:322
 msgid "⬇ Webtoon"
 msgstr "⬇ Webtoon"
 
@@ -2406,39 +2406,39 @@ msgstr "⬇ Webtoon"
 msgid "Type of Scaling"
 msgstr "Ölçekleme Türü"
 
-#: ../data/ui/menu/reader.xml:40 ../data/ui/preferences.ui:353
+#: ../data/ui/menu/reader.xml:40 ../data/ui/preferences.ui:354
 msgid "Adapt to Screen"
 msgstr "Ekrana Uy"
 
-#: ../data/ui/menu/reader.xml:45 ../data/ui/preferences.ui:354
+#: ../data/ui/menu/reader.xml:45 ../data/ui/preferences.ui:355
 msgid "Adapt to Width"
 msgstr "Genişliğe Uy"
 
-#: ../data/ui/menu/reader.xml:50 ../data/ui/preferences.ui:355
+#: ../data/ui/menu/reader.xml:50 ../data/ui/preferences.ui:356
 msgid "Adapt to Height"
 msgstr "Yüksekliğe Uy"
 
-#: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:356
+#: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:357
 msgid "Original Size"
 msgstr "Özgün Boyut"
 
-#: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:378
+#: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:379
 msgid "Background Color"
 msgstr "Arka Plan Rengi"
 
-#: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:382
+#: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:383
 msgid "White"
 msgstr "Beyaz"
 
-#: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:383
+#: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:384
 msgid "Gray"
 msgstr "Gri"
 
-#: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:384
+#: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:385
 msgid "Black"
 msgstr "Siyah"
 
-#: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:385
+#: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:386
 msgid "System Style"
 msgstr "Sistem Biçemi"
 
@@ -2463,162 +2463,170 @@ msgid "General"
 msgstr "Genel"
 
 #: ../data/ui/preferences.ui:46
-msgid "Dark Theme"
-msgstr "Koyu Tema"
+msgid "Theme"
+msgstr ""
 
-#: ../data/ui/preferences.ui:48
-msgid "Use dark GTK theme"
-msgstr "Koyu GTK temasını kullan"
+#: ../data/ui/preferences.ui:50
+msgid "Light"
+msgstr ""
 
-#: ../data/ui/preferences.ui:59
+#: ../data/ui/preferences.ui:51
+msgid "Dark"
+msgstr ""
+
+#: ../data/ui/preferences.ui:52
+msgid "Follow System"
+msgstr ""
+
+#: ../data/ui/preferences.ui:60
 msgid "Night Light"
 msgstr "Gece Işığı"
 
-#: ../data/ui/preferences.ui:61
+#: ../data/ui/preferences.ui:62
 msgid "Automatically enable dark theme at night"
 msgstr "Geceleri koyu temayı kendiliğinden etkinleştir"
 
-#: ../data/ui/preferences.ui:72
+#: ../data/ui/preferences.ui:73
 msgid "Desktop Notifications"
 msgstr "Masaüstü Bildirimleri"
 
-#: ../data/ui/preferences.ui:74
+#: ../data/ui/preferences.ui:75
 msgid "Use desktop notifications for downloads and library updates"
 msgstr ""
 "İndirmeler ve kitaplık güncellemeleri için masaüstü bildirimlerini kullan"
 
-#: ../data/ui/preferences.ui:92 ../data/ui/preferences.ui:96
+#: ../data/ui/preferences.ui:93 ../data/ui/preferences.ui:97
 msgid "Library"
 msgstr "Kitaplık"
 
-#: ../data/ui/preferences.ui:99
+#: ../data/ui/preferences.ui:100
 msgid "Display"
 msgstr "Görünüm"
 
-#: ../data/ui/preferences.ui:102
+#: ../data/ui/preferences.ui:103
 msgid "Display Mode"
 msgstr "Görünüm Kipi"
 
-#: ../data/ui/preferences.ui:106
+#: ../data/ui/preferences.ui:107
 msgid "Grid"
 msgstr "Izgara"
 
-#: ../data/ui/preferences.ui:107
+#: ../data/ui/preferences.ui:108
 msgid "Compact Grid"
 msgstr "Sıkışık Izgara"
 
-#: ../data/ui/preferences.ui:115
+#: ../data/ui/preferences.ui:116
 msgid "Servers Logo"
 msgstr "Sunucu Logoları"
 
-#: ../data/ui/preferences.ui:117
+#: ../data/ui/preferences.ui:118
 msgid "Display servers logo"
 msgstr "Sunucu logolarını görüntüle"
 
-#: ../data/ui/preferences.ui:128
+#: ../data/ui/preferences.ui:129
 msgid "Badges"
 msgstr "Rozetler"
 
-#: ../data/ui/preferences.ui:131
+#: ../data/ui/preferences.ui:132
 msgid "Number of Unread Chapters"
 msgstr "Okunmamış Bölüm Sayısı"
 
-#: ../data/ui/preferences.ui:152
+#: ../data/ui/preferences.ui:153
 msgid "Number of Downloaded Chapters"
 msgstr "İndirilen Bölüm Sayısı"
 
-#: ../data/ui/preferences.ui:173
+#: ../data/ui/preferences.ui:174
 msgid "Number of Recent and Unread Chapters"
 msgstr "Son ve Okunmamış Bölüm Sayısı"
 
-#: ../data/ui/preferences.ui:201
+#: ../data/ui/preferences.ui:202
 msgid "Update at Startup"
 msgstr "Açılışta Güncelle"
 
-#: ../data/ui/preferences.ui:203
+#: ../data/ui/preferences.ui:204
 msgid "Automatically update library at startup"
 msgstr "Açılışta kitaplığı kendiliğinden güncelle"
 
 # Bu çeviri, arayüze daha uygun.
-#: ../data/ui/preferences.ui:215
+#: ../data/ui/preferences.ui:216
 msgid "Auto Download of New Chapters"
 msgstr "Yeni Bölümleri Otomatik İndir"
 
-#: ../data/ui/preferences.ui:217
+#: ../data/ui/preferences.ui:218
 msgid "Automatically download new chapters"
 msgstr "Yeni bölümleri otomatik olarak indir"
 
-#: ../data/ui/preferences.ui:235
+#: ../data/ui/preferences.ui:236
 msgid "Restrict servers to selected languages"
 msgstr "Sunucuları seçilen dillerle kısıtla"
 
-#: ../data/ui/preferences.ui:246
+#: ../data/ui/preferences.ui:247
 msgid "Enable/disable and configure servers"
 msgstr "Sunucuları etkinleştirme/devre dışı bırakma ve ayarlama"
 
-#: ../data/ui/preferences.ui:256
+#: ../data/ui/preferences.ui:257
 msgid "Long Strip Detection"
 msgstr "Uzun Şerit Tespiti"
 
-#: ../data/ui/preferences.ui:258
+#: ../data/ui/preferences.ui:259
 msgid "Automatically detect long vertical strip when possible"
 msgstr "Mümkün olduğu zaman uzun dikey şeridi otomatik olarak algıla"
 
-#: ../data/ui/preferences.ui:270
+#: ../data/ui/preferences.ui:271
 msgid "NSFW Content (18+)"
 msgstr ""
 
-#: ../data/ui/preferences.ui:272
+#: ../data/ui/preferences.ui:273
 msgid "Whether to enable servers with NSFW content"
 msgstr ""
 
-#: ../data/ui/preferences.ui:284
+#: ../data/ui/preferences.ui:285
 msgid "NSFW Only Content (18+)"
 msgstr ""
 
-#: ../data/ui/preferences.ui:286
+#: ../data/ui/preferences.ui:287
 msgid "Whether to enable servers with NSFW only content"
 msgstr "Yalnızca NSFW içeriği olan sunucuların etkinleştirilme durumu"
 
-#: ../data/ui/preferences.ui:305 ../data/ui/preferences.ui:309
+#: ../data/ui/preferences.ui:306 ../data/ui/preferences.ui:310
 msgid "Reader"
 msgstr "Okuyucu"
 
-#: ../data/ui/preferences.ui:329
+#: ../data/ui/preferences.ui:330
 msgid "Maximum Width"
 msgstr "Azami Genişlik"
 
-#: ../data/ui/preferences.ui:330
+#: ../data/ui/preferences.ui:331
 msgid ""
 "Constrain reader's width to a given maximum size (Webtoon reading mode only)"
 msgstr ""
 "Okuyucu genişliğini belirli bir azami boyuta sınırla (yalnızca Webtoon okuma "
 "kipi)"
 
-#: ../data/ui/preferences.ui:348
+#: ../data/ui/preferences.ui:349
 msgid "Scaling"
 msgstr "Ölçekleme"
 
-#: ../data/ui/preferences.ui:349
+#: ../data/ui/preferences.ui:350
 msgid "Type of scaling to adapt image"
 msgstr "Görseli uyarlarken uyulacak ölçeklendirme türü"
 
-#: ../data/ui/preferences.ui:364
+#: ../data/ui/preferences.ui:365
 msgid "Landscape Pages Zoom"
 msgstr "Yatay Sayfaları Yakınlaştır"
 
-#: ../data/ui/preferences.ui:366
+#: ../data/ui/preferences.ui:367
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
 msgstr ""
 "Sayfa yatay olduğunda sayfayı yüksekliğe sığdırmak için yakınlaştır "
 "(yalnızca Ekrana Uy ölçeklemesinde)"
 
-#: ../data/ui/preferences.ui:393
+#: ../data/ui/preferences.ui:394
 msgid "Borders Crop"
 msgstr "Kenar Kırpma"
 
-#: ../data/ui/preferences.ui:395
+#: ../data/ui/preferences.ui:396
 msgid ""
 "Crop white borders of images\n"
 "\n"
@@ -2630,64 +2638,64 @@ msgstr ""
 "NOT: Daha fazla CPU kullanımı gerektirir ve özellikle mobil aygıtlarda "
 "işleme ve animasyon yavaşlamalarına neden olabilir."
 
-#: ../data/ui/preferences.ui:409
+#: ../data/ui/preferences.ui:410
 msgid "Page Numbering"
 msgstr "Sayfa Numaraları"
 
-#: ../data/ui/preferences.ui:411
+#: ../data/ui/preferences.ui:412
 msgid "Hide the page numbering at the bottom of the screen while reading"
 msgstr "Okurken ekranın altındaki sayfa numaralarını gizle"
 
 # Bulunduğu konum gereği Başlık Düzeni tercih edildi
-#: ../data/ui/preferences.ui:423
+#: ../data/ui/preferences.ui:424
 msgid "Fullscreen"
 msgstr "Tam Ekran"
 
-#: ../data/ui/preferences.ui:425
+#: ../data/ui/preferences.ui:426
 msgid "Automatically enter fullscreen mode"
 msgstr "Tam ekran moduna otomatik olarak gir"
 
-#: ../data/ui/preferences.ui:444 ../data/ui/preferences.ui:448
+#: ../data/ui/preferences.ui:445 ../data/ui/preferences.ui:449
 msgid "Advanced"
 msgstr "Gelişmiş"
 
-#: ../data/ui/preferences.ui:451
+#: ../data/ui/preferences.ui:452
 msgid "Data"
 msgstr ""
 
-#: ../data/ui/preferences.ui:452
+#: ../data/ui/preferences.ui:453
 msgid "Data not saved in the library"
 msgstr ""
 
-#: ../data/ui/preferences.ui:455
+#: ../data/ui/preferences.ui:456
 msgid "Clear chapters cache and database"
 msgstr ""
 
-#: ../data/ui/preferences.ui:461
+#: ../data/ui/preferences.ui:462
 msgid "Clear chapters cache and database on application close"
 msgstr ""
 
-#: ../data/ui/preferences.ui:476
+#: ../data/ui/preferences.ui:477
 msgid "Credentials storage"
 msgstr "Kimlik bilgileri depolama"
 
-#: ../data/ui/preferences.ui:479
+#: ../data/ui/preferences.ui:480
 msgid "Allow plaintext storage as fallback"
 msgstr "Düz metin depolamaya yedek olarak izin ver"
 
-#: ../data/ui/preferences.ui:481
+#: ../data/ui/preferences.ui:482
 msgid "Used when no keyring backends are found"
 msgstr "Anahtarlık arka ucu bulunmadığında kullanılır"
 
-#: ../data/ui/preferences.ui:495
+#: ../data/ui/preferences.ui:496
 msgid "Tweaks"
 msgstr "İnce Ayarlar"
 
-#: ../data/ui/preferences.ui:498
+#: ../data/ui/preferences.ui:499
 msgid "Disable Animations"
 msgstr "Animasyonları Devre Dışı Bırak"
 
-#: ../data/ui/preferences.ui:500
+#: ../data/ui/preferences.ui:501
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
@@ -2695,7 +2703,7 @@ msgstr ""
 "Çok dalgalı ve hoş olmayan animasyonlardan kaçınmak için E-Ink e-"
 "okuyucularda kullanışlıdır (ekranın düşük yenileme hızından dolayı)"
 
-#: ../data/ui/preferences.ui:512
+#: ../data/ui/preferences.ui:513
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot disable animations globally via GNOME "
@@ -2787,39 +2795,39 @@ msgstr "Geçersiz URL {}, herhangi bir sunucu tarafından işlenmedi."
 msgid "Cancel"
 msgstr "İptal"
 
-#: ../komikku/application.py:498
+#: ../komikku/application.py:505
 msgid "Join Chat"
 msgstr "Sohbete Katıl"
 
-#: ../komikku/application.py:499
+#: ../komikku/application.py:506
 msgid "Sponsor via Ko-fi"
 msgstr "Ko-fi ile Sponsor Ol"
 
-#: ../komikku/application.py:500
+#: ../komikku/application.py:507
 msgid "Sponsor via Liberapay"
 msgstr "Liberapay ile Sponsor Ol"
 
-#: ../komikku/application.py:501
+#: ../komikku/application.py:508
 msgid "Sponsor via Paypal"
 msgstr "Paypal ile Sponsor Ol"
 
-#: ../komikku/application.py:697
+#: ../komikku/application.py:704
 msgid "Are you sure you want to quit?"
 msgstr "Çıkmak istediğinden emin misin?"
 
-#: ../komikku/application.py:700
+#: ../komikku/application.py:707
 msgid "Some chapters are currently being downloaded."
 msgstr "Bazı bölümler şu anda indiriliyor."
 
-#: ../komikku/application.py:702
+#: ../komikku/application.py:709
 msgid "Some mangas are currently being updated."
 msgstr "Bazı mangalar şu anda güncelleniyor."
 
-#: ../komikku/application.py:706
+#: ../komikku/application.py:713
 msgid "Quit?"
 msgstr "Çık?"
 
-#: ../komikku/application.py:708
+#: ../komikku/application.py:715
 msgid "Quit"
 msgstr ""
 
@@ -2834,35 +2842,35 @@ msgstr ""
 "{0} sunucusu artık desteklenmemektedir.\n"
 "Lütfen başka bir sunucuya geçin."
 
-#: ../komikku/card/__init__.py:101 ../komikku/card/__init__.py:202
+#: ../komikku/card/__init__.py:101 ../komikku/card/__init__.py:203
 #: ../komikku/categories_editor.py:127 ../komikku/downloader.py:347
 #: ../komikku/downloader.py:525 ../komikku/explorer/__init__.py:199
-#: ../komikku/history.py:208 ../komikku/preferences.py:413
+#: ../komikku/history.py:208 ../komikku/preferences.py:425
 #: ../komikku/webview.py:137
 msgid "Back"
 msgstr "Geri"
 
-#: ../komikku/card/__init__.py:129
+#: ../komikku/card/__init__.py:130
 msgid "Read progress synchronization with server completed successfully"
 msgstr "Sunucuyla, okuma ilerleme eşitlemesi başarıyla tamamlandı"
 
-#: ../komikku/card/__init__.py:140
+#: ../komikku/card/__init__.py:141
 msgid "Failed to get manga URL"
 msgstr "Manga URLʼsi alınamadı"
 
-#: ../komikku/card/__init__.py:296
+#: ../komikku/card/__init__.py:299
 msgid "Unknown author"
 msgstr "Bilinmeyen yazar"
 
-#: ../komikku/card/__init__.py:302 ../komikku/card/__init__.py:311
+#: ../komikku/card/__init__.py:305 ../komikku/card/__init__.py:314
 msgid "Unknown status"
 msgstr "Bilinmeyen durum"
 
-#: ../komikku/card/__init__.py:312 ../komikku/explorer/__init__.py:94
+#: ../komikku/card/__init__.py:315 ../komikku/explorer/__init__.py:94
 msgid "Local"
 msgstr "Yerel"
 
-#: ../komikku/card/__init__.py:333 ../komikku/card/chapters_list.py:586
+#: ../komikku/card/__init__.py:341 ../komikku/card/chapters_list.py:586
 msgid "%m/%d/%Y"
 msgstr "%d/%m/%Y"
 
@@ -2870,23 +2878,23 @@ msgstr "%d/%m/%Y"
 msgid "Failed to update chapters reading status"
 msgstr "Bölümün okunma durumu güncellenemedi"
 
-#: ../komikku/card/chapters_list.py:645 ../komikku/library/__init__.py:321
+#: ../komikku/card/chapters_list.py:643 ../komikku/library/__init__.py:321
 msgid "Download"
 msgstr "İndir"
 
-#: ../komikku/card/chapters_list.py:649
+#: ../komikku/card/chapters_list.py:647
 msgid "Clear and Reset"
 msgstr "Temizle ve Sıfırla"
 
-#: ../komikku/card/chapters_list.py:657
+#: ../komikku/card/chapters_list.py:656
 msgid "Mark as Read"
 msgstr "Okundu Olarak İşaretle"
 
-#: ../komikku/card/chapters_list.py:661
+#: ../komikku/card/chapters_list.py:660
 msgid "Mark as Unread"
 msgstr "Okunmamış Olarak İşaretle"
 
-#: ../komikku/card/chapters_list.py:665
+#: ../komikku/card/chapters_list.py:664
 msgid "Mark Previous Chapters as Read"
 msgstr "Önceki Bölümleri Okunmuş Olarak İşaretle"
 
@@ -2939,8 +2947,8 @@ msgid "Comics stored locally as archives in CBZ/CBR formats"
 msgstr ""
 "Yerel olarak CBZ/CBR biçimlerinde arşiv olarak depolanan çizgi romanlar"
 
-#: ../komikku/explorer/__init__.py:112 ../komikku/preferences.py:544
-#: ../komikku/preferences.py:638 ../komikku/servers/mangatube/__init__.py:57
+#: ../komikku/explorer/__init__.py:112 ../komikku/preferences.py:556
+#: ../komikku/preferences.py:650 ../komikku/servers/mangatube/__init__.py:57
 msgid "18+"
 msgstr "18+"
 
@@ -3167,23 +3175,23 @@ msgstr "İndirme hatası"
 msgid "Preferences"
 msgstr "Tercihler"
 
-#: ../komikku/preferences.py:125
+#: ../komikku/preferences.py:137
 msgid "Clear?"
 msgstr ""
 
-#: ../komikku/preferences.py:126
+#: ../komikku/preferences.py:138
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
 
-#: ../komikku/preferences.py:127
+#: ../komikku/preferences.py:139
 msgid "Clear"
 msgstr ""
 
-#: ../komikku/preferences.py:154
+#: ../komikku/preferences.py:166
 msgid "Disable animations?"
 msgstr "Animasyonlar devre dışı bırakılsın mı?"
 
-#: ../komikku/preferences.py:155
+#: ../komikku/preferences.py:167
 msgid ""
 "Are you sure you want to disable animations?\n"
 "\n"
@@ -3193,36 +3201,36 @@ msgstr ""
 "\n"
 "Okuyucudaki hareketle gezinme özelliği artık düzgün çalışmayacaktır."
 
-#: ../komikku/preferences.py:156
+#: ../komikku/preferences.py:168
 msgid "Disable"
 msgstr ""
 
-#: ../komikku/preferences.py:468
+#: ../komikku/preferences.py:480
 msgid "Servers Languages"
 msgstr "Sunucu Dilleri"
 
-#: ../komikku/preferences.py:572
+#: ../komikku/preferences.py:584
 msgid "User Account"
 msgstr "Kullanıcı Hesabı"
 
-#: ../komikku/preferences.py:580
+#: ../komikku/preferences.py:592
 msgid "Address"
 msgstr "Adres"
 
-#: ../komikku/preferences.py:586
+#: ../komikku/preferences.py:598
 msgid "Username"
 msgstr "Kullanıcı adı"
 
-#: ../komikku/preferences.py:590
+#: ../komikku/preferences.py:602
 msgid "Password"
 msgstr "Parola"
 
-#: ../komikku/preferences.py:602
+#: ../komikku/preferences.py:614
 msgid "System keyring service is disabled. Credential cannot be saved."
 msgstr ""
 "Sistem anahtarlık hizmeti devre dışı bırakıldı. Kimlik bilgisi kaydedilemez."
 
-#: ../komikku/preferences.py:607
+#: ../komikku/preferences.py:619
 msgid ""
 "No keyring backends were found to store credential. Use plaintext storage as "
 "fallback."
@@ -3230,7 +3238,7 @@ msgstr ""
 "Kimlik bilgilerini depolayacak anahtarlık arka ucu bulunamadı. Düz metin "
 "depolamayı yedek olarak kullan."
 
-#: ../komikku/preferences.py:612
+#: ../komikku/preferences.py:624
 msgid ""
 "No keyring backends were found to store credential. Plaintext storage will "
 "be used as fallback."
@@ -3238,11 +3246,11 @@ msgstr ""
 "Kimlik bilgilerini depolayacak anahtarlık arka ucu bulunamadı. Düz metin "
 "depolama, yedek olarak kullanılacak."
 
-#: ../komikku/preferences.py:620
+#: ../komikku/preferences.py:632
 msgid "Test"
 msgstr "Test"
 
-#: ../komikku/preferences.py:652
+#: ../komikku/preferences.py:664
 msgid "Servers Settings"
 msgstr "Sunucu Ayarları"
 
@@ -3494,12 +3502,12 @@ msgstr "Durumlara göre süz"
 msgid "Canceled"
 msgstr "İptal edildi"
 
-#: ../komikku/servers/multi/madara.py:362
+#: ../komikku/servers/multi/madara.py:366
 #: ../komikku/servers/readmanhwa/__init__.py:44
 msgid "NSFW Content"
 msgstr "NSFW İçerik"
 
-#: ../komikku/servers/multi/madara.py:363
+#: ../komikku/servers/multi/madara.py:367
 #: ../komikku/servers/readmanhwa/__init__.py:45
 msgid "Whether to show manga containing NSFW content"
 msgstr "NSFW içeriği içeren mangaların gösterilme durumu"
@@ -3536,18 +3544,24 @@ msgstr "Kitaplık güncellemesi başladı"
 msgid "Update started"
 msgstr "Güncelleme başladı"
 
-#: ../komikku/utils.py:235
+#: ../komikku/utils.py:256
 msgid "You are currently offline"
 msgstr "Çevrim dışısınız"
 
-#: ../komikku/utils.py:251
+#: ../komikku/utils.py:272
 msgid "No Internet connection, timeout or server down"
 msgstr ""
 "İnternet bağlantısı yok, bağlantınız zaman aşımına uğradı veya sunucu kapalı"
 
-#: ../komikku/webview.py:253
+#: ../komikku/webview.py:256
 msgid "Please complete CAPTCHA"
 msgstr ""
+
+#~ msgid "Dark Theme"
+#~ msgstr "Koyu Tema"
+
+#~ msgid "Use dark GTK theme"
+#~ msgstr "Koyu GTK temasını kullan"
 
 #~ msgid "No new chapter found"
 #~ msgstr "Yeni bölüm bulunamadı"

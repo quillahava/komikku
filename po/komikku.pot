@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 01:54+0200\n"
+"POT-Creation-Date: 2023-04-20 01:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2182,7 +2182,7 @@ msgstr ""
 msgid "Download Manager"
 msgstr ""
 
-#: ../data/ui/application_window.ui:159 ../data/ui/preferences.ui:231
+#: ../data/ui/application_window.ui:159 ../data/ui/preferences.ui:232
 msgid "Servers"
 msgstr ""
 
@@ -2195,7 +2195,7 @@ msgid "Toggle category sidebar"
 msgstr ""
 
 #: ../data/ui/application_window.ui:252 ../data/ui/application_window.ui:466
-#: ../data/ui/application_window.ui:1070
+#: ../data/ui/application_window.ui:1068
 #: ../data/ui/card_chapters_list_row.ui:44
 msgid "Menu"
 msgstr ""
@@ -2229,7 +2229,7 @@ msgid "Search by name, server or genre"
 msgstr ""
 
 #: ../data/ui/application_window.ui:445 ../data/ui/menu/card.xml:11
-#: ../data/ui/preferences.ui:198
+#: ../data/ui/preferences.ui:199
 msgid "Update"
 msgstr ""
 
@@ -2249,31 +2249,31 @@ msgstr ""
 msgid "Add to Library"
 msgstr ""
 
-#: ../data/ui/application_window.ui:777
+#: ../data/ui/application_window.ui:775
 msgid "Details"
 msgstr ""
 
-#: ../data/ui/application_window.ui:809
+#: ../data/ui/application_window.ui:807
 msgid "Genres"
 msgstr ""
 
-#: ../data/ui/application_window.ui:847
+#: ../data/ui/application_window.ui:845
 msgid "Scanlators"
 msgstr ""
 
-#: ../data/ui/application_window.ui:920
+#: ../data/ui/application_window.ui:918
 msgid "Last Update"
 msgstr ""
 
-#: ../data/ui/application_window.ui:957
+#: ../data/ui/application_window.ui:955
 msgid "Size on Disk"
 msgstr ""
 
-#: ../data/ui/application_window.ui:988
+#: ../data/ui/application_window.ui:986
 msgid "Synopsis"
 msgstr ""
 
-#: ../data/ui/application_window.ui:1120 ../data/ui/categories_editor.ui:85
+#: ../data/ui/application_window.ui:1118 ../data/ui/categories_editor.ui:85
 msgid "No categories"
 msgstr ""
 
@@ -2366,23 +2366,23 @@ msgstr ""
 msgid "About Komikku"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:7 ../data/ui/preferences.ui:314
+#: ../data/ui/menu/reader.xml:7 ../data/ui/preferences.ui:315
 msgid "Reading Mode"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:12 ../data/ui/preferences.ui:318
+#: ../data/ui/menu/reader.xml:12 ../data/ui/preferences.ui:319
 msgid "⬅ Right to Left"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:17 ../data/ui/preferences.ui:319
+#: ../data/ui/menu/reader.xml:17 ../data/ui/preferences.ui:320
 msgid "➡ Left to Right"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:22 ../data/ui/preferences.ui:320
+#: ../data/ui/menu/reader.xml:22 ../data/ui/preferences.ui:321
 msgid "⬇ Vertical"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:27 ../data/ui/preferences.ui:321
+#: ../data/ui/menu/reader.xml:27 ../data/ui/preferences.ui:322
 msgid "⬇ Webtoon"
 msgstr ""
 
@@ -2390,39 +2390,39 @@ msgstr ""
 msgid "Type of Scaling"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:40 ../data/ui/preferences.ui:353
+#: ../data/ui/menu/reader.xml:40 ../data/ui/preferences.ui:354
 msgid "Adapt to Screen"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:45 ../data/ui/preferences.ui:354
+#: ../data/ui/menu/reader.xml:45 ../data/ui/preferences.ui:355
 msgid "Adapt to Width"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:50 ../data/ui/preferences.ui:355
+#: ../data/ui/menu/reader.xml:50 ../data/ui/preferences.ui:356
 msgid "Adapt to Height"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:356
+#: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:357
 msgid "Original Size"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:378
+#: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:379
 msgid "Background Color"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:382
+#: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:383
 msgid "White"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:383
+#: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:384
 msgid "Gray"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:384
+#: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:385
 msgid "Black"
 msgstr ""
 
-#: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:385
+#: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:386
 msgid "System Style"
 msgstr ""
 
@@ -2447,156 +2447,164 @@ msgid "General"
 msgstr ""
 
 #: ../data/ui/preferences.ui:46
-msgid "Dark Theme"
+msgid "Theme"
 msgstr ""
 
-#: ../data/ui/preferences.ui:48
-msgid "Use dark GTK theme"
+#: ../data/ui/preferences.ui:50
+msgid "Light"
 msgstr ""
 
-#: ../data/ui/preferences.ui:59
+#: ../data/ui/preferences.ui:51
+msgid "Dark"
+msgstr ""
+
+#: ../data/ui/preferences.ui:52
+msgid "Follow System"
+msgstr ""
+
+#: ../data/ui/preferences.ui:60
 msgid "Night Light"
 msgstr ""
 
-#: ../data/ui/preferences.ui:61
+#: ../data/ui/preferences.ui:62
 msgid "Automatically enable dark theme at night"
 msgstr ""
 
-#: ../data/ui/preferences.ui:72
+#: ../data/ui/preferences.ui:73
 msgid "Desktop Notifications"
 msgstr ""
 
-#: ../data/ui/preferences.ui:74
+#: ../data/ui/preferences.ui:75
 msgid "Use desktop notifications for downloads and library updates"
 msgstr ""
 
-#: ../data/ui/preferences.ui:92 ../data/ui/preferences.ui:96
+#: ../data/ui/preferences.ui:93 ../data/ui/preferences.ui:97
 msgid "Library"
 msgstr ""
 
-#: ../data/ui/preferences.ui:99
+#: ../data/ui/preferences.ui:100
 msgid "Display"
 msgstr ""
 
-#: ../data/ui/preferences.ui:102
+#: ../data/ui/preferences.ui:103
 msgid "Display Mode"
 msgstr ""
 
-#: ../data/ui/preferences.ui:106
+#: ../data/ui/preferences.ui:107
 msgid "Grid"
 msgstr ""
 
-#: ../data/ui/preferences.ui:107
+#: ../data/ui/preferences.ui:108
 msgid "Compact Grid"
 msgstr ""
 
-#: ../data/ui/preferences.ui:115
+#: ../data/ui/preferences.ui:116
 msgid "Servers Logo"
 msgstr ""
 
-#: ../data/ui/preferences.ui:117
+#: ../data/ui/preferences.ui:118
 msgid "Display servers logo"
 msgstr ""
 
-#: ../data/ui/preferences.ui:128
+#: ../data/ui/preferences.ui:129
 msgid "Badges"
 msgstr ""
 
-#: ../data/ui/preferences.ui:131
+#: ../data/ui/preferences.ui:132
 msgid "Number of Unread Chapters"
 msgstr ""
 
-#: ../data/ui/preferences.ui:152
+#: ../data/ui/preferences.ui:153
 msgid "Number of Downloaded Chapters"
 msgstr ""
 
-#: ../data/ui/preferences.ui:173
+#: ../data/ui/preferences.ui:174
 msgid "Number of Recent and Unread Chapters"
 msgstr ""
 
-#: ../data/ui/preferences.ui:201
+#: ../data/ui/preferences.ui:202
 msgid "Update at Startup"
 msgstr ""
 
-#: ../data/ui/preferences.ui:203
+#: ../data/ui/preferences.ui:204
 msgid "Automatically update library at startup"
 msgstr ""
 
-#: ../data/ui/preferences.ui:215
+#: ../data/ui/preferences.ui:216
 msgid "Auto Download of New Chapters"
 msgstr ""
 
-#: ../data/ui/preferences.ui:217
+#: ../data/ui/preferences.ui:218
 msgid "Automatically download new chapters"
 msgstr ""
 
-#: ../data/ui/preferences.ui:235
+#: ../data/ui/preferences.ui:236
 msgid "Restrict servers to selected languages"
 msgstr ""
 
-#: ../data/ui/preferences.ui:246
+#: ../data/ui/preferences.ui:247
 msgid "Enable/disable and configure servers"
 msgstr ""
 
-#: ../data/ui/preferences.ui:256
+#: ../data/ui/preferences.ui:257
 msgid "Long Strip Detection"
 msgstr ""
 
-#: ../data/ui/preferences.ui:258
+#: ../data/ui/preferences.ui:259
 msgid "Automatically detect long vertical strip when possible"
 msgstr ""
 
-#: ../data/ui/preferences.ui:270
+#: ../data/ui/preferences.ui:271
 msgid "NSFW Content (18+)"
 msgstr ""
 
-#: ../data/ui/preferences.ui:272
+#: ../data/ui/preferences.ui:273
 msgid "Whether to enable servers with NSFW content"
 msgstr ""
 
-#: ../data/ui/preferences.ui:284
+#: ../data/ui/preferences.ui:285
 msgid "NSFW Only Content (18+)"
 msgstr ""
 
-#: ../data/ui/preferences.ui:286
+#: ../data/ui/preferences.ui:287
 msgid "Whether to enable servers with NSFW only content"
 msgstr ""
 
-#: ../data/ui/preferences.ui:305 ../data/ui/preferences.ui:309
+#: ../data/ui/preferences.ui:306 ../data/ui/preferences.ui:310
 msgid "Reader"
 msgstr ""
 
-#: ../data/ui/preferences.ui:329
+#: ../data/ui/preferences.ui:330
 msgid "Maximum Width"
 msgstr ""
 
-#: ../data/ui/preferences.ui:330
+#: ../data/ui/preferences.ui:331
 msgid ""
 "Constrain reader's width to a given maximum size (Webtoon reading mode only)"
 msgstr ""
 
-#: ../data/ui/preferences.ui:348
+#: ../data/ui/preferences.ui:349
 msgid "Scaling"
 msgstr ""
 
-#: ../data/ui/preferences.ui:349
+#: ../data/ui/preferences.ui:350
 msgid "Type of scaling to adapt image"
 msgstr ""
 
-#: ../data/ui/preferences.ui:364
+#: ../data/ui/preferences.ui:365
 msgid "Landscape Pages Zoom"
 msgstr ""
 
-#: ../data/ui/preferences.ui:366
+#: ../data/ui/preferences.ui:367
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
 msgstr ""
 
-#: ../data/ui/preferences.ui:393
+#: ../data/ui/preferences.ui:394
 msgid "Borders Crop"
 msgstr ""
 
-#: ../data/ui/preferences.ui:395
+#: ../data/ui/preferences.ui:396
 msgid ""
 "Crop white borders of images\n"
 "\n"
@@ -2604,69 +2612,69 @@ msgid ""
 "slowdowns, especially on mobile devices."
 msgstr ""
 
-#: ../data/ui/preferences.ui:409
+#: ../data/ui/preferences.ui:410
 msgid "Page Numbering"
 msgstr ""
 
-#: ../data/ui/preferences.ui:411
+#: ../data/ui/preferences.ui:412
 msgid "Hide the page numbering at the bottom of the screen while reading"
 msgstr ""
 
-#: ../data/ui/preferences.ui:423
+#: ../data/ui/preferences.ui:424
 msgid "Fullscreen"
 msgstr ""
 
-#: ../data/ui/preferences.ui:425
+#: ../data/ui/preferences.ui:426
 msgid "Automatically enter fullscreen mode"
 msgstr ""
 
-#: ../data/ui/preferences.ui:444 ../data/ui/preferences.ui:448
+#: ../data/ui/preferences.ui:445 ../data/ui/preferences.ui:449
 msgid "Advanced"
 msgstr ""
 
-#: ../data/ui/preferences.ui:451
+#: ../data/ui/preferences.ui:452
 msgid "Data"
 msgstr ""
 
-#: ../data/ui/preferences.ui:452
+#: ../data/ui/preferences.ui:453
 msgid "Data not saved in the library"
 msgstr ""
 
-#: ../data/ui/preferences.ui:455
+#: ../data/ui/preferences.ui:456
 msgid "Clear chapters cache and database"
 msgstr ""
 
-#: ../data/ui/preferences.ui:461
+#: ../data/ui/preferences.ui:462
 msgid "Clear chapters cache and database on application close"
 msgstr ""
 
-#: ../data/ui/preferences.ui:476
+#: ../data/ui/preferences.ui:477
 msgid "Credentials storage"
 msgstr ""
 
-#: ../data/ui/preferences.ui:479
+#: ../data/ui/preferences.ui:480
 msgid "Allow plaintext storage as fallback"
 msgstr ""
 
-#: ../data/ui/preferences.ui:481
+#: ../data/ui/preferences.ui:482
 msgid "Used when no keyring backends are found"
 msgstr ""
 
-#: ../data/ui/preferences.ui:495
+#: ../data/ui/preferences.ui:496
 msgid "Tweaks"
 msgstr ""
 
-#: ../data/ui/preferences.ui:498
+#: ../data/ui/preferences.ui:499
 msgid "Disable Animations"
 msgstr ""
 
-#: ../data/ui/preferences.ui:500
+#: ../data/ui/preferences.ui:501
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
 msgstr ""
 
-#: ../data/ui/preferences.ui:512
+#: ../data/ui/preferences.ui:513
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot disable animations globally via GNOME "
@@ -2758,39 +2766,39 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../komikku/application.py:498
+#: ../komikku/application.py:505
 msgid "Join Chat"
 msgstr ""
 
-#: ../komikku/application.py:499
+#: ../komikku/application.py:506
 msgid "Sponsor via Ko-fi"
 msgstr ""
 
-#: ../komikku/application.py:500
+#: ../komikku/application.py:507
 msgid "Sponsor via Liberapay"
 msgstr ""
 
-#: ../komikku/application.py:501
+#: ../komikku/application.py:508
 msgid "Sponsor via Paypal"
 msgstr ""
 
-#: ../komikku/application.py:697
+#: ../komikku/application.py:704
 msgid "Are you sure you want to quit?"
 msgstr ""
 
-#: ../komikku/application.py:700
+#: ../komikku/application.py:707
 msgid "Some chapters are currently being downloaded."
 msgstr ""
 
-#: ../komikku/application.py:702
+#: ../komikku/application.py:709
 msgid "Some mangas are currently being updated."
 msgstr ""
 
-#: ../komikku/application.py:706
+#: ../komikku/application.py:713
 msgid "Quit?"
 msgstr ""
 
-#: ../komikku/application.py:708
+#: ../komikku/application.py:715
 msgid "Quit"
 msgstr ""
 
@@ -2802,35 +2810,35 @@ msgid ""
 "Please switch to another server."
 msgstr ""
 
-#: ../komikku/card/__init__.py:101 ../komikku/card/__init__.py:202
+#: ../komikku/card/__init__.py:101 ../komikku/card/__init__.py:203
 #: ../komikku/categories_editor.py:127 ../komikku/downloader.py:347
 #: ../komikku/downloader.py:525 ../komikku/explorer/__init__.py:199
-#: ../komikku/history.py:208 ../komikku/preferences.py:413
+#: ../komikku/history.py:208 ../komikku/preferences.py:425
 #: ../komikku/webview.py:137
 msgid "Back"
 msgstr ""
 
-#: ../komikku/card/__init__.py:129
+#: ../komikku/card/__init__.py:130
 msgid "Read progress synchronization with server completed successfully"
 msgstr ""
 
-#: ../komikku/card/__init__.py:140
+#: ../komikku/card/__init__.py:141
 msgid "Failed to get manga URL"
 msgstr ""
 
-#: ../komikku/card/__init__.py:296
+#: ../komikku/card/__init__.py:299
 msgid "Unknown author"
 msgstr ""
 
-#: ../komikku/card/__init__.py:302 ../komikku/card/__init__.py:311
+#: ../komikku/card/__init__.py:305 ../komikku/card/__init__.py:314
 msgid "Unknown status"
 msgstr ""
 
-#: ../komikku/card/__init__.py:312 ../komikku/explorer/__init__.py:94
+#: ../komikku/card/__init__.py:315 ../komikku/explorer/__init__.py:94
 msgid "Local"
 msgstr ""
 
-#: ../komikku/card/__init__.py:333 ../komikku/card/chapters_list.py:586
+#: ../komikku/card/__init__.py:341 ../komikku/card/chapters_list.py:586
 msgid "%m/%d/%Y"
 msgstr ""
 
@@ -2838,23 +2846,23 @@ msgstr ""
 msgid "Failed to update chapters reading status"
 msgstr ""
 
-#: ../komikku/card/chapters_list.py:645 ../komikku/library/__init__.py:321
+#: ../komikku/card/chapters_list.py:643 ../komikku/library/__init__.py:321
 msgid "Download"
 msgstr ""
 
-#: ../komikku/card/chapters_list.py:649
+#: ../komikku/card/chapters_list.py:647
 msgid "Clear and Reset"
 msgstr ""
 
-#: ../komikku/card/chapters_list.py:657
+#: ../komikku/card/chapters_list.py:656
 msgid "Mark as Read"
 msgstr ""
 
-#: ../komikku/card/chapters_list.py:661
+#: ../komikku/card/chapters_list.py:660
 msgid "Mark as Unread"
 msgstr ""
 
-#: ../komikku/card/chapters_list.py:665
+#: ../komikku/card/chapters_list.py:664
 msgid "Mark Previous Chapters as Read"
 msgstr ""
 
@@ -2904,8 +2912,8 @@ msgstr ""
 msgid "Comics stored locally as archives in CBZ/CBR formats"
 msgstr ""
 
-#: ../komikku/explorer/__init__.py:112 ../komikku/preferences.py:544
-#: ../komikku/preferences.py:638 ../komikku/servers/mangatube/__init__.py:57
+#: ../komikku/explorer/__init__.py:112 ../komikku/preferences.py:556
+#: ../komikku/preferences.py:650 ../komikku/servers/mangatube/__init__.py:57
 msgid "18+"
 msgstr ""
 
@@ -3121,74 +3129,74 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: ../komikku/preferences.py:125
+#: ../komikku/preferences.py:137
 msgid "Clear?"
 msgstr ""
 
-#: ../komikku/preferences.py:126
+#: ../komikku/preferences.py:138
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
 
-#: ../komikku/preferences.py:127
+#: ../komikku/preferences.py:139
 msgid "Clear"
 msgstr ""
 
-#: ../komikku/preferences.py:154
+#: ../komikku/preferences.py:166
 msgid "Disable animations?"
 msgstr ""
 
-#: ../komikku/preferences.py:155
+#: ../komikku/preferences.py:167
 msgid ""
 "Are you sure you want to disable animations?\n"
 "\n"
 "The gesture navigation in the reader will not work properly anymore."
 msgstr ""
 
-#: ../komikku/preferences.py:156
+#: ../komikku/preferences.py:168
 msgid "Disable"
 msgstr ""
 
-#: ../komikku/preferences.py:468
+#: ../komikku/preferences.py:480
 msgid "Servers Languages"
 msgstr ""
 
-#: ../komikku/preferences.py:572
+#: ../komikku/preferences.py:584
 msgid "User Account"
 msgstr ""
 
-#: ../komikku/preferences.py:580
+#: ../komikku/preferences.py:592
 msgid "Address"
 msgstr ""
 
-#: ../komikku/preferences.py:586
+#: ../komikku/preferences.py:598
 msgid "Username"
 msgstr ""
 
-#: ../komikku/preferences.py:590
+#: ../komikku/preferences.py:602
 msgid "Password"
 msgstr ""
 
-#: ../komikku/preferences.py:602
+#: ../komikku/preferences.py:614
 msgid "System keyring service is disabled. Credential cannot be saved."
 msgstr ""
 
-#: ../komikku/preferences.py:607
+#: ../komikku/preferences.py:619
 msgid ""
 "No keyring backends were found to store credential. Use plaintext storage as "
 "fallback."
 msgstr ""
 
-#: ../komikku/preferences.py:612
+#: ../komikku/preferences.py:624
 msgid ""
 "No keyring backends were found to store credential. Plaintext storage will "
 "be used as fallback."
 msgstr ""
 
-#: ../komikku/preferences.py:620
+#: ../komikku/preferences.py:632
 msgid "Test"
 msgstr ""
 
-#: ../komikku/preferences.py:652
+#: ../komikku/preferences.py:664
 msgid "Servers Settings"
 msgstr ""
 
@@ -3437,12 +3445,12 @@ msgstr ""
 msgid "Canceled"
 msgstr ""
 
-#: ../komikku/servers/multi/madara.py:362
+#: ../komikku/servers/multi/madara.py:366
 #: ../komikku/servers/readmanhwa/__init__.py:44
 msgid "NSFW Content"
 msgstr ""
 
-#: ../komikku/servers/multi/madara.py:363
+#: ../komikku/servers/multi/madara.py:367
 #: ../komikku/servers/readmanhwa/__init__.py:45
 msgid "Whether to show manga containing NSFW content"
 msgstr ""
@@ -3479,14 +3487,14 @@ msgstr ""
 msgid "Update started"
 msgstr ""
 
-#: ../komikku/utils.py:235
+#: ../komikku/utils.py:256
 msgid "You are currently offline"
 msgstr ""
 
-#: ../komikku/utils.py:251
+#: ../komikku/utils.py:272
 msgid "No Internet connection, timeout or server down"
 msgstr ""
 
-#: ../komikku/webview.py:253
+#: ../komikku/webview.py:256
 msgid "Please complete CAPTCHA"
 msgstr ""
