@@ -15,5 +15,5 @@ class Scanfr(MyMangaReaderCMS):
     most_populars_url = base_url + '/filterList?page=1&sortBy=views&asc=false'
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/{1}'
-    image_url = None  # For some manga chapters, chapter slug can be used to compute images URLs
+    image_url = None  # For some manga chapters, chapter slug can't be used to compute images URLs
     cover_url = 'https://opfrcdn.xyz/uploads/manga/{0}/cover/cover_250x350.jpg'

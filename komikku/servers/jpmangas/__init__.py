@@ -11,10 +11,10 @@ class Jpmangas(MyMangaReaderCMS):
     lang = 'fr'
     is_nsfw = True
 
-    base_url = 'https://jpmangas.cc'
+    base_url = 'https://jpmangas.xyz'
     search_url = base_url + '/search'
-    most_populars_url = base_url + '/filterList?page=1&cat=&alpha=&sortBy=views&asc=true&author=&tag=&artist='
-    manga_url = base_url + '/lecture-en-ligne/{0}'
-    chapter_url = base_url + '/lecture-en-ligne/{0}/{1}'
-    image_url = None  # For some manga chapters, chapter slug can be used to compute images URLs
+    most_populars_url = base_url + '/filterList?page=1&cat=&alpha=&sortBy=views&asc=false&author=&tag=&artist='
+    manga_url = base_url + '/manga/{0}'
+    chapter_url = base_url + '/manga/{0}/{1}'
+    image_url = base_url + '/uploads/manga/{0}/chapters/{1}/{2}'
     cover_url = base_url + '/uploads/manga/{0}/cover/cover_250x350.jpg'

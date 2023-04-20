@@ -74,7 +74,7 @@ class MyMangaReaderCMS(Server):
             cover=None,
         ))
 
-        data['name'] = soup.find('h2', class_=re.compile(r'widget-title|listmanga-header')).text.strip()
+        data['name'] = soup.find('img', class_=['lazyload', 'img-responsive']).get('alt').strip()
         data['cover'] = self.cover_url.format(data['slug'])
 
         # Details
@@ -134,7 +134,7 @@ class MyMangaReaderCMS(Server):
             chapters.append(dict(
                 slug=slug,
                 date=convert_date_string(date, format='%d %b. %Y'),
-                title=title
+                title=title,
             ))
 
         return chapters
