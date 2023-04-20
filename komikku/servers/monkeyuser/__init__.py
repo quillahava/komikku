@@ -85,14 +85,18 @@ class Monkeyuser(Server):
 
         soup = BeautifulSoup(r.text, 'html.parser')
 
-        return dict(
-            pages=[
-                dict(
-                    slug='/'.join(soup.select_one('.content img').get('src').split('/')[-2:]),
-                    image=None,
-                ),
-            ]
-        )
+        if img_element := soup.select_one('.content img'):
+            # Some chapters have no image but an embedded Youtube video
+            return dict(
+                pages=[
+                    dict(
+                        slug='/'.join(img_element.get('src').split('/')[-2:]),
+                        image=None,
+                    ),
+                ]
+            )
+
+        return None
 
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
