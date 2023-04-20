@@ -11,7 +11,7 @@ class Lelscanvf(MyMangaReaderCMS):
     lang = 'fr'
     is_nsfw = True
 
-    base_url = 'https://lelscanvf.com'
+    base_url = 'https://lelscanvf.cc'
     search_url = base_url + '/search'
     most_populars_url = base_url + '/filterList?page=1&sortBy=views&asc=false'
     manga_url = base_url + '/manga/{0}'
