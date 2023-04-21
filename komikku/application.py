@@ -481,15 +481,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] RTL/LTR/Vertical pager: Fixed touchpad 2-fingers swipe gesture (Wayland only)</li>
-                <li>[Updater] Slightly improves notifications</li>
-                <li>[Servers] Added Little Garden [FR]</li>
-                <li>[Servers] Desu: Update</li>
-                <li>[Servers] Rawkuma: Update</li>
-                <li>[Servers] View Comics: Update</li>
-                <li>[Servers] Read Manga: Update</li>
-                <li>[L10n] Added Portuguese and Ukrainian translations</li>
-                <li>[L10n] Updated French, German, Portuguese (Brazil) and Spanish translations</li>
+                <li>[Preferences] Disappearance of the `Dark Theme` setting in favor of a new `Theme` setting offering 3 choices (Light, Dark, Follow System)</li>
+                <li>[Servers] Added Escaneos de Leviatan [ES]</li>
+                <li>[Servers] Added Fr-Scan [FR]</li>
+                <li>[Servers] Added MonkeyUser [EN]</li>
+                <li>[Servers] Jpmangas: Update</li>
+                <li>[Servers] Lelscan-VF: Update</li>
+                <li>[L10n] Updated French, Indonesian, Portuguese (Brazil) and Spanish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)
