@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.12.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 01:12+0200\n"
-"PO-Revision-Date: 2023-04-21 20:16+0000\n"
+"PO-Revision-Date: 2023-04-23 07:50+0000\n"
 "Last-Translator: Alim Satria <alimsatria2017@mail.ugm.ac.id>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/komikku/main/"
 "id/>\n"
@@ -1646,60 +1646,64 @@ msgid ""
 "[Reader] Add new pager for Webtoons: Vertical smooth/continuous scrolling (a."
 "k.a. infinite canvas)"
 msgstr ""
+"[Pembaca] Menambahkan halaman baru untuk Webtoons: Pengguliran halus/kontinu "
+"secara vertikal (alias kanvas tak terbatas)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:817
 msgid "[Download Manager] Adding downloads: Improve responsiveness"
-msgstr ""
+msgstr "[Pengelola Unduhan] Menambahkan unduhan : Meningkatkan daya tanggap"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:818
 msgid ""
 "[Preferences] Library: Add new option to allow user to enable/disable "
 "servers with NSFW only content"
 msgstr ""
+"[Preferensi] Pustaka : Menambahkan opsi baru untuk memungkinkan pengguna "
+"mengaktifkan/menonaktifkan server dengan konten khusus NSFW"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:819
 msgid "[Servers] Add Mangahub"
-msgstr ""
+msgstr "[Server] Mangahub ditambahkan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:820
 msgid "[Servers] Add NHentai"
-msgstr ""
+msgstr "[Server] NHentai ditambahkan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:821
 msgid "[Servers] Add Readmanhwa"
-msgstr ""
+msgstr "[Server] Readmanhwa ditambahkan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:822
 msgid "[Servers] Central de Mangás: Update"
-msgstr ""
+msgstr "[Server] Central de Mangás: Diperbarui"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:823
 msgid "[Servers] Crunchyroll: Update"
-msgstr ""
+msgstr "[Server] Crunchyroll: Diperbarui"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:824
 msgid "[Servers] Izneo: Update"
-msgstr ""
+msgstr "[Server] Izneo : Diperbarui"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:826
 msgid "[Servers] MangaNelo: Update"
-msgstr ""
+msgstr "[Server] MangaNelo : Diperbarui"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:827
 msgid "[Servers] Dynasty: Improvements"
-msgstr ""
+msgstr "[Server] Dynasty : Ditingkatkan"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:835
 msgid "[Library] Several bugs fixes"
-msgstr ""
+msgstr "[Pustaka] Perbaikan beberapa bug"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:842
 msgid "[Library] Rounded mangas thumbnails"
-msgstr ""
+msgstr "[Pustaka] Gambar mini manga dibuat membulat"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:843
 msgid "[L10n] German translation update"
-msgstr ""
+msgstr "[L10n] Pembaruan terjemahan Bahasa Jerman"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:844
 msgid ""
