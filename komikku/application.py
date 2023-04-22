@@ -104,6 +104,7 @@ class Application(Adw.Application):
 
         self.window = None
 
+        self.set_resource_base_path('/info/febvre/Komikku')
         GLib.set_application_name('Komikku')
 
         logging.basicConfig(
@@ -385,11 +386,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.preferences = Preferences(self)
         self.webview = Webview(self)
 
-        # Custom CSS
-        css_provider = Gtk.CssProvider()
-        css_provider.load_from_resource('/info/febvre/Komikku/css/style.css')
-        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-
         if self.application.profile in ('beta', 'development'):
             self.add_css_class('devel')
 
@@ -467,7 +463,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         set_color_scheme()
 
     def on_about_menu_clicked(self, action, param):
-        builder = Gtk.Builder.new_from_resource('/info/febvre/Komikku/about_window.ui')
+        builder = Gtk.Builder.new_from_resource('/info/febvre/Komikku/ui/about_window.ui')
         window = builder.get_object('about_window')
 
         window.set_artists(CREDITS['artists'])

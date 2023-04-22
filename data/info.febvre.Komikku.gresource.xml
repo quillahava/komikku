@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
     <gresource prefix="/info/febvre/Komikku">
-        <file compressed="true">css/style.css</file>
+        <file compressed="true" alias="style.css">css/style.css</file>
 
-        <file compressed="true" preprocess="xml-stripblanks">about_window.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks" alias="ui/about_window.ui">about_window.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/application_window.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/card_chapters_list_row.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/categories_editor.ui</file>

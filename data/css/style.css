@@ -15,11 +15,6 @@ searchbar > revealer > box {
     padding-right: 0px;
 }
 
-.suggested2-action {
-    background-color: #27c17f;
-    color: #fff;
-}
-
 /* Covers */
 .cover-dropshadow {
     border-radius: 9px;

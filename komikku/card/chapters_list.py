@@ -639,8 +639,6 @@ class ChaptersListRow(Gtk.Box):
         self.menubutton_model.remove_all()
 
         section_menu_model = Gio.Menu()
-        section = Gio.MenuItem.new_section(None, section_menu_model)
-        self.menubutton_model.append_item(section)
         if not self.chapter.downloaded:
             menu_item = Gio.MenuItem.new(_('Download'))
             menu_item.set_action_and_target_value('app.card.download-chapter', GLib.Variant.new_uint16(position))
@@ -650,9 +648,10 @@ class ChaptersListRow(Gtk.Box):
             menu_item.set_action_and_target_value('app.card.reset-chapter', GLib.Variant.new_uint16(position))
             section_menu_model.append_item(menu_item)
 
-        section_menu_model = Gio.Menu()
         section = Gio.MenuItem.new_section(None, section_menu_model)
         self.menubutton_model.append_item(section)
+
+        section_menu_model = Gio.Menu()
         if not self.chapter.read:
             menu_item = Gio.MenuItem.new(_('Mark as Read'))
             menu_item.set_action_and_target_value('app.card.mark-chapter-read', GLib.Variant.new_uint16(position))
@@ -665,3 +664,6 @@ class ChaptersListRow(Gtk.Box):
         menu_item = Gio.MenuItem.new(_('Mark Previous Chapters as Read'))
         menu_item.set_action_and_target_value('app.card.mark-previous-chapters-read', GLib.Variant.new_uint16(position))
         section_menu_model.append_item(menu_item)
+
+        section = Gio.MenuItem.new_section(None, section_menu_model)
+        self.menubutton_model.append_item(section)
