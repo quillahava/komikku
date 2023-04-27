@@ -4,22 +4,19 @@
 
 from komikku.servers.multi.genkan import Genkan
 from komikku.servers.multi.genkan import GenkanInitial
-from komikku.servers.multi.madara import Madara
+from komikku.servers.multi.madara import Madara2
 
 
-class Leviatanscans(Madara):
+class Leviatanscans(Madara2):
     id = 'leviatanscans'
     name = 'LeviatanScans'
     lang = 'en'
 
-    date_format = None
-    series_name = 'home/manga'  # This value changes regularly!
-
     base_url = 'https://en.leviatanscans.com'
-    chapters_url = base_url + '/home/manga/{0}/ajax/chapters/'
+    chapters_url = base_url + '/manga/{0}/ajax/chapters/'
 
 
-class Leviatanscans_es(Madara):
+class Leviatanscans_es(Madara2):
     id = 'leviatanscans_es'
     name = 'Escaneos de Leviatan'
     lang = 'es'
