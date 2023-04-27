@@ -9,6 +9,7 @@ class Atikrost(Madara):
     id = 'atikrost'
     name = 'Atikrost'
     lang = 'tr'
+    status = 'disabled'
 
     base_url = 'https://atikrost.com'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
