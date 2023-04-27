@@ -29,7 +29,7 @@ def test_readmanhwa(readmanhwa_server):
     # Search
     print('Search')
     try:
-        response = readmanhwa_server.search('Solo leveling', False)
+        response = readmanhwa_server.search(response[0]['name'], False)
         slug = response[0]['slug']
     except Exception as e:
         slug = None

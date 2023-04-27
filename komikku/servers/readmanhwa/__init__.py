@@ -24,7 +24,6 @@ class Readmanhwa(Server):
     id = 'readmanhwa'
     name = SERVER_NAME
     lang = 'en'
-    is_nsfw_only = True
     long_strip_genres = ['Webtoons', ]
 
     base_url = 'https://www.readmanhwa.com'
@@ -33,9 +32,9 @@ class Readmanhwa(Server):
     api_base_url = base_url + '/api/'
     api_search_url = api_base_url + 'comics?q={0}&per_page=20&nsfw={1}'
     api_most_populars_url = api_base_url + 'comics?page=1&q=&sort=popularity&order=desc&duration=year&nsfw={0}'
-    api_manga_url = api_base_url + 'comics/{0}?lang=en&nsfw=false'
-    api_manga_chapters_url = api_base_url + 'comics/{0}/chapters?lang=en&nsfw=false'
-    api_manga_chapter_images_url = api_base_url + 'comics/{0}/{1}/images?lang=en&nsfw=false'
+    api_manga_url = api_base_url + 'comics/{0}?lang=en&nsfw=true'
+    api_manga_chapters_url = api_base_url + 'comics/{0}/chapters?lang=en&nsfw=true'
+    api_manga_chapter_images_url = api_base_url + 'comics/{0}/{1}/images?lang=en&nsfw=true'
 
     filters = [
         {
