@@ -9,6 +9,7 @@ class Hunlightscans(Genkan):
     id = 'hunlightscans'
     name = 'Hunlight Scans'
     lang = 'en'
+    status = 'disabled'
 
     base_url = 'https://hunlight-scans.info'
     search_url = base_url + '/comics?query={0}'
