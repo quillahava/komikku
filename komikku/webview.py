@@ -310,6 +310,55 @@ def bypass_cf(func):
     return wrapper
 
 
+def eval_js(code):
+    error = None
+    res = None
+    webview = Gio.Application.get_default().window.webview
+
+    def load_page():
+        if not webview.open('about:blank'):
+            return True
+
+        webview.connect_signal('load-changed', on_load_changed)
+
+        if DEBUG:
+            webview.show()
+
+    def on_evaluate_javascript_finish(_webkit_webview, result, user_data=None):
+        nonlocal error
+        nonlocal res
+
+        try:
+            js_result = webview.webkit_webview.evaluate_javascript_finish(result)
+        except GLib.GError:
+            error = 'Failed to eval JS code'
+        else:
+            if js_result.is_string():
+                res = js_result.to_string()
+
+            if res is None:
+                error = 'Failed to eval JS code'
+
+        webview.close()
+
+    def on_load_changed(_webkit_webview, event):
+        if event != WebKit.LoadEvent.FINISHED:
+            return
+
+        webview.webkit_webview.evaluate_javascript(code, -1, None, None, None, on_evaluate_javascript_finish)
+
+    GLib.timeout_add(100, load_page)
+
+    while res is None and error is None:
+        time.sleep(.1)
+
+    if error:
+        logger.warning(error)
+        raise requests.exceptions.RequestException()
+
+    return res
+
+
 def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
     error = None
     html = None
