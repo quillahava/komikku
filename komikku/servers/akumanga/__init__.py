@@ -9,5 +9,6 @@ class Akumanga(Madara):
     id = 'akumanga'
     name = 'AkuManga'
     lang = 'ar'
+    status = 'disabled'
 
     base_url = 'https://akumanga.com'
