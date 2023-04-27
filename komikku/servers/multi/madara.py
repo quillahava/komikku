@@ -7,18 +7,18 @@
 # Supported servers:
 # 24hRomance [EN] (disabled)
 # 3asq [AR]
-# AkuManga [AR]
+# AkuManga [AR] (disabled)
 # Aloalivn [EN] (disabled)
 # Apoll Comics [ES]
 # ArazNovel [TR]
 # Argos Scan [PT] (disabled)
-# Atikrost [TR]
+# Atikrost [TR] (disabled)
 # Best Manga [RU]
 # Colored Council [EN]
 # Leomanga [ES]
 # Leviatanscans [EN]
 # Manga-Scantrad [FR]
-# Mangas Origines [FR]
+# Mangas Origines [FR] (disabled)
 # Reaperscans [EN/AR/FR/ID/TR]
 # Submanga [ES] (disabled)
 # Wakascan [FR] (disabled)

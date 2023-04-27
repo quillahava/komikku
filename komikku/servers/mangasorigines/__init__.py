@@ -10,6 +10,7 @@ class Mangasorigines(Madara):
     name = 'Mangas Origines'
     lang = 'fr'
     is_nsfw = True
+    status = 'disabled'
 
     has_cf = True
 
