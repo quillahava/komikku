@@ -7,7 +7,6 @@
 # Supported servers:
 # Asura Scans [EN]
 # Asura Scans [TR]
-# Phoenix Fansub [ES]
 # Rawkuma [JA]
 # Raw Manga [JA]
 

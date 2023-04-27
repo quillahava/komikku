@@ -19,6 +19,7 @@
 # Leviatanscans [EN]
 # Manga-Scantrad [FR]
 # Mangas Origines [FR] (disabled)
+# Phoenix Fansub [ES]
 # Reaperscans [EN/AR/FR/ID/TR]
 # Submanga [ES] (disabled)
 # Wakascan [FR] (disabled)

@@ -54,7 +54,7 @@ def test_ninemanga(ninemanga_server):
     print('Get manga data')
     try:
         response = ninemanga_server.get_manga_data(dict(slug=slug))
-        chapter_slug = response['chapters'][-1]['slug']
+        chapter_slug = response['chapters'][0]['slug']
     except Exception as e:
         chapter_slug = None
         log_error_traceback(e)

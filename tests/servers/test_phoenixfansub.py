@@ -19,7 +19,7 @@ def test_phoenixfansub(phoenixfansub_server):
     # Get latest updates
     print('Get latest updates')
     try:
-        response = phoenixfansub_server.get_latest_updates('all')
+        response = phoenixfansub_server.get_latest_updates()
     except Exception as e:
         response = None
         log_error_traceback(e)
@@ -30,7 +30,7 @@ def test_phoenixfansub(phoenixfansub_server):
     # Get most populars
     print('Get most populars')
     try:
-        response = phoenixfansub_server.get_most_populars('all')
+        response = phoenixfansub_server.get_most_populars()
     except Exception as e:
         response = None
         log_error_traceback(e)
@@ -42,7 +42,7 @@ def test_phoenixfansub(phoenixfansub_server):
     print('Search')
     try:
         # Use first result of get_most_populars
-        response = phoenixfansub_server.search(response[0]['name'], 'all')
+        response = phoenixfansub_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
