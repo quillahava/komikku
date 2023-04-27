@@ -376,6 +376,7 @@ class Madara2(Madara):
         if Settings.instance:
             self.filters[0]['default'] = Settings.get_default().nsfw_content
 
+    @bypass_cf
     def get_latest_updates(self, nsfw):
         """
         Returns list of latest updates manga
@@ -405,6 +406,7 @@ class Madara2(Madara):
 
         return results
 
+    @bypass_cf
     def get_most_populars(self, nsfw):
         """
         Returns list of most viewed manga
@@ -434,6 +436,7 @@ class Madara2(Madara):
 
         return results
 
+    @bypass_cf
     def search(self, term, nsfw):
         r = self.session_post(
             self.api_url,
