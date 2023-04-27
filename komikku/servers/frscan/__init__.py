@@ -10,6 +10,7 @@ class Frscan(MyMangaReaderCMS):
     name = 'FR Scan'
     lang = 'fr'
     is_nsfw = True
+    status = 'disabled'
 
     base_url = 'https://frscan.ws'
     search_url = base_url + '/search'

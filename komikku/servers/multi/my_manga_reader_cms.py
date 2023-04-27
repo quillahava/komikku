@@ -5,8 +5,8 @@
 # My Manga Reader CMS
 
 # Supported servers:
-# Fr-Scan (Id scandashfr) [FR]
-# FR Scan [FR]
+# Fr-Scan (Id frdashscan) [FR]
+# FR Scan [FR] (Disabled)
 # Jpmangas [FR]
 # Lelscan-VF [FR]
 # Mangadoor [ES]
