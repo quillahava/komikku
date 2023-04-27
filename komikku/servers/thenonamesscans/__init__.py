@@ -9,6 +9,7 @@ class Thenonamesscans(Genkan):
     id = 'thenonamesscans'
     name = 'The Nonames Scans'
     lang = 'en'
+    status = 'disabled'
 
     base_url = 'https://the-nonames.com'
     search_url = base_url + '/comics?query={0}'

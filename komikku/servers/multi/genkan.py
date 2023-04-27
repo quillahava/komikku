@@ -7,11 +7,11 @@
 # Supported servers
 # Edelgarde Scans [EN] (disabled)
 # Hatigarm Scans [EN] (disabled)
-# Hunlight Scans [EN]
+# Hunlight Scans [EN] (disabled)
 # Leviatan Scans [EN/ES] (disabled)
 # One Shot Scans [EN] (disabled)
 # Reaper Scans [EN] (disabled)
-# The Nonames Scans [EN]
+# The Nonames Scans [EN] (disabled)
 
 from bs4 import BeautifulSoup
 import json
