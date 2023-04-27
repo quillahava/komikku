@@ -41,6 +41,8 @@ class Reaperscans_fr(Madara):
     name = 'ReaperScansFR (GS)'
     lang = 'fr'
 
+    has_cf = True
+
     series_name = 'serie'
     date_format = '%d/%m/%Y'
 
