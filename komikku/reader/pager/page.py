@@ -19,7 +19,7 @@ from komikku.utils import PaintablePixbufAnimation
 
 class Page(Gtk.Overlay):
     __gsignals__ = {
-        'rendered': (GObject.SIGNAL_RUN_FIRST, None, (bool, )),
+        'rendered': (GObject.SignalFlags.RUN_FIRST, None, (bool, )),
     }
 
     def __init__(self, pager, chapter, index):

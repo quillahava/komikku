@@ -31,9 +31,9 @@ class Downloader(GObject.GObject):
     Chapters downloader
     """
     __gsignals__ = {
-        'download-changed': (GObject.SIGNAL_RUN_FIRST, None, (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT, )),
-        'ended': (GObject.SIGNAL_RUN_FIRST, None, ()),
-        'started': (GObject.SIGNAL_RUN_FIRST, None, ()),
+        'download-changed': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT, )),
+        'ended': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'started': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     running = False

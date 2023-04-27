@@ -151,7 +151,7 @@ class CategoriesEditor(Gtk.ScrolledWindow):
 
 class CategoryRow(Gtk.ListBoxRow):
     __gsignals__ = {
-        'edit-mode-changed': (GObject.SIGNAL_RUN_FIRST, None, (bool, )),
+        'edit-mode-changed': (GObject.SignalFlags.RUN_FIRST, None, (bool, )),
     }
 
     category = None

@@ -32,7 +32,7 @@ logger = logging.getLogger('komikku.webview')
 
 class Webview(Gtk.ScrolledWindow):
     __gsignals__ = {
-        'exited': (GObject.SIGNAL_RUN_FIRST, None, ()),
+        'exited': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     lock = False
