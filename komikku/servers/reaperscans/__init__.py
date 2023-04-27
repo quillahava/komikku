@@ -119,12 +119,11 @@ class Reaperscans_pt(Server):
         data['synopsis'] = soup.find('div', class_='description-container').text.strip()
 
         # Chapters
-        for a_element in reversed(soup.find('ul', class_='chapters-list-single').find_all('a')):
-            info_elements = a_element.find_all('span', class_='chapter-span')
+        for a_element in reversed(soup.select('#simple-tabpanel-0 ul > a')):
             data['chapters'].append(dict(
                 slug=a_element.get('href').split('/')[-1],
-                title=info_elements[0].text.strip(),
-                date=convert_date_string(info_elements[2].text.strip()),
+                title=a_element.select_one('.MuiTypography-body1').text.strip(),
+                date=convert_date_string(a_element.select_one('.MuiTypography-body2').text.strip(), format='%d/%m/%Y'),
             ))
 
         return data
