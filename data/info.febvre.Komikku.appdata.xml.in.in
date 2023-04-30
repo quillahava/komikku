@@ -91,6 +91,30 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.20.0" date="2023-05-01">
+            <description>
+                <ul>
+                    <li>[Servers] Added Flame Scans [EN]</li>
+                    <li>[Servers] Added MangaHere [EN]</li>
+                    <li>[Servers] 3asq: Update</li>
+                    <li>[Servers] LeviatanScans: Update [EN/ES]</li>
+                    <li>[Servers] Manhuaus: Update</li>
+                    <li>[Servers] Phoenix Fansub: Update</li>
+                    <li>[Servers] Raw Manga: Update</li>
+                    <li>[Servers] ReadManhwa: Update</li>
+                    <li>[Servers] ReaperScansFR (GS): Update</li>
+                    <li>[Servers] Reaper Scans [PT]: Update</li>
+                    <li>[Servers] AkuManga: Disable</li>
+                    <li>[Servers] Atikrost: Disable</li>
+                    <li>[Servers] FR Scan: Disable</li>
+                    <li>[Servers] Hunlight Scans: Disable</li>
+                    <li>[Servers] Mangas Origines: Disable</li>
+                    <li>[Servers] The Nonames Scans: Disable</li>
+                    <li>[L10n] Updated Finnish and Indonesian translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.19.0" date="2023-04-22">
             <description>
                 <ul>

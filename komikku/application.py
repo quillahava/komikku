@@ -477,13 +477,23 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Preferences] Disappearance of the `Dark Theme` setting in favor of a new `Theme` setting offering 3 choices (Light, Dark, Follow System)</li>
-                <li>[Servers] Added Escaneos de Leviatan [ES]</li>
-                <li>[Servers] Added Fr-Scan [FR]</li>
-                <li>[Servers] Added MonkeyUser [EN]</li>
-                <li>[Servers] Jpmangas: Update</li>
-                <li>[Servers] Lelscan-VF: Update</li>
-                <li>[L10n] Updated French, Indonesian, Portuguese (Brazil) and Spanish translations</li>
+                <li>[Servers] Added Flame Scans [EN]</li>
+                <li>[Servers] Added MangaHere [EN]</li>
+                <li>[Servers] 3asq: Update</li>
+                <li>[Servers] LeviatanScans: Update [EN/ES]</li>
+                <li>[Servers] Manhuaus: Update</li>
+                <li>[Servers] Phoenix Fansub: Update</li>
+                <li>[Servers] Raw Manga: Update</li>
+                <li>[Servers] ReadManhwa: Update</li>
+                <li>[Servers] ReaperScansFR (GS): Update</li>
+                <li>[Servers] Reaper Scans [PT]: Update</li>
+                <li>[Servers] AkuManga: Disable</li>
+                <li>[Servers] Atikrost: Disable</li>
+                <li>[Servers] FR Scan: Disable</li>
+                <li>[Servers] Hunlight Scans: Disable</li>
+                <li>[Servers] Mangas Origines: Disable</li>
+                <li>[Servers] The Nonames Scans: Disable</li>
+                <li>[L10n] Updated Finnish and Indonesian translations</li>
             </ul>
             <p>Happy reading.</p>
         """)

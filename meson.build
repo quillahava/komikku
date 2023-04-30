@@ -1,5 +1,5 @@
 project('komikku',
-    version: '1.19.0',
+    version: '1.20.0',
     meson_version: '>= 0.59.0',
     license: 'GPL-3.0-or-later'
 )
