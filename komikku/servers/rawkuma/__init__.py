@@ -12,12 +12,7 @@ class Rawkuma(MangaStream):
     is_nsfw = True
 
     base_url = 'https://rawkuma.com'
-    search_url = base_url + '/manga/'
-    manga_url = base_url + '/manga/{0}/'
-    chapter_url = base_url + '/{chapter_slug}/'  # manga slug is not used
 
-    name_selector = '.entry-title'
-    thumbnail_selector = '.thumb img'
     authors_selector = '.infox .fmed:-soup-contains("Artist") span, .infox .fmed:-soup-contains("Author") span'
     genres_selector = '.infox .mgen a'
     scanlators_selector = '.infox .fmed:-soup-contains("Serialization") span'

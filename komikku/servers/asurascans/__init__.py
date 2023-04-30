@@ -11,12 +11,7 @@ class Asurascans(MangaStream):
     lang = 'en'
 
     base_url = 'https://www.asurascans.com'
-    search_url = base_url + '/manga/'
-    manga_url = base_url + '/manga/{0}/'
-    chapter_url = base_url + '/{chapter_slug}/'  # manga slug is not used
 
-    name_selector = '.entry-title'
-    thumbnail_selector = '.thumb img'
     authors_selector = '.infox .fmed:-soup-contains("Artist") span, .infox .fmed:-soup-contains("Author") span'
     genres_selector = '.infox .mgen a'
     scanlators_selector = '.infox .fmed:-soup-contains("Serialization") span'
@@ -32,13 +27,8 @@ class Asurascans_tr(MangaStream):
     lang = 'tr'
 
     base_url = 'https://asurascanstr.com'
-    search_url = base_url + '/manga/'
-    manga_url = base_url + '/manga/{0}/'
-    chapter_url = base_url + '/{chapter_slug}/'  # manga slug is not used
 
-    name_selector = '.entry-title'
-    thumbnail_selector = '.thumb img'
-    authors_selector = '.infox .fmed:-soup-contains("Yazar") span'
+    authors_selector = '.infox .fmed:-soup-contains("Yazar") span, .infox .fmed:-soup-contains("Çizer") span'
     genres_selector = '.infox .mgen a'
     scanlators_selector = '.infox .fmed:-soup-contains("Seri Yayını") span'
     status_selector = '.tsinfo .imptdt:-soup-contains("Durum") i'
@@ -46,7 +36,3 @@ class Asurascans_tr(MangaStream):
 
     ignored_chapters_keywords = ['tanitim', ]
     ignored_pages = ['page100-10.jpg', 'zzzzzzz999999.jpg', ]
-
-    def search(self, term, type, orderby=None):
-        # Remove novels from results
-        return [item for item in super().search(term, type, orderby) if 'novel' not in item['name'].lower()]
