@@ -117,16 +117,17 @@ class Mangahere(Server):
             elif 'var chapterid' in script:
                 # Get chapter ID, required with page by page reader
                 for line in script.split(';'):
-                    if line.strip().startswith('var imagecount'):
-                        nb_pages = int(line.strip().split('=')[-1].strip())
-                    elif line.strip().startswith('var pagetype'):
-                        type = int(line.strip().split('=')[-1].strip())
+                    if not line.strip().startswith('var imagecount'):
+                        continue
+
+                    nb_pages = int(line.strip().split('=')[-1].strip())
+                    break
 
         data = dict(
             pages=[],
         )
 
-        if type == 1:
+        if len(soup.select('.reader-main > div')) == 0:
             # Webtoon reader
             res = eval_js(js_code)
             # We obtain something like this
@@ -137,14 +138,12 @@ class Mangahere(Server):
                 data['pages'].append(dict(
                     image=f'https:{url}',
                 ))
-        elif type == 2:
+        else:
             # Page by page reader
             for index in range(1, nb_pages + 1):
                 data['pages'].append(dict(
                     index=index,
                 ))
-        else:
-            return None
 
         return data
 
@@ -152,7 +151,7 @@ class Mangahere(Server):
         """
         Returns chapter page scan (image) content
         """
-        if page['index']:
+        if page.get('index'):
             index = page['index']
             r = self.session_get(self.page_url.format(manga_slug, chapter_slug, index))
             if r.status_code != 200:
