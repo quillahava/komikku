@@ -7,6 +7,7 @@
 # Supported servers:
 # Asura Scans [EN]
 # Asura Scans [TR]
+# Flam Scans [EN]
 # Rawkuma [JA]
 # Raw Manga [JA]
 
