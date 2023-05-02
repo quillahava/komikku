@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 01:12+0200\n"
-"PO-Revision-Date: 2023-04-27 08:48+0000\n"
+"PO-Revision-Date: 2023-05-03 21:51+0000\n"
 "Last-Translator: abidin toumi <abidin24@disroot.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/>"
 "\n"
@@ -2228,7 +2228,7 @@ msgstr "ابحث عن خادم"
 
 #: ../data/ui/application_window.ui:392
 msgid "Search by name, server or genre"
-msgstr ""
+msgstr "ابحث حسب الاسم أو التصنيف أو الخادم"
 
 #: ../data/ui/application_window.ui:445 ../data/ui/menu/card.xml:11
 #: ../data/ui/preferences.ui:199
@@ -2265,7 +2265,7 @@ msgstr ""
 
 #: ../data/ui/application_window.ui:918
 msgid "Last Update"
-msgstr ""
+msgstr "آخر التحديثات"
 
 #: ../data/ui/application_window.ui:955
 msgid "Size on Disk"
@@ -2277,7 +2277,7 @@ msgstr ""
 
 #: ../data/ui/application_window.ui:1118 ../data/ui/categories_editor.ui:85
 msgid "No categories"
-msgstr ""
+msgstr "بدون تصنيفات"
 
 #: ../data/ui/card_chapters_list_row.ui:61
 msgid "New"
@@ -2301,7 +2301,7 @@ msgstr "المتداول"
 
 #: ../data/ui/explorer.ui:338
 msgid "Latest Updates"
-msgstr ""
+msgstr "آخر تحديثات"
 
 #: ../data/ui/history.ui:80
 msgid "No history"
@@ -2406,23 +2406,23 @@ msgstr ""
 
 #: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:357
 msgid "Original Size"
-msgstr ""
+msgstr "الحجم الأصلي"
 
 #: ../data/ui/menu/reader.xml:63 ../data/ui/preferences.ui:379
 msgid "Background Color"
-msgstr ""
+msgstr "لون الخلفية"
 
 #: ../data/ui/menu/reader.xml:68 ../data/ui/preferences.ui:383
 msgid "White"
-msgstr ""
+msgstr "أبيض"
 
 #: ../data/ui/menu/reader.xml:73 ../data/ui/preferences.ui:384
 msgid "Gray"
-msgstr ""
+msgstr "رمادي"
 
 #: ../data/ui/menu/reader.xml:78 ../data/ui/preferences.ui:385
 msgid "Black"
-msgstr ""
+msgstr "أسود"
 
 #: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:386
 msgid "System Style"
@@ -2438,11 +2438,11 @@ msgstr ""
 
 #: ../data/ui/menu/reader.xml:99
 msgid "Hide Page Numbering"
-msgstr ""
+msgstr "اخف ترقيم الصفحات"
 
 #: ../data/ui/menu/reader.xml:106
 msgid "Save Page"
-msgstr ""
+msgstr "احفظ الصفحة"
 
 #: ../data/ui/preferences.ui:37 ../data/ui/preferences.ui:41
 msgid "General"
@@ -2450,15 +2450,15 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:46
 msgid "Theme"
-msgstr ""
+msgstr "السمة"
 
 #: ../data/ui/preferences.ui:50
 msgid "Light"
-msgstr ""
+msgstr "فاتح"
 
 #: ../data/ui/preferences.ui:51
 msgid "Dark"
-msgstr ""
+msgstr "داكن"
 
 #: ../data/ui/preferences.ui:52
 msgid "Follow System"
@@ -2482,7 +2482,7 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:93 ../data/ui/preferences.ui:97
 msgid "Library"
-msgstr ""
+msgstr "المكتبة"
 
 #: ../data/ui/preferences.ui:100
 msgid "Display"
