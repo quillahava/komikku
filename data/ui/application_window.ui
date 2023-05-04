@@ -592,7 +592,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                     <property name="child">
                                       <object class="AdwStatusPage">
                                         <property name="icon_name">user-bookmarks-symbolic</property>
-                                        <property name="title">No categories</property>
+                                        <property name="title" translatable="yes">No categories</property>
                                         <style>
                                           <class name="compact"/>
                                         </style>
