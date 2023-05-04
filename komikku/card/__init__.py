@@ -61,7 +61,7 @@ class Card:
 
         self.chapters_list.add_actions()
 
-    def enter_selection_mode(self, *args):
+    def enter_selection_mode(self):
         if self.selection_mode:
             return
 
@@ -76,7 +76,7 @@ class Card:
         self.viewswitchertitle.set_view_switcher_enabled(False)
         self.viewswitcherbar.set_reveal(False)
 
-    def init(self, manga, transition=True, show=True):
+    def init(self, manga, show=True):
         # Default page is `Info`
         self.stack.set_visible_child_name('info')
         self.origin_page = self.window.page
@@ -119,10 +119,10 @@ class Card:
         self.manga.add_in_library()
         self.window.library.on_manga_added(self.manga)
 
-    def on_delete_menu_clicked(self, action, param):
+    def on_delete_menu_clicked(self, _action, _gparam):
         self.window.library.delete_mangas([self.manga, ])
 
-    def on_manga_updated(self, updater, manga, nb_recent_chapters, nb_deleted_chapters, synced):
+    def on_manga_updated(self, _updater, manga, nb_recent_chapters, nb_deleted_chapters, synced):
         if self.window.page == 'card' and self.manga.id == manga.id:
             self.manga = manga
 
@@ -134,7 +134,7 @@ class Card:
 
             self.info_box.populate()
 
-    def on_open_in_browser_menu_clicked(self, action, param):
+    def on_open_in_browser_menu_clicked(self, _action, _gparam):
         if uri := self.manga.server.get_manga_url(self.manga.slug, self.manga.url):
             Gtk.UriLauncher.new(uri=uri).launch()
         else:

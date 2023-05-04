@@ -541,9 +541,8 @@ class PreferencesServersSettingsSubpage:
             server_allowed = not server_data['is_nsfw'] or (server_data['is_nsfw'] and self.settings.nsfw_content)
             server_allowed &= not server_data['is_nsfw_only'] or (server_data['is_nsfw_only'] and self.settings.nsfw_only_content)
             server_enabled = server_settings is None or server_settings['enabled'] is True
-            server_has_login = getattr(server_class, 'has_login')
 
-            if len(server_data['langs']) > 1 or server_has_login:
+            if len(server_data['langs']) > 1 or server_class.has_login:
                 vbox = Gtk.Box(
                     orientation=Gtk.Orientation.VERTICAL,
                     margin_start=12, margin_top=6, margin_end=12, margin_bottom=6,
@@ -577,7 +576,7 @@ class PreferencesServersSettingsSubpage:
 
                         vbox.append(hbox)
 
-                if server_has_login:
+                if server_class.has_login:
                     box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, margin_top=12, margin_bottom=12, spacing=12)
                     vbox.append(box)
 

@@ -49,23 +49,23 @@ def create_picture_from_data(data, static_animation=False, subdivided=False):
 
     if mime_type == 'image/gif' and not static_animation:
         return PictureAnimation.new_from_data(data)
-    elif subdivided:
+    if subdivided:
         return PictureSubdivided.new_from_data(data)
-    else:
-        return Picture.new_from_data(data)
+
+    return Picture.new_from_data(data)
 
 
 def create_picture_from_file(path, static_animation=False, subdivided=False):
-    format, _width, _height = Pixbuf.get_file_info(path)
-    if format is None:
+    format_, _width, _height = Pixbuf.get_file_info(path)
+    if format_ is None:
         return None
 
-    if 'image/gif' in format.get_mime_types() and not static_animation:
+    if 'image/gif' in format_.get_mime_types() and not static_animation:
         return PictureAnimation.new_from_file(path)
-    elif subdivided:
+    if subdivided:
         return PictureSubdivided.new_from_file(path)
-    else:
-        return Picture.new_from_file(path)
+
+    return Picture.new_from_file(path)
 
 
 def create_picture_from_resource(path):
@@ -79,19 +79,19 @@ def create_paintable_from_data(data, width=None, height=None, static_animation=F
 
     if mime_type == 'image/gif' and not static_animation:
         return PaintablePixbufAnimation.new_from_data(data)
-    else:
-        return PaintablePixbuf.new_from_data(data, width, height, preserve_aspect_ratio)
+
+    return PaintablePixbuf.new_from_data(data, width, height, preserve_aspect_ratio)
 
 
 def create_paintable_from_file(path, width=None, height=None, static_animation=False, preserve_aspect_ratio=True):
-    format, _width, _height = Pixbuf.get_file_info(path)
-    if format is None:
+    format_, _width, _height = Pixbuf.get_file_info(path)
+    if format_ is None:
         return None
 
-    if 'image/gif' in format.get_mime_types() and not static_animation:
+    if 'image/gif' in format_.get_mime_types() and not static_animation:
         return PaintablePixbufAnimation.new_from_file(path, width, height)
-    else:
-        return PaintablePixbuf.new_from_file(path, width, height, preserve_aspect_ratio)
+
+    return PaintablePixbuf.new_from_file(path, width, height, preserve_aspect_ratio)
 
 
 def create_paintable_from_resource(path, width=None, height=None, preserve_aspect_ratio=True):
@@ -249,7 +249,7 @@ def log_error_traceback(e):
 
     if isinstance(e, requests.exceptions.RequestException):
         return _('No Internet connection, timeout or server down')
-    elif isinstance(e, ServerException):
+    if isinstance(e, ServerException):
         return e.message
 
     logger.info(traceback.format_exc())
@@ -334,14 +334,14 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
 
     @classmethod
     def new_from_file(cls, path, width=None, height=None, preserve_aspect_ratio=True):
-        format, orig_width, orig_height = Pixbuf.get_file_info(path)
-        if format is None:
+        format_, orig_width, orig_height = Pixbuf.get_file_info(path)
+        if format_ is None:
             return None
 
         try:
-            if (not width and not height) or 'image/gif' in format.get_mime_types():
+            if (not width and not height) or 'image/gif' in format_.get_mime_types():
                 pixbuf = Pixbuf.new_from_file(path)
-                if 'image/gif' in format.get_mime_types():
+                if 'image/gif' in format_.get_mime_types():
                     if width == -1:
                         ratio = orig_height / height
                         width = orig_width / ratio
@@ -487,7 +487,7 @@ class PaintablePixbufAnimation(GObject.GObject, Gdk.Paintable):
 
     def resize(self, width, height):
         self.width = width
-        self.height = width
+        self.height = height
 
         self.invalidate_size()
 

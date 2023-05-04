@@ -164,8 +164,8 @@ class Japscan(Server):
                     ))
 
             return data
-        else:
-            raise requests.exceptions.RequestException
+
+        raise requests.exceptions.RequestException
 
     @bypass_cf
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):

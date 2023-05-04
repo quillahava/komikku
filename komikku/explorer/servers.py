@@ -78,7 +78,7 @@ class ExplorerServersPage:
         self.parent.search_page.global_search_mode = True
         self.parent.show_page('search')
 
-    def on_server_clicked(self, listbox, row):
+    def on_server_clicked(self, _listbox, row):
         self.parent.server = getattr(row.server_data['module'], row.server_data['class_name'])()
         if self.preselection and hasattr(row, 'manga_data'):
             self.parent.search_page.show_manga_card(row.manga_data)

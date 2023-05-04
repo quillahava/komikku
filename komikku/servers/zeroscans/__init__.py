@@ -67,12 +67,12 @@ class Zeroscans(Server):
             data['status'] = 'hiatus'
 
         # Chapters
-        id = resp_data['id']
+        id_ = resp_data['id']
         page = 1
         next_page = True
         chapters = []
         while next_page:
-            r = self.session_get(self.api_chapters_url.format(id, page))
+            r = self.session_get(self.api_chapters_url.format(id_, page))
             if r.status_code != 200:
                 chapters = []
                 break

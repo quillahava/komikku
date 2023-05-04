@@ -371,8 +371,8 @@ def delete_rows(db_conn, table, ids):
     else:
         sql = 'DELETE FROM {0} WHERE id = ?'.format(table)
 
-        for id in ids:
-            seq.append((id, ))
+        for id_ in ids:
+            seq.append((id_, ))
 
     try:
         db_conn.executemany(sql, seq)
@@ -412,11 +412,11 @@ def insert_rows(db_conn, table, data):
         return True
 
 
-def update_row(db_conn, table, id, data):
+def update_row(db_conn, table, id_, data):
     try:
         db_conn.execute(
             'UPDATE {0} SET {1} WHERE id = ?'.format(table, ', '.join(k + ' = ?' for k in data)),
-            tuple(data.values()) + (id,)
+            tuple(data.values()) + (id_,)
         )
     except Exception as e:
         print('SQLite-error:', e, data)
@@ -429,8 +429,8 @@ def update_rows(db_conn, table, ids, data):
     sql = 'UPDATE {0} SET {1} WHERE id = ?'.format(table, ', '.join(k + ' = ?' for k in data[0]))
 
     seq = []
-    for index, id in enumerate(ids):
-        seq.append(tuple(data[index].values()) + (id, ))
+    for index, id_ in enumerate(ids):
+        seq.append(tuple(data[index].values()) + (id_, ))
 
     try:
         db_conn.executemany(sql, seq)
@@ -457,12 +457,12 @@ class Manga:
             self._server = server
 
     @classmethod
-    def get(cls, id, server=None, db_conn=None):
+    def get(cls, id_, server=None, db_conn=None):
         if db_conn is not None:
-            row = db_conn.execute('SELECT * FROM mangas WHERE id = ?', (id,)).fetchone()
+            row = db_conn.execute('SELECT * FROM mangas WHERE id = ?', (id_,)).fetchone()
         else:
             db_conn = create_db_connection()
-            row = db_conn.execute('SELECT * FROM mangas WHERE id = ?', (id,)).fetchone()
+            row = db_conn.execute('SELECT * FROM mangas WHERE id = ?', (id_,)).fetchone()
             db_conn.close()
 
         if row is None:
@@ -496,17 +496,17 @@ class Manga:
 
         db_conn = create_db_connection()
         with db_conn:
-            id = insert_row(db_conn, 'mangas', data)
+            id_ = insert_row(db_conn, 'mangas', data)
 
             rank = 0
             for chapter_data in chapters:
-                chapter = Chapter.new(chapter_data, rank, id, db_conn)
+                chapter = Chapter.new(chapter_data, rank, id_, db_conn)
                 if chapter is not None:
                     rank += 1
 
         db_conn.close()
 
-        manga = cls.get(id, server)
+        manga = cls.get(id_, server)
 
         if not os.path.exists(manga.path):
             os.makedirs(manga.path)
@@ -597,8 +597,8 @@ class Manga:
     def path(self):
         if self.in_library:
             return os.path.join(get_data_dir(), self.dir_name, trunc_filename(self.name))
-        else:
-            return os.path.join(get_cached_data_dir(), self.dir_name, trunc_filename(self.name))
+
+        return os.path.join(get_cached_data_dir(), self.dir_name, trunc_filename(self.name))
 
     @property
     def server(self):
@@ -783,9 +783,9 @@ class Manga:
                         recent=1,
                         read=0,
                     ))
-                    id = insert_row(db_conn, 'chapters', chapter_data)
-                    if id is not None:
-                        recent_chapters_ids.append(id)
+                    id_ = insert_row(db_conn, 'chapters', chapter_data)
+                    if id_ is not None:
+                        recent_chapters_ids.append(id_)
                         rank += 1
 
                         logger.info('[UPDATE] {0} ({1}): Add new chapter {2}'.format(self.name, self.server_id, chapter_data['title']))
@@ -824,12 +824,12 @@ class Chapter:
                 setattr(self, key, row[key])
 
     @classmethod
-    def get(cls, id, manga=None, db_conn=None):
+    def get(cls, id_, manga=None, db_conn=None):
         if db_conn is not None:
-            row = db_conn.execute('SELECT * FROM chapters WHERE id = ?', (id,)).fetchone()
+            row = db_conn.execute('SELECT * FROM chapters WHERE id = ?', (id_,)).fetchone()
         else:
             db_conn = create_db_connection()
-            row = db_conn.execute('SELECT * FROM chapters WHERE id = ?', (id,)).fetchone()
+            row = db_conn.execute('SELECT * FROM chapters WHERE id = ?', (id_,)).fetchone()
             db_conn.close()
 
         if row is None:
@@ -850,14 +850,14 @@ class Chapter:
         ))
 
         if db_conn is not None:
-            id = insert_row(db_conn, 'chapters', data)
+            id_ = insert_row(db_conn, 'chapters', data)
         else:
             db_conn = create_db_connection()
 
             with db_conn:
-                id = insert_row(db_conn, 'chapters', data)
+                id_ = insert_row(db_conn, 'chapters', data)
 
-        chapter = cls.get(id, db_conn=db_conn) if id is not None else None
+        chapter = cls.get(id_, db_conn=db_conn) if id_ is not None else None
 
         return chapter
 
@@ -1036,12 +1036,12 @@ class Category:
                 setattr(self, key, row[key])
 
     @classmethod
-    def get(cls, id, db_conn=None):
+    def get(cls, id_, db_conn=None):
         if db_conn is not None:
-            row = db_conn.execute('SELECT * FROM categories WHERE id = ?', (id,)).fetchone()
+            row = db_conn.execute('SELECT * FROM categories WHERE id = ?', (id_,)).fetchone()
         else:
             db_conn = create_db_connection()
-            row = db_conn.execute('SELECT * FROM categories WHERE id = ?', (id,)).fetchone()
+            row = db_conn.execute('SELECT * FROM categories WHERE id = ?', (id_,)).fetchone()
             db_conn.close()
 
         if row is None:
@@ -1056,14 +1056,14 @@ class Category:
         )
 
         if db_conn is not None:
-            id = insert_row(db_conn, 'categories', data)
+            id_ = insert_row(db_conn, 'categories', data)
         else:
             db_conn = create_db_connection()
 
             with db_conn:
-                id = insert_row(db_conn, 'categories', data)
+                id_ = insert_row(db_conn, 'categories', data)
 
-        category = cls.get(id, db_conn=db_conn) if id is not None else None
+        category = cls.get(id_, db_conn=db_conn) if id_ is not None else None
 
         db_conn.close()
 
@@ -1122,9 +1122,9 @@ class Download:
     )
 
     @classmethod
-    def get(cls, id):
+    def get(cls, id_):
         db_conn = create_db_connection()
-        row = db_conn.execute('SELECT * FROM downloads WHERE id = ?', (id,)).fetchone()
+        row = db_conn.execute('SELECT * FROM downloads WHERE id = ?', (id_,)).fetchone()
         db_conn.close()
 
         if row is None:

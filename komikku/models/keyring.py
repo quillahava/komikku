@@ -167,7 +167,7 @@ class PlaintextKeyring(keyring.backend.KeyringBackend):
         with open(self.filename, 'w+') as fp:
             return json.dump(data, fp, indent=2)
 
-    def get_credential(self, service, username):
+    def get_credential(self, service, _username):
         data = self._read()
         if service in data:
             return CustomCredential(data[service]['username'], data[service]['password'], data[service].get('address'))

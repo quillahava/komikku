@@ -140,18 +140,18 @@ class Reaperscans_pt(Server):
 
         soup = BeautifulSoup(r.text, 'html.parser')
 
-        id = None
+        id_ = None
         for script_element in soup.find_all('script'):
             if script_element.get('id') != '__NEXT_DATA__':
                 continue
             data = json.loads(script_element.string)
-            id = data['props']['pageProps']['data']['id']
+            id_ = data['props']['pageProps']['data']['id']
             break
 
-        if id is None:
+        if id_ is None:
             return None
 
-        r = self.session_get(self.api_chapter_url.format(id))
+        r = self.session_get(self.api_chapter_url.format(id_))
         if r.status_code != 200:
             return None
 

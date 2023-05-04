@@ -418,7 +418,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         dialog.connect('response', on_response)
         dialog.present()
 
-    def enter_search_mode(self, action, param):
+    def enter_search_mode(self, _action, _param):
         if self.page == 'library':
             self.library.toggle_search_mode()
         elif self.page == 'explorer' and self.explorer.page == 'servers':
@@ -462,7 +462,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         set_color_scheme()
 
-    def on_about_menu_clicked(self, action, param):
+    def on_about_menu_clicked(self, _action, _param):
         builder = Gtk.Builder.new_from_resource('/info/febvre/Komikku/ui/about_window.ui')
         window = builder.get_object('about_window')
 
@@ -515,7 +515,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         return Gdk.EVENT_PROPAGATE
 
-    def on_headerbar_toggled(self, *args):
+    def on_headerbar_toggled(self, _revealer, _gparam):
         if self.page == 'reader' and self.reader.pager:
             self.reader.pager.resize_pages()
 
@@ -620,13 +620,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
             if Settings.get_default().downloader_state:
                 self.downloader.stop()
 
-    def on_page_shown(self, *args):
+    def on_page_shown(self, _stack, _gparam):
         # Detect pages transition end and store current page and previous page
         if not self.stack.props.transition_running:
             self.previous_page = self.page
             self.page = self.stack.get_visible_child_name()
 
-    def on_preferences_menu_clicked(self, action, param):
+    def on_preferences_menu_clicked(self, _action, _param):
         self.preferences.show()
 
     def on_primary_menu_shown(self, _menu_button):
@@ -667,7 +667,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         else:
             do_resize()
 
-    def on_shortcuts_menu_clicked(self, action, param):
+    def on_shortcuts_menu_clicked(self, _action, _param):
         builder = Gtk.Builder()
         builder.add_from_resource('/info/febvre/Komikku/ui/shortcuts_overview.ui')
 
@@ -728,7 +728,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
             size = self.get_default_size()
             Settings.get_default().window_size = [size.width, size.height]
 
-    def select_all(self, action, param):
+    def select_all(self, _action, _param):
         if self.page == 'library':
             self.library.select_all()
         elif self.page == 'card':
@@ -778,7 +778,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
             self.previous_page = self.page
             self.page = name
 
-    def toggle_fullscreen(self, *args):
+    def toggle_fullscreen(self, _object, _gparam):
         if self.page != 'reader':
             return
 

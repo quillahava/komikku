@@ -24,7 +24,7 @@ logger = logging.getLogger('komikku.servers.local')
 def is_archive(path):
     if zipfile.is_zipfile(path):
         return True
-    elif rarfile.is_rarfile(path):
+    if rarfile.is_rarfile(path):
         return True
 
     return False
@@ -38,9 +38,9 @@ class Archive:
 
             elif rarfile.is_rarfile(path):
                 self.obj = CBR(path)
-        except Exception:
+        except Exception as e:
             logger.exception(f'Bad/corrupt archive: {path}')
-            raise ArchiveError
+            raise ArchiveError from e
 
     def __enter__(self):
         return self
@@ -104,9 +104,9 @@ class CBR:
         except rarfile.NoRarEntry as e:
             logger.info(f'{self.path}: {e}')
             return None
-        except rarfile.RarCannotExec:
+        except rarfile.RarCannotExec as e:
             logger.exception('Failed to execute unrar command')
-            raise ArchiveUnrarMissingError
+            raise ArchiveUnrarMissingError from e
         except Exception as e:
             logger.info(f'{self.path}: {e}')
             raise ServerException(e) from e

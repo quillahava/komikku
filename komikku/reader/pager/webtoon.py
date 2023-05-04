@@ -249,7 +249,7 @@ class WebtoonPager(Adw.Bin, BasePager):
 
         return Gdk.EVENT_STOP
 
-    def on_gesture_drag_begin(self, controller, start_x, start_y):
+    def on_gesture_drag_begin(self, _controller, _start_x, _start_y):
         self.gesture_drag_offset = 0
 
     def on_gesture_drag_cancel(self, controller, *args):
@@ -388,14 +388,13 @@ class WebtoonPager(Adw.Bin, BasePager):
                 t = (now - start_time) / (end_time - start_time)
                 t = ease_out_cubic(t)
                 self.vadj.set_value(start + t * (end - start))
-
                 return GLib.SOURCE_CONTINUE
-            else:
-                self.vadj.set_value(end)
-                self.on_scroll(None, None, increment)
-                self.add_page_superlock = False
 
-                return GLib.SOURCE_REMOVE
+            self.vadj.set_value(end)
+            self.on_scroll(None, None, increment)
+            self.add_page_superlock = False
+
+            return GLib.SOURCE_REMOVE
 
         if animate:
             self.add_page_superlock = True

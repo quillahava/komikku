@@ -153,9 +153,10 @@ class Rawmanga(MangaStream):
 
         results = []
         for a_element in soup.select('.bsx > a'):
-            type = a_element.select_one('.type').text.strip()
-            if type == 'Novel':
+            type_ = a_element.select_one('.type').text.strip()
+            if type_ == 'Novel':
                 continue
+
             img_element = a_element.select_one('img')
             slug = a_element.get('href').split('/')[-1]
 

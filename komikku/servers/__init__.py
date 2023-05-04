@@ -144,7 +144,7 @@ class Server(ABC):
         else:
             self.logged_in = True
 
-    def login(self, username, password):
+    def login(self, _username, _password):
         return False
 
     @cached_property
@@ -167,11 +167,11 @@ class Server(ABC):
 
     @property
     def sessions_dir(self):
-        dir = os.path.join(get_cache_dir(), 'sessions')
-        if not os.path.exists(dir):
-            os.mkdir(dir)
+        dir_path = os.path.join(get_cache_dir(), 'sessions')
+        if not os.path.exists(dir_path):
+            os.mkdir(dir_path)
 
-        return dir
+        return dir_path
 
     def clear_session(self, all=False):
         main_id = get_server_main_id_by_id(self.id)
@@ -182,9 +182,9 @@ class Server(ABC):
             os.unlink(file_path)
 
         if all:
-            for id in Server.__sessions.copy():
-                if id.startswith(main_id):
-                    del Server.__sessions[id]
+            for id_ in Server.__sessions.copy():
+                if id_.startswith(main_id):
+                    del Server.__sessions[id_]
         elif self.id in Server.__sessions:
             del Server.__sessions[self.id]
 

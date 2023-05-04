@@ -62,7 +62,7 @@ class Controls:
     def on_fullscreen(self):
         self.window.headerbar_revealer.set_reveal_child(self.is_visible)
 
-    def on_scale_value_changed(self, scale, scroll_type, value):
+    def on_scale_value_changed(self, _scale, scroll_type, value):
         if self.scale_timeout_id:
             GLib.source_remove(self.scale_timeout_id)
             self.scale_timeout_id = None

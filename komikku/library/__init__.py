@@ -500,13 +500,13 @@ class Library:
 
         self.flowbox.invalidate_filter()
 
-    def open_categories_editor(self, action, param):
+    def open_categories_editor(self, _action, _gparam):
         self.window.categories_editor.show()
 
-    def open_download_manager(self, action, param):
+    def open_download_manager(self, _action, _gparam):
         self.window.download_manager.show()
 
-    def open_history(self, action, param):
+    def open_history(self, _action, _gparam):
         self.window.history.show()
 
     def populate(self):

@@ -177,7 +177,7 @@ class Reader:
 
         self.pager.init(chapter)
 
-    def on_background_color_changed(self, action, variant):
+    def on_background_color_changed(self, _action, variant):
         value = variant.get_string()
         if value == self.background_color:
             return
@@ -185,12 +185,12 @@ class Reader:
         self.manga.update(dict(background_color=value))
         self.set_action_background_color()
 
-    def on_borders_crop_changed(self, action, variant):
+    def on_borders_crop_changed(self, _action, variant):
         self.manga.update(dict(borders_crop=variant.get_boolean()))
         self.set_action_borders_crop()
         self.pager.crop_pages_borders()
 
-    def on_landscape_zoom_changed(self, action, variant):
+    def on_landscape_zoom_changed(self, _action, variant):
         value = variant.get_boolean()
         self.manga.update(dict(landscape_zoom=value))
         self.set_action_landscape_zoom()
@@ -206,7 +206,7 @@ class Reader:
         self.page_numbering_label.set_visible(False)
         self.window.set_unfullscreen()
 
-    def on_page_numbering_changed(self, action, variant):
+    def on_page_numbering_changed(self, _action, variant):
         value = not variant.get_boolean()
         self.manga.update(dict(page_numbering=value))
         self.set_action_page_numbering()
@@ -215,7 +215,7 @@ class Reader:
         else:
             self.page_numbering_label.set_visible(False)
 
-    def on_reading_mode_changed(self, action, variant):
+    def on_reading_mode_changed(self, _action, variant):
         value = variant.get_string()
         if value == self.reading_mode:
             return
@@ -238,7 +238,7 @@ class Reader:
 
         self.pager.resize_pages()
 
-    def on_scaling_changed(self, action, variant):
+    def on_scaling_changed(self, _action, variant):
         value = variant.get_string()
         if value == self.scaling:
             return
@@ -261,7 +261,7 @@ class Reader:
         # Operation is resource intensive and could disrupt page transition
         self.init_pager(self.init_chapter)
 
-    def save_page(self, action, param):
+    def save_page(self, _action, _gparam):
         if self.window.page != 'reader':
             return
 

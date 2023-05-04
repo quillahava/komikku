@@ -317,7 +317,7 @@ class Pager(Adw.Bin, BasePager):
         else:
             page = self.carousel.get_nth_page(2)
 
-            def append_after_remove(*args):
+            def append_after_remove(_carousel, _position):
                 if self.carousel.get_position() != 1:
                     return
 
@@ -640,12 +640,12 @@ class Pager(Adw.Bin, BasePager):
                     page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_LEFT if dy > 0 else Gtk.ScrollType.STEP_RIGHT, False)
                     return Gdk.EVENT_STOP
 
-                elif self.reader.reading_mode == 'left-to-right':
+                if self.reader.reading_mode == 'left-to-right':
                     # Use vertical scroll event to scroll horizontally in page
                     page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_RIGHT if dy > 0 else Gtk.ScrollType.STEP_LEFT, False)
                     return Gdk.EVENT_STOP
 
-                elif self.reader.reading_mode == 'vertical' and dx == 0:
+                if self.reader.reading_mode == 'vertical' and dx == 0:
                     # Allow vertical navigation when page is horizontally scrollable
                     self.scroll_to_direction('left' if dy < 0 else 'right')
                     return Gdk.EVENT_STOP

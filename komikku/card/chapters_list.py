@@ -99,7 +99,7 @@ class ChaptersList:
     def sort_order(self):
         return self.card.manga.sort_order or 'desc'
 
-    def add_actions(self, *args):
+    def add_actions(self):
         # Menu actions in selection mode
         download_selected_chapters_action = Gio.SimpleAction.new('card.download-selected-chapters', None)
         download_selected_chapters_action.connect('activate', self.download_selected_chapters)
@@ -142,13 +142,13 @@ class ChaptersList:
         mark_previous_chapters_as_read_action.connect('activate', self.set_previous_chapters_as_read)
         self.card.window.application.add_action(mark_previous_chapters_as_read_action)
 
-    def download_chapter(self, action, position):
+    def download_chapter(self, _action, position):
         item = self.list_model.get_item(position.get_uint16())
         self.card.window.downloader.add([item.chapter], emit_signal=True)
         self.card.window.downloader.start()
         item.emit_changed()
 
-    def download_selected_chapters(self, action, param):
+    def download_selected_chapters(self, _action, _gparam):
         self.card.window.downloader.add(self.get_selected_chapters(), emit_signal=True)
         self.card.window.downloader.start()
 
@@ -184,13 +184,13 @@ class ChaptersList:
         self.listview.set_single_click_activate(True)
         self.chapters_selection_mode_actionbar.set_revealed(False)
 
-    def on_factory_bind(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
+    def on_factory_bind(self, _factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
         list_item.get_child().populate(list_item.get_item())
 
-    def on_factory_setup(self, factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
+    def on_factory_setup(self, _factory: Gtk.ListItemFactory, list_item: Gtk.ListItem):
         list_item.set_child(ChaptersListRow(self.card))
 
-    def on_long_press(self, _controller, x, y):
+    def on_long_press(self, _controller, _x, _y):
         if not self.card.selection_mode:
             self.card.enter_selection_mode()
         elif not self.selection_mode_range:
@@ -313,7 +313,7 @@ class ChaptersList:
 
         self.model.select_all()
 
-    def set_previous_chapters_as_read(self, action, position):
+    def set_previous_chapters_as_read(self, _action, position):
         chapters_ids = []
         chapters_data = []
 
@@ -396,7 +396,7 @@ class ChaptersList:
 
         return 0
 
-    def toggle_chapter_read_status(self, action, position, read):
+    def toggle_chapter_read_status(self, _action, position, read):
         item = self.list_model.get_item(position.get_uint16())
         chapter = item.chapter
 
@@ -410,7 +410,7 @@ class ChaptersList:
 
         item.emit_changed()
 
-    def toggle_selected_chapters_read_status(self, action, param, read):
+    def toggle_selected_chapters_read_status(self, _action, _gparam, read):
         chapters_ids = []
         chapters_data = []
 
@@ -456,7 +456,7 @@ class ChaptersList:
             self.card.leave_selection_mode()
             self.card.window.show_notification(_('Failed to update chapters reading status'))
 
-    def update_chapter_item(self, downloader=None, download=None, chapter=None):
+    def update_chapter_item(self, _downloader=None, download=None, chapter=None):
         """
         Update a specific chapter row
         - used when download status change (via signal from Downloader)
@@ -520,7 +520,7 @@ class ChaptersListRow(Gtk.Box):
 
         return position
 
-    def on_button_clicked(self, _gesture, n_press, _x, _y):
+    def on_button_clicked(self, _gesture, _n_press, _x, _y):
         button = self.gesture_click.get_current_button()
         if button == 1:
             # Left button
@@ -528,7 +528,7 @@ class ChaptersListRow(Gtk.Box):
             self.card.chapters_list.selection_click_position = self.position
             return Gdk.EVENT_STOP
 
-        elif button == 3 and not self.card.selection_mode:
+        if button == 3 and not self.card.selection_mode:
             # Right button
             # Store row position and enter selection mode
             self.card.chapters_list.selection_click_position = self.position

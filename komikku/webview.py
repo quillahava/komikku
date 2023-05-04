@@ -115,7 +115,7 @@ class Webview(Gtk.ScrolledWindow):
 
         getattr(self.window, self.window.previous_page).show(reset=False)
 
-    def open(self, uri, user_agent=None, settings=None):
+    def open(self, uri, user_agent=None):
         if self.lock:
             return False
 
@@ -180,8 +180,8 @@ def bypass_cf(func):
                 if r.status_code == 200:
                     logger.debug(f'{server.id}: Session OK')
                     return func(*args, **kwargs)
-                else:
-                    logger.debug(f'{server.id}: Session KO')
+
+                logger.debug(f'{server.id}: Session KO')
             else:
                 logger.debug(f'{server.id}: Session has no CF cookie. Loading page in webview...')
 
@@ -249,7 +249,7 @@ def bypass_cf(func):
             webview.close()
             webview.navigate_back(None)
 
-        def on_title_changed(_webkit_webview, title):
+        def on_title_changed(_webkit_webview, _title):
             if webview.webkit_webview.props.title.startswith('captcha'):
                 logger.debug(f'{server.id}: Captcha `{webview.webkit_webview.props.title}` detected')
                 # Show webview, user must complete a CAPTCHA
@@ -263,7 +263,7 @@ def bypass_cf(func):
             logger.debug(f'{server.id}: Page loaded, getting cookies...')
             webview.network_session.get_cookie_manager().get_cookies(server.base_url, None, on_get_cookies_finish, None)
 
-        def on_get_cookies_finish(cookie_manager, result, user_data):
+        def on_get_cookies_finish(cookie_manager, result, _user_data):
             nonlocal done
 
             server.session = requests.Session()
@@ -324,7 +324,7 @@ def eval_js(code):
         if DEBUG:
             webview.show()
 
-    def on_evaluate_javascript_finish(_webkit_webview, result, user_data=None):
+    def on_evaluate_javascript_finish(_webkit_webview, result, _user_data=None):
         nonlocal error
         nonlocal res
 
@@ -359,7 +359,7 @@ def eval_js(code):
     return res
 
 
-def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
+def get_page_html(url, user_agent=None, wait_js_code=None):
     error = None
     html = None
     webview = Gio.Application.get_default().window.webview
@@ -375,7 +375,7 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
         if DEBUG:
             webview.show()
 
-    def on_get_html_finish(_webkit_webview, result, user_data=None):
+    def on_get_html_finish(_webkit_webview, result, _user_data=None):
         nonlocal error
         nonlocal html
 
@@ -398,7 +398,7 @@ def get_page_html(url, user_agent=None, settings=None, wait_js_code=None):
         else:
             webview.webkit_webview.evaluate_javascript('document.documentElement.outerHTML', -1, None, None, None, on_get_html_finish)
 
-    def on_load_failed(_webkit_webview, _event, _uri, gerror):
+    def on_load_failed(_webkit_webview, _event, _uri, _gerror):
         nonlocal error
 
         error = f'Failed to load chapter page: {url}'

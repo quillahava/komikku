@@ -80,10 +80,10 @@ class ExplorerSearchPage:
         if self.parent.props.visible_child_name != 'search':
             # Not in Explorer search page
             return False
-        elif server_id != self.parent.server.id:
+        if server_id != self.parent.server.id:
             # server_id is not the current server
             return False
-        elif page != self.page:
+        if page != self.page:
             # page is not the current page
             return False
 
@@ -206,7 +206,7 @@ class ExplorerSearchPage:
 
         self.filter_menu_button.set_popover(popover)
 
-    def on_manga_clicked(self, listbox, row):
+    def on_manga_clicked(self, _listbox, row):
         if self.global_search_mode:
             self.parent.server = getattr(row.server_data['module'], row.server_data['class_name'])()
 
