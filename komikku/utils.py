@@ -501,19 +501,27 @@ class Picture(Gtk.Picture):
 
     @classmethod
     def new_from_data(cls, data):
-        return cls(PaintablePixbuf.new_from_data(data))
+        if paintable := PaintablePixbuf.new_from_data(data):
+            return cls(paintable)
+        return None
 
     @classmethod
     def new_from_file(cls, path):
-        return cls(PaintablePixbuf.new_from_file(path))
+        if paintable := PaintablePixbuf.new_from_file(path):
+            return cls(paintable)
+        return None
 
     @classmethod
     def new_from_pixbuf(cls, pixbuf):
-        return cls(PaintablePixbuf.new_from_pixbuf(pixbuf))
+        if paintable := PaintablePixbuf.new_from_pixbuf(pixbuf):
+            return cls(paintable)
+        return None
 
     @classmethod
     def new_from_resource(cls, path):
-        return cls(PaintablePixbuf.new_from_resource(path))
+        if paintable := PaintablePixbuf.new_from_resource(path):
+            return cls(paintable)
+        return None
 
     @property
     def height(self):
@@ -547,11 +555,15 @@ class PictureAnimation(Gtk.Picture):
 
     @classmethod
     def new_from_data(cls, data):
-        return cls(PaintablePixbufAnimation.new_from_data(data))
+        if paintable := PaintablePixbufAnimation.new_from_data(data):
+            return cls(paintable)
+        return None
 
     @classmethod
     def new_from_file(cls, path):
-        return cls(PaintablePixbufAnimation.new_from_file(path))
+        if paintable := PaintablePixbufAnimation.new_from_file(path):
+            return cls(paintable)
+        return None
 
     @property
     def height(self):
