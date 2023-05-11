@@ -389,6 +389,11 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
 
         return ImageChops.difference(im, bg).getbbox()
 
+    def dispose(self):
+        self.pixbuf = None
+        self.texture = None
+        self.texture_cropped = None
+
     def do_get_intrinsic_height(self):
         return self.height
 
@@ -464,12 +469,18 @@ class PaintablePixbufAnimation(GObject.GObject, Gdk.Paintable):
         return cls(path, anim, width, height)
 
     def __delay_cb(self):
+        if self.iter is None:
+            return
         delay = self.iter.get_delay_time()
         if delay == -1:
             return
         self.timeout_id = GLib.timeout_add(delay, self.__delay_cb)
 
         self.invalidate_contents()
+
+    def dispose(self):
+        self.iter = None
+        self.anim = None
 
     def do_get_intrinsic_height(self):
         return self.height
@@ -493,11 +504,11 @@ class PaintablePixbufAnimation(GObject.GObject, Gdk.Paintable):
 
 
 class Picture(Gtk.Picture):
-    def __init__(self, pixbuf):
+    def __init__(self, paintable):
         super().__init__()
 
         self.set_can_shrink(False)
-        self.set_paintable(pixbuf)
+        self.set_paintable(paintable)
 
     @classmethod
     def new_from_data(cls, data):
@@ -540,18 +551,20 @@ class Picture(Gtk.Picture):
         return self.props.paintable.width
 
     def dispose(self):
+        paintable = self.get_paintable()
         self.set_paintable(None)
+        paintable.dispose()
 
     def resize(self, width, height, cropped=False):
         self.props.paintable.resize(width, height, cropped)
 
 
 class PictureAnimation(Gtk.Picture):
-    def __init__(self, pixbuf):
+    def __init__(self, paintable):
         super().__init__()
 
         self.set_can_shrink(False)
-        self.set_paintable(pixbuf)
+        self.set_paintable(paintable)
 
     @classmethod
     def new_from_data(cls, data):
@@ -582,7 +595,9 @@ class PictureAnimation(Gtk.Picture):
         return self.props.paintable.width
 
     def dispose(self):
+        paintable = self.get_paintable()
         self.set_paintable(None)
+        paintable.dispose()
 
     def resize(self, width, height, _cropped=False):
         self.props.paintable.resize(width, height)
