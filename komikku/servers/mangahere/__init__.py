@@ -140,7 +140,7 @@ class Mangahere(Server):
                 ))
         else:
             # Page by page reader
-            for index in range(1, nb_pages + 1):
+            for index in range(1, nb_pages):
                 data['pages'].append(dict(
                     index=index,
                 ))
