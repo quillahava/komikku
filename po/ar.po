@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 01:12+0200\n"
-"PO-Revision-Date: 2023-05-03 21:51+0000\n"
+"PO-Revision-Date: 2023-05-16 00:14+0000\n"
 "Last-Translator: abidin toumi <abidin24@disroot.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/>"
 "\n"
@@ -2269,11 +2269,11 @@ msgstr "آخر التحديثات"
 
 #: ../data/ui/application_window.ui:955
 msgid "Size on Disk"
-msgstr ""
+msgstr "الحجم المستغل على القرص"
 
 #: ../data/ui/application_window.ui:986
 msgid "Synopsis"
-msgstr ""
+msgstr "ملخص"
 
 #: ../data/ui/application_window.ui:1118 ../data/ui/categories_editor.ui:85
 msgid "No categories"
@@ -2426,11 +2426,11 @@ msgstr "أسود"
 
 #: ../data/ui/menu/reader.xml:83 ../data/ui/preferences.ui:386
 msgid "System Style"
-msgstr ""
+msgstr "سمة النظام"
 
 #: ../data/ui/menu/reader.xml:91
 msgid "Zoom Landscape Pages"
-msgstr ""
+msgstr "كبر الصفحات الأفقية"
 
 #: ../data/ui/menu/reader.xml:95
 msgid "Crop Borders"
@@ -2446,7 +2446,7 @@ msgstr "احفظ الصفحة"
 
 #: ../data/ui/preferences.ui:37 ../data/ui/preferences.ui:41
 msgid "General"
-msgstr ""
+msgstr "عام"
 
 #: ../data/ui/preferences.ui:46
 msgid "Theme"
@@ -2462,7 +2462,7 @@ msgstr "داكن"
 
 #: ../data/ui/preferences.ui:52
 msgid "Follow System"
-msgstr ""
+msgstr "اتبِعْ النظام"
 
 #: ../data/ui/preferences.ui:60
 msgid "Night Light"
@@ -2470,15 +2470,15 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:62
 msgid "Automatically enable dark theme at night"
-msgstr ""
+msgstr "فعّل السمة الداكنة في الليل تلقائيًا"
 
 #: ../data/ui/preferences.ui:73
 msgid "Desktop Notifications"
-msgstr ""
+msgstr "إشعارات سطح المكتب"
 
 #: ../data/ui/preferences.ui:75
 msgid "Use desktop notifications for downloads and library updates"
-msgstr ""
+msgstr "استخد الإشعارات لإظهار التنزيلات والتحديثات"
 
 #: ../data/ui/preferences.ui:93 ../data/ui/preferences.ui:97
 msgid "Library"
@@ -2486,15 +2486,15 @@ msgstr "المكتبة"
 
 #: ../data/ui/preferences.ui:100
 msgid "Display"
-msgstr ""
+msgstr "العرض"
 
 #: ../data/ui/preferences.ui:103
 msgid "Display Mode"
-msgstr ""
+msgstr "نمط العرض"
 
 #: ../data/ui/preferences.ui:107
 msgid "Grid"
-msgstr ""
+msgstr "شبكة"
 
 #: ../data/ui/preferences.ui:108
 msgid "Compact Grid"
@@ -2502,11 +2502,11 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:116
 msgid "Servers Logo"
-msgstr ""
+msgstr "شعار الخادم"
 
 #: ../data/ui/preferences.ui:118
 msgid "Display servers logo"
-msgstr ""
+msgstr "اعرض شعار الخادم"
 
 #: ../data/ui/preferences.ui:129
 msgid "Badges"
