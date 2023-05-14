@@ -1,20 +1,21 @@
 # shima <hakase446@gmail.com>, 2023.
+# Valentin Chernetsov <kurnesay@danwin1210.de>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 01:12+0200\n"
-"PO-Revision-Date: 2023-03-25 23:38+0000\n"
-"Last-Translator: shima <hakase446@gmail.com>\n"
-"Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/"
-">\n"
+"PO-Revision-Date: 2023-05-16 00:14+0000\n"
+"Last-Translator: Valentin Chernetsov <kurnesay@danwin1210.de>\n"
+"Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/>"
+"\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.17-dev\n"
+"X-Generator: Weblate 4.18-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -85,18 +86,20 @@ msgid ""
 "[Reader] RTL/LTR/Vertical pager: Fixed touchpad 2-fingers swipe gesture "
 "(Wayland only)"
 msgstr ""
+"[Читалка] RTL/LTP/Вертикальные страницы: Исправлены жесты двумя пальцами ("
+"Только на Wayland)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:98
 msgid "[Updater] Slightly improves notifications"
-msgstr ""
+msgstr "[Обноление] Небольшие улучшения уведомлений"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:99
 msgid "[Servers] Added Little Garden [FR]"
-msgstr ""
+msgstr "[Сервера] Добавлен Little Garden [FR]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:100
 msgid "[Servers] Desu: Update"
-msgstr ""
+msgstr "[Сервера] Desu: Обновлен"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:101
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:129
@@ -107,7 +110,7 @@ msgstr "[Серверы] Rawkuma: Обновление"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 msgid "[Servers] View Comics: Update"
-msgstr ""
+msgstr "[Сервера] Отображение комиксов: Обновлено"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:103
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:211
@@ -124,12 +127,14 @@ msgstr "[Серверы] Read Manga: Обновление"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[L10n] Added Portuguese and Ukrainian translations"
-msgstr ""
+msgstr "[L10n] Добавлен Португальский и Украинский язык"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid ""
 "[L10n] Updated French, German, Portuguese (Brazil) and Spanish translations"
 msgstr ""
+"[L10n] Обновлен Французский, немецкий, португальский (Бразилия) и испанский "
+"язык"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:118
@@ -143,23 +148,23 @@ msgstr "Приятного чтения."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 msgid "Fixed search entries appearance"
-msgstr ""
+msgstr "Исправлен вид появления предложений поиска"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:114
 msgid "Fixed webview"
-msgstr ""
+msgstr "Исправлен веб-просмотр"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
 msgid "[Servers] Manga Freak: Update"
-msgstr ""
+msgstr "[Сервера] Manga Freak: Обновлен"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:116
 msgid "[L10n] Updated Finnish translation"
-msgstr ""
+msgstr "[L10n] Обновлен Финский перевод"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:124
 msgid "[Servers] NHentai: Reactivation"
-msgstr ""
+msgstr "[Сервера] NHentai: Снова активен"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:125
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:262
@@ -194,32 +199,38 @@ msgid ""
 "[L10n] Update Dutch, Finnish, Indonesian, Portuguese (Brazil), Russian and "
 "Spanish translations"
 msgstr ""
+"[L10n] Обновлен Голландский, Финский, Индонезийский, Португальский (Бразилия)"
+", Русский и Испанский язык"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:132
 msgid "Switch to GNOME 44 runtime: GTK 4.10.1, Adwaita 1.3.1, WebKitGTK 6.0"
 msgstr ""
+"Переход на среду выполнения GNOME 44: GTK 4.10.1, Adwaita 1.3.1, WebKitGTK 6."
+"0"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:140
 msgid ""
 "[Explorer] Added ability to read from search results (new settings have been "
 "added in Preferences to manage cached data)"
 msgstr ""
+"[Проводник] Добавлена возможность чтения из результатов поиска (добавлены "
+"новые настройки в Предпочтениях для управления кэшированными данными)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:141
 msgid "[Reader] Fixed memory leaks"
-msgstr ""
+msgstr "[Читалка] Исправлены утечки памяти"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:142
 msgid "[Servers] WEBTOON: Update"
-msgstr ""
+msgstr "[Серверы] WEBTOON: Обновление"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:143
 msgid "[L10n] New Finnish and Indonesian translations"
-msgstr ""
+msgstr "[L10n] Новые переводы на Финский и Индонезийский языки"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:144
 msgid "[L10n] Update Portuguese (Brazil) and Spanish translations"
-msgstr ""
+msgstr "[L10n] Обновление Португальского (Бразилия) и Испанского перевода"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:152
 msgid ""
@@ -1234,19 +1245,22 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:616
 msgid "[Card] Fixed synopsis display when it contains HTML"
-msgstr ""
+msgstr "[Карточка] Исправлено отображение синопсиса, когда он содержит HTML"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:617
 msgid "[Reader] Add option to hide page numbering"
-msgstr ""
+msgstr "[Читалка] Добавлена опция скрыть нумерацию страниц"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:618
 msgid "[Reader] Fixed pager jumps when page rendering is retried"
 msgstr ""
+"[Читалка] Исправлен переход на определенную страницу при повторной попытке "
+"рендеринга страницы"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:619
 msgid "[Explorer] Servers: Don't show Pinned when empty"
 msgstr ""
+"[Иследователь] Сервера: Не отображать закрепленные, если ничего не закреплено"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:620
 msgid "[Servers] Add Best Manga [RU]"
@@ -1375,42 +1389,46 @@ msgstr "[L10n] Обновление французского и немецког
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:696
 msgid "Several UI changes to improve scaling on small devices screens"
 msgstr ""
+"Несколько изменений пользовательского интерфейса на устройствах с маленьким "
+"экраном"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:697
 msgid "[Library] Add categories edition in bulk (via multiple selection mode)"
 msgstr ""
+"[Библиотека] Добавлено редактирование категорий в массовом порядке в режиме "
+"множественного выбора"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:698
 msgid "[Reader] Fix memory leaks"
-msgstr ""
+msgstr "[Читалка] Исправлена утечка памяти"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:699
 msgid "[Explorer] Allow search in servers list"
-msgstr ""
+msgstr "[Проводник] Разрешен поиск в списке серверов"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:700
 msgid "[Explorer] Added possibility to pin favorite servers"
-msgstr ""
+msgstr "[Проводник] Добавлена возможность закрепления избранных серверов"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:701
 msgid "[Updater] Prevents updating of comics whose server is disabled"
-msgstr ""
+msgstr "[Обновление] Предотвращает обновление комиксов, чей сервер отключен"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:702
 msgid "[Keyring] Improved SecretService detection"
-msgstr ""
+msgstr "[Keyring] Улучшено обнаружение SecretService"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:703
 msgid "[Servers] Add AllHentai (RU)"
-msgstr ""
+msgstr "[Сервера] Добавлен AllHentai (RU)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:704
 msgid "[Servers] Add CatManga aka Black Cat Scanlations (EN)"
-msgstr ""
+msgstr "[Сервера] Добавлен CatManga aka Black Cat Scanlations (EN)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:705
 msgid "[Servers] Add Dongman Manhua (ZH Hans)"
-msgstr ""
+msgstr "[Сервера] Добавлен Dongman Manhua (ZH Hans)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:706
 msgid ""
@@ -1418,48 +1436,57 @@ msgid ""
 "Wakascan (FR), 24hRomance (EN), AkuManga (AR), ArazNovel (TR), Argos Scan "
 "(PT), Atikrost (TR)"
 msgstr ""
+"[Сервера] Добавлен Мадару (мультисерверы): Aloalivn (EN), Apoll Comics (ES), "
+"Wakascan (FR), 24hRomance (EN), AkuManga (AR), ArazNovel (TR), Argos Scan "
+"(PT), Atikrost (TR)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:707
 msgid "[Servers] Add MangaFreak (EN)"
-msgstr ""
+msgstr "[Сервера] Добавлен MangaFreak (EN)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:709
 msgid "[Servers] Pepper&amp;Carrot: Fix pages order"
-msgstr ""
+msgstr "[Сервера] Pepper&amp;Carrot: Исправлен порядок страниц"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:710
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:769
 msgid "[Servers] Scantrad France: Update"
-msgstr ""
+msgstr "[Сервера] Scantrad France: Обновлен"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:711
 msgid ""
 "[Servers] Webtoon: Improved details retrieval (both for originals and "
 "challenges)"
 msgstr ""
+"[Сервера] Webtoon: Улучшен поиск деталей (как для оригиналов, так и для "
+"вызовов)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:720
 msgid "[Library] Add Categories to organize the library"
-msgstr ""
+msgstr "[Библиотека] Добавлены категории для организации библиотеки"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:721
 msgid "[Servers] Add Read Comics Online (EN)"
-msgstr ""
+msgstr "[Serverа] Добавлен Read Comics Online (EN)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:722
 msgid "[Servers] Komga: Add sync (read progress) with server"
-msgstr ""
+msgstr "[Сервера] Komga: Добавлена синхронизация прогресса чтения с сервером"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:723
 msgid ""
 "[Servers] JapScan: Partial fix (Webtoons chapters in single page are not "
 "handled)"
 msgstr ""
+"[Сервера] JapScan: Частичное исправление (не обрабатывались главы Webtoons "
+"на одной странице)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:726
 msgid ""
 "[Servers] MangaSee: Fix page download for chapters with decimals in name"
 msgstr ""
+"[Сервера] MangaSee: Исправление загрузки странц для глав с десятичными "
+"цифрами в названии"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:728
 msgid "[Servers] Scan Manga: Skip chapters coming from external servers"
