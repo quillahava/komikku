@@ -43,7 +43,7 @@ class Mangakawaii(Server):
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/{1}/{2}/1'
     chapters_url = base_url + '/loadChapter?page={0}'
-    cdn_base_url = 'https://cdn.mangakawaii.pics'
+    cdn_base_url = 'https://cdn.mangakawaii.io'
     image_url = cdn_base_url + '/uploads/manga/{0}/chapters_{1}/{2}/{3}?{4}'
     cover_url = cdn_base_url + '/uploads/manga/{0}/cover/cover_250x350.jpg'
 
