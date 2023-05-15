@@ -1,12 +1,13 @@
 # Heimen Stoffels <vistausss@fastmail.com>, 2023.
 # Philip Goto <philip.goto@gmail.com>, 2023.
+# Koen Benne <koen.benne@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 01:12+0200\n"
 "PO-Revision-Date: 2023-05-16 00:14+0000\n"
-"Last-Translator: Philip Goto <philip.goto@gmail.com>\n"
+"Last-Translator: Koen Benne <koen.benne@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/komikku/main/nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -122,12 +123,13 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[L10n] Added Portuguese and Ukrainian translations"
-msgstr ""
+msgstr "[L10n] Portugese en Oekraïense vertalingen toegevoegd"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid ""
 "[L10n] Updated French, German, Portuguese (Brazil) and Spanish translations"
 msgstr ""
+"[L10n] Franse, Duitse, Portugese (Brazilië) en Spaanse vertalingen bijgewerkt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:118
@@ -141,7 +143,7 @@ msgstr "Vrolijk lezen."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 msgid "Fixed search entries appearance"
-msgstr ""
+msgstr "Probleem met weergave van zoekitems verholpen"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:114
 msgid "Fixed webview"
@@ -153,11 +155,11 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:116
 msgid "[L10n] Updated Finnish translation"
-msgstr ""
+msgstr "[L10n] Finse vertaling bijgewerkt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:124
 msgid "[Servers] NHentai: Reactivation"
-msgstr ""
+msgstr "[Servers] NHentai: Reactivering"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:125
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:262
@@ -205,19 +207,19 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:141
 msgid "[Reader] Fixed memory leaks"
-msgstr ""
+msgstr "[Reader] Geheugenlekken verholpen"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:142
 msgid "[Servers] WEBTOON: Update"
-msgstr ""
+msgstr "[Servers] WEBTOON: bijgewerkt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:143
 msgid "[L10n] New Finnish and Indonesian translations"
-msgstr ""
+msgstr "[L10n] Nieuwe Finse en Indonesische vertalingen"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:144
 msgid "[L10n] Update Portuguese (Brazil) and Spanish translations"
-msgstr ""
+msgstr "[L10n] Portugese (Brazilië) en Spaanse vertalingen bijgewerkt"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:152
 msgid ""
