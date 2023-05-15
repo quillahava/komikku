@@ -461,19 +461,22 @@ class Pager(Adw.Bin, BasePager):
                 hadj.set_value(self.zoom['start_hadj_value'])
                 vadj.set_value(self.zoom['start_vadj_value'])
 
-                page.set_image([self.zoom['start_width'], self.zoom['start_height']])
+                page.set_image([self.zoom['orig_width'], self.zoom['orig_height']])
 
         return Gdk.EVENT_STOP
 
     def on_gesture_zoom_end(self, _gesture, _sequence):
         page = self.current_page
-        if page.picture.width == self.zoom['orig_width'] and page.picture.height == self.zoom['orig_height']:
+        if page.picture.width == self.zoom['orig_width'] or page.picture.height == self.zoom['orig_height']:
             self.zoom['active'] = False
             self.interactive = True
 
         self.gesture_zoom.set_state(Gtk.EventSequenceState.CLAIMED)
 
     def on_gesture_zoom_begin(self, _gesture, _sequence):
+        if self.page_change_in_progress:
+            return
+
         page = self.current_page
 
         if page.status != 'rendered' or page.error is not None or page.animated:
@@ -497,6 +500,9 @@ class Pager(Adw.Bin, BasePager):
         self.gesture_zoom.set_state(Gtk.EventSequenceState.CLAIMED)
 
     def on_gesture_zoom_scale_changed(self, _gesture, scale):
+        if not self.zoom['active']:
+            return
+
         self.zoom_page(scale, True)
 
         self.gesture_zoom.set_state(Gtk.EventSequenceState.CLAIMED)
