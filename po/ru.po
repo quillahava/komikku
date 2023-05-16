@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 01:12+0200\n"
-"PO-Revision-Date: 2023-05-16 00:14+0000\n"
+"PO-Revision-Date: 2023-05-17 10:50+0000\n"
 "Last-Translator: Valentin Chernetsov <kurnesay@danwin1210.de>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/>"
 "\n"
@@ -1584,14 +1584,16 @@ msgid ""
 "[Add dialog] Search page: Give keyboard focus to search entry when a "
 "printable character is typed"
 msgstr ""
+"[Добавлен диалог] Страница поиска: Когда пользователь начинает печатать, "
+"фокус переходит поисковому запросу"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:793
 msgid "[Card] Add 'Resume read' button"
-msgstr ""
+msgstr "[Карточка] Добавлена кнопка \"Продолжить чтение\""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:794
 msgid "[Servers] Add Xoxocomics (EN)"
-msgstr ""
+msgstr "[Сервера] Добавлен Xoxocomics (EN)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:796
 msgid "[Servers] MangaDex: Update to API v2 (more stable)"
