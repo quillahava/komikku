@@ -500,6 +500,10 @@ class Manga:
 
             rank = 0
             for chapter_data in chapters:
+                if not chapter_data.get('date'):
+                    # Used today if not date is provided
+                    chapter_data['date'] = datetime.date.today()
+
                 chapter = Chapter.new(chapter_data, rank, id_, db_conn)
                 if chapter is not None:
                     rank += 1
@@ -776,6 +780,10 @@ class Manga:
                     rank += 1
                 else:
                     # Add new chapter
+                    if not chapter_data.get('date'):
+                        # Used today if not date is provided
+                        chapter_data['date'] = datetime.date.today()
+
                     chapter_data.update(dict(
                         manga_id=self.id,
                         rank=rank,
