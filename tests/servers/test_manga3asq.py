@@ -19,7 +19,7 @@ def test_manga3asq(manga3asq_server):
     # Get latest updates
     print('Get latest updates')
     try:
-        response = manga3asq_server.get_latest_updates()
+        response = manga3asq_server.get_latest_updates(False)
     except Exception as e:
         response = None
         log_error_traceback(e)
@@ -30,7 +30,7 @@ def test_manga3asq(manga3asq_server):
     # Get most populars
     print('Get most populars')
     try:
-        response = manga3asq_server.get_most_populars()
+        response = manga3asq_server.get_most_populars(False)
     except Exception as e:
         response = None
         log_error_traceback(e)
