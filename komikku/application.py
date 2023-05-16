@@ -68,9 +68,11 @@ CREDITS = dict(
     translators=(
         'Ege Çelikçi (Turkish)',
         'Dingzhong Chen (Simplified Chinese)',
+        'Valentin Chernetsov (Russian)',
         'Valéry Febvre (French)',
         'Óscar Fernández Díaz (Spanish)',
         'Rafael Fontenelle (Brazilian Portuguese)',
+        'Philip Goto (Dutch)',
         'Jiri Grönroos (Finnish)',
         'Mariusz Kurek (Polish)',
         'Liliana Prikler (German)',
@@ -79,7 +81,9 @@ CREDITS = dict(
         'Alim Satria (Indonesian)',
         'Heimen Stoffels (Dutch)',
         'Irénée Thirion (French)',
+        'Abidin Toumi (Arabic)',
         'Sabri Ünal (Turkish)',
+        'Roger VC (Catalan)',
         'Gallegonovato (Spanish)',
         'GrownNed (Russian)',
         'Infinitive Witch (Brazilian Portuguese)',
@@ -477,23 +481,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Servers] Added Flame Scans [EN]</li>
-                <li>[Servers] Added MangaHere [EN]</li>
-                <li>[Servers] 3asq: Update</li>
-                <li>[Servers] LeviatanScans: Update [EN/ES]</li>
-                <li>[Servers] Manhuaus: Update</li>
-                <li>[Servers] Phoenix Fansub: Update</li>
-                <li>[Servers] Raw Manga: Update</li>
-                <li>[Servers] ReadManhwa: Update</li>
-                <li>[Servers] ReaperScansFR (GS): Update</li>
-                <li>[Servers] Reaper Scans [PT]: Update</li>
-                <li>[Servers] AkuManga: Disable</li>
-                <li>[Servers] Atikrost: Disable</li>
-                <li>[Servers] FR Scan: Disable</li>
-                <li>[Servers] Hunlight Scans: Disable</li>
-                <li>[Servers] Mangas Origines: Disable</li>
-                <li>[Servers] The Nonames Scans: Disable</li>
-                <li>[L10n] Updated Finnish and Indonesian translations</li>
+                <li>[Reader] LTR/RTL/Vertical pager: Fixed zoom bugs</li>
+                <li>[Reader] Fixed crashes caused by corrupted images</li>
+                <li>[Servers] Added TCB Scans [EN]</li>
+                <li>[Servers] MangaHere: Fixed duplicated pages</li>
+                <li>[Servers] MangaKawaii: Update</li>
+                <li>[L10n] Added Arabic and Catalan translations</li>
+                <li>[L10n] Updated Dutch and Russian translations</li>
             </ul>
             <p>Happy reading.</p>
         """)
