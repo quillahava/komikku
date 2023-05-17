@@ -481,13 +481,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] LTR/RTL/Vertical pager: Fixed zoom bugs</li>
-                <li>[Reader] Fixed crashes caused by corrupted images</li>
-                <li>[Servers] Added TCB Scans [EN]</li>
-                <li>[Servers] MangaHere: Fixed duplicated pages</li>
-                <li>[Servers] MangaKawaii: Update</li>
-                <li>[L10n] Added Arabic and Catalan translations</li>
-                <li>[L10n] Updated Dutch and Russian translations</li>
+                <li>[Reader] LTR/RTL/Vertical pager: Fixed double tap/click zoom</li>
+                <li>[Servers] Jpmangas: Update</li>
+                <li>[Servers] Mangaowl: Update</li>
+                <li>[L10n] Updated Russian translation</li>
             </ul>
             <p>Happy reading.</p>
         """)
