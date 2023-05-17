@@ -445,8 +445,10 @@ class Pager(Adw.Bin, BasePager):
                     return
 
                 self.interactive = False
-                self.zoom['start_width'] = page.picture.width
-                self.zoom['start_height'] = page.picture.height
+                self.zoom['orig_width'] = page.picture.width
+                self.zoom['orig_height'] = page.picture.height
+                self.zoom['start_width'] = self.zoom['orig_width']
+                self.zoom['start_height'] = self.zoom['orig_height']
                 self.zoom['start_hadj_value'] = hadj.get_value()
                 self.zoom['start_vadj_value'] = vadj.get_value()
                 self.zoom['x'] = x
