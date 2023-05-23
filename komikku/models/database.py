@@ -736,6 +736,10 @@ class Manga:
 
         db_conn = create_db_connection()
         with db_conn:
+            # Re-create the manga directory if it does not exist.
+            if not os.path.exists(self.path):
+                os.makedirs(self.path)
+
             # Update cover
             cover = data.pop('cover')
             if cover:
