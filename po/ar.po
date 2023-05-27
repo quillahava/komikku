@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 01:12+0200\n"
-"PO-Revision-Date: 2023-05-16 00:14+0000\n"
+"PO-Revision-Date: 2023-05-28 11:49+0000\n"
 "Last-Translator: abidin toumi <abidin24@disroot.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/>"
 "\n"
@@ -2219,8 +2219,9 @@ msgid "Open in Browser"
 msgstr "افتح في المتصفح"
 
 #: ../data/ui/application_window.ui:329
+#, fuzzy
 msgid "Search for comics across all servers"
-msgstr ""
+msgstr "ابحث عن قصة في كل الخوادم"
 
 #: ../data/ui/application_window.ui:336
 msgid "Search for servers"
@@ -2237,7 +2238,7 @@ msgstr "حدّث"
 
 #: ../data/ui/application_window.ui:525
 msgid "Discover new readings"
-msgstr ""
+msgstr "اكتشف قصصًا جديدة لقراءتها"
 
 #: ../data/ui/application_window.ui:621
 msgid "OK"
@@ -2390,19 +2391,19 @@ msgstr "ويب تون ⬇"
 
 #: ../data/ui/menu/reader.xml:35
 msgid "Type of Scaling"
-msgstr ""
+msgstr "نوع التحجيم"
 
 #: ../data/ui/menu/reader.xml:40 ../data/ui/preferences.ui:354
 msgid "Adapt to Screen"
-msgstr ""
+msgstr "تكيف مع أبعاد الشاشة"
 
 #: ../data/ui/menu/reader.xml:45 ../data/ui/preferences.ui:355
 msgid "Adapt to Width"
-msgstr ""
+msgstr "تكيف مع عرض الشاشة"
 
 #: ../data/ui/menu/reader.xml:50 ../data/ui/preferences.ui:356
 msgid "Adapt to Height"
-msgstr ""
+msgstr "تكيف مع ارتفاع الشاشة"
 
 #: ../data/ui/menu/reader.xml:55 ../data/ui/preferences.ui:357
 msgid "Original Size"
@@ -2434,7 +2435,7 @@ msgstr "كبر الصفحات الأفقية"
 
 #: ../data/ui/menu/reader.xml:95
 msgid "Crop Borders"
-msgstr ""
+msgstr "اقتصاص الحواف"
 
 #: ../data/ui/menu/reader.xml:99
 msgid "Hide Page Numbering"
@@ -2510,23 +2511,23 @@ msgstr "اعرض شعار الخادم"
 
 #: ../data/ui/preferences.ui:129
 msgid "Badges"
-msgstr ""
+msgstr "شارات"
 
 #: ../data/ui/preferences.ui:132
 msgid "Number of Unread Chapters"
-msgstr ""
+msgstr "عدد الفصول غير المقروءة"
 
 #: ../data/ui/preferences.ui:153
 msgid "Number of Downloaded Chapters"
-msgstr ""
+msgstr "عدد الفصول المنزّلة"
 
 #: ../data/ui/preferences.ui:174
 msgid "Number of Recent and Unread Chapters"
-msgstr ""
+msgstr "عدد الفصول الحديثة غير المقروءة"
 
 #: ../data/ui/preferences.ui:202
 msgid "Update at Startup"
-msgstr ""
+msgstr "حدّث عند التشغيل"
 
 #: ../data/ui/preferences.ui:204
 msgid "Automatically update library at startup"
