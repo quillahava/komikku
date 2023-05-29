@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 01:12+0200\n"
-"PO-Revision-Date: 2023-05-18 13:51+0000\n"
+"PO-Revision-Date: 2023-05-30 08:50+0000\n"
 "Last-Translator: Valentin Chernetsov <kurnesay@danwin1210.de>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/>"
 "\n"
@@ -1996,46 +1996,48 @@ msgstr "[Читалка] Убран сбой при поврежденных и�
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:961
 msgid "[Settings] Add servers settings"
-msgstr ""
+msgstr "[Настройки] Добавлены настройки серверов"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:962
 msgid "[Servers] Add Union Mangás (PT)"
-msgstr ""
+msgstr "[Сервера] Добавлен Union Mangás (PT)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:963
 msgid "[Servers] Add MangaLib and HentaiLib (RU)"
-msgstr ""
+msgstr "[Сервера] Добавлен MangaLib и HentaiLib (RU)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:964
 msgid ""
 "[Servers] Add Edelgarde Scans, Hunlight Scans, One Shot Scans, Reaper Scans, "
 "The Nonames Scans, Zero Scans (EN)"
 msgstr ""
+"[Сервера] Добавлены Edelgarde Scans, Hunlight Scans, One Shot Scans, Reaper "
+"Scans, The Nonames Scans, Zero Scans (EN)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:965
 msgid "[Servers] Add Leviatan Scans (EN, ES)"
-msgstr ""
+msgstr "[Сервера] Добавлен Leviatan Scans (EN, ES)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:966
 msgid "[Servers] Hatigarm Scans: new server version"
-msgstr ""
+msgstr "[Сервера] Hatigarm Scans: Новая версия сервера"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:967
 msgid "[Servers] Scantrad France: Fix"
-msgstr ""
+msgstr "[Сервера] Scantrad France: Исправлен"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:968
 msgid "[Servers] MangaDex: Added ability to log in"
-msgstr ""
+msgstr "[Сервера] MangaDex: Добавлена возможность войти в систему"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:969
 msgid "[Servers] Read Manga: Fixes"
-msgstr ""
+msgstr "[Сервера] Read Manga: Некоторые исправления"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:970
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:976
 msgid "Improved manga update"
-msgstr ""
+msgstr "Улучшение обновление манги"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:975
 msgid "[Servers] Mangakawaii: Fixed manga cover"
@@ -2047,7 +2049,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:982
 msgid "[Reader] Cursor hiding during keyboard navigation"
-msgstr ""
+msgstr "[Читалка] Скрытие курсора при навигации с помощью клавиатуры"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:983
 msgid "[Reader] Arrow scrolling in every reading directions"
@@ -2093,27 +2095,27 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1001
 msgid "Added Desu server (RU)"
-msgstr ""
+msgstr "Добавлен сервер Desu (RU)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1002
 msgid "Added the Russian translation"
-msgstr ""
+msgstr "Добавлен русский язык"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1003
 msgid "Updated the Brazilian Portuguese translation"
-msgstr ""
+msgstr "Обновлен Бразильский Португальский язык"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1004
 msgid "Fixed a bug in manga updater"
-msgstr ""
+msgstr "Исправлен баг при обновлении манг"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1009
 msgid "Fixe a bug in Download Manager"
-msgstr ""
+msgstr "Исправлена ошибка в менеджере загрузки"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1014
 msgid "Added a Download Manager"
-msgstr ""
+msgstr "Добавлен менеджер загрузок"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1015
 msgid "[Manga] Improved chapters download"
@@ -2123,30 +2125,32 @@ msgstr ""
 msgid ""
 "[Reader] Vertical reading direction: Added scrolling with UP and DOWN keys"
 msgstr ""
+"[Читалка] Вертикальное направление чтения: Добавлена прокрутка с помощью "
+"клавиш UP и DOWN"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1017
 msgid "[Reader] Added a Retry button when a image load failed"
-msgstr ""
+msgstr "[Читалка] Добавлена кнопка повтора при неудачной загрузке изображения"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1018
 msgid "[Servers] Removed Manga Rock (server has closed)"
-msgstr ""
+msgstr "[Сервера] Удален Manga Rock (Сервер закрыт)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1019
 msgid "[Servers] Minor fix in xkcd"
-msgstr ""
+msgstr "[Сервера] Небольшое исправление в xkcd"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1020
 msgid "[Servers] MangaDex: Added 15 languages"
-msgstr ""
+msgstr "[Сервера] MangaDex: Добавлено 15 языков"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1025
 msgid "[Library] Add an unread badge"
-msgstr ""
+msgstr "[Библиотека] Добавлен непрочитанный значок"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1026
 msgid "[Library/Manga] Added \"Select All\" in selection mode"
-msgstr ""
+msgstr "[Библиотека/Манга] Добавлена функция \"Выбрать все\" в режиме выбора"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1027
 msgid ""
@@ -2203,7 +2207,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1055
 msgid "Happy new year to everyone."
-msgstr ""
+msgstr "Поздравляю всех с Новым годом."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1060
 msgid "Added 'Vertical' reading direction"
@@ -2215,7 +2219,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1066
 msgid "Fixed Manganelo and WEBTOON servers"
-msgstr ""
+msgstr "Исправлены серверы Manganelo и WEBTOON"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1071
 msgid "Ninemanga: Fixed missing chapters issue (EN, BR, DE, ES, IT)"
@@ -2235,7 +2239,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1079
 msgid "Bug fixes in Scantrad France and DB Multiverse"
-msgstr ""
+msgstr "Исправление ошибок в Scantrad France и DB Multiverse"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1084
 msgid "A bug fix in change of reading direction"
@@ -2261,11 +2265,11 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1097
 msgid "Fix in Mangakawaii server (Cloudflare problem)"
-msgstr ""
+msgstr "Исправление на сервере Mangakawaii (Проблема с Cloudflare)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1102
 msgid "Fixes in Mangakawaii server"
-msgstr ""
+msgstr "Исправления на сервере Mangakawaii"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1107
 msgid "Added Dragon Ball Multiverse (DBM) server"
@@ -2273,7 +2277,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1108
 msgid "Fixes in Japscan server (search still broken)"
-msgstr ""
+msgstr "Исправления в Japscan (Поиск все еще не работает)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1113
 msgid "New servers: NineManga Russian, Webtoon Indonesia and Webtoon Thai"
@@ -2284,6 +2288,8 @@ msgid ""
 "For all servers that allow it, most popular mangas are now offered as "
 "starting search results."
 msgstr ""
+"На всех серверах, где это возможно, самые популярные манги теперь "
+"предлагаются в качестве начальных результатов поиска."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1119
 msgid "Improve speed of dates parsing"
@@ -2291,11 +2297,11 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1120
 msgid "Fixed order of manga chapters for Scantrad France and Central de Mangás"
-msgstr ""
+msgstr "Исправлен порядок глав манги для Scantrad France и Central de Mangás"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1125
 msgid "Fix keyboard navigation in reader"
-msgstr ""
+msgstr "Исправьте навигации с помощью клавиатуры в читалке"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1130
 msgid "Add a new server: xkcd (English)"
@@ -2311,7 +2317,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1141
 msgid "Bug fix: Change the location of the data storage"
-msgstr ""
+msgstr "Исправление ошибок: Изменение местоположения хранилища данных"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:1146
 msgid "First release"
@@ -2323,7 +2329,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.desktop.in:4
 msgid "@description@"
-msgstr ""
+msgstr "@описание@"
 
 #: ../data/info.febvre.Komikku.desktop.in:13
 msgid ""
@@ -2349,7 +2355,7 @@ msgstr ""
 
 #: ../data/ui/application_window.ui:185 ../data/ui/menu/main.xml:19
 msgid "History"
-msgstr ""
+msgstr "История"
 
 #: ../data/ui/application_window.ui:240
 msgid "Toggle category sidebar"
@@ -2412,7 +2418,7 @@ msgstr ""
 
 #: ../data/ui/application_window.ui:775
 msgid "Details"
-msgstr ""
+msgstr "Подробности"
 
 #: ../data/ui/application_window.ui:807
 msgid "Genres"
@@ -2472,27 +2478,27 @@ msgstr "Порядок Глав"
 
 #: ../data/ui/menu/card.xml:23
 msgid "⬆ By Source"
-msgstr ""
+msgstr "⬆ По источнику"
 
 #: ../data/ui/menu/card.xml:28
 msgid "⬇ By Source"
-msgstr ""
+msgstr "⬇ По источнику"
 
 #: ../data/ui/menu/card.xml:34
 msgid "⬆ By Date"
-msgstr ""
+msgstr "⬆ По дате"
 
 #: ../data/ui/menu/card.xml:39
 msgid "⬇ By Date"
-msgstr ""
+msgstr "⬇ По дате"
 
 #: ../data/ui/menu/card.xml:45
 msgid "⬆ By Title"
-msgstr ""
+msgstr "⬆ По названию"
 
 #: ../data/ui/menu/card.xml:50
 msgid "⬇ By Title"
-msgstr ""
+msgstr "⬇ По названию"
 
 #: ../data/ui/menu/card_selection_mode.xml:18
 #: ../data/ui/menu/library_selection_mode.xml:25
@@ -2513,7 +2519,7 @@ msgstr ""
 
 #: ../data/ui/menu/library_selection_mode.xml:7
 msgid "Edit Categories"
-msgstr ""
+msgstr "Редактировать категории"
 
 #: ../data/ui/menu/main.xml:7
 msgid "Update Library"
@@ -2617,7 +2623,7 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:51
 msgid "Dark"
-msgstr ""
+msgstr "Темный"
 
 #: ../data/ui/preferences.ui:52
 msgid "Follow System"
@@ -2773,6 +2779,10 @@ msgid ""
 "NOTE: Requires more CPU usage and can cause rendering and animation "
 "slowdowns, especially on mobile devices."
 msgstr ""
+"Обрезать белые границы изображений\n"
+"\n"
+"ПРИМЕЧАНИЕ: Требует большего использования процессора и может вызвать "
+"замедление рендеринга и анимации, особенно на мобильных устройствах."
 
 #: ../data/ui/preferences.ui:410
 msgid "Page Numbering"
@@ -2780,7 +2790,7 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:412
 msgid "Hide the page numbering at the bottom of the screen while reading"
-msgstr ""
+msgstr "Скрыть нумерацию страниц в нижней части экрана во время чтения"
 
 #: ../data/ui/preferences.ui:424
 msgid "Fullscreen"
@@ -2796,23 +2806,23 @@ msgstr "Продвинутые"
 
 #: ../data/ui/preferences.ui:452
 msgid "Data"
-msgstr ""
+msgstr "Данные"
 
 #: ../data/ui/preferences.ui:453
 msgid "Data not saved in the library"
-msgstr ""
+msgstr "Данные не сохранены в библиотеке"
 
 #: ../data/ui/preferences.ui:456
 msgid "Clear chapters cache and database"
-msgstr ""
+msgstr "Очистить кэш и базу данных глав"
 
 #: ../data/ui/preferences.ui:462
 msgid "Clear chapters cache and database on application close"
-msgstr ""
+msgstr "Очистка кэша глав и базы данных при закрытии приложения"
 
 #: ../data/ui/preferences.ui:477
 msgid "Credentials storage"
-msgstr ""
+msgstr "Хранение учетных данных"
 
 #: ../data/ui/preferences.ui:480
 msgid "Allow plaintext storage as fallback"
@@ -2828,7 +2838,7 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:499
 msgid "Disable Animations"
-msgstr ""
+msgstr "Отключить анимации"
 
 #: ../data/ui/preferences.ui:501
 msgid ""
@@ -2906,7 +2916,7 @@ msgstr ""
 #: ../data/ui/shortcuts_overview.ui:98
 msgctxt "Shortcut window description"
 msgid "Download Manager"
-msgstr ""
+msgstr "Менеджер загрузки"
 
 #: ../data/ui/shortcuts_overview.ui:101
 msgctxt "Shortcut window description"
@@ -2926,7 +2936,7 @@ msgstr ""
 #: ../komikku/downloader.py:335 ../komikku/downloader.py:336
 #: ../komikku/library/__init__.py:334 ../komikku/library/__init__.py:335
 msgid "Cancel"
-msgstr ""
+msgstr "Отменить"
 
 #: ../komikku/application.py:505
 msgid "Join Chat"
@@ -2981,7 +2991,7 @@ msgstr ""
 #: ../komikku/history.py:208 ../komikku/preferences.py:425
 #: ../komikku/webview.py:137
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 #: ../komikku/card/__init__.py:130
 msgid "Read progress synchronization with server completed successfully"
@@ -2989,7 +2999,7 @@ msgstr ""
 
 #: ../komikku/card/__init__.py:141
 msgid "Failed to get manga URL"
-msgstr ""
+msgstr "Не удалось получить URL манги"
 
 #: ../komikku/card/__init__.py:299
 msgid "Unknown author"
@@ -3009,7 +3019,7 @@ msgstr "%d/%m/%Y"
 
 #: ../komikku/card/chapters_list.py:362 ../komikku/card/chapters_list.py:457
 msgid "Failed to update chapters reading status"
-msgstr ""
+msgstr "Не удалось обновить статус чтения глав"
 
 #: ../komikku/card/chapters_list.py:643 ../komikku/library/__init__.py:321
 msgid "Download"
@@ -3017,7 +3027,7 @@ msgstr "Загрузить"
 
 #: ../komikku/card/chapters_list.py:647
 msgid "Clear and Reset"
-msgstr ""
+msgstr "Очистить и сбросить"
 
 #: ../komikku/card/chapters_list.py:656
 msgid "Mark as Read"
@@ -3041,6 +3051,8 @@ msgid ""
 "Are you sure you want to delete\n"
 "\"{0}\" category?"
 msgstr ""
+"Вы уверены, что хотите удалить\"\n"
+"{0}\" категорию?"
 
 #: ../komikku/categories_editor.py:80 ../komikku/categories_editor.py:187
 #: ../komikku/library/__init__.py:297
@@ -3049,7 +3061,7 @@ msgstr "Удалить"
 
 #: ../komikku/categories_editor.py:192
 msgid "Edit"
-msgstr ""
+msgstr "Редактировать"
 
 #: ../komikku/categories_editor.py:205
 msgid "Save"
@@ -3075,7 +3087,7 @@ msgstr "ошибка"
 
 #: ../komikku/explorer/__init__.py:95
 msgid "Comics stored locally as archives in CBZ/CBR formats"
-msgstr ""
+msgstr "Комиксы, хранящиеся локально в виде архивов в форматах CBZ/CBR"
 
 #: ../komikku/explorer/__init__.py:112 ../komikku/preferences.py:556
 #: ../komikku/preferences.py:650 ../komikku/servers/mangatube/__init__.py:57
@@ -3084,7 +3096,7 @@ msgstr ""
 
 #: ../komikku/explorer/__init__.py:132
 msgid "Help"
-msgstr ""
+msgstr "Помощь"
 
 #: ../komikku/explorer/__init__.py:137
 msgid ""
@@ -3098,6 +3110,16 @@ msgid ""
 "\n"
 "NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."
 msgstr ""
+"Для правильной обработки локальных комиксов требуется определенная структура "
+"папок.\n"
+"\n"
+"Каждый комикс должен иметь свою собственную папку, в которой должны "
+"находиться главы/тома в виде архивных файлов в форматах CBZ или CBR.\n"
+"\n"
+"Название папки будет использоваться в качестве названия комикса.\n"
+"\n"
+"ПРИМЕЧАНИЕ: Для архивов CBR требуется инструмент командной строки 'unrar' "
+"или 'unar'."
 
 #: ../komikku/explorer/__init__.py:151
 msgid "Open local folder"
@@ -3126,7 +3148,7 @@ msgstr ""
 #: ../komikku/explorer/search.py:294 ../komikku/explorer/search.py:356
 #: ../komikku/explorer/search.py:446 ../komikku/explorer/search.py:455
 msgid "A request is already in progress."
-msgstr ""
+msgstr "Запрос уже находится в процессе выполнения."
 
 #: ../komikku/explorer/search.py:343
 msgid "Oops, failed to retrieve most popular."
@@ -3162,7 +3184,7 @@ msgstr ""
 
 #: ../komikku/explorer/search.py:622
 msgid "Empty search is allowed."
-msgstr ""
+msgstr "Пустой поиск разрешен."
 
 #: ../komikku/explorer/search.py:624
 msgid ""
@@ -3173,7 +3195,7 @@ msgstr ""
 
 #: ../komikku/explorer/search.py:642
 msgid "Global Search"
-msgstr ""
+msgstr "Глобальный поиск"
 
 #: ../komikku/explorer/search.py:644
 msgid "Search across all servers"
@@ -3221,11 +3243,11 @@ msgstr "Вы уверенны что хотите удалить выбранн�
 
 #: ../komikku/library/__init__.py:317
 msgid "Are you sure you want to download all chapters of selected mangas?"
-msgstr ""
+msgstr "Вы точно хотите загрузить все главы выбранных манг?"
 
 #: ../komikku/library/__init__.py:319
 msgid "Download?"
-msgstr ""
+msgstr "Скачать?"
 
 #: ../komikku/library/__init__.py:346 ../komikku/library/__init__.py:598
 msgid "Add new comic"
@@ -3241,7 +3263,7 @@ msgstr ""
 
 #: ../komikku/library/__init__.py:645
 msgid "Failed to update reading status"
-msgstr ""
+msgstr "Не удалось обновить статус чтения"
 
 #: ../komikku/library/__init__.py:672 ../komikku/library/categories_list.py:144
 msgid "Uncategorized"
@@ -3296,19 +3318,19 @@ msgstr "Настройки"
 
 #: ../komikku/preferences.py:137
 msgid "Clear?"
-msgstr ""
+msgstr "Очистить?"
 
 #: ../komikku/preferences.py:138
 msgid "Are you sure you want to clear chapters cache and database?"
-msgstr ""
+msgstr "Вы уверены, что хотите очистить кэш и базу данных глав?"
 
 #: ../komikku/preferences.py:139
 msgid "Clear"
-msgstr ""
+msgstr "Очистить"
 
 #: ../komikku/preferences.py:166
 msgid "Disable animations?"
-msgstr ""
+msgstr "Отключить анимации?"
 
 #: ../komikku/preferences.py:167
 msgid ""
@@ -3316,10 +3338,13 @@ msgid ""
 "\n"
 "The gesture navigation in the reader will not work properly anymore."
 msgstr ""
+"Вы уверены, что хотите отключить анимации?\n"
+"\n"
+"Навигация с помощью жестов в читалке не будет работать должным образом."
 
 #: ../komikku/preferences.py:168
 msgid "Disable"
-msgstr ""
+msgstr "Отключить"
 
 #: ../komikku/preferences.py:480
 msgid "Servers Languages"
@@ -3374,6 +3399,8 @@ msgstr ""
 msgid ""
 "Failed to save page: missing permission to access the XDG pictures directory"
 msgstr ""
+"Не удалось сохранить страницу: отсутствует разрешение на доступ к каталогу "
+"изображений XDG"
 
 #: ../komikku/reader/pager/__init__.py:241
 #, python-brace-format
@@ -3381,10 +3408,12 @@ msgid ""
 "Failed to sync read progress with server:\n"
 "{message}"
 msgstr ""
+"Не удалось синхронизировать прогресс чтения с сервером:\n"
+"{message}"
 
 #: ../komikku/reader/pager/__init__.py:243
 msgid "Failed to sync read progress with server"
-msgstr ""
+msgstr "Не удалось синхронизировать прогресс чтения с сервером"
 
 #: ../komikku/reader/pager/__init__.py:581
 #: ../komikku/reader/pager/webtoon.py:356
@@ -3403,7 +3432,7 @@ msgstr ""
 
 #: ../komikku/reader/pager/page.py:245
 msgid "Failed to load image"
-msgstr ""
+msgstr "Не удалось загрузить изображение"
 
 #: ../komikku/reader/pager/page.py:313
 msgid "Retry"
@@ -3427,12 +3456,12 @@ msgstr ""
 
 #: ../komikku/servers/dynasty/__init__.py:38
 msgid "Categories"
-msgstr ""
+msgstr "Категории"
 
 #: ../komikku/servers/dynasty/__init__.py:39
 #: ../komikku/servers/mangaworld/__init__.py:31
 msgid "Filter by types"
-msgstr ""
+msgstr "Фильтр по типам"
 
 #: ../komikku/servers/dynasty/__init__.py:42
 msgid "Anthology"
@@ -3472,7 +3501,7 @@ msgstr ""
 
 #: ../komikku/servers/exceptions.py:10
 msgid "Error: {}"
-msgstr ""
+msgstr "Ошибка: {}"
 
 #: ../komikku/servers/exceptions.py:16
 msgid "Local archive is corrupt."
@@ -3484,7 +3513,7 @@ msgstr ""
 
 #: ../komikku/servers/exceptions.py:26
 msgid "Failed to bypass Cloudflare protection. Please try again."
-msgstr ""
+msgstr "Не удалось обойти защиту Cloudflare. Пожалуйста, попробуйте еще раз."
 
 #: ../komikku/servers/exceptions.py:31
 msgid "No longer exists."
@@ -3496,7 +3525,7 @@ msgstr ""
 
 #: ../komikku/servers/mangadex/__init__.py:60
 msgid "Filter by content ratings"
-msgstr ""
+msgstr "Фильтр по рейтингу"
 
 #: ../komikku/servers/mangadex/__init__.py:63
 msgid "Safe"
@@ -3508,7 +3537,7 @@ msgstr ""
 
 #: ../komikku/servers/mangadex/__init__.py:65
 msgid "Erotica"
-msgstr ""
+msgstr "Эротика"
 
 #: ../komikku/servers/mangadex/__init__.py:66
 msgid "Pornographic"
@@ -3524,7 +3553,7 @@ msgstr ""
 #: ../komikku/servers/mangapill/__init__.py:32
 #: ../komikku/servers/multi/manga_stream.py:49
 msgid "Filter by type"
-msgstr ""
+msgstr "Фильтр по типу"
 
 #: ../komikku/servers/mangapill/__init__.py:37
 #: ../komikku/servers/mangatube/__init__.py:38
