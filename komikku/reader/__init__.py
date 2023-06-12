@@ -329,6 +329,8 @@ class Reader:
         self.scaling_action.set_enabled(self.reading_mode != 'webtoon')
         # Landscape pages zoom is enabled in RTL/LTR/Vertical reading modes only and when scaling is 'screen'
         self.landscape_zoom_action.set_enabled(self.reading_mode != 'webtoon' and self.scaling == 'screen')
+        # Borders crop is enabled in RTL/LTR/Vertical reading mode only
+        self.borders_crop_action.set_enabled(self.reading_mode != 'webtoon')
 
         # Additionally, direction of page slider in controls must be updated
         self.controls.set_scale_direction(inverted=self.reading_mode == 'right-to-left')

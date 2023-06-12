@@ -34,22 +34,6 @@ class BasePager:
         self.add_controller(self.controller_motion)
         self.controller_motion.connect('motion', self.on_pointer_motion)
 
-        # Gesture click controller: layout navigation, zoom
-        # Note: Should be added to desired widget in derived class
-        self.gesture_click = Gtk.GestureClick.new()
-        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
-        self.gesture_click.set_exclusive(True)
-        self.gesture_click.set_button(1)
-        self.gesture_click.connect('released', self.on_btn_clicked)
-
-        # Gesture zoom controller
-        # Note: Should be added to desired widget in derived class
-        self.gesture_zoom = Gtk.GestureZoom.new()
-        self.gesture_zoom.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
-        self.gesture_zoom.connect('begin', self.on_gesture_zoom_begin)
-        self.gesture_zoom.connect('end', self.on_gesture_zoom_end)
-        self.gesture_zoom.connect('scale-changed', self.on_gesture_zoom_scale_changed)
-
     @property
     @abstractmethod
     def pages(self):
@@ -69,9 +53,7 @@ class BasePager:
         raise NotImplementedError()
 
     def crop_pages_borders(self):
-        for page in self.pages:
-            if page.status == 'rendered' and page.error is None:
-                page.set_image()
+        raise NotImplementedError()
 
     def dispose(self):
         self.window.controller_key.disconnect(self.key_pressed_handler_id)
@@ -85,22 +67,6 @@ class BasePager:
 
     @abstractmethod
     def init(self):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def on_btn_clicked(self, _widget, event):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def on_gesture_zoom_begin(self, _gesture, _sequence):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def on_gesture_zoom_end(self, _gesture, _sequence):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def on_gesture_zoom_scale_changed(self, _gesture, scale):
         raise NotImplementedError()
 
     @abstractmethod
@@ -123,19 +89,11 @@ class BasePager:
     def on_page_rendered(self, page, retry):
         raise NotImplementedError()
 
-    @abstractmethod
-    def on_single_click(self, x, _y):
-        raise NotImplementedError()
-
     def rescale_pages(self):
-        self.zoom['active'] = False
-
         for page in self.pages:
             page.rescale()
 
     def resize_pages(self, _pager=None, _orientation=None):
-        self.zoom['active'] = False
-
         for page in self.pages:
             page.resize()
 
@@ -250,17 +208,14 @@ class BasePager:
 class Pager(Adw.Bin, BasePager):
     """Classic page by page pager (LTR, RTL, vertical)"""
 
-    _interactive = True
     current_chapter_id = None
-
-    btn_clicked_timeout_id = None
 
     def __init__(self, reader):
         Adw.Bin.__init__(self)
         BasePager.__init__(self, reader)
 
         self.carousel = Adw.Carousel()
-        self.carousel.set_scroll_params(Adw.SpringParams.new(1, 0.05, 10))  # guesstimate
+        self.carousel.set_scroll_params(Adw.SpringParams.new(1, 0.025, 10))  # guesstimate
         self.carousel.set_allow_long_swipes(False)
         self.carousel.set_reveal_duration(0)
         self.set_child(self.carousel)
@@ -274,19 +229,12 @@ class Pager(Adw.Bin, BasePager):
         self.add_controller(self.controller_scroll)
         self.controller_scroll.connect('scroll', self.on_scroll)
 
-        # Gesture click controller: layout navigation, zoom
-        self.carousel.add_controller(self.gesture_click)
-
-        # Gesture zoom controller
-        self.carousel.add_controller(self.gesture_zoom)
-
     @GObject.Property(type=bool, default=True)
     def interactive(self):
-        return self._interactive
+        return self.carousel.get_interactive()
 
     @interactive.setter
     def interactive(self, value):
-        self._interactive = value
         self.carousel.set_interactive(value)
 
     @property
@@ -348,7 +296,7 @@ class Pager(Adw.Bin, BasePager):
             adj = page.scrolledwindow.get_hadjustment()
 
         pages = list(self.pages)
-        if pages.index(page) > pages.index(self.current_page):
+        if page in pages and pages.index(page) > pages.index(self.current_page):
             adj.set_value(0)
         else:
             adj.set_value(adj.get_upper() - adj.get_page_size())
@@ -365,6 +313,11 @@ class Pager(Adw.Bin, BasePager):
             page.dispose()
             page = next_page
 
+    def crop_pages_borders(self):
+        for page in self.pages:
+            if page.status == 'rendered' and page.error is None:
+                page.picture.crop = self.reader.borders_crop
+
     def dispose(self):
         self.carousel.disconnect(self.page_changed_handler_id)
         BasePager.dispose(self)
@@ -379,8 +332,6 @@ class Pager(Adw.Bin, BasePager):
             self.init(self.current_page.chapter, index)
 
     def init(self, chapter, page_index=None):
-        self.zoom['active'] = False
-
         self.reader.update_title(chapter)
         self.clear()
 
@@ -424,90 +375,6 @@ class Pager(Adw.Bin, BasePager):
         # Without it, the `scroll_to` (with velocity=0) doesn't work!
         # Cf. issue https://gitlab.gnome.org/GNOME/libadwaita/-/issues/457
         GLib.timeout_add(150, init_pages)
-
-    def on_btn_clicked(self, _gesture, n_press, x, y):
-        if n_press == 1 and self.btn_clicked_timeout_id is None:
-            # Schedule single click event to be able to detect double click
-            self.btn_clicked_timeout_id = GLib.timeout_add(self.default_double_click_time, self.on_single_click, x, y)
-
-        elif n_press == 2:
-            # Remove scheduled single click event
-            if self.btn_clicked_timeout_id:
-                GLib.source_remove(self.btn_clicked_timeout_id)
-                self.btn_clicked_timeout_id = None
-
-            page = self.current_page
-            hadj = page.scrolledwindow.get_hadjustment()
-            vadj = page.scrolledwindow.get_vadjustment()
-
-            if not self.zoom['active']:
-                if page.status != 'rendered' or page.error is not None or page.animated:
-                    return
-
-                self.interactive = False
-                self.zoom['orig_width'] = page.picture.width
-                self.zoom['orig_height'] = page.picture.height
-                self.zoom['start_width'] = self.zoom['orig_width']
-                self.zoom['start_height'] = self.zoom['orig_height']
-                self.zoom['start_hadj_value'] = hadj.get_value()
-                self.zoom['start_vadj_value'] = vadj.get_value()
-                self.zoom['x'] = x
-                self.zoom['y'] = y
-                self.zoom['active'] = True
-
-                self.zoom_page()
-            else:
-                self.zoom['active'] = False
-                self.interactive = True
-
-                hadj.set_value(self.zoom['start_hadj_value'])
-                vadj.set_value(self.zoom['start_vadj_value'])
-
-                page.set_image([self.zoom['orig_width'], self.zoom['orig_height']])
-
-        return Gdk.EVENT_STOP
-
-    def on_gesture_zoom_end(self, _gesture, _sequence):
-        page = self.current_page
-        if page.picture.width == self.zoom['orig_width'] or page.picture.height == self.zoom['orig_height']:
-            self.zoom['active'] = False
-            self.interactive = True
-
-        self.gesture_zoom.set_state(Gtk.EventSequenceState.CLAIMED)
-
-    def on_gesture_zoom_begin(self, _gesture, _sequence):
-        if self.page_change_in_progress:
-            return
-
-        page = self.current_page
-
-        if page.status != 'rendered' or page.error is not None or page.animated:
-            return
-
-        self.interactive = False
-
-        if not self.zoom['active']:
-            self.zoom['orig_width'] = page.picture.width
-            self.zoom['orig_height'] = page.picture.height
-        self.zoom['start_width'] = page.picture.width
-        self.zoom['start_height'] = page.picture.height
-
-        _active, x, y = self.gesture_zoom.get_bounding_box_center()
-        self.zoom['x'] = x
-        self.zoom['y'] = y
-        self.zoom['start_hadj_value'] = page.scrolledwindow.get_hadjustment().get_value()
-        self.zoom['start_vadj_value'] = page.scrolledwindow.get_vadjustment().get_value()
-        self.zoom['active'] = True
-
-        self.gesture_zoom.set_state(Gtk.EventSequenceState.CLAIMED)
-
-    def on_gesture_zoom_scale_changed(self, _gesture, scale):
-        if not self.zoom['active']:
-            return
-
-        self.zoom_page(scale, True)
-
-        self.gesture_zoom.set_state(Gtk.EventSequenceState.CLAIMED)
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.window.page != 'reader':
@@ -575,10 +442,11 @@ class Pager(Adw.Bin, BasePager):
 
     def on_page_changed(self, _carousel, index):
         # index != 1 except when:
-        # - come back from inaccessible chapter page
         # - partial/incomplete mouse drag
         # - come back from offlimit page
+        # - come back from inaccessible chapter page
 
+        previous_page = self.current_page
         page = self.carousel.get_nth_page(index)
         self.current_page = page
 
@@ -594,6 +462,12 @@ class Pager(Adw.Bin, BasePager):
             return
 
         if index != 1:
+            if previous_page.status == 'rendered':
+                # Make sure previous page image is left at default scaling
+                # Some gestures to zoom (KImage widget) with touchpad/touchscreen may accidentally cause a page change
+                # (Adw.Carousel/Adw.SwipeTracker drag gesture)
+                previous_page.picture.set_zoom(previous_page.picture.zoom_scaling)
+
             if self.autohide_controls:
                 # Hide controls
                 self.reader.toggle_controls(False)
@@ -635,6 +509,12 @@ class Pager(Adw.Bin, BasePager):
         if not self.interactive:
             return Gdk.EVENT_PROPAGATE
 
+        modifiers = Gtk.accelerator_get_default_mod_mask()
+        state = self.controller_scroll.get_current_event_state()
+        if state & modifiers == Gdk.ModifierType.CONTROL_MASK:
+            # Propagate event to page: allow zoom with Ctrl + mouse wheel
+            return Gdk.EVENT_PROPAGATE
+
         page = self.current_page
         if page.scrollable:
             # Page is scrollable (horizontally or vertically)
@@ -666,7 +546,6 @@ class Pager(Adw.Bin, BasePager):
 
         else:
             # Page is not scrollable
-
             if self.reader.reading_mode == 'right-to-left' and dy and dx == 0:
                 # Navigation must be inverted in RTL reading mode
                 # Do page change in the place of Adw.carousel
@@ -676,25 +555,18 @@ class Pager(Adw.Bin, BasePager):
         return Gdk.EVENT_PROPAGATE
 
     def on_single_click(self, x, _y):
-        self.btn_clicked_timeout_id = None
+        if not self.interactive:
+            return
 
         if x < self.reader.size.width / 3:
             # 1st third of the page
-            if not self.interactive:
-                return False
-
             self.scroll_to_direction('left')
         elif x > 2 * self.reader.size.width / 3:
             # Last third of the page
-            if not self.interactive:
-                return False
-
             self.scroll_to_direction('right')
         else:
             # Center part of the page: toggle controls
             self.reader.toggle_controls()
-
-        return False
 
     def reverse_pages(self):
         left_page = self.carousel.get_nth_page(0)
@@ -756,57 +628,3 @@ class Pager(Adw.Bin, BasePager):
         self.reader.controls.set_scale_value(page.index + 1)
 
         return GLib.SOURCE_REMOVE
-
-    def zoom_page(self, scale=2, gesture=False):
-        start_width = self.zoom['start_width']
-        start_height = self.zoom['start_height']
-        x = self.zoom['x']
-        y = self.zoom['y']
-
-        zoom_width = int(start_width * scale)
-        zoom_height = int(start_height * scale)
-
-        if gesture:
-            if zoom_width < self.zoom['orig_width']:
-                zoom_width = self.zoom['orig_width']
-                zoom_height = self.zoom['orig_height']
-
-            elif self.gesture_zoom.get_device().get_source() == Gdk.InputSource.TOUCHSCREEN:
-                # Move image to follow zoom position on touchscreen
-                _active, x2, y2 = self.gesture_zoom.get_bounding_box_center()
-                x -= x2 - x
-                y -= y2 - y
-
-        if start_width <= self.reader.size.width:
-            rel_x = x - (self.reader.size.width - start_width) / 2
-        else:
-            rel_x = x + self.zoom['start_hadj_value']
-        if start_height <= self.reader.size.height:
-            rel_y = y - (self.reader.size.height - start_height) / 2
-        else:
-            rel_y = y + self.zoom['start_vadj_value']
-
-        h_value = rel_x * scale - x
-        v_value = rel_y * scale - y
-
-        page = self.current_page
-        hadj = page.scrolledwindow.get_hadjustment()
-        vadj = page.scrolledwindow.get_vadjustment()
-        hadj.configure(
-            h_value,
-            0,
-            max(self.reader.size.width, zoom_width),
-            hadj.props.step_increment,
-            hadj.props.page_increment,
-            self.reader.size.width
-        )
-        vadj.configure(
-            v_value,
-            0,
-            max(self.reader.size.height, zoom_height),
-            vadj.props.step_increment,
-            vadj.props.page_increment,
-            self.reader.size.height
-        )
-
-        page.set_image([zoom_width, zoom_height])

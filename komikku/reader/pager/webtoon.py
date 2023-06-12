@@ -48,6 +48,10 @@ class WebtoonPager(Adw.Bin, BasePager):
         self.scrolledwindow.set_child(self.box)
 
         # Gesture click controller: layout navigation
+        self.gesture_click = Gtk.GestureClick.new()
+        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self.gesture_click.set_button(1)
+        self.gesture_click.connect('released', self.on_gesture_click_released)
         self.add_controller(self.gesture_click)
 
         # Scroll controller
@@ -244,10 +248,9 @@ class WebtoonPager(Adw.Bin, BasePager):
         self.add_pages_worker_id = GLib.timeout_add(100, self.add_pages_worker)
         GLib.idle_add(self.update, self.current_page)
 
-    def on_btn_clicked(self, _gesture, _n_press, x, y):
-        self.on_single_click(x, y)
-
-        return Gdk.EVENT_STOP
+    def on_gesture_click_released(self, _gesture, n_press, x, y):
+        if n_press == 1:
+            self.on_single_click(x, y)
 
     def on_gesture_drag_begin(self, _controller, _start_x, _start_y):
         self.gesture_drag_offset = 0

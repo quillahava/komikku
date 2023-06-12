@@ -10,11 +10,11 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 from komikku.activity_indicator import ActivityIndicator
+from komikku.reader.pager.image import KImage
 from komikku.utils import create_picture_from_data
 from komikku.utils import create_picture_from_file
 from komikku.utils import create_picture_from_resource
 from komikku.utils import log_error_traceback
-from komikku.utils import PaintablePixbufAnimation
 
 
 class Page(Gtk.Overlay):
@@ -59,10 +59,6 @@ class Page(Gtk.Overlay):
         self.add_overlay(self.activity_indicator)
 
     @property
-    def animated(self):
-        return isinstance(self.picture.get_paintable(), PaintablePixbufAnimation)
-
-    @property
     def height(self):
         if self.reader.reading_mode == 'webtoon' and self.picture:
             return self.picture.height
@@ -105,6 +101,16 @@ class Page(Gtk.Overlay):
         self.retry_button.set_visible(False)
 
         self.render(retry=True)
+
+    def on_clicked(self, _picture, x, y):
+        self.reader.pager.on_single_click(x, y)
+
+    def on_zoom_begin(self, _picture):
+        self.reader.pager.interactive = False
+        self.reader.toggle_controls(False)
+
+    def on_zoom_end(self, _picture):
+        self.reader.pager.interactive = True
 
     def render(self, retry=False):
         def complete(error_code, error_message):
@@ -221,22 +227,41 @@ class Page(Gtk.Overlay):
             run()
 
     def rescale(self):
-        if self.status == 'rendered':
+        if self.status != 'rendered':
+            return
+
+        if self.reader.reading_mode == 'webtoon':
             self.set_image()
+        else:
+            self.picture.scaling = self.reader.scaling
+            self.picture.landscape_zoom = self.reader.landscape_zoom
 
     def resize(self):
-        if self.status == 'rendered':
+        if self.status == 'rendered' and self.reader.reading_mode == 'webtoon':
             self.set_image()
 
     def set_image(self, size=None):
         if self.picture is None:
             if self.path is None and self.data is None:
-                picture = create_picture_from_resource('/info/febvre/Komikku/images/missing_file.png')
+                if self.reader.reading_mode != 'webtoon':
+                    picture = KImage.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+                else:
+                    picture = create_picture_from_resource('/info/febvre/Komikku/images/missing_file.png')
             else:
                 if self.path:
-                    picture = create_picture_from_file(self.path, subdivided=self.reader.reading_mode == 'webtoon')
+                    if self.reader.reading_mode != 'webtoon':
+                        picture = KImage.new_from_file(
+                            self.path, self.reader.scaling, self.reader.borders_crop, self.reader.landscape_zoom
+                        )
+                    else:
+                        picture = create_picture_from_file(self.path, subdivided=self.reader.reading_mode == 'webtoon')
                 else:
-                    picture = create_picture_from_data(self.data['buffer'], subdivided=self.reader.reading_mode == 'webtoon')
+                    if self.reader.reading_mode != 'webtoon':
+                        picture = KImage.new_from_data(
+                            self.data['buffer'], self.reader.scaling, self.reader.borders_crop, self.reader.landscape_zoom
+                        )
+                    else:
+                        picture = create_picture_from_data(self.data['buffer'], subdivided=self.reader.reading_mode == 'webtoon')
 
                 if picture is None:
                     GLib.unlink(self.path)
@@ -245,11 +270,18 @@ class Page(Gtk.Overlay):
                     self.window.show_notification(_('Failed to load image'), 2)
 
                     self.error = 'corrupt_file'
-                    picture = create_picture_from_resource('/info/febvre/Komikku/images/missing_file.png')
+                    if self.reader.reading_mode != 'webtoon':
+                        picture = KImage.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
+                    else:
+                        picture = create_picture_from_resource('/info/febvre/Komikku/images/missing_file.png')
+                elif self.reader.reading_mode != 'webtoon':
+                    picture.connect('zoom-begin', self.on_zoom_begin)
+                    picture.connect('zoom-end', self.on_zoom_end)
+                    picture.connect('clicked', self.on_clicked)
         else:
             picture = self.picture
 
-        if size is None:
+        if size is None and self.reader.reading_mode == 'webtoon':
             if self.reader.scaling != 'original':
                 if self.reader.landscape_zoom and self.reader.scaling == 'screen' and picture.orig_width > picture.orig_height:
                     # When page is landscape and scaling is 'screen', scale/zoom page to fit height
@@ -271,8 +303,6 @@ class Page(Gtk.Overlay):
                     picture.resize(adapt_to_height_width, max_height, self.reader.manga.borders_crop)
             else:
                 picture.resize(picture.orig_width, picture.orig_height, cropped=self.reader.manga.borders_crop)
-        else:
-            picture.resize(size[0], size[1], cropped=self.reader.manga.borders_crop)
 
         if self.picture is None:
             self.picture = picture
@@ -282,21 +312,12 @@ class Page(Gtk.Overlay):
                 self.scrolledwindow.set_child(picture)
 
         # Determine if page can receive pointer events
-        if not self.error:
-            if self.reader.reading_mode == 'webtoon':
+        if self.reader.reading_mode == 'webtoon':
+            if not self.error:
                 self.props.can_target = False
-            elif picture.width > self.pager.size.width or picture.height > self.pager.size.height:
-                # Allows page to be scrollable
-                self.scrolledwindow.props.can_target = True
-                self.props.can_target = True
             else:
-                self.scrolledwindow.props.can_target = False
-                self.props.can_target = False
-        else:
-            # Allows `Retry` button to be clickable
-            self.props.can_target = True
-            if self.reader.reading_mode != 'webtoon':
-                self.scrolledwindow.props.can_target = False
+                # Allows `Retry` button to be clickable
+                self.props.can_target = True
 
     def show_retry_button(self):
         if self.retry_button is None:
