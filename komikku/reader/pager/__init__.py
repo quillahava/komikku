@@ -462,7 +462,7 @@ class Pager(Adw.Bin, BasePager):
             return
 
         if index != 1:
-            if previous_page.status == 'rendered':
+            if previous_page.picture.zoom_scaling:
                 # Make sure previous page image is left at default scaling
                 # Some gestures to zoom (KImage widget) with touchpad/touchscreen may accidentally cause a page change
                 # (Adw.Carousel/Adw.SwipeTracker drag gesture)
