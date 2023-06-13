@@ -3,7 +3,7 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from gettext import gettext as _
-from gettext import ngettext as n_
+from gettext import ngettext
 import threading
 import time
 
@@ -665,7 +665,7 @@ class Library:
     def update_subtitle(self, *args, db_conn=None):
         nb_selected = len(self.flowbox.get_selected_children()) if self.selection_mode else 0
         if nb_selected > 0:
-            title = n_('{0} selected', '{0} selected', nb_selected).format(nb_selected)
+            title = ngettext('{0} selected', '{0} selected', nb_selected).format(nb_selected)
         else:
             if (category_id := Settings.get_default().selected_category) != CategoryVirtual.ALL:
                 if category_id == CategoryVirtual.UNCATEGORIZED:

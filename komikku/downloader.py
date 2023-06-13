@@ -4,7 +4,7 @@
 
 import datetime
 from gettext import gettext as _
-from gettext import ngettext as n_
+from gettext import ngettext
 import threading
 import time
 
@@ -470,7 +470,7 @@ class DownloadManager(Gtk.Box):
     def on_selection_changed(self, _flowbox):
         number = len(self.listbox.get_selected_rows())
         if number:
-            self.subtitle_label.set_label(n_('{0} selected', '{0} selected', number).format(number))
+            self.subtitle_label.set_label(ngettext('{0} selected', '{0} selected', number).format(number))
             self.subtitle_label.set_visible(True)
         else:
             self.subtitle_label.set_visible(False)

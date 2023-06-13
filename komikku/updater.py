@@ -3,7 +3,7 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from gettext import gettext as _
-from gettext import ngettext as n_
+from gettext import ngettext
 import threading
 
 from gi.repository import Gio
@@ -104,13 +104,13 @@ class Updater(GObject.GObject):
 
             messages = []
             if total_chapters > 0:
-                messages.append(n_('{0} successful update', '{0} successful updates', total_successes).format(total_successes))
-                messages.append(n_('{0} new chapter', '{0} new chapters', total_chapters).format(total_chapters))
+                messages.append(ngettext('{0} successful update', '{0} successful updates', total_successes).format(total_successes))
+                messages.append(ngettext('{0} new chapter', '{0} new chapters', total_chapters).format(total_chapters))
             else:
                 messages.append(_('No new chapters'))
 
             if total_errors > 0:
-                messages.append(n_('{0} update failed', '{0} updates failed', total_errors).format(total_errors))
+                messages.append(ngettext('{0} update failed', '{0} updates failed', total_errors).format(total_errors))
 
             GLib.timeout_add(2000, show_notification, 'updater.0', title, '\n'.join(messages))
 
@@ -121,7 +121,7 @@ class Updater(GObject.GObject):
                 show_notification(
                     f'updater.{manga.id}',
                     manga.name,
-                    n_('{0} new chapter', '{0} new chapters', nb_recent_chapters).format(nb_recent_chapters)
+                    ngettext('{0} new chapter', '{0} new chapters', nb_recent_chapters).format(nb_recent_chapters)
                 )
 
                 # Auto download new chapters

@@ -3,7 +3,7 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from gettext import gettext as _
-from gettext import ngettext as n_
+from gettext import ngettext
 import natsort
 
 from gi.repository import Gdk
@@ -267,7 +267,7 @@ class ChaptersList:
 
         number = len(self.selection_positions)
         if number:
-            self.card.viewswitchertitle.set_subtitle(n_('{0} selected', '{0} selected', number).format(number))
+            self.card.viewswitchertitle.set_subtitle(ngettext('{0} selected', '{0} selected', number).format(number))
         else:
             self.card.leave_selection_mode()
 
