@@ -141,7 +141,7 @@ class Xoxocomics(Server):
             data['pages'].append(dict(
                 slug=None,
                 image=element.img.get('data-original'),
-                index=index + 1,
+                index=index + 1,  # Added 2023-06-13
             ))
 
         return data
@@ -161,7 +161,7 @@ class Xoxocomics(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=f'{page["index"]}.{mime_type.split("/")[-1]}',
+            name=f'{page["index"]:04d}.{mime_type.split("/")[-1]}' if page.get('index') else page['image'].split('/')[-1],
         )
 
     def get_manga_url(self, slug, url):
