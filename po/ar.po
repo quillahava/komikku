@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 01:12+0200\n"
-"PO-Revision-Date: 2023-05-28 11:49+0000\n"
+"PO-Revision-Date: 2023-06-14 18:50+0000\n"
 "Last-Translator: abidin toumi <abidin24@disroot.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/>"
 "\n"
@@ -3075,11 +3075,11 @@ msgstr ""
 
 #: ../komikku/library/__init__.py:530
 msgid "Loading…"
-msgstr ""
+msgstr "يحمل…"
 
 #: ../komikku/library/__init__.py:645
 msgid "Failed to update reading status"
-msgstr ""
+msgstr "فشل تحديث حالة القراءة"
 
 #: ../komikku/library/__init__.py:672 ../komikku/library/categories_list.py:144
 msgid "Uncategorized"
@@ -3090,22 +3090,22 @@ msgstr ""
 #: ../komikku/servers/mangapill/__init__.py:36
 #: ../komikku/servers/multi/manga_stream.py:53
 msgid "All"
-msgstr ""
+msgstr "الكل"
 
 #: ../komikku/models/database.py:449
 #: ../komikku/servers/mangaworld/__init__.py:50
 msgid "Complete"
-msgstr ""
+msgstr "مكتملة"
 
 #: ../komikku/models/database.py:450
 #: ../komikku/servers/mangaworld/__init__.py:49
 msgid "Ongoing"
-msgstr ""
+msgstr "جارية"
 
 #: ../komikku/models/database.py:451
 #: ../komikku/servers/mangaworld/__init__.py:51
 msgid "Suspended"
-msgstr ""
+msgstr "متوقفة"
 
 #: ../komikku/models/database.py:452
 #: ../komikku/servers/mangaworld/__init__.py:52
@@ -3118,35 +3118,35 @@ msgstr ""
 
 #: ../komikku/models/database.py:1119
 msgid "Downloaded"
-msgstr ""
+msgstr "منزلة"
 
 #: ../komikku/models/database.py:1120
 msgid "Downloading"
-msgstr ""
+msgstr "ينزل"
 
 #: ../komikku/models/database.py:1121
 msgid "Download error"
-msgstr ""
+msgstr "خطأ أثناء التنزيل"
 
 #: ../komikku/preferences.py:72
 msgid "Preferences"
-msgstr ""
+msgstr "التفضيلات"
 
 #: ../komikku/preferences.py:137
 msgid "Clear?"
-msgstr ""
+msgstr "أتريد المسح؟"
 
 #: ../komikku/preferences.py:138
 msgid "Are you sure you want to clear chapters cache and database?"
-msgstr ""
+msgstr "أتريد مسح التخزين المؤقت للفصول وقاعدة البيانات؟"
 
 #: ../komikku/preferences.py:139
 msgid "Clear"
-msgstr ""
+msgstr "امسح"
 
 #: ../komikku/preferences.py:166
 msgid "Disable animations?"
-msgstr ""
+msgstr "أتريد تعطيل التأثيرات الرسومية؟"
 
 #: ../komikku/preferences.py:167
 msgid ""
