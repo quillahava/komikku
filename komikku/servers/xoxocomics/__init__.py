@@ -12,11 +12,6 @@ from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 
-headers = {
-    'User-Agent': USER_AGENT,
-    'Origin': 'https://xoxocomics.com',
-}
-
 
 class Xoxocomics(Server):
     id = 'xoxocomics'
@@ -24,7 +19,7 @@ class Xoxocomics(Server):
     lang = 'en'
     is_nsfw = True
 
-    base_url = 'https://xoxocomics.com'
+    base_url = 'https://xoxocomics.net'
     latest_updates_url = base_url + '/comic-updates'
     most_populars_url = base_url + '/popular-comics'
     search_url = base_url + '/ajax/search'
@@ -34,7 +29,10 @@ class Xoxocomics(Server):
     def __init__(self):
         if self.session is None:
             self.session = requests.Session()
-            self.session.headers = headers
+            self.session.headers = {
+                'User-Agent': USER_AGENT,
+                'Origin': self.base_url,
+            }
 
     def get_manga_data(self, initial_data):
         """
@@ -139,10 +137,11 @@ class Xoxocomics(Server):
         data = dict(
             pages=[],
         )
-        for element in soup.find_all(class_='page-chapter'):
+        for index, element in enumerate(soup.find_all(class_='page-chapter')):
             data['pages'].append(dict(
                 slug=None,
                 image=element.img.get('data-original'),
+                index=index + 1,
             ))
 
         return data
@@ -162,7 +161,7 @@ class Xoxocomics(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=page['image'].split('/')[-1],
+            name=f'{page["index"]}.{mime_type.split("/")[-1]}',
         )
 
     def get_manga_url(self, slug, url):
