@@ -188,6 +188,8 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
 
     @hadjustment.setter
     def hadjustment(self, adj):
+        if not adj:
+            return
         adj.connect('value-changed', lambda adj: self.queue_draw())
         self.__hadj = adj
         self.configure_adjustments()
@@ -199,12 +201,18 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
     @property
     def image_height(self):
         """ Image original height """
-        return self.crop_bbox[3] - self.crop_bbox[1] if self.crop and self.crop_bbox else self.pixbuf.get_height()
+        if self.crop and self.crop_bbox:
+            return self.crop_bbox[3] - self.crop_bbox[1]
+
+        return self.pixbuf.get_height() if self.pixbuf else 0
 
     @property
     def image_width(self):
         """ Image original width """
-        return self.crop_bbox[2] - self.crop_bbox[0] if self.crop and self.crop_bbox else self.pixbuf.get_width()
+        if self.crop and self.crop_bbox:
+            return self.crop_bbox[2] - self.crop_bbox[0]
+
+        return self.pixbuf.get_width() if self.pixbuf else 0
 
     @property
     def image_displayed_height(self):
@@ -287,6 +295,8 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
 
     @vadjustment.setter
     def vadjustment(self, adj):
+        if not adj:
+            return
         adj.connect('value-changed', lambda adj: self.queue_draw())
         self.__vadj = adj
         self.configure_adjustments()
