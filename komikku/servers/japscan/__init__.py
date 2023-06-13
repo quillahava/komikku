@@ -177,7 +177,10 @@ class Japscan(Server):
             url = page['image']
         elif page['url']:
             soup = BeautifulSoup(get_page_html(self.base_url + page['url']), 'lxml')
-            url = soup.find(id='single-reader').img.get('src')
+            if reader_element := soup.find(id='single-reader'):
+                url = reader_element.img.get('src')
+            else:
+                return None
 
         r = self.session_get(
             url,
