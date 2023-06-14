@@ -26,7 +26,7 @@ class Mangafreak(Server):
     base_url = 'https://w15.mangafreak.net'
     most_populars_url = base_url
     latest_updates_url = base_url + '/Latest_Releases'
-    search_url = base_url + '/Search/{term}'
+    search_url = base_url + '/Find/{term}'
     manga_url = base_url + '/Manga/{slug}'
     chapter_url = base_url + '/{chapter_slug}'
     image_url = 'https://images.mangafreak.net/mangas/{slug}'
