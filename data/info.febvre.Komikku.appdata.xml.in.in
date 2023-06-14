@@ -91,6 +91,20 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.22.0" date="2023-06-15">
+            <description>
+                <ul>
+                    <li>RTL/LTR/Vertical pager: Added &lt;Crtl+Mouse Wheel&gt; zoom</li>
+                    <li>[Servers] JapScan: Update</li>
+                    <li>[Servers] MangaFreak: Update</li>
+                    <li>[Servers] MangaKawaii: Update</li>
+                    <li>[Servers] Mangapill: Update</li>
+                    <li>[Servers] Xoxocomics: Update</li>
+                    <li>[L10n] Updated Arabic, French, Russian and Turkish translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.21.1" date="2023-05-18">
             <description>
                 <ul>

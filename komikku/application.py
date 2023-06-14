@@ -481,10 +481,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] LTR/RTL/Vertical pager: Fixed double tap/click zoom</li>
-                <li>[Servers] Jpmangas: Update</li>
-                <li>[Servers] Mangaowl: Update</li>
-                <li>[L10n] Updated Russian translation</li>
+                <li>RTL/LTR/Vertical pager: Added &lt;Crtl+Mouse Wheel&gt; zoom</li>
+                <li>[Servers] JapScan: Update</li>
+                <li>[Servers] MangaFreak: Update</li>
+                <li>[Servers] MangaKawaii: Update</li>
+                <li>[Servers] Mangapill: Update</li>
+                <li>[Servers] Xoxocomics: Update</li>
+                <li>[L10n] Updated Arabic, French, Russian and Turkish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)
