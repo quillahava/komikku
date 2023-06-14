@@ -49,14 +49,14 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
     def __init__(self, path, pixbuf, scaling='screen', can_zoom=True, crop=False, landscape_zoom=False):
         super().__init__()
 
+        self.__can_zoom = can_zoom
         self.__crop = crop
         self.__hadj = None
-        self.__landscape_zoom = can_zoom and landscape_zoom
+        self.__landscape_zoom = self.__can_zoom and landscape_zoom
         self.__scaling = scaling
         self.__vadj = None
         self.__zoom = 1
 
-        self.can_zoom = can_zoom
         self.crop_bbox = None
         self.pixbuf = pixbuf
         self.path = path
@@ -73,27 +73,28 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
 
         self.set_overflow(Gtk.Overflow.HIDDEN)
 
-        if self.can_zoom:
-            # Controller to zoom with mouse wheel or Ctrl + 2-fingers touchpad gesture
-            self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.VERTICAL)
-            self.add_controller(self.controller_scroll)
-            self.controller_scroll.connect('scroll', self.on_scroll)
-
+        if self.__can_zoom:
             # Controller to track pointer motion: used to know current cursor position
             self.controller_motion = Gtk.EventControllerMotion.new()
             self.add_controller(self.controller_motion)
             self.controller_motion.connect('motion', self.on_pointer_motion)
 
+            # Controller to zoom with mouse wheel or Ctrl + 2-fingers touchpad gesture
+            self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.VERTICAL)
+            self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+            self.add_controller(self.controller_scroll)
+            self.controller_scroll.connect('scroll', self.on_scroll)
+
             # Gesture click controller: double-tap zoom
             self.gesture_click = Gtk.GestureClick.new()
-            self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
+            self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
             self.gesture_click.set_button(1)
             self.gesture_click.connect('released', self.on_gesture_click_released)
             self.add_controller(self.gesture_click)
 
-            # Gesture zoom controller (2-fingers touchpad gesture or touchscreen gesture)
+            # Gesture zoom controller (2-fingers touchpad/touchscreen gesture)
             self.gesture_zoom = Gtk.GestureZoom.new()
-            self.gesture_zoom.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
+            self.gesture_zoom.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
             self.gesture_zoom.connect('begin', self.on_gesture_zoom_begin)
             self.gesture_zoom.connect('end', self.on_gesture_zoom_end)
             self.gesture_zoom.connect('scale-changed', self.on_gesture_zoom_scale_changed)
@@ -512,6 +513,14 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             return Gdk.EVENT_STOP
 
         return Gdk.EVENT_PROPAGATE
+
+    def set_allow_zooming(self, allow):
+        if not self.__can_zoom:
+            return
+
+        self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE if allow else Gtk.PropagationPhase.NONE)
+        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE if allow else Gtk.PropagationPhase.NONE)
+        self.gesture_zoom.set_propagation_phase(Gtk.PropagationPhase.CAPTURE if allow else Gtk.PropagationPhase.NONE)
 
     def set_zoom(self, zoom=None, center=None):
         """ Set zoom level for given position """

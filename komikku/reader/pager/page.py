@@ -240,6 +240,15 @@ class Page(Gtk.Overlay):
         if self.status == 'rendered' and self.reader.reading_mode == 'webtoon':
             self.set_image()
 
+    def set_allow_zooming(self, allow):
+        if self.reader.reading_mode == 'webtoon':
+            return
+
+        if self.picture is None:
+            return
+
+        self.picture.set_allow_zooming(allow)
+
     def set_image(self, size=None):
         if self.picture is None:
             if self.path is None and self.data is None:

@@ -252,7 +252,8 @@ class Pager(Adw.Bin, BasePager):
 
     def add_page(self, position):
         if position == 'start':
-            self.carousel.get_nth_page(2).dispose()
+            if page_end := self.carousel.get_nth_page(2):
+                page_end.dispose()
 
             page = self.carousel.get_nth_page(0)
             direction = 1 if self.reader.reading_mode == 'right-to-left' else -1
@@ -283,7 +284,8 @@ class Pager(Adw.Bin, BasePager):
             # Cf. issue https://gitlab.gnome.org/GNOME/libadwaita/-/issues/430
             position_handler_id = self.carousel.connect('notify::position', append_after_remove)
 
-            self.carousel.get_nth_page(0).dispose()
+            if page_start := self.carousel.get_nth_page(0):
+                page_start.dispose()
 
     def adjust_page_placement(self, page):
         # Only if page is scrollable
@@ -446,9 +448,10 @@ class Pager(Adw.Bin, BasePager):
         # - come back from offlimit page
         # - come back from inaccessible chapter page
 
-        previous_page = self.current_page
         page = self.carousel.get_nth_page(index)
         self.current_page = page
+
+        page.set_allow_zooming(True)
 
         if page.status == 'offlimit':
             GLib.idle_add(self.scroll_to_page, self.carousel.get_nth_page(1), True, False)
@@ -462,12 +465,6 @@ class Pager(Adw.Bin, BasePager):
             return
 
         if index != 1:
-            if previous_page.picture and previous_page.picture.zoom_scaling:
-                # Make sure previous page image is left at default scaling
-                # Some gestures to zoom (KImage widget) with touchpad/touchscreen may accidentally cause a page change
-                # (Adw.Carousel/Adw.SwipeTracker drag gesture)
-                previous_page.picture.set_zoom(previous_page.picture.zoom_scaling)
-
             if self.autohide_controls:
                 # Hide controls
                 self.reader.toggle_controls(False)
@@ -552,6 +549,11 @@ class Pager(Adw.Bin, BasePager):
                 self.scroll_to_direction('left' if dy > 0 else 'right')
                 return Gdk.EVENT_STOP
 
+        # Just before zomm gestures (KImage widget), touchscreen swipe or touchpad scrolling events can be accidentally produced.
+        # As page is being changed, zooming should not occur.
+        page.set_allow_zooming(False)
+
+        # Propagate event to Adw.Carousel
         return Gdk.EVENT_PROPAGATE
 
     def on_single_click(self, x, _y):
