@@ -9,16 +9,17 @@ msgstr ""
 "Project-Id-Version: Komikku 0.30.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: 2023-04-20 11:41+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/komikku/main/es/"
-">\n"
+"PO-Revision-Date: 2023-06-15 20:10+0000\n"
+"Last-Translator: Óscar Fernández Díaz <oscfdezdz@users.noreply.hosted.weblate"
+".org>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/komikku/main/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18-dev\n"
+"X-Generator: Weblate 4.18.1-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -85,7 +86,7 @@ msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 msgid "RTL/LTR/Vertical pager: Added &lt;Crtl+Mouse Wheel&gt; zoom"
-msgstr ""
+msgstr "Localizador RTL/LTR/Vertical: Añadido &lt;Crtl+Rueda del ratón&gt; zoom"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:98
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:245
@@ -120,7 +121,7 @@ msgstr "[Servidores] Xoxocomics: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 msgid "[L10n] Updated Arabic and Russian translations"
-msgstr ""
+msgstr "[L10n] Actualizadas las traducciones al árabe y al ruso"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
@@ -139,7 +140,7 @@ msgstr "Feliz lectura."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "[Reader] LTR/RTL/Vertical pager: Fixed double tap/click zoom"
-msgstr ""
+msgstr "[Lector] Localizador LTR/RTL/Vertical: Arreglado zoom doble tap/click"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:163
@@ -158,39 +159,39 @@ msgstr "[Servidores] Mangaowl: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 msgid "[L10n] Updated Russian translation"
-msgstr ""
+msgstr "[L10n] Traducción al ruso actualizada"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:121
 msgid "[Reader] LTR/RTL/Vertical pager: Fixed zoom bugs"
-msgstr ""
+msgstr "[Lector] Localizador LTR/RTL/Vertical: Corregidos errores de zoom"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:122
 msgid "[Reader] Fixed crashes caused by corrupted images"
-msgstr ""
+msgstr "[Reader] Corregidos fallos causados por imágenes corruptas"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:123
 msgid "[Servers] Added TCB Scans [EN]"
-msgstr ""
+msgstr "[Servidores] Añadidos escaneos TCB [EN]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:124
 msgid "[Servers] MangaHere: Fixed duplicated pages"
-msgstr ""
+msgstr "[Servidores] MangaHere: Corregidas páginas duplicadas"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:126
 msgid "[L10n] Added Arabic and Catalan translations"
-msgstr ""
+msgstr "[L10n] Añadidas traducciones al árabe y al catalán"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:127
 msgid "[L10n] Updated Dutch and Russian translations"
-msgstr ""
+msgstr "[L10n] Actualizadas las traducciones al neerlandés y al ruso"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:135
 msgid "[Servers] Added Flame Scans [EN]"
-msgstr ""
+msgstr "[Servidores] Añadidos escaneos de Flame [ES]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
 msgid "[Servers] Added MangaHere [EN]"
-msgstr ""
+msgstr "[Servidores] Añadido MangaHere [EN]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:137
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:201
@@ -200,11 +201,11 @@ msgstr "[Servidores] 3asq: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:138
 msgid "[Servers] LeviatanScans: Update [EN/ES]"
-msgstr ""
+msgstr "[Servidores] LeviatanScans: Actualización [EN/ES]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:139
 msgid "[Servers] Manhuaus: Update"
-msgstr ""
+msgstr "[Servidores] Manhuaus: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:140
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:204
@@ -227,7 +228,7 @@ msgstr "[Servidores] ReadManhwa: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:143
 msgid "[Servers] ReaperScansFR (GS): Update"
-msgstr ""
+msgstr "[Servidores] ReaperScansFR (GS): Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:144
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:442
@@ -237,67 +238,71 @@ msgstr "[Servidores] Reaper Scans [PT]: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:145
 msgid "[Servers] AkuManga: Disable"
-msgstr ""
+msgstr "[Servidores] AkuManga: Desactivado"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:146
 msgid "[Servers] Atikrost: Disable"
-msgstr ""
+msgstr "[Servidores] Atikrost: Desactivado"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:147
 msgid "[Servers] FR Scan: Disable"
-msgstr ""
+msgstr "[Servidores] FR Scan: Desactivado"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:148
 msgid "[Servers] Hunlight Scans: Disable"
-msgstr ""
+msgstr "[Servidores] Hunlight Scans: Desactivado"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:149
 msgid "[Servers] Mangas Origines: Disable"
-msgstr ""
+msgstr "[Servidores] Mangas Origines: Desactivado"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:150
 msgid "[Servers] The Nonames Scans: Disable"
-msgstr ""
+msgstr "[Servidores] Escaneos The Nonames: Desactivado"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:151
 msgid "[L10n] Updated Finnish and Indonesian translations"
-msgstr ""
+msgstr "[L10n] Actualizadas las traducciones al finés y al indonesio"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:159
 msgid ""
 "[Preferences] Disappearance of the `Dark Theme` setting in favor of a new "
 "`Theme` setting offering 3 choices (Light, Dark, Follow System)"
 msgstr ""
+"[Preferencias] Desaparición del ajuste \"Tema oscuro\" en favor de un nuevo "
+"ajuste \"Tema\" que ofrece 3 opciones (Claro, Oscuro, Seguir sistema)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:160
 msgid "[Servers] Added Escaneos de Leviatan [ES]"
-msgstr ""
+msgstr "[Servidores] Añadido Escaneos de Leviatan [ES]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:161
 msgid "[Servers] Added Fr-Scan [FR]"
-msgstr ""
+msgstr "[Servidores] Añadido Fr-Scan [FR]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:162
 msgid "[Servers] Added MonkeyUser [EN]"
-msgstr ""
+msgstr "[Servidores] Añadido MonkeyUser [EN]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:164
 msgid "[Servers] Lelscan-VF: Update"
-msgstr ""
+msgstr "[Servidores] Lelscan-VF: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:165
 msgid ""
 "[L10n] Updated French, Indonesian, Portuguese (Brazil) and Spanish "
 "translations"
 msgstr ""
+"[L10n] Actualizadas las traducciones al francés, indonesio, portugués "
+"(Brasil) y español"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:173
 msgid ""
 "[Reader] RTL/LTR/Vertical pager: Fixed touchpad 2-fingers swipe gesture "
 "(Wayland only)"
 msgstr ""
-"[Lector] RTL/LTR/Buscapersonas vertical: panel táctil fijo con gesto de "
-"deslizar con 2 dedos (solo Wayland)"
+"[Lector] Localizador RTL/LTR/Vertical: Arreglado el gesto de deslizar con 2 "
+"dedos del panel táctil (solo Wayland)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:174
 msgid "[Updater] Slightly improves notifications"
@@ -320,7 +325,7 @@ msgstr "[Servidores] Rawkuma: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:178
 msgid "[Servers] View Comics: Update"
-msgstr "[Servidores] Ver cómics: actualización"
+msgstr "[Servidores] View Comics: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:179
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:287
@@ -337,14 +342,14 @@ msgstr "[Servidores] Read Manga: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:180
 msgid "[L10n] Added Portuguese and Ukrainian translations"
-msgstr "[L10n] Se agregaron las traducciones al Portugués y Ucraniano"
+msgstr "[L10n] Añadidas traducciones al portugués y al ucraniano"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:181
 msgid ""
 "[L10n] Updated French, German, Portuguese (Brazil) and Spanish translations"
 msgstr ""
-"[L10n] Traducciones actualizadas al Francés, Alemán, Portugués (Brasil) y "
-"Español"
+"[L10n] Actualizadas las traducciones al francés, alemán, portugués (Brasil) "
+"y español"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:189
 msgid "Fixed search entries appearance"
@@ -356,11 +361,11 @@ msgstr "Corregido webview"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:191
 msgid "[Servers] Manga Freak: Update"
-msgstr "[Servidores] Manga Freak: Actualizados"
+msgstr "[Servidores] Manga Freak: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:192
 msgid "[L10n] Updated Finnish translation"
-msgstr "[L10n] Traducción al Finés actualizada"
+msgstr "[L10n] Traducción al finés actualizada"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:200
 msgid "[Servers] NHentai: Reactivation"
@@ -388,13 +393,13 @@ msgid ""
 "[L10n] Update Dutch, Finnish, Indonesian, Portuguese (Brazil), Russian and "
 "Spanish translations"
 msgstr ""
-"[L10n] Actualización de las traducciones al Neerlandés, Finés, Indonesio, "
-"Portugués (Brasil), Ruso y Español"
+"[L10n] Actualización de las traducciones al neerlandés, finés, indonesio, "
+"portugués (Brasil), ruso y español"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:208
 msgid "Switch to GNOME 44 runtime: GTK 4.10.1, Adwaita 1.3.1, WebKitGTK 6.0"
 msgstr ""
-"Cambie al tiempo de ejecución de GNOME 44: GTK 4.10.1, Adwaita 1.3.1, "
+"Cambiar al tiempo de ejecución de GNOME 44: GTK 4.10.1, Adwaita 1.3.1, "
 "WebKitGTK 6.0"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:216
@@ -412,16 +417,16 @@ msgstr "[Lector] Solucionado el consumo de memoria"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:218
 msgid "[Servers] WEBTOON: Update"
-msgstr "[Servidores] WEBTOON: Actualizados"
+msgstr "[Servidores] WEBTOON: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:219
 msgid "[L10n] New Finnish and Indonesian translations"
-msgstr "[L10n] Nuevas traducciones al Finés y al Indonesio"
+msgstr "[L10n] Nuevas traducciones al finés y al indonesio"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:220
 msgid "[L10n] Update Portuguese (Brazil) and Spanish translations"
 msgstr ""
-"[L10n] Actualización de las traducciones al Portugués (Brasil) y al Español"
+"[L10n] Actualización de las traducciones al portugués (Brasil) y al español"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:228
 msgid ""
@@ -2817,7 +2822,7 @@ msgstr "Oscuro"
 
 #: ../data/ui/preferences.ui:52
 msgid "Follow System"
-msgstr "Sistema"
+msgstr "Seguir sistema"
 
 #: ../data/ui/preferences.ui:60
 msgid "Night Light"
@@ -3229,8 +3234,8 @@ msgstr "%d/%m/%Y"
 #, python-brace-format
 msgid "{0} selected"
 msgid_plural "{0} selected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} seleccionado"
+msgstr[1] "{0} seleccionados"
 
 #: ../komikku/card/chapters_list.py:362 ../komikku/card/chapters_list.py:457
 msgid "Failed to update chapters reading status"
@@ -3899,26 +3904,26 @@ msgstr "Actualización completada"
 #, python-brace-format
 msgid "{0} successful update"
 msgid_plural "{0} successful updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} actualizado con éxito"
+msgstr[1] "{0} actualizados con éxito"
 
 #: ../komikku/updater.py:108 ../komikku/updater.py:124
 #, python-brace-format
 msgid "{0} new chapter"
 msgid_plural "{0} new chapters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} capítulo nuevo"
+msgstr[1] "{0} capítulos nuevos"
 
 #: ../komikku/updater.py:110
 msgid "No new chapters"
-msgstr "Sin capítulos nuevos"
+msgstr "No hay capítulos nuevos"
 
 #: ../komikku/updater.py:113
 #, python-brace-format
 msgid "{0} update failed"
 msgid_plural "{0} updates failed"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} actualización fallida"
+msgstr[1] "{0} actualizaciones fallidas"
 
 #: ../komikku/updater.py:140
 msgid "Oops, update has failed. Please try again."
