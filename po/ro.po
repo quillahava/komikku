@@ -7,41 +7,46 @@ msgstr ""
 "Project-Id-Version: Komikku 1.22.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-06-17 11:51+0000\n"
+"Last-Translator: YXH <wyr2fsyxh5@protonmail.com>\n"
+"Language-Team: Romanian <https://hosted.weblate.org/projects/komikku/main/ro/"
+">\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
+"X-Generator: Weblate 4.18.1\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
-msgstr ""
+msgstr "Citește-ți manga preferată"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:13
 msgid ""
 "With its simple, elegant and adaptive interface, this manga reader allows "
 "you to search, sort and read all your favorite manga with ease."
 msgstr ""
+"Cu interfața sa simplă, elegantă și adaptabilă, acest cititor de manga vă "
+"permite să căutați, să sortați și să citiți cu ușurință toate manga-urile "
+"dvs. preferate."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
 msgid "Why you will love Komikku?"
-msgstr ""
+msgstr "De ce vă va plăcea Komikku?"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
-msgstr ""
+msgstr "Citire online și offline de pe zeci de servere"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:18
 msgid "Support for locally stored manga (in CBZ or CBR formats)"
-msgstr ""
+msgstr "Suport pentru manga stocată local (în format CBZ sau CBR)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
-msgstr ""
+msgstr "Modurile de citire includ RTL, LTR, vertical și Webtoon"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:20
 msgid ""
@@ -49,34 +54,38 @@ msgid ""
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
 "wheel, 2-fingers swipe gesture (touchpad), swipe gesture (touch screen)"
 msgstr ""
+"Suportă mai multe tipuri de navigare: tastele săgeată de la tastatură, "
+"navigare la dreapta și la stânga prin clic de mouse sau prin atingere ("
+"touchpad/ecran tactil), rotița mouse-ului, gestul de glisare cu 2 degete "
+"(touchpad), gestul de glisare (ecran tactil)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:21
 msgid "Categories to organize your library"
-msgstr ""
+msgstr "Categorii pentru organizarea bibliotecii dvs"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:22
 msgid "Automatic update of manga"
-msgstr ""
+msgstr "Actualizare automată de manga"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:23
 msgid "Automatic download of new chapters"
-msgstr ""
+msgstr "Descărcare automată a capitolelor noi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:24
 msgid "Reading history"
-msgstr ""
+msgstr "Istoria lecturii"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:25
 msgid "Light and dark themes"
-msgstr ""
+msgstr "Teme deschise și întunecate"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:84
 msgid "@authorfullname@"
-msgstr ""
+msgstr "@numeleautorului@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:97
 msgid "RTL/LTR/Vertical pager: Added &lt;Crtl+Mouse Wheel&gt; zoom"
-msgstr ""
+msgstr "Pager RTL/LTR/Vertical: Adăugat &lt;Crtl+Mouse Wheel&gt; zoom"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:98
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:245
@@ -84,7 +93,7 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:498
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:763
 msgid "[Servers] JapScan: Update"
-msgstr ""
+msgstr "[Servere] JapScan: Actualizare"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:99
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:125
@@ -97,21 +106,21 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:827
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:901
 msgid "[Servers] MangaKawaii: Update"
-msgstr ""
+msgstr "[Servere] MangaKawaii: Actualizare"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:100
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:377
 msgid "[Servers] Mangapill: Update"
-msgstr ""
+msgstr "[Servere] Mangapill: Actualizare"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:101
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:398
 msgid "[Servers] Xoxocomics: Update"
-msgstr ""
+msgstr "[Servere] Xoxocomics: Actualizare"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 msgid "[L10n] Updated Arabic and Russian translations"
-msgstr ""
+msgstr "[L10n] Traduceri actualizate în arabă și rusă"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
@@ -126,18 +135,19 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:250
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:265
 msgid "Happy reading."
-msgstr ""
+msgstr "Lectură plăcută."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "[Reader] LTR/RTL/Vertical pager: Fixed double tap/click zoom"
 msgstr ""
+"[Cititor] LTR/RTL/Vertical pager: S-a fixat zoomul prin dublă atingere/clic"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:163
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:532
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:663
 msgid "[Servers] Jpmangas: Update"
-msgstr ""
+msgstr "[Servere] Jpmangas: Actualizare"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:112
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:261
@@ -145,53 +155,53 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:395
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:483
 msgid "[Servers] Mangaowl: Update"
-msgstr ""
+msgstr "[Servere] Mangaowl: Actualizare"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 msgid "[L10n] Updated Russian translation"
-msgstr ""
+msgstr "[L10n] Traducere în limba rusă actualizată"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:121
 msgid "[Reader] LTR/RTL/Vertical pager: Fixed zoom bugs"
-msgstr ""
+msgstr "[Cititor] LTR/RTL/Vertical pager: Bug-uri de zoom fixate"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:122
 msgid "[Reader] Fixed crashes caused by corrupted images"
-msgstr ""
+msgstr "[Reader] Au fost reparate blocajele cauzate de imagini corupte"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:123
 msgid "[Servers] Added TCB Scans [EN]"
-msgstr ""
+msgstr "[Servere] Au fost adăugate scanări TCB [EN]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:124
 msgid "[Servers] MangaHere: Fixed duplicated pages"
-msgstr ""
+msgstr "[Servere] MangaHere: Pagini duplicate fixate"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:126
 msgid "[L10n] Added Arabic and Catalan translations"
-msgstr ""
+msgstr "[L10n] Au fost adăugate traduceri în arabă și catalană"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:127
 msgid "[L10n] Updated Dutch and Russian translations"
-msgstr ""
+msgstr "[L10n] Traduceri actualizate în olandeză și rusă"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:135
 msgid "[Servers] Added Flame Scans [EN]"
-msgstr ""
+msgstr "[Servere] Au fost adăugate Flame Scans[EN]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
 msgid "[Servers] Added MangaHere [EN]"
-msgstr ""
+msgstr "[Servere] A fost adăugat MangaHere [EN]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:137
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:201
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:338
 msgid "[Servers] 3asq: Update"
-msgstr ""
+msgstr "[Servere] 3asq: Actualizare"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:138
 msgid "[Servers] LeviatanScans: Update [EN/ES]"
-msgstr ""
+msgstr "[Servere] LeviatanScans: Actualizare [EN/ES]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:139
 msgid "[Servers] Manhuaus: Update"
