@@ -260,6 +260,10 @@ def bypass_cf(func):
             if webview.webkit_webview.props.title != 'ready':
                 return
 
+            # Exit from webview if end of chalenge has not been detected in on_load_changed
+            # Webview should not be closed, we need to store cookies first
+            webview.navigate_back(None)
+
             logger.debug(f'{server.id}: Page loaded, getting cookies...')
             webview.network_session.get_cookie_manager().get_cookies(server.base_url, None, on_get_cookies_finish, None)
 
