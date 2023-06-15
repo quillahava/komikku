@@ -87,7 +87,7 @@ class Grisebouille(Server):
         data = dict(
             pages=[],
         )
-        for img_element in soup.select('#article > p > img'):
+        for img_element in soup.select('#article p > img'):
             url = img_element.get('src')
             if not url.startswith(self.base_url):
                 continue
