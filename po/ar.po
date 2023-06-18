@@ -7,17 +7,17 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: 2023-06-14 18:50+0000\n"
+"PO-Revision-Date: 2023-06-19 16:51+0000\n"
 "Last-Translator: abidin toumi <abidin24@disroot.org>\n"
-"Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/"
-">\n"
+"Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/>"
+"\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.18-dev\n"
+"X-Generator: Weblate 4.18.1\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -3304,27 +3304,27 @@ msgstr ""
 
 #: ../komikku/preferences.py:168
 msgid "Disable"
-msgstr ""
+msgstr "عطل"
 
 #: ../komikku/preferences.py:480
 msgid "Servers Languages"
-msgstr ""
+msgstr "لغات الخوادم"
 
 #: ../komikku/preferences.py:583
 msgid "User Account"
-msgstr ""
+msgstr "حساب المستخدم"
 
 #: ../komikku/preferences.py:591
 msgid "Address"
-msgstr ""
+msgstr "عنوان"
 
 #: ../komikku/preferences.py:597
 msgid "Username"
-msgstr ""
+msgstr "اسم المستخدم"
 
 #: ../komikku/preferences.py:601
 msgid "Password"
-msgstr ""
+msgstr "كلمة السر"
 
 #: ../komikku/preferences.py:613
 msgid "System keyring service is disabled. Credential cannot be saved."
@@ -3344,16 +3344,16 @@ msgstr ""
 
 #: ../komikku/preferences.py:631
 msgid "Test"
-msgstr ""
+msgstr "اختبر"
 
 #: ../komikku/preferences.py:663
 msgid "Servers Settings"
-msgstr ""
+msgstr "إعدادات الخوادم"
 
 #: ../komikku/reader/__init__.py:274
 #, python-brace-format
 msgid "Page successfully saved to {0}"
-msgstr ""
+msgstr "نجح حفظ الصفحة إلى {0}"
 
 #: ../komikku/reader/__init__.py:301
 msgid ""
@@ -3569,57 +3569,57 @@ msgstr ""
 
 #: ../komikku/servers/mangatube/__init__.py:50
 msgid "Age Rating"
-msgstr ""
+msgstr "تصنيف العمري"
 
 #: ../komikku/servers/mangatube/__init__.py:51
 msgid "Maturity"
-msgstr ""
+msgstr "استحقاق"
 
 #: ../komikku/servers/mangatube/__init__.py:55
 msgid "Without"
-msgstr ""
+msgstr "بدون"
 
 #: ../komikku/servers/mangatube/__init__.py:56
 msgid "16+"
-msgstr ""
+msgstr "16+"
 
 #: ../komikku/servers/mangaworld/__init__.py:45
 msgid "Status"
-msgstr ""
+msgstr "حالة"
 
 #: ../komikku/servers/mangaworld/__init__.py:46
 msgid "Filter by statuses"
-msgstr ""
+msgstr "افرز حسب الحالة"
 
 #: ../komikku/servers/mangaworld/__init__.py:53
 msgid "Canceled"
-msgstr ""
+msgstr "ملغاة"
 
 #: ../komikku/servers/multi/madara.py:367
 #: ../komikku/servers/readmanhwa/__init__.py:43
 msgid "NSFW Content"
-msgstr ""
+msgstr "محتوى حساس NSFW"
 
 #: ../komikku/servers/multi/madara.py:368
 #: ../komikku/servers/readmanhwa/__init__.py:44
 msgid "Whether to show manga containing NSFW content"
-msgstr ""
+msgstr "إذا ما أردت إظهار مانغا تحتوي على محتوى حساس NSFW"
 
 #: ../komikku/updater.py:96
 msgid "Library update completed with errors"
-msgstr ""
+msgstr "حُدثت المكتبة لكن طرأت أخطاء أثناءه"
 
 #: ../komikku/updater.py:98
 msgid "Library update completed"
-msgstr ""
+msgstr "اكتمل تحديث المكتبة"
 
 #: ../komikku/updater.py:101
 msgid "Update completed with errors"
-msgstr ""
+msgstr "تم التحديث دون أخطاء"
 
 #: ../komikku/updater.py:103
 msgid "Update completed"
-msgstr ""
+msgstr "اكتمل التحديث"
 
 #: ../komikku/updater.py:107
 #, python-brace-format
@@ -3645,7 +3645,7 @@ msgstr[5] ""
 
 #: ../komikku/updater.py:110
 msgid "No new chapters"
-msgstr ""
+msgstr "لا توجد فصول جديدة"
 
 #: ../komikku/updater.py:113
 #, python-brace-format
