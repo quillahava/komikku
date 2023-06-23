@@ -45,9 +45,12 @@ class Mangakawaii(Server):
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/{1}/{2}/1'
     chapters_url = base_url + '/loadChapter?page={0}'
-    cdn_base_url = 'https://cdn.mangakawaii.io'
-    image_url = cdn_base_url + '/uploads/manga/{0}/chapters_{1}/{2}/{3}?{4}'
-    cover_url = cdn_base_url + '/uploads/manga/{0}/cover/cover_250x350.jpg'
+    cdn_base_urls = [
+        'https://cdn.mangakawaii.io',
+        'https://cdn2.mangakawaii.io',
+    ]
+    image_url = '{0}/uploads/manga/{1}/chapters_{2}/{3}/{4}?{5}'
+    cover_url = cdn_base_urls[0] + '/uploads/manga/{0}/cover/cover_250x350.jpg'
     bypass_cf_url = base_url + '/manga/martial-peak/'
 
     csrf_token = None
@@ -282,13 +285,19 @@ class Mangakawaii(Server):
         """
         Returns chapter page scan (image) content
         """
-        r = self.session_get(
-            self.image_url.format(manga_slug, self.lang, chapter_slug, page['image'], page['version']),
-            headers={
-                'Referer': self.base_url,
-            }
-        )
-        if r.status_code != 200:
+        success = False
+        for cdn_base_url in self.cdn_base_urls:
+            r = self.session_get(
+                self.image_url.format(cdn_base_url, manga_slug, self.lang, chapter_slug, page['image'], page['version']),
+                headers={
+                    'Referer': self.base_url,
+                }
+            )
+            if r.ok:
+                success = True
+                break
+
+        if not success:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
