@@ -8,6 +8,7 @@
 # Asura Scans [EN]
 # Asura Scans [TR]
 # Flam Scans [EN]
+# PhenixScans [FR]
 # Rawkuma [JA]
 # Raw Manga [JA]
 
@@ -123,6 +124,7 @@ class MangaStream(Server):
                 'coming soon',
                 'mass released',
                 'daily release',
+                'en cours',  # fr
                 'devam ediyor',  # tr
             )
             if any(re.findall('|'.join(labels), label, re.IGNORECASE)):
@@ -131,6 +133,7 @@ class MangaStream(Server):
             # Complete
             labels = (
                 'completed',
+                'fini',  # fr
                 'tamamlandı',  # tr
             )
             if any(re.findall('|'.join(labels), label, re.IGNORECASE)):
@@ -139,6 +142,7 @@ class MangaStream(Server):
             # Hiatus
             labels = (
                 'hiatus',
+                'en pause',  # fr
                 'bırakıldı',  # tr
             )
             if any(re.findall('|'.join(labels), label, re.IGNORECASE)):
