@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: 2023-06-19 16:51+0000\n"
+"PO-Revision-Date: 2023-07-07 14:50+0000\n"
 "Last-Translator: abidin toumi <abidin24@disroot.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/>"
 "\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.18.1\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -2601,8 +2601,9 @@ msgid "Follow System"
 msgstr "اتبِعْ النظام"
 
 #: ../data/ui/preferences.ui:60
+#, fuzzy
 msgid "Night Light"
-msgstr ""
+msgstr "الإضاءة الليلية"
 
 #: ../data/ui/preferences.ui:62
 msgid "Automatically enable dark theme at night"
@@ -2666,23 +2667,23 @@ msgstr "حدّث عند التشغيل"
 
 #: ../data/ui/preferences.ui:204
 msgid "Automatically update library at startup"
-msgstr ""
+msgstr "حدِّث المكتبة تلقائيًا عند التشغيل"
 
 #: ../data/ui/preferences.ui:216
 msgid "Auto Download of New Chapters"
-msgstr ""
+msgstr "تنزيل الفصول الجديدة تلقائيًا"
 
 #: ../data/ui/preferences.ui:218
 msgid "Automatically download new chapters"
-msgstr ""
+msgstr "نزّل الفصول الجديدة تلقائيًا"
 
 #: ../data/ui/preferences.ui:236
 msgid "Restrict servers to selected languages"
-msgstr ""
+msgstr "حَدُ الخوادم باللغات المختارة"
 
 #: ../data/ui/preferences.ui:247
 msgid "Enable/disable and configure servers"
-msgstr ""
+msgstr "تفعيل/تعطيل الخوادم وضبطها"
 
 #: ../data/ui/preferences.ui:257
 msgid "Long Strip Detection"
@@ -2694,11 +2695,11 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:271
 msgid "NSFW Content (18+)"
-msgstr ""
+msgstr "محتوى حساس NSFW (18+)"
 
 #: ../data/ui/preferences.ui:273
 msgid "Whether to enable servers with NSFW content"
-msgstr ""
+msgstr "تفعيل الخوادم التي تنطوي على محتوى حساس NSFW"
 
 #: ../data/ui/preferences.ui:285
 msgid "NSFW Only Content (18+)"
@@ -2710,28 +2711,30 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:306 ../data/ui/preferences.ui:310
 msgid "Reader"
-msgstr ""
+msgstr "القارئ"
 
 #: ../data/ui/preferences.ui:330
 msgid "Maximum Width"
-msgstr ""
+msgstr "العرض الأقصى"
 
 #: ../data/ui/preferences.ui:331
+#, fuzzy
 msgid ""
 "Constrain reader's width to a given maximum size (Webtoon reading mode only)"
-msgstr ""
+msgstr "فرض عرض القارئ أقصى حجم مُعطى (وضع قراءة ويبتون فقط)"
 
 #: ../data/ui/preferences.ui:349
 msgid "Scaling"
-msgstr ""
+msgstr "التحجيم"
 
 #: ../data/ui/preferences.ui:350
 msgid "Type of scaling to adapt image"
-msgstr ""
+msgstr "نوع التحجيم لتكييف حجم الصورة"
 
 #: ../data/ui/preferences.ui:365
+#, fuzzy
 msgid "Landscape Pages Zoom"
-msgstr ""
+msgstr "تكبير الصور العرضية"
 
 #: ../data/ui/preferences.ui:367
 msgid ""
@@ -2740,7 +2743,7 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:394
 msgid "Borders Crop"
-msgstr ""
+msgstr "اقتصاص الحواف"
 
 #: ../data/ui/preferences.ui:396
 msgid ""
@@ -2749,50 +2752,57 @@ msgid ""
 "NOTE: Requires more CPU usage and can cause rendering and animation "
 "slowdowns, especially on mobile devices."
 msgstr ""
+"قص الحواف البيضاء من الصور\n"
+"\n"
+"ملاحظة: قد يسبب زيادة في استخدام المعالج ويترتب عنه بطء في تصيير الصور "
+"والتأثيرات خصوصًا في الهواتف."
 
 #: ../data/ui/preferences.ui:410
 msgid "Page Numbering"
-msgstr ""
+msgstr "ترقيم الصفحات"
 
 #: ../data/ui/preferences.ui:412
 msgid "Hide the page numbering at the bottom of the screen while reading"
-msgstr ""
+msgstr "اخفاء رقم الصفحة أسفل القارئ"
 
 #: ../data/ui/preferences.ui:424
 msgid "Fullscreen"
-msgstr ""
+msgstr "ملء الشاشة"
 
 #: ../data/ui/preferences.ui:426
 msgid "Automatically enter fullscreen mode"
-msgstr ""
+msgstr "دخول وضع ملء الشاشة تلقائيًا"
 
 #: ../data/ui/preferences.ui:445 ../data/ui/preferences.ui:449
 msgid "Advanced"
-msgstr ""
+msgstr "متقدم"
 
 #: ../data/ui/preferences.ui:452
 msgid "Data"
-msgstr ""
+msgstr "بيانات"
 
 #: ../data/ui/preferences.ui:453
+#, fuzzy
 msgid "Data not saved in the library"
-msgstr ""
+msgstr "لم تُحفظ البيانات في المكتبة"
 
 #: ../data/ui/preferences.ui:456
 msgid "Clear chapters cache and database"
-msgstr ""
+msgstr "مسح خبيئة الفصول وقاعدة البيانات"
 
 #: ../data/ui/preferences.ui:462
+#, fuzzy
 msgid "Clear chapters cache and database on application close"
-msgstr ""
+msgstr "مسح خبيئة الفصول وقاعدة البيانات عند اغلاق التطبيق"
 
 #: ../data/ui/preferences.ui:477
 msgid "Credentials storage"
 msgstr ""
 
 #: ../data/ui/preferences.ui:480
+#, fuzzy
 msgid "Allow plaintext storage as fallback"
-msgstr ""
+msgstr "السماح بالتخزين النصي كخيار احتياطي"
 
 #: ../data/ui/preferences.ui:482
 msgid "Used when no keyring backends are found"
@@ -2800,11 +2810,11 @@ msgstr ""
 
 #: ../data/ui/preferences.ui:496
 msgid "Tweaks"
-msgstr ""
+msgstr "تطويعات"
 
 #: ../data/ui/preferences.ui:499
 msgid "Disable Animations"
-msgstr ""
+msgstr "تعطيل التأثيرات"
 
 #: ../data/ui/preferences.ui:501
 msgid ""
@@ -2827,71 +2837,72 @@ msgstr ""
 #: ../data/ui/shortcuts_overview.ui:33
 msgctxt "Shortcut window description"
 msgid "Open preferences"
-msgstr ""
+msgstr "افتح التفضيلات"
 
 #: ../data/ui/shortcuts_overview.ui:39
 msgctxt "Shortcut window description"
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "بدّل وضع ملء الشاشة"
 
 #: ../data/ui/shortcuts_overview.ui:45
 msgctxt "Shortcut window description"
 msgid "Open shortcuts window"
-msgstr ""
+msgstr "افتح نافذة الاختصارات"
 
 #: ../data/ui/shortcuts_overview.ui:53
 msgctxt "Shortcut window description"
 msgid "Library"
-msgstr ""
+msgstr "المكتبة"
 
 #: ../data/ui/shortcuts_overview.ui:56
 msgctxt "Shortcut window description"
 msgid "Add manga"
-msgstr ""
+msgstr "أضف منغا"
 
 #: ../data/ui/shortcuts_overview.ui:62
 msgctxt "Shortcut window description"
 msgid "Select all"
-msgstr ""
+msgstr "اختر الكل"
 
 #: ../data/ui/shortcuts_overview.ui:68
 msgctxt "Shortcut window description"
 msgid "Search"
-msgstr ""
+msgstr "ابحث"
 
 #: ../data/ui/shortcuts_overview.ui:76
 msgctxt "Shortcut window description"
 msgid "Manga Card"
-msgstr ""
+msgstr "بطاقة المنغا"
 
 #: ../data/ui/shortcuts_overview.ui:79
 msgctxt "Shortcut window description"
 msgid "Select all chapters"
-msgstr ""
+msgstr "اختر كل الفصول"
 
 #: ../data/ui/shortcuts_overview.ui:87
 msgctxt "Shortcut window description"
 msgid "Reader"
-msgstr ""
+msgstr "القارئ"
 
 #: ../data/ui/shortcuts_overview.ui:90
 msgctxt "Shortcut window description"
 msgid "Save Page"
-msgstr ""
+msgstr "احفظ الصفحة"
 
 #: ../data/ui/shortcuts_overview.ui:98
 msgctxt "Shortcut window description"
 msgid "Download Manager"
-msgstr ""
+msgstr "مدير التنزيلات"
 
 #: ../data/ui/shortcuts_overview.ui:101
 msgctxt "Shortcut window description"
 msgid "Select all downloads"
-msgstr ""
+msgstr "اختر كل التنزيلات"
 
 #: ../komikku/application.py:136
+#, fuzzy
 msgid "Multiple URLs not supported"
-msgstr ""
+msgstr "الروابط المتعددة غير مدعومة"
 
 #: ../komikku/application.py:152
 msgid "Invalid URL {}, not handled by any server."
@@ -2902,43 +2913,43 @@ msgstr ""
 #: ../komikku/downloader.py:335 ../komikku/downloader.py:336
 #: ../komikku/library/__init__.py:334 ../komikku/library/__init__.py:335
 msgid "Cancel"
-msgstr ""
+msgstr "ألغِ"
 
 #: ../komikku/application.py:494
 msgid "Join Chat"
-msgstr ""
+msgstr "انضم للمحادثة"
 
 #: ../komikku/application.py:495
 msgid "Sponsor via Ko-fi"
-msgstr ""
+msgstr "ادعم عبر كو-في"
 
 #: ../komikku/application.py:496
 msgid "Sponsor via Liberapay"
-msgstr ""
+msgstr "ادعم عبر لِبراباي"
 
 #: ../komikku/application.py:497
 msgid "Sponsor via Paypal"
-msgstr ""
+msgstr "ادعم عبر بايبال"
 
 #: ../komikku/application.py:694
 msgid "Are you sure you want to quit?"
-msgstr ""
+msgstr "أمتأكد من الخروج؟"
 
 #: ../komikku/application.py:697
 msgid "Some chapters are currently being downloaded."
-msgstr ""
+msgstr "بعض الفصول تُنزّل."
 
 #: ../komikku/application.py:699
 msgid "Some mangas are currently being updated."
-msgstr ""
+msgstr "بعض المنغا تُحدّث."
 
 #: ../komikku/application.py:703
 msgid "Quit?"
-msgstr ""
+msgstr "خروج؟"
 
 #: ../komikku/application.py:705
 msgid "Quit"
-msgstr ""
+msgstr "خروج"
 
 #: ../komikku/card/__init__.py:93
 #, python-brace-format
@@ -2947,6 +2958,9 @@ msgid ""
 "{0} server is not longer supported.\n"
 "Please switch to another server."
 msgstr ""
+"تنبيه\n"
+"خادم {0} لم يعد مدعومًا.\n"
+"يرجى الانتقال لخادم آخر."
 
 #: ../komikku/card/__init__.py:101 ../komikku/card/__init__.py:203
 #: ../komikku/categories_editor.py:127 ../komikku/downloader.py:347
@@ -2954,43 +2968,43 @@ msgstr ""
 #: ../komikku/history.py:208 ../komikku/preferences.py:425
 #: ../komikku/webview.py:137
 msgid "Back"
-msgstr ""
+msgstr "رجوع"
 
 #: ../komikku/card/__init__.py:130
 msgid "Read progress synchronization with server completed successfully"
-msgstr ""
+msgstr "نجحت مزامنة تقدم القراءة مع الخادم"
 
 #: ../komikku/card/__init__.py:141
 msgid "Failed to get manga URL"
-msgstr ""
+msgstr "فشل جلب رابط المنغا"
 
 #: ../komikku/card/__init__.py:299
 msgid "Unknown author"
-msgstr ""
+msgstr "المؤلف مجهول"
 
 #: ../komikku/card/__init__.py:305 ../komikku/card/__init__.py:314
 msgid "Unknown status"
-msgstr ""
+msgstr "الحالة مجهولة"
 
 #: ../komikku/card/__init__.py:315 ../komikku/explorer/__init__.py:94
 msgid "Local"
-msgstr ""
+msgstr "محلي"
 
 #: ../komikku/card/__init__.py:341 ../komikku/card/chapters_list.py:593
 msgid "%m/%d/%Y"
-msgstr ""
+msgstr "%d/%m/%Y"
 
 #: ../komikku/card/chapters_list.py:270 ../komikku/downloader.py:473
 #: ../komikku/library/__init__.py:668
 #, python-brace-format
 msgid "{0} selected"
 msgid_plural "{0} selected"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لم تختر"
+msgstr[1] "واحد مختار"
+msgstr[2] "اثنان مختاران"
+msgstr[3] "{0} مختارون"
+msgstr[4] "{0} مختارة"
+msgstr[5] "{0} مختارة"
 
 #: ../komikku/card/chapters_list.py:362 ../komikku/card/chapters_list.py:457
 msgid "Failed to update chapters reading status"
@@ -2998,7 +3012,7 @@ msgstr ""
 
 #: ../komikku/card/chapters_list.py:650 ../komikku/library/__init__.py:321
 msgid "Download"
-msgstr ""
+msgstr "نزّل"
 
 #: ../komikku/card/chapters_list.py:654
 msgid "Clear and Reset"
@@ -3006,19 +3020,19 @@ msgstr ""
 
 #: ../komikku/card/chapters_list.py:663
 msgid "Mark as Read"
-msgstr ""
+msgstr "اجعله مقروء"
 
 #: ../komikku/card/chapters_list.py:667
 msgid "Mark as Unread"
-msgstr ""
+msgstr "اجعله بغير مقروء"
 
 #: ../komikku/card/chapters_list.py:671
 msgid "Mark Previous Chapters as Read"
-msgstr ""
+msgstr "اجعل الفصول السابقة غير مقروءة"
 
 #: ../komikku/categories_editor.py:78 ../komikku/library/__init__.py:295
 msgid "Delete?"
-msgstr ""
+msgstr "أتريد حذفه؟"
 
 #: ../komikku/categories_editor.py:79
 #, python-brace-format
@@ -3026,23 +3040,25 @@ msgid ""
 "Are you sure you want to delete\n"
 "\"{0}\" category?"
 msgstr ""
+"أمتأكد من حذف\n"
+"فئة \"{0}\" ؟"
 
 #: ../komikku/categories_editor.py:80 ../komikku/categories_editor.py:187
 #: ../komikku/library/__init__.py:297
 msgid "Delete"
-msgstr ""
+msgstr "احذف"
 
 #: ../komikku/categories_editor.py:192
 msgid "Edit"
-msgstr ""
+msgstr "حرّر"
 
 #: ../komikku/categories_editor.py:205
 msgid "Save"
-msgstr ""
+msgstr "احفظ"
 
 #: ../komikku/downloader.py:207
 msgid "Download completed"
-msgstr ""
+msgstr "اكتمل التنزيل"
 
 #: ../komikku/downloader.py:208 ../komikku/downloader.py:237
 #, python-brace-format
@@ -3052,11 +3068,11 @@ msgstr ""
 #: ../komikku/downloader.py:231
 #, python-brace-format
 msgid "{0}/{1} pages downloaded"
-msgstr ""
+msgstr "نُزلة {0}\\{1} صفحة"
 
 #: ../komikku/downloader.py:233
 msgid "error"
-msgstr ""
+msgstr "خطأ"
 
 #: ../komikku/explorer/__init__.py:95
 msgid "Comics stored locally as archives in CBZ/CBR formats"
@@ -3065,11 +3081,11 @@ msgstr ""
 #: ../komikku/explorer/__init__.py:112 ../komikku/preferences.py:555
 #: ../komikku/preferences.py:649 ../komikku/servers/mangatube/__init__.py:57
 msgid "18+"
-msgstr ""
+msgstr "18+"
 
 #: ../komikku/explorer/__init__.py:132
 msgid "Help"
-msgstr ""
+msgstr "مساعدة"
 
 #: ../komikku/explorer/__init__.py:137
 msgid ""
@@ -3086,7 +3102,7 @@ msgstr ""
 
 #: ../komikku/explorer/__init__.py:151
 msgid "Open local folder"
-msgstr ""
+msgstr "افتح مجلد القصص المحلية"
 
 #: ../komikku/explorer/__init__.py:158
 msgid "Toggle pinned status"
@@ -3094,7 +3110,7 @@ msgstr ""
 
 #: ../komikku/explorer/search.py:72
 msgid "Search"
-msgstr ""
+msgstr "ابحث"
 
 #: ../komikku/explorer/search.py:231
 msgid "Oops, server website URL is unknown."
@@ -3102,11 +3118,11 @@ msgstr ""
 
 #: ../komikku/explorer/search.py:281
 msgid "Oops, failed to retrieve latest updates."
-msgstr ""
+msgstr "فشل جلب آخر التحديثات."
 
 #: ../komikku/explorer/search.py:285
 msgid "No Latest Updates Found"
-msgstr ""
+msgstr "لم يُعثر على تحديثات"
 
 #: ../komikku/explorer/search.py:294 ../komikku/explorer/search.py:356
 #: ../komikku/explorer/search.py:446 ../komikku/explorer/search.py:455
