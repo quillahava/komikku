@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: 2023-07-07 14:50+0000\n"
+"PO-Revision-Date: 2023-07-10 13:52+0000\n"
 "Last-Translator: abidin toumi <abidin24@disroot.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/>"
 "\n"
@@ -3139,11 +3139,11 @@ msgstr ""
 
 #: ../komikku/explorer/search.py:431 ../komikku/explorer/search.py:517
 msgid "Oops, search failed. Please try again."
-msgstr ""
+msgstr "عذرًا فشل البحث، حاول مجددًا."
 
 #: ../komikku/explorer/search.py:435
 msgid "No Results Found"
-msgstr ""
+msgstr "لم يُعثر على نتائج"
 
 #: ../komikku/explorer/search.py:436
 msgid "Try a different search"
@@ -3151,7 +3151,7 @@ msgstr ""
 
 #: ../komikku/explorer/search.py:522
 msgid "No results"
-msgstr ""
+msgstr "لا نتائج"
 
 #: ../komikku/explorer/search.py:618
 msgid "Search {}"
