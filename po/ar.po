@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: 2023-07-10 13:52+0000\n"
+"PO-Revision-Date: 2023-07-15 08:52+0000\n"
 "Last-Translator: abidin toumi <abidin24@disroot.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/>"
 "\n"
@@ -28,6 +28,8 @@ msgid ""
 "With its simple, elegant and adaptive interface, this manga reader allows "
 "you to search, sort and read all your favorite manga with ease."
 msgstr ""
+"بفضل واجهته البسيطة والأنيقة والمتكيفة ، يُيسر لك هذا القارئ البحث عن "
+"المانغا المفضلة لديك وفرزها وقراءتها."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:15
 msgid "Why you will love Komikku?"
@@ -35,15 +37,15 @@ msgstr "لماذا ستفضل كوميكو؟"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
-msgstr ""
+msgstr "يتيح لك المطالعة من عديد الخوادم والتنزيل منها"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:18
 msgid "Support for locally stored manga (in CBZ or CBR formats)"
-msgstr ""
+msgstr "دعم للمنغا الخزنة محليًا (ذات تنسيق CBZ وCBR)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
-msgstr ""
+msgstr "أوضاع القراءة من اليمين لليسار ومن اليسار لليمين والعمودي و ويبتون"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:20
 msgid ""
@@ -51,6 +53,10 @@ msgid ""
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
 "wheel, 2-fingers swipe gesture (touchpad), swipe gesture (touch screen)"
 msgstr ""
+"يدعم أنواع تنقل متعددة: مفاتيح الأسهم من لوحة المفاتيح أو عبر تخطيط تنقل "
+"لليمن ولليسر عن طريق النقر بالفأرة يدعم كذلك الضغط على لوحة اللمس/الشاشة "
+"اللمسية أو بعجلة الفأرة أو عبر إيماءة التمرير بإصبعين للوحة اللمس أو إيماءات "
+"التمرير للشاشة اللمسية"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:21
 msgid "Categories to organize your library"
@@ -70,7 +76,7 @@ msgstr "سجل مطالعة"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:25
 msgid "Light and dark themes"
-msgstr ""
+msgstr "سمة داكنة وسمة فاتحة"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:84
 msgid "@authorfullname@"
@@ -3390,50 +3396,50 @@ msgstr ""
 #: ../komikku/reader/pager/__init__.py:460
 #: ../komikku/reader/pager/webtoon.py:359
 msgid "There is no previous chapter."
-msgstr ""
+msgstr "لا فصل سابق."
 
 #: ../komikku/reader/pager/__init__.py:462
 #: ../komikku/reader/pager/webtoon.py:357
 msgid "It was the last chapter."
-msgstr ""
+msgstr "كان آخر فصل."
 
 #: ../komikku/reader/pager/__init__.py:626
 #: ../komikku/reader/pager/webtoon.py:443
 msgid "This chapter is inaccessible."
-msgstr ""
+msgstr "لا يمكن الوصول للفصل."
 
 #: ../komikku/reader/pager/page.py:279
 msgid "Failed to load image"
-msgstr ""
+msgstr "فشل تحميل الصورة"
 
 #: ../komikku/reader/pager/page.py:343
 msgid "Retry"
-msgstr ""
+msgstr "أعد المحاولة"
 
 #: ../komikku/servers/bilibili/__init__.py:34
 msgid "Price"
-msgstr ""
+msgstr "سعر"
 
 #: ../komikku/servers/bilibili/__init__.py:35
 msgid "Filter by price"
-msgstr ""
+msgstr "رشح بالسعر"
 
 #: ../komikku/servers/bilibili/__init__.py:40
 msgid "Free"
-msgstr ""
+msgstr "مجاني"
 
 #: ../komikku/servers/bilibili/__init__.py:41
 msgid "Paid"
-msgstr ""
+msgstr "مدفوع"
 
 #: ../komikku/servers/dynasty/__init__.py:38
 msgid "Categories"
-msgstr ""
+msgstr "فئات"
 
 #: ../komikku/servers/dynasty/__init__.py:39
 #: ../komikku/servers/mangaworld/__init__.py:31
 msgid "Filter by types"
-msgstr ""
+msgstr "رشح حسب النوع"
 
 #: ../komikku/servers/dynasty/__init__.py:42
 msgid "Anthology"
@@ -3453,27 +3459,27 @@ msgstr ""
 
 #: ../komikku/servers/dynasty/__init__.py:46
 msgid "Chapters"
-msgstr ""
+msgstr "فصول"
 
 #: ../komikku/servers/dynasty/__init__.py:52
 msgid "With Tags"
-msgstr ""
+msgstr "بوسوم"
 
 #: ../komikku/servers/dynasty/__init__.py:53
 msgid "Tags to search for"
-msgstr ""
+msgstr "وسوم للبحث عنها"
 
 #: ../komikku/servers/dynasty/__init__.py:59
 msgid "Without Tags"
-msgstr ""
+msgstr "بدون وسوم"
 
 #: ../komikku/servers/dynasty/__init__.py:60
 msgid "Tags to exclude from search"
-msgstr ""
+msgstr "وسوم لإقصائها"
 
 #: ../komikku/servers/exceptions.py:10
 msgid "Error: {}"
-msgstr ""
+msgstr "خطأ: {}"
 
 #: ../komikku/servers/exceptions.py:16
 msgid "Local archive is corrupt."
@@ -3481,27 +3487,27 @@ msgstr ""
 
 #: ../komikku/servers/exceptions.py:21
 msgid "Unable to extract page. Maybe the 'unrar' tool is missing?"
-msgstr ""
+msgstr "تعذر الاستخراج. هل أداة «unrar» مثبتة؟"
 
 #: ../komikku/servers/exceptions.py:26
 msgid "Failed to bypass Cloudflare protection. Please try again."
-msgstr ""
+msgstr "فشل تجاوز حماية كلودفلير. أعد المحاولة."
 
 #: ../komikku/servers/exceptions.py:31
 msgid "No longer exists."
-msgstr ""
+msgstr "لم يعد موجودًا."
 
 #: ../komikku/servers/mangadex/__init__.py:59
 msgid "Rating"
-msgstr ""
+msgstr "تقييم"
 
 #: ../komikku/servers/mangadex/__init__.py:60
 msgid "Filter by content ratings"
-msgstr ""
+msgstr "رشح حسب تقييم المحتوى"
 
 #: ../komikku/servers/mangadex/__init__.py:63
 msgid "Safe"
-msgstr ""
+msgstr "آمن"
 
 #: ../komikku/servers/mangadex/__init__.py:64
 msgid "Suggestive"
@@ -3520,23 +3526,23 @@ msgstr ""
 #: ../komikku/servers/mangaworld/__init__.py:30
 #: ../komikku/servers/multi/manga_stream.py:50
 msgid "Type"
-msgstr ""
+msgstr "نوع"
 
 #: ../komikku/servers/mangapill/__init__.py:32
 #: ../komikku/servers/multi/manga_stream.py:51
 msgid "Filter by type"
-msgstr ""
+msgstr "رشح حسب النوع"
 
 #: ../komikku/servers/mangapill/__init__.py:37
 #: ../komikku/servers/mangatube/__init__.py:38
 #: ../komikku/servers/mangaworld/__init__.py:34
 #: ../komikku/servers/multi/manga_stream.py:56
 msgid "Manga"
-msgstr ""
+msgstr "مانغا"
 
 #: ../komikku/servers/mangapill/__init__.py:38
 msgid "Novel"
-msgstr ""
+msgstr "رواية"
 
 #: ../komikku/servers/mangapill/__init__.py:39
 #: ../komikku/servers/mangatube/__init__.py:43
@@ -3546,21 +3552,21 @@ msgstr ""
 
 #: ../komikku/servers/mangapill/__init__.py:40
 msgid "Doujinshi"
-msgstr ""
+msgstr "دوجينشي"
 
 #: ../komikku/servers/mangapill/__init__.py:41
 #: ../komikku/servers/mangatube/__init__.py:39
 #: ../komikku/servers/mangaworld/__init__.py:36
 #: ../komikku/servers/multi/manga_stream.py:57
 msgid "Manhwa"
-msgstr ""
+msgstr "مانهوا كورية"
 
 #: ../komikku/servers/mangapill/__init__.py:42
 #: ../komikku/servers/mangatube/__init__.py:40
 #: ../komikku/servers/mangaworld/__init__.py:35
 #: ../komikku/servers/multi/manga_stream.py:58
 msgid "Manhua"
-msgstr ""
+msgstr "مانهوا صينية"
 
 #: ../komikku/servers/mangapill/__init__.py:43
 msgid "OEL"
@@ -3568,11 +3574,11 @@ msgstr ""
 
 #: ../komikku/servers/mangatube/__init__.py:34
 msgid "Type of Serie"
-msgstr ""
+msgstr "نوع السلسلة"
 
 #: ../komikku/servers/mangatube/__init__.py:41
 msgid "Webtoon"
-msgstr ""
+msgstr "ويبتون"
 
 #: ../komikku/servers/mangatube/__init__.py:42
 #: ../komikku/servers/multi/manga_stream.py:59
@@ -3581,7 +3587,7 @@ msgstr ""
 
 #: ../komikku/servers/mangatube/__init__.py:44
 msgid "Light Novel"
-msgstr ""
+msgstr "رواية خفيفة"
 
 #: ../komikku/servers/mangatube/__init__.py:50
 msgid "Age Rating"
@@ -3641,58 +3647,58 @@ msgstr "اكتمل التحديث"
 #, python-brace-format
 msgid "{0} successful update"
 msgid_plural "{0} successful updates"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لم ينجح التحديث"
+msgstr[1] "نجح تحديث واحد"
+msgstr[2] "نجح تحديثان"
+msgstr[3] "نجحت {0} تحديثات"
+msgstr[4] "نجح {0} تحديثًا"
+msgstr[5] "نجح {0} تحديث"
 
 #: ../komikku/updater.py:108 ../komikku/updater.py:124
 #, python-brace-format
 msgid "{0} new chapter"
 msgid_plural "{0} new chapters"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لا فصول جديدة"
+msgstr[1] "فصل جديد"
+msgstr[2] "فصلان جديدان"
+msgstr[3] "{0} فصول جديدة"
+msgstr[4] "{0} فصلًا جديدًا"
+msgstr[5] "{0} فصل جديد"
 
 #: ../komikku/updater.py:110
 msgid "No new chapters"
-msgstr "لا توجد فصول جديدة"
+msgstr "لا فصول جديدة"
 
 #: ../komikku/updater.py:113
 #, python-brace-format
 msgid "{0} update failed"
 msgid_plural "{0} updates failed"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لم تفشل تحديثات"
+msgstr[1] "فشل تحديث واحد"
+msgstr[2] "فشل تحديثان"
+msgstr[3] "فشلت {0} تحديثات"
+msgstr[4] "فشل {0} تحديثًا"
+msgstr[5] "فشل {0} تحديث"
 
 #: ../komikku/updater.py:140
 msgid "Oops, update has failed. Please try again."
-msgstr ""
+msgstr "فشل التحديث. حاول مجددًا."
 
 #: ../komikku/updater.py:149
 msgid "Library update started"
-msgstr ""
+msgstr "بدأ تحديث المكتبة"
 
 #: ../komikku/updater.py:151
 msgid "Update started"
-msgstr ""
+msgstr "بدأ التحديث"
 
 #: ../komikku/utils.py:256
 msgid "You are currently offline"
-msgstr ""
+msgstr "أنت غير متصل بالشبكة"
 
 #: ../komikku/utils.py:272
 msgid "No Internet connection, timeout or server down"
-msgstr ""
+msgstr "لا اتصال بالشبكة أو مهلة الاتصال انتهت أو الخادم عطِب"
 
 #: ../komikku/webview.py:256
 msgid "Please complete CAPTCHA"
