@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: 2023-07-15 08:52+0000\n"
+"PO-Revision-Date: 2023-07-16 18:02+0000\n"
 "Last-Translator: abidin toumi <abidin24@disroot.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/>"
 "\n"
@@ -2978,7 +2978,7 @@ msgstr "رجوع"
 
 #: ../komikku/card/__init__.py:130
 msgid "Read progress synchronization with server completed successfully"
-msgstr "نجحت مزامنة تقدم القراءة مع الخادم"
+msgstr "نجحت مزامنة تقدم المطالعة مع الخادم"
 
 #: ../komikku/card/__init__.py:141
 msgid "Failed to get manga URL"
