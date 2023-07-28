@@ -409,7 +409,7 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
             bbox = self._compute_borders_crop_bbox()
 
             # Crop is possible if computed bbox is included in pixbuf
-            if bbox[2] - bbox[0] < self.orig_width or bbox[3] - bbox[1] < self.orig_height:
+            if bbox is not None and (bbox[2] - bbox[0] < self.orig_width or bbox[3] - bbox[1] < self.orig_height):
                 return crop_pixbuf(self.pixbuf, bbox[0], bbox[1], bbox[2] - bbox[0], bbox[3] - bbox[1])
 
             return self.pixbuf
