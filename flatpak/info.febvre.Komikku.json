@@ -115,6 +115,26 @@
         "build-args" : [
             "--share=network"
         ]
-    }
-
+    },
+    "cleanup": [
+        "/bin/cvtenc",
+        "/bin/autogsdoc",
+        "/bin/debugapp",
+        "/bin/defaults",
+        "/bin/gdnc",
+        "/bin/gdomap",
+        "/bin/gnustep*",
+        "/bin/gspath",
+        "/bin/HTMLLinker",
+        "/bin/make_strings",
+        "/bin/openapp",
+        "/bin/pl*",
+        "/bin/sfparse",
+        "/bin/xmlparse",
+        "/etc/GNUstep",
+        "/include",
+        "/lib/GNUstep",
+        "/share/GNUstep",
+        "/share/man"
+    ]
 }
