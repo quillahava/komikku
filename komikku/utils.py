@@ -44,34 +44,6 @@ def check_cmdline_tool(cmd):
         return p.returncode == 0, out.decode('utf-8').strip()
 
 
-def create_picture_from_data(data, static_animation=False, subdivided=False):
-    mime_type, _result_uncertain = Gio.content_type_guess(None, data)
-
-    if mime_type == 'image/gif' and not static_animation:
-        return PictureAnimation.new_from_data(data)
-    if subdivided:
-        return PictureSubdivided.new_from_data(data)
-
-    return Picture.new_from_data(data)
-
-
-def create_picture_from_file(path, static_animation=False, subdivided=False):
-    format_, _width, _height = Pixbuf.get_file_info(path)
-    if format_ is None:
-        return None
-
-    if 'image/gif' in format_.get_mime_types() and not static_animation:
-        return PictureAnimation.new_from_file(path)
-    if subdivided:
-        return PictureSubdivided.new_from_file(path)
-
-    return Picture.new_from_file(path)
-
-
-def create_picture_from_resource(path):
-    return Picture.new_from_resource(path)
-
-
 def create_paintable_from_data(data, width=None, height=None, static_animation=False, preserve_aspect_ratio=True):
     mime_type, _result_uncertain = Gio.content_type_guess(None, data)
     if not mime_type:

@@ -20,14 +20,10 @@ from komikku.utils import log_error_traceback
 class BasePager:
     autohide_controls = True
     default_double_click_time = Gtk.Settings.get_default().get_property('gtk-double-click-time')
-    zoom = dict(active=False)
 
     def __init__(self, reader):
         self.reader = reader
         self.window = reader.window
-
-        # Keyboard navigation
-        self.key_pressed_handler_id = self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
         # Controller to track pointer motion: used to hide pointer during keyboard navigation
         self.controller_motion = Gtk.EventControllerMotion.new()
@@ -44,19 +40,8 @@ class BasePager:
     def size(self):
         raise NotImplementedError()
 
-    @abstractmethod
-    def add_page(self, position):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def clear(self):
-        raise NotImplementedError()
-
     def crop_pages_borders(self):
         raise NotImplementedError()
-
-    def dispose(self):
-        self.window.controller_key.disconnect(self.key_pressed_handler_id)
 
     @abstractmethod
     def goto_page(self, page_index):
@@ -67,10 +52,6 @@ class BasePager:
 
     @abstractmethod
     def init(self):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def on_key_pressed(self, _widget, event):
         raise NotImplementedError()
 
     def on_pointer_motion(self, _controller, x, y):
@@ -85,17 +66,9 @@ class BasePager:
 
         return Gdk.EVENT_PROPAGATE
 
-    @abstractmethod
-    def on_page_rendered(self, page, retry):
-        raise NotImplementedError()
-
     def rescale_pages(self):
         for page in self.pages:
             page.rescale()
-
-    def resize_pages(self, _pager=None, _orientation=None):
-        for page in self.pages:
-            page.resize()
 
     def save_progress(self, read_pages):
         """Save reading progress
@@ -103,7 +76,7 @@ class BasePager:
         Accepts one or several pages which can be from different chapters"""
 
         if type(read_pages) != list:
-            read_pages = [read_pages]
+            read_pages = [read_pages,]
 
         for page in read_pages.copy():
             if page.status == 'disposed':
@@ -118,7 +91,7 @@ class BasePager:
             if page.status == 'rendering':
                 return GLib.SOURCE_CONTINUE
 
-            if page.status != 'rendered' or page.error is not None:
+            if page.status == 'offlimit' or page.error is not None:
                 read_pages.remove(page)
 
         if not read_pages:
@@ -173,10 +146,6 @@ class BasePager:
 
         return GLib.SOURCE_REMOVE
 
-    @abstractmethod
-    def scroll_to_direction(self, direction):
-        raise NotImplementedError()
-
     def sync_progress_with_server(self, chapter, index):
         # Sync reading progress with server if function is supported
         def run():
@@ -208,6 +177,8 @@ class BasePager:
 class Pager(Adw.Bin, BasePager):
     """Classic page by page pager (LTR, RTL, vertical)"""
 
+    __gtype_name__ = 'Pager'
+
     current_chapter_id = None
 
     def __init__(self, reader):
@@ -220,8 +191,10 @@ class Pager(Adw.Bin, BasePager):
         self.carousel.set_reveal_duration(0)
         self.set_child(self.carousel)
 
-        self.carousel.connect('notify::orientation', self.resize_pages)
         self.page_changed_handler_id = self.carousel.connect('page-changed', self.on_page_changed)
+
+        # Keyboard navigation
+        self.key_pressed_handler_id = self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
         # Scroll controller
         self.controller_scroll = Gtk.EventControllerScroll.new(Gtk.EventControllerScrollFlags.BOTH_AXES)
@@ -317,12 +290,12 @@ class Pager(Adw.Bin, BasePager):
 
     def crop_pages_borders(self):
         for page in self.pages:
-            if page.status == 'rendered' and page.error is None:
+            if page.picture and page.error is None:
                 page.picture.crop = self.reader.borders_crop
 
     def dispose(self):
+        self.window.controller_key.disconnect(self.key_pressed_handler_id)
         self.carousel.disconnect(self.page_changed_handler_id)
-        BasePager.dispose(self)
         self.clear()
 
     def goto_page(self, index):

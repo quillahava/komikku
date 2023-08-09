@@ -375,7 +375,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.gesture_click.connect('pressed', self.on_button_clicked)
 
         self.connect('close-request', self.quit)
-        self.headerbar_revealer.connect('notify::child-revealed', self.on_headerbar_toggled)
 
         self.stack.connect('notify::transition-running', self.on_page_shown)
 
@@ -508,10 +507,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
             return Gdk.EVENT_STOP
 
         return Gdk.EVENT_PROPAGATE
-
-    def on_headerbar_toggled(self, _revealer, _gparam):
-        if self.page == 'reader' and self.reader.pager:
-            self.reader.pager.resize_pages()
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
@@ -654,8 +649,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
             self.library.on_resize()
             self.card.on_resize()
-            if self.page == 'reader':
-                self.reader.on_resize()
 
         if allocation.name == 'maximized':
             GLib.idle_add(on_maximized)

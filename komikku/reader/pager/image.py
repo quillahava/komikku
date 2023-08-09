@@ -40,15 +40,18 @@ def crop_pixbuf(pixbuf, src_x, src_y, width, height):
 
 
 class KImage(Gtk.Widget, Gtk.Scrollable):
+    __gtype_name__ = 'KImage'
     __gsignals__ = {
+        'allocable': (GObject.SignalFlags.RUN_FIRST, None, ()),
         'clicked': (GObject.SignalFlags.RUN_FIRST, None, (int, int)),
         'zoom-begin': (GObject.SignalFlags.RUN_FIRST, None, ()),
         'zoom-end': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
-    def __init__(self, path, pixbuf, scaling='screen', can_zoom=True, crop=False, landscape_zoom=False):
+    def __init__(self, path, pixbuf, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False):
         super().__init__()
 
+        self.__allocable = False
         self.__can_zoom = can_zoom
         self.__crop = crop
         self.__hadj = None
@@ -59,6 +62,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
 
         self.crop_bbox = None
         self.pixbuf = pixbuf
+        self.ratio = pixbuf.get_width() / pixbuf.get_height()
         self.path = path
         self.texture = None
         self.texture_crop = None
@@ -108,7 +112,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             self.crop_bbox = self.__compute_borders_crop_bbox()
 
     @classmethod
-    def new_from_data(cls, data, scaling='screen', crop=False, landscape_zoom=False, static_animation=False):
+    def new_from_data(cls, data, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False, static_animation=False):
         mime_type, _result_uncertain = Gio.content_type_guess(None, data)
         if not mime_type:
             return None
@@ -124,10 +128,10 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(None, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom)
+        return cls(None, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
 
     @classmethod
-    def new_from_file(cls, path, scaling='screen', crop=False, landscape_zoom=False, static_animation=False):
+    def new_from_file(cls, path, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False, static_animation=False):
         format_, _width, _height = Pixbuf.get_file_info(path)
         if format_ is None:
             return None
@@ -141,11 +145,11 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(path, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom)
+        return cls(path, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
 
     @classmethod
-    def new_from_pixbuf(cls, pixbuf, scaling='screen', crop=False, landscape_zoom=False, static_animation=False):
-        return cls(None, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom)
+    def new_from_pixbuf(cls, pixbuf, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False, static_animation=False):
+        return cls(None, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
 
     @classmethod
     def new_from_resource(cls, path):
@@ -155,7 +159,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(None, pixbuf, can_zoom=False)
+        return cls(None, pixbuf)
 
     @property
     def borders(self):
@@ -171,6 +175,10 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             vborder = 0
 
         return (hborder, vborder)
+
+    @property
+    def can_zoom(self):
+        return self.__can_zoom
 
     @GObject.Property(type=bool, default=False)
     def crop(self):
@@ -398,6 +406,12 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         self.texture_cropped = None
         self.animation_iter = None
 
+    def do_measure(self, orientation, for_size):
+        if orientation == Gtk.Orientation.HORIZONTAL:
+            return 0, int(for_size * self.ratio) if for_size != -1 else -1, -1, -1
+
+        return 0, for_size // self.ratio if for_size != -1 else -1, -1, -1
+
     def do_size_allocate(self, w, h, b):
         if self.crop and self.crop_bbox is None:
             self.crop_bbox = self.__compute_borders_crop_bbox()
@@ -454,6 +468,10 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         snapshot.append_texture(self.texture_crop if self.crop else self.texture, rect)
 
         snapshot.restore()
+
+        if not self.__allocable:
+            self.__allocable = True
+            self.emit('allocable')
 
     def on_gesture_click_released(self, _gesture, n_press, x, y):
         def emit_clicked(x, y):

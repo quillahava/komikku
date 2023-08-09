@@ -59,6 +59,11 @@ class Reader:
 
     @property
     def borders_crop(self):
+        if self.reading_mode == 'webtoon':
+            # Borders crop is not an option in Webtoon reading mode
+            # Ignore settings and return False
+            return False
+
         if self.manga.borders_crop in (0, 1):
             return bool(self.manga.borders_crop)
 
@@ -66,6 +71,11 @@ class Reader:
 
     @property
     def landscape_zoom(self):
+        if self.reading_mode == 'webtoon':
+            # Landscape zoom is not an option in Webtoon reading mode
+            # Ignore settings and return False
+            return False
+
         if self.manga.landscape_zoom in (0, 1):
             return bool(self.manga.landscape_zoom)
 
@@ -232,12 +242,6 @@ class Reader:
                 self.pager.reverse_pages()
             self.set_orientation()
 
-    def on_resize(self):
-        if not self.pager:
-            return
-
-        self.pager.resize_pages()
-
     def on_scaling_changed(self, _action, variant):
         value = variant.get_string()
         if value == self.scaling:
@@ -266,7 +270,7 @@ class Reader:
             return
 
         page = self.pager.current_page
-        if page.status != 'rendered' or page.error is not None:
+        if not page.picture or page.error:
             return
 
         def do_save(dest_path):
