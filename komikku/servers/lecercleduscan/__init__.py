@@ -9,6 +9,7 @@ class Lecercleduscan(FoOlSlide):
     id = 'lecercleduscan'
     name = 'Le Cercle du Scan'
     lang = 'fr'
+    status = 'disabled'
 
     base_url = 'https://lel.lecercleduscan.com'
     search_url = base_url + '/search/'
