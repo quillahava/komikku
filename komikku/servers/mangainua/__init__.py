@@ -22,6 +22,7 @@ class Mangainua(Server):
 
     base_url = 'https://manga.in.ua'
     search_url = base_url + '/mangas/'
+    api_chapters_url = base_url + '/engine/ajax/controller.php?mod=load_chapters'
 
     def __init__(self):
         if self.session is None:
@@ -83,8 +84,43 @@ class Mangainua(Server):
         # Description
         data['synopsis'] = soup.find('div', class_='item__full-description').text
 
+        #
         # Chapters
-        for chapter in soup.find('div', class_='linkstocomicsblock').find_all('div', class_='ltcitems'):
+        # Available via an API call that requires 2 params: `news_id` and `user_hash`
+        #
+
+        news_id = initial_data['url'].split('/')[-1].split('-')[0]
+
+        # user_hash can be found in a script
+        for script_element in soup.find_all('script'):
+            script = script_element.string
+            if not script or 'var site_login_hash' not in script:
+                continue
+
+            hash = None
+            for line in script.split('\n'):
+                line = line.strip()
+
+                if 'var site_login_hash' in line:
+                    hash = line.split("'")[-2]
+                    break
+
+        r = self.session_post(
+            self.api_chapters_url,
+            data=dict(
+                action='show',
+                news_id=news_id,
+                news_category=1,
+                this_link='',
+                user_hash=hash,
+            )
+        )
+        if r.status_code != 200:
+            return None
+
+        soup = BeautifulSoup(r.text, features='lxml')
+
+        for chapter in soup.find_all('div', class_='ltcitems'):
             url = chapter.a['href']
             slug = url.split('/')[-1].split('.')[0]
 
