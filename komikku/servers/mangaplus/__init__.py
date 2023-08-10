@@ -27,6 +27,7 @@ LANGUAGES_CODES = dict(
     ru='rus',
     id='ind',
     th='tha',
+    vi='vie',
 )
 RE_ENCRYPTION_KEY = re.compile('.{1,2}')
 SERVER_NAME = 'MANGA Plus by SHUEISHA'
@@ -325,6 +326,12 @@ class Mangaplus_th(Mangaplus):
     lang = 'th'
 
 
+class Mangaplus_vi(Mangaplus):
+    id = 'mangaplus_vi'
+    name = SERVER_NAME
+    lang = 'vi'
+
+
 # Protocol Buffers messages used to deserialize API responses
 # https://gist.github.com/ZaneHannanAU/437531300c4df524bdb5fd8a13fbab50
 
@@ -343,6 +350,7 @@ class LanguageEnum(IntEnum):
     PORTUGUESE_BR = 4
     RUSSIAN = 5
     THAI = 6
+    VIET = 9
 
     @classmethod
     def from_code(cls, code):
@@ -353,12 +361,16 @@ class LanguageEnum(IntEnum):
             return cls.SPANISH.value
         if code == 'fr':
             return cls.FRENCH.value
+        if code == 'id':
+            return cls.INDONESIAN.value
         if code == 'pt_BR':
             return cls.PORTUGUESE_BR.value
         if code == 'ru':
             return cls.RUSSIAN.value
-        if code == 'id':
-            return cls.INDONESIAN.value
+        if code == 'th':
+            return cls.THAI.value
+        if code == 'vi':
+            return cls.VIET.value
 
 
 class UpdateTimingEnum(IntEnum):
