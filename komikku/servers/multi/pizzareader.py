@@ -3,6 +3,7 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 # Supported servers:
+# FMTeam [FR]
 # GTO The Great Site [IT]
 # Lupi Team [IT]
 # Phoenix Scans [IT]
