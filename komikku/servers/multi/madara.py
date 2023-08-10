@@ -15,6 +15,7 @@
 # Atikrost [TR] (disabled)
 # Best Manga [RU]
 # Colored Council [EN]
+# Fr-Scan (Id frdashscan) [FR]
 # Leomanga [ES]
 # Leviatanscans [EN]
 # Manga-Scantrad [FR]

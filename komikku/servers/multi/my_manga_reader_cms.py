@@ -5,7 +5,6 @@
 # My Manga Reader CMS
 
 # Supported servers:
-# Fr-Scan (Id frdashscan) [FR]
 # FR Scan [FR] (Disabled)
 # Jpmangas [FR]
 # Lelscan-VF [FR]
@@ -219,7 +218,7 @@ class MyMangaReaderCMS(Server):
         Returns list of latest updated manga
         """
         r = self.session_get(
-            self.base_url,
+            f'{self.base_url}/latest-release'
         )
         if r.status_code != 200:
             return None
