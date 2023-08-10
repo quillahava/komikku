@@ -17,10 +17,10 @@ class Goldenmangas(Server):
     lang = 'pt_BR'
     is_nsfw = True
 
-    base_url = 'https://goldenmangas.top'
-    search_url = base_url + '/mangabr'
-    manga_url = base_url + '/mangabr/{0}'
-    chapter_url = base_url + '/mangabr/{0}/{1}'
+    base_url = 'https://goldenmanga.top'
+    search_url = base_url + '/mangas'
+    manga_url = base_url + '/mangas/{0}'
+    chapter_url = base_url + '/mangas/{0}/{1}'
     image_url = base_url + '/mm-admin/uploads/mangas/{0}/{1}/{2}'
 
     def __init__(self):
