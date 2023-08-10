@@ -161,7 +161,7 @@ class Madara(Server):
                 # In case of synopsis has been moved with details
                 data['synopsis'] = element.find('p').text.strip()
 
-        summary_container = soup.find('div', class_=['summary__content', 'manga-excerpt'])
+        summary_container = soup.find('div', class_=['summary__content', 'manga-excerpt', 'manga-summary'])
         if summary_container:
             if p_elements := summary_container.find_all('p'):
                 data['synopsis'] = '\n\n'.join([p_element.text.strip() for p_element in p_elements])

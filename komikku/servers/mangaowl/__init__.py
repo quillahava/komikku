@@ -11,7 +11,7 @@ class Mangaowl(Madara):
     lang = 'en'
     is_nsfw = True
 
-    series_name = 'series'  # This value changes regularly!
+    series_name = 'manga'  # This value changes regularly!
 
     base_url = 'https://mangaowl.io'
-    chapters_url = base_url + '/series/{0}/ajax/chapters/'
+    chapters_url = base_url + '/manga/{0}/ajax/chapters/'
