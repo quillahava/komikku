@@ -46,17 +46,20 @@ def test_unionmangas(unionmangas_server):
         response = unionmangas_server.get_manga_data(dict(slug=slug))
         name = response['name']
         chapter_slug = response['chapters'][0]['slug']
+        chapter_url = response['chapters'][0]['url']
     except Exception as e:
         chapter_slug = None
+        chapter_url = None
         log_error_traceback(e)
 
     assert chapter_slug is not None
+    assert chapter_url is not None
     yield
 
     # Get chapter data
     print("Get chapter data")
     try:
-        response = unionmangas_server.get_manga_chapter_data(None, name, chapter_slug, None)
+        response = unionmangas_server.get_manga_chapter_data(None, None, None, chapter_url)
         page = response['pages'][0]
     except Exception as e:
         page = None

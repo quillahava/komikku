@@ -19,11 +19,11 @@ class Unionmangas(Server):
     is_nsfw = True
     long_strip_genres = ['Webtoon', ]
 
-    base_url = 'https://unionleitor.top'
+    base_url = 'https://guimah.com'
     api_search_url = base_url + '/assets/busca.php?nomeManga={0}'
     most_populars_url = base_url + '/lista-mangas/visualizacoes'
-    manga_url = base_url + '/perfil-manga/{0}'
-    chapter_url = base_url + '/leitor/{0}/{1}'
+    manga_url = base_url + '/perfil/{0}'
+    chapter_url = base_url + '/leitor/{0}'
     image_url = 'https://umangas.club/leitor/mangas/{0}/{1}/{2}'
 
     def __init__(self):
@@ -93,6 +93,7 @@ class Unionmangas(Server):
             data['chapters'].append(dict(
                 title=a_element.text.strip(),
                 slug=a_element.get('href').split('/')[-1],
+                url='/'.join(a_element.get('href').split('/')[-2:]),
                 date=convert_date_string(span_element.text.strip()[1:-1], format='%d/%m/%Y'),
             ))
 
@@ -102,9 +103,7 @@ class Unionmangas(Server):
         """
         Returns manga chapter data by scraping chapter HTML page content
         """
-        manga_slug = manga_name.replace(' ', '_')
-
-        r = self.session_get(self.chapter_url.format(manga_slug, chapter_slug))
+        r = self.session_get(self.chapter_url.format(chapter_url))
         if r.status_code != 200:
             return None
 
