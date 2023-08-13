@@ -87,6 +87,8 @@
     <url type="homepage">@website@</url>
     <url type="contact">https://matrix.to/#/#komikku-gnome:matrix.org</url>
     <url type="bugtracker">@gitrepo@/-/issues</url>
+    <url type="vcs-browser">@gitrepo@</url>
+    <url type="translate">https://hosted.weblate.org/projects/komikku</url>
     <url type="donation">https://ko-fi.com/valos</url>
     <url type="donation">https://liberapay.com/valos/donate</url>
 
