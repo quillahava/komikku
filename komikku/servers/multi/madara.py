@@ -23,6 +23,7 @@
 # Phoenix Fansub [ES]
 # Reaperscans [EN/AR/FR/ID/TR]
 # Submanga [ES] (disabled)
+# ToonGod [EN]
 # Wakascan [FR] (disabled)
 
 from bs4 import BeautifulSoup
@@ -400,6 +401,8 @@ class Madara2(Madara):
 
         results = []
         for element in soup.find_all('div', class_='post-title'):
+            if not element.h3:
+                continue
             a_element = element.h3.a
             results.append(dict(
                 slug=a_element.get('href').split('/')[-2],
@@ -430,6 +433,8 @@ class Madara2(Madara):
 
         results = []
         for element in soup.find_all('div', class_='post-title'):
+            if not element.h3:
+                continue
             a_element = element.h3.a
             results.append(dict(
                 slug=a_element.get('href').split('/')[-2],
