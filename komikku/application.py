@@ -589,7 +589,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
             self.webview.navigate_back(source)
 
     def on_network_status_changed(self, monitor, _connected):
-        self.network_available = monitor.get_connectivity() == Gio.NetworkConnectivity.FULL
+        connectivity = monitor.get_connectivity()
+        if _connected != self.network_available:
+            self.application.logger.warning('Connection status: {}'.format(connectivity))
+        self.network_available = connectivity == Gio.NetworkConnectivity.FULL
 
         if self.network_available:
             # Automatically update library at startup
@@ -600,7 +603,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
             if Settings.get_default().downloader_state:
                 self.downloader.start()
         else:
-            self.application.logger.warning('Connection status: {}'.format(monitor.get_connectivity()))
 
             # Stop Updater
             self.updater.stop()
