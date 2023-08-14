@@ -123,8 +123,8 @@ class Webtoon(Server):
         for element in info_element.find_all(class_='genre'):
             data['genres'].append(get_soup_element_inner_text(element))
 
-        if 'challenge' in data['url']:
-            # Challenge (aka Canvas)
+        if 'canvas' in data['url']:
+            # Canvas
             detail_element = soup.find('div', class_='detail')
 
             data['cover'] = soup.find('div', class_='detail_header').img.get('src')
