@@ -174,6 +174,7 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
         page.insert_before(self, None)
 
+        page.connect('rendered', self.on_page_rendered)
         page.render()
 
     def cancel_deceleration(self):
@@ -211,7 +212,7 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
                 if last_page._ic_position == self.widget_height:
                     self.emit('offlimit', 'end')
 
-        self.get_parent().get_vscrollbar().props.adjustment.configure(
+        self.vadjustment.configure(
             max(min(self.vadjustment.props.value, self.max_vadjustment_value), 0),
             lower,
             upper,
@@ -327,18 +328,20 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         # So, no deceleration on touch screen :-(
         self.cancel_deceleration()
 
-    def on_gesture_drag_end(self, controller, _offset_x, _offset_y):
+    def on_gesture_drag_end(self, _controller, _offset_x, _offset_y):
         self.cancel_deceleration()
 
-        # Take it to prevent Gtk.GestureClick release event
-        controller.set_state(Gtk.EventSequenceState.DENIED)
+    def on_gesture_drag_update(self, _controller, _offset_x, offset_y):
+        if abs(offset_y) < 1:
+            # Ignore drags that are only clicks
+            # Occurs when a `Retry` button is activated
+            return
 
-    def on_gesture_drag_update(self, controller, offset_x, offset_y):
         self.scroll_direction = Gtk.DirectionType.UP if offset_y > 0 else Gtk.DirectionType.DOWN
         self.vadjustment.props.value -= (offset_y - self.scroll_drag_offset) * SCROLL_DRAG_FACTOR
         self.scroll_drag_offset = offset_y
 
-        controller.set_state(Gtk.EventSequenceState.CLAIMED)
+        self.gesture_drag.set_state(Gtk.EventSequenceState.CLAIMED)
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.pager.window.page != 'reader':
@@ -366,10 +369,15 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
         return Gdk.EVENT_STOP
 
+    def on_page_rendered(self, page, retry):
+        if retry:
+            # No idea why this reset is necessary
+            self.gesture_drag.reset()
+
     def on_page_status_changed(self, page, _status, init_height):
-        if page.status != 'allocable':
+        if page.status not in ('allocable', 'offlimit'):
             return
-        if page.error:
+        if page.error or page.status == 'offlimit':
             self.is_scroll_adjusting = False
             return
 
@@ -412,6 +420,7 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
         self.vadjustment.props.value += page._ic_height
 
+        page.connect('rendered', self.on_page_rendered)
         page.connect('notify::status', self.on_page_status_changed, page._ic_height)
         page.render()
 
