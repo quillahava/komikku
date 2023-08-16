@@ -83,7 +83,7 @@ CREDITS = dict(
         'Irénée Thirion (French)',
         'Abidin Toumi (Arabic)',
         'Sabri Ünal (Turkish)',
-        'Roger VC (Catalan)',
+        'Roger Vilarasau (Catalan)',
         'Gallegonovato (Spanish)',
         'GrownNed (Russian)',
         'Infinitive Witch (Brazilian Portuguese)',
@@ -480,13 +480,23 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>RTL/LTR/Vertical pager: Added &lt;Crtl+Mouse Wheel&gt; zoom</li>
-                <li>[Servers] JapScan: Update</li>
-                <li>[Servers] MangaFreak: Update</li>
+                <li>[Reader] Full rewrite of the Webtoon pager</li>
+                <li>[Servers] Adds PhenixScans [FR]</li>
+                <li>[Servers] Adds ToonGod [EN] </li>
+                <li>[Servers] Asura Scans [EN]: Update</li>
+                <li>[Servers] FM Team: Update</li>
+                <li>[Servers] FR-Scan: Update</li>
+                <li>[Servers] Golden Mangás: Update</li>
+                <li>[Servers] Grisebouille: Update</li>
+                <li>[Servers] MANGA Plus by SHUEISHA: Update</li>
+                <li>[Servers] Manga/in/ua: Update</li>
                 <li>[Servers] MangaKawaii: Update</li>
-                <li>[Servers] Mangapill: Update</li>
-                <li>[Servers] Xoxocomics: Update</li>
-                <li>[L10n] Updated Arabic, French, Russian and Turkish translations</li>
+                <li>[Servers] Mangaowl: Update</li>
+                <li>[Servers] Union Mangás: Update</li>
+                <li>[Servers] Webtoon: Update</li>
+                <li>[Servers] Le Cercle du Scan: Disable</li>
+                <li>[L10n] Added Romanian translation</li>
+                <li>[L10n] Updated Arabic, Catalan, Finnish, Russian and Spanish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)
