@@ -16,4 +16,4 @@ class Toongod(Madara2):
     date_format = '%d %b %Y'
     series_name = 'webtoon'
 
-    base_url = 'https://toongod.org'
+    base_url = 'https://www.toongod.org'
