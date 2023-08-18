@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: 2023-06-14 18:50+0000\n"
+"PO-Revision-Date: 2023-08-19 00:54+0000\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
-"Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/"
-">\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/>"
+"\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18-dev\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -93,7 +93,7 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:498
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:763
 msgid "[Servers] JapScan: Update"
-msgstr ""
+msgstr "[Sunucular] JapScan: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:99
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:125
@@ -106,21 +106,21 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:827
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:901
 msgid "[Servers] MangaKawaii: Update"
-msgstr ""
+msgstr "[Sunucular] MangaKawaii: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:100
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:377
 msgid "[Servers] Mangapill: Update"
-msgstr ""
+msgstr "[Sunucular] Mangapill: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:101
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:398
 msgid "[Servers] Xoxocomics: Update"
-msgstr ""
+msgstr "[Sunucular] Xoxocomics: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 msgid "[L10n] Updated Arabic and Russian translations"
-msgstr ""
+msgstr "[L10n] Arapça ve Rusça çeviriler güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
@@ -135,7 +135,7 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:250
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:265
 msgid "Happy reading."
-msgstr ""
+msgstr "İyi okumalar."
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "[Reader] LTR/RTL/Vertical pager: Fixed double tap/click zoom"
@@ -146,7 +146,7 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:532
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:663
 msgid "[Servers] Jpmangas: Update"
-msgstr ""
+msgstr "[Sunucular] Jpmangas: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:112
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:261
@@ -154,11 +154,11 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:395
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:483
 msgid "[Servers] Mangaowl: Update"
-msgstr ""
+msgstr "[Sunucular] Mangaowl: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 msgid "[L10n] Updated Russian translation"
-msgstr ""
+msgstr "[L10n] Rusça çeviri güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:121
 msgid "[Reader] LTR/RTL/Vertical pager: Fixed zoom bugs"
@@ -166,41 +166,41 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:122
 msgid "[Reader] Fixed crashes caused by corrupted images"
-msgstr ""
+msgstr "[Reader] Bozuk görüntülerin neden olduğu çökmeler düzeltildi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:123
 msgid "[Servers] Added TCB Scans [EN]"
-msgstr ""
+msgstr "[Sunucular] TCB Taramaları Eklendi [TR]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:124
 msgid "[Servers] MangaHere: Fixed duplicated pages"
-msgstr ""
+msgstr "[Sunucular] MangaHere: Yinelenen sayfalar düzeltildi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:126
 msgid "[L10n] Added Arabic and Catalan translations"
-msgstr ""
+msgstr "[L10n] Arapça ve Katalanca çeviriler eklendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:127
 msgid "[L10n] Updated Dutch and Russian translations"
-msgstr ""
+msgstr "[L10n] Flemenkçe ve Rusça çeviriler güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:135
 msgid "[Servers] Added Flame Scans [EN]"
-msgstr ""
+msgstr "[Sunucular] Flame Scans eklendi[EN]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
 msgid "[Servers] Added MangaHere [EN]"
-msgstr ""
+msgstr "[Sunucular] MangaHere eklendi [EN]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:137
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:201
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:338
 msgid "[Servers] 3asq: Update"
-msgstr ""
+msgstr "[Sunucular] 3asq: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:138
 msgid "[Servers] LeviatanScans: Update [EN/ES]"
-msgstr ""
+msgstr "[Sunucular] LeviatanScans: Güncellendi [EN/ES]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:139
 msgid "[Servers] Manhuaus: Update"
