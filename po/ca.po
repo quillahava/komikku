@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: 2023-07-03 16:48+0000\n"
+"PO-Revision-Date: 2023-08-21 16:48+0000\n"
 "Last-Translator: Roger VC <rogervilarasau@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/komikku/main/ca/>"
 "\n"
@@ -3260,7 +3260,7 @@ msgstr "Marca com a no llegit"
 
 #: ../komikku/card/chapters_list.py:671
 msgid "Mark Previous Chapters as Read"
-msgstr "Marcar els capítols anteriors com a llegits"
+msgstr "Marca els capítols anteriors com a llegits"
 
 #: ../komikku/categories_editor.py:78 ../komikku/library/__init__.py:295
 msgid "Delete?"
