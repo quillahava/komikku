@@ -75,7 +75,7 @@ class BasePager:
 
         Accepts one or several pages which can be from different chapters"""
 
-        if type(read_pages) != list:
+        if not isinstance(read_pages, list):
             read_pages = [read_pages,]
 
         for page in read_pages.copy():
