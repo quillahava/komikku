@@ -137,10 +137,10 @@ def get_buffer_mime_type(buffer):
     try:
         if hasattr(magic, 'detect_from_content'):
             # Using file-magic module: https://github.com/file/file
-            return magic.detect_from_content(buffer[:128]).mime_type
+            return magic.detect_from_content(buffer[:128]).mime_type  # noqa: TC300
 
         # Using python-magic module: https://github.com/ahupp/python-magic
-        return magic.from_buffer(buffer[:128], mime=True)
+        return magic.from_buffer(buffer[:128], mime=True)  # noqa: TC300
     except Exception:
         return ''
 
@@ -149,10 +149,10 @@ def get_file_mime_type(path):
     try:
         if hasattr(magic, 'detect_from_filename'):
             # Using file-magic module: https://github.com/file/file
-            return magic.detect_from_filename(path).mime_type
+            return magic.detect_from_filename(path).mime_type  # noqa: TC300
 
         # Using python-magic module: https://github.com/ahupp/python-magic
-        return magic.from_file(path, mime=True)
+        return magic.from_file(path, mime=True)  # noqa: TC300
     except Exception:
         return ''
 

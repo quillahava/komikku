@@ -277,7 +277,7 @@ class Japscan(Server):
                         name=item['name'],
                     ))
             except Exception:
-                pass
+                pass  # noqa: TC202
             else:
                 return results
 

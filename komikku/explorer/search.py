@@ -190,9 +190,9 @@ class ExplorerSearchPage:
                 elif filter_['value_type'] == 'multiple':
                     filter_widget = build_select_multiple(filter_)
                 else:
-                    raise NotImplementedError('Invalid select value_type')
+                    raise ValueError('Invalid select value_type')  # noqa: TC003
             else:
-                raise NotImplementedError('Invalid filter type')
+                raise ValueError('Invalid filter type')  # noqa: TC003
 
             if index > 0:
                 vbox.append(Gtk.Separator())

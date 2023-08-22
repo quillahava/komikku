@@ -330,7 +330,7 @@ class Settings(Gio.Settings):
             # Before 0.22.0 reading mode was called reading direction
             mode = self.get_enum('reading-direction')
         except Exception:
-            pass
+            pass  # noqa: TC202
 
         if mode < 0:
             mode = self.get_enum('reading-mode')
@@ -351,7 +351,7 @@ class Settings(Gio.Settings):
             self.get_enum('reading-direction')
             self.set_enum('reading-direction', -1)
         except Exception:
-            pass
+            pass  # noqa: TC202
 
         if mode == 'right-to-left':
             self.set_enum('reading-mode', 0)
