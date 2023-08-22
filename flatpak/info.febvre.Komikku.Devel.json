@@ -1,5 +1,5 @@
 {
-    "app-id" : "info.febvre.Komikku",
+    "app-id" : "info.febvre.Komikku.Devel",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "44",
     "sdk" : "org.gnome.Sdk",
@@ -100,13 +100,6 @@
             "builddir" : true,
             "config-opts" : [
                 "-Dprofile=development"
-            ],
-            "sources" : [
-                {
-                    "type" : "archive",
-                    "url" : "https://gitlab.com/valos/Komikku/-/archive/v0.6.2/Komikku-v0.6.2.tar.bz2",
-                    "sha256" : "eecb17bc621e20f5ca5e2764fccfb125981dfa6fc14232243b68088be6b06f29"
-                }
             ]
         }
     ],

@@ -14,9 +14,11 @@ flake8:
     - flake8 komikku
 
 flatpak:
+  stage: 'test'
   extends: '.flatpak@x86_64'
   image: 'quay.io/gnome_infrastructure/gnome-runtime-images:x86_64-gnome-44'
 
 flatpak@aarch64:
+  stage: 'test'
   extends: '.flatpak@aarch64'
   image: 'quay.io/gnome_infrastructure/gnome-runtime-images:aarch64-gnome-44'
