@@ -1,11 +1,12 @@
 include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 
-variables:
-  APP_ID: "info.febvre.Komikku.Devel"
-  BUNDLE: "info.febvre.Komikku.Devel.flatpak"
-  FLATPAK_MODULE: "komikku"
-  MANIFEST_PATH: "flatpak/info.febvre.Komikku.Devel.json"
-  RUNTIME_REPO: "https://flathub.org/repo/flathub.flatpakrepo"
+.vars-devel:
+  variables:
+    MANIFEST_PATH: "flatpak/info.febvre.Komikku.Devel.json"
+    FLATPAK_MODULE: "komikku"
+    APP_ID: "info.febvre.Komikku.Devel"
+    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+    BUNDLE: "info.febvre.Komikku.Devel.flatpak"
 
 flake8:
   image: python:3.10
@@ -13,12 +14,10 @@ flake8:
     - pip install flake8
     - flake8 komikku
 
-flatpak:
-  stage: 'test'
-  extends: '.flatpak@x86_64'
-  image: 'quay.io/gnome_infrastructure/gnome-runtime-images:x86_64-gnome-44'
+# Build Flatpak for x86_64
+flatpak@x86_64:
+  extends: ['.flatpak@x86_64', '.vars-devel']
 
+# Build Flatpak for aarch64
 flatpak@aarch64:
-  stage: 'test'
-  extends: '.flatpak@aarch64'
-  image: 'quay.io/gnome_infrastructure/gnome-runtime-images:aarch64-gnome-44'
+  extends: ['.flatpak@aarch64', '.vars-devel']
