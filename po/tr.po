@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: 2023-08-19 00:54+0000\n"
+"PO-Revision-Date: 2023-08-25 12:52+0000\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/>"
 "\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0-dev\n"
+"X-Generator: Weblate 5.0.1-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -3019,8 +3019,8 @@ msgstr "%d/%m/%Y"
 #, python-brace-format
 msgid "{0} selected"
 msgid_plural "{0} selected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} seçildi"
+msgstr[1] "{0} seçildi"
 
 #: ../komikku/card/chapters_list.py:362 ../komikku/card/chapters_list.py:457
 msgid "Failed to update chapters reading status"
@@ -3066,7 +3066,7 @@ msgstr "Sil"
 
 #: ../komikku/categories_editor.py:192
 msgid "Edit"
-msgstr "Düzenle"
+msgstr "Düzenle"
 
 #: ../komikku/categories_editor.py:205
 msgid "Save"
@@ -3685,15 +3685,15 @@ msgstr "Güncelleme tamamlandı"
 #, python-brace-format
 msgid "{0} successful update"
 msgid_plural "{0} successful updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} başarılı güncelleme"
+msgstr[1] "{0} başarılı güncelleme"
 
 #: ../komikku/updater.py:108 ../komikku/updater.py:124
 #, python-brace-format
 msgid "{0} new chapter"
 msgid_plural "{0} new chapters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} yeni bölüm"
+msgstr[1] "{0} yeni bölüm"
 
 #: ../komikku/updater.py:110
 msgid "No new chapters"
@@ -3703,8 +3703,8 @@ msgstr "Yeni bölüm Yok"
 #, python-brace-format
 msgid "{0} update failed"
 msgid_plural "{0} updates failed"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} güncelleme başarısız oldu"
+msgstr[1] "{0} güncelleme başarısız oldu"
 
 #: ../komikku/updater.py:140
 msgid "Oops, update has failed. Please try again."
