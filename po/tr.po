@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-14 23:56+0200\n"
-"PO-Revision-Date: 2023-08-25 12:52+0000\n"
+"PO-Revision-Date: 2023-08-30 11:22+0000\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/>"
 "\n"
@@ -2366,7 +2366,7 @@ msgstr "İndirmeyi başlat/durdur"
 
 #: ../data/ui/application_window.ui:313 ../data/ui/menu/card.xml:60
 msgid "Open in Browser"
-msgstr "Tarayıcıda aç"
+msgstr "Tarayıcıda Aç"
 
 #: ../data/ui/application_window.ui:329
 msgid "Search for comics across all servers"
