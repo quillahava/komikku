@@ -88,7 +88,6 @@ class DebugInfo:
         info['icon-theme'] = Gtk.Settings.get_default().get_property('gtk-icon-theme-name')
 
         gsk_renderer.unrealize()
-        surface.destroy()
 
         return info
 
