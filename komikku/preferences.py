@@ -25,9 +25,8 @@ class Preferences(Adw.Bin):
     window = NotImplemented
     settings = NotImplemented
 
-    leaflet = Gtk.Template.Child('leaflet')
+    navigationview = Gtk.Template.Child('navigationview')
     pages_stack = Gtk.Template.Child('pages_stack')
-    subpages_stack = Gtk.Template.Child('subpages_stack')
     viewswitcherbar = Gtk.Template.Child('viewswitcherbar')
 
     color_scheme_row = Gtk.Template.Child('color_scheme_row')
@@ -80,11 +79,11 @@ class Preferences(Adw.Bin):
         self.set_config_values()
 
         self.window.stack.add_named(self, 'preferences')
-        self.leaflet.connect('notify::visible-child', self.on_page_changed)
+        self.navigationview.connect('notify::visible-page', self.on_page_changed)
 
     def navigate_back(self, _source):
-        if self.leaflet.get_visible_child_name() == 'subpages':
-            self.leaflet.navigate(Adw.NavigationDirection.BACK)
+        if self.navigationview.get_visible_page().props.tag in ('servers_languages', 'servers_settings'):
+            self.navigationview.pop()
         else:
             getattr(self.window, self.window.previous_page).show(reset=False)
 
@@ -242,7 +241,7 @@ class Preferences(Adw.Bin):
         self.servers_settings_subpage.populate()
 
     def on_page_changed(self, _deck, _child):
-        if self.leaflet.get_visible_child_name() != 'subpages':
+        if self.navigationview.get_visible_page().props.tag not in ('servers_languages', 'servers_settings'):
             self.viewswitchertitle.set_subtitle('')
             self.viewswitchertitle.set_view_switcher_enabled(True)
         else:
@@ -478,8 +477,7 @@ class PreferencesServersLanguagesSubpage:
 
     def present(self, _widget):
         self.parent.viewswitchertitle.set_subtitle(_('Servers Languages'))
-        self.parent.subpages_stack.set_visible_child_name('servers_languages')
-        self.parent.leaflet.set_visible_child_name('subpages')
+        self.parent.navigationview.push_by_tag('servers_languages')
 
 
 class PreferencesServersSettingsSubpage:
@@ -661,8 +659,7 @@ class PreferencesServersSettingsSubpage:
 
     def present(self, _widget):
         self.parent.viewswitchertitle.set_subtitle(_('Servers Settings'))
-        self.parent.subpages_stack.set_visible_child_name('servers_settings')
-        self.parent.leaflet.set_visible_child_name('subpages')
+        self.parent.navigationview.push_by_tag('servers_settings')
 
     def save_credential(self, button, server_main_id, server_class, username_entry, password_entry, address_entry, plaintext_checkbutton):
         username = username_entry.get_text()
