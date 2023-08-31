@@ -94,8 +94,6 @@ CREDITS = dict(
     ),
 )
 
-MOBILE_WIDTH_BREAKPOINT = 720
-
 
 class Application(Adw.Application):
     application_id = None
@@ -170,7 +168,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
     _page = 'library'
     previous_page = None
-    mobile_width = False
     network_available = False
 
     headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
@@ -346,8 +343,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         if Settings.get_default().window_maximized_state:
             self.maximize()
 
-        self.set_size_request(360, -1)
-        self.mobile_width = self.get_width() <= MOBILE_WIDTH_BREAKPOINT
+        self.set_size_request(360, 288)
 
         # Titlebar
         self.left_button.connect('clicked', self.on_left_button_clicked)
@@ -656,10 +652,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
             do_resize()
 
         def do_resize():
-            self.mobile_width = self.get_width() <= MOBILE_WIDTH_BREAKPOINT
-
             self.library.on_resize()
-            self.card.on_resize()
 
         if allocation.name == 'maximized':
             GLib.idle_add(on_maximized)

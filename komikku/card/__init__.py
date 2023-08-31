@@ -144,9 +144,6 @@ class Card:
         if self.selection_mode and self.stack.get_visible_child_name() != 'chapters':
             self.leave_selection_mode()
 
-    def on_resize(self):
-        self.info_box.on_resize()
-
     def on_resume_button_clicked(self, _button):
         chapters = []
         for i in range(self.chapters_list.list_model.get_n_items()):
@@ -241,45 +238,6 @@ class InfoBox:
 
         self.add_button.connect('clicked', self.card.on_add_button_clicked)
         self.resume2_button.connect('clicked', self.card.on_resume_button_clicked)
-
-        self.adapt_to_width()
-
-    def adapt_to_width(self):
-        if self.window.mobile_width:
-            self.cover_box.set_orientation(Gtk.Orientation.VERTICAL)
-            self.cover_box.props.spacing = 12
-
-            self.name_label.props.halign = Gtk.Align.CENTER
-            self.name_label.props.justify = Gtk.Justification.CENTER
-
-            self.status_server_label.props.halign = Gtk.Align.CENTER
-            self.status_server_label.props.justify = Gtk.Justification.CENTER
-
-            self.authors_label.props.halign = Gtk.Align.CENTER
-            self.authors_label.props.justify = Gtk.Justification.CENTER
-
-            self.buttons_box.set_orientation(Gtk.Orientation.VERTICAL)
-            self.buttons_box.props.spacing = 18
-            self.buttons_box.props.halign = Gtk.Align.CENTER
-        else:
-            self.cover_box.set_orientation(Gtk.Orientation.HORIZONTAL)
-            self.cover_box.props.spacing = 24
-
-            self.name_label.props.halign = Gtk.Align.START
-            self.name_label.props.justify = Gtk.Justification.LEFT
-
-            self.status_server_label.props.halign = Gtk.Align.START
-            self.status_server_label.props.justify = Gtk.Justification.LEFT
-
-            self.authors_label.props.halign = Gtk.Align.START
-            self.authors_label.props.justify = Gtk.Justification.LEFT
-
-            self.buttons_box.set_orientation(Gtk.Orientation.HORIZONTAL)
-            self.buttons_box.props.spacing = 12
-            self.buttons_box.props.halign = Gtk.Align.START
-
-    def on_resize(self):
-        self.adapt_to_width()
 
     def populate(self):
         cover_width = 170
