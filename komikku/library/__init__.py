@@ -65,17 +65,13 @@ class Library:
         self.searchbar.connect_entry(self.search_entry)
         self.searchbar.set_key_capture_widget(self.window)
 
-        # Flap (categories)
-        self.flap = self.window.library_flap
-        self.flap.props.transition_type = Adw.FlapTransitionType.OVER
-        self.flap.props.fold_policy = Adw.FlapFoldPolicy.ALWAYS
-        self.flap.props.modal = True
-        self.flap.props.swipe_to_close = True
-        self.flap.props.swipe_to_open = True
-        self.flap.connect('notify::reveal-flap', self.on_flap_revealed)
-        self.flap_reveal_button = self.window.library_flap_reveal_button
-        self.flap.bind_property(
-            'reveal-flap', self.flap_reveal_button, 'active', GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        # Overlay split view (provide overlay sidebar)
+        self.overlaysplitview = self.window.library_overlaysplitview
+        self.overlaysplitview.connect('notify::show-sidebar', self.on_overlaysplitview_revealed)
+        self.overlaysplitview_reveal_button = self.window.library_overlaysplitview_reveal_button
+        self.overlaysplitview.bind_property(
+            'show-sidebar', self.overlaysplitview_reveal_button, 'active',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
 
         self.categories_list = CategoriesList(self)
@@ -326,7 +322,7 @@ class Library:
     def edit_categories_selected(self, _action, _param):
         # Edit categories of selected mangas
         self.categories_list.set_edit_mode(True)
-        self.flap.set_reveal_flap(True)
+        self.overlaysplitview.set_show_sidebar(True)
 
     def enter_selection_mode(self):
         self.selection_mode_actionbar.set_revealed(True)
@@ -358,13 +354,7 @@ class Library:
             thumbnail._selected = False
 
         self.selection_mode_actionbar.set_revealed(False)
-        self.flap.set_reveal_flap(False)
-
-    def on_flap_revealed(self, _flap, _param):
-        if self.flap.get_reveal_flap():
-            self.categories_list.populate()
-        else:
-            self.categories_list.set_edit_mode(False)
+        self.overlaysplitview.set_show_sidebar(False)
 
     def on_gesture_long_press_activated(self, _gesture, x, y):
         """Allow to enter in selection mode with a long press on a thumbnail"""
@@ -462,6 +452,12 @@ class Library:
 
     def on_manga_updated(self, _updater, manga, _nb_recent_chapters, _nb_deleted_chapters, _synced):
         self.update_thumbnail(manga)
+
+    def on_overlaysplitview_revealed(self, _overlaysplitview, _param):
+        if self.overlaysplitview.get_show_sidebar():
+            self.categories_list.populate()
+        else:
+            self.categories_list.set_edit_mode(False)
 
     def on_resize(self):
         if self.page == 'start_page':
@@ -649,11 +645,11 @@ class Library:
 
     def update_headerbar_buttons(self):
         if self.page == 'flowbox':
-            self.flap_reveal_button.set_visible(True)
+            self.overlaysplitview_reveal_button.set_visible(True)
             self.window.right_button_stack.set_visible(True)
             self.window.right_button_stack.set_visible_child_name('library')
         else:
-            self.flap_reveal_button.set_visible(False)
+            self.overlaysplitview_reveal_button.set_visible(False)
             self.window.right_button_stack.set_visible(False)
 
     def update_selected(self, _action, _param):
