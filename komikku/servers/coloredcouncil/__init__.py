@@ -1,6 +1,6 @@
-# Copyright (C) 2021-2023 Mariusz Kurek
+# Copyright (C) 2021-2023 Lili Kurek
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
-# Author: Mariusz Kurek <mariuszkurek@pm.me>
+# Author: Lili Kurek <lilikurek@proton.me>
 
 from komikku.servers.multi.madara import Madara
 
