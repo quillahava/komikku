@@ -7,6 +7,7 @@ import os
 import shutil
 
 from gi.repository import Adw
+from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -24,6 +25,7 @@ class ReaderPage(Adw.NavigationPage):
     __gtype_name__ = 'ReaderPage'
 
     headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
+    back_button = Gtk.Template.Child('back_button')
     title = Gtk.Template.Child('title')
     fullscreen_button = Gtk.Template.Child('fullscreen_button')
     menu_button = Gtk.Template.Child('menu_button')
@@ -44,12 +46,14 @@ class ReaderPage(Adw.NavigationPage):
 
         self.connect('hidden', self.on_hidden)
         self.connect('shown', self.on_shown)
+        self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
         # Double maximum distance allowed between two clicks (default 5)
         # Allows to zoom more easily (double tap) on touch screen
         Gtk.Settings.get_default().set_property('gtk-double-click-distance', 10)
 
         # Header bar
+        self.back_button.connect('clicked', self.on_back_button_clicked)
         self.fullscreen_button.connect('clicked', self.window.toggle_fullscreen, None)
         self.menu_button.set_menu_model(self.builder.get_object('menu-reader'))
         # Focus is lost after showing popover submenu (bug?)
@@ -183,6 +187,8 @@ class ReaderPage(Adw.NavigationPage):
         if Settings.get_default().fullscreen:
             self.window.set_fullscreen()
 
+        self.back_button.set_tooltip_text(self.manga.name)
+
         self.show()
 
     def init_pager(self, chapter):
@@ -200,6 +206,9 @@ class ReaderPage(Adw.NavigationPage):
         self.overlay.set_child(self.pager)
 
         self.pager.init(chapter)
+
+    def on_back_button_clicked(self, _btn):
+        self.window.navigationview.pop()
 
     def on_background_color_changed(self, _action, variant):
         value = variant.get_string()
@@ -229,6 +238,18 @@ class ReaderPage(Adw.NavigationPage):
         self.controls.hide()
         self.page_numbering_label.set_visible(False)
         self.window.set_unfullscreen()
+
+    def on_key_pressed(self, _controller, keyval, _keycode, state):
+        if self.window.page != self.props.tag:
+            return Gdk.EVENT_PROPAGATE
+
+        # Allow to navigate back with <Esc> key and <Alt+Left>
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
+        if keyval == Gdk.KEY_Escape or (modifiers == Gdk.ModifierType.ALT_MASK and keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left)):
+            self.window.navigationview.pop()
+            return Gdk.EVENT_STOP
+
+        return Gdk.EVENT_PROPAGATE
 
     def on_page_numbering_changed(self, _action, variant):
         value = not variant.get_boolean()

@@ -23,6 +23,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
   <template class="ReaderPage" parent="AdwNavigationPage">
     <property name="tag">reader</property>
     <property name="title" translatable="yes">Reader</property>
+    <property name="can-pop">False</property>
 
     <property name="child">
       <object class="AdwToolbarView">
@@ -31,6 +32,13 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
             <property name="reveal_child">True</property>
             <child>
               <object class="AdwHeaderBar">
+                <child type="start">
+                  <object class="GtkButton" id="back_button">
+                    <property name="receives_default">1</property>
+                    <property name="icon-name">go-previous-symbolic</property>
+                    <property name="tooltip-text" translatable="yes">Back</property>
+                  </object>
+                </child>
                 <property name="title-widget">
                   <object class="AdwWindowTitle" id="title"/>
                 </property>
