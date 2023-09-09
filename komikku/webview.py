@@ -15,6 +15,7 @@ import tzlocal
 
 gi.require_version('WebKit', '6.0')
 
+from gi.repository import Adw
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
@@ -30,25 +31,33 @@ DEBUG = False
 logger = logging.getLogger('komikku.webview')
 
 
-class Webview(Gtk.ScrolledWindow):
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/webview.ui')
+class WebviewPage(Adw.NavigationPage):
+    __gtype_name__ = 'WebviewPage'
     __gsignals__ = {
         'exited': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
+    toolbarview = Gtk.Template.Child('toolbarview')
+    title = Gtk.Template.Child('title')
+
+    auto_exited = False
+    exited = False
     lock = False
     user_agent = None
 
     def __init__(self, window):
+        Adw.NavigationPage.__init__(self)
+
         self.__handlers_ids = []
         self.window = window
 
-        self.title_label = self.window.webview_title_label
-        self.subtitle_label = self.window.webview_subtitle_label
+        self.connect('hidden', self.on_hidden)
 
-        Gtk.ScrolledWindow.__init__(self)
-
-        self.get_hscrollbar().set_visible(False)
-        self.get_vscrollbar().set_visible(False)
+        self.scrolledwindow = Gtk.ScrolledWindow()
+        self.scrolledwindow.get_hscrollbar().set_visible(False)
+        self.scrolledwindow.get_vscrollbar().set_visible(False)
+        self.toolbarview.set_content(self.scrolledwindow)
 
         # User agent: Gnome Web like
         cpu_arch = platform.machine()
@@ -84,8 +93,9 @@ class Webview(Gtk.ScrolledWindow):
             settings=self.settings
         )
 
-        self.set_child(self.webkit_webview)
-        self.window.stack.add_named(self, 'webview')
+        self.scrolledwindow.set_child(self.webkit_webview)
+
+        self.window.navigationview.add(self)
 
     def close(self, blank=True):
         self.disconnect_all_signals()
@@ -106,14 +116,20 @@ class Webview(Gtk.ScrolledWindow):
 
         self.__handlers_ids = []
 
-    def navigate_back(self, source):
-        if source is None and self.window.page != 'webview':
+    def exit(self):
+        if self.window.page != self.props.tag or self.exited:
             return
 
-        if source:
-            self.emit('exited')
+        self.exited = True
+        self.auto_exited = True
 
-        getattr(self.window, self.window.previous_page).show(reset=False)
+        self.window.navigationview.pop()
+
+    def on_hidden(self, _page):
+        self.exited = True
+        if not self.auto_exited:
+            # Emit exited signal only if webview page is left via a user interaction
+            self.emit('exited')
 
     def open(self, uri, user_agent=None):
         if self.lock:
@@ -126,23 +142,15 @@ class Webview(Gtk.ScrolledWindow):
 
         logger.debug('Load page %s', uri)
 
-        def do_load():
-            self.webkit_webview.load_uri(uri)
-
-        GLib.idle_add(do_load)
+        self.webkit_webview.load_uri(uri)
 
         return True
 
-    def show(self, transition=True, reset=False):
-        self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.set_visible(False)
+    def show(self):
+        self.auto_exited = False
+        self.exited = False
 
-        self.window.right_button_stack.set_visible(False)
-
-        self.window.menu_button.set_visible(False)
-
-        self.window.show_page('webview', transition=transition)
+        self.window.navigationview.push(self)
 
 
 def bypass_cf(func):
@@ -210,7 +218,7 @@ def bypass_cf(func):
 
                 # Exit from webview
                 # Webview should not be closed, we need to store cookies first
-                webview.navigate_back(None)
+                webview.exit()
 
             if event != WebKit.LoadEvent.FINISHED:
                 return
@@ -219,7 +227,7 @@ def bypass_cf(func):
             if cf_reload_count > CF_RELOAD_MAX:
                 error = 'Max CF reload exceeded'
                 webview.close()
-                webview.navigate_back(None)
+                webview.exit()
                 return
 
             # Detect end of CF challenge via JavaScript
@@ -247,14 +255,14 @@ def bypass_cf(func):
             error = f'CF challenge bypass failure: {uri}'
 
             webview.close()
-            webview.navigate_back(None)
+            webview.exit()
 
         def on_title_changed(_webkit_webview, _title):
             if webview.webkit_webview.props.title.startswith('captcha'):
                 logger.debug(f'{server.id}: Captcha `{webview.webkit_webview.props.title}` detected')
                 # Show webview, user must complete a CAPTCHA
-                webview.title_label.set_text(_('Please complete CAPTCHA'))
-                webview.subtitle_label.set_text(server.name)
+                webview.title.set_title(_('Please complete CAPTCHA'))
+                webview.title.set_subtitle(server.name)
                 webview.show()
 
             if webview.webkit_webview.props.title != 'ready':
@@ -262,7 +270,7 @@ def bypass_cf(func):
 
             # Exit from webview if end of chalenge has not been detected in on_load_changed
             # Webview should not be closed, we need to store cookies first
-            webview.navigate_back(None)
+            webview.exit()
 
             logger.debug(f'{server.id}: Page loaded, getting cookies...')
             webview.network_session.get_cookie_manager().get_cookies(server.base_url, None, on_get_cookies_finish, None)

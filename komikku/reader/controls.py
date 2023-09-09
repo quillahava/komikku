@@ -45,7 +45,7 @@ class Controls:
     def hide(self):
         self.is_visible = False
         if self.window.is_fullscreen():
-            self.window.headerbar_revealer.set_reveal_child(False)
+            self.reader.headerbar_revealer.set_reveal_child(False)
         self.bottom_box.set_visible(False)
 
     def init(self, chapter):
@@ -60,7 +60,7 @@ class Controls:
             self.scale.set_range(1, self.pages_count)
 
     def on_fullscreen(self):
-        self.window.headerbar_revealer.set_reveal_child(self.is_visible)
+        self.reader.headerbar_revealer.set_reveal_child(self.is_visible)
 
     def on_scale_value_changed(self, _scale, scroll_type, value):
         if self.scale_timeout_id:
@@ -77,7 +77,7 @@ class Controls:
             self.scale_timeout_id = GLib.timeout_add(250, goto_page, value - 1)
 
     def on_unfullscreen(self):
-        self.window.headerbar_revealer.set_reveal_child(True)
+        self.reader.headerbar_revealer.set_reveal_child(True)
 
     def set_scale_value(self, index):
         if not self.active:
@@ -102,6 +102,6 @@ class Controls:
         self.is_visible = True
 
         if self.window.is_fullscreen():
-            self.window.headerbar_revealer.set_reveal_child(True)
+            self.reader.headerbar_revealer.set_reveal_child(True)
 
         self.bottom_box.set_visible(True)

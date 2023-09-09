@@ -15,10 +15,9 @@ from komikku.models import Settings
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/categories_editor.ui')
-class CategoriesEditor(Gtk.ScrolledWindow):
-    __gtype_name__ = 'CategoriesEditor'
+class CategoriesEditorPage(Adw.NavigationPage):
+    __gtype_name__ = 'CategoriesEditorPage'
 
-    window = NotImplemented
     edited_row = None
 
     add_entry = Gtk.Template.Child('add_entry')
@@ -28,14 +27,14 @@ class CategoriesEditor(Gtk.ScrolledWindow):
     listbox = Gtk.Template.Child('listbox')
 
     def __init__(self, window):
-        Gtk.ScrolledWindow.__init__(self)
+        Adw.NavigationPage.__init__(self)
 
         self.window = window
 
         self.add_entry.connect('activate', self.add_category)
         self.add_button.connect('clicked', self.add_category)
 
-        self.window.stack.add_named(self, 'categories_editor')
+        self.window.navigationview.add(self)
 
     def add_category(self, _button):
         label = self.add_entry.get_text().strip()
@@ -120,19 +119,10 @@ class CategoriesEditor(Gtk.ScrolledWindow):
         else:
             self.stack.set_visible_child_name('empty')
 
-    def show(self, transition=True, reset=True):
-        if reset:
-            self.populate()
+    def show(self):
+        self.populate()
 
-        self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.set_visible(False)
-
-        self.window.right_button_stack.set_visible(False)
-
-        self.window.menu_button.set_visible(False)
-
-        self.window.show_page('categories_editor', transition=transition)
+        self.window.navigationview.push(self)
 
     def update_category(self, _button, row):
         label = row.edit_entry.get_text().strip()

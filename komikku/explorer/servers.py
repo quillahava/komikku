@@ -5,6 +5,7 @@
 from gettext import gettext as _
 import os
 
+from gi.repository import Adw
 from gi.repository import Gio
 from gi.repository import GObject
 from gi.repository import Gtk
@@ -15,20 +16,28 @@ from komikku.servers.utils import get_allowed_servers_list
 from komikku.utils import get_data_dir
 
 
-class ExplorerServersPage:
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/explorer_servers.ui')
+class ExplorerServersPage(Adw.NavigationPage):
+    __gtype_name__ = 'ExplorerServersPage'
+
+    global_search_button = Gtk.Template.Child('global_search_button')
+    search_button = Gtk.Template.Child('search_button')
+
+    searchbar = Gtk.Template.Child('searchbar')
+    searchbar_separator = Gtk.Template.Child('searchbar_separator')
+    searchentry = Gtk.Template.Child('searchentry')
+    listbox = Gtk.Template.Child('listbox')
+    pinned_listbox = Gtk.Template.Child('pinned_listbox')
+
     preselection = False
 
     def __init__(self, parent):
+        Adw.NavigationPage.__init__(self)
+
         self.parent = parent
         self.window = parent.window
 
-        self.search_button = self.window.explorer_servers_page_search_button
-        self.global_search_button = self.window.explorer_servers_page_global_search_button
-        self.searchbar = self.parent.servers_page_searchbar
-        self.searchbar_separator = self.parent.servers_page_searchbar_separator
-        self.searchentry = self.parent.servers_page_searchentry
-        self.pinned_listbox = self.parent.servers_page_pinned_listbox
-        self.listbox = self.parent.servers_page_listbox
+        self.connect('shown', self.on_shown)
 
         self.global_search_button.connect('clicked', self.on_global_search_button_clicked)
 
@@ -75,15 +84,14 @@ class ExplorerServersPage:
         )
 
     def on_global_search_button_clicked(self, _button):
-        self.parent.search_page.global_search_mode = True
-        self.parent.show_page('search')
+        self.parent.search_page.show()
 
     def on_server_clicked(self, _listbox, row):
-        self.parent.server = getattr(row.server_data['module'], row.server_data['class_name'])()
+        server = getattr(row.server_data['module'], row.server_data['class_name'])()
         if self.preselection and hasattr(row, 'manga_data'):
-            self.parent.search_page.show_manga_card(row.manga_data)
+            self.parent.search_page.show_manga_card(row.manga_data, server)
         else:
-            self.parent.show_page('search')
+            self.parent.search_page.show(server)
 
     def on_search_mode_toggled(self, _searchbar, _gparam):
         if self.searchbar.get_search_mode():
@@ -101,6 +109,10 @@ class ExplorerServersPage:
                 continue
             self.on_server_clicked(self.listbox, child_row)
             break
+
+    def on_shown(self, _page):
+        if self.searchbar.get_search_mode():
+            self.searchentry.grab_focus()
 
     def open_local_folder(self, _button):
         path = os.path.join(get_data_dir(), 'local')
@@ -175,10 +187,14 @@ class ExplorerServersPage:
             self.parent.server = getattr(row.server_data['module'], row.server_data['class_name'])()
             self.parent.search_page.show_manga_card(row.manga_data)
         else:
-            self.parent.show_page(self.parent.page)
+            self.window.navigationview.push(self)
 
     def search(self, _entry):
         self.listbox.invalidate_filter()
+
+    def show(self, servers):
+        self.searchbar.set_search_mode(False)
+        self.populate(servers)
 
     def toggle_search_mode(self):
         self.searchbar.set_search_mode(not self.searchbar.get_search_mode())

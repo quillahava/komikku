@@ -73,7 +73,7 @@ class ChaptersList:
         self.model = Gtk.MultiSelection.new(self.list_model)
         self.selection_changed_handler_id = self.model.connect('selection-changed', self.on_selection_changed)
 
-        self.listview = self.card.window.card_chapters_listview
+        self.listview = self.card.chapters_listview
         # Remove unwanted style class 'view' which changes background color in dark appearance!
         self.listview.remove_css_class('view')
         self.listview.set_factory(self.factory)
@@ -83,8 +83,8 @@ class ChaptersList:
         self.listview.connect('activate', self.on_row_activate)
 
         # Chapters selection mode ActionBar
-        self.chapters_selection_mode_actionbar = self.card.window.card_chapters_selection_mode_actionbar
-        self.card.window.card_chapters_selection_mode_menubutton.set_menu_model(self.card.builder.get_object('menu-card-selection-mode'))
+        self.chapters_selection_mode_actionbar = self.card.chapters_selection_mode_actionbar
+        self.card.chapters_selection_mode_menubutton.set_menu_model(self.card.builder.get_object('menu-card-selection-mode'))
 
         # Gesture to detect long press on mouse button 1 and enter in selection mode
         self.gesture_long_press = Gtk.GestureLongPress.new()
@@ -267,7 +267,7 @@ class ChaptersList:
 
         number = len(self.selection_positions)
         if number:
-            self.card.viewswitchertitle.set_subtitle(ngettext('{0} selected', '{0} selected', number).format(number))
+            self.card.title.set_subtitle(ngettext('{0} selected', '{0} selected', number).format(number))
         else:
             self.card.leave_selection_mode()
 

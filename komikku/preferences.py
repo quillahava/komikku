@@ -19,13 +19,12 @@ from komikku.utils import html_escape
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/preferences.ui')
-class Preferences(Adw.Bin):
-    __gtype_name__ = 'Preferences'
+class PreferencesPage(Adw.NavigationPage):
+    __gtype_name__ = 'PreferencesPage'
 
-    window = NotImplemented
-    settings = NotImplemented
+    title_stack = Gtk.Template.Child('title_stack')
+    title = Gtk.Template.Child('title')
 
-    navigationview = Gtk.Template.Child('navigationview')
     pages_stack = Gtk.Template.Child('pages_stack')
     viewswitcherbar = Gtk.Template.Child('viewswitcherbar')
 
@@ -43,9 +42,7 @@ class Preferences(Adw.Bin):
     nsfw_content_switch = Gtk.Template.Child('nsfw_content_switch')
     nsfw_only_content_switch = Gtk.Template.Child('nsfw_only_content_switch')
     servers_languages_actionrow = Gtk.Template.Child('servers_languages_actionrow')
-    servers_languages_subpage_group = Gtk.Template.Child('servers_languages_subpage_group')
     servers_settings_actionrow = Gtk.Template.Child('servers_settings_actionrow')
-    servers_settings_subpage_group = Gtk.Template.Child('servers_settings_subpage_group')
     long_strip_detection_switch = Gtk.Template.Child('long_strip_detection_switch')
 
     reading_mode_row = Gtk.Template.Child('reading_mode_row')
@@ -63,29 +60,18 @@ class Preferences(Adw.Bin):
     disable_animations_switch = Gtk.Template.Child('disable_animations_switch')
 
     def __init__(self, window):
-        super().__init__()
+        Adw.NavigationPage.__init__(self)
 
         self.window = window
 
-        # Add Adw.ViewSwitcherTitle in Adw.HeaderBar => Gtk.Stack 'preferences' page
-        self.viewswitchertitle = Adw.ViewSwitcherTitle(title=_('Preferences'))
-        self.viewswitchertitle.set_stack(self.pages_stack)
-        self.viewswitchertitle.connect('notify::title-visible', self.on_viewswitchertitle_title_visible)
-        self.window.title_stack.get_child_by_name('preferences').set_child(self.viewswitchertitle)
-        self.viewswitcherbar.set_reveal(self.viewswitchertitle.get_title_visible())
+        self.window.breakpoint.add_setter(self.viewswitcherbar, 'reveal', True)
+        self.window.breakpoint.add_setter(self.title_stack, 'visible-child', self.title)
 
         self.settings = Settings.get_default()
 
         self.set_config_values()
 
-        self.window.stack.add_named(self, 'preferences')
-        self.navigationview.connect('notify::visible-page', self.on_page_changed)
-
-    def navigate_back(self, _source):
-        if self.navigationview.get_visible_page().props.tag in ('servers_languages', 'servers_settings'):
-            self.navigationview.pop()
-        else:
-            getattr(self.window, self.window.previous_page).show(reset=False)
+        self.window.navigationview.add(self)
 
     def on_background_color_changed(self, row, _gparam):
         index = row.get_selected()
@@ -240,13 +226,6 @@ class Preferences(Adw.Bin):
         # Update Servers settings subpage
         self.servers_settings_subpage.populate()
 
-    def on_page_changed(self, _deck, _child):
-        if self.navigationview.get_visible_page().props.tag not in ('servers_languages', 'servers_settings'):
-            self.viewswitchertitle.set_subtitle('')
-            self.viewswitchertitle.set_view_switcher_enabled(True)
-        else:
-            self.viewswitchertitle.set_view_switcher_enabled(False)
-
     def on_page_numbering_changed(self, switch_button, _gparam):
         self.settings.page_numbering = not switch_button.get_active()
 
@@ -279,9 +258,6 @@ class Preferences(Adw.Bin):
             self.settings.update_at_startup = True
         else:
             self.settings.update_at_startup = False
-
-    def on_viewswitchertitle_title_visible(self, _viewswitchertitle, _param):
-        self.viewswitcherbar.set_reveal(self.viewswitchertitle.get_title_visible())
 
     def set_config_values(self):
         #
@@ -337,12 +313,14 @@ class Preferences(Adw.Bin):
         self.new_chapters_auto_download_switch.connect('notify::active', self.on_new_chapters_auto_download_changed)
 
         # Servers languages
-        self.servers_languages_subpage = PreferencesServersLanguagesSubpage(self)
+        self.servers_languages_subpage = PreferencesServersLanguagesSubPage(self)
+        self.window.navigationview.add(self.servers_languages_subpage)
         self.servers_languages_actionrow.props.activatable = True
         self.servers_languages_actionrow.connect('activated', self.servers_languages_subpage.present)
 
         # Servers settings
-        self.servers_settings_subpage = PreferencesServersSettingsSubpage(self)
+        self.servers_settings_subpage = PreferencesServersSettingsSubPage(self)
+        self.window.navigationview.add(self.servers_settings_subpage)
         self.servers_settings_actionrow.props.activatable = True
         self.servers_settings_actionrow.connect('activated', self.servers_settings_subpage.present)
 
@@ -421,31 +399,26 @@ class Preferences(Adw.Bin):
         self.disable_animations_switch.connect('notify::active', self.on_disable_animations_changed)
 
     def show(self, transition=True):
-        self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.set_visible(False)
-
-        self.window.right_button_stack.set_visible(False)
-
-        self.window.menu_button.set_visible(False)
-
         # Update maximum value of clamp size adjustment
         self.clamp_size_adjustment.set_upper(self.window.monitor.props.geometry.width)
 
         self.update_cached_data_size()
 
-        self.pages_stack.set_visible_child_name('general')
-        self.window.show_page('preferences', transition=transition)
+        self.window.navigationview.push(self)
 
     def update_cached_data_size(self):
         self.clear_cached_data_actionrow.set_subtitle(folder_size(get_cached_data_dir()) or '-')
 
 
-class PreferencesServersLanguagesSubpage:
-    parent = NotImplemented
-    settings = NotImplemented
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/preferences_servers_languages.ui')
+class PreferencesServersLanguagesSubPage(Adw.NavigationPage):
+    __gtype_name__ = 'PreferencesServersLanguagesSubPage'
+
+    group = Gtk.Template.Child('group')
 
     def __init__(self, parent):
+        Adw.NavigationPage.__init__(self)
+
         self.parent = parent
         self.settings = Settings.get_default()
 
@@ -464,7 +437,7 @@ class PreferencesServersLanguagesSubpage:
             action_row.add_suffix(switch)
             action_row.set_activatable_widget(switch)
 
-            self.parent.servers_languages_subpage_group.add(action_row)
+            self.group.add(action_row)
 
     def on_language_activated(self, switch_button, _gparam, code):
         if switch_button.get_active():
@@ -476,15 +449,18 @@ class PreferencesServersLanguagesSubpage:
         self.parent.servers_settings_subpage.populate()
 
     def present(self, _widget):
-        self.parent.viewswitchertitle.set_subtitle(_('Servers Languages'))
-        self.parent.navigationview.push_by_tag('servers_languages')
+        self.parent.window.navigationview.push(self)
 
 
-class PreferencesServersSettingsSubpage:
-    parent = NotImplemented
-    settings = NotImplemented
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/preferences_servers_settings.ui')
+class PreferencesServersSettingsSubPage(Adw.NavigationPage):
+    __gtype_name__ = 'PreferencesServersSettingsSubPage'
+
+    group = Gtk.Template.Child('group')
 
     def __init__(self, parent):
+        Adw.NavigationPage.__init__(self)
+
         self.parent = parent
         self.settings = Settings.get_default()
         self.keyring_helper = KeyringHelper()
@@ -506,10 +482,10 @@ class PreferencesServersSettingsSubpage:
         credentials_storage_plaintext_fallback = self.settings.credentials_storage_plaintext_fallback
 
         # Clear
-        child = self.parent.servers_settings_subpage_group.get_first_child().get_last_child().get_first_child().get_first_child()
+        child = self.group.get_first_child().get_last_child().get_first_child().get_first_child()
         while child:
             next_child = child.get_next_sibling()
-            self.parent.servers_settings_subpage_group.remove(child)
+            self.group.remove(child)
             child = next_child
 
         servers_data = {}
@@ -556,7 +532,7 @@ class PreferencesServersSettingsSubpage:
                 expander_row.connect('notify::enable-expansion', self.on_server_activated, server_main_id)
                 expander_row.add_row(vbox)
 
-                self.parent.servers_settings_subpage_group.add(expander_row)
+                self.group.add(expander_row)
 
                 if len(server_data['langs']) > 1:
                     for lang in server_data['langs']:
@@ -655,11 +631,10 @@ class PreferencesServersSettingsSubpage:
                 action_row.set_activatable_widget(switch)
                 action_row.add_suffix(switch)
 
-                self.parent.servers_settings_subpage_group.add(action_row)
+                self.group.add(action_row)
 
     def present(self, _widget):
-        self.parent.viewswitchertitle.set_subtitle(_('Servers Settings'))
-        self.parent.navigationview.push_by_tag('servers_settings')
+        self.parent.window.navigationview.push(self)
 
     def save_credential(self, button, server_main_id, server_class, username_entry, password_entry, address_entry, plaintext_checkbutton):
         username = username_entry.get_text()

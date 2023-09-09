@@ -15,48 +15,14 @@ from komikku.servers import LANGUAGES
 LOGO_SIZE = 28
 
 
-@Gtk.Template.from_resource('/info/febvre/Komikku/ui/explorer.ui')
-class Explorer(Gtk.Stack):
-    __gtype_name__ = 'Explorer_'
-
-    page = 'servers'
-    server = None
-
-    servers_page_searchbar = Gtk.Template.Child('servers_page_searchbar')
-    servers_page_searchbar_separator = Gtk.Template.Child('servers_page_searchbar_separator')
-    servers_page_searchentry = Gtk.Template.Child('servers_page_searchentry')
-    servers_page_listbox = Gtk.Template.Child('servers_page_listbox')
-    servers_page_pinned_listbox = Gtk.Template.Child('servers_page_pinned_listbox')
-
-    search_page_stack = Gtk.Template.Child('search_page_stack')
-    search_page_viewswitcherbar = Gtk.Template.Child('search_page_viewswitcherbar')
-    search_page_searchbar = Gtk.Template.Child('search_page_searchbar')
-    search_page_searchentry = Gtk.Template.Child('search_page_searchentry')
-    search_page_filter_menu_button = Gtk.Template.Child('search_page_filter_menu_button')
-    search_page_search_stack = Gtk.Template.Child('search_page_search_stack')
-    search_page_search_listbox = Gtk.Template.Child('search_page_search_listbox')
-    search_page_search_no_results_status_page = Gtk.Template.Child('search_page_search_no_results_status_page')
-    search_page_search_intro_status_page = Gtk.Template.Child('search_page_search_intro_status_page')
-    search_page_search_spinner = Gtk.Template.Child('search_page_search_spinner')
-    search_page_most_populars_stack = Gtk.Template.Child('search_page_most_populars_stack')
-    search_page_most_populars_listbox = Gtk.Template.Child('search_page_most_populars_listbox')
-    search_page_most_populars_no_results_status_page = Gtk.Template.Child('search_page_most_populars_no_results_status_page')
-    search_page_most_populars_spinner = Gtk.Template.Child('search_page_most_populars_spinner')
-    search_page_latest_updates_stack = Gtk.Template.Child('search_page_latest_updates_stack')
-    search_page_latest_updates_listbox = Gtk.Template.Child('search_page_latest_updates_listbox')
-    search_page_latest_updates_no_results_status_page = Gtk.Template.Child('search_page_latest_updates_no_results_status_page')
-    search_page_latest_updates_spinner = Gtk.Template.Child('search_page_latest_updates_spinner')
-
+class Explorer:
     def __init__(self, window):
-        Gtk.Stack.__init__(self)
-
         self.window = window
-        self.title_stack = self.window.title_stack.get_child_by_name('explorer')
 
         self.servers_page = ExplorerServersPage(self)
+        self.window.navigationview.add(self.servers_page)
         self.search_page = ExplorerSearchPage(self)
-
-        self.window.stack.add_named(self, 'explorer')
+        self.window.navigationview.add(self.search_page)
 
     def build_server_row(self, data):
         # Used in `servers` and `search` (global search) pages
@@ -162,71 +128,5 @@ NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."""))
 
         return row
 
-    def navigate_back(self, source):
-        if self.page == 'servers':
-            # Back to Library if:
-            # - user click on 'Back' button
-            # - or use 'Esc' key and 'severs' page in not in search mode
-            if source == 'click' or not self.servers_page.searchbar.get_search_mode():
-                self.window.library.show()
-
-            # Leave search mode
-            if self.servers_page.searchbar.get_search_mode():
-                self.servers_page.searchbar.set_search_mode(False)
-                self.servers_page.search_button.grab_focus()
-
-        elif self.page == 'search':
-            self.server = None
-            self.search_page.global_search_mode = False
-            # Stop global search if not ended
-            self.search_page.stop_search_global = True
-
-            # Restore focus to search entry if in search mode
-            if self.servers_page.searchbar.get_search_mode():
-                self.servers_page.searchentry.grab_focus()
-
-            self.show_page('servers')
-
-    def show(self, transition=True, servers=None, reset=True):
-        if reset:
-            self.server = None
-            self.search_page.global_search_mode = False
-
-            self.servers_page.searchbar.set_search_mode(False)
-            self.servers_page.populate(servers)
-            self.show_page('servers')
-
-        self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.set_visible(False)
-
-        self.window.right_button_stack.set_visible_child_name('explorer.servers')
-        self.window.right_button_stack.set_visible(True)
-
-        self.window.menu_button.set_visible(False)
-
-        self.window.show_page('explorer', transition=transition)
-
-    def show_page(self, name):
-        self.window.activity_indicator.stop()
-        self.title_stack.set_visible_child_name(name)
-        self.set_visible_child_name(name)
-
-        if name == 'servers':
-            if self.page is None and self.servers_page.searchbar.get_search_mode():
-                self.servers_page.searchbar.set_search_mode(False)
-
-        elif name == 'search':
-            self.search_page.searchentry.grab_focus()
-
-            if self.page == 'servers':
-                self.search_page.show()
-
-        if name == 'servers' or (name == 'search' and not self.search_page.global_search_mode and self.server.id != 'local'):
-            self.window.right_button_stack.set_visible_child_name('explorer.' + name)
-            self.window.right_button_stack.set_visible(True)
-        else:
-            # `Search` page in global mode or when server is Local don't have a right button in headerbar
-            self.window.right_button_stack.set_visible(False)
-
-        self.page = name
+    def show(self, servers=None):
+        self.servers_page.show(servers)

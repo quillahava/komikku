@@ -6,6 +6,7 @@ from gettext import gettext as _
 import threading
 
 from gi.repository import Adw
+from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Pango
@@ -17,42 +18,53 @@ from komikku.servers import LANGUAGES
 from komikku.utils import log_error_traceback
 
 
-class ExplorerSearchPage:
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/explorer_search.ui')
+class ExplorerSearchPage(Adw.NavigationPage):
+    __gtype_name__ = 'ExplorerSearchPage'
+
+    title_stack = Gtk.Template.Child('title_stack')
+    title = Gtk.Template.Child('title')
+    viewswitcher = Gtk.Template.Child('viewswitcher')
+    server_website_button = Gtk.Template.Child('server_website_button')
+
+    stack = Gtk.Template.Child('stack')
+    searchbar = Gtk.Template.Child('searchbar')
+    searchentry = Gtk.Template.Child('searchentry')
+    filter_menu_button = Gtk.Template.Child('filter_menu_button')
+    search_stack = Gtk.Template.Child('search_stack')
+    search_listbox = Gtk.Template.Child('search_listbox')
+    search_no_results_status_page = Gtk.Template.Child('search_no_results_status_page')
+    search_intro_status_page = Gtk.Template.Child('search_intro_status_page')
+    search_spinner = Gtk.Template.Child('search_spinner')
+    most_populars_stack = Gtk.Template.Child('most_populars_stack')
+    most_populars_listbox = Gtk.Template.Child('most_populars_listbox')
+    most_populars_no_results_status_page = Gtk.Template.Child('most_populars_no_results_status_page')
+    most_populars_spinner = Gtk.Template.Child('most_populars_spinner')
+    latest_updates_stack = Gtk.Template.Child('latest_updates_stack')
+    latest_updates_listbox = Gtk.Template.Child('latest_updates_listbox')
+    latest_updates_no_results_status_page = Gtk.Template.Child('latest_updates_no_results_status_page')
+    latest_updates_spinner = Gtk.Template.Child('latest_updates_spinner')
+    viewswitcherbar = Gtk.Template.Child('viewswitcherbar')
+
     global_search_mode = False
     page = None
     search_filters = None
+    server = None
 
     requests = {}
     lock_search_global = None
     stop_search_global = None
 
     def __init__(self, parent):
+        Adw.NavigationPage.__init__(self)
+
         self.parent = parent
         self.window = parent.window
 
-        self.stack = self.parent.search_page_stack
-        self.viewswitcherbar = self.parent.search_page_viewswitcherbar
+        self.connect('hidden', self.on_hidden)
+        self.connect('shown', self.on_shown)
 
-        self.server_website_button = self.parent.window.explorer_search_page_server_website_button
-
-        self.searchbar = self.parent.search_page_searchbar
-        self.searchentry = self.parent.search_page_searchentry
-        self.filter_menu_button = self.parent.search_page_filter_menu_button
-        self.search_stack = self.parent.search_page_search_stack
-        self.search_listbox = self.parent.search_page_search_listbox
-        self.search_no_results_status_page = self.parent.search_page_search_no_results_status_page
-        self.search_intro_status_page = self.parent.search_page_search_intro_status_page
-        self.search_spinner = self.parent.search_page_search_spinner
-
-        self.most_populars_stack = self.parent.search_page_most_populars_stack
-        self.most_populars_listbox = self.parent.search_page_most_populars_listbox
-        self.most_populars_no_results_status_page = self.parent.search_page_most_populars_no_results_status_page
-        self.most_populars_spinner = self.parent.search_page_most_populars_spinner
-
-        self.latest_updates_stack = self.parent.search_page_latest_updates_stack
-        self.latest_updates_listbox = self.parent.search_page_latest_updates_listbox
-        self.latest_updates_no_results_status_page = self.parent.search_page_latest_updates_no_results_status_page
-        self.latest_updates_spinner = self.parent.search_page_latest_updates_spinner
+        self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
         self.page_changed_handler_id = self.stack.connect('notify::visible-child-name', self.on_page_changed)
 
@@ -61,26 +73,23 @@ class ExplorerSearchPage:
         self.searchbar.set_key_capture_widget(self.window)
         self.searchentry.connect('activate', self.search)
         self.searchentry.connect('search-changed', self.on_search_changed)
-        self.search_listbox.connect('row-activated', self.on_manga_clicked)
 
+        self.search_listbox.connect('row-activated', self.on_manga_clicked)
         self.most_populars_listbox.connect('row-activated', self.on_manga_clicked)
         self.most_populars_no_results_status_page.get_child().connect('clicked', self.populate_most_populars)
         self.latest_updates_listbox.connect('row-activated', self.on_manga_clicked)
         self.latest_updates_no_results_status_page.get_child().connect('clicked', self.populate_latest_updates)
 
-        # Add Adw.ViewSwitcherTitle in Adw.HeaderBar => Gtk.Stack 'explorer' page => Gtk.Stack 'search' page
-        self.viewswitchertitle = Adw.ViewSwitcherTitle(title=_('Search'))
-        self.viewswitchertitle.set_stack(self.stack)
-        self.viewswitchertitle.connect('notify::title-visible', self.on_viewswitchertitle_title_visible)
-        self.parent.title_stack.get_child_by_name('search').set_child(self.viewswitchertitle)
+        self.window.breakpoint.add_setter(self.viewswitcherbar, 'reveal', True)
+        self.window.breakpoint.add_setter(self.title_stack, 'visible-child', self.title)
 
     def can_page_be_updated_with_results(self, page, server_id):
         self.requests[page].remove(server_id)
 
-        if self.parent.props.visible_child_name != 'search':
+        if self.window.page != self.props.tag:
             # Not in Explorer search page
             return False
-        if server_id != self.parent.server.id:
+        if server_id != self.server.id:
             # server_id is not the current server
             return False
         if page != self.page:
@@ -117,7 +126,7 @@ class ExplorerSearchPage:
             child = next_child
 
     def init_search_filters(self):
-        self.search_filters = get_server_default_search_filters(self.parent.server)
+        self.search_filters = get_server_default_search_filters(self.server)
 
         if not self.search_filters:
             self.filter_menu_button.set_popover(None)
@@ -179,7 +188,7 @@ class ExplorerSearchPage:
         popover = Gtk.Popover()
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
 
-        for index, filter_ in enumerate(self.parent.server.filters):
+        for index, filter_ in enumerate(self.server.filters):
             if filter_['type'] == 'checkbox':
                 filter_widget = build_checkbox(filter_)
             elif filter_['type'] == 'entry':
@@ -206,9 +215,30 @@ class ExplorerSearchPage:
 
         self.filter_menu_button.set_popover(popover)
 
+    def on_hidden(self, _page):
+        if self.window.previous_page == self.props.tag:
+            return
+
+        # Stop global search if not ended
+        self.stop_search_global = True
+
+    def on_key_pressed(self, _controller, keyval, _keycode, state):
+        if self.window.page != self.props.tag:
+            return Gdk.EVENT_PROPAGATE
+
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
+
+        if keyval == Gdk.KEY_Escape or (modifiers == Gdk.ModifierType.ALT_MASK and keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left)):
+            # If in search mode, stop event to prevent Search mode exit and do pop
+            if self.searchbar.get_search_mode():
+                self.window.navigationview.pop()
+                return Gdk.EVENT_STOP
+
+        return Gdk.EVENT_PROPAGATE
+
     def on_manga_clicked(self, _listbox, row):
         if self.global_search_mode:
-            self.parent.server = getattr(row.server_data['module'], row.server_data['class_name'])()
+            self.server = getattr(row.server_data['module'], row.server_data['class_name'])()
 
         self.show_manga_card(row.manga_data)
 
@@ -225,16 +255,13 @@ class ExplorerSearchPage:
             self.search_stack.set_visible_child_name('intro')
 
     def on_server_website_button_clicked(self, _button):
-        if self.parent.server.base_url:
-            Gtk.UriLauncher.new(uri=self.parent.server.base_url).launch()
+        if self.server.base_url:
+            Gtk.UriLauncher.new(uri=self.server.base_url).launch()
         else:
             self.window.show_notification(_('Oops, server website URL is unknown.'), 2)
 
-    def on_viewswitchertitle_title_visible(self, _viewswitchertitle, _param):
-        if self.viewswitchertitle.get_title_visible():
-            self.viewswitcherbar.set_reveal(not self.global_search_mode and self.viewswitchertitle.props.view_switcher_enabled)
-        else:
-            self.viewswitcherbar.set_reveal(False)
+    def on_shown(self, _page):
+        self.searchentry.grab_focus()
 
     def populate_latest_updates(self, *args):
         def run(server):
@@ -290,11 +317,11 @@ class ExplorerSearchPage:
         self.latest_updates_spinner.start()
         self.latest_updates_stack.set_visible_child_name('loading')
 
-        if self.requests.get('latest_updates') and self.parent.server.id in self.requests['latest_updates']:
+        if self.requests.get('latest_updates') and self.server.id in self.requests['latest_updates']:
             self.window.show_notification(_('A request is already in progress.'), 2)
             return
 
-        thread = threading.Thread(target=run, args=(self.parent.server, ))
+        thread = threading.Thread(target=run, args=(self.server, ))
         thread.daemon = True
         thread.start()
 
@@ -352,11 +379,11 @@ class ExplorerSearchPage:
         self.most_populars_spinner.start()
         self.most_populars_stack.set_visible_child_name('loading')
 
-        if self.requests.get('most_populars') and self.parent.server.id in self.requests['most_populars']:
+        if self.requests.get('most_populars') and self.server.id in self.requests['most_populars']:
             self.window.show_notification(_('A request is already in progress.'), 2)
             return
 
-        thread = threading.Thread(target=run, args=(self.parent.server, ))
+        thread = threading.Thread(target=run, args=(self.server, ))
         thread.daemon = True
         thread.start()
 
@@ -364,7 +391,7 @@ class ExplorerSearchPage:
         if page not in self.requests:
             self.requests[page] = []
 
-        self.requests[page].append(self.parent.server.id)
+        self.requests[page].append(self.server.id)
 
     def search(self, _entry=None):
         term = self.searchentry.get_text().strip()
@@ -384,7 +411,7 @@ class ExplorerSearchPage:
             return
 
         # Disallow empty search except for 'Local' server
-        if not term and self.parent.server.id != 'local':
+        if not term and self.server.id != 'local':
             return
 
         def run(server):
@@ -442,11 +469,11 @@ class ExplorerSearchPage:
         self.search_spinner.start()
         self.search_listbox.set_sort_func(None)
 
-        if self.requests.get('search') and self.parent.server.id in self.requests['search']:
+        if self.requests.get('search') and self.server.id in self.requests['search']:
             self.window.show_notification(_('A request is already in progress.'), 2)
             return
 
-        thread = threading.Thread(target=run, args=(self.parent.server, ))
+        thread = threading.Thread(target=run, args=(self.server, ))
         thread.daemon = True
         thread.start()
 
@@ -598,16 +625,19 @@ class ExplorerSearchPage:
         thread.daemon = True
         thread.start()
 
-    def show(self):
+    def show(self, server=None):
+        self.server = server
+        self.global_search_mode = server is None
+
         self.init_search_filters()
 
         if not self.global_search_mode:
             # Search, Most Populars, Latest Updates
-            self.viewswitchertitle.set_title(self.parent.server.name)
+            self.title.set_title(self.server.name)
 
-            has_search = self.parent.server.true_search
-            has_most_populars = getattr(self.parent.server, 'get_most_populars', None) is not None
-            has_latest_updates = getattr(self.parent.server, 'get_latest_updates', None) is not None
+            has_search = self.server.true_search
+            has_most_populars = getattr(self.server, 'get_most_populars', None) is not None
+            has_latest_updates = getattr(self.server, 'get_latest_updates', None) is not None
 
             with self.stack.handler_block(self.page_changed_handler_id):
                 self.stack.get_page(self.stack.get_child_by_name('most_populars')).set_visible(has_most_populars)
@@ -615,10 +645,10 @@ class ExplorerSearchPage:
                 self.stack.get_page(self.stack.get_child_by_name('search')).set_visible(has_search)
 
             if has_search:
-                self.searchentry.props.placeholder_text = _('Search {}').format(self.parent.server.name)
+                self.searchentry.props.placeholder_text = _('Search {}').format(self.server.name)
                 self.searchentry.set_text('')
                 self.search_intro_status_page.set_title(_('Search for Reading'))
-                if self.parent.server.id == 'local':
+                if self.server.id == 'local':
                     description = _('Empty search is allowed.')
                 else:
                     description = _("""Alternatively, you can look up specific comics using the syntax:
@@ -635,11 +665,21 @@ class ExplorerSearchPage:
                 start_page = 'latest_updates'
 
             viewswitcher_enabled = has_search + has_most_populars + has_latest_updates > 1
-            self.viewswitcherbar.set_reveal(self.viewswitchertitle.get_title_visible() and viewswitcher_enabled)
-            self.viewswitchertitle.set_view_switcher_enabled(viewswitcher_enabled)
+            if viewswitcher_enabled:
+                self.viewswitcher.set_visible(True)
+                self.viewswitcherbar.set_visible(True)
+                if self.viewswitcherbar.get_reveal():
+                    self.title_stack.set_visible_child(self.title)
+                else:
+                    self.title_stack.set_visible_child(self.viewswitcher)
+            else:
+                self.title_stack.set_visible_child(self.title)
+                self.viewswitcher.set_visible(False)
+                self.viewswitcherbar.set_visible(False)
+            self.server_website_button.set_visible(self.server.id != 'local')
         else:
             # Global Search (use `search` page)
-            self.viewswitchertitle.set_title(_('Global Search'))
+            self.title.set_title(_('Global Search'))
 
             self.searchentry.props.placeholder_text = _('Search across all servers')
             self.searchentry.set_text('')
@@ -648,18 +688,21 @@ class ExplorerSearchPage:
             self.search_stack.set_visible_child_name('intro')
             start_page = 'search'
 
-            self.viewswitcherbar.set_reveal(False)
-            self.viewswitchertitle.set_view_switcher_enabled(False)
+            self.viewswitcher.set_visible(False)
+            self.viewswitcherbar.set_visible(False)
+            self.server_website_button.set_visible(False)
 
         self.page = start_page
         # To be sure to be notify on next page change
         self.stack.set_visible_child_name('search')
         GLib.idle_add(self.stack.set_visible_child_name, start_page)
 
-    def show_manga_card(self, manga_data):
+        self.window.navigationview.push(self)
+
+    def show_manga_card(self, manga_data, server=None):
         def run_get(server, initial_data):
             try:
-                manga_data = self.parent.server.get_manga_data(initial_data)
+                manga_data = self.server.get_manga_data(initial_data)
 
                 if manga_data is not None:
                     GLib.idle_add(complete_get, manga_data, server)
@@ -682,17 +725,17 @@ class ExplorerSearchPage:
                 GLib.idle_add(error, server, user_error_message)
 
         def complete_get(manga_data, server):
-            if server != self.parent.server:
+            if server != self.server:
                 return False
 
             self.window.activity_indicator.stop()
 
-            manga = Manga.new(manga_data, self.parent.server, Settings.get_default().long_strip_detection)
+            manga = Manga.new(manga_data, self.server, Settings.get_default().long_strip_detection)
 
             self.window.card.init(manga)
 
         def complete_update(manga, server):
-            if server != self.parent.server:
+            if server != self.server:
                 return False
 
             self.window.activity_indicator.stop()
@@ -700,7 +743,7 @@ class ExplorerSearchPage:
             self.window.card.init(manga)
 
         def error(server, message=None):
-            if server != self.parent.server:
+            if server != self.server:
                 return False
 
             self.window.activity_indicator.stop()
@@ -711,18 +754,21 @@ class ExplorerSearchPage:
 
         self.window.activity_indicator.start()
 
+        if server is not None:
+            self.server = server
+
         # Check if selected manga is already in database
         db_conn = create_db_connection()
         record = db_conn.execute(
             'SELECT * FROM mangas WHERE slug = ? AND server_id = ?',
-            (manga_data['slug'], self.parent.server.id)
+            (manga_data['slug'], self.server.id)
         ).fetchone()
         db_conn.close()
 
         if record:
-            thread = threading.Thread(target=run_update, args=(self.parent.server, record['id'], ))
+            thread = threading.Thread(target=run_update, args=(self.server, record['id'], ))
         else:
-            thread = threading.Thread(target=run_get, args=(self.parent.server, manga_data, ))
+            thread = threading.Thread(target=run_get, args=(self.server, manga_data, ))
 
         thread.daemon = True
         thread.start()

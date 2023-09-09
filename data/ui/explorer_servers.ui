@@ -20,25 +20,26 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="HistoryPage" parent="AdwNavigationPage">
-    <property name="tag">history</property>
-    <property name="title" translatable="yes">History</property>
+  <template class="ExplorerServersPage" parent="AdwNavigationPage">
+    <property name="tag">explorer.servers</property>
+    <property name="title" translatable="yes">Servers</property>
 
     <property name="child">
       <object class="AdwToolbarView">
         <child type="top">
           <object class="AdwHeaderBar">
-            <property name="centering-policy">strict</property>
-            <property name="title-widget">
-              <object class="AdwWindowTitle">
-                <property name="title" translatable="yes">History</property>
+            <child type="end">
+              <object class="GtkButton" id="global_search_button">
+                <property name="receives_default">1</property>
+                <property name="icon-name">explore-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Search for comics across all servers</property>
               </object>
-            </property>
+            </child>
             <child type="end">
               <object class="GtkToggleButton" id="search_button">
-                <property name="receives_default">1</property>
+                <property name="receives_default">0</property>
                 <property name="icon-name">edit-find-symbolic</property>
-                <property name="tooltip-text" translatable="yes">Search</property>
+                <property name="tooltip-text" translatable="yes">Search for servers</property>
               </object>
             </child>
           </object>
@@ -56,6 +57,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkSearchBar" id="searchbar">
                     <child>
                       <object class="GtkSearchEntry" id="searchentry">
+                        <property name="placeholder-text" translatable="yes">Search for servers by name or language</property>
                         <property name="hexpand">1</property>
                       </object>
                     </child>
@@ -72,39 +74,37 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
             <child>
               <object class="GtkScrolledWindow">
                 <property name="vexpand">1</property>
-                <property name="focusable">1</property>
+                <property name="hscrollbar_policy">never</property>
                 <property name="child">
                   <object class="GtkViewport">
-                    <property name="scroll-to-focus">true</property>
+                    <property name="scroll-to-focus">True</property>
                     <child>
                       <object class="AdwClamp">
-                        <property name="maximum-size">768</property>
+                        <property name="maximum_size">768</property>
                         <property name="margin-top">12</property>
                         <property name="margin-end">12</property>
-                        <property name="margin-bottom">24</property>
+                        <property name="margin-bottom">12</property>
                         <property name="margin-start">12</property>
                         <child>
-                          <object class="GtkStack" id="stack">
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">32</property>
                             <child>
-                              <object class="GtkStackPage">
-                                <property name="name">list</property>
-                                <property name="child">
-                                  <object class="GtkBox" id="dates_box">
-                                    <property name="orientation">vertical</property>
-                                    <property name="spacing">24</property>
-                                  </object>
-                                </property>
+                              <object class="GtkListBox" id="pinned_listbox">
+                                <property name="name">pinned_servers</property>
+                                <property name="selection_mode">none</property>
+                                <style>
+                                  <class name="boxed-list"/>
+                                </style>
                               </object>
                             </child>
                             <child>
-                              <object class="GtkStackPage">
-                                <property name="name">empty</property>
-                                <property name="child">
-                                  <object class="AdwStatusPage" id="empty_status_page">
-                                    <property name="icon-name">document-open-recent-symbolic</property>
-                                    <property name="title" translatable="yes">No history</property>
-                                  </object>
-                                </property>
+                              <object class="GtkListBox" id="listbox">
+                                <property name="name">servers</property>
+                                <property name="selection_mode">none</property>
+                                <style>
+                                  <class name="boxed-list"/>
+                                </style>
                               </object>
                             </child>
                           </object>

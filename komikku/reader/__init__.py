@@ -6,6 +6,7 @@ from gettext import gettext as _
 import os
 import shutil
 
+from gi.repository import Adw
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -18,28 +19,41 @@ from komikku.servers.utils import get_file_mime_type
 from komikku.utils import is_flatpak
 
 
-class Reader:
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/reader.ui')
+class ReaderPage(Adw.NavigationPage):
+    __gtype_name__ = 'ReaderPage'
+
+    headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
+    title = Gtk.Template.Child('title')
+    fullscreen_button = Gtk.Template.Child('fullscreen_button')
+    menu_button = Gtk.Template.Child('menu_button')
+
+    overlay = Gtk.Template.Child('reader_overlay')
+
     manga = None
     init_chapter = None
     chapters_consulted = None
     pager = None
 
     def __init__(self, window):
+        Adw.NavigationPage.__init__(self)
+
         self.window = window
         self.builder = window.builder
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/reader.xml')
+
+        self.connect('hidden', self.on_hidden)
+        self.connect('shown', self.on_shown)
 
         # Double maximum distance allowed between two clicks (default 5)
         # Allows to zoom more easily (double tap) on touch screen
         Gtk.Settings.get_default().set_property('gtk-double-click-distance', 10)
 
-        self.overlay = self.window.reader_overlay
-
-        # Headerbar
-        self.title_label = self.window.reader_title_label
-        self.subtitle_label = self.window.reader_subtitle_label
-        self.fullscreen_button = self.window.reader_fullscreen_button
+        # Header bar
         self.fullscreen_button.connect('clicked', self.window.toggle_fullscreen, None)
+        self.menu_button.set_menu_model(self.builder.get_object('menu-reader'))
+        # Focus is lost after showing popover submenu (bug?)
+        self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())
 
         # Page numbering
         self.page_numbering_defined = False
@@ -48,10 +62,10 @@ class Reader:
         self.page_numbering_label.set_valign(Gtk.Align.END)
         self.overlay.add_overlay(self.page_numbering_label)
 
-        self.window.connect('notify::page', self.on_shown)
-
         # Controls
         self.controls = Controls(self)
+
+        self.window.navigationview.add(self)
 
     @property
     def background_color(self):
@@ -105,8 +119,8 @@ class Reader:
     def size(self):
         size = self.window.get_allocation()
 
-        if self.window.headerbar_revealer.get_child_revealed():
-            size.height -= self.window.headerbar.get_preferred_size()[1].height
+        if self.headerbar_revealer.get_child_revealed():
+            size.height -= self.get_child().get_top_bar_height()
 
         return size
 
@@ -207,7 +221,7 @@ class Reader:
 
         self.pager.rescale_pages()
 
-    def on_navigate_back(self):
+    def on_hidden(self, _page):
         if self.pager:
             self.pager.dispose()
             self.pager = None
@@ -252,21 +266,13 @@ class Reader:
 
         self.pager.rescale_pages()
 
-    def on_shown(self, _window, _page):
-        # Reader can only be shown from card or history
-        if self.window.page != 'reader' or self.window.previous_page not in ('card', 'history'):
-            return
-
-        if self.window.previous_page == 'history':
-            # Update card
-            self.window.card.init(self.manga, show=False)
-
+    def on_shown(self, _page):
         # Wait page is shown (transition is ended) to init pager
         # Operation is resource intensive and could disrupt page transition
         self.init_pager(self.init_chapter)
 
     def save_page(self, _action, _gparam):
-        if self.window.page != 'reader':
+        if self.window.page != self.props.tag:
             return
 
         page = self.pager.current_page
@@ -353,13 +359,8 @@ class Reader:
 
         self.pager.set_orientation(orientation)
 
-    def show(self, reset=True):
-        self.window.right_button_stack.set_visible_child_name('reader')
-        self.window.right_button_stack.set_visible(True)
-        self.window.menu_button.set_icon_name('view-more-symbolic')
-        self.window.menu_button.set_visible(True)
-
-        self.window.show_page('reader')
+    def show(self):
+        self.window.navigationview.push(self)
 
     def toggle_controls(self, visible=None):
         if visible is None:
@@ -388,8 +389,8 @@ class Reader:
 
     def update_title(self, chapter):
         # Set title & subtitle (headerbar)
-        self.title_label.set_text(chapter.manga.name)
+        self.title.set_title(chapter.manga.name)
         subtitle = chapter.title
         if chapter.manga.name in subtitle:
             subtitle = subtitle.replace(chapter.manga.name, '').strip()
-        self.subtitle_label.set_text(subtitle)
+        self.title.set_subtitle(subtitle)

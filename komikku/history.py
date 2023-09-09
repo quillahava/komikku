@@ -6,10 +6,10 @@ import datetime
 from gettext import gettext as _
 import pytz
 
+from gi.repository import Adw
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository import Adw
 
 from komikku.models import Chapter
 from komikku.models import create_db_connection
@@ -23,8 +23,10 @@ DAYS_LIMIT = 30
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/history.ui')
-class History(Gtk.Box):
-    __gtype_name__ = 'History'
+class HistoryPage(Adw.NavigationPage):
+    __gtype_name__ = 'HistoryPage'
+
+    search_button = Gtk.Template.Child('search_button')
 
     stack = Gtk.Template.Child('stack')
     dates_box = Gtk.Template.Child('dates_box')
@@ -33,12 +35,12 @@ class History(Gtk.Box):
     searchentry = Gtk.Template.Child('searchentry')
 
     def __init__(self, window):
-        Gtk.Box.__init__(self)
+        Adw.NavigationPage.__init__(self)
 
         self.window = window
         self.builder = window.builder
 
-        self.search_button = self.window.history_search_button
+        self.connect('hidden', self.on_hidden)
 
         self.searchbar.bind_property(
             'search-mode-enabled', self.search_button, 'active',
@@ -54,7 +56,7 @@ class History(Gtk.Box):
         self.searchentry.connect('activate', self.on_searchentry_activated)
         self.searchentry.connect('search-changed', self.search)
 
-        self.window.stack.add_named(self, 'history')
+        self.window.navigationview.add(self)
 
     def filter(self, row):
         """
@@ -75,15 +77,10 @@ class History(Gtk.Box):
 
         return ret
 
-    def navigate_back(self, source):
-        # Back to Library if user click on 'Back' button
-        if source == 'click' or not self.searchbar.get_search_mode():
-            self.window.library.show()
-
+    def on_hidden(self, _page):
         # Leave search mode
         if self.searchbar.get_search_mode():
             self.searchbar.set_search_mode(False)
-            self.search_button.grab_focus()
 
     def on_searchentry_activated(self, _entry):
         if not self.searchbar.get_search_mode():
@@ -201,20 +198,10 @@ class History(Gtk.Box):
             # Hide date_box, will be shown if a least one row of listbox is not filtered
             date_box.set_visible(False)
 
-    def show(self, transition=True, reset=True):
-        if reset:
-            self.populate()
+    def show(self):
+        self.populate()
 
-        self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.set_visible(False)
-
-        self.window.right_button_stack.set_visible_child_name('history')
-        self.window.right_button_stack.set_visible(True)
-
-        self.window.menu_button.set_visible(False)
-
-        self.window.show_page('history', transition=transition)
+        self.window.navigationview.push(self)
 
     def toggle_search_mode(self):
         self.searchbar.set_search_mode(not self.searchbar.get_search_mode())

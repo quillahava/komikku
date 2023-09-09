@@ -22,13 +22,13 @@ class CategoriesList:
 
     def __init__(self, library):
         self.library = library
-        self.listbox = self.library.window.library_categories_listbox
-        self.stack = self.library.window.library_categories_stack
-        self.edit_mode_buttonbox = self.library.window.library_categories_edit_mode_buttonbox
+        self.listbox = self.library.categories_listbox
+        self.stack = self.library.categories_stack
+        self.edit_mode_buttonbox = self.library.categories_edit_mode_buttonbox
 
         self.listbox.connect('row-activated', self.on_category_activated)
-        self.library.window.library_categories_edit_mode_ok_button.connect('clicked', self.on_edit_mode_ok_button_clicked)
-        self.library.window.library_categories_edit_mode_cancel_button.connect('clicked', self.on_edit_mode_cancel_button_clicked)
+        self.library.categories_edit_mode_ok_button.connect('clicked', self.on_edit_mode_ok_button_clicked)
+        self.library.categories_edit_mode_cancel_button.connect('clicked', self.on_edit_mode_cancel_button_clicked)
 
     def clear(self):
         row = self.listbox.get_first_child()
@@ -46,7 +46,7 @@ class CategoriesList:
         self.listbox.unselect_all()
         self.listbox.select_row(row)
 
-        self.library.update_subtitle()
+        self.library.update_title()
         self.library.flowbox.invalidate_filter()
 
     def on_edit_mode_cancel_button_clicked(self, _button):

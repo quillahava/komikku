@@ -15,8 +15,8 @@ class CategoriesList:
         self.card = card
         self.window = card.window
 
-        self.stack = self.window.card_categories_stack
-        self.listbox = self.window.card_categories_listbox
+        self.stack = self.card.categories_stack
+        self.listbox = self.card.categories_listbox
 
     def clear(self):
         row = self.listbox.get_first_child()

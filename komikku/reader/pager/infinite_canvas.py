@@ -344,7 +344,7 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         self.gesture_drag.set_state(Gtk.EventSequenceState.CLAIMED)
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
-        if self.pager.window.page != 'reader':
+        if self.pager.window.page != self.pager.reader.props.tag:
             return Gdk.EVENT_PROPAGATE
 
         modifiers = Gtk.accelerator_get_default_mod_mask()

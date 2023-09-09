@@ -352,7 +352,7 @@ class Pager(Adw.Bin, BasePager):
         GLib.timeout_add(150, init_pages)
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
-        if self.window.page != 'reader':
+        if self.window.page != self.reader.props.tag:
             return Gdk.EVENT_PROPAGATE
 
         if self.page_change_in_progress:

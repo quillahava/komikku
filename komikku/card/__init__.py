@@ -4,6 +4,8 @@
 
 from gettext import gettext as _
 
+from gi.repository import Adw
+from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -16,30 +18,72 @@ from komikku.utils import folder_size
 from komikku.utils import html_escape
 
 
-class Card:
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/card.ui')
+class CardPage(Adw.NavigationPage):
+    __gtype_name__ = 'CardPage'
+
+    left_button = Gtk.Template.Child('left_button')
+    title_stack = Gtk.Template.Child('title_stack')
+    title = Gtk.Template.Child('title')
+    viewswitcher = Gtk.Template.Child('viewswitcher')
+    resume_button = Gtk.Template.Child('resume_button')
+    menu_button = Gtk.Template.Child('menu_button')
+
+    stack = Gtk.Template.Child('stack')
+    categories_stack = Gtk.Template.Child('categories_stack')
+    categories_listbox = Gtk.Template.Child('categories_listbox')
+    chapters_listview = Gtk.Template.Child('chapters_listview')
+    chapters_selection_mode_actionbar = Gtk.Template.Child('chapters_selection_mode_actionbar')
+    chapters_selection_mode_menubutton = Gtk.Template.Child('chapters_selection_mode_menubutton')
+    cover_box = Gtk.Template.Child('cover_box')
+    cover_image = Gtk.Template.Child('cover_image')
+    name_label = Gtk.Template.Child('name_label')
+    authors_label = Gtk.Template.Child('authors_label')
+    status_server_label = Gtk.Template.Child('status_server_label')
+    buttons_box = Gtk.Template.Child('buttons_box')
+    add_button = Gtk.Template.Child('add_button')
+    resume2_button = Gtk.Template.Child('resume2_button')
+    genres_label = Gtk.Template.Child('genres_label')
+    scanlators_label = Gtk.Template.Child('scanlators_label')
+    chapters_label = Gtk.Template.Child('chapters_label')
+    last_update_label = Gtk.Template.Child('last_update_label')
+    synopsis_label = Gtk.Template.Child('synopsis_label')
+    size_on_disk_label = Gtk.Template.Child('size_on_disk_label')
+    viewswitcherbar = Gtk.Template.Child('viewswitcherbar')
+
     manga = None
-    origin_page = None
     selection_mode = False
 
     def __init__(self, window):
+        Adw.NavigationPage.__init__(self)
+
         self.window = window
         self.builder = window.builder
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/card.xml')
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/card_selection_mode.xml')
 
-        self.viewswitchertitle = self.window.card_viewswitchertitle
-        self.viewswitcherbar = self.window.card_viewswitcherbar
+        self.connect('hidden', self.on_hidden)
+        self.connect('shown', self.on_shown)
+        self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
-        self.stack = self.window.card_stack
+        # Header bar
+        self.left_button.connect('clicked', self.leave_selection_mode)
+        self.resume_button.connect('clicked', self.on_resume_button_clicked)
+        self.menu_button.set_menu_model(self.builder.get_object('menu-card'))
+        # Focus is lost after showing popover submenu (bug?)
+        self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())
+
         self.info_box = InfoBox(self)
         self.categories_list = CategoriesList(self)
         self.chapters_list = ChaptersList(self)
 
-        self.viewswitchertitle.connect('notify::title-visible', self.on_viewswitchertitle_title_visible)
-        self.window.card_resume_button.connect('clicked', self.on_resume_button_clicked)
         self.stack.connect('notify::visible-child', self.on_page_changed)
         self.window.updater.connect('manga-updated', self.on_manga_updated)
-        self.window.connect('notify::page', self.on_shown)
+
+        self.window.breakpoint.add_setter(self.viewswitcherbar, 'reveal', True)
+        self.window.breakpoint.add_setter(self.title_stack, 'visible-child', self.title)
+
+        self.window.navigationview.add(self)
 
     def add_actions(self):
         self.delete_action = Gio.SimpleAction.new('card.delete', None)
@@ -65,21 +109,22 @@ class Card:
         if self.selection_mode:
             return
 
-        self.window.left_button.set_label(_('Cancel'))
-        self.window.left_button.set_tooltip_text(_('Cancel'))
-        self.window.right_button_stack.set_visible(False)
-        self.window.menu_button.set_visible(False)
-
         self.selection_mode = True
         self.chapters_list.enter_selection_mode()
 
-        self.viewswitchertitle.set_view_switcher_enabled(False)
-        self.viewswitcherbar.set_reveal(False)
+        self.props.can_pop = False
+        self.left_button.set_label(_('Cancel'))
+        self.left_button.set_tooltip_text(_('Cancel'))
+        self.left_button.set_visible(True)
+        self.viewswitcher.set_stack(None)
+        self.viewswitcherbar.set_stack(None)
+        self.resume_button.set_visible(False)
+        self.menu_button.set_visible(False)
+        self.title_stack.set_visible_child(self.title)
 
     def init(self, manga, show=True):
         # Default page is `Info`
         self.stack.set_visible_child_name('info')
-        self.origin_page = self.window.page
 
         # Hide Categories if manga is not in Library
         self.stack.get_page(self.stack.get_child_by_name('categories')).set_visible(manga.in_library)
@@ -96,18 +141,19 @@ class Card:
         if show:
             self.show()
 
-    def leave_selection_mode(self, _param=None):
-        self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.right_button_stack.set_visible(True)
-        self.window.menu_button.set_visible(True)
-
+    def leave_selection_mode(self, *args):
         self.chapters_list.leave_selection_mode()
         self.selection_mode = False
 
-        self.viewswitchertitle.set_view_switcher_enabled(True)
-        self.viewswitcherbar.set_reveal(True)
-        self.viewswitchertitle.set_subtitle('')
+        self.props.can_pop = True
+        self.left_button.set_visible(False)
+        self.viewswitcher.set_stack(self.stack)
+        self.viewswitcherbar.set_stack(self.stack)
+        self.resume_button.set_visible(True)
+        self.menu_button.set_visible(True)
+        self.title.set_subtitle('')
+        if not self.viewswitcherbar.get_reveal():
+            self.title_stack.set_visible_child(self.viewswitcher)
 
     def on_add_button_clicked(self, _button):
         # Show categories
@@ -122,8 +168,31 @@ class Card:
     def on_delete_menu_clicked(self, _action, _gparam):
         self.window.library.delete_mangas([self.manga, ])
 
+    def on_hidden(self, _page):
+        self.window.library.show(invalidate_sort=True)
+        self.window.library.update_thumbnail(self.manga)
+
+    def on_key_pressed(self, _controller, keyval, _keycode, state):
+        if self.window.page != self.props.tag:
+            return Gdk.EVENT_PROPAGATE
+
+        modifiers = state & Gtk.accelerator_get_default_mod_mask()
+        if self.selection_mode:
+            if keyval == Gdk.KEY_Escape or (modifiers == Gdk.ModifierType.ALT_MASK and keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left)):
+                self.leave_selection_mode()
+                # Stop event to prevent back navigation
+                return Gdk.EVENT_STOP
+        else:
+            # Allow to enter in selection mode with <SHIFT>+Arrow key
+            if modifiers != Gdk.ModifierType.SHIFT_MASK or keyval not in (Gdk.KEY_Up, Gdk.KEY_KP_Up, Gdk.KEY_Down, Gdk.KEY_KP_Down):
+                return Gdk.EVENT_PROPAGATE
+
+            self.enter_selection_mode()
+
+        return Gdk.EVENT_PROPAGATE
+
     def on_manga_updated(self, _updater, manga, nb_recent_chapters, nb_deleted_chapters, synced):
-        if self.window.page == 'card' and self.manga.id == manga.id:
+        if self.window.page == self.props.tag and self.manga.id == manga.id:
             self.manga = manga
 
             if manga.server.sync:
@@ -163,9 +232,13 @@ class Card:
 
         self.window.reader.init(self.manga, chapter)
 
-    def on_shown(self, _window, _page):
-        # Card can only be shown from library, explorer or history
-        if self.window.page != 'card' or self.window.previous_page not in ('library', 'explorer', 'history'):
+    def on_shown(self, _page):
+        if self.window.last_navigation_action == 'pop':
+            # No need of repopulate on a back navigation
+
+            # Refresh to update all previously chapters consulted (last page read may have changed)
+            # and update info like disk usage
+            self.refresh(self.window.reader.chapters_consulted)
             return
 
         # Wait page is shown (transition is ended) to populate
@@ -175,12 +248,6 @@ class Card:
     def on_update_menu_clicked(self, _action, _param):
         self.window.updater.add(self.manga)
         self.window.updater.start()
-
-    def on_viewswitchertitle_title_visible(self, _viewswitchertitle, _param):
-        if self.viewswitchertitle.get_title_visible() and not self.selection_mode:
-            self.viewswitcherbar.set_reveal(True)
-        else:
-            self.viewswitcherbar.set_reveal(False)
 
     def populate(self):
         self.chapters_list.set_sort_order(invalidate=False)
@@ -192,24 +259,14 @@ class Card:
         self.update_action.set_enabled(enabled)
         self.sort_order_action.set_enabled(enabled)
 
-    def show(self, transition=True, reset=True):
-        if reset:
-            self.viewswitchertitle.set_title(self.manga.name)
-            self.info_box.populate()
-
-        self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.set_visible(False)
-
-        self.window.right_button_stack.set_visible_child_name('card')
-        self.window.right_button_stack.set_visible(True)
-
-        self.window.menu_button.set_icon_name('view-more-symbolic')
-        self.window.menu_button.set_visible(True)
+    def show(self):
+        self.props.title = self.manga.name  # Adw.NavigationPage title
+        self.title.set_title(self.manga.name)
+        self.info_box.populate()
 
         self.open_in_browser_action.set_enabled(self.manga.server_id != 'local')
 
-        self.window.show_page('card', transition=transition)
+        self.window.navigationview.push(self)
 
     def refresh(self, chapters):
         self.info_box.refresh()
@@ -221,23 +278,35 @@ class InfoBox:
         self.card = card
         self.window = card.window
 
-        self.cover_box = self.window.card_cover_box
-        self.cover_image = self.window.card_cover_image
-        self.name_label = self.window.card_name_label
-        self.authors_label = self.window.card_authors_label
-        self.status_server_label = self.window.card_status_server_label
-        self.buttons_box = self.window.card_buttons_box
-        self.add_button = self.window.card_add_button
-        self.resume2_button = self.window.card_resume2_button
-        self.genres_label = self.window.card_genres_label
-        self.scanlators_label = self.window.card_scanlators_label
-        self.chapters_label = self.window.card_chapters_label
-        self.last_update_label = self.window.card_last_update_label
-        self.synopsis_label = self.window.card_synopsis_label
-        self.size_on_disk_label = self.window.card_size_on_disk_label
+        self.cover_box = self.card.cover_box
+        self.cover_image = self.card.cover_image
+        self.name_label = self.card.name_label
+        self.authors_label = self.card.authors_label
+        self.status_server_label = self.card.status_server_label
+        self.buttons_box = self.card.buttons_box
+        self.add_button = self.card.add_button
+        self.resume2_button = self.card.resume2_button
+        self.genres_label = self.card.genres_label
+        self.scanlators_label = self.card.scanlators_label
+        self.chapters_label = self.card.chapters_label
+        self.last_update_label = self.card.last_update_label
+        self.synopsis_label = self.card.synopsis_label
+        self.size_on_disk_label = self.card.size_on_disk_label
 
         self.add_button.connect('clicked', self.card.on_add_button_clicked)
         self.resume2_button.connect('clicked', self.card.on_resume_button_clicked)
+
+        self.window.breakpoint.add_setter(self.cover_box, 'orientation', Gtk.Orientation.VERTICAL)
+        self.window.breakpoint.add_setter(self.cover_box, 'spacing', 12)
+        self.window.breakpoint.add_setter(self.name_label, 'halign', Gtk.Align.CENTER)
+        self.window.breakpoint.add_setter(self.name_label, 'justify', Gtk.Justification.CENTER)
+        self.window.breakpoint.add_setter(self.status_server_label, 'halign', Gtk.Align.CENTER)
+        self.window.breakpoint.add_setter(self.status_server_label, 'justify', Gtk.Justification.CENTER)
+        self.window.breakpoint.add_setter(self.authors_label, 'halign', Gtk.Align.CENTER)
+        self.window.breakpoint.add_setter(self.authors_label, 'justify', Gtk.Justification.CENTER)
+        self.window.breakpoint.add_setter(self.buttons_box, 'orientation', Gtk.Orientation.VERTICAL)
+        self.window.breakpoint.add_setter(self.buttons_box, 'spacing', 18)
+        self.window.breakpoint.add_setter(self.buttons_box, 'halign', Gtk.Align.CENTER)
 
     def populate(self):
         cover_width = 170

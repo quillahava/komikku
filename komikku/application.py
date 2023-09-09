@@ -17,29 +17,27 @@ from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
-from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Notify
-from gi.repository.GdkPixbuf import Pixbuf
 
 from komikku.activity_indicator import ActivityIndicator
-from komikku.card import Card
-from komikku.categories_editor import CategoriesEditor
+from komikku.card import CardPage
+from komikku.categories_editor import CategoriesEditorPage
 from komikku.debug_info import DebugInfo
 from komikku.downloader import Downloader
-from komikku.downloader import DownloadManager
+from komikku.downloader import DownloadManagerPage
 from komikku.explorer import Explorer
-from komikku.history import History
-from komikku.library import Library
+from komikku.history import HistoryPage
+from komikku.library import LibraryPage
 from komikku.models import backup_db
 from komikku.models import init_db
 from komikku.models import Settings
 from komikku.models.database import clear_cached_data
-from komikku.preferences import Preferences
-from komikku.reader import Reader
+from komikku.preferences import PreferencesPage
+from komikku.reader import ReaderPage
 from komikku.servers.utils import get_allowed_servers_list
 from komikku.updater import Updater
-from komikku.webview import Webview
+from komikku.webview import WebviewPage
 
 CREDITS = dict(
     artists=(
@@ -166,89 +164,16 @@ class Application(Adw.Application):
 class ApplicationWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ApplicationWindow'
 
-    _page = 'library'
-    previous_page = None
     network_available = False
+    last_navigation_action = None
 
-    headerbar_revealer = Gtk.Template.Child('headerbar_revealer')
-    headerbar = Gtk.Template.Child('headerbar')
-    left_button = Gtk.Template.Child('left_button')
-    left_extra_button_stack = Gtk.Template.Child('left_extra_button_stack')
-    title_stack = Gtk.Template.Child('title_stack')
-    right_button_stack = Gtk.Template.Child('right_button_stack')
-    menu_button = Gtk.Template.Child('menu_button')
-
-    box = Gtk.Template.Child('box')
     overlay = Gtk.Template.Child('overlay')
-    stack = Gtk.Template.Child('stack')
-
-    library_overlaysplitview_reveal_button = Gtk.Template.Child('library_overlaysplitview_reveal_button')
-    library_title_label = Gtk.Template.Child('library_title_label')
-    library_search_button = Gtk.Template.Child('library_search_button')
-    library_searchbar = Gtk.Template.Child('library_searchbar')
-    library_searchbar_separator = Gtk.Template.Child('library_searchbar_separator')
-    library_search_menu_button = Gtk.Template.Child('library_search_menu_button')
-    library_searchentry = Gtk.Template.Child('library_searchentry')
-    library_overlaysplitview = Gtk.Template.Child('library_overlaysplitview')
-    library_stack = Gtk.Template.Child('library_stack')
-    library_categories_stack = Gtk.Template.Child('library_categories_stack')
-    library_categories_listbox = Gtk.Template.Child('library_categories_listbox')
-    library_categories_edit_mode_buttonbox = Gtk.Template.Child('library_categories_edit_mode_buttonbox')
-    library_categories_edit_mode_cancel_button = Gtk.Template.Child('library_categories_edit_mode_cancel_button')
-    library_categories_edit_mode_ok_button = Gtk.Template.Child('library_categories_edit_mode_ok_button')
-    library_flowbox = Gtk.Template.Child('library_flowbox')
-    library_selection_mode_actionbar = Gtk.Template.Child('library_selection_mode_actionbar')
-    library_selection_mode_menubutton = Gtk.Template.Child('library_selection_mode_menubutton')
-
-    card_viewswitchertitle = Gtk.Template.Child('card_viewswitchertitle')
-    card_viewswitcherbar = Gtk.Template.Child('card_viewswitcherbar')
-    card_stack = Gtk.Template.Child('card_stack')
-    card_categories_stack = Gtk.Template.Child('card_categories_stack')
-    card_categories_listbox = Gtk.Template.Child('card_categories_listbox')
-    card_chapters_listview = Gtk.Template.Child('card_chapters_listview')
-    card_chapters_selection_mode_actionbar = Gtk.Template.Child('card_chapters_selection_mode_actionbar')
-    card_chapters_selection_mode_menubutton = Gtk.Template.Child('card_chapters_selection_mode_menubutton')
-    card_cover_box = Gtk.Template.Child('card_cover_box')
-    card_cover_image = Gtk.Template.Child('card_cover_image')
-    card_name_label = Gtk.Template.Child('card_name_label')
-    card_authors_label = Gtk.Template.Child('card_authors_label')
-    card_status_server_label = Gtk.Template.Child('card_status_server_label')
-    card_buttons_box = Gtk.Template.Child('card_buttons_box')
-    card_add_button = Gtk.Template.Child('card_add_button')
-    card_resume_button = Gtk.Template.Child('card_resume_button')
-    card_resume2_button = Gtk.Template.Child('card_resume2_button')
-    card_genres_label = Gtk.Template.Child('card_genres_label')
-    card_scanlators_label = Gtk.Template.Child('card_scanlators_label')
-    card_chapters_label = Gtk.Template.Child('card_chapters_label')
-    card_last_update_label = Gtk.Template.Child('card_last_update_label')
-    card_synopsis_label = Gtk.Template.Child('card_synopsis_label')
-    card_size_on_disk_label = Gtk.Template.Child('card_size_on_disk_label')
-
-    reader_fullscreen_button = Gtk.Template.Child('reader_fullscreen_button')
-    reader_overlay = Gtk.Template.Child('reader_overlay')
-    reader_title_label = Gtk.Template.Child('reader_title_label')
-    reader_subtitle_label = Gtk.Template.Child('reader_subtitle_label')
-
-    download_manager_subtitle_label = Gtk.Template.Child('download_manager_subtitle_label')
-    download_manager_start_stop_button = Gtk.Template.Child('download_manager_start_stop_button')
-
-    explorer_servers_page_global_search_button = Gtk.Template.Child('explorer_servers_page_global_search_button')
-    explorer_servers_page_search_button = Gtk.Template.Child('explorer_servers_page_search_button')
-    explorer_search_page_server_website_button = Gtk.Template.Child('explorer_search_page_server_website_button')
-
-    history_search_button = Gtk.Template.Child('history_search_button')
-
-    webview_title_label = Gtk.Template.Child('webview_title_label')
-    webview_subtitle_label = Gtk.Template.Child('webview_subtitle_label')
+    navigationview = Gtk.Template.Child('navigationview')
+    breakpoint = Gtk.Template.Child('breakpoint')
 
     notification_timer = None
     notification_label = Gtk.Template.Child('notification_label')
     notification_revealer = Gtk.Template.Child('notification_revealer')
-
-    start_page_progressbar = Gtk.Template.Child('start_page_progressbar')
-    start_page_logo_image = Gtk.Template.Child('start_page_logo_image')
-    start_page_title_label = Gtk.Template.Child('start_page_title_label')
-    start_page_discover_button = Gtk.Template.Child('start_page_discover_button')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -276,13 +201,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.add_accelerators()
         self.add_actions()
 
-    @GObject.Property(type=str)
+    @property
     def page(self):
-        return self._page
+        return self.navigationview.get_visible_page().props.tag
 
-    @page.setter
-    def page(self, value):
-        self._page = value
+    @property
+    def previous_page(self):
+        previous_page = self.navigationview.get_previous_page(self.navigationview.get_visible_page())
+        return previous_page.props.tag if previous_page else None
 
     @property
     def monitor(self):
@@ -303,10 +229,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         about_action = Gio.SimpleAction.new('about', None)
         about_action.connect('activate', self.on_about_menu_clicked)
         self.application.add_action(about_action)
-
-        add_action = Gio.SimpleAction.new('add', None)
-        add_action.connect('activate', self.on_left_button_clicked)
-        self.application.add_action(add_action)
 
         enter_search_mode_action = Gio.SimpleAction.new('enter-search-mode', None)
         enter_search_mode_action.connect('activate', self.enter_search_mode)
@@ -345,45 +267,35 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         self.set_size_request(360, 288)
 
-        # Titlebar
-        self.left_button.connect('clicked', self.on_left_button_clicked)
-        self.menu_button.set_create_popup_func(self.on_primary_menu_shown)
-
-        # Fisrt start page
-        pixbuf = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/logo.png', 256, 256, True)
-        self.start_page_logo_image.set_from_pixbuf(pixbuf)
-
         # Window
         self.connect('notify::default-width', self.on_resize)
         self.connect('notify::default-height', self.on_resize)
         self.connect('notify::fullscreened', self.on_resize)
         self.connect('notify::maximized', self.on_resize)
+        self.connect('close-request', self.quit)
+
+        self.navigationview.connect('popped', self.on_navigation_popped)
+        self.navigationview.connect('pushed', self.on_navigation_pushed)
 
         self.controller_key = Gtk.EventControllerKey.new()
         self.controller_key.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.add_controller(self.controller_key)
-        self.controller_key.connect('key-pressed', self.on_key_pressed)
 
         self.gesture_click = Gtk.GestureClick.new()
         self.gesture_click.set_button(0)
         self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.add_controller(self.gesture_click)
-        self.gesture_click.connect('pressed', self.on_button_clicked)
 
-        self.connect('close-request', self.quit)
-
-        self.stack.connect('notify::transition-running', self.on_page_shown)
-
-        # Init stack pages
-        self.library = Library(self)
-        self.card = Card(self)
-        self.reader = Reader(self)
-        self.categories_editor = CategoriesEditor(self)
-        self.download_manager = DownloadManager(self)
+        # Init pages
+        self.library = LibraryPage(self)
+        self.card = CardPage(self)
+        self.reader = ReaderPage(self)
+        self.categories_editor = CategoriesEditorPage(self)
+        self.download_manager = DownloadManagerPage(self)
         self.explorer = Explorer(self)
-        self.history = History(self)
-        self.preferences = Preferences(self)
-        self.webview = Webview(self)
+        self.history = HistoryPage(self)
+        self.preferences = PreferencesPage(self)
+        self.webview = WebviewPage(self)
 
         if self.application.profile in ('beta', 'development'):
             self.add_css_class('devel')
@@ -420,7 +332,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
     def enter_search_mode(self, _action, _param):
         if self.page == 'library':
             self.library.toggle_search_mode()
-        elif self.page == 'explorer' and self.explorer.page == 'servers':
+        elif self.page == 'explorer.servers':
             self.explorer.servers_page.toggle_search_mode()
         elif self.page == 'history':
             self.history.toggle_search_mode()
@@ -504,94 +416,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_transient_for(self)
         window.present()
 
-    def on_button_clicked(self, _gesture, _n_press, _x, _y):
-        button = self.gesture_click.get_current_button()
-        if button == 8:
-            # Back button
-            self.on_left_button_clicked()
-            return Gdk.EVENT_STOP
+    def on_navigation_popped(self, _nav, _page):
+        self.last_navigation_action = 'pop'
 
-        return Gdk.EVENT_PROPAGATE
+        self.activity_indicator.stop()
 
-    def on_key_pressed(self, _controller, keyval, _keycode, state):
-        modifiers = state & Gtk.accelerator_get_default_mod_mask()
-
-        if keyval == Gdk.KEY_Escape or (modifiers == Gdk.ModifierType.ALT_MASK and keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left)):
-            self.on_left_button_clicked()
-            return Gdk.EVENT_STOP
-
-        return Gdk.EVENT_PROPAGATE
-
-    def on_left_button_clicked(self, action_or_button=None, _param=None):
-        """
-        Go back navigation with <Escape> or <Alt+Left> keys and mouse Back button:
-        - Library <- Categories Editor
-        - Library <- Download Manager
-        - Library <- Explorer (Servers) <- Search <- Card
-        - Library <- History <- Reader
-        - Library <- History <- Manga Card <- Reader
-        - Library <- Manga Card <- Reader
-        - Library <- Preferences <- Subpage
-
-        - Exit selection mode: Library, Card chapters, Download Manager
-        - Exit search mode: Library, Explorer 'Servers' and 'Search' pages, History
-        """
-
-        if type(action_or_button) is Gio.SimpleAction:
-            source = 'shortcut'
-        elif type(action_or_button) is Gtk.Button:
-            source = 'click'
-        else:
-            # <Escape> key or mouse Back button
-            source = 'esc-key'
-
-        if self.page == 'library':
-            if source in ('click', 'shortcut') and not self.library.selection_mode:
-                self.explorer.show()
-            if self.library.selection_mode:
-                self.library.leave_selection_mode()
-            if source == 'esc-key' and self.library.searchbar.get_search_mode():
-                self.library.searchbar.set_search_mode(False)
-                self.library.search_button.grab_focus()
-
-        elif self.page == 'card':
-            if self.card.selection_mode:
-                self.card.leave_selection_mode()
-            else:
-                if self.card.origin_page == 'explorer':
-                    self.explorer.show(reset=False)
-                else:
-                    self.library.show(invalidate_sort=True)
-                    self.library.update_thumbnail(self.card.manga)
-
-        elif self.page == 'reader':
-            self.reader.on_navigate_back()
-
-            # Refresh to update all previously chapters consulted (last page read may have changed)
-            # and update info like disk usage
-            self.card.refresh(self.reader.chapters_consulted)
-            self.card.show()
-
-        elif self.page == 'categories_editor':
-            self.library.show()
-
-        elif self.page == 'download_manager':
-            if self.download_manager.selection_mode:
-                self.download_manager.leave_selection_mode()
-            else:
-                self.library.show()
-
-        elif self.page == 'explorer':
-            self.explorer.navigate_back(source)
-
-        elif self.page == 'history':
-            self.history.navigate_back(source)
-
-        elif self.page == 'preferences':
-            self.preferences.navigate_back(source)
-
-        elif self.page == 'webview':
-            self.webview.navigate_back(source)
+    def on_navigation_pushed(self, _nav):
+        self.last_navigation_action = 'push'
 
     def on_network_status_changed(self, monitor, _connected):
         connectivity = monitor.get_connectivity()
@@ -616,30 +447,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
             if Settings.get_default().downloader_state:
                 self.downloader.stop()
 
-    def on_page_shown(self, _stack, _gparam):
-        # Detect pages transition end and store current page and previous page
-        if not self.stack.props.transition_running:
-            self.previous_page = self.page
-            self.page = self.stack.get_visible_child_name()
-
     def on_preferences_menu_clicked(self, _action, _param):
         self.preferences.show()
-
-    def on_primary_menu_shown(self, _menu_button):
-        if self.page == 'library':
-            self.menu_button.set_menu_model(self.builder.get_object('menu'))
-
-        elif self.page == 'card':
-            self.menu_button.set_menu_model(self.builder.get_object('menu-card'))
-
-        elif self.page == 'reader':
-            self.menu_button.set_menu_model(self.builder.get_object('menu-reader'))
-
-        elif self.page == 'download_manager':
-            self.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
-
-        # Focus is lost after showing popover submenu (bug?)
-        self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())
 
     def on_resize(self, _window, allocation):
         def on_maximized():
@@ -741,6 +550,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
             self.unfullscreen()
 
     def show_notification(self, message, timeout=5):
+        # We use a custom in-app notification solution (Gtk.Revealer)
+        # until Adw.ToastOverlay/Adw.Toast is fixed
+        # see https://gitlab.gnome.org/GNOME/libadwaita/-/issues/440
+        self.notification_revealer.set_margin_top(self.library.get_child().get_top_bar_height())
+
         self.notification_label.set_text(message)
         self.notification_revealer.set_reveal_child(True)
 
@@ -749,26 +563,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         self.notification_timer = Timer(timeout, GLib.idle_add, args=[self.hide_notification])
         self.notification_timer.start()
-
-    def show_page(self, name, transition=True):
-        self.activity_indicator.stop()
-
-        if not transition:
-            transition_type = Gtk.StackTransitionType.NONE
-        elif name in ('categories_editor', 'download_manager', 'explorer', 'history', 'preferences'):
-            transition_type = Gtk.StackTransitionType.SLIDE_RIGHT
-        else:
-            if self.page in ('categories_editor', 'download_manager', 'explorer', 'history', 'preferences'):
-                transition_type = Gtk.StackTransitionType.SLIDE_LEFT
-            else:
-                transition_type = self.stack.get_transition_type()
-
-        self.stack.set_visible_child_full(name, transition_type)
-        self.title_stack.set_visible_child_full(name, transition_type)
-
-        if not Gtk.Settings.get_default().props.gtk_enable_animations:
-            self.previous_page = self.page
-            self.page = name
 
     def toggle_fullscreen(self, _object, _gparam):
         if self.page != 'reader':

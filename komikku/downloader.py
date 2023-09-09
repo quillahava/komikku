@@ -8,6 +8,7 @@ from gettext import ngettext
 import threading
 import time
 
+from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
@@ -270,20 +271,25 @@ class Downloader(GObject.GObject):
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/download_manager.ui')
-class DownloadManager(Gtk.Box):
-    __gtype_name__ = 'DownloadManager'
+class DownloadManagerPage(Adw.NavigationPage):
+    __gtype_name__ = 'DownloadManagerPage'
     __gsignals_handlers_ids__ = None
 
     selection_mode = False
     selection_mode_range = False
     selection_mode_last_row_index = None
 
+    left_button = Gtk.Template.Child('left_button')
+    title = Gtk.Template.Child('title')
+    start_stop_button = Gtk.Template.Child('start_stop_button')
+    menu_button = Gtk.Template.Child('menu_button')
+
     stack = Gtk.Template.Child('stack')
     listbox = Gtk.Template.Child('listbox')
     selection_mode_actionbar = Gtk.Template.Child('selection_mode_actionbar')
 
     def __init__(self, window):
-        Gtk.Box.__init__(self)
+        Adw.NavigationPage.__init__(self)
 
         self.window = window
         self.downloader = self.window.downloader
@@ -291,10 +297,13 @@ class DownloadManager(Gtk.Box):
         self.builder = window.builder
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/download_manager.xml')
 
-        self.subtitle_label = self.window.download_manager_subtitle_label
-        self.start_stop_button = self.window.download_manager_start_stop_button
-
+        # Header bar
+        self.left_button.connect('clicked', self.leave_selection_mode)
         self.start_stop_button.connect('clicked', self.on_start_stop_button_clicked)
+        self.menu_button.set_menu_model(self.builder.get_object('menu-download-manager'))
+        # Focus is lost after showing popover submenu (bug?)
+        self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())
+
         self.listbox.connect('row-activated', self.on_download_row_activated)
         self.listbox.connect('selected-rows-changed', self.on_selection_changed)
         self.window.controller_key.connect('key-pressed', self.on_key_pressed)
@@ -318,7 +327,7 @@ class DownloadManager(Gtk.Box):
             self.downloader.connect('started', self.update_headerbar),
         ]
 
-        self.window.stack.add_named(self, 'download_manager')
+        self.window.navigationview.add(self)
 
     def add_actions(self):
         # Delete All action
@@ -332,21 +341,23 @@ class DownloadManager(Gtk.Box):
         self.window.application.add_action(delete_selected_action)
 
     def enter_selection_mode(self):
-        self.window.left_button.set_label(_('Cancel'))
-        self.window.left_button.set_tooltip_text(_('Cancel'))
-        self.window.right_button_stack.set_visible(False)
-        self.window.menu_button.set_visible(False)
+        self.props.can_pop = False
+        self.left_button.set_label(_('Cancel'))
+        self.left_button.set_tooltip_text(_('Cancel'))
+        self.left_button.set_visible(True)
+        self.start_stop_button.set_visible(False)
+        self.menu_button.set_visible(False)
 
         self.selection_mode = True
 
         self.listbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
         self.selection_mode_actionbar.set_revealed(True)
 
-    def leave_selection_mode(self):
-        self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.right_button_stack.set_visible(True)
-        self.window.menu_button.set_visible(True)
+    def leave_selection_mode(self, *args):
+        self.props.can_pop = True
+        self.left_button.set_visible(False)
+        self.start_stop_button.set_visible(True)
+        self.menu_button.set_visible(True)
 
         self.selection_mode = False
 
@@ -417,18 +428,24 @@ class DownloadManager(Gtk.Box):
         self.on_download_row_activated(None, selected_row)
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
-        """Allow to enter in selection mode with <SHIFT>+Arrow key"""
-        if self.selection_mode or self.window.page != 'downloader':
+        if self.window.page != self.props.tag:
             return Gdk.EVENT_PROPAGATE
 
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
-        if modifiers != Gdk.ModifierType.SHIFT_MASK or keyval not in (Gdk.KEY_Up, Gdk.KEY_KP_Up, Gdk.KEY_Down, Gdk.KEY_KP_Down):
-            return Gdk.EVENT_PROPAGATE
 
-        row = self.listbox.get_focus_child()
-        if row is not None:
-            self.enter_selection_mode()
-            self.on_download_row_activated(None, row)
+        if self.selection_mode:
+            if keyval == Gdk.KEY_Escape or (modifiers == Gdk.ModifierType.ALT_MASK and keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left)):
+                self.leave_selection_mode()
+                # Stop event to prevent back navigation
+                return Gdk.EVENT_STOP
+        else:
+            # Allow to enter in selection mode with <SHIFT>+Arrow key
+            if modifiers != Gdk.ModifierType.SHIFT_MASK or keyval not in (Gdk.KEY_Up, Gdk.KEY_KP_Up, Gdk.KEY_Down, Gdk.KEY_KP_Down):
+                return Gdk.EVENT_PROPAGATE
+
+            if row := self.listbox.get_focus_child():
+                self.enter_selection_mode()
+                self.on_download_row_activated(None, row)
 
         return Gdk.EVENT_PROPAGATE
 
@@ -470,10 +487,9 @@ class DownloadManager(Gtk.Box):
     def on_selection_changed(self, _flowbox):
         number = len(self.listbox.get_selected_rows())
         if number:
-            self.subtitle_label.set_label(ngettext('{0} selected', '{0} selected', number).format(number))
-            self.subtitle_label.set_visible(True)
+            self.title.set_subtitle(ngettext('{0} selected', '{0} selected', number).format(number))
         else:
-            self.subtitle_label.set_visible(False)
+            self.title.set_subtitle('')
 
     @if_network_available
     def on_start_stop_button_clicked(self, _button):
@@ -518,28 +534,17 @@ class DownloadManager(Gtk.Box):
             self.listbox.select_row(row)
             row._selected = True
 
-    def show(self, transition=True, reset=True):
-        if reset:
-            self.populate()
-
-        self.window.left_button.set_tooltip_text(_('Back'))
-        self.window.left_button.set_icon_name('go-previous-symbolic')
-        self.window.left_extra_button_stack.set_visible(False)
-
-        self.window.right_button_stack.set_visible_child_name('download_manager')
-
-        self.window.menu_button.set_icon_name('view-more-symbolic')
-
-        self.window.show_page('download_manager', transition=transition)
+    def show(self):
+        self.populate()
 
         self.update_headerbar(forced=True)
+        self.window.navigationview.push(self)
 
     def update_headerbar(self, *args, forced=False):
-        if self.window.page != 'download_manager' and not forced:
+        if self.window.page != self.props.tag and not forced:
             return
 
         if self.listbox.get_first_child() is not None:
-            self.window.right_button_stack.set_visible(True)
             if self.downloader.running:
                 self.start_stop_button.get_first_child().set_from_icon_name('media-playback-stop-symbolic')
             else:
@@ -547,11 +552,11 @@ class DownloadManager(Gtk.Box):
 
             self.start_stop_button.set_sensitive(True)
             self.start_stop_button.set_visible(True)
-            self.window.menu_button.set_visible(True)
+            self.menu_button.set_visible(True)
         else:
             # No downloads
-            self.window.right_button_stack.set_visible(False)
-            self.window.menu_button.set_visible(False)
+            self.start_stop_button.set_visible(False)
+            self.menu_button.set_visible(False)
 
     def update_row(self, _downloader, download, chapter):
         chapter_id = chapter.id if chapter is not None else download.chapter.id

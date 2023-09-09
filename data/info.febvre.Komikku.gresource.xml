@@ -5,13 +5,20 @@
 
         <file compressed="true" preprocess="xml-stripblanks" alias="ui/about_window.ui">about_window.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/application_window.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks">ui/card.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/card_chapters_list_row.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/categories_editor.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/download_manager.ui</file>
-        <file compressed="true" preprocess="xml-stripblanks">ui/explorer.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks">ui/explorer_search.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks">ui/explorer_servers.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/history.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks">ui/library.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/preferences.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks">ui/preferences_servers_languages.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks">ui/preferences_servers_settings.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks">ui/reader.ui</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/shortcuts_overview.ui</file>
+        <file compressed="true" preprocess="xml-stripblanks">ui/webview.ui</file>
 
         <file compressed="true" preprocess="xml-stripblanks">ui/menu/main.xml</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/menu/card.xml</file>

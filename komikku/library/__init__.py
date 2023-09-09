@@ -13,6 +13,7 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
+from gi.repository.GdkPixbuf import Pixbuf
 
 from komikku.library.categories_list import CategoriesList
 from komikku.library.thumbnail import Thumbnail
@@ -24,7 +25,36 @@ from komikku.models import Settings
 from komikku.models import update_rows
 
 
-class Library:
+@Gtk.Template.from_resource('/info/febvre/Komikku/ui/library.ui')
+class LibraryPage(Adw.NavigationPage):
+    __gtype_name__ = 'LibraryPage'
+
+    left_button = Gtk.Template.Child('left_button')
+    categories_togglebutton = Gtk.Template.Child('categories_togglebutton')
+    title = Gtk.Template.Child('title')
+    search_button = Gtk.Template.Child('search_button')
+    menu_button = Gtk.Template.Child('menu_button')
+
+    searchbar = Gtk.Template.Child('searchbar')
+    searchbar_separator = Gtk.Template.Child('searchbar_separator')
+    search_menu_button = Gtk.Template.Child('search_menu_button')
+    search_entry = Gtk.Template.Child('searchentry')
+    overlaysplitview = Gtk.Template.Child('overlaysplitview')
+    stack = Gtk.Template.Child('stack')
+    categories_stack = Gtk.Template.Child('categories_stack')
+    categories_listbox = Gtk.Template.Child('categories_listbox')
+    categories_edit_mode_buttonbox = Gtk.Template.Child('categories_edit_mode_buttonbox')
+    categories_edit_mode_cancel_button = Gtk.Template.Child('categories_edit_mode_cancel_button')
+    categories_edit_mode_ok_button = Gtk.Template.Child('categories_edit_mode_ok_button')
+    flowbox = Gtk.Template.Child('flowbox')
+    selection_mode_actionbar = Gtk.Template.Child('selection_mode_actionbar')
+    selection_mode_menubutton = Gtk.Template.Child('selection_mode_menubutton')
+
+    start_page_progressbar = Gtk.Template.Child('start_page_progressbar')
+    start_page_logo_image = Gtk.Template.Child('start_page_logo_image')
+    start_page_title_label = Gtk.Template.Child('start_page_title_label')
+    start_page_discover_button = Gtk.Template.Child('start_page_discover_button')
+
     page = None
     selected_filters = []
     selection_mode = False
@@ -33,27 +63,28 @@ class Library:
     thumbnails_cover_size = None
 
     def __init__(self, window):
+        Adw.NavigationPage.__init__(self)
+
         self.window = window
         self.builder = window.builder
+        self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/main.xml')
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/library_search.xml')
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/library_selection_mode.xml')
 
         self.selected_filters = Settings.get_default().library_selected_filters
 
-        self.title_label = self.window.library_title_label
-        self.stack = self.window.library_stack
+        # Header bar
+        self.left_button.connect('clicked', self.on_left_button_clicked)
+        self.menu_button.set_menu_model(self.builder.get_object('menu'))
+        # Focus is lost after showing popover submenu (bug?)
+        self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())
 
         # Search
-        self.searchbar = self.window.library_searchbar
-        self.searchbar_separator = self.window.library_searchbar_separator
-        self.search_menu_button = self.window.library_search_menu_button
         self.search_menu_button.set_menu_model(self.builder.get_object('menu-library-search'))
         if self.selected_filters:
             self.search_menu_button.add_css_class('accent')
-        self.search_entry = self.window.library_searchentry
         self.search_entry.connect('activate', self.on_search_entry_activated)
         self.search_entry.connect('changed', self.search)
-        self.search_button = self.window.library_search_button
         self.searchbar.bind_property(
             'search-mode-enabled', self.search_button, 'active',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
@@ -66,26 +97,22 @@ class Library:
         self.searchbar.set_key_capture_widget(self.window)
 
         # Overlay split view (provide overlay sidebar)
-        self.overlaysplitview = self.window.library_overlaysplitview
         self.overlaysplitview.connect('notify::show-sidebar', self.on_overlaysplitview_revealed)
-        self.overlaysplitview_reveal_button = self.window.library_overlaysplitview_reveal_button
         self.overlaysplitview.bind_property(
-            'show-sidebar', self.overlaysplitview_reveal_button, 'active',
+            'show-sidebar', self.categories_togglebutton, 'active',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
 
         self.categories_list = CategoriesList(self)
 
         # Thumbnails Flowbox
-        self.flowbox = self.window.library_flowbox
         self.flowbox.set_valign(Gtk.Align.START)
         self.flowbox.connect('child-activated', self.on_manga_thumbnail_activated)
-        self.flowbox.connect('selected-children-changed', self.update_subtitle)
+        self.flowbox.connect('selected-children-changed', self.update_title)
         self.flowbox.connect('unselect-all', self.leave_selection_mode)
 
         # Selection mode ActionBar
-        self.selection_mode_actionbar = self.window.library_selection_mode_actionbar
-        self.window.library_selection_mode_menubutton.set_menu_model(self.builder.get_object('menu-library-selection-mode'))
+        self.selection_mode_menubutton.set_menu_model(self.builder.get_object('menu-library-selection-mode'))
 
         # Gestures for multi-selection mode
         self.window.controller_key.connect('key-pressed', self.on_key_pressed)
@@ -169,7 +196,13 @@ class Library:
         self.flowbox.set_filter_func(_filter)
         self.flowbox.set_sort_func(_sort)
 
+        self.window.navigationview.add(self)
+
     def add_actions(self):
+        add_action = Gio.SimpleAction.new('add', None)
+        add_action.connect('activate', self.on_left_button_clicked)
+        self.window.application.add_action(add_action)
+
         # Menu actions
         update_action = Gio.SimpleAction.new('library.update', None)
         update_action.connect('activate', self.update_all)
@@ -274,14 +307,14 @@ class Library:
             for manga in mangas:
                 self.remove_thumbnail(manga)
 
+            if self.window.page == 'card':
+                self.window.navigationview.pop()
+            else:
+                self.leave_selection_mode()
+
             if not self.flowbox.get_first_child():
                 # Library is now empty
                 self.populate()
-
-            if self.window.page == 'card':
-                self.show()
-            else:
-                self.leave_selection_mode()
 
         if self.window.page == 'card':
             message = _('Are you sure you want to delete this manga?')
@@ -325,29 +358,15 @@ class Library:
         self.overlaysplitview.set_show_sidebar(True)
 
     def enter_selection_mode(self):
-        self.selection_mode_actionbar.set_revealed(True)
-
-        self.window.left_button.set_label(_('Cancel'))
-        self.window.left_button.set_tooltip_text(_('Cancel'))
-        # Hide search button: disable search
-        self.window.right_button_stack.set_visible(False)
-
-        self.window.menu_button.set_visible(False)
-
         self.selection_mode = True
+        self.update_headerbar_buttons()
 
         self.flowbox.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
+        self.selection_mode_actionbar.set_revealed(True)
 
     def leave_selection_mode(self, _param=None):
-        self.window.left_button.set_tooltip_text(_('Add new comic'))
-        self.window.left_button.set_icon_name('list-add-symbolic')
-        if self.page == 'flowbox':
-            # Show search button: re-enable search
-            self.window.right_button_stack.set_visible(True)
-
-        self.window.menu_button.set_visible(True)
-
         self.selection_mode = False
+        self.update_headerbar_buttons()
 
         self.flowbox.set_selection_mode(Gtk.SelectionMode.NONE)
         for thumbnail in self.flowbox:
@@ -355,6 +374,12 @@ class Library:
 
         self.selection_mode_actionbar.set_revealed(False)
         self.overlaysplitview.set_show_sidebar(False)
+
+    def on_left_button_clicked(self, action_or_button=None, _param=None):
+        if not self.selection_mode:
+            self.window.explorer.show()
+        else:
+            self.leave_selection_mode()
 
     def on_gesture_long_press_activated(self, _gesture, x, y):
         """Allow to enter in selection mode with a long press on a thumbnail"""
@@ -369,24 +394,28 @@ class Library:
         self.on_manga_thumbnail_activated(None, selected_thumbnail)
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
-        """Allow to enter in selection mode with <SHIFT>+Arrow key"""
-        if self.selection_mode or self.window.page != 'library':
+        if self.window.page != self.props.tag:
             return Gdk.EVENT_PROPAGATE
 
         modifiers = state & Gtk.accelerator_get_default_mod_mask()
-        arrow_keys = (
-            Gdk.KEY_Up, Gdk.KEY_KP_Up,
-            Gdk.KEY_Down, Gdk.KEY_KP_Down,
-            Gdk.KEY_Left, Gdk.KEY_KP_Left,
-            Gdk.KEY_Right, Gdk.KEY_KP_Right
-        )
-        if modifiers != Gdk.ModifierType.SHIFT_MASK or keyval not in arrow_keys:
-            return Gdk.EVENT_PROPAGATE
+        if not self.selection_mode:
+            # Allow to enter in selection mode with <SHIFT>+Arrow key
+            arrow_keys = (
+                Gdk.KEY_Up, Gdk.KEY_KP_Up,
+                Gdk.KEY_Down, Gdk.KEY_KP_Down,
+                Gdk.KEY_Left, Gdk.KEY_KP_Left,
+                Gdk.KEY_Right, Gdk.KEY_KP_Right
+            )
+            if modifiers != Gdk.ModifierType.SHIFT_MASK or keyval not in arrow_keys:
+                return Gdk.EVENT_PROPAGATE
 
-        thumbnail = self.flowbox.get_focus_child() or self.flowbox.get_first_child()
-        if thumbnail is not None:
-            self.enter_selection_mode()
-            self.on_manga_thumbnail_activated(None, thumbnail)
+            thumbnail = self.flowbox.get_focus_child() or self.flowbox.get_first_child()
+            if thumbnail is not None:
+                self.enter_selection_mode()
+                self.on_manga_thumbnail_activated(None, thumbnail)
+        else:
+            if keyval == Gdk.KEY_Escape or (modifiers == Gdk.ModifierType.ALT_MASK and keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left)):
+                self.leave_selection_mode()
 
         return Gdk.EVENT_PROPAGATE
 
@@ -510,21 +539,24 @@ class Library:
 
         db_conn = create_db_connection()
 
-        self.update_subtitle(db_conn=db_conn)
+        self.update_title(db_conn=db_conn)
 
         mangas_rows = db_conn.execute('SELECT id FROM mangas WHERE in_library = 1 ORDER BY last_read DESC').fetchall()
         db_conn.close()
 
+        pixbuf = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/logo.png', 256, 256, True)
+        self.start_page_logo_image.set_from_pixbuf(pixbuf)
+
         if len(mangas_rows) == 0:
             # Update start page title, hide loading progress bar and show 'Discover' button
-            self.window.start_page_progressbar.set_visible(False)
-            self.window.start_page_title_label.set_text(_('Welcome to Komikku'))
-            self.window.start_page_discover_button.set_visible(True)
+            self.start_page_progressbar.set_visible(False)
+            self.start_page_title_label.set_text(_('Welcome to Komikku'))
+            self.start_page_discover_button.set_visible(True)
             return
 
-        self.window.start_page_progressbar.set_visible(True)
-        self.window.start_page_title_label.set_text(_('Loading…'))
-        self.window.start_page_discover_button.set_visible(False)
+        self.start_page_progressbar.set_visible(True)
+        self.start_page_title_label.set_text(_('Loading…'))
+        self.start_page_discover_button.set_visible(False)
 
         # Clear library flowbox
         thumbnail = self.flowbox.get_first_child()
@@ -540,7 +572,7 @@ class Library:
                 thumbnail = Thumbnail(self, Manga.get(row['id'], db_conn=db_conn), *self.thumbnails_cover_size)
                 thumbnails.append(thumbnail)
 
-                GLib.idle_add(self.window.start_page_progressbar.set_fraction, (index + 1) / len(mangas_rows))
+                GLib.idle_add(self.start_page_progressbar.set_fraction, (index + 1) / len(mangas_rows))
 
             db_conn.close()
             GLib.idle_add(complete)
@@ -583,24 +615,15 @@ class Library:
                 thumbnail._selected = True
                 self.flowbox.select_child(thumbnail)
 
-    def show(self, invalidate_sort=False, reset=True):
-        if self.page == 'flowbox':
-            if invalidate_sort:
-                self.flowbox.invalidate_sort()
+    def show(self, invalidate_sort=False):
+        if self.page != 'flowbox':
+            return
 
-            if self.searchbar.get_search_mode():
-                self.search_entry.grab_focus()
+        if invalidate_sort:
+            self.flowbox.invalidate_sort()
 
-        self.window.left_button.set_tooltip_text(_('Add new comic'))
-        self.window.left_button.set_icon_name('list-add-symbolic')
-        self.window.left_extra_button_stack.set_visible(True)
-
-        self.update_headerbar_buttons()
-
-        self.window.menu_button.set_icon_name('open-menu-symbolic')
-        self.window.menu_button.set_visible(True)
-
-        self.window.show_page('library', True)
+        if self.searchbar.get_search_mode():
+            self.search_entry.grab_focus()
 
     def show_page(self, name):
         if self.page == name:
@@ -645,12 +668,22 @@ class Library:
 
     def update_headerbar_buttons(self):
         if self.page == 'flowbox':
-            self.overlaysplitview_reveal_button.set_visible(True)
-            self.window.right_button_stack.set_visible(True)
-            self.window.right_button_stack.set_visible_child_name('library')
+            if self.selection_mode:
+                self.left_button.set_label(_('Cancel'))
+                self.left_button.set_tooltip_text(_('Cancel'))
+                self.search_button.set_visible(False)
+                self.menu_button.set_visible(False)
+            else:
+                self.left_button.set_tooltip_text(_('Add new comic'))
+                self.left_button.set_icon_name('list-add-symbolic')
+                self.search_button.set_visible(True)
+                self.menu_button.set_visible(True)
+
+            self.categories_togglebutton.set_visible(True)
         else:
-            self.overlaysplitview_reveal_button.set_visible(False)
-            self.window.right_button_stack.set_visible(False)
+            self.categories_togglebutton.set_visible(False)
+            self.search_button.set_visible(False)
+            self.menu_button.set_visible(True)
 
     def update_selected(self, _action, _param):
         self.window.updater.add([thumbnail.manga for thumbnail in self.flowbox.get_selected_children()])
@@ -658,7 +691,13 @@ class Library:
 
         self.leave_selection_mode()
 
-    def update_subtitle(self, *args, db_conn=None):
+    def update_thumbnail(self, manga):
+        for thumbnail in self.flowbox:
+            if thumbnail.manga.id == manga.id:
+                thumbnail.update(manga)
+                break
+
+    def update_title(self, *args, db_conn=None):
         nb_selected = len(self.flowbox.get_selected_children()) if self.selection_mode else 0
         if nb_selected > 0:
             title = ngettext('{0} selected', '{0} selected', nb_selected).format(nb_selected)
@@ -671,10 +710,4 @@ class Library:
             else:
                 title = 'Komikku'
 
-        self.title_label.set_label(title)
-
-    def update_thumbnail(self, manga):
-        for thumbnail in self.flowbox:
-            if thumbnail.manga.id == manga.id:
-                thumbnail.update(manga)
-                break
+        self.title.set_title(title)
