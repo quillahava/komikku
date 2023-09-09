@@ -343,22 +343,17 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                           </object>
                         </child>
                         <child>
-                          <object class="AdwActionRow">
+                          <object class="AdwSpinRow">
                             <property name="title" translatable="yes">Maximum Width</property>
                             <property name="subtitle" translatable="yes">Constrain reader's width to a given maximum size (Webtoon reading mode only)</property>
-                            <child>
-                              <object class="GtkSpinButton">
-                                <property name="valign">center</property>
-                                <property name="adjustment">
-                                  <object class="GtkAdjustment" id="clamp_size_adjustment">
-                                    <property name="lower">360</property>
-                                    <property name="upper">3840</property>
-                                    <property name="page-increment">100</property>
-                                    <property name="step-increment">10</property>
-                                  </object>
-                                </property>
+                            <property name="adjustment">
+                              <object class="GtkAdjustment" id="clamp_size_adjustment">
+                                <property name="lower">360</property>
+                                <property name="upper">3840</property>
+                                <property name="page-increment">100</property>
+                                <property name="step-increment">10</property>
                               </object>
-                            </child>
+                            </property>
                           </object>
                         </child>
                         <child>
