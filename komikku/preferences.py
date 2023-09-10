@@ -425,22 +425,15 @@ class PreferencesServersLanguagesSubPage(Adw.NavigationPage):
         servers_languages = self.settings.servers_languages
 
         for code, language in LANGUAGES.items():
-            action_row = Adw.ActionRow()
-            action_row.set_title(language)
-            action_row.set_activatable(True)
+            switchrow = Adw.SwitchRow()
+            switchrow.set_title(language)
+            switchrow.set_active(code in servers_languages)
+            switchrow.connect('notify::active', self.on_language_activated, code)
 
-            switch = Gtk.Switch.new()
-            switch.set_valign(Gtk.Align.CENTER)
-            switch.set_halign(Gtk.Align.CENTER)
-            switch.set_active(code in servers_languages)
-            switch.connect('notify::active', self.on_language_activated, code)
-            action_row.add_suffix(switch)
-            action_row.set_activatable_widget(switch)
+            self.group.add(switchrow)
 
-            self.group.add(action_row)
-
-    def on_language_activated(self, switch_button, _gparam, code):
-        if switch_button.get_active():
+    def on_language_activated(self, switchrow, _gparam, code):
+        if switchrow.get_active():
             self.settings.add_servers_language(code)
         else:
             self.settings.remove_servers_language(code)
@@ -467,11 +460,11 @@ class PreferencesServersSettingsSubPage(Adw.NavigationPage):
 
         self.populate()
 
-    def on_server_activated(self, widget, _gparam, server_main_id):
-        if isinstance(widget, Adw.ExpanderRow):
-            self.settings.toggle_server(server_main_id, widget.get_enable_expansion())
+    def on_server_activated(self, row, _gparam, server_main_id):
+        if isinstance(row, Adw.ExpanderRow):
+            self.settings.toggle_server(server_main_id, row.get_enable_expansion())
         else:
-            self.settings.toggle_server(server_main_id, widget.get_active())
+            self.settings.toggle_server(server_main_id, row.get_active())
 
     def on_server_language_activated(self, switch_button, _gparam, server_main_id, lang):
         self.settings.toggle_server_lang(server_main_id, lang, switch_button.get_active())
@@ -617,21 +610,15 @@ class PreferencesServersSettingsSubPage(Adw.NavigationPage):
                         username_entry.set_text(credential.username)
                         password_entry.set_text(credential.password)
             else:
-                action_row = Adw.ActionRow()
-                action_row.set_title(html_escape(server_data['name']))
+                switchrow = Adw.SwitchRow()
+                switchrow.set_title(html_escape(server_data['name']))
                 if server_data['is_nsfw'] or server_data['is_nsfw_only']:
-                    action_row.set_subtitle(_('18+'))
-                action_row.set_sensitive(server_allowed)
+                    switchrow.set_subtitle(_('18+'))
+                switchrow.set_sensitive(server_allowed)
+                switchrow.set_active(server_enabled and server_allowed)
+                switchrow.connect('notify::active', self.on_server_activated, server_main_id)
 
-                switch = Gtk.Switch.new()
-                switch.set_active(server_enabled and server_allowed)
-                switch.set_valign(Gtk.Align.CENTER)
-                switch.set_halign(Gtk.Align.CENTER)
-                switch.connect('notify::active', self.on_server_activated, server_main_id)
-                action_row.set_activatable_widget(switch)
-                action_row.add_suffix(switch)
-
-                self.group.add(action_row)
+                self.group.add(switchrow)
 
     def present(self, _widget):
         self.parent.window.navigationview.push(self)
