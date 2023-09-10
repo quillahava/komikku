@@ -420,6 +420,7 @@ class PreferencesServersLanguagesSubPage(Adw.NavigationPage):
         Adw.NavigationPage.__init__(self)
 
         self.parent = parent
+        self.window = self.parent.window
         self.settings = Settings.get_default()
 
         servers_languages = self.settings.servers_languages
@@ -440,9 +441,12 @@ class PreferencesServersLanguagesSubPage(Adw.NavigationPage):
 
         # Update Servers settings subpage
         self.parent.servers_settings_subpage.populate()
+        # Update Explorer servers page
+        if self.window.explorer.servers_page in self.window.navigationview.get_navigation_stack():
+            self.window.explorer.servers_page.populate()
 
     def present(self, _widget):
-        self.parent.window.navigationview.push(self)
+        self.window.navigationview.push(self)
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/preferences_servers_settings.ui')
@@ -455,6 +459,7 @@ class PreferencesServersSettingsSubPage(Adw.NavigationPage):
         Adw.NavigationPage.__init__(self)
 
         self.parent = parent
+        self.window = self.parent.window
         self.settings = Settings.get_default()
         self.keyring_helper = KeyringHelper()
 
@@ -466,8 +471,16 @@ class PreferencesServersSettingsSubPage(Adw.NavigationPage):
         else:
             self.settings.toggle_server(server_main_id, row.get_active())
 
+        # Update explorer servers page
+        if self.window.explorer.servers_page in self.window.navigationview.get_navigation_stack():
+            self.window.explorer.servers_page.populate()
+
     def on_server_language_activated(self, switch_button, _gparam, server_main_id, lang):
         self.settings.toggle_server_lang(server_main_id, lang, switch_button.get_active())
+
+        # Update explorer servers page
+        if self.window.explorer.servers_page in self.window.navigationview.get_navigation_stack():
+            self.window.explorer.servers_page.populate()
 
     def populate(self):
         settings = self.settings.servers_settings
@@ -621,7 +634,7 @@ class PreferencesServersSettingsSubPage(Adw.NavigationPage):
                 self.group.add(switchrow)
 
     def present(self, _widget):
-        self.parent.window.navigationview.push(self)
+        self.window.navigationview.push(self)
 
     def save_credential(self, button, server_main_id, server_class, username_entry, password_entry, address_entry, plaintext_checkbutton):
         username = username_entry.get_text()

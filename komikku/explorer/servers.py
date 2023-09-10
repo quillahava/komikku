@@ -119,35 +119,29 @@ class ExplorerServersPage(Adw.NavigationPage):
         Gio.app_info_launch_default_for_uri(f'file://{path}')
 
     def populate_pinned(self):
-        row = self.pinned_listbox.get_first_child()
-        while row:
-            next_row = row.get_next_sibling()
-            self.pinned_listbox.remove(row)
-            row = next_row
+        self.pinned_listbox.remove_all()
 
+        count = 0
         pinned_servers = Settings.get_default().pinned_servers
-
-        if len(pinned_servers) == 0:
-            self.pinned_listbox.set_visible(False)
-            return
-
-        # Add header
-        row = Gtk.ListBoxRow(activatable=False)
-        row.add_css_class('explorer-section-listboxrow')
-        label = Gtk.Label(xalign=0)
-        label.add_css_class('subtitle')
-        label.set_text(_('Pinned').upper())
-        row.set_child(label)
-        self.pinned_listbox.append(row)
-
         for server_data in self.servers:
             if server_data['id'] not in pinned_servers:
                 continue
 
             row = self.parent.build_server_row(server_data)
             self.pinned_listbox.append(row)
+            count += 1
 
-        self.pinned_listbox.set_visible(True)
+        if count:
+            # Add header
+            row = Gtk.ListBoxRow(activatable=False)
+            row.add_css_class('explorer-section-listboxrow')
+            label = Gtk.Label(xalign=0)
+            label.add_css_class('subtitle')
+            label.set_text(_('Pinned').upper())
+            row.set_child(label)
+            self.pinned_listbox.prepend(row)
+
+        self.pinned_listbox.set_visible(count > 0)
 
     def populate(self, servers=None):
         if not servers:
@@ -159,11 +153,7 @@ class ExplorerServersPage(Adw.NavigationPage):
             self.pinned_listbox.set_visible(False)
             self.preselection = True
 
-        row = self.listbox.get_first_child()
-        while row:
-            next_row = row.get_next_sibling()
-            self.listbox.remove(row)
-            row = next_row
+        self.listbox.remove_all()
 
         last_lang = None
         for server_data in self.servers:
@@ -186,7 +176,7 @@ class ExplorerServersPage(Adw.NavigationPage):
             row = self.listbox.get_first_child().get_next_sibling()
             self.parent.server = getattr(row.server_data['module'], row.server_data['class_name'])()
             self.parent.search_page.show_manga_card(row.manga_data)
-        else:
+        elif self not in self.window.navigationview.get_navigation_stack():
             self.window.navigationview.push(self)
 
     def search(self, _entry):
