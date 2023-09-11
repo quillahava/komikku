@@ -17,10 +17,8 @@ class Teamx(Server):
 
     base_url = 'https://teamxnovel.com'
     search_url = base_url + '/ajax/search'
-    most_populars_url = base_url + '/projects'
     manga_url = base_url + '/series/{0}'
     chapter_url = base_url + '/series/{0}/{1}'
-    image_url = 'https://cdn.onepiecechapters.com/file/CDN-M-A-N/{0}'
 
     def __init__(self):
         if self.session is None:
@@ -60,6 +58,7 @@ class Teamx(Server):
         data['name'] = soup.select_one('.author-info-title h1').text.strip()
         data['cover'] = soup.select_one('.whitebox > .text-right > img').get('src')
 
+        # Details
         data['genres'] = [a_element.text.strip() for a_element in soup.select('.review-author-info > a')]
 
         for element in soup.select('.whitebox > .text-right .full-list-info'):
@@ -86,7 +85,7 @@ class Teamx(Server):
                     value = a_element.text.strip()
                     data['genres'].append(value)
 
-        # Details
+        # Synopsis
         data['synopsis'] = soup.select_one('.review-content > p').text.strip()
 
         # Chapters
@@ -101,6 +100,7 @@ class Teamx(Server):
             chapter_url = option_element.get('value')
             if not chapter_url:
                 continue
+
             data['chapters'].append(dict(
                 slug=chapter_url.split('/')[-1],
                 title=' '.join(option_element.text.strip().split()),
@@ -165,26 +165,6 @@ class Teamx(Server):
         """
         return self.manga_url.format(slug)
 
-    def get_most_populars(self):
-        """
-        Returns most viewed mangas
-        """
-        r = self.session_get(self.base_url)
-        if r.status_code != 200:
-            return None
-
-        soup = BeautifulSoup(r.text, 'html.parser')
-
-        results = []
-        for a_element in soup.select('.swiper-slide .entry-image a'):
-            results.append(dict(
-                slug=a_element.get('href').split('/')[-1],
-                name=a_element.img.get('alt'),
-                cover=a_element.img.get('src'),
-            ))
-
-        return results
-
     def get_latest_updates(self):
         """
         Returns latest updates
@@ -197,6 +177,26 @@ class Teamx(Server):
 
         results = []
         for a_element in soup.select('.imgu a'):
+            results.append(dict(
+                slug=a_element.get('href').split('/')[-1],
+                name=a_element.img.get('alt'),
+                cover=a_element.img.get('src'),
+            ))
+
+        return results
+
+    def get_most_populars(self):
+        """
+        Returns most viewed mangas
+        """
+        r = self.session_get(self.base_url)
+        if r.status_code != 200:
+            return None
+
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        results = []
+        for a_element in soup.select('.swiper-slide .entry-image a'):
             results.append(dict(
                 slug=a_element.get('href').split('/')[-1],
                 name=a_element.img.get('alt'),
