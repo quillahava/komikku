@@ -13,38 +13,6 @@ from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import get_soup_element_inner_text
 
-COOKIE_AGE_GATE_PASS = requests.cookies.create_cookie(
-    name='pagGDPR',  # just why?
-    value='true',
-    domain='.webtoons.com',
-    path='/',
-    expires=None,
-)
-
-COOKIE_NEED_GDPR = requests.cookies.create_cookie(
-    name='needGDPR',
-    value='true',
-    domain='.webtoons.com',
-    path='/',
-    expires=None,
-)
-
-COOKIE_DISALLOW_ANALYSIS = requests.cookies.create_cookie(
-    name='tpaaGDPR',
-    value='',
-    domain='.webtoons.com',
-    path='/',
-    expires=None,
-)
-
-COOKIE_DISALLOW_MARKETING = requests.cookies.create_cookie(
-    name='tpamGDPR',
-    value='',
-    domain='.webtoons.com',
-    path='/',
-    expires=None,
-)
-
 LANGUAGES_CODES = dict(
     en='en',
     es='es',
@@ -72,10 +40,6 @@ class Webtoon(Server):
     def __init__(self):
         if self.session is None:
             self.session = requests.Session()
-            self.session.cookies.set_cookie(COOKIE_AGE_GATE_PASS)
-            self.session.cookies.set_cookie(COOKIE_NEED_GDPR)
-            self.session.cookies.set_cookie(COOKIE_DISALLOW_ANALYSIS)
-            self.session.cookies.set_cookie(COOKIE_DISALLOW_MARKETING)
 
     @classmethod
     def get_manga_initial_data_from_url(cls, url):
@@ -327,7 +291,7 @@ class Webtoon(Server):
             # the slug can't be used to forge manga URL, we must store the full url (relative)
             results.append(dict(
                 slug=a_element.get('href').split('=')[-1],
-                url=a_element.get('href'),
+                url=a_element.get('href').replace(self.base_url, ''),
                 name=a_element.find('p', class_='subj').text.strip(),
             ))
 
