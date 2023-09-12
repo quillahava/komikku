@@ -778,9 +778,20 @@ class Manga:
 
                 rank = get_free_rank(rank)
                 if row:
-                    # Update chapter rank
-                    chapter_data['rank'] = rank
-                    update_row(db_conn, 'chapters', row['id'], chapter_data)
+                    # Update changes
+                    changes = {}
+                    if row['title'] != chapter_data['title']:
+                        changes['title'] = chapter_data['title']
+                    if row['url'] != chapter_data.get('url'):
+                        changes['url'] = chapter_data['url']
+                    if chapter_data.get('date') and row['date'] != chapter_data['date']:
+                        changes['date'] = chapter_data['date']
+                    if row['scanlators'] != chapter_data.get('scanlators'):
+                        changes['scanlators'] = chapter_data['scanlators']
+                    if row['rank'] != rank:
+                        changes['rank'] = rank
+                    if changes:
+                        update_row(db_conn, 'chapters', row['id'], changes)
                     rank += 1
                 else:
                     # Add new chapter
