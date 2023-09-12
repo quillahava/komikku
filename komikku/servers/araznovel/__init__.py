@@ -9,5 +9,6 @@ class Araznovel(Madara):
     id = 'araznovel'
     name = 'ArazNovel'
     lang = 'tr'
+    status = 'disabled'  # Novel only 2023-09
 
     base_url = 'https://araznovel.com'

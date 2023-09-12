@@ -10,7 +10,7 @@
 # AkuManga [AR] (disabled)
 # Aloalivn [EN] (disabled)
 # Apoll Comics [ES]
-# ArazNovel [TR]
+# ArazNovel [TR] (disabled)
 # Argos Scan [PT] (disabled)
 # Atikrost [TR] (disabled)
 # Best Manga [RU]
