@@ -25,6 +25,7 @@ class Readmanhwa(Server):
     name = SERVER_NAME
     lang = 'en'
     long_strip_genres = ['Webtoons', ]
+    status = 'disabled'  # Switch to Hentai only https://manhwahentai.to (Madara) 2023-09
 
     base_url = 'https://www.readmanhwa.com'
     manga_url = base_url + '/' + lang + '/webtoon/{0}'
