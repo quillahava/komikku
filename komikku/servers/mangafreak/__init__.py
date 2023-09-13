@@ -74,22 +74,23 @@ class Mangafreak(Server):
         data['cover'] = soup.find('div', class_='manga_series_image').img.get('src')
 
         # Details
-        details_elements = details_container_element.find_all('div')
+        for element in details_container_element.select('div'):
+            text_split = element.text.strip().split(':')
+            if len(text_split) != 2:
+                continue
 
-        status = details_elements[1].text.strip()
-        if status == 'COMPLETED':
-            data['status'] = 'complete'
-        elif status == 'ON-GOING':
-            data['status'] = 'ongoing'
+            label, value = list(map(str.strip, text_split))
+            if label == 'Status':
+                if value == 'COMPLETED':
+                    data['status'] = 'complete'
+                elif value == 'ON-GOING':
+                    data['status'] = 'ongoing'
 
-        author = details_elements[2].text.strip()
-        if author:
-            data['authors'].append(author)
-        author = details_elements[3].text.strip()
-        if author:
-            data['authors'].append(author)
+            elif label in ('Author', 'Artist'):
+                if value not in data['authors']:
+                    data['authors'].append(value)
 
-        for a_element in details_elements[5].find_all('a'):
+        for a_element in details_container_element.select('.series_sub_genre_list > a'):
             data['genres'].append(a_element.text.strip())
 
         # Synopsis
