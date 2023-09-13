@@ -480,23 +480,20 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] Full rewrite of the Webtoon pager</li>
-                <li>[Servers] Adds PhenixScans [FR]</li>
-                <li>[Servers] Adds ToonGod [EN] </li>
+                <li>[Servers] Added Manhwa Hentai (NSFW only) [EN]</li>
+                <li>[Servers] Added Team-X [AR]</li>
                 <li>[Servers] Asura Scans [EN]: Update</li>
-                <li>[Servers] FM Team: Update</li>
-                <li>[Servers] FR-Scan: Update</li>
-                <li>[Servers] Golden Mangás: Update</li>
-                <li>[Servers] Grisebouille: Update</li>
-                <li>[Servers] MANGA Plus by SHUEISHA: Update</li>
-                <li>[Servers] Manga/in/ua: Update</li>
-                <li>[Servers] MangaKawaii: Update</li>
-                <li>[Servers] Mangaowl: Update</li>
-                <li>[Servers] Union Mangás: Update</li>
+                <li>[Servers] MangaFreak: Update</li>
+                <li>[Servers] Mint Manga: Update</li>
+                <li>[Servers] Read Ranga: Update</li>
+                <li>[Servers] Self Manga: Update</li>
+                <li>[Servers] ToonGod: Update</li>
+                <li>[Servers] View Comics: Update</li>
                 <li>[Servers] Webtoon: Update</li>
-                <li>[Servers] Le Cercle du Scan: Disable</li>
-                <li>[L10n] Added Romanian translation</li>
-                <li>[L10n] Updated Arabic, Catalan, Finnish, Russian and Spanish translations</li>
+                <li>[Servers] ArazNovel: Disable</li>
+                <li>[Servers] Phoenix Fansub: Disable</li>
+                <li>[Servers] ReadManhwa: Disable</li>
+                <li>[L10n] Updated Catalan, Italian, Polish and Turkish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)

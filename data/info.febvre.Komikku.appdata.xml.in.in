@@ -93,6 +93,27 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.24.0" date="2023-09-13">
+            <description>
+                <ul>
+                    <li>[Servers] Added Manhwa Hentai (NSFW only) [EN]</li>
+                    <li>[Servers] Added Team-X [AR]</li>
+                    <li>[Servers] Asura Scans [EN]: Update</li>
+                    <li>[Servers] MangaFreak: Update</li>
+                    <li>[Servers] Mint Manga: Update</li>
+                    <li>[Servers] Read Ranga: Update</li>
+                    <li>[Servers] Self Manga: Update</li>
+                    <li>[Servers] ToonGod: Update</li>
+                    <li>[Servers] View Comics: Update</li>
+                    <li>[Servers] Webtoon: Update</li>
+                    <li>[Servers] ArazNovel: Disable</li>
+                    <li>[Servers] Phoenix Fansub: Disable</li>
+                    <li>[Servers] ReadManhwa: Disable</li>
+                    <li>[L10n] Updated Catalan, Italian, Polish and Turkish translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.23.0" date="2023-08-16">
             <description>
                 <ul>
