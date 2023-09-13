@@ -606,7 +606,7 @@ class PreferencesServersSettingsSubpage:
 
                     plaintext_checkbutton = None
                     if self.keyring_helper.is_disabled or not self.keyring_helper.has_recommended_backend:
-                        label = Gtk.Label()
+                        label = Gtk.Label(hexpand=True)
                         label.set_wrap(True)
                         if self.keyring_helper.is_disabled:
                             label.add_css_class('dim-label')
@@ -616,7 +616,7 @@ class PreferencesServersSettingsSubpage:
                             if not credentials_storage_plaintext_fallback:
                                 plaintext_checkbutton = Gtk.CheckButton.new()
                                 label.set_text(_('No keyring backends were found to store credential. Use plaintext storage as fallback.'))
-                                plaintext_checkbutton.add(label)
+                                plaintext_checkbutton.set_child(label)
                                 box.append(plaintext_checkbutton)
                             else:
                                 label.add_css_class('dim-label')

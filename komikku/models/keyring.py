@@ -43,13 +43,24 @@ class KeyringHelper:
     appid = 'info.febvre.Komikku'
 
     def __init__(self, fallback_keyring='plaintext'):
-        if not self.is_disabled or not self.has_recommended_backend:
+        if self.is_disabled or not self.has_recommended_backend:
             if fallback_keyring == 'plaintext':
                 keyring.set_keyring(PlaintextKeyring())
 
     @property
     def has_recommended_backend(self):
-        return self.keyring is not None and not isinstance(self.keyring, keyring.backends.fail.Keyring)
+        """ Returns True if at least one supported backend is available, False otherwise """
+
+        # At this time, SecretService is the only backend that support a collection of items with arbitrary attributes
+        # Known working implementations are:
+        # - GNOME Keyring
+        # - KeePassXC Secret Service integration (tested, work well)
+
+        # Freedesktop.org Secret Service specification was written by both GNOME and KDE projects together
+        # but it’s supported by the GNOME Keyring only
+        # ksecretservice (https://community.kde.org/KDE_Utils/ksecretsservice) exists but is unfinished and seems unmaintained
+        current_keyring = keyring.get_keyring()
+        return current_keyring is not None and isinstance(current_keyring, keyring.backends.SecretService.Keyring)
 
     @property
     def is_disabled(self):
@@ -57,30 +68,31 @@ class KeyringHelper:
 
     @property
     def keyring(self):
-        current_keyring_backend = keyring.get_keyring()
+        current_keyring = keyring.get_keyring()
 
-        if isinstance(current_keyring_backend, keyring.backends.chainer.ChainerBackend):
+        if isinstance(current_keyring, keyring.backends.chainer.ChainerBackend):
             # Search SecretService backend
-            for backend in current_keyring_backend.backends:
+            for backend in current_keyring.backends:
                 if isinstance(backend, keyring.backends.SecretService.Keyring):
                     return backend
 
             return None
 
-        return current_keyring_backend
+        return current_keyring
 
     def get(self, service):
         if self.is_disabled:
             return None
 
-        if isinstance(self.keyring, keyring.backends.SecretService.Keyring):
-            collection = self.keyring.get_preferred_collection()
+        current_keyring = self.keyring
+        if isinstance(current_keyring, keyring.backends.SecretService.Keyring):
+            collection = current_keyring.get_preferred_collection()
 
             credential = None
             with closing(collection.connection):
                 items = collection.search_items({'service': service})
                 for item in items:
-                    self.keyring.unlock(item)
+                    current_keyring.unlock(item)
                     username = item.get_attributes().get('username')
                     if username is None:
                         # Try to find username in 'login' attribute instead of 'username'
@@ -89,8 +101,8 @@ class KeyringHelper:
                     if username:
                         credential = CustomCredential(username, item.get_secret().decode('utf-8'), item.get_attributes().get('address'))
         else:
-            # Fallback on PlaintextKeyring
-            credential = self.keyring.get_credential(service, None)
+            # Fallback backend
+            credential = current_keyring.get_credential(service, None)
 
         if credential is None or credential.username is None:
             return None
@@ -101,17 +113,9 @@ class KeyringHelper:
         if self.is_disabled:
             return
 
-        if isinstance(self.keyring, keyring.backends.SecretService.Keyring):
-            # At this time, SecretService is the only backend that support a collection of items with arbitrary attributes
-            # Known working implementations are:
-            # - GNOME Keyring
-            # - KeePassXC Secret Service integration (tested, work well)
-
-            # Freedesktop.org Secret Service specification was written by both GNOME and KDE projects together
-            # but it’s supported by the GNOME Keyring only
-            # ksecretservice (https://community.kde.org/KDE_Utils/ksecretsservice) exists but is unfinished and seems unmaintained
-
-            collection = self.keyring.get_preferred_collection()
+        current_keyring = self.keyring
+        if isinstance(current_keyring, keyring.backends.SecretService.Keyring):
+            collection = current_keyring.get_preferred_collection()
 
             label = f'{self.appid}: {username}@{service}'
             attributes = {
@@ -130,14 +134,14 @@ class KeyringHelper:
 
                 collection.create_item(label, attributes, password)
         else:
-            # Fallback on PlaintextKeyring
-            self.keyring.set_password(service, username, password, address)
+            # Fallback backend
+            current_keyring.set_password(service, username, password, address)
 
 
 class PlaintextKeyring(keyring.backend.KeyringBackend):
     """Simple File Keyring with no encryption
 
-    Used as fallback when no Keyring backend is found
+    Used as fallback when no supported Keyring backend is found
     """
 
     priority = 1
@@ -165,7 +169,9 @@ class PlaintextKeyring(keyring.backend.KeyringBackend):
             os.mkdir(self.folder)
 
         with open(self.filename, 'w+') as fp:
-            return json.dump(data, fp, indent=2)
+            json.dump(data, fp, indent=2)
+
+        os.chmod(self.filename, 0o600)
 
     def get_credential(self, service, _username):
         data = self._read()
