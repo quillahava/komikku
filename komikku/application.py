@@ -480,6 +480,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
+                <li>[Keyring] Fixed regression prevented detection of the SecretService backend</li>
                 <li>[Servers] Added Manhwa Hentai (NSFW only) [EN]</li>
                 <li>[Servers] Added Team-X [AR]</li>
                 <li>[Servers] Asura Scans [EN]: Update</li>
