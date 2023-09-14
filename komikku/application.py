@@ -480,6 +480,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
+                <li>[Reader] Webtoon pager: Fixed a scrolling bug</li>
                 <li>[Keyring] Fixed regression prevented detection of the SecretService backend</li>
                 <li>[Servers] Added Manhwa Hentai (NSFW only) [EN]</li>
                 <li>[Servers] Added Team-X [AR]</li>
