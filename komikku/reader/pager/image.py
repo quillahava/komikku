@@ -410,7 +410,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         if orientation == Gtk.Orientation.HORIZONTAL:
             return 0, int(for_size * self.ratio) if for_size != -1 else -1, -1, -1
 
-        return 0, for_size // self.ratio if for_size != -1 else -1, -1, -1
+        return 0, int(for_size / self.ratio) if for_size != -1 else -1, -1, -1
 
     def do_size_allocate(self, w, h, b):
         if self.crop and self.crop_bbox is None:
