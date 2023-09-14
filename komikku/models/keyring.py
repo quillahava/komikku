@@ -59,7 +59,7 @@ class KeyringHelper:
         # Freedesktop.org Secret Service specification was written by both GNOME and KDE projects together
         # but it’s supported by the GNOME Keyring only
         # ksecretservice (https://community.kde.org/KDE_Utils/ksecretsservice) exists but is unfinished and seems unmaintained
-        current_keyring = keyring.get_keyring()
+        current_keyring = self.keyring
         return current_keyring is not None and isinstance(current_keyring, keyring.backends.SecretService.Keyring)
 
     @property
