@@ -319,9 +319,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                     </child>
                   </object>
                 </child>
-                <style>
-                  <class name="background"/>
-                </style>
               </object>
             </property>
           </object>
