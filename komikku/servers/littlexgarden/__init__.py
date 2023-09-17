@@ -282,6 +282,8 @@ class Littlexgarden(Server):
 
     def search(self, term):
         all_mangas = self.get_most_populars()
+        if all_mangas is None:
+            return None
 
         results = []
         for el in all_mangas:
