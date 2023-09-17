@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from concurrent.futures import as_completed
+from concurrent.futures import ThreadPoolExecutor
 from gettext import gettext as _
 import threading
 
@@ -483,21 +485,24 @@ class ExplorerSearchPage(Adw.NavigationPage):
             return
 
         def run(servers):
-            for server_data in servers:
-                server = getattr(server_data['module'], server_data['class_name'])()
+            with ThreadPoolExecutor(max_workers=len(servers)) as executor:
+                tasks = {}
+                for server_data in servers:
+                    future = executor.submit(search_server, server_data)
+                    tasks[future] = server_data
 
-                try:
-                    filters = get_server_default_search_filters(server)
-                    results = server.search(term, **filters)
+                for future in as_completed(tasks):
                     if self.stop_search_global:
+                        executor.shutdown(False, cancel_futures=True)
                         break
 
-                    GLib.idle_add(complete_server, results, server_data)
-                except Exception as e:
-                    if self.stop_search_global:
-                        break
-                    user_error_message = log_error_traceback(e)
-                    GLib.idle_add(complete_server, None, server_data, user_error_message)
+                    server_data = tasks[future]
+                    try:
+                        results = future.result()
+                    except Exception as exc:
+                        GLib.idle_add(complete_server, None, server_data, log_error_traceback(exc))
+                    else:
+                        GLib.idle_add(complete_server, results, server_data)
 
             GLib.idle_add(complete)
 
@@ -554,6 +559,11 @@ class ExplorerSearchPage(Adw.NavigationPage):
                 self.search_listbox.append(row)
 
             self.search_listbox.invalidate_sort()
+
+        def search_server(server_data):
+            server = getattr(server_data['module'], server_data['class_name'])()
+            filters = get_server_default_search_filters(server)
+            return server.search(term, **filters)
 
         def sort_results(row1, row2):
             """
