@@ -3,12 +3,11 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from bs4 import BeautifulSoup
-import requests
 
 from komikku.servers import Server
-from komikku.servers import USER_AGENT
 from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import get_buffer_mime_type
+from komikku.webview import bypass_cf
 
 
 class Goldenmangas(Server):
@@ -17,19 +16,15 @@ class Goldenmangas(Server):
     lang = 'pt_BR'
     is_nsfw = True
 
-    base_url = 'https://goldenmanga.top'
+    has_cf = True
+
+    base_url = 'https://www.goldenmangas.top'
     search_url = base_url + '/mangas'
     manga_url = base_url + '/mangas/{0}'
     chapter_url = base_url + '/mangas/{0}/{1}'
     image_url = base_url + '/mm-admin/uploads/mangas/{0}/{1}/{2}'
 
-    def __init__(self):
-        if self.session is None:
-            self.session = requests.Session()
-            self.session.headers.update({
-                'User-Agent': USER_AGENT,
-            })
-
+    @bypass_cf
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -107,6 +102,7 @@ class Goldenmangas(Server):
 
         return data
 
+    @bypass_cf
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
         Returns manga chapter data by scraping chapter HTML page content
@@ -155,6 +151,7 @@ class Goldenmangas(Server):
         """
         return self.manga_url.format(slug)
 
+    @bypass_cf
     def get_latest_updates(self):
         r = self.session_get(self.base_url)
         if r.status_code != 200:
@@ -171,6 +168,7 @@ class Goldenmangas(Server):
 
         return results
 
+    @bypass_cf
     def get_most_populars(self, types=None, statuses=None):
         r = self.session_get(self.base_url)
         if r.status_code != 200:
@@ -187,6 +185,7 @@ class Goldenmangas(Server):
 
         return results
 
+    @bypass_cf
     def search(self, term, types=None, statuses=None, orderby=None):
         r = self.session_get(self.search_url, params=dict(busca=term))
         if r.status_code != 200:
