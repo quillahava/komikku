@@ -8,6 +8,7 @@ import requests
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
+from komikku.servers.multi.heancms import Heancms
 from komikku.servers.multi.genkan import GenkanInitial
 from komikku.servers.multi.madara import Madara
 from komikku.servers.utils import convert_date_string
@@ -63,6 +64,7 @@ class Reaperscans_pt(Server):
     id = 'reaperscans_pt'
     name = 'Reaper Scans'
     lang = 'pt'
+    status = 'disabled'  # Switch to HeanCMS (2023-??), a new server has been added with correct language (pt-BR)
 
     api_base_url = 'https://api.reaperscans.net'
     api_search_url = api_base_url + '/series/search'
@@ -237,6 +239,19 @@ class Reaperscans_pt(Server):
             ))
 
         return results
+
+
+class Reaperscans_pt_br(Heancms):
+    id = 'reaperscans_pt_br'
+    name = 'Reaper Scans'
+    lang = 'pt_BR'
+
+    base_url = 'https://reaperbr.online'
+    api_url = 'https://api.reaperscans.net'
+
+    cover_css_path = 'div div div.container.px-5.text-gray-50 div.grid.grid-cols-12.pt-3.gap-x-3 div.col-span-12.relative.flex.justify-center.w-full div.flex.flex-col.items-center.justify-center.gap-y-2.w-full img'
+    authors_css_path = 'div div.container.px-5.text-gray-50 div.grid.grid-cols-12.pt-3.gap-x-3 div.col-span-12.flex.flex-col.gap-y-3 div div.flex.flex-col.gap-y-2 p:nth-child(3) strong'
+    synopsis_css_path = 'div div.container.px-5.text-gray-50 div.grid.grid-cols-12.pt-3.gap-x-3 div.col-span-12.flex.flex-col.gap-y-3 div.bg-gray-800.text-gray-50.rounded-xl.p-5'
 
 
 class Reaperscans_tr(Madara):

@@ -22,13 +22,6 @@ def reaperscans_ar_server():
 
 
 @pytest.fixture
-def reaperscans_fr_server():
-    from komikku.servers.reaperscans import Reaperscans_fr
-
-    return Reaperscans_fr()
-
-
-@pytest.fixture
 def reaperscans_id_server():
     from komikku.servers.reaperscans import Reaperscans_id
 
@@ -36,10 +29,10 @@ def reaperscans_id_server():
 
 
 @pytest.fixture
-def reaperscans_pt_server():
-    from komikku.servers.reaperscans import Reaperscans_pt
+def reaperscans_pt_br_server():
+    from komikku.servers.reaperscans import Reaperscans_pt_br
 
-    return Reaperscans_pt()
+    return Reaperscans_pt_br()
 
 
 @pytest.fixture
@@ -194,78 +187,6 @@ def test_reaperscans_ar(reaperscans_ar_server):
 
 
 @test_steps('get_latest_updates', 'get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
-def test_reaperscans_fr(reaperscans_fr_server):
-    # Get latest updates
-    print('Get latest updates')
-    try:
-        response = reaperscans_fr_server.get_latest_updates()
-    except Exception as e:
-        response = None
-        log_error_traceback(e)
-
-    assert response is not None
-    yield
-
-    # Get most populars
-    print('Get most populars')
-    try:
-        response = reaperscans_fr_server.get_most_populars()
-    except Exception as e:
-        response = None
-        log_error_traceback(e)
-
-    assert response
-    yield
-
-    # Search
-    print('Search')
-    try:
-        response = reaperscans_fr_server.search(response[0]['name'])
-        slug = response[0]['slug']
-    except Exception as e:
-        slug = None
-        log_error_traceback(e)
-
-    assert slug is not None
-    yield
-
-    # Get manga data
-    print('Get manga data')
-    try:
-        response = reaperscans_fr_server.get_manga_data(dict(slug=slug))
-        chapter_slug = response['chapters'][0]['slug']
-    except Exception as e:
-        chapter_slug = None
-        log_error_traceback(e)
-
-    assert chapter_slug is not None
-    yield
-
-    # Get chapter data
-    print("Get chapter data")
-    try:
-        response = reaperscans_fr_server.get_manga_chapter_data(slug, None, chapter_slug, None)
-        page = response['pages'][0]
-    except Exception as e:
-        page = None
-        log_error_traceback(e)
-
-    assert page is not None
-    yield
-
-    # Get page image
-    print('Get page image')
-    try:
-        response = reaperscans_fr_server.get_manga_chapter_page_image(slug, None, chapter_slug, page)
-    except Exception as e:
-        response = None
-        log_error_traceback(e)
-
-    assert response is not None
-    yield
-
-
-@test_steps('get_latest_updates', 'get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
 def test_reaperscans_id(reaperscans_id_server):
     # Get latest updates
     print('Get latest updates')
@@ -338,11 +259,11 @@ def test_reaperscans_id(reaperscans_id_server):
 
 
 @test_steps('get_latest_updates', 'get_most_populars', 'search', 'get_manga_data', 'get_chapter_data', 'get_page_image')
-def test_reaperscans_pt(reaperscans_pt_server):
+def test_reaperscans_pt_br(reaperscans_pt_br_server):
     # Get latest updates
     print('Get latest updates')
     try:
-        response = reaperscans_pt_server.get_latest_updates()
+        response = reaperscans_pt_br_server.get_latest_updates()
     except Exception as e:
         response = None
         log_error_traceback(e)
@@ -353,7 +274,7 @@ def test_reaperscans_pt(reaperscans_pt_server):
     # Get most populars
     print('Get most populars')
     try:
-        response = reaperscans_pt_server.get_most_populars()
+        response = reaperscans_pt_br_server.get_most_populars()
     except Exception as e:
         response = None
         log_error_traceback(e)
@@ -364,7 +285,7 @@ def test_reaperscans_pt(reaperscans_pt_server):
     # Search
     print('Search')
     try:
-        response = reaperscans_pt_server.search(response[0]['name'])
+        response = reaperscans_pt_br_server.search(response[0]['name'])
         slug = response[0]['slug']
     except Exception as e:
         slug = None
@@ -376,7 +297,7 @@ def test_reaperscans_pt(reaperscans_pt_server):
     # Get manga data
     print('Get manga data')
     try:
-        response = reaperscans_pt_server.get_manga_data(dict(slug=slug))
+        response = reaperscans_pt_br_server.get_manga_data(dict(slug=slug))
         chapter_slug = response['chapters'][0]['slug']
     except Exception as e:
         chapter_slug = None
@@ -388,7 +309,7 @@ def test_reaperscans_pt(reaperscans_pt_server):
     # Get chapter data
     print("Get chapter data")
     try:
-        response = reaperscans_pt_server.get_manga_chapter_data(slug, None, chapter_slug, None)
+        response = reaperscans_pt_br_server.get_manga_chapter_data(slug, None, chapter_slug, None)
         page = response['pages'][0]
     except Exception as e:
         page = None
@@ -400,7 +321,7 @@ def test_reaperscans_pt(reaperscans_pt_server):
     # Get page image
     print('Get page image')
     try:
-        response = reaperscans_pt_server.get_manga_chapter_page_image(None, None, None, page)
+        response = reaperscans_pt_br_server.get_manga_chapter_page_image(slug, None, chapter_slug, page)
     except Exception as e:
         response = None
         log_error_traceback(e)
