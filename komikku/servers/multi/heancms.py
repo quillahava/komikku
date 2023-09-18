@@ -4,6 +4,9 @@
 
 # Hean CMS
 
+# Supported servers:
+# Perf scan [FR]
+
 from bs4 import BeautifulSoup
 import json
 import requests
