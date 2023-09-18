@@ -246,7 +246,7 @@ class Server(ABC):
         By convention, a chapter is a dictionary which must contain the following keys:
         - slug: A slug (str) allowing to forge HTML page URL of the chapter
                 (usually in conjunction with the manga slug)
-        - url: URL of chapter HTML page if `slug` is not usable or does not exist
+        - url: URL of chapter HTML page if `slug` is not usable
         - title: Title of the chapter
         - date: Publish date of the chapter [optional]
         - scanlators: List of scanlators (str) [optional]
