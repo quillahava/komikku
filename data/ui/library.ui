@@ -205,6 +205,9 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                 <property name="hexpand">0</property>
                                 <property name="vexpand">0</property>
                                 <property name="pixel_size">140</property>
+                                <style>
+                                  <class name="icon-dropshadow"/>
+                                </style>
                               </object>
                             </child>
                             <child>
@@ -221,7 +224,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                             </child>
                             <child>
                               <object class="GtkButton" id="start_page_discover_button">
-                                <property name="label" translatable="yes">Discover new readings</property>
+                                <property name="label" translatable="yes">Discover Comics</property>
                                 <property name="visible">0</property>
                                 <property name="receives-default">True</property>
                                 <property name="halign">center</property>
