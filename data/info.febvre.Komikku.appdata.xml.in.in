@@ -93,6 +93,19 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.25.0" date="2023-09-21">
+            <description>
+                <ul>
+                    <li>[UX] Refined visuals taking advantage of the new capabilities of GNOME 45</li>
+                    <li>[Explorer] Global search: Improved speed</li>
+                    <li>[Servers] Added Perf Scan [FR]</li>
+                    <li>[Servers] Added Reaper Scans [pt_BR]</li>
+                    <li>[Servers] Golden Mangás: Update</li>
+                    <li>[L10n] Updated French translation</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.24.2" date="2023-09-15">
             <description>
                 <p>[Reader] Webtoon pager: Fixed a scrolling bug</p>

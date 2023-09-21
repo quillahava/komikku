@@ -388,22 +388,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] Webtoon pager: Fixed a scrolling bug</li>
-                <li>[Keyring] Fixed regression prevented detection of the SecretService backend</li>
-                <li>[Servers] Added Manhwa Hentai (NSFW only) [EN]</li>
-                <li>[Servers] Added Team-X [AR]</li>
-                <li>[Servers] Asura Scans [EN]: Update</li>
-                <li>[Servers] MangaFreak: Update</li>
-                <li>[Servers] Mint Manga: Update</li>
-                <li>[Servers] Read Ranga: Update</li>
-                <li>[Servers] Self Manga: Update</li>
-                <li>[Servers] ToonGod: Update</li>
-                <li>[Servers] View Comics: Update</li>
-                <li>[Servers] Webtoon: Update</li>
-                <li>[Servers] ArazNovel: Disable</li>
-                <li>[Servers] Phoenix Fansub: Disable</li>
-                <li>[Servers] ReadManhwa: Disable</li>
-                <li>[L10n] Updated Catalan, Italian, Polish and Turkish translations</li>
+                <li>[UX] Refined visuals taking advantage of the new capabilities of GNOME 45</li>
+                <li>[Explorer] Global search: Improved speed</li>
+                <li>[Servers] Added Perf Scan [FR]</li>
+                <li>[Servers] Added Reaper Scans [pt_BR]</li>
+                <li>[Servers] Golden Mangás: Update</li>
+                <li>[L10n] Updated French translation</li>
             </ul>
             <p>Happy reading.</p>
         """)
