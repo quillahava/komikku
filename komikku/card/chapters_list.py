@@ -154,12 +154,13 @@ class ChaptersList:
 
         self.card.leave_selection_mode()
 
-    def enter_selection_mode(self):
+    def enter_selection_mode(self, init=False):
         self.chapters_selection_mode_actionbar.set_revealed(True)
         self.listview.set_single_click_activate(False)
 
-        # Init selection with clicked row (stored in self.selection_click_position)
-        self.on_selection_changed(None, None, None)
+        if init:
+            # Init selection with clicked row (stored in self.selection_click_position)
+            self.on_selection_changed(None, None, None)
 
     def get_selected_chapters(self):
         chapters = []
@@ -192,7 +193,7 @@ class ChaptersList:
 
     def on_long_press(self, _controller, _x, _y):
         if not self.card.selection_mode:
-            self.card.enter_selection_mode()
+            self.card.enter_selection_mode(init=True)
         elif not self.selection_mode_range:
             self.selection_mode_range = True
             self.on_selection_changed(None, None, None)
@@ -532,7 +533,7 @@ class ChaptersListRow(Gtk.Box):
             # Right button
             # Store row position and enter selection mode
             self.card.chapters_list.selection_click_position = self.position
-            self.card.enter_selection_mode()
+            self.card.enter_selection_mode(init=True)
             return Gdk.EVENT_STOP
 
         return Gdk.EVENT_PROPAGATE

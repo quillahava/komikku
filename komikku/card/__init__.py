@@ -77,7 +77,6 @@ class CardPage(Adw.NavigationPage):
         self.categories_list = CategoriesList(self)
         self.chapters_list = ChaptersList(self)
 
-        self.stack.connect('notify::visible-child', self.on_page_changed)
         self.window.updater.connect('manga-updated', self.on_manga_updated)
 
         self.window.breakpoint.add_setter(self.viewswitcherbar, 'reveal', True)
@@ -105,22 +104,25 @@ class CardPage(Adw.NavigationPage):
 
         self.chapters_list.add_actions()
 
-    def enter_selection_mode(self):
+    def enter_selection_mode(self, init=False):
         if self.selection_mode:
             return
 
         self.selection_mode = True
-        self.chapters_list.enter_selection_mode()
+        self.chapters_list.enter_selection_mode(init)
 
         self.props.can_pop = False
+
         self.left_button.set_label(_('Cancel'))
         self.left_button.set_tooltip_text(_('Cancel'))
         self.left_button.set_visible(True)
-        self.viewswitcher.set_stack(None)
-        self.viewswitcherbar.set_stack(None)
+
+        self.viewswitcher.set_visible(False)
+        self.viewswitcherbar.set_visible(False)
+        self.title_stack.set_visible_child(self.title)
+
         self.resume_button.set_visible(False)
         self.menu_button.set_visible(False)
-        self.title_stack.set_visible_child(self.title)
 
     def init(self, manga, show=True):
         # Default page is `Info`
@@ -142,18 +144,21 @@ class CardPage(Adw.NavigationPage):
             self.show()
 
     def leave_selection_mode(self, *args):
-        self.chapters_list.leave_selection_mode()
         self.selection_mode = False
+        self.chapters_list.leave_selection_mode()
 
         self.props.can_pop = True
+
         self.left_button.set_visible(False)
-        self.viewswitcher.set_stack(self.stack)
-        self.viewswitcherbar.set_stack(self.stack)
-        self.resume_button.set_visible(True)
-        self.menu_button.set_visible(True)
+
+        self.viewswitcher.set_visible(True)
+        self.viewswitcherbar.set_visible(True)
         self.title.set_subtitle('')
         if not self.viewswitcherbar.get_reveal():
             self.title_stack.set_visible_child(self.viewswitcher)
+
+        self.resume_button.set_visible(True)
+        self.menu_button.set_visible(True)
 
     def on_add_button_clicked(self, _button):
         # Show categories
@@ -208,10 +213,6 @@ class CardPage(Adw.NavigationPage):
             Gtk.UriLauncher.new(uri=uri).launch()
         else:
             self.window.show_notification(_('Failed to get manga URL'))
-
-    def on_page_changed(self, _stack, _param):
-        if self.selection_mode and self.stack.get_visible_child_name() != 'chapters':
-            self.leave_selection_mode()
 
     def on_resume_button_clicked(self, _button):
         chapters = []
