@@ -46,6 +46,7 @@ class ReaderPage(Adw.NavigationPage):
 
         self.connect('hidden', self.on_hidden)
         self.connect('shown', self.on_shown)
+        self.window.connect('notify::fullscreened', self.on_fullscreen_state_changed)
         self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
         # Double maximum distance allowed between two clicks (default 5)
@@ -185,7 +186,7 @@ class ReaderPage(Adw.NavigationPage):
         self.set_action_page_numbering()
 
         if Settings.get_default().fullscreen:
-            self.window.set_fullscreen()
+            self.window.fullscreen()
 
         self.back_button.set_tooltip_text(self.manga.name)
 
@@ -223,12 +224,13 @@ class ReaderPage(Adw.NavigationPage):
         self.set_action_borders_crop()
         self.pager.crop_pages_borders()
 
-    def on_landscape_zoom_changed(self, _action, variant):
-        value = variant.get_boolean()
-        self.manga.update(dict(landscape_zoom=value))
-        self.set_action_landscape_zoom()
-
-        self.pager.rescale_pages()
+    def on_fullscreen_state_changed(self, _window, gparam):
+        if self.window.is_fullscreen():
+            self.headerbar_revealer.set_reveal_child(False)
+            self.fullscreen_button.set_icon_name('view-restore-symbolic')
+        else:
+            self.headerbar_revealer.set_reveal_child(True)
+            self.fullscreen_button.set_icon_name('view-fullscreen-symbolic')
 
     def on_hidden(self, _page):
         if self.pager:
@@ -237,7 +239,7 @@ class ReaderPage(Adw.NavigationPage):
 
         self.controls.hide()
         self.page_numbering_label.set_visible(False)
-        self.window.set_unfullscreen()
+        self.window.unfullscreen()
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.window.page != self.props.tag:
@@ -250,6 +252,13 @@ class ReaderPage(Adw.NavigationPage):
             return Gdk.EVENT_STOP
 
         return Gdk.EVENT_PROPAGATE
+
+    def on_landscape_zoom_changed(self, _action, variant):
+        value = variant.get_boolean()
+        self.manga.update(dict(landscape_zoom=value))
+        self.set_action_landscape_zoom()
+
+        self.pager.rescale_pages()
 
     def on_page_numbering_changed(self, _action, variant):
         value = not variant.get_boolean()

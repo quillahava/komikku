@@ -537,18 +537,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         elif self.page == 'download_manager':
             self.download_manager.select_all()
 
-    def set_fullscreen(self):
-        if not self.is_fullscreen():
-            self.reader.fullscreen_button.set_icon_name('view-restore-symbolic')
-            self.reader.controls.on_fullscreen()
-            self.fullscreen()
-
-    def set_unfullscreen(self):
-        if self.is_fullscreen():
-            self.reader.fullscreen_button.set_icon_name('view-fullscreen-symbolic')
-            self.reader.controls.on_unfullscreen()
-            self.unfullscreen()
-
     def show_notification(self, message, timeout=5):
         # We use a custom in-app notification solution (Gtk.Revealer)
         # until Adw.ToastOverlay/Adw.Toast is fixed
@@ -569,12 +557,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
             return
 
         if self.is_fullscreen():
-            # Hide reader controls if visible
-            self.reader.toggle_controls(False)
-
-            self.set_unfullscreen()
+            self.unfullscreen()
         else:
-            self.set_fullscreen()
+            self.fullscreen()
 
 
 if __name__ == '__main__':

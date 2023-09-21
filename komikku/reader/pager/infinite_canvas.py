@@ -29,7 +29,6 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         'keyboard-navigation': (GObject.SignalFlags.RUN_FIRST, None, ()),
         'offlimit': (GObject.SignalFlags.RUN_FIRST, None, (str,)),
         'page-requested': (GObject.SignalFlags.RUN_FIRST, None, (str,)),
-        'scroll': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     def __init__(self, pager):
@@ -293,8 +292,6 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         self.canvas_height = size
         self.configure_adjustments()
 
-        self.emit('scroll')
-
         if adjusted:
             self.is_scroll_adjusting = False
 
@@ -354,20 +351,24 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         if keyval in (Gdk.KEY_Down, Gdk.KEY_KP_Down, Gdk.KEY_Right, Gdk.KEY_KP_Right, Gdk.KEY_space):
             self.emit('keyboard-navigation')
             self.scroll_by_type(Gtk.ScrollType.STEP_DOWN)
+            return Gdk.EVENT_STOP
 
         elif keyval in (Gdk.KEY_Up, Gdk.KEY_KP_Up, Gdk.KEY_Left, Gdk.KEY_KP_Left):
             self.emit('keyboard-navigation')
             self.scroll_by_type(Gtk.ScrollType.STEP_UP)
+            return Gdk.EVENT_STOP
 
         elif keyval == Gdk.KEY_Page_Down:
             self.emit('keyboard-navigation')
             self.scroll_by_increment(self.vadjustment.props.page_size * SCROLL_CLICK_PERCENTAGE)
+            return Gdk.EVENT_STOP
 
         elif keyval == Gdk.KEY_Page_Up:
             self.emit('keyboard-navigation')
             self.scroll_by_increment(-self.vadjustment.props.page_size * SCROLL_CLICK_PERCENTAGE)
+            return Gdk.EVENT_STOP
 
-        return Gdk.EVENT_STOP
+        return Gdk.EVENT_PROPAGATE
 
     def on_page_rendered(self, page, retry):
         if retry:

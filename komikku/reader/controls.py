@@ -43,9 +43,10 @@ class Controls:
         self.reader.overlay.add_overlay(self.bottom_box)
 
     def hide(self):
-        self.is_visible = False
         if self.window.is_fullscreen():
             self.reader.headerbar_revealer.set_reveal_child(False)
+
+        self.is_visible = False
         self.bottom_box.set_visible(False)
 
     def init(self, chapter):
@@ -96,12 +97,11 @@ class Controls:
             self.bottom_box.reorder_child_after(self.label, self.scale)
 
     def show(self):
+        if self.window.is_fullscreen():
+            self.reader.headerbar_revealer.set_reveal_child(True)
+
         if not self.active:
             return
 
         self.is_visible = True
-
-        if self.window.is_fullscreen():
-            self.reader.headerbar_revealer.set_reveal_child(True)
-
         self.bottom_box.set_visible(True)
