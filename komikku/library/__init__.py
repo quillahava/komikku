@@ -13,7 +13,6 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository.GdkPixbuf import Pixbuf
 
 from komikku.library.categories_list import CategoriesList
 from komikku.library.thumbnail import Thumbnail
@@ -544,8 +543,8 @@ class LibraryPage(Adw.NavigationPage):
         mangas_rows = db_conn.execute('SELECT id FROM mangas WHERE in_library = 1 ORDER BY last_read DESC').fetchall()
         db_conn.close()
 
-        pixbuf = Pixbuf.new_from_resource_at_scale('/info/febvre/Komikku/images/logo.png', 256, 256, True)
-        self.start_page_logo_image.set_from_pixbuf(pixbuf)
+        paintable = Gdk.Texture.new_from_resource('/info/febvre/Komikku/images/logo.png')
+        self.start_page_logo_image.set_from_paintable(paintable)
 
         if len(mangas_rows) == 0:
             # Update start page title, hide loading progress bar and show 'Discover' button
