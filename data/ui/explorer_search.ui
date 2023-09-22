@@ -43,7 +43,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
             </property>
             <child type="end">
               <object class="GtkButton" id="server_website_button">
-                <property name="receives_default">1</property>
                 <property name="icon-name">web-browser-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Open in Browser</property>
               </object>
@@ -80,7 +79,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                 <child>
                                   <object class="GtkMenuButton" id="filter_menu_button">
                                     <property name="focus_on_click">0</property>
-                                    <property name="receives_default">1</property>
                                     <property name="icon-name">go-down-symbolic</property>
                                   </object>
                                 </child>
@@ -155,7 +153,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                               <object class="GtkSpinner" id="search_spinner">
                                                 <property name="height-request">50</property>
                                                 <property name="width-request">50</property>
-                                                <property name="visible">True</property>
                                                 <style>
                                                   <class name="spinner"/>
                                                 </style>
@@ -258,7 +255,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                           <object class="GtkSpinner" id="most_populars_spinner">
                                             <property name="height-request">50</property>
                                             <property name="width-request">50</property>
-                                            <property name="visible">True</property>
                                             <style>
                                               <class name="spinner"/>
                                             </style>
@@ -349,7 +345,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                           <object class="GtkSpinner" id="latest_updates_spinner">
                                             <property name="height-request">50</property>
                                             <property name="width-request">50</property>
-                                            <property name="visible">True</property>
                                             <style>
                                               <class name="spinner"/>
                                             </style>

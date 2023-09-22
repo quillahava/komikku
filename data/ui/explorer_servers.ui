@@ -30,14 +30,12 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
           <object class="AdwHeaderBar">
             <child type="end">
               <object class="GtkButton" id="global_search_button">
-                <property name="receives_default">1</property>
                 <property name="icon-name">explore-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Search for comics across all servers</property>
               </object>
             </child>
             <child type="end">
               <object class="GtkToggleButton" id="search_button">
-                <property name="receives_default">0</property>
                 <property name="icon-name">edit-find-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Search for servers</property>
               </object>

@@ -24,7 +24,7 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
   <template class="ApplicationWindow" parent="AdwApplicationWindow">
     <child>
       <object class="AdwBreakpoint" id="breakpoint">
-        <condition>max-width: 550sp</condition>
+        <condition>max-width: 720sp</condition>
       </object>
     </child>
 

@@ -30,14 +30,12 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
           <object class="AdwHeaderBar">
             <child type="start">
               <object class="GtkButton" id="left_button">
-                <property name="receives_default">1</property>
                 <property name="icon-name">list-add-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Add new comic</property>
               </object>
             </child>
             <child type="start">
               <object class="GtkToggleButton" id="categories_togglebutton">
-                <property name="receives_default">1</property>
                 <property name="icon-name">user-bookmarks-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Toggle categories sidebar</property>
               </object>
@@ -49,7 +47,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
             </property>
             <child type="end">
               <object class="GtkMenuButton" id="menu_button">
-                <property name="receives_default">1</property>
                 <property name="primary">1</property>
                 <property name="icon-name">open-menu-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Main Menu</property>
@@ -57,7 +54,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
             </child>
             <child type="end">
               <object class="GtkToggleButton" id="search_button">
-                <property name="receives_default">1</property>
                 <property name="icon-name">edit-find-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Search</property>
               </object>
@@ -93,7 +89,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                                 </child>
                                 <child>
                                   <object class="GtkMenuButton" id="search_menu_button">
-                                    <property name="receives_default">1</property>
                                     <property name="icon-name">go-down-symbolic</property>
                                   </object>
                                 </child>
@@ -226,7 +221,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                               <object class="GtkButton" id="start_page_discover_button">
                                 <property name="label" translatable="yes">Discover Comics</property>
                                 <property name="visible">0</property>
-                                <property name="receives-default">True</property>
                                 <property name="halign">center</property>
                                 <property name="action-name">app.add</property>
                                 <style>
@@ -311,13 +305,11 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
                     <child>
                       <object class="GtkButton" id="categories_edit_mode_cancel_button">
                         <property name="label" translatable="yes">Cancel</property>
-                        <property name="receives_default">1</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkButton" id="categories_edit_mode_ok_button">
                         <property name="label" translatable="yes">OK</property>
-                        <property name="receives_default">1</property>
                       </object>
                     </child>
                   </object>

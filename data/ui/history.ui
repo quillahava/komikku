@@ -36,7 +36,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
             </property>
             <child type="end">
               <object class="GtkToggleButton" id="search_button">
-                <property name="receives_default">1</property>
                 <property name="icon-name">edit-find-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Search</property>
               </object>
@@ -72,7 +71,6 @@ along with Komikku.  If not, see <http://www.gnu.org/licenses/>.
             <child>
               <object class="GtkScrolledWindow">
                 <property name="vexpand">1</property>
-                <property name="focusable">1</property>
                 <property name="child">
                   <object class="GtkViewport">
                     <property name="scroll-to-focus">true</property>
