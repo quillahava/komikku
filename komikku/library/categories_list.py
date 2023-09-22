@@ -113,9 +113,9 @@ class CategoriesList:
         db_conn = create_db_connection()
         categories = db_conn.execute('SELECT * FROM categories ORDER BY label ASC').fetchall()
         nb_categorized = db_conn.execute('SELECT count(*) FROM categories_mangas_association').fetchone()[0]
-        db_conn.close()
 
         if not categories and self.edit_mode:
+            db_conn.close()
             return
 
         self.clear()
@@ -130,6 +130,7 @@ class CategoriesList:
                 items += ['uncategorized']
 
             for item in items:
+                nb = None
                 if item == 'all':
                     if self.edit_mode:
                         continue
@@ -142,9 +143,14 @@ class CategoriesList:
 
                     category = -1
                     label = _('Uncategorized')
+                    nb = db_conn.execute('SELECT count(*) FROM mangas').fetchone()[0] - nb_categorized
                 else:
                     category = Category.get(item['id'])
                     label = category.label
+                    if not self.edit_mode:
+                        nb = db_conn.execute(
+                            'SELECT count(*) FROM categories_mangas_association WHERE category_id = ?', (item['id'],)
+                        ).fetchone()[0]
 
                 row = Adw.ActionRow(activatable=True)
                 row.category = category
@@ -160,11 +166,17 @@ class CategoriesList:
                     switch.set_valign(Gtk.Align.CENTER)
                     row.set_activatable_widget(switch)
                     row.add_suffix(switch)
+                elif nb:
+                    nb_label = Gtk.Label(label=nb, valign=Gtk.Align.CENTER)
+                    nb_label.add_css_class('badge')
+                    row.add_suffix(nb_label)
 
                 self.listbox.append(row)
         else:
             Settings.get_default().selected_category = CategoryVirtual.ALL
             self.stack.set_visible_child_name('empty')
+
+        db_conn.close()
 
     def set_edit_mode(self, edit_mode):
         self.edit_mode = edit_mode
