@@ -1,0 +1,336 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $PreferencesPage : Adw.NavigationPage {
+  tag: "preferences";
+  title: _("Preferences");
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      title-widget: Stack title_stack {
+        Adw.ViewSwitcher {
+          policy: wide;
+          stack: pages_stack;
+        }
+
+        Adw.WindowTitle title {
+          title: _("Preferences");
+        }
+      };
+    }
+
+    content: Adw.ViewStack pages_stack {
+      Adw.ViewStackPage {
+        name: "general";
+        title: _("General");
+        icon-name: "emblem-system-symbolic";
+        child: Adw.PreferencesPage {
+          title: _("General");
+
+          Adw.PreferencesGroup {
+            Adw.ComboRow color_scheme_row {
+              title: _("Theme");
+              model: StringList {
+                strings [
+                  _("Light"),
+                  _("Dark"),
+                  _("Follow System"),
+                ]
+              };
+            }
+
+            Adw.SwitchRow night_light_switch {
+              title: _("Night Light");
+              subtitle: _("Automatically enable dark theme at night");
+            }
+
+            Adw.SwitchRow desktop_notifications_switch {
+              title: _("Desktop Notifications");
+              subtitle: _("Use desktop notifications for downloads and library updates");
+            }
+          }
+        };
+      }
+
+      Adw.ViewStackPage {
+        name: "library";
+        title: _("Library");
+        icon-name: "grid-symbolic";
+        child: Adw.PreferencesPage {
+          title: _("Library");
+
+          Adw.PreferencesGroup {
+            title: _("Display");
+
+            Adw.ComboRow library_display_mode_row {
+              title: _("Display Mode");
+              model: StringList {
+                strings [
+                  _("Grid"),
+                  _("Compact Grid"),
+                ]
+              };
+            }
+
+            Adw.SwitchRow library_servers_logo_switch {
+              title: _("Servers Logo");
+              subtitle: _("Display servers logo");
+            }
+
+            Adw.ExpanderRow {
+              title: _("Badges");
+
+              Adw.ActionRow {
+                title: _("Number of Unread Chapters");
+                activatable-widget: library_badge_unread_chapters_switch;
+
+                [prefix]
+                Button {
+                  valign: center;
+
+                  styles [
+                    "circular",
+                    "library-thumbnail-badge-unread-chapters",
+                  ]
+                }
+
+                Switch library_badge_unread_chapters_switch {
+                  halign: center;
+                  valign: center;
+                }
+              }
+
+              Adw.ActionRow {
+                title: _("Number of Downloaded Chapters");
+                activatable-widget: library_badge_downloaded_chapters_switch;
+
+                [prefix]
+                Button {
+                  valign: center;
+
+                  styles [
+                    "circular",
+                    "library-thumbnail-badge-downloaded-chapters",
+                  ]
+                }
+
+                Switch library_badge_downloaded_chapters_switch {
+                  halign: center;
+                  valign: center;
+                }
+              }
+
+              Adw.ActionRow {
+                title: _("Number of Recent and Unread Chapters");
+                activatable-widget: library_badge_recent_chapters_switch;
+
+                [prefix]
+                Button {
+                  valign: center;
+
+                  styles [
+                    "circular",
+                    "library-thumbnail-badge-recent-chapters",
+                  ]
+                }
+
+                Switch library_badge_recent_chapters_switch {
+                  halign: center;
+                  valign: center;
+                }
+              }
+            }
+          }
+
+          Adw.PreferencesGroup {
+            title: _("Update");
+
+            Adw.SwitchRow update_at_startup_switch {
+              title: _("Update at Startup");
+              subtitle: _("Automatically update library at startup");
+            }
+
+            Adw.SwitchRow new_chapters_auto_download_switch {
+              title: _("Auto Download of New Chapters");
+              subtitle: _("Automatically download new chapters");
+            }
+          }
+
+          Adw.PreferencesGroup {
+            title: _("Servers");
+
+            Adw.ActionRow servers_languages_actionrow {
+              title: _("Servers Languages");
+              subtitle: _("Restrict servers to selected languages");
+
+              Image {
+                icon-name: "go-next-symbolic";
+              }
+            }
+
+            Adw.ActionRow servers_settings_actionrow {
+              title: _("Servers Settings");
+              subtitle: _("Enable/disable and configure servers");
+
+              Image {
+                icon-name: "go-next-symbolic";
+              }
+            }
+
+            Adw.SwitchRow long_strip_detection_switch {
+              title: _("Long Strip Detection");
+              subtitle: _("Automatically detect long vertical strip when possible");
+            }
+
+            Adw.SwitchRow nsfw_content_switch {
+              title: _("NSFW Content (18+)");
+              subtitle: _("Whether to enable servers with NSFW content");
+            }
+
+            Adw.SwitchRow nsfw_only_content_switch {
+              title: _("NSFW Only Content (18+)");
+              subtitle: _("Whether to enable servers with NSFW only content");
+            }
+          }
+        };
+      }
+
+      Adw.ViewStackPage {
+        name: "reader";
+        title: _("Reader");
+        icon-name: "view-paged-symbolic";
+        child: Adw.PreferencesPage {
+          title: _("Reader");
+
+          Adw.PreferencesGroup {
+            Adw.ComboRow reading_mode_row {
+              title: _("Reading Mode");
+              model: StringList {
+                strings [
+                  _("⬅ Right to Left"),
+                  _("➡ Left to Right"),
+                  _("⬇ Vertical"),
+                  _("⬇ Webtoon"),
+                ]
+              };
+            }
+
+            Adw.SpinRow {
+              title: _("Maximum Width");
+              subtitle: _("Constrain reader\'s width to a given maximum size (Webtoon reading mode only)");
+              adjustment:
+              Adjustment clamp_size_adjustment {
+                lower: 360;
+                upper: 3840;
+                page-increment: 100;
+                step-increment: 10;
+              };
+            }
+
+            Adw.ComboRow scaling_row {
+              title: _("Scaling");
+              subtitle: _("Type of scaling to adapt image");
+              model: StringList {
+                strings [
+                  _("Adapt to Screen"),
+                  _("Adapt to Width"),
+                  _("Adapt to Height"),
+                  _("Original Size"),
+                ]
+              };
+            }
+
+            Adw.SwitchRow landscape_zoom_switch {
+              title: _("Landscape Pages Zoom");
+              subtitle: _("Zoom page to fit height when page is landscape (Adapt to Screen scaling only)");
+            }
+
+            Adw.ComboRow background_color_row {
+              title: _("Background Color");
+              model: StringList {
+                strings [
+                  _("White"),
+                  _("Gray"),
+                  _("Black"),
+                  _("System Style"),
+                ]
+              };
+            }
+
+            Adw.SwitchRow borders_crop_switch {
+              title: _("Borders Crop");
+              subtitle: _("Crop white borders of images\n\nNOTE: Requires more CPU usage and can cause rendering and animation slowdowns, especially on mobile devices.");
+            }
+
+            Adw.SwitchRow page_numbering_switch {
+              title: _("Page Numbering");
+              subtitle: _("Hide the page numbering at the bottom of the screen while reading");
+            }
+
+            Adw.SwitchRow fullscreen_switch {
+              title: _("Fullscreen");
+              subtitle: _("Automatically enter fullscreen mode");
+            }
+          }
+        };
+      }
+
+      Adw.ViewStackPage {
+        name: "advanced";
+        title: _("Advanced");
+        icon-name: "applications-science-symbolic";
+        child: Adw.PreferencesPage {
+          title: _("Advanced");
+
+          Adw.PreferencesGroup {
+            title: _("Data");
+            description: _("Data not saved in the library");
+
+            Adw.ActionRow clear_cached_data_actionrow {
+              title: _("Clear chapters cache and database");
+              activatable: true;
+            }
+
+            Adw.SwitchRow clear_cached_data_on_app_close_switch {
+              title: _("Clear chapters cache and database on application close");
+            }
+          }
+
+          Adw.PreferencesGroup {
+            title: _("Credentials storage");
+
+            Adw.SwitchRow credentials_storage_plaintext_fallback_switch {
+              title: _("Allow plaintext storage as fallback");
+              subtitle: _("Used when no keyring backends are found");
+            }
+          }
+
+          Adw.PreferencesGroup {
+            title: _("Tweaks");
+
+            Adw.SwitchRow disable_animations_switch {
+              title: _("Disable Animations");
+              subtitle: _("Useful with E Ink e-readers to avoid very choppy and unpleasant animations (due to the low refresh rate of the screen)");
+            }
+
+            Label {
+              label: _("This tweak is only intended for users who do not use the GNOME desktop environment and therefore cannot disable animations globally via GNOME Settings (Accessibility ⇨ Seeing ⇨ Reduce Animation).");
+              wrap: true;
+              margin-top: 12;
+
+              styles [
+                "caption",
+                "dim-label",
+              ]
+            }
+          }
+        };
+      }
+    };
+
+    [bottom]
+    Adw.ViewSwitcherBar viewswitcherbar {
+      stack: pages_stack;
+    }
+  };
+}

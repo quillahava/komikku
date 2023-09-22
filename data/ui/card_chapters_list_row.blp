@@ -1,0 +1,103 @@
+using Gtk 4.0;
+
+template $ChaptersListRow : Box {
+  orientation: vertical;
+
+  Box primary_hbox {
+    margin-bottom: 6;
+    margin-end: 6;
+    margin-start: 10;
+    margin-top: 6;
+    spacing: 6;
+
+    Box {
+      hexpand: true;
+      orientation: vertical;
+      spacing: 4;
+      valign: center;  // set to CENTER to allow title to be vertically centered if scanlators are missing
+
+      Label title_label {
+        valign: center;
+        ellipsize: end;
+        xalign: 0.0;
+
+        styles [
+          "body",
+        ]
+      }
+
+      Label scanlators_label {
+        valign: center;
+        ellipsize: end;
+        xalign: 0.0;
+
+        styles [
+          "dim-label",
+          "caption",
+        ]
+      }
+    }
+
+    MenuButton menubutton {
+      valign: start;
+      icon-name: "view-more-symbolic";
+      tooltip-text: _("Menu");
+
+      styles [
+        "flat",
+      ]
+    }
+  }
+
+  Box secondary_hbox {
+    hexpand: true;
+    margin-bottom: 6;
+    margin-end: 6;
+    margin-start: 10;
+    margin-top: 0;
+    spacing: 12;
+
+    Label badge_label {
+      label: _("New");
+      valign: center;
+      xalign: 0.0;
+      yalign: 1.0;
+
+      styles [
+        "badge",
+        "caption",
+      ]
+    }
+
+    Label subtitle_label {
+      halign: start;
+      hexpand: true;
+      valign: center;
+      xalign: 0.0;
+      yalign: 1.0;
+
+      styles [
+        "caption",
+      ]
+    }
+
+    ProgressBar download_progress_progressbar {
+      hexpand: true;
+      valign: center;
+    }
+
+    Button download_stop_button {
+      icon-name: "media-playback-stop-symbolic";
+    }
+
+    Label read_progress_label {
+      margin-end: 5;
+      xalign: 0.5;
+      yalign: 1.0;
+
+      styles [
+        "caption",
+      ]
+    }
+  }
+}

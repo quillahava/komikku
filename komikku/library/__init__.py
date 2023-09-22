@@ -550,12 +550,12 @@ class LibraryPage(Adw.NavigationPage):
         if len(mangas_rows) == 0:
             # Update start page title, hide loading progress bar and show 'Discover' button
             self.start_page_progressbar.set_visible(False)
-            self.start_page_title_label.set_text(_('Welcome to Komikku'))
+            self.start_page_title_label.set_markup('<span weight="bold">' + _('Welcome to Komikku') + '</span>')
             self.start_page_discover_button.set_visible(True)
             return
 
         self.start_page_progressbar.set_visible(True)
-        self.start_page_title_label.set_text(_('Loading…'))
+        self.start_page_title_label.set_markup('<span weight="bold">' + _('Loading…') + '</span>')
         self.start_page_discover_button.set_visible(False)
 
         # Clear library flowbox

@@ -1,0 +1,32 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ApplicationWindow: Adw.ApplicationWindow {
+  Adw.Breakpoint breakpoint {
+    condition ("max-width: 720sp")
+  }
+
+  content: Overlay overlay {
+    child: Adw.NavigationView navigationview {
+    };
+
+    [overlay]
+    Overlay notification_overlay {
+      can-target: false;
+      valign: start;
+      child: Revealer notification_revealer {
+        can-target: false;
+        halign: center;
+        child: Label notification_label {
+          label: "app notification message";
+          justify: center;
+          wrap: true;
+
+          styles [
+            "app-notification",
+          ]
+        };
+      };
+    }
+  };
+}

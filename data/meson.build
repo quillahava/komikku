@@ -43,8 +43,8 @@ endif
 #
 dependency('glib-2.0')
 dependency('gobject-introspection-1.0')
-dependency('gtk4', version: '>=4.10.1')
-dependency('libadwaita-1', version: '>=1.3.1')
+dependency('gtk4', version: '>=4.12.1')
+dependency('libadwaita-1', version: '>=1.4.0')
 
 #
 # gschema XML file
@@ -72,22 +72,6 @@ endif
 
 subdir('ui')
 subdir('icons')
-
-#
-# gresource XML file
-#
-message('Compile gresource XML file')
-app_resources = gnome.compile_resources(app_id,
-    base_id + '.gresource.xml',
-    gresource_bundle: true,
-    dependencies: configure_file(
-        input: 'ui/about_window.ui.in',
-        output: 'about_window.ui',
-        configuration: glade_conf
-    ),
-    install: true,
-    install_dir: pkgdatadir
-)
 
 #
 # appdata/metainfo XML file
@@ -121,3 +105,45 @@ if appstreamcli.found()
         args: ['validate-relax', join_paths(meson.current_build_dir (), app_id + '.appdata.xml')]
     )
 endif
+
+#
+# Convert Blueprint templates files
+#
+message('Convert Blueprint templates into XML')
+blueprints = custom_target('blueprints',
+    input: files(
+        'ui/application_window.blp',
+        'ui/card.blp',
+        'ui/card_chapters_list_row.blp',
+        'ui/categories_editor.blp',
+        'ui/download_manager.blp',
+        'ui/explorer_search.blp',
+        'ui/explorer_servers.blp',
+        'ui/history.blp',
+        'ui/library.blp',
+        'ui/preferences.blp',
+        'ui/preferences_servers_languages.blp',
+        'ui/preferences_servers_settings.blp',
+        'ui/reader.blp',
+        'ui/shortcuts_overview.blp',
+        'ui/webview.blp',
+    ),
+    output: '.',
+    command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
+)
+
+#
+# gresource XML file
+#
+message('Compile gresource XML file')
+app_resources = gnome.compile_resources(app_id,
+    base_id + '.gresource.xml',
+    gresource_bundle: true,
+    dependencies: [blueprints, configure_file(
+        input: 'ui/about_window.ui.in',
+        output: 'about_window.ui',
+        configuration: glade_conf
+    )],
+    install: true,
+    install_dir: pkgdatadir
+)

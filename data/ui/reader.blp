@@ -1,0 +1,39 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ReaderPage : Adw.NavigationPage {
+  tag: "reader";
+  title: _("Reader");
+  can-pop: false;
+  child: Adw.ToolbarView {
+    [top]
+    Revealer headerbar_revealer {
+      reveal-child: true;
+
+      Adw.HeaderBar {
+        [start]
+        Button back_button {
+          icon-name: "go-previous-symbolic";
+          tooltip-text: _("Back");
+        }
+        title-widget: Adw.WindowTitle title {
+        };
+
+        [end]
+        MenuButton menu_button {
+          icon-name: "view-more-symbolic";
+          tooltip-text: _("Menu");
+        }
+
+        [end]
+        ToggleButton fullscreen_button {
+          icon-name: "view-fullscreen-symbolic";
+          tooltip-text: _("Toggle fullscreen mode");
+        }
+      }
+    }
+
+    content: Overlay reader_overlay {
+    };
+  };
+}

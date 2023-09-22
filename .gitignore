@@ -3,6 +3,7 @@
 **/*.*~
 data/#*#
 po/*.mo
+subprojects/blueprint-compiler
 _build
 .buildconfig
 flatpak/*Devel*

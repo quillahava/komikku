@@ -1,0 +1,75 @@
+using Gtk 4.0;
+
+ShortcutsWindow shortcuts_overview {
+  modal: true;
+
+  ShortcutsSection {
+    section-name: "shortcuts";
+    max-height: 8;
+
+    ShortcutsGroup {
+      title: C_("Shortcut window description", "Application");
+
+      ShortcutsShortcut {
+        title: C_("Shortcut window description", "Open preferences");
+        accelerator: "<Primary>comma";
+      }
+
+      ShortcutsShortcut {
+        title: C_("Shortcut window description", "Toggle fullscreen mode");
+        accelerator: "F11";
+      }
+
+      ShortcutsShortcut {
+        title: C_("Shortcut window description", "Open shortcuts window");
+        accelerator: "<Primary>question";
+      }
+    }
+
+    ShortcutsGroup {
+      title: C_("Shortcut window description", "Library");
+
+      ShortcutsShortcut {
+        title: C_("Shortcut window description", "Add manga");
+        accelerator: "<Primary>plus";
+      }
+
+      ShortcutsShortcut {
+        title: C_("Shortcut window description", "Select all");
+        accelerator: "<Primary>A";
+      }
+
+      ShortcutsShortcut {
+        title: C_("Shortcut window description", "Search");
+        accelerator: "<Primary>F";
+      }
+    }
+
+    ShortcutsGroup {
+      title: C_("Shortcut window description", "Manga Card");
+
+      ShortcutsShortcut {
+        title: C_("Shortcut window description", "Select all chapters");
+        accelerator: "<Primary>A";
+      }
+    }
+
+    ShortcutsGroup {
+      title: C_("Shortcut window description", "Reader");
+
+      ShortcutsShortcut {
+        title: C_("Shortcut window description", "Save Page");
+        accelerator: "<Primary>S";
+      }
+    }
+
+    ShortcutsGroup {
+      title: C_("Shortcut window description", "Download Manager");
+
+      ShortcutsShortcut {
+        title: C_("Shortcut window description", "Select all downloads");
+        accelerator: "<Primary>A";
+      }
+    }
+  }
+}

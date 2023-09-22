@@ -1,0 +1,26 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $PreferencesServersSettingsSubPage : Adw.NavigationPage {
+  tag: "preferences.servers_settings";
+  title: _("Servers Settings");
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: _("Preferences");
+        subtitle: _("Servers Settings");
+      };
+    }
+
+    content: Box {
+      orientation: vertical;
+
+      Adw.PreferencesPage {
+        Adw.PreferencesGroup group {
+          vexpand: true;
+        }
+      }
+    };
+  };
+}

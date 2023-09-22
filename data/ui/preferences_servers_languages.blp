@@ -1,0 +1,26 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $PreferencesServersLanguagesSubPage : Adw.NavigationPage {
+  tag: "preferences.servers_languages";
+  title: _("Servers Languages");
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: _("Preferences");
+        subtitle: _("Servers Languages");
+      };
+    }
+
+    content: Box {
+      orientation: vertical;
+
+      Adw.PreferencesPage {
+        Adw.PreferencesGroup group {
+          vexpand: true;
+        }
+      }
+    };
+  };
+}

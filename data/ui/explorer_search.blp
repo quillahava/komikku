@@ -1,0 +1,286 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ExplorerSearchPage : Adw.NavigationPage {
+  tag: "explorer.search";
+  title: _("Search");
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      title-widget: Stack title_stack {
+        Adw.ViewSwitcher viewswitcher {
+          policy: wide;
+          stack: stack;
+        }
+
+        Adw.WindowTitle title {
+        }
+      };
+
+      [end]
+      Button server_website_button {
+        icon-name: "web-browser-symbolic";
+        tooltip-text: _("Open in Browser");
+      }
+    }
+
+    content: Adw.ViewStack stack {
+      Adw.ViewStackPage {
+        name: "search";
+        title: _("Search");
+        icon-name: "system-search-symbolic";
+        child: Box {
+          orientation: vertical;
+
+          Adw.Clamp {
+            maximum-size: 768;
+            margin-end: 12;
+            margin-start: 12;
+
+            SearchBar searchbar {
+              search-mode-enabled: true;
+
+              Box {
+                hexpand: true;
+
+                SearchEntry searchentry {
+                  hexpand: true;
+                }
+
+                MenuButton filter_menu_button {
+                  focus-on-click: false;
+                  icon-name: "go-down-symbolic";
+                }
+
+                styles [
+                  "linked",
+                ]
+              }
+
+              styles [
+                "inline",
+              ]
+            }
+          }
+
+          Separator {
+          }
+
+          ScrolledWindow {
+            vexpand: true;
+            hscrollbar-policy: never;
+            child: Viewport {
+              scroll-to-focus: true;
+
+              Adw.Clamp {
+                maximum-size: 768;
+                margin-top: 12;
+                margin-end: 12;
+                margin-bottom: 12;
+                margin-start: 12;
+
+                Stack search_stack {
+                  vhomogeneous: false;
+
+                  StackPage {
+                    name: "results";
+                    child: Adw.Bin {
+                      ListBox search_listbox {
+                        valign: start;
+                        selection-mode: none;
+
+                        styles [
+                          "boxed-list",
+                        ]
+                      }
+                    };
+                  }
+
+                  StackPage {
+                    name: "no_results";
+                    child: Adw.StatusPage search_no_results_status_page {
+                      icon-name: "computer-fail-symbolic";
+                    };
+                  }
+
+                  StackPage {
+                    name: "loading";
+                    child: Box {
+                      orientation: vertical;
+                      valign: center;
+
+                      Spinner search_spinner {
+                        height-request: 50;
+                        width-request: 50;
+
+                        styles [
+                          "spinner",
+                        ]
+                      }
+                    };
+                  }
+
+                  StackPage {
+                    name: "intro";
+                    child: Adw.StatusPage search_intro_status_page {
+                      icon-name: "system-search-symbolic";
+                    };
+                  }
+                }
+              }
+            };
+          }
+        };
+      }
+
+      Adw.ViewStackPage {
+        name: "most_populars";
+        title: _("Most Popular");
+        icon-name: "starred-symbolic";
+        child: ScrolledWindow {
+          vexpand: true;
+          hscrollbar-policy: never;
+          child: Viewport {
+            scroll-to-focus: true;
+
+            Adw.Clamp {
+              maximum-size: 768;
+              margin-top: 12;
+              margin-end: 12;
+              margin-bottom: 12;
+              margin-start: 12;
+
+              Stack most_populars_stack {
+                vhomogeneous: false;
+
+                StackPage {
+                  name: "results";
+                  child: Adw.Bin {
+                    ListBox most_populars_listbox {
+                      valign: start;
+                      selection-mode: none;
+
+                      styles [
+                        "boxed-list",
+                      ]
+                    }
+                  };
+                }
+
+                StackPage {
+                  name: "no_results";
+                  child: Adw.StatusPage most_populars_no_results_status_page {
+                    icon-name: "computer-fail-symbolic";
+                    child: Button {
+                      label: _("Retry");
+                      halign: center;
+
+                      styles [
+                        "pill",
+                        "suggested-action",
+                      ]
+                    };
+                  };
+                }
+
+                StackPage {
+                  name: "loading";
+                  child: Box {
+                    orientation: vertical;
+                    valign: center;
+
+                    Spinner most_populars_spinner {
+                      height-request: 50;
+                      width-request: 50;
+
+                      styles [
+                        "spinner",
+                      ]
+                    }
+                  };
+                }
+              }
+            }
+          };
+        };
+      }
+
+      Adw.ViewStackPage {
+        name: "latest_updates";
+        title: _("Latest Updates");
+        icon-name: "software-update-available-symbolic";
+        child: ScrolledWindow {
+          vexpand: true;
+          hscrollbar-policy: never;
+          child: Viewport {
+            scroll-to-focus: true;
+
+            Adw.Clamp {
+              maximum-size: 768;
+              margin-top: 12;
+              margin-end: 12;
+              margin-bottom: 12;
+              margin-start: 12;
+
+              Stack latest_updates_stack {
+                vhomogeneous: false;
+
+                StackPage {
+                  name: "results";
+                  child: Adw.Bin {
+                    ListBox latest_updates_listbox {
+                      valign: start;
+                      selection-mode: none;
+
+                      styles [
+                        "boxed-list",
+                      ]
+                    }
+                  };
+                }
+
+                StackPage {
+                  name: "no_results";
+                  child: Adw.StatusPage latest_updates_no_results_status_page {
+                    icon-name: "computer-fail-symbolic";
+                    child: Button {
+                      label: _("Retry");
+                      halign: center;
+
+                      styles [
+                        "pill",
+                        "suggested-action",
+                      ]
+                    };
+                  };
+                }
+
+                StackPage {
+                  name: "loading";
+                  child: Box {
+                    orientation: vertical;
+                    valign: center;
+
+                    Spinner latest_updates_spinner {
+                      height-request: 50;
+                      width-request: 50;
+
+                      styles [
+                        "spinner",
+                      ]
+                    }
+                  };
+                }
+              }
+            }
+          };
+        };
+      }
+    };
+
+    [bottom]
+    Adw.ViewSwitcherBar viewswitcherbar {
+      stack: stack;
+    }
+  };
+}
