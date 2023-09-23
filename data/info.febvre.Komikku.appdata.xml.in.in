@@ -93,6 +93,15 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.25.1" date="2023-09-24">
+            <description>
+                <ul>
+                    <li>[Library] Categories sidebar: Added badges to display number of comics per category</li>
+                    <li>[Card] Fixed a bug that occurred during certain `Update` actions</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.25.0" date="2023-09-21">
             <description>
                 <ul>

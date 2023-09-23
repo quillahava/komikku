@@ -389,6 +389,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_release_notes("""
             <ul>
                 <li>[UX] Refined visuals taking advantage of the new capabilities of GNOME 45</li>
+                <li>[Library] Categories sidebar: Added badges to display number of comics per category</li>
+                <li>[Card] Fixed a bug that occurred during certain `Update` actions</li>
                 <li>[Explorer] Global search: Improved speed</li>
                 <li>[Servers] Added Perf Scan [FR]</li>
                 <li>[Servers] Added Reaper Scans [pt_BR]</li>
