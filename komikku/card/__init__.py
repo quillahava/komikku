@@ -235,11 +235,14 @@ class CardPage(Adw.NavigationPage):
 
     def on_shown(self, _page):
         if self.window.last_navigation_action == 'pop':
-            # No need of repopulate on a back navigation
+            # No need to repopulate on a back navigation
 
-            # Refresh to update all previously chapters consulted (last page read may have changed)
-            # and update info like disk usage
-            self.refresh(self.window.reader.chapters_consulted)
+            if self.window.reader.chapters_consulted:
+                # We come from reader
+                # Refresh to update all previously chapters consulted (last page read may have changed)
+                # and update info like disk usage
+                self.refresh(self.window.reader.chapters_consulted)
+
             return
 
         # Wait page is shown (transition is ended) to populate
