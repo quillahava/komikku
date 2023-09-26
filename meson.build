@@ -37,7 +37,7 @@ localedir = join_paths(prefix, get_option('localedir'))
 base_id = '.'.join([domainext, domainname, prettyname])
 app_id_aspath = '/'.join([domainext, domainname, prettyname])
 if profile == 'development'
-    app_id = base_id + '.Devel'
+    app_id = base_id + 'Devel'
 else
     app_id = base_id
 endif

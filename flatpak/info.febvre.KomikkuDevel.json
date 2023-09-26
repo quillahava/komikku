@@ -1,5 +1,5 @@
 {
-    "app-id" : "info.febvre.Komikku.Devel",
+    "app-id" : "info.febvre.KomikkuDevel",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "45",
     "sdk" : "org.gnome.Sdk",
