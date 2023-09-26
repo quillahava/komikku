@@ -8,7 +8,7 @@ flatpak:
     image: 'quay.io/gnome_infrastructure/gnome-runtime-images:x86_64-gnome-45'
     stage: 'test'
     variables:
-        MANIFEST_PATH: "flatpak/info.febvre.Komikku.Devel.json"
+        MANIFEST_PATH: "flatpak/info.febvre.KomikkuDevel.json"
         MESON_ARGS: "-Dprofile=development"
         FLATPAK_MODULE: "komikku"
         RUNTIME_REPO: "https://flathub.org/repo/flathub.flatpakrepo"
