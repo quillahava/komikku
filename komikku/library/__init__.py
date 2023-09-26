@@ -72,6 +72,8 @@ class LibraryPage(Adw.NavigationPage):
 
         self.selected_filters = Settings.get_default().library_selected_filters
 
+        self.connect('shown', self.on_shown)
+
         # Header bar
         self.left_button.connect('clicked', self.on_left_button_clicked)
         self.menu_button.set_menu_model(self.builder.get_object('menu'))
@@ -559,6 +561,10 @@ class LibraryPage(Adw.NavigationPage):
 
         self.flowbox.invalidate_filter()
 
+    def on_shown(self, _page):
+        if self.searchbar.get_search_mode():
+            self.search_entry.grab_focus()
+
     def on_sort_order_changed(self, _action, variant):
         value = variant.get_string()
         if value == Settings.get_default().library_sort_order:
@@ -661,16 +667,6 @@ class LibraryPage(Adw.NavigationPage):
         self.sort_order_action.set_state(GLib.Variant('s', Settings.get_default().library_sort_order))
         if invalidate:
             self.flowbox.invalidate_sort()
-
-    def show(self, invalidate_sort=False):
-        if self.page != 'flowbox':
-            return
-
-        if invalidate_sort:
-            self.flowbox.invalidate_sort()
-
-        if self.searchbar.get_search_mode():
-            self.search_entry.grab_focus()
 
     def show_page(self, name):
         if self.page == name:

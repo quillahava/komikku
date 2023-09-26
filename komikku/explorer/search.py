@@ -221,6 +221,7 @@ class ExplorerSearchPage(Adw.NavigationPage):
         if self.window.previous_page == self.props.tag:
             return
 
+        self.global_search_mode = False
         # Stop global search if not ended
         self.stop_search_global = True
 

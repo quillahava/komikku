@@ -303,7 +303,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         # Theme (light or dark)
         self.init_theme()
 
-        self.library.show()
         GLib.idle_add(self.library.populate)
 
     def confirm(self, title, message, confirm_label, confirm_callback, confirm_appearance=None, cancel_callback=None):

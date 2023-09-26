@@ -241,6 +241,22 @@ class ReaderPage(Adw.NavigationPage):
         self.page_numbering_label.set_visible(False)
         self.window.unfullscreen()
 
+        # Sync Card page
+        if self.window.card in self.window.navigationview.get_navigation_stack():
+            if self.chapters_consulted:
+                # Refresh to update all previously chapters consulted (last page read may have changed also)
+                # and update info like disk usage
+                self.window.card.refresh(self.chapters_consulted)
+
+        # Sync History page
+        if self.window.history in self.window.navigationview.get_navigation_stack():
+            self.window.history.populate()
+
+        # Sync Library page (root)
+        if self.manga.in_library:
+            self.window.library.update_thumbnail(self.manga)
+            self.window.library.flowbox.invalidate_sort()
+
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.window.page != self.props.tag:
             return Gdk.EVENT_PROPAGATE

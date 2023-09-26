@@ -62,7 +62,6 @@ class CardPage(Adw.NavigationPage):
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/card.xml')
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/card_selection_mode.xml')
 
-        self.connect('hidden', self.on_hidden)
         self.connect('shown', self.on_shown)
         self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
@@ -173,10 +172,6 @@ class CardPage(Adw.NavigationPage):
     def on_delete_menu_clicked(self, _action, _gparam):
         self.window.library.delete_mangas([self.manga, ])
 
-    def on_hidden(self, _page):
-        self.window.library.show(invalidate_sort=True)
-        self.window.library.update_thumbnail(self.manga)
-
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.window.page != self.props.tag:
             return Gdk.EVENT_PROPAGATE
@@ -234,15 +229,7 @@ class CardPage(Adw.NavigationPage):
         self.window.reader.init(self.manga, chapter)
 
     def on_shown(self, _page):
-        if self.window.last_navigation_action == 'pop':
-            # No need to repopulate on a back navigation
-
-            if self.window.reader.chapters_consulted:
-                # We come from reader
-                # Refresh to update all previously chapters consulted (last page read may have changed)
-                # and update info like disk usage
-                self.refresh(self.window.reader.chapters_consulted)
-
+        if self.window.last_navigation_action != 'push':
             return
 
         # Wait page is shown (transition is ended) to populate
