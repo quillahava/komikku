@@ -7,6 +7,31 @@
                 <attribute name="label" translatable="yes">Update Library</attribute>
                 <attribute name="action">app.library.update</attribute>
             </item>
+            <submenu>
+                <attribute name="label" translatable="yes">Sort</attribute>
+
+                <section>
+                    <attribute name="id">library-sort-order</attribute>
+                    <item>
+                        <attribute name="label" translatable="yes">Alphabetical</attribute>
+                        <attribute name="action">app.library.sort-order</attribute>
+                        <attribute name="target">alphanum-asc</attribute>
+                    </item>
+                    <item>
+                        <attribute name="label" translatable="yes">Latest Read First</attribute>
+                        <attribute name="action">app.library.sort-order</attribute>
+                        <attribute name="target">latest-read-desc</attribute>
+                    </item>
+                    <item>
+                        <attribute name="label" translatable="yes">Latest Updated First</attribute>
+                        <attribute name="action">app.library.sort-order</attribute>
+                        <attribute name="target">latest-updated-desc</attribute>
+                    </item>
+                </section>
+            </submenu>
+        </section>
+
+        <section>
             <item>
                 <attribute name="label" translatable="yes">Download Manager</attribute>
                 <attribute name="action">app.library.download-manager</attribute>
@@ -20,6 +45,7 @@
                 <attribute name="action">app.library.history</attribute>
             </item>
         </section>
+
         <section>
             <item>
                 <attribute name="label" translatable="yes">Preferences</attribute>

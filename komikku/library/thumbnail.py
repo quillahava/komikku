@@ -235,7 +235,6 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
         self.__get_badges_values()
 
         self.cover_texture = None
-        self.server_logo__texture = None
         self.__create_cover_texture()
 
         self.invalidate_contents()

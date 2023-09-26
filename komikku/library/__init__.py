@@ -184,11 +184,41 @@ class LibraryPage(Adw.NavigationPage):
             manga1 = thumbnail1.manga
             manga2 = thumbnail2.manga
 
-            if manga1.last_read > manga2.last_read:
-                return -1
+            sort_order = Settings.get_default().library_sort_order
+            if sort_order == 'latest-read-desc':
+                if manga1.last_read > manga2.last_read:
+                    return -1
 
-            if manga1.last_read < manga2.last_read:
-                return 1
+                if manga1.last_read < manga2.last_read:
+                    return 1
+
+            elif sort_order == 'latest-updated-desc':
+                if manga1.last_update is None or manga2.last_update is None:
+                    if manga1.last_update is not None and manga2.last_update is None:
+                        return -1
+                    if manga1.last_update is None and manga2.last_update is not None:
+                        return 1
+
+                    # Both are None, fall back on alphabetical sorting (ascendant)
+                    if manga1.name > manga2.name:
+                        return 1
+                    if manga1.name < manga2.name:
+                        return -1
+
+                    return 0
+
+                if manga1.last_update > manga2.last_update:
+                    return -1
+
+                if manga1.last_update < manga2.last_update:
+                    return 1
+
+            elif sort_order == 'alphanum-asc':
+                if manga1.name > manga2.name:
+                    return 1
+
+                if manga1.name < manga2.name:
+                    return -1
 
             return 0
 
@@ -206,6 +236,11 @@ class LibraryPage(Adw.NavigationPage):
         update_action = Gio.SimpleAction.new('library.update', None)
         update_action.connect('activate', self.update_all)
         self.window.application.add_action(update_action)
+
+        variant = GLib.Variant.new_string(Settings.get_default().library_sort_order)
+        self.sort_order_action = Gio.SimpleAction.new_stateful('library.sort-order', variant.get_type(), variant)
+        self.sort_order_action.connect('activate', self.on_sort_order_changed)
+        self.window.application.add_action(self.sort_order_action)
 
         download_manager_action = Gio.SimpleAction.new('library.download-manager', None)
         download_manager_action.connect('activate', self.open_download_manager)
@@ -524,6 +559,14 @@ class LibraryPage(Adw.NavigationPage):
 
         self.flowbox.invalidate_filter()
 
+    def on_sort_order_changed(self, _action, variant):
+        value = variant.get_string()
+        if value == Settings.get_default().library_sort_order:
+            return
+
+        Settings.get_default().library_sort_order = value
+        self.set_sort_order()
+
     def open_categories_editor(self, _action, _gparam):
         self.window.categories_editor.show()
 
@@ -613,6 +656,11 @@ class LibraryPage(Adw.NavigationPage):
             if not thumbnail._selected and not thumbnail._filtered:
                 thumbnail._selected = True
                 self.flowbox.select_child(thumbnail)
+
+    def set_sort_order(self, invalidate=True):
+        self.sort_order_action.set_state(GLib.Variant('s', Settings.get_default().library_sort_order))
+        if invalidate:
+            self.flowbox.invalidate_sort()
 
     def show(self, invalidate_sort=False):
         if self.page != 'flowbox':

@@ -238,6 +238,38 @@ class Settings(Gio.Settings):
         self.set_boolean('library-servers-logo', state)
 
     @property
+    def library_sort_order(self):
+        """Return the library's sort order"""
+        value = self.library_sort_order_value
+
+        if value == 0:
+            return 'alphanum-asc'
+        if value == 3:
+            return 'latest-read-desc'
+        if value == 5:
+            return 'latest-updated-desc'
+
+    @property
+    def library_sort_order_value(self):
+        """Return the library's sort order value"""
+        return self.get_enum('library-sort-order')
+
+    @library_sort_order.setter
+    def library_sort_order(self, sort):
+        """
+        Set the library's sort order
+
+        :param sort: library's sort order
+        :type sort: string
+        """
+        if sort == 'alphanum-asc':
+            self.set_enum('library-sort-order', 0)
+        elif sort == 'latest-read-desc':
+            self.set_enum('library-sort-order', 3)
+        elif sort == 'latest-updated-desc':
+            self.set_enum('library-sort-order', 5)
+
+    @property
     def long_strip_detection(self):
         return self.get_boolean('long-strip-detection')
 

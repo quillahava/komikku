@@ -15,6 +15,11 @@
         <value nick="grid" value="0" />
         <value nick="grid-compact" value="1" />
     </enum>
+    <enum id="@appid@.LibrarySortOrder">
+        <value nick="alphanum-asc" value="0" />
+        <value nick="latest-read-desc" value="3" />
+        <value nick="latest-updated-desc" value="5" />
+    </enum>
     <enum id="@appid@.ReadingMode">
         <value nick="--" value="-1" />
         <value nick="right-to-left" value="0" />
@@ -88,6 +93,11 @@
             <default>"grid"</default>
             <summary>Library Display Mode</summary>
             <description>Display mode of comics in Library</description>
+        </key>
+        <key enum="@appid@.LibrarySortOrder" name="library-sort-order">
+            <default>"latest-read-desc"</default>
+            <summary>Sorting method used in Library</summary>
+            <description>Sorting method used to display comics in Library</description>
         </key>
         <key type="b" name="library-servers-logo">
             <default>false</default>
