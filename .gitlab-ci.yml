@@ -2,7 +2,7 @@ include: 'https://gitlab.gnome.org/GNOME/citemplates/-/raw/70996b9c3985709ab8700
 # include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 
 variables:
-    BUNDLE: "info.febvre.Komikku.Devel.flatpak"
+    BUNDLE: "info.febvre.KomikkuDevel.flatpak"
 
 flatpak:
     image: 'quay.io/gnome_infrastructure/gnome-runtime-images:x86_64-gnome-45'
@@ -12,7 +12,7 @@ flatpak:
         MESON_ARGS: "-Dprofile=development"
         FLATPAK_MODULE: "komikku"
         RUNTIME_REPO: "https://flathub.org/repo/flathub.flatpakrepo"
-        APP_ID: "info.febvre.Komikku.Devel"
+        APP_ID: "info.febvre.KomikkuDevel"
     extends: .flatpak
 
 review:
