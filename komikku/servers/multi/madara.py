@@ -83,7 +83,7 @@ class Madara(Server):
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-        if mime_type != 'text/html':
+        if mime_type not in ('text/html', 'text/plain'):
             return None
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -161,7 +161,8 @@ class Madara(Server):
                     data['status'] = 'hiatus'
             elif label.startswith(('Summary')):
                 # In case of synopsis has been moved with details
-                data['synopsis'] = element.find('p').text.strip()
+                if text_element := element.find('p, strong'):
+                    data['synopsis'] = text_element.text.strip()
 
         summary_container = soup.find('div', class_=['summary__content', 'manga-excerpt', 'manga-summary'])
         if summary_container:
