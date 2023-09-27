@@ -10,13 +10,8 @@ class Mangasorigines(Madara):
     name = 'Mangas Origines'
     lang = 'fr'
     is_nsfw = True
-    status = 'disabled'
 
-    has_cf = True
-
-    date_format = None
-
-    base_url = 'https://mangas-origines.fr'
+    base_url = 'https://mangas-origines.xyz'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
     chapter_url = base_url + '/manga/{0}/{1}/'
     bypass_cf_url = base_url + '/manga/sakamoto-days/'
