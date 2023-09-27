@@ -21,7 +21,7 @@ SEARCH_RESULTS_LIMIT = 9
 
 class Bilibili(Server):
     id = 'bilibili'
-    name = 'BILIBILI COMICS'
+    name = 'Bilibili Comics'
     lang = 'en'
 
     base_url = 'https://www.bilibilicomics.com'
@@ -57,6 +57,7 @@ class Bilibili(Server):
             self.session = requests.Session()
             self.session.headers.update({
                 'User-Agent': USER_AGENT,
+                'Origin': self.base_url,
                 'Referer': f'{self.base_url}/',
                 'Accept': 'application/json; text/plain; */*',
                 'Content-Type': 'application/json;charset=UTF-8',
@@ -187,7 +188,7 @@ class Bilibili(Server):
             payload['order'] = 0 if orderby == 'populars' else 1
             payload['page_size'] = SEARCH_RESULTS_LIMIT * 2
         else:
-            payload['order'] = 0
+            payload['order'] = -1
             payload['page_size'] = SEARCH_RESULTS_LIMIT
             payload['need_shield_prefer'] = True
             payload['key_word'] = term
