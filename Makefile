@@ -20,20 +20,20 @@ setup:  ## Setup build folder.
 
 local:  ## Configure a local build.
 	meson configure $(BUILD) -Dprefix=$$(pwd)/$(BUILD)/testdir
-	ninja -C $(BUILD) install
 
 develop:  ## Configure a local build with debugging.
 	meson configure $(BUILD) -Dprefix=$$(pwd)/$(BUILD)/testdir -Dprofile=development
-	ninja -C $(BUILD) install
 
 run:  ## Run the local build.
+	ninja -C $(BUILD) install
 	ninja -C $(BUILD) run
 
 install:  ## Install system-wide.
 	ninja -C $(BUILD) install
 
 test:  ## Run tests.
-	python3 -m pytest -v tests/
+	ninja -C $(BUILD) install
+	$(BUILD)/bin/komikku-tests $(ARGS)
 
 clean:  ## Clean build files.
 	rm -r $(BUILD)

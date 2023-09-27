@@ -1,39 +1,41 @@
 ## Test inside a virtual environment
 
-1. Create venv
+1. Create venv (in root folder)
 
-    ```bash
+    ```sh
     python3 -m venv .venv
     ```
 
 2. Activate venv
 
-    ```bash
+    ```sh
     source .venv/bin/activate
     ```
 
-3. Install dependencies + pytest
+3. Install dependencies
 
-    ```bash
+    ```sh
     pip install --upgrade pip setuptools wheel
-    pip install PyGObject
-    pip install natsort
-    pip install pillow
-    pip install beautifulsoup4
-    pip install lxml
-    pip install cloudscraper
-    pip install dateparser
-    pip install python-magic
-    pip install keyring
-    pip install unidecode
-    pip install pure-protobuf
-
-    pip install pytest
-    pip install pytest-steps
+    pip install -r requirements.txt
+    pip install -r requirements-dev.txt
     ```
+
+4. Install
+
+    ```sh
+    make setup
+    make develop
+    ```
+
 
 ## Run tests
 
-    ```bash
-    python -m pytest -v
-    ```
+```sh
+make test
+```
+
+OR to test a single server:
+
+```sh
+make test ARGS=./tests/servers/test_xkcd.py
+```

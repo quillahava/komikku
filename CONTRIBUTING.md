@@ -97,7 +97,6 @@ Komikku can be built in a Python virtual environment. However, some tools and de
 
 5. Run:
     ```sh
-    make install
     make run
     ```
 ​
