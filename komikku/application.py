@@ -387,14 +387,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[UX] Refined visuals taking advantage of the new capabilities of GNOME 45</li>
-                <li>[Library] Categories sidebar: Added badges to display number of comics per category</li>
-                <li>[Card] Fixed a bug that occurred during certain `Update` actions</li>
-                <li>[Explorer] Global search: Improved speed</li>
-                <li>[Servers] Added Perf Scan [FR]</li>
-                <li>[Servers] Added Reaper Scans [pt_BR]</li>
-                <li>[Servers] Golden Mangás: Update</li>
-                <li>[L10n] Updated French translation</li>
+                <li>[Library] Added sorting: Alphabetical, Latest Read First (default), Latest Updated First</li>
+                <li>[Servers] Mangas Origines [FR]: Reenable</li>
+                <li>[Servers] Bilibili Comics: Update</li>
+                <li>[Servers] Mangalek: Update</li>
+                <li>[Servers] Manhwa Hentai: Update</li>
+                <li>[L10n] Updated Finnish, Polish and Spanish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)
