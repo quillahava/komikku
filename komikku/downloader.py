@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from concurrent.futures import as_completed
+from concurrent.futures import ThreadPoolExecutor
 import datetime
 from gettext import gettext as _
 from gettext import ngettext
@@ -109,18 +111,53 @@ class Downloader(GObject.GObject):
     def start(self):
         def run(exclude_errors=False):
             db_conn = create_db_connection()
+
+            # Get pending downloads sorted by server
+            sql = """
+                SELECT d.id, m.server_id FROM downloads d
+                JOIN chapters c ON d.chapter_id = c.id
+                JOIN mangas m ON c.manga_id = m.id
+            """
             if exclude_errors:
-                rows = db_conn.execute('SELECT * FROM downloads WHERE status != "error" ORDER BY date ASC').fetchall()
-            else:
-                rows = db_conn.execute('SELECT * FROM downloads ORDER BY date ASC').fetchall()
+                sql += ' WHERE d.status != "error"'
+
+            sql += ' ORDER BY m.server_id ASC, d.id ASC'
+            rows = db_conn.execute(sql).fetchall()
+
             db_conn.close()
 
-            interrupted = False
+            if not rows or self.stop_flag:
+                self.running = False
+                GLib.idle_add(self.emit, 'ended')
+                return
+
+            # Build dict with list of downloads per server
+            servers_downloads = {}
             for row in rows:
+                if row['server_id'] not in servers_downloads:
+                    servers_downloads[row['server_id']] = []
+                servers_downloads[row['server_id']].append(row['id'])
+
+            with ThreadPoolExecutor(max_workers=len(servers_downloads)) as executor:
+                tasks = {}
+                for server_id, downloads in servers_downloads.items():
+                    future = executor.submit(process_server_downloads, downloads)
+                    tasks[future] = None
+
+                for future in as_completed(tasks):
+                    if self.stop_flag:
+                        executor.shutdown(False, cancel_futures=True)
+                        break
+
+            # Continue, new downloads may have been added in the meantime
+            run(exclude_errors=True)
+
+        def process_server_downloads(downloads):
+            for id in downloads:
                 if self.stop_flag:
                     break
 
-                download = Download.get(row['id'])
+                download = Download.get(id)
                 if download is None:
                     # Download has been removed in the meantime
                     continue
@@ -136,7 +173,6 @@ class Downloader(GObject.GObject):
                         success_counter = 0
                         for index, _page in enumerate(chapter.pages):
                             if self.stop_flag:
-                                interrupted = True
                                 break
 
                             if chapter.get_page_path(index) is None:
@@ -166,7 +202,7 @@ class Downloader(GObject.GObject):
                             else:
                                 success_counter += 1
 
-                        if interrupted:
+                        if self.stop_flag:
                             download.update(dict(status='pending'))
                         else:
                             if error_counter == 0:
@@ -195,34 +231,10 @@ class Downloader(GObject.GObject):
                     user_error_message = log_error_traceback(e)
                     GLib.idle_add(notify_download_error, download, user_error_message)
 
-            if not rows or self.stop_flag:
-                self.running = False
-                GLib.idle_add(self.emit, 'ended')
-            else:
-                # Continue, new downloads may have been added in the meantime
-                run(exclude_errors=True)
-
-        def notify_download_success(chapter):
-            if notification is not None:
-                notification.update(
-                    _('Download completed'),
-                    _('[{0}] Chapter {1}').format(chapter.manga.name, chapter.title)
-                )
-                notification.show()
-
-            self.emit('download-changed', None, chapter)
-
-            return False
-
         def notify_download_error(download, message=None):
             if message:
                 self.window.show_notification(message)
 
-            self.emit('download-changed', download, None)
-
-            return False
-
-        def notify_download_started(download):
             self.emit('download-changed', download, None)
 
             return False
@@ -240,6 +252,23 @@ class Downloader(GObject.GObject):
                 notification.show()
 
             self.emit('download-changed', download, None)
+
+            return False
+
+        def notify_download_started(download):
+            self.emit('download-changed', download, None)
+
+            return False
+
+        def notify_download_success(chapter):
+            if notification is not None:
+                notification.update(
+                    _('Download completed'),
+                    _('[{0}] Chapter {1}').format(chapter.manga.name, chapter.title)
+                )
+                notification.show()
+
+            self.emit('download-changed', None, chapter)
 
             return False
 
@@ -547,12 +576,13 @@ class DownloadManagerPage(Adw.NavigationPage):
         if self.listbox.get_first_child() is not None:
             if self.downloader.running:
                 self.start_stop_button.get_first_child().set_from_icon_name('media-playback-stop-symbolic')
+                self.menu_button.set_visible(False)
             else:
                 self.start_stop_button.get_first_child().set_from_icon_name('media-playback-start-symbolic')
+                self.menu_button.set_visible(True)
 
             self.start_stop_button.set_sensitive(True)
             self.start_stop_button.set_visible(True)
-            self.menu_button.set_visible(True)
         else:
             # No downloads
             self.start_stop_button.set_visible(False)
