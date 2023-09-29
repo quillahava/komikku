@@ -899,6 +899,57 @@ class Chapter:
 
         return os.path.join(self.manga.path, name)
 
+    def clear(self, reset=False):
+        # Delete folder except when server is 'local'
+        if os.path.exists(self.path) and self.manga.server_id != 'local':
+            shutil.rmtree(self.path)
+
+        data = dict(
+            pages=None,
+            downloaded=0,
+        )
+        if reset:
+            data.update(dict(
+                read_progress=None,
+                read=0,
+                last_read=None,
+                last_page_read_index=None,
+            ))
+        self.update(data)
+
+    @staticmethod
+    def clear_many(chapters, reset=False):
+        # Assume the chapters belong to the same manga
+        manga = chapters[0].manga
+        ids = []
+        data = []
+
+        for chapter in chapters:
+            # Delete folder except when server is 'local'
+            if os.path.exists(chapter.path) and manga.server_id != 'local':
+                shutil.rmtree(chapter.path)
+
+            ids.append(chapter.id)
+
+            updated_data = dict(
+                pages=None,
+                downloaded=0,
+            )
+            if reset:
+                updated_data.update(dict(
+                    read_progress=None,
+                    read=0,
+                    last_read=None,
+                    last_page_read_index=None,
+                ))
+            data.append(updated_data)
+
+        db_conn = create_db_connection()
+        with db_conn:
+            update_rows(db_conn, 'chapters', ids, data)
+
+        db_conn.close()
+
     def delete(self, db_conn=None):
         if db_conn is not None:
             db_conn.execute('DELETE FROM chapters WHERE id = ?', (self.id, ))
@@ -999,20 +1050,6 @@ class Chapter:
         path = os.path.join(self.path, name)
 
         return path if os.path.exists(path) else None
-
-    def reset(self):
-        # Delete folder except when server is 'local'
-        if os.path.exists(self.path) and self.manga.server_id != 'local':
-            shutil.rmtree(self.path)
-
-        self.update(dict(
-            pages=None,
-            downloaded=0,
-            read_progress=None,
-            read=0,
-            last_read=None,
-            last_page_read_index=None,
-        ))
 
     def update(self, data):
         """

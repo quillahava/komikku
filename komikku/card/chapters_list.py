@@ -12,6 +12,7 @@ from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gtk
 
+from komikku.models import Chapter
 from komikku.models import create_db_connection
 from komikku.models import Download
 from komikku.models import update_rows
@@ -289,12 +290,7 @@ class ChaptersList:
 
     def reset_selected_chapters(self, _action, _param):
         # Clear and reset selected chapters
-        for chapter in self.get_selected_chapters():
-            if Download.get_by_chapter_id(chapter.id) is not None:
-                # Prevent reset of a chapter that is currently downloaded or scheduled for download
-                continue
-
-            chapter.reset()
+        Chapter.clear_many(self.get_selected_chapters(), reset=True)
 
         self.card.leave_selection_mode()
 
@@ -305,7 +301,7 @@ class ChaptersList:
             # Prevent reset of a chapter that is currently downloaded or scheduled for download
             return
 
-        item.chapter.reset()
+        item.chapter.clear(reset=True)
         item.emit_changed()
 
     def select_all(self, *args):
