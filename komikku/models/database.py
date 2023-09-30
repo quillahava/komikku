@@ -885,6 +885,11 @@ class Chapter:
         return chapter
 
     @property
+    def clearable(self):
+        # Not clearable if server is 'local'
+        return os.path.exists(self.path) and self.manga.server_id != 'local'
+
+    @property
     def manga(self):
         if self._manga is None:
             self._manga = Manga.get(self.manga_id)
@@ -899,27 +904,37 @@ class Chapter:
 
         return os.path.join(self.manga.path, name)
 
+    @property
+    def resetable(self):
+        return self.read or self.last_page_read_index
+
     def clear(self, reset=False):
-        # Delete folder except when server is 'local'
-        if os.path.exists(self.path) and self.manga.server_id != 'local':
+        """
+        Clear (erase files on disk) and optionally reset
+
+        :param bool reset: reset
+        :return: True on success False otherwise
+        """
+        if self.clearable:
             shutil.rmtree(self.path)
 
         data = dict(
-            pages=None,
             downloaded=0,
         )
         if reset:
             data.update(dict(
+                pages=None,
                 read_progress=None,
                 read=0,
                 last_read=None,
                 last_page_read_index=None,
             ))
-        self.update(data)
+
+        return self.update(data)
 
     @staticmethod
     def clear_many(chapters, reset=False):
-        # Assume the chapters belong to the same manga
+        # Assume all chapters belong to the same manga
         manga = chapters[0].manga
         ids = []
         data = []
@@ -932,11 +947,11 @@ class Chapter:
             ids.append(chapter.id)
 
             updated_data = dict(
-                pages=None,
                 downloaded=0,
             )
             if reset:
                 updated_data.update(dict(
+                    pages=None,
                     read_progress=None,
                     read=0,
                     last_read=None,

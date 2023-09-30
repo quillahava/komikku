@@ -114,9 +114,13 @@ class ChaptersList:
         mark_selected_chapters_as_unread_action.connect('activate', self.toggle_selected_chapters_read_status, 0)
         self.card.window.application.add_action(mark_selected_chapters_as_unread_action)
 
-        reset_selected_chapters_action = Gio.SimpleAction.new('card.reset-selected-chapters', None)
-        reset_selected_chapters_action.connect('activate', self.reset_selected_chapters)
-        self.card.window.application.add_action(reset_selected_chapters_action)
+        clear_selected_chapters_action = Gio.SimpleAction.new('card.clear-selected-chapters', None)
+        clear_selected_chapters_action.connect('activate', self.clear_selected_chapters, False)
+        self.card.window.application.add_action(clear_selected_chapters_action)
+
+        clear_reset_selected_chapters_action = Gio.SimpleAction.new('card.clear-reset-selected-chapters', None)
+        clear_reset_selected_chapters_action.connect('activate', self.clear_selected_chapters, True)
+        self.card.window.application.add_action(clear_reset_selected_chapters_action)
 
         select_all_chapters_action = Gio.SimpleAction.new('card.select-all-chapters', None)
         select_all_chapters_action.connect('activate', self.select_all)
@@ -127,9 +131,13 @@ class ChaptersList:
         download_chapter_action.connect('activate', self.download_chapter)
         self.card.window.application.add_action(download_chapter_action)
 
-        reset_chapter_action = Gio.SimpleAction.new('card.reset-chapter', GLib.VariantType.new('q'))
-        reset_chapter_action.connect('activate', self.reset_chapter)
-        self.card.window.application.add_action(reset_chapter_action)
+        clear_chapter_action = Gio.SimpleAction.new('card.clear-chapter', GLib.VariantType.new('q'))
+        clear_chapter_action.connect('activate', self.clear_chapter, False)
+        self.card.window.application.add_action(clear_chapter_action)
+
+        clear_reset_chapter_action = Gio.SimpleAction.new('card.clear-reset-chapter', GLib.VariantType.new('q'))
+        clear_reset_chapter_action.connect('activate', self.clear_chapter, True)
+        self.card.window.application.add_action(clear_reset_chapter_action)
 
         mark_chapter_as_read_action = Gio.SimpleAction.new('card.mark-chapter-read', GLib.VariantType.new('q'))
         mark_chapter_as_read_action.connect('activate', self.toggle_chapter_read_status, 1)
@@ -142,6 +150,22 @@ class ChaptersList:
         mark_previous_chapters_as_read_action = Gio.SimpleAction.new('card.mark-previous-chapters-read', GLib.VariantType.new('q'))
         mark_previous_chapters_as_read_action.connect('activate', self.set_previous_chapters_as_read)
         self.card.window.application.add_action(mark_previous_chapters_as_read_action)
+
+    def clear_chapter(self, _action, position, reset):
+        # Clear and reset chapter
+        item = self.list_model.get_item(position.get_uint16())
+        if Download.get_by_chapter_id(item.chapter.id) is not None:
+            # Prevent reset of a chapter that is currently downloaded or scheduled for download
+            return
+
+        item.chapter.clear(reset=reset)
+        item.emit_changed()
+
+    def clear_selected_chapters(self, _action, _param, reset):
+        # Clear and reset selected chapters
+        Chapter.clear_many(self.get_selected_chapters(), reset=reset)
+
+        self.card.leave_selection_mode()
 
     def download_chapter(self, _action, position):
         item = self.list_model.get_item(position.get_uint16())
@@ -287,22 +311,6 @@ class ChaptersList:
     def refresh(self, chapters):
         for chapter in chapters:
             self.update_chapter_item(chapter=chapter)
-
-    def reset_selected_chapters(self, _action, _param):
-        # Clear and reset selected chapters
-        Chapter.clear_many(self.get_selected_chapters(), reset=True)
-
-        self.card.leave_selection_mode()
-
-    def reset_chapter(self, _action, position):
-        # Clear and reset chapter
-        item = self.list_model.get_item(position.get_uint16())
-        if Download.get_by_chapter_id(item.chapter.id) is not None:
-            # Prevent reset of a chapter that is currently downloaded or scheduled for download
-            return
-
-        item.chapter.clear(reset=True)
-        item.emit_changed()
 
     def select_all(self, *args):
         if not self.card.selection_mode:
@@ -635,18 +643,31 @@ class ChaptersListRow(Gtk.Box):
         position = self.position
         self.menubutton_model.remove_all()
 
-        section_menu_model = Gio.Menu()
         if not self.chapter.downloaded:
+            section_menu_model = Gio.Menu()
             menu_item = Gio.MenuItem.new(_('Download'))
             menu_item.set_action_and_target_value('app.card.download-chapter', GLib.Variant.new_uint16(position))
             section_menu_model.append_item(menu_item)
-        if self.chapter.pages:
-            menu_item = Gio.MenuItem.new(_('Clear and Reset'))
-            menu_item.set_action_and_target_value('app.card.reset-chapter', GLib.Variant.new_uint16(position))
-            section_menu_model.append_item(menu_item)
 
-        section = Gio.MenuItem.new_section(None, section_menu_model)
-        self.menubutton_model.append_item(section)
+            section = Gio.MenuItem.new_section(None, section_menu_model)
+            self.menubutton_model.append_item(section)
+
+        if self.chapter.clearable or self.chapter.resetable:
+            section_menu_model = Gio.Menu()
+
+            if self.chapter.clearable:
+                menu_item = Gio.MenuItem.new(_('Clear'))
+                menu_item.set_action_and_target_value('app.card.clear-chapter', GLib.Variant.new_uint16(position))
+                section_menu_model.append_item(menu_item)
+
+            if self.chapter.resetable:
+                menu_item = Gio.MenuItem.new(_('Clear and Reset') if self.chapter.clearable else _('Reset'))
+                menu_item.set_action_and_target_value('app.card.clear-reset-chapter', GLib.Variant.new_uint16(position))
+                section_menu_model.append_item(menu_item)
+
+            if section_menu_model.get_n_items():
+                section = Gio.MenuItem.new_section(None, section_menu_model)
+                self.menubutton_model.append_item(section)
 
         section_menu_model = Gio.Menu()
         if not self.chapter.read:
