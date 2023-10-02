@@ -5,10 +5,10 @@ msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-02 10:57+0200\n"
-"PO-Revision-Date: 2023-09-21 12:46+0000\n"
+"PO-Revision-Date: 2023-10-04 12:37+0000\n"
 "Last-Translator: Valéry Febvre <vfebvre@easter-eggs.com>\n"
-"Language-Team: French <https://hosted.weblate.org/projects/komikku/main/fr/"
-">\n"
+"Language-Team: French <https://hosted.weblate.org/projects/komikku/main/fr/>"
+"\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -86,26 +86,28 @@ msgid ""
 "[Library] Added sorting: Alphabetical, Latest Read First (default), Latest "
 "Updated First"
 msgstr ""
+"[Bibliothèque] Ajout de la possibilité de trier : Alphabétiquement, Derniers "
+"lus en premier (par défaut), Derniers mis à jour en premier"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:101
 msgid "[Servers] Mangas Origines [FR]: Reenable"
-msgstr ""
+msgstr "[Serveurs] Mangas Origines [FR] : Réactivé"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 msgid "[Servers] Bilibili Comics: Update"
-msgstr ""
+msgstr "[Serveurs] Bilibili Comics : Mise à jour"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:103
 msgid "[Servers] Mangalek: Update"
-msgstr ""
+msgstr "[Serveurs] Mangalek : Mise à jour"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[Servers] Manhwa Hentai: Update"
-msgstr ""
+msgstr "[Serveurs] Manhwa Hentai : Mise à jour"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid "[L10n] Updated Finnish, Polish and Spanish translations"
-msgstr ""
+msgstr "[L10n] Mise à jour des traductions en finnois, polonais et espagnol"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "Happy reading."
@@ -194,7 +196,6 @@ msgid "Add"
 msgstr "Ajouter"
 
 #: ../data/ui/download_manager.blp:6 ../data/ui/download_manager.blp:16
-#, fuzzy
 msgid "Download Manager"
 msgstr "Gestionnaire de téléchargement"
 
@@ -208,7 +209,6 @@ msgstr "Aucun téléchargement"
 
 #: ../data/ui/explorer_search.blp:6 ../data/ui/explorer_search.blp:30
 #: ../data/ui/history.blp:19 ../data/ui/library.blp:36
-#, fuzzy
 msgid "Search"
 msgstr "Rechercher"
 
@@ -250,12 +250,10 @@ msgstr "Aucun historique"
 
 #: ../data/ui/library.blp:6 ../data/ui/preferences.blp:57
 #: ../data/ui/preferences.blp:60
-#, fuzzy
 msgid "Library"
 msgstr "Bibliothèque"
 
 #: ../data/ui/library.blp:19
-#, fuzzy
 msgid "Toggle categories sidebar"
 msgstr "Basculer la barre latérale des catégories"
 
@@ -338,19 +336,19 @@ msgstr "Mettre à jour la bibliothèque"
 
 #: ../data/ui/menu/main.xml:11
 msgid "Sort"
-msgstr ""
+msgstr "Trier"
 
 #: ../data/ui/menu/main.xml:16
 msgid "Alphabetical"
-msgstr ""
+msgstr "Alphabétiquement"
 
 #: ../data/ui/menu/main.xml:21
 msgid "Latest Read First"
-msgstr ""
+msgstr "Derniers lus en premier"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Updated First"
-msgstr ""
+msgstr "Derniers mis à jour en premier"
 
 #: ../data/ui/menu/main.xml:55
 msgid "Keyboard Shortcuts"
@@ -377,7 +375,6 @@ msgid "Hide Page Numbering"
 msgstr "Masquer la numérotation des pages"
 
 #: ../data/ui/menu/reader.xml:106
-#, fuzzy
 msgid "Save Page"
 msgstr "Enregistrer la page"
 
@@ -526,7 +523,6 @@ msgstr "Activer ou non les serveurs avec uniquement du contenu NSFW"
 
 #: ../data/ui/preferences.blp:200 ../data/ui/preferences.blp:203
 #: ../data/ui/reader.blp:6
-#, fuzzy
 msgid "Reader"
 msgstr "Lecteur"
 
@@ -715,7 +711,6 @@ msgid "Back"
 msgstr "Retour"
 
 #: ../data/ui/reader.blp:31
-#, fuzzy
 msgid "Toggle fullscreen mode"
 msgstr "Basculer le mode plein écran"
 
@@ -907,7 +902,7 @@ msgstr "Effacer et réinitialiser"
 
 #: ../komikku/card/chapters_list.py:664
 msgid "Reset"
-msgstr ""
+msgstr "Réinitialiser"
 
 #: ../komikku/card/chapters_list.py:674
 msgid "Mark as Read"
@@ -1068,8 +1063,8 @@ msgid ""
 "\n"
 "<b>id:ID from comic URL</b>"
 msgstr ""
-"Vous pouvez également rechercher des bandes dessinées spécifiques en "
-"utilisant la syntaxe :\n"
+"Vous pouvez également rechercher des BD spécifiques en utilisant la syntaxe :"
+"\n"
 "\n"
 "<b>id:ID de l'URL de la bande dessinée</b>"
 
