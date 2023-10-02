@@ -186,20 +186,20 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.builder = Gtk.Builder()
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/main.xml')
 
+        self.activity_indicator = ActivityIndicator()
+        self.overlay.add_overlay(self.activity_indicator)
+
         self.downloader = Downloader(self)
         self.updater = Updater(self)
 
-        self.activity_indicator = ActivityIndicator()
-        self.overlay.add_overlay(self.activity_indicator)
+        self.assemble_window()
+        self.add_accelerators()
+        self.add_actions()
 
         Gio.NetworkMonitor.get_default().connect('network-changed', self.on_network_status_changed)
         # Non-portal implementations of Gio.NetworkMonitor (app not running under Flatpak) don't actually change the value
         # unless the network state actually changes
         Gio.NetworkMonitor.get_default().emit('network-changed', None)
-
-        self.assemble_window()
-        self.add_accelerators()
-        self.add_actions()
 
     @property
     def page(self):
