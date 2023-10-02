@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-02 10:57+0200\n"
-"PO-Revision-Date: 2023-08-30 11:22+0000\n"
+"PO-Revision-Date: 2023-10-04 12:37+0000\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
-"Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/"
-">\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/>"
+"\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.1-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -88,26 +88,28 @@ msgid ""
 "[Library] Added sorting: Alphabetical, Latest Read First (default), Latest "
 "Updated First"
 msgstr ""
+"[Kitaplık] Sıralama eklendi: Alfabetik, Önce En Son Okunan (öntanımlı), Son "
+"Güncellenen İlk"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:101
 msgid "[Servers] Mangas Origines [FR]: Reenable"
-msgstr ""
+msgstr "[Sunucular] Mangas Origines [FR]: Yeniden Etkinleştirildi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 msgid "[Servers] Bilibili Comics: Update"
-msgstr ""
+msgstr "[Sunucular] Bilibili Comics: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:103
 msgid "[Servers] Mangalek: Update"
-msgstr ""
+msgstr "[Sunucular] Mangalek: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[Servers] Manhwa Hentai: Update"
-msgstr ""
+msgstr "[Sunucular] Manhwa Hentai: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid "[L10n] Updated Finnish, Polish and Spanish translations"
-msgstr ""
+msgstr "[L10n] Fince, Lehçe ve İspanyolca çeviriler güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "Happy reading."
@@ -198,7 +200,6 @@ msgid "Add"
 msgstr "Ekle"
 
 #: ../data/ui/download_manager.blp:6 ../data/ui/download_manager.blp:16
-#, fuzzy
 msgid "Download Manager"
 msgstr "İndirme Yöneticisi"
 
@@ -212,7 +213,6 @@ msgstr "İndirme yok"
 
 #: ../data/ui/explorer_search.blp:6 ../data/ui/explorer_search.blp:30
 #: ../data/ui/history.blp:19 ../data/ui/library.blp:36
-#, fuzzy
 msgid "Search"
 msgstr "Ara"
 
@@ -254,13 +254,12 @@ msgstr "Geçmiş yok"
 
 #: ../data/ui/library.blp:6 ../data/ui/preferences.blp:57
 #: ../data/ui/preferences.blp:60
-#, fuzzy
 msgid "Library"
 msgstr "Kitaplık"
 
 #: ../data/ui/library.blp:19
 msgid "Toggle categories sidebar"
-msgstr ""
+msgstr "Kategoriler kenar çubuğunu göster/gizle"
 
 #: ../data/ui/library.blp:23
 msgid "Komikku"
@@ -268,7 +267,7 @@ msgstr "Komikku"
 
 #: ../data/ui/library.blp:30
 msgid "Main Menu"
-msgstr ""
+msgstr "Ana Menü"
 
 #: ../data/ui/library.blp:61
 msgid "Search by name, server or genre"
@@ -280,7 +279,7 @@ msgstr "Güncelle"
 
 #: ../data/ui/library.blp:182
 msgid "Discover Comics"
-msgstr ""
+msgstr "Çizgi Romanları Keşfet"
 
 #: ../data/ui/library.blp:256
 msgid "OK"
@@ -341,19 +340,19 @@ msgstr "Kitaplığı Güncelle"
 
 #: ../data/ui/menu/main.xml:11
 msgid "Sort"
-msgstr ""
+msgstr "Sırala"
 
 #: ../data/ui/menu/main.xml:16
 msgid "Alphabetical"
-msgstr ""
+msgstr "Alfabetik"
 
 #: ../data/ui/menu/main.xml:21
 msgid "Latest Read First"
-msgstr ""
+msgstr "Son Okunan İlk"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Updated First"
-msgstr ""
+msgstr "Son Güncellenen İlk"
 
 #: ../data/ui/menu/main.xml:55
 msgid "Keyboard Shortcuts"
@@ -380,7 +379,6 @@ msgid "Hide Page Numbering"
 msgstr "Sayfa Numaralarını Gizle"
 
 #: ../data/ui/menu/reader.xml:106
-#, fuzzy
 msgid "Save Page"
 msgstr "Sayfayı Kaydet"
 
@@ -529,7 +527,6 @@ msgstr "Yalnızca NSFW içeriği olan sunucuların etkinleştirilme durumu"
 
 #: ../data/ui/preferences.blp:200 ../data/ui/preferences.blp:203
 #: ../data/ui/reader.blp:6
-#, fuzzy
 msgid "Reader"
 msgstr "Okuyucu"
 
@@ -590,7 +587,7 @@ msgstr "Özgün Boyut"
 
 #: ../data/ui/preferences.blp:244
 msgid "Landscape Pages Zoom"
-msgstr "Yatay Sayfaları Yakınlaştır"
+msgstr "Yatay Sayfaları Yakınlaştırma"
 
 #: ../data/ui/preferences.blp:245
 msgid ""
@@ -666,11 +663,11 @@ msgstr "Veriler kitaplığa kaydedilmedi"
 
 #: ../data/ui/preferences.blp:290
 msgid "Clear chapters cache and database"
-msgstr "Bölüm önbelleğini ve veritabanını temizle"
+msgstr "Bölümler önbelleğini ve veri tabanını temizle"
 
 #: ../data/ui/preferences.blp:295
 msgid "Clear chapters cache and database on application close"
-msgstr "Uygulama kapatıldığında bölüm önbelleğini ve veritabanını temizle"
+msgstr "Uygulama kapatıldığında bölümler önbelleğini ve veri tabanını temizle"
 
 #: ../data/ui/preferences.blp:300
 msgid "Credentials storage"
@@ -715,7 +712,6 @@ msgid "Back"
 msgstr "Geri"
 
 #: ../data/ui/reader.blp:31
-#, fuzzy
 msgid "Toggle fullscreen mode"
 msgstr "Tam ekran kipini aç/kapat"
 
@@ -791,7 +787,7 @@ msgstr "Tüm indirilenleri seç"
 
 #: ../data/ui/webview.blp:6
 msgid "Webview"
-msgstr ""
+msgstr "Web görünümü"
 
 #: ../komikku/application.py:132
 msgid "Multiple URLs not supported"
@@ -1022,7 +1018,7 @@ msgstr "Son Güncellemeler Bulunamadı"
 #: ../komikku/explorer/search.py:324 ../komikku/explorer/search.py:386
 #: ../komikku/explorer/search.py:476 ../komikku/explorer/search.py:485
 msgid "A request is already in progress."
-msgstr "Bir işlem zaten sürüyor"
+msgstr "Bir işlem zaten sürüyor."
 
 #: ../komikku/explorer/search.py:373
 msgid "Oops, failed to retrieve most popular."
@@ -1078,11 +1074,11 @@ msgstr "Genel Arama"
 
 #: ../komikku/explorer/search.py:695
 msgid "Search globally by name"
-msgstr ""
+msgstr "Küresel olarak ada göre ara"
 
 #: ../komikku/explorer/search.py:697
 msgid "Search for comics across all the servers you have enabled"
-msgstr ""
+msgstr "Etkinleştirilmiş tüm sunucularda çizgi roman ara"
 
 #: ../komikku/explorer/search.py:762
 msgid "Oops, failed to retrieve manga's information."
@@ -1139,7 +1135,7 @@ msgstr "Yükleniyor…"
 
 #: ../komikku/library/__init__.py:707
 msgid "Failed to update reading status"
-msgstr "Bölümün okunma durumu güncellenemedi"
+msgstr "Okunma durumları güncellenemedi"
 
 #: ../komikku/library/__init__.py:720
 msgid "Add new comic"
@@ -1194,12 +1190,12 @@ msgstr "İndirme hatası"
 
 #: ../komikku/preferences.py:122
 msgid "Clear?"
-msgstr "Temizlensin mi?"
+msgstr "Temizlensin Mi?"
 
 #: ../komikku/preferences.py:123
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
-"Bölüm önbelleğini ve veritabanını temizlemek istediğinizden emin misiniz?"
+"Bölümler önbelleğini ve veri tabanını temizlemek istediğinizden emin misiniz?"
 
 #: ../komikku/preferences.py:151
 msgid "Disable animations?"
@@ -1550,7 +1546,7 @@ msgstr[1] "{0} yeni bölüm"
 
 #: ../komikku/updater.py:110
 msgid "No new chapters"
-msgstr "Yeni bölüm Yok"
+msgstr "Yeni bölüm yok"
 
 #: ../komikku/updater.py:113
 #, python-brace-format
@@ -1582,7 +1578,7 @@ msgstr ""
 
 #: ../komikku/webview.py:264
 msgid "Please complete CAPTCHA"
-msgstr "Lütfen CAPTCHA tamamlayın"
+msgstr "Lütfen CAPTCHA'yı tamamlayın"
 
 #~ msgid "[Servers] MangaKawaii: Update"
 #~ msgstr "[Sunucular] MangaKawaii: Güncellendi"
