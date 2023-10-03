@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: Komikku 0.30.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-02 10:57+0200\n"
-"PO-Revision-Date: 2023-09-27 13:33+0000\n"
+"PO-Revision-Date: 2023-10-04 12:37+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/komikku/main/es/"
-">\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/komikku/main/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,26 +88,28 @@ msgid ""
 "[Library] Added sorting: Alphabetical, Latest Read First (default), Latest "
 "Updated First"
 msgstr ""
+"[Biblioteca] Añadida Ordenación: Alfabética, lo último leído primero (por "
+"defecto), lo último actualizado primero"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:101
 msgid "[Servers] Mangas Origines [FR]: Reenable"
-msgstr ""
+msgstr "[Servidores] Mangas Origines [FR]: Reactivar"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 msgid "[Servers] Bilibili Comics: Update"
-msgstr ""
+msgstr "[Servidores] Bilibili Comics: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:103
 msgid "[Servers] Mangalek: Update"
-msgstr ""
+msgstr "[Servidores] Mangalek: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[Servers] Manhwa Hentai: Update"
-msgstr ""
+msgstr "[Servidores] Manhwa Hentai: Actualización"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid "[L10n] Updated Finnish, Polish and Spanish translations"
-msgstr ""
+msgstr "[L10n] Actualizadas las traducciones al finés, polaco y español"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "Happy reading."
@@ -338,19 +340,19 @@ msgstr "Actualizar biblioteca"
 
 #: ../data/ui/menu/main.xml:11
 msgid "Sort"
-msgstr ""
+msgstr "Ordenar"
 
 #: ../data/ui/menu/main.xml:16
 msgid "Alphabetical"
-msgstr ""
+msgstr "Alfabético"
 
 #: ../data/ui/menu/main.xml:21
 msgid "Latest Read First"
-msgstr ""
+msgstr "Lo último leído primero"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Updated First"
-msgstr ""
+msgstr "Primero lo último actualizado"
 
 #: ../data/ui/menu/main.xml:55
 msgid "Keyboard Shortcuts"
@@ -905,7 +907,7 @@ msgstr "Limpiar y reiniciar"
 
 #: ../komikku/card/chapters_list.py:664
 msgid "Reset"
-msgstr ""
+msgstr "Restablecer"
 
 #: ../komikku/card/chapters_list.py:674
 msgid "Mark as Read"
