@@ -186,6 +186,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.builder = Gtk.Builder()
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/main.xml')
 
+        self.css_provider = Gtk.CssProvider.new()
+        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), self.css_provider, 400)
+
         self.activity_indicator = ActivityIndicator()
         self.overlay.add_overlay(self.activity_indicator)
 

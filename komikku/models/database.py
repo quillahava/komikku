@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from colorthief import ColorThief
 import datetime
 from enum import IntEnum
 from functools import cache
@@ -518,6 +519,26 @@ class Manga:
         manga._save_cover(cover_url)
 
         return manga
+
+    @property
+    def backdrop_colors_css(self):
+        cover_path = self.cover_fs_path
+        if cover_path is None:
+            return None
+
+        path = os.path.join(self.path, 'backdrop_colors.css')
+        if os.path.exists(path):
+            with open(path) as fp:
+                return fp.read()
+
+        colors = []
+        for index, color in enumerate(ColorThief(cover_path).get_palette(color_count=2, quality=1)):
+            colors.append(f'@define-color background_color_{index} rgb({color[0]}, {color[1]}, {color[2]});\n')
+
+        with open(path, 'w') as fp:
+            fp.writelines(colors)
+
+        return ''.join(colors)
 
     @property
     def categories(self):

@@ -31,6 +31,7 @@ class PreferencesPage(Adw.NavigationPage):
     color_scheme_row = Gtk.Template.Child('color_scheme_row')
     night_light_switch = Gtk.Template.Child('night_light_switch')
     desktop_notifications_switch = Gtk.Template.Child('desktop_notifications_switch')
+    card_backdrop_switch = Gtk.Template.Child('card_backdrop_switch')
 
     library_display_mode_row = Gtk.Template.Child('library_display_mode_row')
     library_servers_logo_switch = Gtk.Template.Child('library_servers_logo_switch')
@@ -87,6 +88,14 @@ class PreferencesPage(Adw.NavigationPage):
 
     def on_borders_crop_changed(self, switch_button, _gparam):
         self.settings.borders_crop = switch_button.get_active()
+
+    def on_card_backdrop_changed(self, switch_button, _gparam):
+        if switch_button.get_active():
+            self.settings.card_backdrop = True
+            self.window.card.set_backdrop()
+        else:
+            self.settings.card_backdrop = False
+            self.window.card.remove_backdrop()
 
     def on_color_scheme_changed(self, row, _gparam):
         index = row.get_selected()
@@ -280,6 +289,10 @@ class PreferencesPage(Adw.NavigationPage):
         # Desktop notifications
         self.desktop_notifications_switch.set_active(self.settings.desktop_notifications)
         self.desktop_notifications_switch.connect('notify::active', self.on_desktop_notifications_changed)
+
+        # Card backdrop
+        self.card_backdrop_switch.set_active(self.settings.card_backdrop)
+        self.card_backdrop_switch.connect('notify::active', self.on_card_backdrop_changed)
 
         #
         # Library

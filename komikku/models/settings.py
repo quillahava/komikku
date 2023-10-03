@@ -80,6 +80,14 @@ class Settings(Gio.Settings):
         self.set_boolean('borders-crop', state)
 
     @property
+    def card_backdrop(self):
+        return self.get_boolean('card-backdrop')
+
+    @card_backdrop.setter
+    def card_backdrop(self, state):
+        self.set_boolean('card-backdrop', state)
+
+    @property
     def clamp_size(self):
         """Return Webtoon pager clamp size"""
         return self.get_int('clamp-size')

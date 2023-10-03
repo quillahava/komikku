@@ -12,6 +12,7 @@ from gi.repository import Gtk
 
 from komikku.card.categories_list import CategoriesList
 from komikku.card.chapters_list import ChaptersList
+from komikku.models import Settings
 from komikku.utils import create_paintable_from_file
 from komikku.utils import create_paintable_from_resource
 from komikku.utils import folder_size
@@ -245,10 +246,21 @@ class CardPage(Adw.NavigationPage):
         self.chapters_list.populate()
         self.categories_list.populate()
 
+    def remove_backdrop(self):
+        self.remove_css_class('backdrop')
+
     def set_actions_enabled(self, enabled):
         self.delete_action.set_enabled(enabled)
         self.update_action.set_enabled(enabled)
         self.sort_order_action.set_enabled(enabled)
+
+    def set_backdrop(self):
+        if Adw.StyleManager.get_default().get_high_contrast() or not Settings.get_default().card_backdrop:
+            return
+
+        if backdrop_colors_css := self.manga.backdrop_colors_css:
+            self.window.css_provider.load_from_string(backdrop_colors_css)
+            self.add_css_class('backdrop')
 
     def show(self):
         self.props.title = self.manga.name  # Adw.NavigationPage title
@@ -307,10 +319,14 @@ class InfoBox:
 
         if manga.cover_fs_path is None:
             paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', cover_width, -1)
+            self.card.remove_backdrop()
         else:
             paintable = create_paintable_from_file(manga.cover_fs_path, cover_width, -1)
-            if paintable is None:
+            if paintable:
+                self.card.set_backdrop()
+            else:
                 paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', cover_width, -1)
+                self.card.remove_backdrop()
 
         self.cover_image.set_paintable(paintable)
 

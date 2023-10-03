@@ -87,6 +87,11 @@
             <summary>Desktop Notifications</summary>
             <description>Use desktop notifications for downloads and library updates</description>
         </key>
+        <key type="b" name="card-backdrop">
+            <default>false</default>
+            <summary>Backdrop in Details Page</summary>
+            <description>Enable background recoloring to match cover</description>
+        </key>
 
         <!-- Preferences: Library -->
         <key enum="@appid@.LibraryDisplayMode" name="library-display-mode">

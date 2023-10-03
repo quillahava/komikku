@@ -128,6 +128,7 @@ blueprints = custom_target('blueprints',
         'ui/shortcuts_overview.blp',
         'ui/webview.blp',
     ),
+    build_always_stale: true,
     output: '.',
     command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
 )

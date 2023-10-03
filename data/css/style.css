@@ -56,15 +56,33 @@ flowbox flowboxchild:selected {
 /*
  * Manga card
  */
+.backdrop {
+    background: linear-gradient(127deg, alpha(@background_color_0, .55), alpha(@background_color_0, 0) 70.71%),
+                linear-gradient(217deg, alpha(@background_color_1, .55), alpha(@background_color_1, 0) 70.71%),
+                linear-gradient(336deg, alpha(@background_color_2, .55), alpha(@background_color_2, 0) 70.71%);
+    transition-property: background;
+}
+.backdrop button:focus:focus-visible,
+.backdrop row:focus:focus-visible {
+    outline-color: alpha(currentColor, .25);
+}
+.backdrop list,
+.backdrop listview,
+.backdrop actionbar box {
+    background: transparent;
+}
+.backdrop picture {
+    background: linear-gradient(to bottom, @background_color_0, @background_color_1);
+}
+
 listview :last-child {
     border-bottom: none;
 }
 
 .badge {
-    color: @accent_color;
     font-weight: 700;
-    background-color: alpha(@accent_bg_color, 0.2);
-    padding: 0 8px;
+    background-color: #f68276;
+    padding: 0 7px;
     border-radius: 999px;
 }
 

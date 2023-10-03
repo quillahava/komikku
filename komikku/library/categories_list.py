@@ -169,6 +169,7 @@ class CategoriesList:
                 elif nb:
                     nb_label = Gtk.Label(label=nb, valign=Gtk.Align.CENTER)
                     nb_label.add_css_class('badge')
+                    nb_label.add_css_class('caption')
                     row.add_suffix(nb_label)
 
                 self.listbox.append(row)

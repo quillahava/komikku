@@ -1,3 +1,7 @@
+// Copyright (C) 2019-2023 Valéry Febvre
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 using Gtk 4.0;
 using Adw 1;
 
@@ -47,6 +51,11 @@ template $PreferencesPage : Adw.NavigationPage {
             Adw.SwitchRow desktop_notifications_switch {
               title: _("Desktop Notifications");
               subtitle: _("Use desktop notifications for downloads and library updates");
+            }
+
+            Adw.SwitchRow card_backdrop_switch {
+              title: _("Backdrop in Details Page");
+              subtitle: _("Enable background recoloring to match cover");
             }
           }
         };
