@@ -1,22 +1,23 @@
 # shima <hakase446@gmail.com>, 2023.
 # Valentin Chernetsov <kurnesay@danwin1210.de>, 2023.
 # FIONover <overfion@protonmail.com>, 2023.
+# Анна Алешкина #нетвойне <chipchilinka338@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-02 10:57+0200\n"
-"PO-Revision-Date: 2023-06-26 15:52+0000\n"
-"Last-Translator: FIONover <overfion@protonmail.com>\n"
-"Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/"
-">\n"
+"PO-Revision-Date: 2023-10-04 12:37+0000\n"
+"Last-Translator: Анна Алешкина #нетвойне <chipchilinka338@gmail.com>\n"
+"Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/>"
+"\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.18.1\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -133,16 +134,22 @@ msgid ""
 "by buying the official comics when they are\n"
 "available in your region/language."
 msgstr ""
+"Программа для чтения манги, манхвы, манхуа, веб-комиксов, веб-комиксов и "
+"комиксов для GNOME\n"
+"\n"
+"👉 Никогда не забывайте, что вы можете поддержать авторов\n"
+"покупая официальные комиксы, когда они\n"
+"когда они будут доступны в вашем регионе/на вашем языке."
 
 #: ../data/ui/card.blp:30 ../data/ui/card.blp:433
 #: ../data/ui/card_chapters_list_row.blp:44 ../data/ui/download_manager.blp:22
 #: ../data/ui/library.blp:130 ../data/ui/reader.blp:25
 msgid "Menu"
-msgstr ""
+msgstr "Меню"
 
 #: ../data/ui/card.blp:36
 msgid "Resume reading"
-msgstr ""
+msgstr "Продолжить чтение"
 
 #: ../data/ui/card.blp:43
 msgid "Info"
@@ -150,7 +157,7 @@ msgstr "Информация"
 
 #: ../data/ui/card.blp:130
 msgid "Add to Library"
-msgstr ""
+msgstr "Добавить в библиотеку"
 
 #: ../data/ui/card.blp:160
 msgid "Details"
@@ -166,11 +173,11 @@ msgstr "Переводчики"
 
 #: ../data/ui/card.blp:287
 msgid "Last Update"
-msgstr ""
+msgstr "Последнее обновление"
 
 #: ../data/ui/card.blp:319
 msgid "Size on Disk"
-msgstr ""
+msgstr "Размер на Диске"
 
 #: ../data/ui/card.blp:345
 msgid "Synopsis"
@@ -179,7 +186,7 @@ msgstr "Описание"
 #: ../data/ui/card.blp:473 ../data/ui/categories_editor.blp:64
 #: ../data/ui/library.blp:234
 msgid "No categories"
-msgstr ""
+msgstr "Нет категорий"
 
 #: ../data/ui/card_chapters_list_row.blp:61
 msgid "New"
@@ -187,16 +194,15 @@ msgstr "Новое"
 
 #: ../data/ui/categories_editor.blp:33
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
 #: ../data/ui/download_manager.blp:6 ../data/ui/download_manager.blp:16
-#, fuzzy
 msgid "Download Manager"
 msgstr "Менеджер загрузок"
 
 #: ../data/ui/download_manager.blp:28
 msgid "Start/Stop download"
-msgstr ""
+msgstr "Начать/приостановить загрузку"
 
 #: ../data/ui/download_manager.blp:65
 msgid "No downloads"
@@ -205,7 +211,7 @@ msgstr "Нет загрузок"
 #: ../data/ui/explorer_search.blp:6 ../data/ui/explorer_search.blp:30
 #: ../data/ui/history.blp:19 ../data/ui/library.blp:36
 msgid "Search"
-msgstr ""
+msgstr "Поиск"
 
 #: ../data/ui/explorer_search.blp:23
 msgid "Open in Browser"
@@ -213,27 +219,27 @@ msgstr "Открыть в браузере"
 
 #: ../data/ui/explorer_search.blp:138
 msgid "Most Popular"
-msgstr ""
+msgstr "Популярное"
 
 #: ../data/ui/explorer_search.blp:210
 msgid "Latest Updates"
-msgstr ""
+msgstr "Последние обновления"
 
 #: ../data/ui/explorer_servers.blp:6 ../data/ui/preferences.blp:160
 msgid "Servers"
-msgstr ""
+msgstr "Серверы"
 
 #: ../data/ui/explorer_servers.blp:13
 msgid "Search for comics across all servers"
-msgstr ""
+msgstr "Поиск по всем серверам"
 
 #: ../data/ui/explorer_servers.blp:19
 msgid "Search for servers"
-msgstr ""
+msgstr "Поиск серверов"
 
 #: ../data/ui/explorer_servers.blp:33
 msgid "Search for servers by name or language"
-msgstr ""
+msgstr "Поиск серверов по названию или языку"
 
 #: ../data/ui/history.blp:6 ../data/ui/history.blp:13
 msgid "History"
@@ -241,11 +247,10 @@ msgstr "История"
 
 #: ../data/ui/history.blp:70
 msgid "No history"
-msgstr ""
+msgstr "Нет истории"
 
 #: ../data/ui/library.blp:6 ../data/ui/preferences.blp:57
 #: ../data/ui/preferences.blp:60
-#, fuzzy
 msgid "Library"
 msgstr "Библиотека"
 
@@ -259,11 +264,11 @@ msgstr "Komikku"
 
 #: ../data/ui/library.blp:30
 msgid "Main Menu"
-msgstr ""
+msgstr "Главное меню"
 
 #: ../data/ui/library.blp:61
 msgid "Search by name, server or genre"
-msgstr ""
+msgstr "Поиск по названию, серверу или жанру"
 
 #: ../data/ui/library.blp:109 ../data/ui/preferences.blp:146
 msgid "Update"
@@ -275,7 +280,7 @@ msgstr ""
 
 #: ../data/ui/library.blp:256
 msgid "OK"
-msgstr ""
+msgstr "ОК"
 
 #: ../data/ui/menu/card.xml:18
 msgid "Order of Chapters"
@@ -316,11 +321,11 @@ msgstr "Удалить всё"
 
 #: ../data/ui/menu/library_search.xml:7
 msgid "Unread"
-msgstr ""
+msgstr "Не прочитано"
 
 #: ../data/ui/menu/library_search.xml:15
 msgid "Recents"
-msgstr ""
+msgstr "Недавние"
 
 #: ../data/ui/menu/library_selection_mode.xml:7
 msgid "Edit Categories"
@@ -332,19 +337,19 @@ msgstr "Обновить библиотеку"
 
 #: ../data/ui/menu/main.xml:11
 msgid "Sort"
-msgstr ""
+msgstr "Сортировать"
 
 #: ../data/ui/menu/main.xml:16
 msgid "Alphabetical"
-msgstr ""
+msgstr "По алфавиту"
 
 #: ../data/ui/menu/main.xml:21
 msgid "Latest Read First"
-msgstr ""
+msgstr "Сначала последнее прочитанное"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Updated First"
-msgstr ""
+msgstr "Сначала последнее обновленное"
 
 #: ../data/ui/menu/main.xml:55
 msgid "Keyboard Shortcuts"
@@ -371,7 +376,6 @@ msgid "Hide Page Numbering"
 msgstr "Скрыть нумерацию страниц"
 
 #: ../data/ui/menu/reader.xml:106
-#, fuzzy
 msgid "Save Page"
 msgstr "Сохранить страницу"
 
@@ -387,11 +391,11 @@ msgstr "Основное"
 
 #: ../data/ui/preferences.blp:32
 msgid "Theme"
-msgstr ""
+msgstr "Тема"
 
 #: ../data/ui/preferences.blp:35
 msgid "Light"
-msgstr ""
+msgstr "Светлая"
 
 #: ../data/ui/preferences.blp:36
 msgid "Dark"
@@ -399,7 +403,7 @@ msgstr "Темный"
 
 #: ../data/ui/preferences.blp:37
 msgid "Follow System"
-msgstr ""
+msgstr "Системная"
 
 #: ../data/ui/preferences.blp:43
 msgid "Night Light"
@@ -468,7 +472,7 @@ msgstr "Автоматически обновлять библиотеку пр�
 
 #: ../data/ui/preferences.blp:154
 msgid "Auto Download of New Chapters"
-msgstr "Автоматическая загрузка новых глав"
+msgstr "Авто-загрузка новых глав"
 
 #: ../data/ui/preferences.blp:155
 msgid "Automatically download new chapters"
@@ -487,7 +491,7 @@ msgstr "Ограничить источники выбраннми языкам�
 #: ../data/ui/preferences.blp:172 ../data/ui/preferences_servers_settings.blp:6
 #: ../data/ui/preferences_servers_settings.blp:12
 msgid "Servers Settings"
-msgstr ""
+msgstr "Настройки сервера"
 
 #: ../data/ui/preferences.blp:173
 msgid "Enable/disable and configure servers"
@@ -519,7 +523,6 @@ msgstr "Включать ли серверы с только NSFW-контент
 
 #: ../data/ui/preferences.blp:200 ../data/ui/preferences.blp:203
 #: ../data/ui/reader.blp:6
-#, fuzzy
 msgid "Reader"
 msgstr "Читалка"
 
@@ -545,7 +548,7 @@ msgstr "⬇ Вебтун"
 
 #: ../data/ui/preferences.blp:219
 msgid "Maximum Width"
-msgstr ""
+msgstr "Максимальная ширина"
 
 #: ../data/ui/preferences.blp:220
 msgid ""
@@ -623,7 +626,7 @@ msgstr ""
 
 #: ../data/ui/preferences.blp:266
 msgid "Page Numbering"
-msgstr ""
+msgstr "Нумерация страниц"
 
 #: ../data/ui/preferences.blp:267
 msgid "Hide the page numbering at the bottom of the screen while reading"
@@ -696,7 +699,7 @@ msgstr "Назад"
 
 #: ../data/ui/reader.blp:31
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Полноэкранный режим"
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -711,17 +714,17 @@ msgstr "Открыть настройки"
 #: ../data/ui/shortcuts_overview.blp:19
 msgctxt "Shortcut window description"
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Полноэкранный режим"
 
 #: ../data/ui/shortcuts_overview.blp:24
 msgctxt "Shortcut window description"
 msgid "Open shortcuts window"
-msgstr ""
+msgstr "Сочетания клавиш"
 
 #: ../data/ui/shortcuts_overview.blp:30
 msgctxt "Shortcut window description"
 msgid "Library"
-msgstr ""
+msgstr "Библиотека"
 
 #: ../data/ui/shortcuts_overview.blp:33
 msgctxt "Shortcut window description"
@@ -731,12 +734,12 @@ msgstr "Добавить мангу"
 #: ../data/ui/shortcuts_overview.blp:38
 msgctxt "Shortcut window description"
 msgid "Select all"
-msgstr ""
+msgstr "Выбрать все"
 
 #: ../data/ui/shortcuts_overview.blp:43
 msgctxt "Shortcut window description"
 msgid "Search"
-msgstr ""
+msgstr "Поиск"
 
 #: ../data/ui/shortcuts_overview.blp:49
 msgctxt "Shortcut window description"
@@ -746,7 +749,7 @@ msgstr ""
 #: ../data/ui/shortcuts_overview.blp:52
 msgctxt "Shortcut window description"
 msgid "Select all chapters"
-msgstr ""
+msgstr "Выбрать все главы"
 
 #: ../data/ui/shortcuts_overview.blp:58
 msgctxt "Shortcut window description"
