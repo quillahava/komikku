@@ -49,14 +49,14 @@ __Komikku__ is available as native package in the repositories of the following 
 ### Flatpak of development version
 
 1. Setup [Flatpak](https://www.flatpak.org/setup/) for your Linux distro.
-2. Download the Komikku flatpak from the last passed [Gitlab pipeline](https://gitlab.com/valos/Komikku/-/jobs/artifacts/main/raw/info.febvre.Komikku.flatpak?job=flatpak).
+2. Download the Komikku flatpak from the last passed [Gitlab pipeline](https://gitlab.com/valos/Komikku/-/jobs/artifacts/main/raw/info.febvre.KomikkuDevel.flatpak?job=flatpak).
 3. Install the flatpak:
 ```bash
-flatpak install info.febvre.Komikku.flatpak
+flatpak install info.febvre.KomikkuDevel.flatpak
 ```
 4. Launch it:
 ```bash
-flatpak run -d info.febvre.Komikku
+flatpak run -d info.febvre.KomikkuDevel
 ```
 
 ## Contributing
