@@ -126,7 +126,7 @@ class Updater(GObject.GObject):
 
                 # Auto download new chapters
                 if Settings.get_default().new_chapters_auto_download:
-                    self.window.downloader.add(recent_chapters_ids)
+                    self.window.downloader.add(recent_chapters_ids, emit_signal=True)
                     self.window.downloader.start()
 
             self.emit('manga-updated', manga, nb_recent_chapters, nb_deleted_chapters, synced)
