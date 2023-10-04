@@ -80,6 +80,7 @@ listview :last-child {
 }
 
 .badge {
+    color: white;
     font-weight: 700;
     background-color: #f68276;
     padding: 0 7px;
