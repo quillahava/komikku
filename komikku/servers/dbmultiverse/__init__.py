@@ -120,6 +120,8 @@ class Dbmultiverse(Server):
             url = img_element.get('src')
             if not url:
                 url = img_element.get('style').split(';')[0].split(':')[1][4:-1]
+        elif div_element := soup.find('div', id='balloonsimg'):
+            url = div_element.get('style').split('(')[1].split(')')[0]
         elif celebrate_element := soup.find('div', class_='cadrelect'):
             # Special page to celebrate 1000/2000/... pages
             # return first contribution image
