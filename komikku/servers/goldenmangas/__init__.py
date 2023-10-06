@@ -18,7 +18,7 @@ class Goldenmangas(Server):
 
     has_cf = True
 
-    base_url = 'https://www.goldenmangas.top'
+    base_url = 'https://goldenmanga.top'
     search_url = base_url + '/mangas'
     manga_url = base_url + '/mangas/{0}'
     chapter_url = base_url + '/mangas/{0}/{1}'
