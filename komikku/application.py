@@ -257,6 +257,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         quit_action.connect('activate', self.quit)
         self.application.add_action(quit_action)
 
+        self.explorer.search_page.add_actions()
         self.library.add_actions()
         self.card.add_actions()
         self.reader.add_actions()

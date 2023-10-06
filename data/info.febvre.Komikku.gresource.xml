@@ -24,6 +24,7 @@
         <file compressed="true" preprocess="xml-stripblanks">ui/menu/card.xml</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/menu/card_selection_mode.xml</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/menu/download_manager.xml</file>
+        <file compressed="true" preprocess="xml-stripblanks">ui/menu/explorer_search_global_search.xml</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/menu/library_search.xml</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/menu/library_selection_mode.xml</file>
         <file compressed="true" preprocess="xml-stripblanks">ui/menu/reader.xml</file>

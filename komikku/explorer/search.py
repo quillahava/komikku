@@ -9,6 +9,7 @@ import threading
 
 from gi.repository import Adw
 from gi.repository import Gdk
+from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Pango
@@ -29,6 +30,7 @@ class ExplorerSearchPage(Adw.NavigationPage):
     viewswitcher = Gtk.Template.Child('viewswitcher')
     server_website_button = Gtk.Template.Child('server_website_button')
 
+    progressbar = Gtk.Template.Child('progressbar')
     stack = Gtk.Template.Child('stack')
     searchbar = Gtk.Template.Child('searchbar')
     searchentry = Gtk.Template.Child('searchentry')
@@ -48,7 +50,8 @@ class ExplorerSearchPage(Adw.NavigationPage):
     latest_updates_spinner = Gtk.Template.Child('latest_updates_spinner')
     viewswitcherbar = Gtk.Template.Child('viewswitcherbar')
 
-    global_search_mode = False
+    search_global_mode = False
+    search_global_selected_filters = []
     page = None
     search_filters = None
     server = None
@@ -62,6 +65,10 @@ class ExplorerSearchPage(Adw.NavigationPage):
 
         self.parent = parent
         self.window = parent.window
+
+        self.window.builder.add_from_resource('/info/febvre/Komikku/ui/menu/explorer_search_global_search.xml')
+
+        self.search_global_selected_filters = Settings.get_default().explorer_search_global_selected_filters
 
         self.connect('hidden', self.on_hidden)
         self.connect('shown', self.on_shown)
@@ -84,6 +91,14 @@ class ExplorerSearchPage(Adw.NavigationPage):
 
         self.window.breakpoint.add_setter(self.viewswitcherbar, 'reveal', True)
         self.window.breakpoint.add_setter(self.title_stack, 'visible-child', self.title)
+
+    def add_actions(self):
+        # Global Search menu actions
+        action = Gio.SimpleAction.new_stateful(
+            'explorer.search.global.search.pinned', None, GLib.Variant('b', 'pinned' in self.search_global_selected_filters)
+        )
+        action.connect('change-state', self.on_search_global_search_menu_action_changed)
+        self.window.application.add_action(action)
 
     def can_page_be_updated_with_results(self, page, server_id):
         self.requests[page].remove(server_id)
@@ -129,6 +144,13 @@ class ExplorerSearchPage(Adw.NavigationPage):
 
     def init_search_filters(self):
         self.search_filters = get_server_default_search_filters(self.server)
+        self.filter_menu_button.remove_css_class('accent')
+
+        if self.search_global_mode:
+            if self.search_global_selected_filters:
+                self.filter_menu_button.add_css_class('accent')
+            self.filter_menu_button.set_menu_model(self.window.builder.get_object('menu-explorer-search-global-search'))
+            return
 
         if not self.search_filters:
             self.filter_menu_button.set_popover(None)
@@ -221,7 +243,7 @@ class ExplorerSearchPage(Adw.NavigationPage):
         if self.window.previous_page == self.props.tag:
             return
 
-        self.global_search_mode = False
+        self.search_global_mode = False
         # Stop global search if not ended
         self.stop_search_global = True
 
@@ -240,7 +262,7 @@ class ExplorerSearchPage(Adw.NavigationPage):
         return Gdk.EVENT_PROPAGATE
 
     def on_manga_clicked(self, _listbox, row):
-        if self.global_search_mode:
+        if self.search_global_mode:
             self.server = getattr(row.server_data['module'], row.server_data['class_name'])()
 
         self.show_manga_card(row.manga_data)
@@ -256,6 +278,22 @@ class ExplorerSearchPage(Adw.NavigationPage):
     def on_search_changed(self, _entry):
         if not self.searchentry.get_text().strip():
             self.search_stack.set_visible_child_name('intro')
+
+    def on_search_global_search_menu_action_changed(self, action, variant):
+        value = variant.get_boolean()
+        action.set_state(GLib.Variant('b', value))
+        name = action.props.name.split('.')[-1]
+
+        if value:
+            self.search_global_selected_filters.add(name)
+        else:
+            self.search_global_selected_filters.remove(name)
+        Settings.get_default().explorer_search_global_selected_filters = self.search_global_selected_filters
+
+        if self.search_global_selected_filters:
+            self.filter_menu_button.add_css_class('accent')
+        else:
+            self.filter_menu_button.remove_css_class('accent')
 
     def on_server_website_button_clicked(self, _button):
         if self.server.base_url:
@@ -399,7 +437,7 @@ class ExplorerSearchPage(Adw.NavigationPage):
     def search(self, _entry=None):
         term = self.searchentry.get_text().strip()
 
-        if self.global_search_mode:
+        if self.search_global_mode:
             self.search_global(term)
             return
 
@@ -492,7 +530,7 @@ class ExplorerSearchPage(Adw.NavigationPage):
                     future = executor.submit(search_server, server_data)
                     tasks[future] = server_data
 
-                for future in as_completed(tasks):
+                for index, future in enumerate(as_completed(tasks)):
                     if self.stop_search_global:
                         executor.shutdown(False, cancel_futures=True)
                         break
@@ -505,10 +543,13 @@ class ExplorerSearchPage(Adw.NavigationPage):
                     else:
                         GLib.idle_add(complete_server, results, server_data)
 
+                    self.progressbar.set_fraction((index + 1) / len(servers))
+
             GLib.idle_add(complete)
 
         def complete():
             self.lock_search_global = False
+            self.progressbar.set_fraction(0)
 
         def complete_server(results, server_data, message=None):
             lang = server_data['lang']
@@ -606,9 +647,20 @@ class ExplorerSearchPage(Adw.NavigationPage):
 
         self.clear_search_results()
 
+        if 'pinned' in self.search_global_selected_filters:
+            servers = []
+            pinned_servers = Settings.get_default().pinned_servers
+            for server_data in self.parent.servers_page.servers:
+                if server_data['id'] not in pinned_servers:
+                    continue
+
+                servers.append(server_data)
+        else:
+            servers = self.parent.servers_page.servers
+
         # Init results list
-        for server_data in self.parent.servers_page.servers:
-            # Server
+        for server_data in servers:
+            # Server row
             row = self.parent.build_server_row(server_data)
             row.server_data = server_data
             row.position = 0
@@ -632,17 +684,17 @@ class ExplorerSearchPage(Adw.NavigationPage):
         self.search_listbox.set_sort_func(sort_results)
         self.search_listbox.set_visible(True)
 
-        thread = threading.Thread(target=run, args=(self.parent.servers_page.servers, ))
+        thread = threading.Thread(target=run, args=(servers,))
         thread.daemon = True
         thread.start()
 
     def show(self, server=None):
         self.server = server
-        self.global_search_mode = server is None
+        self.search_global_mode = server is None
 
         self.init_search_filters()
 
-        if not self.global_search_mode:
+        if not self.search_global_mode:
             # Search, Most Populars, Latest Updates
             self.title.set_title(self.server.name)
 
@@ -704,6 +756,7 @@ class ExplorerSearchPage(Adw.NavigationPage):
             self.server_website_button.set_visible(False)
 
         self.page = start_page
+        self.progressbar.set_fraction(0)
         # To be sure to be notify on next page change
         self.stack.set_visible_child_name('search')
         GLib.idle_add(self.stack.set_visible_child_name, start_page)

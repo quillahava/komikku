@@ -58,6 +58,11 @@
             <summary>Pinned Servers</summary>
             <description>List of pinned servers in Explorer</description>
         </key>
+        <key type="as" name="explorer-search-global-selected-filters">
+            <default>[]</default>
+            <summary>Selected filters in Explorer Global Search</summary>
+            <description>List of selected filters in Explorer global search</description>
+        </key>
 
         <!-- Library -->
         <key type="as" name="library-selected-filters">

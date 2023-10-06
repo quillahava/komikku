@@ -176,6 +176,15 @@ class Settings(Gio.Settings):
         self.set_boolean('desktop-notifications', state)
 
     @property
+    def explorer_search_global_selected_filters(self):
+        return set(self.get_value('explorer-search-global-selected-filters'))
+
+    @explorer_search_global_selected_filters.setter
+    def explorer_search_global_selected_filters(self, filters):
+        filters = GLib.Variant('as', filters)
+        self.set_value('explorer-search-global-selected-filters', filters)
+
+    @property
     def fullscreen(self):
         return self.get_boolean('fullscreen')
 

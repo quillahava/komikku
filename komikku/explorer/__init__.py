@@ -26,7 +26,7 @@ class Explorer:
 
     def build_server_row(self, data):
         # Used in `servers` and `search` (global search) pages
-        if self.search_page.global_search_mode:
+        if self.search_page.search_global_mode:
             row = Gtk.ListBoxRow(activatable=False)
             row.add_css_class('explorer-section-listboxrow')
         else:
@@ -83,7 +83,7 @@ class Explorer:
         vbox.append(subtitle_box)
         box.append(vbox)
 
-        if self.search_page.global_search_mode:
+        if self.search_page.search_global_mode:
             return row
 
         # Server requires a user account
