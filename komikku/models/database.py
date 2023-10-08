@@ -10,6 +10,7 @@ from gettext import gettext as _
 import importlib
 import json
 import logging
+import natsort
 import os
 from PIL import Image
 import sqlite3
@@ -96,6 +97,11 @@ def clear_cached_data(manga_in_use=None):
     db_conn.close()
 
 
+def collate_natsort(value1, value2):
+    lst = natsort.natsorted([value1, value2], alg=natsort.ns.INT | natsort.ns.IC)
+    return -1 if lst[0] == value1 else 1
+
+
 def create_db_connection():
     con = sqlite3.connect(get_db_path(), detect_types=sqlite3.PARSE_DECLTYPES)
     if con is None:
@@ -106,6 +112,9 @@ def create_db_connection():
 
     # Enable integrity constraint
     con.execute('PRAGMA foreign_keys = ON')
+
+    # Add natural sort collation
+    con.create_collation('natsort', collate_natsort)
 
     return con
 
@@ -686,12 +695,24 @@ class Manga:
         assert direction in (-1, 1), 'Invalid direction value'
 
         db_conn = create_db_connection()
-        if direction == 1:
+
+        order = 'ASC' if direction == 1 else 'DESC'
+        if self.sort_order in ('asc', 'desc', None):
             row = db_conn.execute(
-                'SELECT * FROM chapters WHERE manga_id = ? AND rank > ? ORDER BY rank ASC', (self.id, chapter.rank)).fetchone()
-        else:
+                f'SELECT * FROM chapters WHERE manga_id = ? AND rank > ? ORDER BY rank {order}',
+                (self.id, chapter.rank)
+            ).fetchone()
+        elif self.sort_order in ('date-asc', 'date-desc'):
             row = db_conn.execute(
-                'SELECT * FROM chapters WHERE manga_id = ? AND rank < ? ORDER BY rank DESC', (self.id, chapter.rank)).fetchone()
+                f'SELECT * FROM chapters WHERE manga_id = ? AND date > ? ORDER BY data {order}, id {order}',
+                (self.id, chapter.date)
+            ).fetchone()
+        elif self.sort_order in ('natural-asc', 'natural-desc'):
+            row = db_conn.execute(
+                f'SELECT * FROM chapters WHERE manga_id = ? AND title > ? COLLATE natsort ORDER BY title {order}, id {order}',
+                (self.id, chapter.title)
+            ).fetchone()
+
         db_conn.close()
 
         if not row:
