@@ -159,11 +159,20 @@ class ChaptersList:
             return
 
         item.chapter.clear(reset=reset)
+        item.chapter = Chapter.get(item.chapter.id)
         item.emit_changed()
+
+        self.card.window.library.update_thumbnail(self.card.manga)
 
     def clear_selected_chapters(self, _action, _param, reset):
         # Clear and reset selected chapters
-        Chapter.clear_many(self.get_selected_chapters(), reset=reset)
+        items = self.get_selected_chapters_items()
+        Chapter.clear_many([item.chapter for item in items], reset=reset)
+        for item in items:
+            item.chapter = Chapter.get(item.chapter.id)
+            item.emit_changed()
+
+        self.card.window.library.update_thumbnail(self.card.manga)
 
         self.card.leave_selection_mode()
 
@@ -174,7 +183,7 @@ class ChaptersList:
         item.emit_changed()
 
     def download_selected_chapters(self, _action, _gparam):
-        self.card.window.downloader.add(self.get_selected_chapters(), emit_signal=True)
+        self.card.window.downloader.add([item.chapter for item in self.get_selected_chapters_items()], emit_signal=True)
         self.card.window.downloader.start()
 
         self.card.leave_selection_mode()
@@ -187,18 +196,18 @@ class ChaptersList:
             # Init selection with clicked row (stored in self.selection_click_position)
             self.on_selection_changed(None, None, None)
 
-    def get_selected_chapters(self):
-        chapters = []
+    def get_selected_chapters_items(self):
+        items = []
 
         bitsec = self.model.get_selection()
         for index in range(bitsec.get_size()):
             position = bitsec.get_nth(index)
             if self.sort_order.endswith('desc'):
-                chapters.insert(0, self.list_model.get_item(position).chapter)
+                items.insert(0, self.list_model.get_item(position))
             else:
-                chapters.append(self.list_model.get_item(position).chapter)
+                items.append(self.list_model.get_item(position))
 
-        return chapters
+        return items
 
     def leave_selection_mode(self):
         self.model.unselect_all()
@@ -414,6 +423,7 @@ class ChaptersList:
         chapter.update(data)
 
         item.emit_changed()
+        self.card.window.library.update_thumbnail(self.card.manga)
 
     def toggle_selected_chapters_read_status(self, _action, _gparam, read):
         chapters_ids = []
@@ -422,8 +432,8 @@ class ChaptersList:
         self.card.window.activity_indicator.start()
 
         # First, update DB
-        for chapter in self.get_selected_chapters():
-            chapters_ids.append(chapter.id)
+        for item in self.get_selected_chapters_items():
+            chapters_ids.append(item.chapter.id)
             chapters_data.append(dict(
                 last_page_read_index=None,
                 read_progress=None,
@@ -441,15 +451,14 @@ class ChaptersList:
         if res:
             # Then, if DB update succeeded, update chapters rows
             def update_chapters_rows():
-                for chapter in self.get_selected_chapters():
-                    chapter.last_page_read_index = None
-                    chapter.read = read
-                    chapter.recent = False
-
+                for item in self.get_selected_chapters_items():
+                    item.chapter = Chapter.get(item.chapter.id)
+                    item.emit_changed()
                     yield True
 
                 self.card.leave_selection_mode()
                 self.card.window.activity_indicator.stop()
+                self.card.window.library.update_thumbnail(self.card.manga)
 
             def run_generator(func):
                 gen = func()
@@ -481,6 +490,8 @@ class ChaptersList:
                 item.download = download
                 item.emit_changed()
                 break
+
+        self.card.window.library.update_thumbnail(self.card.manga)
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/card_chapters_list_row.ui')
