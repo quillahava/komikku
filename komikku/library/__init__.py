@@ -517,6 +517,7 @@ class LibraryPage(Adw.NavigationPage):
 
     def on_manga_updated(self, _updater, manga, _nb_recent_chapters, _nb_deleted_chapters, _synced):
         self.update_thumbnail(manga)
+        self.flowbox.invalidate_filter()
 
     def on_overlaysplitview_revealed(self, _overlaysplitview, _param):
         if self.overlaysplitview.get_show_sidebar():
