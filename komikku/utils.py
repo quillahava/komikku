@@ -10,7 +10,6 @@ import gi
 import html
 from io import BytesIO
 import logging
-import math
 import os
 from PIL import Image
 from PIL import ImageChops
@@ -19,6 +18,7 @@ import subprocess
 import traceback
 
 gi.require_version('Gdk', '4.0')
+gi.require_version('Gtk', '4.0')
 gi.require_version('GdkPixbuf', '2.0')
 
 from gi.repository import Gdk
@@ -234,24 +234,6 @@ def skip_past(haystack, needle):
         return idx + len(needle)
 
     return None
-
-
-def subdivide_pixbuf(pixbuf, part_height):
-    """Sub-divide a long vertical GdkPixbuf.Pixbuf into multiple GdkPixbuf.Pixbuf"""
-    parts = []
-
-    width = pixbuf.get_width()
-    full_height = pixbuf.get_height()
-
-    for index in range(math.ceil(full_height / part_height)):
-        y = index * part_height
-        height = part_height if y + part_height <= full_height else full_height - y
-
-        part_pixbuf = Pixbuf.new(Colorspace.RGB, pixbuf.get_has_alpha(), 8, width, height)
-        pixbuf.copy_area(0, y, width, height, part_pixbuf, 0, 0)
-        parts.append(part_pixbuf)
-
-    return parts
 
 
 def trunc_filename(filename):
@@ -573,53 +555,3 @@ class PictureAnimation(Gtk.Picture):
 
     def resize(self, width, height, _cropped=False):
         self.props.paintable.resize(width, height)
-
-
-class PictureSubdivided(Gtk.Box):
-    """
-    A Gtk.Box containing an image subdivided into multiple Gtk.Picture.
-
-    Useful to display long vertical images commonly used in Webtoons
-    because images height are limited by GL_MAX_TEXTURE_SIZE.
-    """
-
-    def __init__(self, path, pixbuf):
-        super().__init__(orientation=Gtk.Orientation.VERTICAL)
-
-        self.path = path
-        # Pages of Webtoon pager have a minimum size (equal to reader view size)
-        # In rare cases where an image is smaller than page, it must be centered vertically
-        self.props.valign = Gtk.Align.CENTER
-
-        # TODO: find a way to replace 4096 by GL_MAX_TEXTURE_SIZE value
-        for pixbuf_tile in subdivide_pixbuf(pixbuf, 4096):
-            picture = Gtk.Picture()
-            picture.set_pixbuf(pixbuf_tile)
-            picture.set_can_shrink(True)
-            self.append(picture)
-
-        self.orig_width = pixbuf.get_width()
-        self.orig_height = pixbuf.get_height()
-        self.width = self.orig_width
-        self.height = self.orig_height
-
-    @classmethod
-    def new_from_data(cls, data):
-        stream = Gio.MemoryInputStream.new_from_data(data, None)
-        return cls(None, Pixbuf.new_from_stream(stream))
-
-    @classmethod
-    def new_from_file(cls, path):
-        return cls(path, Pixbuf.new_from_file(path))
-
-    def dispose(self):
-        picture = self.get_first_child()
-        while picture:
-            next_picture = picture.get_next_sibling()
-            picture.set_pixbuf(None)
-            picture = next_picture
-
-    def resize(self, width, height, _cropped=False):
-        self.width = width
-        self.height = height
-        self.set_size_request(width, height)

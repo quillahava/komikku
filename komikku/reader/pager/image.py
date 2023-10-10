@@ -27,6 +27,8 @@ from gi.repository.GdkPixbuf import PixbufAnimation
 
 logger = logging.getLogger('komikku')
 
+MAX_TEXTURE_SIZE = 4096
+
 ZOOM_FACTOR_DOUBLE_TAP = 2.5
 ZOOM_FACTOR_MAX = 20
 ZOOM_FACTOR_SCROLL_WHEEL = 1.3
@@ -439,7 +441,12 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             if self.crop and self.texture_crop is None:
                 self.texture_crop = Gdk.Texture.new_for_pixbuf(crop_borders())
             elif self.texture is None:
-                self.texture = Gdk.Texture.new_for_pixbuf(self.pixbuf)
+                if self.image_height > MAX_TEXTURE_SIZE:
+                    # Long vertical images commonly used in Webtoons
+                    # Subdivide it into multiple Pixbuf so as not to exceed the hardware limit
+                    self.texture = [Gdk.Texture.new_for_pixbuf(pixbuf) for pixbuf in subdivide_pixbuf(self.pixbuf, MAX_TEXTURE_SIZE)]
+                else:
+                    self.texture = Gdk.Texture.new_for_pixbuf(self.pixbuf)
         else:
             self.texture = Gdk.Texture.new_for_pixbuf(self.animation_iter.get_pixbuf())
 
@@ -464,8 +471,18 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         )
 
         # Add texture
-        rect = Graphene.Rect().init(0, 0, width, height)
-        snapshot.append_texture(self.texture_crop if self.crop else self.texture, rect)
+        rect = Graphene.Rect().alloc()
+        if isinstance(self.texture, list):
+            cursor = 0
+            for texture in self.texture:
+                ratio = texture.get_height() / texture.get_width()
+                texture_height = int(width * ratio)
+                rect.init(0, cursor, width, texture_height)
+                snapshot.append_texture(texture, rect)
+                cursor += texture_height
+        else:
+            rect.init(0, 0, width, height)
+            snapshot.append_texture(self.texture_crop if self.crop else self.texture, rect)
 
         snapshot.restore()
 
@@ -572,3 +589,21 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
 
             value = max((y + vadjustment_value - borders[1]) / zoom_ratio - y, 0)
             self.vadjustment.set_value(value)
+
+
+def subdivide_pixbuf(pixbuf, part_height):
+    """Sub-divide a long vertical GdkPixbuf.Pixbuf into multiple GdkPixbuf.Pixbuf"""
+    parts = []
+
+    width = pixbuf.get_width()
+    full_height = pixbuf.get_height()
+
+    for index in range(math.ceil(full_height / part_height)):
+        y = index * part_height
+        height = part_height if y + part_height <= full_height else full_height - y
+
+        part_pixbuf = Pixbuf.new(Colorspace.RGB, pixbuf.get_has_alpha(), 8, width, height)
+        pixbuf.copy_area(0, y, width, height, part_pixbuf, 0, 0)
+        parts.append(part_pixbuf)
+
+    return parts
