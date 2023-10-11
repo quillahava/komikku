@@ -33,7 +33,7 @@ install:  ## Install system-wide.
 
 test:  ## Run tests.
 	ninja -C $(BUILD) install
-	$(BUILD)/bin/komikku-tests $(ARGS)
+	TEST_PATH=$(TEST_PATH) ninja -C $(BUILD) tests
 
 clean:  ## Clean build files.
 	rm -r $(BUILD)

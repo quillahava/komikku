@@ -22,7 +22,9 @@ import sys
 
 sys.path.insert(1, '@pythondir@')
 
+testpath = os.environ.get('TEST_PATH')
 builddir = os.environ.get('MESON_BUILD_ROOT')
+
 if builddir:
     sys.dont_write_bytecode = True
     sys.path.insert(1, os.environ['MESON_SOURCE_ROOT'])
@@ -41,8 +43,8 @@ if __name__ == '__main__':
     resource = Gio.Resource.load(os.path.join('@pkgdatadir@', '@appid@.gresource'))
     resource._register()
 
-    if len(sys.argv) > 1:
-        retcode = pytest.main(sys.argv[1:] + ['-vv'])
+    if testpath:
+        retcode = pytest.main(['../' + testpath, '-vv'])
     else:
         retcode = pytest.main([os.path.join(builddir, '../tests'), '-vv'])
 

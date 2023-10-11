@@ -37,5 +37,5 @@ make test
 OR to test a single server:
 
 ```sh
-make test ARGS=./tests/servers/test_xkcd.py
+make test TEST_PATH=./tests/servers/test_xkcd.py
 ```
