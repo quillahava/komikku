@@ -3,6 +3,7 @@
 **/*.*~
 data/#*#
 po/*.mo
+resources
 subprojects/blueprint-compiler
 _build
 .buildconfig

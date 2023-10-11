@@ -1,5 +1,6 @@
 beautifulsoup4
 brotli
+colorthief
 dateparser >= 1.1.4
 emoji
 keyring >= 21.6.0
