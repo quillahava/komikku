@@ -140,11 +140,11 @@ class Downloader(GObject.GObject):
 
             with ThreadPoolExecutor(max_workers=len(servers_downloads)) as executor:
                 tasks = {}
-                for server_id, downloads in servers_downloads.items():
+                for _server_id, downloads in servers_downloads.items():
                     future = executor.submit(process_server_downloads, downloads)
                     tasks[future] = None
 
-                for future in as_completed(tasks):
+                for _future in as_completed(tasks):
                     if self.stop_flag:
                         executor.shutdown(False, cancel_futures=True)
                         break
@@ -153,11 +153,11 @@ class Downloader(GObject.GObject):
             run(exclude_errors=True)
 
         def process_server_downloads(downloads):
-            for id in downloads:
+            for download_id in downloads:
                 if self.stop_flag:
                     break
 
-                download = Download.get(id)
+                download = Download.get(download_id)
                 if download is None:
                     # Download has been removed in the meantime
                     continue

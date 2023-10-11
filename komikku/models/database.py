@@ -372,7 +372,7 @@ def init_db():
 
 def delete_rows(db_conn, table, ids):
     seq = []
-    if type(ids[0]) is dict:
+    if isinstance(ids[0], dict):
         # Several keys (secondary) are used to delete a row
         sql = 'DELETE FROM {0} WHERE {1}'.format(table, ' AND '.join(f'{skey} = ?' for skey in ids[0].keys()))
 
