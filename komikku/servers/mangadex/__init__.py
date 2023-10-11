@@ -63,9 +63,35 @@ class Mangadex(Server):
                 {'key': 'safe', 'name': _('Safe'), 'default': True},
                 {'key': 'suggestive', 'name': _('Suggestive'), 'default': True},
                 {'key': 'erotica', 'name': _('Erotica'), 'default': False},
-                {'key': 'pornographic', 'name': _('Pornographic'), 'default': False}
+                {'key': 'pornographic', 'name': _('Pornographic'), 'default': False},
             ]
-        }
+        },
+        {
+            'key': 'statuses',
+            'type': 'select',
+            'name': _('Status'),
+            'description': _('Filter by statuses'),
+            'value_type': 'multiple',
+            'options': [
+                {'key': 'ongoing', 'name': _('Ongoing'), 'default': False},
+                {'key': 'completed', 'name': _('Completed'), 'default': False},
+                {'key': 'hiatus', 'name': _('Paused'), 'default': False},
+                {'key': 'cancelled', 'name': _('Cancelled'), 'default': False},
+            ]
+        },
+        {
+            'key': 'publication_demographics',
+            'type': 'select',
+            'name': _('Publication Demographic'),
+            'description': _('Filter by publication demographics'),
+            'value_type': 'multiple',
+            'options': [
+                {'key': 'shounen', 'name': _('Shounen'), 'default': False},
+                {'key': 'shoujo', 'name': _('Shoujo'), 'default': False},
+                {'key': 'josei', 'name': _('Josei'), 'default': False},
+                {'key': 'seinen', 'name': _('Seinen'), 'default': False},
+            ]
+        },
     ]
 
     def __init__(self):
@@ -269,7 +295,7 @@ class Mangadex(Server):
         """
         return self.manga_url.format(slug)
 
-    def get_latest_updates(self, ratings=None):
+    def get_latest_updates(self, ratings=None, statuses=None, publication_demographics=None):
         params = {
             'limit': SEARCH_RESULTS_LIMIT,
             'contentRating[]': ratings,
@@ -307,7 +333,7 @@ class Mangadex(Server):
 
         return results
 
-    def get_most_populars(self, ratings=None):
+    def get_most_populars(self, ratings=None, statuses=None, publication_demographics=None):
         return self.search('', ratings)
 
     def resolve_chapters(self, manga_slug):
@@ -355,11 +381,13 @@ class Mangadex(Server):
 
         return chapters
 
-    def search(self, term, ratings=None):
+    def search(self, term, ratings=None, statuses=None, publication_demographics=None):
         params = {
             'limit': SEARCH_RESULTS_LIMIT,
             'contentRating[]': ratings,
-            'availableTranslatedLanguage[]': [self.lang_code],
+            'status[]': statuses,
+            'publicationDemographic[]': publication_demographics,
+            'availableTranslatedLanguage[]': [self.lang_code, ],
             'order[followedCount]': 'desc',
         }
         if term:
@@ -388,7 +416,7 @@ class Mangadex_cs(Mangadex):
     id = 'mangadex_cs'
     name = SERVER_NAME
     lang = 'cs'
-    lang_code = 'cz'
+    lang_code = 'cs'
 
 
 class Mangadex_de(Mangadex):
@@ -437,7 +465,7 @@ class Mangadex_ja(Mangadex):
     id = 'mangadex_ja'
     name = SERVER_NAME
     lang = 'ja'
-    lang_code = 'jp'
+    lang_code = 'ja'
 
 
 class Mangadex_ko(Mangadex):
@@ -493,18 +521,18 @@ class Mangadex_vi(Mangadex):
     id = 'mangadex_vi'
     name = SERVER_NAME
     lang = 'vi'
-    lang_code = 'vn'
+    lang_code = 'vi'
 
 
 class Mangadex_zh_hans(Mangadex):
     id = 'mangadex_zh_hans'
     name = SERVER_NAME
     lang = 'zh_Hans'
-    lang_code = 'cn'
+    lang_code = 'zh'
 
 
 class Mangadex_zh_hant(Mangadex):
     id = 'mangadex_zh_hant'
     name = SERVER_NAME
     lang = 'zh_Hant'
-    lang_code = 'hk'
+    lang_code = 'zh-hk'
