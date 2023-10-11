@@ -440,8 +440,8 @@ class Title:
     name: str = field(2)
     author: str = field(3)
     portrait_image_url: str = field(4)
-    landscape_image_url: str = field(5)
-    view_count: int32 = field(6)
+    # landscape_image_url: str = field(5)
+    # view_count: int32 = field(6)
     language: LanguageEnum = field(7, default=LanguageEnum.ENGLISH)
 
 
@@ -451,7 +451,7 @@ class TitleDetail:
     title: Title = field(1)
     title_image_url: str = field(2)
     synopsis: str = field(3)
-    background_image_url: str = field(4)
+    # background_image_url: str = field(4)
     next_timestamp: int32 = field(5, default=0)
     update_timimg: UpdateTimingEnum = field(6, default=UpdateTimingEnum.DAY)
     viewing_period_description: str = field(7, default=None)
