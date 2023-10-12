@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: Komikku 0.30.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-12 16:38+0200\n"
-"PO-Revision-Date: 2023-10-04 12:37+0000\n"
+"PO-Revision-Date: 2023-10-12 20:37+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/komikku/main/es/"
-">\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/komikku/main/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,43 +81,44 @@ msgstr "Temas claro y oscuro"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:53
 msgid "The Library page"
-msgstr ""
+msgstr "Página de la Biblioteca"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:57
 msgid "The Library page with the category sidebar open"
 msgstr ""
+"La página de la Biblioteca con la barra lateral de las categorías abiertas"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:61
 msgid "The Preferences page (Library settings)"
-msgstr ""
+msgstr "La página de las Preferencias (Configuración de la biblioteca)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:65
 msgid "The Explorer page in mobile format (Servers list)"
-msgstr ""
+msgstr "La página del Explorador en formato móvil (Lista de servidores)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:69
 msgid "The Details page"
-msgstr ""
+msgstr "Página de los detalles"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:73
 msgid "The Details page (chapters list)"
-msgstr ""
+msgstr "La página de los Detalles (lista de los capítulos)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:77
 msgid "The Reader page"
-msgstr ""
+msgstr "La página del lector"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:81
 msgid "The Reader page in mobile format"
-msgstr ""
+msgstr "La página del Lector en formato móvil"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:85
 msgid "The Category editor page in mobile format"
-msgstr ""
+msgstr "La página del editor de las categorías en formato móvil"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:89
 msgid "The Reading history page in mobile format"
-msgstr ""
+msgstr "La página Historial de lectura en formato móvil"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:94
 msgid "@authorfullname@"
@@ -126,30 +127,38 @@ msgstr "@authorfullname@"
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "[Library] Kept badges in phase with reading status"
 msgstr ""
+"[Biblioteca] Se mantienen los marcadores en sincronía con el estado de "
+"lectura"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 msgid ""
 "[Card] Chapters list: Added `Clear` action (deletes downloaded pages without "
 "affecting chapter(s) state)"
 msgstr ""
+"[Tarjeta] Lista de capítulos: Añadida la acción `Borrar` (borra las páginas "
+"descargadas sin afectar al estado de los capítulos)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:112
 msgid "[Card] Added backdrop: Background recoloring to match cover"
 msgstr ""
+"[Tarjeta] Fondo agregado: cambio del color del fondo para que coincida con "
+"la portada"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 msgid "[Downloader] Improved speed"
-msgstr ""
+msgstr "[Descargador] Velocidad mejorada"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:114
 msgid "[Explorer] Global search: Added a progressbar"
-msgstr ""
+msgstr "[Explorador] Búsqueda global: Añadida una barra de progreso"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
 msgid ""
 "[Explorer] Global search: Added a filter that allows restricting search to "
 "pinned servers only"
 msgstr ""
+"[Explorador] Búsqueda global: Añadido un filtro que permite restringir la "
+"búsqueda sólo a los servidores fijados"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:116
 msgid "[Servers] Dragon Ball Multiverse: Update"
@@ -170,10 +179,12 @@ msgstr "[Servidores] MangaDex: Actualización"
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:120
 msgid "[Servers] Reaper Scans [PT-br]: Update (name change to `Yugen Scans`)"
 msgstr ""
+"[Servidores] Reaper Scans [PT-br]: Actualización (cambio de nombre a `Yugen "
+"Scans`)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:121
 msgid "[L10n] Updated French, Russian, Spanish and Turkish translations"
-msgstr ""
+msgstr "[L10n] Actualizadas las traducciones al Francés, Ruso, Español y Turco"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:123
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
@@ -221,6 +232,8 @@ msgid ""
 "manga;reader;viewer;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offline;"
 "gnome;"
 msgstr ""
+"manga;lector;visor;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offline;gnome"
+";"
 
 #: ../data/ui/about_window.ui.in:28
 msgid ""
@@ -416,7 +429,7 @@ msgstr "Eliminar todo"
 
 #: ../data/ui/menu/explorer_search_global_search.xml:7
 msgid "Pinned Servers Only"
-msgstr ""
+msgstr "Solo servidores fijados"
 
 #: ../data/ui/menu/library_search.xml:7
 msgid "Unread"
@@ -524,11 +537,11 @@ msgstr ""
 
 #: ../data/ui/preferences.blp:57
 msgid "Backdrop in Details Page"
-msgstr ""
+msgstr "Fondo en la página de los detalles"
 
 #: ../data/ui/preferences.blp:58
 msgid "Enable background recoloring to match cover"
-msgstr ""
+msgstr "Activar el cambio de color del fondo para que coincida con la portada"
 
 #: ../data/ui/preferences.blp:72
 msgid "Display"
@@ -1534,15 +1547,15 @@ msgstr "Filtrar por estados"
 
 #: ../komikku/servers/mangadex/__init__.py:77
 msgid "Completed"
-msgstr ""
+msgstr "Completado"
 
 #: ../komikku/servers/mangadex/__init__.py:78
 msgid "Paused"
-msgstr ""
+msgstr "Pausado"
 
 #: ../komikku/servers/mangadex/__init__.py:79
 msgid "Cancelled"
-msgstr ""
+msgstr "Cancelado"
 
 #: ../komikku/servers/mangadex/__init__.py:85
 msgid "Publication Demographic"
