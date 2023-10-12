@@ -391,12 +391,18 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Library] Added sorting: Alphabetical, Latest Read First (default), Latest Updated First</li>
-                <li>[Servers] Mangas Origines [FR]: Reenable</li>
-                <li>[Servers] Bilibili Comics: Update</li>
-                <li>[Servers] Mangalek: Update</li>
-                <li>[Servers] Manhwa Hentai: Update</li>
-                <li>[L10n] Updated Finnish, Polish and Spanish translations</li>
+                <li>[Library] Kept badges in phase with reading status</li>
+                <li>[Card] Chapters list: Added `Clear` action (deletes downloaded pages without affecting chapter(s) state)</li>
+                <li>[Card] Added backdrop: Background recoloring to match cover</li>
+                <li>[Downloader] Improved speed</li>
+                <li>[Explorer] Global search: Added a progressbar</li>
+                <li>[Explorer] Global search: Added a filter that allows restricting search to pinned servers only</li>
+                <li>[Servers] Dragon Ball Multiverse: Update</li>
+                <li>[Servers] Golden Mangás: Update</li>
+                <li>[Servers] MANGA Plus by SHUEISHA: Update</li>
+                <li>[Servers] MangaDex: Update</li>
+                <li>[Servers] Reaper Scans [PT-br]: Update (name change to `Yugen Scans`)</li>
+                <li>[L10n] Updated French, Russian, Spanish and Turkish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)

@@ -37,11 +37,11 @@
         <display_length compare="ge">360</display_length>
     </requires>
 
-    <recommends>
+    <supports>
         <control>keyboard</control>
         <control>pointing</control>
         <control>touch</control>
-    </recommends>
+    </supports>
 
     <custom>
         <value key="Purism::form_factor">workstation</value>
@@ -99,10 +99,30 @@
     <url type="bugtracker">@gitrepo@/-/issues</url>
     <url type="vcs-browser">@gitrepo@</url>
     <url type="translate">https://hosted.weblate.org/projects/komikku</url>
+    <url type="contribute">@gitrepo@/-/blob/main/CONTRIBUTING.md</url>
     <url type="donation">https://ko-fi.com/valos</url>
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
+        <release version="1.27.0" date="2023-10-12">
+            <description>
+                <ul>
+                    <li>[Library] Kept badges in phase with reading status</li>
+                    <li>[Card] Chapters list: Added `Clear` action (deletes downloaded pages without affecting chapter(s) state)</li>
+                    <li>[Card] Added backdrop: Background recoloring to match cover</li>
+                    <li>[Downloader] Improved speed</li>
+                    <li>[Explorer] Global search: Added a progressbar</li>
+                    <li>[Explorer] Global search: Added a filter that allows restricting search to pinned servers only</li>
+                    <li>[Servers] Dragon Ball Multiverse: Update</li>
+                    <li>[Servers] Golden Mangás: Update</li>
+                    <li>[Servers] MANGA Plus by SHUEISHA: Update</li>
+                    <li>[Servers] MangaDex: Update</li>
+                    <li>[Servers] Reaper Scans [PT-br]: Update (name change to `Yugen Scans`)</li>
+                    <li>[L10n] Updated French, Russian, Spanish and Turkish translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
         <release version="1.26.0" date="2023-09-27">
             <description>
                 <ul>
