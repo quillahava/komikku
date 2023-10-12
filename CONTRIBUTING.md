@@ -39,7 +39,7 @@ flatpak install --user flathub org.gnome.Builder
 
 Then, open __GNOME Builder__, click the **Clone...** button and paste the repository url.
 
-By default, GNOME Builder should select the `info.febvre.Komikku.json` manifest, which is the
+By default, GNOME Builder should select the `info.febvre.KomikkuDevel.json` manifest, which is the
 manifest used for building the Gitlab CI pipeline version.
 
 ### Building from source
