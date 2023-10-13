@@ -515,9 +515,8 @@ class LibraryPage(Adw.NavigationPage):
 
         return Gdk.EVENT_PROPAGATE
 
-    def on_manga_updated(self, _updater, manga, _nb_recent_chapters, _nb_deleted_chapters, _synced):
-        self.update_thumbnail(manga)
-        self.flowbox.invalidate_filter()
+    def on_manga_updated(self, _obj, manga, _nb_recent_chapters, _nb_deleted_chapters, _synced):
+        self.refresh_on_manga_state_changed(manga)
 
     def on_overlaysplitview_revealed(self, _overlaysplitview, _param):
         if self.overlaysplitview.get_show_sidebar():
@@ -639,6 +638,11 @@ class LibraryPage(Adw.NavigationPage):
         thread = threading.Thread(target=run)
         thread.daemon = True
         thread.start()
+
+    def refresh_on_manga_state_changed(self, manga):
+        self.update_thumbnail(manga)
+        if self.selected_filters:
+            self.flowbox.invalidate_filter()
 
     def remove_thumbnail(self, manga):
         # Remove manga thumbnail in flowbox

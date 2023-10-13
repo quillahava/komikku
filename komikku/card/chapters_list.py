@@ -162,7 +162,7 @@ class ChaptersList:
         item.chapter = Chapter.get(item.chapter.id)
         item.emit_changed()
 
-        self.card.window.library.update_thumbnail(self.card.manga)
+        self.card.window.library.refresh_on_manga_state_changed(self.card.manga)
 
     def clear_selected_chapters(self, _action, _param, reset):
         # Clear and reset selected chapters
@@ -172,7 +172,7 @@ class ChaptersList:
             item.chapter = Chapter.get(item.chapter.id)
             item.emit_changed()
 
-        self.card.window.library.update_thumbnail(self.card.manga)
+        self.card.window.library.refresh_on_manga_state_changed(self.card.manga)
 
         self.card.leave_selection_mode()
 
@@ -423,7 +423,7 @@ class ChaptersList:
         chapter.update(data)
 
         item.emit_changed()
-        self.card.window.library.update_thumbnail(self.card.manga)
+        self.card.window.library.refresh_on_manga_state_changed(self.card.manga)
 
     def toggle_selected_chapters_read_status(self, _action, _gparam, read):
         chapters_ids = []
@@ -458,7 +458,7 @@ class ChaptersList:
 
                 self.card.leave_selection_mode()
                 self.card.window.activity_indicator.stop()
-                self.card.window.library.update_thumbnail(self.card.manga)
+                self.card.window.library.refresh_on_manga_state_changed(self.card.manga)
 
             def run_generator(func):
                 gen = func()
@@ -491,7 +491,7 @@ class ChaptersList:
                 item.emit_changed()
                 break
 
-        self.card.window.library.update_thumbnail(self.card.manga)
+        self.card.window.library.refresh_on_manga_state_changed(self.card.manga)
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/card_chapters_list_row.ui')
