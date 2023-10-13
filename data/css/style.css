@@ -15,6 +15,12 @@ searchbar > revealer > box {
     padding-right: 0px;
 }
 
+/* Override app-notification class */
+.app-notification {
+    margin: 12px 12px 24px 12px;
+    border-radius: 12px;
+}
+
 /* Covers */
 .cover-dropshadow {
     border-radius: 9px;
