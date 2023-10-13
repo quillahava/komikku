@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-12 16:38+0200\n"
-"PO-Revision-Date: 2023-08-21 16:48+0000\n"
+"PO-Revision-Date: 2023-10-14 22:11+0000\n"
 "Last-Translator: Roger VC <rogervilarasau@gmail.com>\n"
-"Language-Team: Catalan <https://hosted.weblate.org/projects/komikku/main/ca/"
-">\n"
+"Language-Team: Catalan <https://hosted.weblate.org/projects/komikku/main/ca/>"
+"\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -80,43 +80,43 @@ msgstr "Temes clars i foscos"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:53
 msgid "The Library page"
-msgstr ""
+msgstr "Pàgina de la biblioteca"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:57
 msgid "The Library page with the category sidebar open"
-msgstr ""
+msgstr "Pàgina de la biblioteca amb la barra lateral de categories oberta"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:61
 msgid "The Preferences page (Library settings)"
-msgstr ""
+msgstr "La pàgina de Preferències (Paràmetres de biblioteca)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:65
 msgid "The Explorer page in mobile format (Servers list)"
-msgstr ""
+msgstr "La pàgina d'explorador en format mòbil (Llista de servidors)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:69
 msgid "The Details page"
-msgstr ""
+msgstr "La pàgina de detalls"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:73
 msgid "The Details page (chapters list)"
-msgstr ""
+msgstr "La pàgina de detalls (llista de capitols)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:77
 msgid "The Reader page"
-msgstr ""
+msgstr "Pàgina del lector"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:81
 msgid "The Reader page in mobile format"
-msgstr ""
+msgstr "Pàgina del lector en format mòbil"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:85
 msgid "The Category editor page in mobile format"
-msgstr ""
+msgstr "Pàgina d'editor de categories en format mòbil"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:89
 msgid "The Reading history page in mobile format"
-msgstr ""
+msgstr "Pàgina de l'historial de lectura en format mòbil"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:94
 msgid "@authorfullname@"
@@ -131,6 +131,8 @@ msgid ""
 "[Card] Chapters list: Added `Clear` action (deletes downloaded pages without "
 "affecting chapter(s) state)"
 msgstr ""
+"[Targeta] Llista de capítols: Afegida l'acció `Neteja` (esborra les pàgines "
+"descarregades sense afectar l'estat del(s) capítol(s))"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:112
 msgid "[Card] Added backdrop: Background recoloring to match cover"
@@ -203,7 +205,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:134
 msgid "[L10n] Updated Finnish, Polish and Spanish translations"
-msgstr ""
+msgstr "[L10n] Actualitzades les traduccions al finlandès, polonès i espanyol"
 
 #: ../data/info.febvre.Komikku.desktop.in:3
 msgid "@prettyname@"
@@ -218,6 +220,8 @@ msgid ""
 "manga;reader;viewer;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offline;"
 "gnome;"
 msgstr ""
+"manga;lector;visor;còmic;manhwa;manhua;bd;webtoon;webcomic;scan;fora de "
+"línia;gnome;"
 
 #: ../data/ui/about_window.ui.in:28
 msgid ""
@@ -290,7 +294,6 @@ msgid "Add"
 msgstr "Afegir"
 
 #: ../data/ui/download_manager.blp:6 ../data/ui/download_manager.blp:16
-#, fuzzy
 msgid "Download Manager"
 msgstr "Gestor de descàrregues"
 
@@ -304,7 +307,6 @@ msgstr "No hi ha descàrregues"
 
 #: ../data/ui/explorer_search.blp:10 ../data/ui/explorer_search.blp:34
 #: ../data/ui/history.blp:19 ../data/ui/library.blp:36
-#, fuzzy
 msgid "Search"
 msgstr "Cerca"
 
@@ -346,21 +348,20 @@ msgstr "No hi ha història"
 
 #: ../data/ui/library.blp:6 ../data/ui/preferences.blp:66
 #: ../data/ui/preferences.blp:69
-#, fuzzy
 msgid "Library"
 msgstr "Biblioteca"
 
 #: ../data/ui/library.blp:19
 msgid "Toggle categories sidebar"
-msgstr ""
+msgstr "Commuta la barra lateral de categories"
 
 #: ../data/ui/library.blp:23
 msgid "Komikku"
-msgstr ""
+msgstr "Komikku"
 
 #: ../data/ui/library.blp:30
 msgid "Main Menu"
-msgstr ""
+msgstr "Menú principal"
 
 #: ../data/ui/library.blp:61
 msgid "Search by name, server or genre"
@@ -372,7 +373,7 @@ msgstr "Actualitzar"
 
 #: ../data/ui/library.blp:182
 msgid "Discover Comics"
-msgstr ""
+msgstr "Descobriu Còmics"
 
 #: ../data/ui/library.blp:256
 msgid "OK"
@@ -417,7 +418,7 @@ msgstr "Eliminar tots"
 
 #: ../data/ui/menu/explorer_search_global_search.xml:7
 msgid "Pinned Servers Only"
-msgstr ""
+msgstr "Només servidors fixats"
 
 #: ../data/ui/menu/library_search.xml:7
 msgid "Unread"
@@ -437,19 +438,19 @@ msgstr "Actualitzar la Biblioteca"
 
 #: ../data/ui/menu/main.xml:11
 msgid "Sort"
-msgstr ""
+msgstr "Ordre"
 
 #: ../data/ui/menu/main.xml:16
 msgid "Alphabetical"
-msgstr ""
+msgstr "Alfabètic"
 
 #: ../data/ui/menu/main.xml:21
 msgid "Latest Read First"
-msgstr ""
+msgstr "L'últim llegit primer"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Updated First"
-msgstr ""
+msgstr "L'últim actualitzat primer"
 
 #: ../data/ui/menu/main.xml:55
 msgid "Keyboard Shortcuts"
@@ -476,7 +477,6 @@ msgid "Hide Page Numbering"
 msgstr "Amaga la numeració de pàgines"
 
 #: ../data/ui/menu/reader.xml:106
-#, fuzzy
 msgid "Save Page"
 msgstr "Desa la pàgina"
 
@@ -633,7 +633,6 @@ msgstr "Si s'han d'habilitar servidors amb contingut només NSFW"
 
 #: ../data/ui/preferences.blp:209 ../data/ui/preferences.blp:212
 #: ../data/ui/reader.blp:6
-#, fuzzy
 msgid "Reader"
 msgstr "Lector"
 
@@ -771,12 +770,12 @@ msgstr "Dades no guardades a la biblioteca"
 
 #: ../data/ui/preferences.blp:299
 msgid "Clear chapters cache and database"
-msgstr "Esborra la memòria cau dels capítols i la base de dades"
+msgstr "Neteja la memòria cau dels capítols i la base de dades"
 
 #: ../data/ui/preferences.blp:304
 msgid "Clear chapters cache and database on application close"
 msgstr ""
-"Esborra la memòria cau dels capítols i la base de dades al tancar l'aplicació"
+"Neteja la memòria cau dels capítols i la base de dades al tancar l'aplicació"
 
 #: ../data/ui/preferences.blp:309
 msgid "Credentials storage"
@@ -822,9 +821,8 @@ msgid "Back"
 msgstr "Enrere"
 
 #: ../data/ui/reader.blp:31
-#, fuzzy
 msgid "Toggle fullscreen mode"
-msgstr "Canvia el mode de pantalla completa"
+msgstr "Canvia al mode de pantalla completa"
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -897,8 +895,9 @@ msgid "Select all downloads"
 msgstr "Selecciona totes les descàrregues"
 
 #: ../data/ui/webview.blp:6
+#, fuzzy
 msgid "Webview"
-msgstr ""
+msgstr "Vista web"
 
 #: ../komikku/application.py:132
 msgid "Multiple URLs not supported"
@@ -1006,15 +1005,15 @@ msgstr "Descarregar"
 
 #: ../komikku/card/chapters_list.py:670 ../komikku/preferences.py:133
 msgid "Clear"
-msgstr "Llimpiar"
+msgstr "Neteja"
 
 #: ../komikku/card/chapters_list.py:675
 msgid "Clear and Reset"
-msgstr "Esborra i reinicia"
+msgstr "Neteja i reinicia"
 
 #: ../komikku/card/chapters_list.py:675
 msgid "Reset"
-msgstr ""
+msgstr "Reinicialitzar"
 
 #: ../komikku/card/chapters_list.py:685
 msgid "Mark as Read"
@@ -1185,11 +1184,11 @@ msgstr "Cerca Global"
 
 #: ../komikku/explorer/search.py:747
 msgid "Search globally by name"
-msgstr ""
+msgstr "Cerca globalment per nom"
 
 #: ../komikku/explorer/search.py:749
 msgid "Search for comics across all the servers you have enabled"
-msgstr ""
+msgstr "Cerca de còmics a través de tots els servidors que teniu habilitats"
 
 #: ../komikku/explorer/search.py:820
 msgid "Oops, failed to retrieve manga's information."
@@ -1301,12 +1300,12 @@ msgstr "Error de descàrrega"
 
 #: ../komikku/preferences.py:131
 msgid "Clear?"
-msgstr "Llimpiar?"
+msgstr "Netejar?"
 
 #: ../komikku/preferences.py:132
 msgid "Are you sure you want to clear chapters cache and database?"
 msgstr ""
-"Esteu segur que voleu esborrar la memòria cau dels capítols i la base de "
+"Esteu segur que voleu netejar la memòria cau dels capítols i la base de "
 "dades?"
 
 #: ../komikku/preferences.py:160
@@ -1535,19 +1534,19 @@ msgstr "Filtrar per estats"
 
 #: ../komikku/servers/mangadex/__init__.py:77
 msgid "Completed"
-msgstr ""
+msgstr "Completat"
 
 #: ../komikku/servers/mangadex/__init__.py:78
 msgid "Paused"
-msgstr ""
+msgstr "Pausat"
 
 #: ../komikku/servers/mangadex/__init__.py:79
 msgid "Cancelled"
-msgstr ""
+msgstr "Cancel·lat"
 
 #: ../komikku/servers/mangadex/__init__.py:85
 msgid "Publication Demographic"
-msgstr ""
+msgstr "Demografia de la publicació"
 
 #: ../komikku/servers/mangadex/__init__.py:86
 msgid "Filter by publication demographics"
@@ -1555,19 +1554,19 @@ msgstr ""
 
 #: ../komikku/servers/mangadex/__init__.py:89
 msgid "Shounen"
-msgstr ""
+msgstr "Shounen"
 
 #: ../komikku/servers/mangadex/__init__.py:90
 msgid "Shoujo"
-msgstr ""
+msgstr "Shoujo"
 
 #: ../komikku/servers/mangadex/__init__.py:91
 msgid "Josei"
-msgstr ""
+msgstr "Josei"
 
 #: ../komikku/servers/mangadex/__init__.py:92
 msgid "Seinen"
-msgstr ""
+msgstr "Seinen"
 
 #: ../komikku/servers/mangapill/__init__.py:31
 #: ../komikku/servers/mangatube/__init__.py:33
