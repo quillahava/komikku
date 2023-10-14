@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-12 16:38+0200\n"
-"PO-Revision-Date: 2023-10-04 12:37+0000\n"
+"PO-Revision-Date: 2023-10-14 22:11+0000\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
-"Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/"
-">\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/>"
+"\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,43 +81,43 @@ msgstr "Açık ve koyu tema"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:53
 msgid "The Library page"
-msgstr ""
+msgstr "Kitaplık sayfası"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:57
 msgid "The Library page with the category sidebar open"
-msgstr ""
+msgstr "Kitaplık sayfası kategori kenar çubuğu açık"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:61
 msgid "The Preferences page (Library settings)"
-msgstr ""
+msgstr "Tercihler sayfası (Kitaplık ayarları)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:65
 msgid "The Explorer page in mobile format (Servers list)"
-msgstr ""
+msgstr "Keşfet sayfası mobil biçimde (Sunucu listesi)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:69
 msgid "The Details page"
-msgstr ""
+msgstr "Ayrıntılar sayfası"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:73
 msgid "The Details page (chapters list)"
-msgstr ""
+msgstr "Ayrıntılar sayfası (böümler listesi)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:77
 msgid "The Reader page"
-msgstr ""
+msgstr "Okuyucu sayfası"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:81
 msgid "The Reader page in mobile format"
-msgstr ""
+msgstr "Okuyucu sayfası mobil biçimde"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:85
 msgid "The Category editor page in mobile format"
-msgstr ""
+msgstr "Kategori üzenleyici sayfası mobil biçimde"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:89
 msgid "The Reading history page in mobile format"
-msgstr ""
+msgstr "Okuma geçmişi sayfası mobil biçimde"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:94
 msgid "@authorfullname@"
@@ -173,7 +173,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:121
 msgid "[L10n] Updated French, Russian, Spanish and Turkish translations"
-msgstr ""
+msgstr "[L10n] Fransızca, Rusça, İspanyolca ve Türkçe çeviriler güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:123
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
@@ -221,6 +221,8 @@ msgid ""
 "manga;reader;viewer;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offline;"
 "gnome;"
 msgstr ""
+"manga;reader;viewer;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offline;gnom"
+"e;okuyucu;görüntüleyici;çizgi roman;çevrim dışı;"
 
 #: ../data/ui/about_window.ui.in:28
 msgid ""
@@ -416,7 +418,7 @@ msgstr "Hepsini Sil"
 
 #: ../data/ui/menu/explorer_search_global_search.xml:7
 msgid "Pinned Servers Only"
-msgstr ""
+msgstr "Yalnızca Sabitlenmiş Sunucular"
 
 #: ../data/ui/menu/library_search.xml:7
 msgid "Unread"
@@ -523,11 +525,12 @@ msgstr ""
 
 #: ../data/ui/preferences.blp:57
 msgid "Backdrop in Details Page"
-msgstr ""
+msgstr "Ayrıntılar Sayfasında Arka Fon"
 
 #: ../data/ui/preferences.blp:58
 msgid "Enable background recoloring to match cover"
 msgstr ""
+"Kapakla eşleşecek şekilde arka plan yeniden renklendirilmeyi etkinleştir"
 
 #: ../data/ui/preferences.blp:72
 msgid "Display"
@@ -1524,39 +1527,39 @@ msgstr "Durumlara göre süz"
 
 #: ../komikku/servers/mangadex/__init__.py:77
 msgid "Completed"
-msgstr ""
+msgstr "Tamamlandı"
 
 #: ../komikku/servers/mangadex/__init__.py:78
 msgid "Paused"
-msgstr ""
+msgstr "Duraklatıldı"
 
 #: ../komikku/servers/mangadex/__init__.py:79
 msgid "Cancelled"
-msgstr ""
+msgstr "İptal edildi"
 
 #: ../komikku/servers/mangadex/__init__.py:85
 msgid "Publication Demographic"
-msgstr ""
+msgstr "Yayın Kitlesi"
 
 #: ../komikku/servers/mangadex/__init__.py:86
 msgid "Filter by publication demographics"
-msgstr ""
+msgstr "Yayın kitlesine göre süz"
 
 #: ../komikku/servers/mangadex/__init__.py:89
 msgid "Shounen"
-msgstr ""
+msgstr "Shounen"
 
 #: ../komikku/servers/mangadex/__init__.py:90
 msgid "Shoujo"
-msgstr ""
+msgstr "Shoujo"
 
 #: ../komikku/servers/mangadex/__init__.py:91
 msgid "Josei"
-msgstr ""
+msgstr "Josei"
 
 #: ../komikku/servers/mangadex/__init__.py:92
 msgid "Seinen"
-msgstr ""
+msgstr "Seinen"
 
 #: ../komikku/servers/mangapill/__init__.py:31
 #: ../komikku/servers/mangatube/__init__.py:33
