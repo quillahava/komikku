@@ -5,6 +5,7 @@
 from contextlib import closing
 import json
 import keyring
+from keyring.backends.chainer import ChainerBackend
 from keyring.credentials import Credential
 import logging
 import os
@@ -70,7 +71,7 @@ class KeyringHelper:
     def keyring(self):
         current_keyring = keyring.get_keyring()
 
-        if isinstance(current_keyring, keyring.backends.chainer.ChainerBackend):
+        if isinstance(current_keyring, ChainerBackend):
             # Search SecretService backend
             for backend in current_keyring.backends:
                 if isinstance(backend, keyring.backends.SecretService.Keyring):
