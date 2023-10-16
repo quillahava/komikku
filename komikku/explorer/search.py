@@ -798,7 +798,7 @@ class ExplorerSearchPage(Adw.NavigationPage):
 
             self.window.card.init(manga)
 
-        def complete_update(manga, server, recent_chapters_ids, nb_deleted_chapters, synced):
+        def complete_update(manga, server, recent_chapters_ids, _nb_deleted_chapters, _synced):
             nb_recent_chapters = len(recent_chapters_ids)
 
             if nb_recent_chapters > 0:

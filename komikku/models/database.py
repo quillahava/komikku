@@ -771,7 +771,12 @@ class Manga:
 
             return get_free_rank(rank + 1)
 
-        data = self.server.get_manga_data(dict(slug=self.slug, url=self.url, last_read=self.last_read))
+        data = self.server.get_manga_data(dict(
+            slug=self.slug,
+            name=self.name,
+            url=self.url,
+            last_read=self.last_read
+        ))
         if data is None:
             return False, 0, 0, False
 
