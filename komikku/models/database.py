@@ -697,19 +697,21 @@ class Manga:
         db_conn = create_db_connection()
 
         order = 'ASC' if direction == 1 else 'DESC'
+        op = '>' if direction == 1 else '<'
+
         if self.sort_order in ('asc', 'desc', None):
             row = db_conn.execute(
-                f'SELECT * FROM chapters WHERE manga_id = ? AND rank > ? ORDER BY rank {order}',
+                f'SELECT * FROM chapters WHERE manga_id = ? AND rank {op} ? ORDER BY rank {order}',
                 (self.id, chapter.rank)
             ).fetchone()
         elif self.sort_order in ('date-asc', 'date-desc'):
             row = db_conn.execute(
-                f'SELECT * FROM chapters WHERE manga_id = ? AND date > ? ORDER BY data {order}, id {order}',
+                f'SELECT * FROM chapters WHERE manga_id = ? AND date {op} ? ORDER BY data {order}, id {order}',
                 (self.id, chapter.date)
             ).fetchone()
         elif self.sort_order in ('natural-asc', 'natural-desc'):
             row = db_conn.execute(
-                f'SELECT * FROM chapters WHERE manga_id = ? AND title > ? COLLATE natsort ORDER BY title {order}, id {order}',
+                f'SELECT * FROM chapters WHERE manga_id = ? AND title {op} ? COLLATE natsort ORDER BY title {order}, id {order}',
                 (self.id, chapter.title)
             ).fetchone()
 
