@@ -1,6 +1,6 @@
-# <a href="https://apps.gnome.org/app/info.febvre.Komikku/"><img height="88" src="data/icons/info.febvre.Komikku.svg" />Komikku</a>
+# <a href="https://apps.gnome.org/Komikku/"><img height="88" src="data/icons/info.febvre.Komikku.svg" />Komikku</a>
 
-[![](https://circle.gnome.org/assets/button/badge.svg)](https://apps.gnome.org/app/info.febvre.Komikku/)
+[![](https://circle.gnome.org/assets/button/badge.svg)](https://apps.gnome.org/Komikku/)
 [![](https://stopthemingmy.app/badge.svg)](https://stopthemingmy.app)
 [![Pipeline status](https://gitlab.com/valos/Komikku/badges/main/pipeline.svg)](https://gitlab.com/valos/Komikku/-/pipelines)
 [![Translation status](https://hosted.weblate.org/widgets/komikku/-/main/svg-badge.svg)](https://hosted.weblate.org/engage/komikku/)
