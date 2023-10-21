@@ -25,7 +25,7 @@ from gi.repository import WebKit
 from komikku.servers.exceptions import CfBypassError
 from komikku.utils import get_cache_dir
 
-CF_RELOAD_MAX = 5
+CF_RELOAD_MAX = 3
 DEBUG = False
 
 logger = logging.getLogger('komikku.webview')
@@ -54,38 +54,72 @@ class WebviewPage(Adw.NavigationPage):
 
         self.connect('hidden', self.on_hidden)
 
-        self.scrolledwindow = Gtk.ScrolledWindow()
-        self.scrolledwindow.get_hscrollbar().set_visible(False)
-        self.scrolledwindow.get_vscrollbar().set_visible(False)
-        self.toolbarview.set_content(self.scrolledwindow)
-
         # User agent: Gnome Web like
         cpu_arch = platform.machine()
         session_type = GLib.getenv('XDG_SESSION_TYPE').capitalize()
-        system = GLib.get_os_info('NAME')
-
-        custom_part = f'{session_type}; {system}; Linux {cpu_arch}'
-        self.user_agent = f'Mozilla/5.0 ({custom_part}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15'
+        custom_part = f'{session_type}; Linux {cpu_arch}'
+        self.user_agent = f'Mozilla/5.0 ({custom_part}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15'
 
         # WebKit WebView
         self.settings = WebKit.Settings.new()
         self.settings.set_enable_developer_extras(DEBUG)
-        self.settings.set_enable_webgl(True)
-        self.settings.set_enable_media_stream(True)
+        self.settings.set_enable_dns_prefetching(True)
+
+        # Enable extra features
+        all_feature_list = self.settings.get_all_features()
+        if DEBUG:
+            experimental_feature_list = self.settings.get_experimental_features()
+            development_feature_list = self.settings.get_development_features()
+            experimental_features = [
+                experimental_feature_list.get(index).get_identifier() for index in range(experimental_feature_list.get_length())
+            ]
+            development_features = [
+                development_feature_list.get(index).get_identifier() for index in range(development_feature_list.get_length())
+            ]
+
+            # Categories: Security, Animation, JavaScript, HTML, Other, DOM, Privacy, Media, Network, CSS
+            for index in range(all_feature_list.get_length()):
+                feature = all_feature_list.get(index)
+                if feature.get_identifier() in experimental_features:
+                    type = 'Experimental'
+                elif feature.get_identifier() in development_features:
+                    type = 'Development'
+                else:
+                    type = 'Stable'
+                if feature.get_category() == 'Other' and not feature.get_default_value():
+                    print('ID: {0}, Default: {1}, Category: {2}, Details: {3}, type: {4}'.format(
+                        feature.get_identifier(),
+                        feature.get_default_value(),
+                        feature.get_category(),
+                        feature.get_details(),
+                        type
+                    ))
+
+        extra_features_enabled = (
+            'AllowDisplayOfInsecureContent',
+            'AllowRunningOfInsecureContent',
+            'JavaScriptCanAccessClipboard',
+        )
+        for index in range(all_feature_list.get_length()):
+            feature = all_feature_list.get(index)
+            if feature.get_identifier() in extra_features_enabled and not feature.get_default_value():
+                self.settings.set_feature_enabled(feature, True)
 
         self.web_context = WebKit.WebContext(time_zone_override=tzlocal.get_localzone_name())
         self.web_context.set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER)
+        self.web_context.set_preferred_languages(['en-US', 'en'])
 
         self.network_session = WebKit.NetworkSession.new(
             os.path.join(get_cache_dir(), 'webview', 'data'),
             os.path.join(get_cache_dir(), 'webview', 'cache')
         )
-        self.network_session.set_tls_errors_policy(WebKit.TLSErrorsPolicy.IGNORE)
+        self.network_session.get_website_data_manager().set_favicons_enabled(True)
+        self.network_session.set_itp_enabled(False)
+        self.network_session.get_cookie_manager().set_accept_policy(WebKit.CookieAcceptPolicy.ALWAYS)
         self.network_session.get_cookie_manager().set_persistent_storage(
             os.path.join(get_cache_dir(), 'webview', 'cookies.sqlite'),
             WebKit.CookiePersistentStorage.SQLITE
         )
-        self.network_session.get_cookie_manager().set_accept_policy(WebKit.CookieAcceptPolicy.ALWAYS)
 
         self.webkit_webview = WebKit.WebView(
             web_context=self.web_context,
@@ -93,14 +127,14 @@ class WebviewPage(Adw.NavigationPage):
             settings=self.settings
         )
 
-        self.scrolledwindow.set_child(self.webkit_webview)
-
+        self.toolbarview.set_content(self.webkit_webview)
         self.window.navigationview.add(self)
 
     def close(self, blank=True):
         self.disconnect_all_signals()
 
         if blank:
+            self.webkit_webview.stop_loading()
             GLib.idle_add(self.webkit_webview.load_uri, 'about:blank')
 
         self.lock = False
