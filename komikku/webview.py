@@ -297,7 +297,8 @@ def bypass_cf(func):
                 # Show webview, user must complete a CAPTCHA
                 webview.title.set_title(_('Please complete CAPTCHA'))
                 webview.title.set_subtitle(server.name)
-                webview.show()
+                if webview.window.page != webview.props.tag:
+                    webview.show()
 
             if webview.webkit_webview.props.title != 'ready':
                 return
