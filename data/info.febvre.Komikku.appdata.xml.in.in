@@ -99,8 +99,21 @@
     <url type="donation">https://liberapay.com/valos/donate</url>
 
     <releases>
-        <release version="1.27.0" date="2023-10-12">
+        <release version="1.27.1" date="2023-10-12">
             <description>
+                <ul>
+                    <li>[Library] When filtered, it's now correctly updated when changes occur (additions, new chapters, reading progressions)</li>
+                    <li>[Card] Chapters list: Added missing icon</li>
+                    <li>[Reader] Fixed chapters ordering while reading</li>
+                    <li>[UX] In-app notifications: Update to fit GNOME 45 style</li>
+                    <li>[Webview] Some improvements</li>
+                    <li>[L10n] Updated Catalan, Polish, Spanish and Turkish translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
+        <release version="1.27.0" date="2023-10-12">
+            <description translatable="no">
                 <ul>
                     <li>[Library] Kept badges in phase with reading status</li>
                     <li>[Card] Chapters list: Added `Clear` action (deletes downloaded pages without affecting chapter(s) state)</li>
@@ -119,7 +132,7 @@
             </description>
         </release>
         <release version="1.26.0" date="2023-09-27">
-            <description>
+            <description translatable="no">
                 <ul>
                     <li>[Library] Added sorting: Alphabetical, Latest Read First (default), Latest Updated First</li>
                     <li>[Servers] Mangas Origines [FR]: Reenable</li>

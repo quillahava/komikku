@@ -391,18 +391,12 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Library] Kept badges in phase with reading status</li>
-                <li>[Card] Chapters list: Added `Clear` action (deletes downloaded pages without affecting chapter(s) state)</li>
-                <li>[Card] Added backdrop: Background recoloring to match cover</li>
-                <li>[Downloader] Improved speed</li>
-                <li>[Explorer] Global search: Added a progressbar</li>
-                <li>[Explorer] Global search: Added a filter that allows restricting search to pinned servers only</li>
-                <li>[Servers] Dragon Ball Multiverse: Update</li>
-                <li>[Servers] Golden Mangás: Update</li>
-                <li>[Servers] MANGA Plus by SHUEISHA: Update</li>
-                <li>[Servers] MangaDex: Update</li>
-                <li>[Servers] Reaper Scans [PT-br]: Update (name change to `Yugen Scans`)</li>
-                <li>[L10n] Updated French, Russian, Spanish and Turkish translations</li>
+                <li>[Library] When filtered, it's now correctly updated when changes occur (additions, new chapters, reading progressions)</li>
+                <li>[Card] Chapters list: Added missing icon</li>
+                <li>[Reader] Fixed chapters ordering while reading</li>
+                <li>[UX] In-app notifications: Update to fit GNOME 45 style</li>
+                <li>[Webview] Some improvements</li>
+                <li>[L10n] Updated Catalan, Polish, Spanish and Turkish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)
