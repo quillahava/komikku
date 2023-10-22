@@ -1,12 +1,13 @@
 # Irénée THIRION <irenee.thirion@e.email>, 2022.
 # Valéry Febvre <vfebvre@easter-eggs.com>, 2023.
+# "Mathieu B." <mathieu.bousquet2@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-12 16:38+0200\n"
-"PO-Revision-Date: 2023-10-12 20:37+0000\n"
-"Last-Translator: Valéry Febvre <vfebvre@easter-eggs.com>\n"
+"PO-Revision-Date: 2023-10-23 21:53+0000\n"
+"Last-Translator: \"Mathieu B.\" <mathieu.bousquet2@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/komikku/main/fr/>"
 "\n"
 "Language: fr\n"
@@ -14,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.1-dev\n"
+"X-Generator: Weblate 5.1.1-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -778,7 +779,7 @@ msgstr "Données non enregistrées dans la bibliothèque"
 
 #: ../data/ui/preferences.blp:299
 msgid "Clear chapters cache and database"
-msgstr "Effacer le cache des chapitres et la base de données"
+msgstr "Effacer le cache et la base de données des chapitres"
 
 #: ../data/ui/preferences.blp:304
 msgid "Clear chapters cache and database on application close"
