@@ -7,7 +7,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-12 16:38+0200\n"
 "PO-Revision-Date: 2023-10-23 21:53+0000\n"
-"Last-Translator: \"Mathieu B.\" <mathieu.bousquet2@gmail.com>\n"
+"Last-Translator: Valéry Febvre <vfebvre@easter-eggs.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/komikku/main/fr/>"
 "\n"
 "Language: fr\n"
@@ -779,7 +779,7 @@ msgstr "Données non enregistrées dans la bibliothèque"
 
 #: ../data/ui/preferences.blp:299
 msgid "Clear chapters cache and database"
-msgstr "Effacer le cache et la base de données des chapitres"
+msgstr "Effacer le cache des chapitres et la base de données"
 
 #: ../data/ui/preferences.blp:304
 msgid "Clear chapters cache and database on application close"
