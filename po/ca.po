@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-12 16:38+0200\n"
-"PO-Revision-Date: 2023-10-14 22:11+0000\n"
+"PO-Revision-Date: 2023-10-30 11:01+0000\n"
 "Last-Translator: Roger VC <rogervilarasau@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/komikku/main/ca/>"
 "\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.1-dev\n"
+"X-Generator: Weblate 5.2-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -124,7 +124,7 @@ msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "[Library] Kept badges in phase with reading status"
-msgstr ""
+msgstr "[Biblioteca] Mantenir els distintius en fase amb l'estat de lectura"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 msgid ""
@@ -137,20 +137,24 @@ msgstr ""
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:112
 msgid "[Card] Added backdrop: Background recoloring to match cover"
 msgstr ""
+"[Carta] Afegit rerefons: Canvi de color del rerefons per coincidir amb la "
+"coberta"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 msgid "[Downloader] Improved speed"
-msgstr ""
+msgstr "[Descarregador] S'ha millorat la velocitat"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:114
 msgid "[Explorer] Global search: Added a progressbar"
-msgstr ""
+msgstr "[Explorador] Cerca global: S'ha afegit una barra de progrés"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:115
 msgid ""
 "[Explorer] Global search: Added a filter that allows restricting search to "
 "pinned servers only"
 msgstr ""
+"[Explorador] Cerca global: S'ha afegit un filtre que permet restringir la "
+"cerca només per a servidors fixats"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:116
 msgid "[Servers] Dragon Ball Multiverse: Update"
@@ -171,10 +175,13 @@ msgstr "[Servidors] Mangadex: Actualització"
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:120
 msgid "[Servers] Reaper Scans [PT-br]: Update (name change to `Yugen Scans`)"
 msgstr ""
+"[Servidors] Reaper Scans [PT-br]: Actualització (canvi de nom a `Yugen "
+"Scans`)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:121
 msgid "[L10n] Updated French, Russian, Spanish and Turkish translations"
 msgstr ""
+"[L10n] Actualització de les traduccions al francès, rus, espanyol i turc"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:123
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
@@ -186,22 +193,24 @@ msgid ""
 "[Library] Added sorting: Alphabetical, Latest Read First (default), Latest "
 "Updated First"
 msgstr ""
+"[Biblioteca] Afegida ordenació: Alfabètic, L'últim Llegit Primer (per "
+"defecte), L'últim Actualitzat Primer"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:130
 msgid "[Servers] Mangas Origines [FR]: Reenable"
-msgstr ""
+msgstr "[Servidors] Mangas Origines [FR]: Reactivat"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:131
 msgid "[Servers] Bilibili Comics: Update"
-msgstr ""
+msgstr "[Servidors] Bilibili Comics: Actualització"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:132
 msgid "[Servers] Mangalek: Update"
-msgstr ""
+msgstr "[Servidors] Mangalek: Actualització"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:133
 msgid "[Servers] Manhwa Hentai: Update"
-msgstr ""
+msgstr "[Servidors] Manhwa Hentai: Actualització"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:134
 msgid "[L10n] Updated Finnish, Polish and Spanish translations"
@@ -526,11 +535,11 @@ msgstr ""
 
 #: ../data/ui/preferences.blp:57
 msgid "Backdrop in Details Page"
-msgstr ""
+msgstr "Rerefons en la Pàgina de Detalls"
 
 #: ../data/ui/preferences.blp:58
 msgid "Enable background recoloring to match cover"
-msgstr ""
+msgstr "Habilita el canvi de color del rerefons per coincidir amb la coberta"
 
 #: ../data/ui/preferences.blp:72
 msgid "Display"
@@ -895,7 +904,6 @@ msgid "Select all downloads"
 msgstr "Selecciona totes les descàrregues"
 
 #: ../data/ui/webview.blp:6
-#, fuzzy
 msgid "Webview"
 msgstr "Vista web"
 
@@ -1550,7 +1558,7 @@ msgstr "Demografia de la publicació"
 
 #: ../komikku/servers/mangadex/__init__.py:86
 msgid "Filter by publication demographics"
-msgstr ""
+msgstr "Filtra per demografia de la publicació"
 
 #: ../komikku/servers/mangadex/__init__.py:89
 msgid "Shounen"
