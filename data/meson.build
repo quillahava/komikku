@@ -97,12 +97,12 @@ appdata_file = i18n.merge_file(
   install_dir: join_paths(datadir, 'metainfo')
 )
 
-appstreamcli = find_program('appstream-util', required: false)
+appstreamcli = find_program('appstreamcli', required: false)
 if appstreamcli.found()
     test (
         'Validate appdata/metainfo file',
         appstreamcli,
-        args: ['validate-relax', join_paths(meson.current_build_dir (), app_id + '.appdata.xml')]
+        args: ['validate', join_paths(meson.current_build_dir (), app_id + '.appdata.xml')]
     )
 endif
 
