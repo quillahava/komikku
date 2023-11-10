@@ -95,8 +95,7 @@
     <url type="vcs-browser">@gitrepo@</url>
     <url type="translate">https://hosted.weblate.org/projects/komikku</url>
     <url type="contribute">@gitrepo@/-/blob/main/CONTRIBUTING.md</url>
-    <url type="donation">https://ko-fi.com/valos</url>
-    <url type="donation">https://liberapay.com/valos/donate</url>
+    <url type="donation">https://valos.gitlab.io/Komikku/#sponsor</url>
 
     <releases>
         <release version="1.27.1" date="2023-10-12">
