@@ -42,8 +42,6 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         self.scroll_direction = None
         self.scroll_drag_offset = 0
 
-        self.is_being_allocated = False
-        self.is_page_removing = False
         self.is_scroll_adjusting = False
         self.is_scroll_by_increment = False
         self.is_scroll_decelerating = False
@@ -123,7 +121,7 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         self.gesture_drag.connect('drag-begin', self.on_gesture_drag_begin)
         self.gesture_drag.connect('drag-end', self.on_gesture_drag_end)
         self.gesture_drag.connect('drag-update', self.on_gesture_drag_update)
-        self.add_controller(self.gesture_drag)
+        self.pager.add_controller(self.gesture_drag)
 
         # Gesture click controller: Navigation layout
         self.gesture_click = Gtk.GestureClick.new()
@@ -132,10 +130,8 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         self.add_controller(self.gesture_click)
 
     def add_or_remove_page(self):
-        if not self.get_first_child() or self.is_being_allocated or self.is_scroll_decelerating or self.is_scroll_adjusting or self.is_scroll_by_increment:
+        if not self.get_first_child() or self.is_scroll_decelerating or self.is_scroll_adjusting or self.is_scroll_by_increment:
             return
-
-        self.is_being_allocated = True
 
         first_page = self.get_first_child()
         last_page = self.get_last_child()
@@ -151,13 +147,11 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         if self.scroll_direction in (Gtk.DirectionType.UP, None):
             if first_page.loadable and first_page._ic_position > -self.widget_height * PRELOAD:
                 self.emit('page-requested', 'start')
-                return True
+                return
 
             if last_page.loadable and last_page._ic_position > self.widget_height * (PRELOAD + 1):
                 self.remove(last_page)
                 return
-
-        self.is_being_allocated = False
 
         if self.scroll_direction is None:
             # Set a default scroll direction at end of init
@@ -255,12 +249,8 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
         size = 0
         scroll_offset = self.vadjustment.props.value
-        addition = False
 
         while page:
-            if page._ic_status == 'adding':
-                addition = True
-
             if page.picture and page.status != 'rendering' and page.loadable and not page.error:
                 _, page_height, _, _ = page.picture.do_measure(Gtk.Orientation.VERTICAL, width)
                 if page.activity_indicator.spinner.get_spinning():
@@ -294,13 +284,6 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
         if adjusted:
             self.is_scroll_adjusting = False
-
-        if addition:
-            self.is_being_allocated = False
-
-        if self.is_page_removing:
-            self.is_being_allocated = False
-            self.is_page_removing = False
 
         self.add_or_remove_page()
 
@@ -396,11 +379,13 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         self.is_scroll_decelerating = False
         self.scroll_direction = Gtk.DirectionType.UP if dy < 0 else Gtk.DirectionType.DOWN
 
+        # Scroll deltas unit Gdk.ScrollUnit.SURFACE occurs with touchpads under Wayland
+        unit_multiple_factor = 1 if self.controller_scroll.get_unit() == Gdk.ScrollUnit.SURFACE else self.vadjustment.props.step_increment
         self.vadjustment.props.value = min(
             self.vadjustment.props.upper - self.vadjustment.props.page_size,
             max(
                 0,
-                self.vadjustment.props.value + dy * self.vadjustment.props.step_increment
+                self.vadjustment.props.value + dy * unit_multiple_factor
             )
         )
 
@@ -440,7 +425,6 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
     def remove(self, page):
         """ Removes a page """
         page.dispose()
-        self.is_page_removing = True
 
         if self.scroll_direction == Gtk.DirectionType.DOWN:
             self.vadjustment.props.value -= page._ic_height
@@ -448,7 +432,7 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
     def remove_controllers(self):
         self.remove_controller(self.controller_scroll)
         self.remove_controller(self.gesture_click)
-        self.remove_controller(self.gesture_drag)
+        self.pager.remove_controller(self.gesture_drag)
 
     def scroll_by_increment(self, increment, duration=500):
         self.is_scroll_decelerating = False

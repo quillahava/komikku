@@ -38,12 +38,16 @@ class Page(Gtk.Overlay):
         self.error = None      # connection error, server error, corrupt file error
         self.loadable = False  # loadable from disk or downloadable from server (chapter pages are known)
 
-        self.scrolledwindow = Gtk.ScrolledWindow()
-        self.scrolledwindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-        self.scrolledwindow.set_kinetic_scrolling(True)
-        self.scrolledwindow.set_overlay_scrolling(True)
+        if self.reader.reading_mode != 'webtoon':
+            self.scrollable = True
+            self.scrolledwindow = Gtk.ScrolledWindow()
+            self.scrolledwindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+            self.scrolledwindow.set_kinetic_scrolling(True)
+            self.scrolledwindow.set_overlay_scrolling(True)
 
-        self.set_child(self.scrolledwindow)
+            self.set_child(self.scrolledwindow)
+        else:
+            self.scrollable = False
 
         # Activity indicator
         self.activity_indicator = ActivityIndicator()
@@ -54,13 +58,24 @@ class Page(Gtk.Overlay):
         return self.get_allocation().height
 
     @property
-    def hscrollable(self):
-        adj = self.scrolledwindow.get_hadjustment()
-        return adj.props.upper > adj.props.page_size
+    def is_hscrollable(self):
+        if self.scrollable:
+            adj = self.scrolledwindow.get_hadjustment()
+            return adj.props.upper > adj.props.page_size
+
+        return False
 
     @property
-    def scrollable(self):
-        return self.hscrollable or self.vscrollable
+    def is_scrollable(self):
+        return self.is_hscrollable or self.is_vscrollable
+
+    @property
+    def is_vscrollable(self):
+        if self.scrollable:
+            adj = self.scrolledwindow.get_vadjustment()
+            return adj.props.upper > adj.props.page_size
+
+        return False
 
     @GObject.Property(type=str)
     def status(self):
@@ -69,11 +84,6 @@ class Page(Gtk.Overlay):
     @status.setter
     def status(self, value):
         self._status = value
-
-    @property
-    def vscrollable(self):
-        adj = self.scrolledwindow.get_vadjustment()
-        return adj.props.upper > adj.props.page_size
 
     def dispose(self):
         self.status = 'disposed'
@@ -239,7 +249,7 @@ class Page(Gtk.Overlay):
         if self.path is None and self.data is None:
             picture = KImage.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
         else:
-            can_zoom = self.reader.reading_mode != 'webtoon'
+            can_zoom = self.scrollable
             if self.path:
                 picture = KImage.new_from_file(
                     self.path, self.reader.scaling, self.reader.borders_crop, self.reader.landscape_zoom, can_zoom
@@ -265,7 +275,11 @@ class Page(Gtk.Overlay):
 
         if self.picture:
             self.picture.dispose()
-        self.scrolledwindow.set_child(picture)
+
+        if self.scrollable:
+            self.scrolledwindow.set_child(picture)
+        else:
+            self.set_child(picture)
         self.picture = picture
 
     def show_retry_button(self):

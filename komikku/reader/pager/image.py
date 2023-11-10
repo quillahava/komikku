@@ -300,6 +300,10 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
 
         return (width, height)
 
+    @property
+    def scrollable(self):
+        return isinstance(self.get_parent(), Gtk.ScrolledWindow)
+
     @GObject.Property(type=Gtk.Adjustment)
     def vadjustment(self):
         return self.__vadj or Gtk.Adjustment()
@@ -457,18 +461,19 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         width = self.image_displayed_width
         height = self.image_displayed_height
 
-        x = -(self.hadjustment.props.value - (self.hadjustment.props.upper - width) / 2)
-        snapshot.translate(Graphene.Point().init(int(x), 0))
-        y = -(self.vadjustment.props.value - (self.vadjustment.props.upper - height) / 2)
-        snapshot.translate(Graphene.Point().init(0, int(y)))
+        if self.scrollable:
+            x = -(self.hadjustment.props.value - (self.hadjustment.props.upper - width) / 2)
+            snapshot.translate(Graphene.Point().init(int(x), 0))
+            y = -(self.vadjustment.props.value - (self.vadjustment.props.upper - height) / 2)
+            snapshot.translate(Graphene.Point().init(0, int(y)))
 
-        # Center in widget when no scrolling
-        snapshot.translate(
-            Graphene.Point().init(
-                max((self.widget_width - width) // 2, 0),
-                max((self.widget_height - height) // 2, 0),
+            # Center in widget when no scrolling
+            snapshot.translate(
+                Graphene.Point().init(
+                    max((self.widget_width - width) // 2, 0),
+                    max((self.widget_height - height) // 2, 0),
+                )
             )
-        )
 
         # Add texture
         rect = Graphene.Rect().alloc()
