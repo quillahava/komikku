@@ -10,6 +10,8 @@ class Phenixscans(MangaStream):
     name = 'PhenixScans'
     lang = 'fr'
 
+    has_cf = True
+
     base_url = 'https://phenixscans.fr'
 
     authors_selector = '.infox .fmed:-soup-contains("Artiste") span, .infox .fmed:-soup-contains("Auteur") span'
