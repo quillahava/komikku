@@ -63,6 +63,7 @@ class WebviewPage(Adw.NavigationPage):
         # WebKit WebView
         self.settings = WebKit.Settings.new()
         self.settings.set_enable_developer_extras(DEBUG)
+        self.settings.set_enable_write_console_messages_to_stdout(DEBUG)
         self.settings.set_enable_dns_prefetching(True)
 
         # Enable extra features
@@ -254,7 +255,9 @@ def bypass_cf(func):
                 # Webview should not be closed, we need to store cookies first
                 webview.exit()
 
-            if event != WebKit.LoadEvent.FINISHED:
+            if event != WebKit.LoadEvent.FINISHED and not webview.auto_exited:
+                # Wait loading is finished
+                # Sometime FINISHED event never appends. COMMITTED event and auto-exited flag are sufficient
                 return
 
             cf_reload_count += 1
