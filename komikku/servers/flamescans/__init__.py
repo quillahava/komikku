@@ -7,10 +7,10 @@ from komikku.servers.multi.manga_stream import MangaStream
 
 class Flamescans(MangaStream):
     id = 'flamescans'
-    name = 'Flame Scans'
+    name = 'Flame Comics (Flame Scans)'
     lang = 'en'
 
-    base_url = 'https://flamescans.org'
+    base_url = 'https://flamecomics.com'
 
     series_name = 'series'
 
