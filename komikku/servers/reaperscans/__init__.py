@@ -246,10 +246,7 @@ class Reaperscans_pt_br(Heancms):
     name = 'Yugen Scans (Reaper Scans)'
     lang = 'pt_BR'
 
-    # Clone
-    # https://yugenmangas.lat
-
-    base_url = 'https://reaperbr.online'
+    base_url = 'https://yugenmangas.lat'
     api_url = 'https://api.yugenmangas.net'
 
     cover_css_path = 'div div div.container.px-5.text-gray-50 div.grid.grid-cols-12.pt-3.gap-x-3 div.col-span-12.relative.flex.justify-center.w-full div.flex.flex-col.items-center.justify-center.gap-y-2.w-full img'
