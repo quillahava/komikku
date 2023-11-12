@@ -43,6 +43,7 @@ def test_perfscan(perfscan_server):
     try:
         response = perfscan_server.search(response[0]['name'])
         slug = response[0]['slug']
+        name = response[0]['name']
     except Exception as e:
         slug = None
         log_error_traceback(e)
@@ -53,7 +54,7 @@ def test_perfscan(perfscan_server):
     # Get manga data
     print('Get manga data')
     try:
-        response = perfscan_server.get_manga_data(dict(slug=slug))
+        response = perfscan_server.get_manga_data(dict(slug=slug, name=name))
         chapter_slug = response['chapters'][0]['slug']
     except Exception as e:
         chapter_slug = None
