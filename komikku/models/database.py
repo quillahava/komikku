@@ -954,10 +954,6 @@ class Chapter:
 
         return os.path.join(self.manga.path, name)
 
-    @property
-    def resetable(self):
-        return self.read or self.last_page_read_index
-
     def clear(self, reset=False):
         """
         Clear (erase files on disk) and optionally reset

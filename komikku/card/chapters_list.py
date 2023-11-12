@@ -663,22 +663,20 @@ class ChaptersListRow(Gtk.Box):
             section = Gio.MenuItem.new_section(None, section_menu_model)
             self.menubutton_model.append_item(section)
 
-        if self.chapter.clearable or self.chapter.resetable:
-            section_menu_model = Gio.Menu()
+        section_menu_model = Gio.Menu()
 
-            if self.chapter.clearable:
-                menu_item = Gio.MenuItem.new(_('Clear'))
-                menu_item.set_action_and_target_value('app.card.clear-chapter', GLib.Variant.new_uint16(position))
-                section_menu_model.append_item(menu_item)
+        if self.chapter.clearable:
+            menu_item = Gio.MenuItem.new(_('Clear'))
+            menu_item.set_action_and_target_value('app.card.clear-chapter', GLib.Variant.new_uint16(position))
+            section_menu_model.append_item(menu_item)
 
-            if self.chapter.resetable:
-                menu_item = Gio.MenuItem.new(_('Clear and Reset') if self.chapter.clearable else _('Reset'))
-                menu_item.set_action_and_target_value('app.card.clear-reset-chapter', GLib.Variant.new_uint16(position))
-                section_menu_model.append_item(menu_item)
+        menu_item = Gio.MenuItem.new(_('Clear and Reset') if self.chapter.clearable else _('Reset'))
+        menu_item.set_action_and_target_value('app.card.clear-reset-chapter', GLib.Variant.new_uint16(position))
+        section_menu_model.append_item(menu_item)
 
-            if section_menu_model.get_n_items():
-                section = Gio.MenuItem.new_section(None, section_menu_model)
-                self.menubutton_model.append_item(section)
+        if section_menu_model.get_n_items():
+            section = Gio.MenuItem.new_section(None, section_menu_model)
+            self.menubutton_model.append_item(section)
 
         section_menu_model = Gio.Menu()
         if not self.chapter.read:
