@@ -391,12 +391,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Library] When filtered, it's now correctly updated when changes occur (additions, new chapters, reading progressions)</li>
-                <li>[Card] Chapters list: Added missing icon</li>
-                <li>[Reader] Fixed chapters ordering while reading</li>
-                <li>[UX] In-app notifications: Update to fit GNOME 45 style</li>
-                <li>[Webview] Some improvements</li>
-                <li>[L10n] Updated Catalan, Polish, Spanish and Turkish translations</li>
+                <li>[Card] Chapters list: Fixed "Reset" action not always available</li>
+                <li>[Reader] Webtoon pager: Fixed scrolling with touchpad under Wayland</li>
+                <li>[Servers] Added LegacyScans [FR]</li>
+                <li>[Servers] Flame Comics: Update (rebranded previously Flame Scans)</li>
+                <li>[Servers] Fr-Scan: Update</li>
+                <li>[Servers] PhenixScans: Update</li>
+                <li>[Servers] Yugen Scans: Update</li>
+                <li>[L10n] Updated Catalan, Chinese (simplified) and French translations</li>
             </ul>
             <p>Happy reading.</p>
         """)
