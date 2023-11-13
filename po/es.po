@@ -9,8 +9,9 @@ msgstr ""
 "Project-Id-Version: Komikku 0.30.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-12 16:38+0200\n"
-"PO-Revision-Date: 2023-10-14 22:11+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"PO-Revision-Date: 2023-11-14 15:06+0000\n"
+"Last-Translator: Óscar Fernández Díaz <oscfdezdz@users.noreply.hosted.weblate"
+".org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/komikku/main/es/>"
 "\n"
 "Language: es\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.1-dev\n"
+"X-Generator: Weblate 5.2-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -158,7 +159,7 @@ msgid ""
 "pinned servers only"
 msgstr ""
 "[Explorador] Búsqueda global: Añadido un filtro que permite restringir la "
-"búsqueda sólo a los servidores fijados"
+"búsqueda solo a los servidores fijados"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:116
 msgid "[Servers] Dragon Ball Multiverse: Update"
@@ -184,7 +185,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:121
 msgid "[L10n] Updated French, Russian, Spanish and Turkish translations"
-msgstr "[L10n] Actualizadas las traducciones al Francés, Ruso, Español y Turco"
+msgstr "[L10n] Actualizadas las traducciones al francés, ruso, español y turco"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:123
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:136
@@ -196,8 +197,8 @@ msgid ""
 "[Library] Added sorting: Alphabetical, Latest Read First (default), Latest "
 "Updated First"
 msgstr ""
-"[Biblioteca] Añadida Ordenación: Alfabética, lo último leído primero (por "
-"defecto), lo último actualizado primero"
+"[Biblioteca] Añadida ordenación: Alfabética, lo último leído primero "
+"(predeterminado), lo último actualizado primero"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:130
 msgid "[Servers] Mangas Origines [FR]: Reenable"
@@ -461,7 +462,7 @@ msgstr "Lo último leído primero"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Updated First"
-msgstr "Primero lo último actualizado"
+msgstr "Lo último actualizado primero"
 
 #: ../data/ui/menu/main.xml:55
 msgid "Keyboard Shortcuts"
@@ -1559,7 +1560,7 @@ msgstr "Cancelado"
 
 #: ../komikku/servers/mangadex/__init__.py:85
 msgid "Publication Demographic"
-msgstr "Publicación Demográfica"
+msgstr "Demográfica de la publicación"
 
 #: ../komikku/servers/mangadex/__init__.py:86
 msgid "Filter by publication demographics"
