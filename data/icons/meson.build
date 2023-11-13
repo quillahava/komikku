@@ -5,7 +5,7 @@ scalable_dir = join_paths(datadir, 'icons/hicolor/scalable/apps')
 profile = get_option('profile')
 if profile == 'beta'
     install_data (
-        '@0@.Devel.svg'.format(base_id),
+        '@0@Devel.svg'.format(base_id),
         install_dir: scalable_dir,
         rename: '@0@.svg'.format(app_id)
     )
