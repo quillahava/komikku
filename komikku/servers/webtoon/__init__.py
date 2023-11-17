@@ -5,7 +5,6 @@
 from gettext import gettext as _
 
 from bs4 import BeautifulSoup
-from functools import wraps
 import requests
 from urllib.parse import urlsplit
 
@@ -26,19 +25,6 @@ LANGUAGES_CODES = dict(
 )
 
 SERVER_NAME = 'WEBTOON'
-
-
-def init_session(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        server = args[0]
-        if not server._session_initialized:
-            server.session_get(server.base_url + '/{0}/'.format(LANGUAGES_CODES[server.lang]))
-            server._session_initialized = True
-
-        return func(*args, **kwargs)
-
-    return wrapper
 
 
 class Webtoon(Server):
@@ -70,7 +56,6 @@ class Webtoon(Server):
     ]
 
     def __init__(self):
-        self._session_initialized = False
         if self.session is None:
             self.session = requests.Session()
 
@@ -78,7 +63,6 @@ class Webtoon(Server):
     def get_manga_initial_data_from_url(cls, url):
         return dict(url=url.replace(cls.base_url, ''), slug=url.split('=')[-1])
 
-    @init_session
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -155,7 +139,6 @@ class Webtoon(Server):
 
         return data
 
-    @init_session
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
         Returns manga chapter data by scraping chapter HTML page content
@@ -212,7 +195,7 @@ class Webtoon(Server):
             if date_element.span:
                 date_element.span.decompose()
 
-            # Small difference here compared to other servers
+            # Small difference here compared to the majority of servers
             # the slug can't be used to forge chapter URL, we must store the full url
             url_split = urlsplit(li_element.a.get('href'))
 
@@ -249,7 +232,6 @@ class Webtoon(Server):
         """
         return self.manga_url.format(url)
 
-    @init_session
     def get_most_populars(self):
         """
         Returns TOP 10 manga
@@ -288,9 +270,7 @@ class Webtoon(Server):
     def is_long_strip(self, _manga_data):
         return True
 
-    @init_session
     def search(self, term, type='all'):
-        # @init_session is really useful here to ensure that needed cookies are there
         results = None
 
         if type == 'all' or type == 'webtoon':
@@ -310,6 +290,10 @@ class Webtoon(Server):
 
     def search_by_type(self, term, type):
         assert type in ('CHALLENGE', 'WEBTOON', ), 'Invalid type'
+
+        # Clear cookies
+        # Seems to help to bypass some region-based restrictions?!?
+        self.session.cookies.clear()
 
         r = self.session_get(
             self.search_url.format(LANGUAGES_CODES[self.lang]),
@@ -335,8 +319,8 @@ class Webtoon(Server):
 
         results = []
         for a_element in a_elements:
-            # Small difference here compared to other servers
-            # the slug can't be used to forge manga URL, we must store the full url (relative)
+            # Small difference here compared to the majority of servers
+            # slug can't be used to forge manga URL, we must store the full url (relative)
             results.append(dict(
                 slug=a_element.get('href').split('=')[-1],
                 url=a_element.get('href').replace(self.base_url, ''),
