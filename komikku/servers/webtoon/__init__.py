@@ -5,6 +5,7 @@
 from gettext import gettext as _
 
 from bs4 import BeautifulSoup
+from functools import wraps
 import requests
 from urllib.parse import urlsplit
 
@@ -25,6 +26,19 @@ LANGUAGES_CODES = dict(
 )
 
 SERVER_NAME = 'WEBTOON'
+
+
+def init_session(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        server = args[0]
+        if not server._session_initialized:
+            server.session_get(server.base_url + '/{0}/'.format(LANGUAGES_CODES[server.lang]))
+            server._session_initialized = True
+
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 class Webtoon(Server):
@@ -56,6 +70,7 @@ class Webtoon(Server):
     ]
 
     def __init__(self):
+        self._session_initialized = False
         if self.session is None:
             self.session = requests.Session()
 
@@ -63,6 +78,7 @@ class Webtoon(Server):
     def get_manga_initial_data_from_url(cls, url):
         return dict(url=url.replace(cls.base_url, ''), slug=url.split('=')[-1])
 
+    @init_session
     def get_manga_data(self, initial_data):
         """
         Returns manga data by scraping manga HTML page content
@@ -106,7 +122,7 @@ class Webtoon(Server):
             data['genres'].append(get_soup_element_inner_text(element))
 
         if 'canvas' in data['url']:
-            # Canvas
+            # Canvas/Challenge
             detail_element = soup.find('div', class_='detail')
 
             data['cover'] = soup.find('div', class_='detail_header').img.get('src')
@@ -114,7 +130,7 @@ class Webtoon(Server):
             for element in info_element.find_all(class_='author'):
                 data['authors'].append(get_soup_element_inner_text(element))
         else:
-            # Original
+            # Original/Webtoon
             detail_element = soup.find('div', class_='detail_body')
 
             data['cover'] = detail_element.get('style').split(' ')[1][4:-1].split('?')[0] + '?type=q90'
@@ -139,6 +155,7 @@ class Webtoon(Server):
 
         return data
 
+    @init_session
     def get_manga_chapter_data(self, manga_slug, manga_name, chapter_slug, chapter_url):
         """
         Returns manga chapter data by scraping chapter HTML page content
@@ -232,6 +249,7 @@ class Webtoon(Server):
         """
         return self.manga_url.format(url)
 
+    @init_session
     def get_most_populars(self):
         """
         Returns TOP 10 manga
@@ -270,7 +288,9 @@ class Webtoon(Server):
     def is_long_strip(self, _manga_data):
         return True
 
+    @init_session
     def search(self, term, type='all'):
+        # @init_session is really useful here to ensure that needed cookies are there
         results = None
 
         if type == 'all' or type == 'webtoon':
