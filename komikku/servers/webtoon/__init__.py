@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+from gettext import gettext as _
+
 from bs4 import BeautifulSoup
 import requests
 from urllib.parse import urlsplit
@@ -36,6 +38,22 @@ class Webtoon(Server):
     manga_url = base_url + '{0}'
     chapters_url = 'https://m.webtoons.com{0}'
     chapter_url = base_url + '{0}'
+
+    filters = [
+        {
+            'key': 'type',
+            'type': 'select',
+            'name': _('Type'),
+            'description': _('Filter by type'),
+            'value_type': 'single',
+            'default': 'all',
+            'options': [
+                {'key': 'all', 'name': _('All')},
+                {'key': 'webtoon', 'name': _('Originals')},
+                {'key': 'challenge', 'name': _('Canvas')},
+            ],
+        },
+    ]
 
     def __init__(self):
         if self.session is None:
@@ -218,10 +236,11 @@ class Webtoon(Server):
         """
         Returns TOP 10 manga
         """
+        headers = {'user-agent': USER_AGENT}
         if self.lang in LANGUAGES_CODES:
-            r = self.session_get(self.most_populars_url.format(LANGUAGES_CODES[self.lang]))
+            r = self.session_get(self.most_populars_url.format(LANGUAGES_CODES[self.lang]), headers=headers)
         else:
-            r = self.session_get(self.most_populars_url)
+            r = self.session_get(self.most_populars_url, headers=headers)
         if r.status_code != 200:
             return None
 
@@ -251,26 +270,35 @@ class Webtoon(Server):
     def is_long_strip(self, _manga_data):
         return True
 
-    def search(self, term):
+    def search(self, term, type='all'):
         results = None
 
-        webtoon_results = self.search_by_type(term, 'WEBTOON')
-        if webtoon_results is not None:
-            results = webtoon_results
+        if type == 'all' or type == 'webtoon':
+            webtoon_results = self.search_by_type(term, 'WEBTOON')
+            if webtoon_results is not None:
+                results = webtoon_results
 
-        challenge_results = self.search_by_type(term, 'CHALLENGE')
-        if challenge_results is not None:
-            if results is None:
-                results = challenge_results
-            else:
-                results += challenge_results
+        if type == 'all' or type == 'challenge':
+            challenge_results = self.search_by_type(term, 'CHALLENGE')
+            if challenge_results is not None:
+                if results is None:
+                    results = challenge_results
+                else:
+                    results += challenge_results
 
         return results
 
     def search_by_type(self, term, type):
         assert type in ('CHALLENGE', 'WEBTOON', ), 'Invalid type'
 
-        r = self.session_get(self.search_url.format(LANGUAGES_CODES[self.lang]), params=dict(keyword=term, type=type))
+        r = self.session_get(
+            self.search_url.format(LANGUAGES_CODES[self.lang]),
+            params=dict(
+                keyword=term,
+                searchType=type,
+            ),
+            headers={'user-agent': USER_AGENT}
+        )
         if r.status_code != 200:
             return None
 
