@@ -424,6 +424,8 @@ class Pager(Adw.Bin, BasePager):
         page = self.carousel.get_nth_page(index)
         self.current_page = page
 
+        # Disallow navigating if page is scrollable
+        self.interactive = not page.is_scrollable if index != 1 else True
         page.set_allow_zooming(True)
 
         if page.status == 'offlimit':
@@ -452,9 +454,6 @@ class Pager(Adw.Bin, BasePager):
         GLib.timeout_add(100, self.save_progress, page)
 
     def on_page_edge_overshotted(self, _scrolledwindow, position):
-        if not self.interactive:
-            return
-
         # When page is scrollable, scroll events are consumed, so we must manage page changes in place of Adw.Carousel
         if self.reader.reading_mode in ('right-to-left', 'left-to-right'):
             # RTL/LTR
