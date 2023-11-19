@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+import datetime
 import logging
 import os
 import rarfile
@@ -53,9 +54,13 @@ class Archive:
         data = dict(
             title=None,
             volume=None,
-            authors=[],
-            genres=[],
+            authors=set(),
+            translators=set(),
+            genres=set(),
             synopsis=None,
+            day=None,
+            month=None,
+            year=None,
         )
         info_xml = self.get_name_buffer('ComicInfo.xml')
         if not info_xml:
@@ -72,12 +77,21 @@ class Archive:
                 data['title'] = info.text
             elif info.tag == 'Volume':
                 data['volume'] = info.text.strip()
-            elif info.tag in ('Colorist', 'CoverArtist', 'Inker', 'Letterer', 'Penciller', 'Writer', ) and info.text not in data['authors']:
-                data['authors'].append(info.text)
+            elif info.tag in ('Colorist', 'CoverArtist', 'Inker', 'Letterer', 'Penciller', 'Writer'):
+                for author in info.text.split(','):
+                    data['authors'].add(author.strip())
+            elif info.tag == 'Translator':
+                for translator in info.text.split(','):
+                    data['translators'].add(translator.strip())
             elif info.tag == 'Genre':
-                data['genres'] = [genre.strip() for genre in info.text.split(',')]
+                for genre in info.text.split(','):
+                    data['genres'].add(genre.strip())
+            elif info.tag == 'Manga' and info.text.strip() == 'Yes':
+                data['genres'].add('Manga')
             elif info.tag == 'Summary':
                 data['synopsis'] = info.text.strip()
+            elif info.tag in ('Day', 'Month', 'Year'):
+                data[info.tag.lower()] = int(info.text.strip())
 
         return data
 
@@ -194,7 +208,7 @@ class Local(Server):
                     with Archive(path) as archive:
                         names = archive.get_namelist()
 
-                        # Used some chapters/volumes info to populate comic info
+                        # Used some chapters/volumes info to populate comic data
                         info = archive.get_info()
                         for genre in info['genres']:
                             if genre not in data['genres']:
@@ -202,20 +216,11 @@ class Local(Server):
                         for author in info['authors']:
                             if author not in data['authors']:
                                 data['authors'].append(author)
-                        if info['synopsis']:
+                        for translator in info['translators']:
+                            if translator not in data['scanlators']:
+                                data['scanlators'].append(translator)
+                        if not data['synopsis'] and info['synopsis']:
                             data['synopsis'] = info['synopsis']
-
-                        title = info['title'] or os.path.splitext(file)[0]
-                        if info['volume']:
-                            title = f'{info["volume"]} - {title}'
-                        chapter = dict(
-                            slug=file,
-                            title=title,
-                            date=None,
-                            downloaded=1,
-                        )
-
-                        data['chapters'].append(chapter)
 
                         # Cover is by default 1st page of 1st chapter/volume (archive)
                         if data['cover'] is None:
@@ -223,6 +228,21 @@ class Local(Server):
                                 path=path,
                                 name=names[0],
                             )
+
+                        title = info['title'] or os.path.splitext(file)[0]
+                        if info['volume']:
+                            title = f'{info["volume"]} - {title}'
+                        date = datetime.date(info['year'], info['month'] or 1, info['day'] or 1) if info['year'] else None
+
+                        chapter = dict(
+                            slug=file,
+                            title=title,
+                            date=date,
+                            scanlators=list(info['translators']),
+                            downloaded=1,
+                        )
+
+                        data['chapters'].append(chapter)
                 except Exception:
                     logger.exception(f'Failed to retrieve chapters of {data["name"]}')
 
