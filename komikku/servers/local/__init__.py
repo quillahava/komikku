@@ -52,8 +52,10 @@ class Archive:
         # Parse ComicInfo.xml if exists
         data = dict(
             title=None,
+            volume=None,
             authors=[],
-            genre=None,
+            genres=[],
+            synopsis=None,
         )
         info_xml = self.get_name_buffer('ComicInfo.xml')
         if not info_xml:
@@ -68,10 +70,14 @@ class Archive:
 
             if info.tag in ('Series', 'Title', ):
                 data['title'] = info.text
+            elif info.tag == 'Volume':
+                data['volume'] = info.text.strip()
             elif info.tag in ('Colorist', 'CoverArtist', 'Inker', 'Letterer', 'Penciller', 'Writer', ) and info.text not in data['authors']:
                 data['authors'].append(info.text)
             elif info.tag == 'Genre':
-                data['genre'] = info.text
+                data['genres'] = [genre.strip() for genre in info.text.split(',')]
+            elif info.tag == 'Summary':
+                data['synopsis'] = info.text.strip()
 
         return data
 
@@ -190,15 +196,21 @@ class Local(Server):
 
                         # Used some chapters/volumes info to populate comic info
                         info = archive.get_info()
-                        if info['genre'] and info['genre'] not in data['genres']:
-                            data['genres'].append(info['genre'])
+                        for genre in info['genres']:
+                            if genre not in data['genres']:
+                                data['genres'].append(genre)
                         for author in info['authors']:
                             if author not in data['authors']:
                                 data['authors'].append(author)
+                        if info['synopsis']:
+                            data['synopsis'] = info['synopsis']
 
+                        title = info['title'] or os.path.splitext(file)[0]
+                        if info['volume']:
+                            title = f'{info["volume"]} - {title}'
                         chapter = dict(
                             slug=file,
-                            title=info['title'] or os.path.splitext(file)[0],
+                            title=title,
                             date=None,
                             downloaded=1,
                         )
