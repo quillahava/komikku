@@ -83,22 +83,16 @@ class BasePager:
                 # Page is no longer present in pager
                 read_pages.remove(page)
 
-        if not read_pages:
-            return GLib.SOURCE_REMOVE
-
         for page in read_pages.copy():
             # Loop as long as a page rendering is not ended
-            if page.status == 'rendering':
+            if page.status in ('rendering', 'allocable'):
                 return GLib.SOURCE_CONTINUE
 
             if page.status == 'offlimit' or page.error is not None:
                 read_pages.remove(page)
 
-        if not read_pages:
-            return GLib.SOURCE_REMOVE
-
         read_chapters = dict()
-        for page in read_pages:
+        for page in read_pages.copy():
             chapter = page.chapter
             if chapter.id not in read_chapters:
                 read_chapters[chapter.id] = dict(
@@ -106,6 +100,7 @@ class BasePager:
                     pages=[],
                 )
             read_chapters[chapter.id]['pages'].append(page.index)
+            read_pages.remove(page)
 
         # Update manga last read time
         self.reader.manga.update(dict(last_read=datetime.datetime.utcnow()))
@@ -144,7 +139,7 @@ class BasePager:
                 for index in pages:
                     self.sync_progress_with_server(chapter, index)
 
-        return GLib.SOURCE_REMOVE
+        return GLib.SOURCE_REMOVE if not read_pages else GLib.SOURCE_CONTINUE
 
     def sync_progress_with_server(self, chapter, index):
         # Sync reading progress with server if function is supported
@@ -271,10 +266,13 @@ class Pager(Adw.Bin, BasePager):
             adj = page.scrolledwindow.get_hadjustment()
 
         pages = list(self.pages)
-        if page in pages and pages.index(page) > pages.index(self.current_page):
-            adj.set_value(0)
-        else:
-            adj.set_value(adj.get_upper() - adj.get_page_size())
+        if page in pages:
+            if self.current_page is None or page == self.current_page:
+                adj.set_value(0 if self.reader.reading_mode == 'left-to-right' else adj.get_upper() - adj.get_page_size())
+            elif pages.index(page) > pages.index(self.current_page):
+                adj.set_value(0)
+            else:
+                adj.set_value(adj.get_upper() - adj.get_page_size())
 
         if self.reader.reading_mode == 'vertical':
             # Center page horizontally
@@ -307,6 +305,7 @@ class Pager(Adw.Bin, BasePager):
             self.init(self.current_page.chapter, index)
 
     def init(self, chapter, page_index=None):
+        self.current_page = None
         self.reader.update_title(chapter)
         self.clear()
 
@@ -327,13 +326,13 @@ class Pager(Adw.Bin, BasePager):
             center_page.connect('rendered', self.on_page_rendered)
             center_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
             center_page.render()
-            self.current_page = center_page
 
             # Left page
             left_page = Page(self, chapter, page_index + direction)
             self.carousel.prepend(left_page)
             left_page.connect('rendered', self.on_page_rendered)
             left_page.scrolledwindow.connect('edge-overshot', self.on_page_edge_overshotted)
+            self.scroll_to_page(center_page, False, False)
 
             # Right page
             right_page = Page(self, chapter, page_index - direction)
@@ -344,11 +343,8 @@ class Pager(Adw.Bin, BasePager):
             left_page.render()
             right_page.render()
 
-            GLib.idle_add(self.scroll_to_page, center_page, False, False)
-
-        # Hack: use a `GLib.timeout_add + GLib.idle_add` to add first pages in carousel
-        # Without it, the `scroll_to` (with velocity=0) doesn't work!
-        # Cf. issue https://gitlab.gnome.org/GNOME/libadwaita/-/issues/457
+        # Hack: use a `GLib.timeout_add` to add first pages in carousel
+        # Without it, `scroll_to` (with animate=False) doesn't work!
         GLib.timeout_add(150, init_pages)
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
@@ -373,14 +369,14 @@ class Pager(Adw.Bin, BasePager):
             hadj = page.scrolledwindow.get_hadjustment()
 
             if keyval in (Gdk.KEY_Left, Gdk.KEY_KP_Left):
-                if hadj.get_value() == 0 and self.interactive:
+                if hadj.get_value() == 0:
                     self.scroll_to_direction('left')
                     return Gdk.EVENT_STOP
 
                 page.scrolledwindow.emit('scroll-child', Gtk.ScrollType.STEP_LEFT, False)
                 return Gdk.EVENT_STOP
 
-            if hadj.get_value() + hadj.get_page_size() == hadj.get_upper() and self.interactive:
+            if hadj.get_value() + hadj.get_page_size() == hadj.get_upper():
                 self.scroll_to_direction('right')
                 return Gdk.EVENT_STOP
 
@@ -424,8 +420,9 @@ class Pager(Adw.Bin, BasePager):
         page = self.carousel.get_nth_page(index)
         self.current_page = page
 
-        # Disallow navigating if page is scrollable
-        self.interactive = not page.is_scrollable if index != 1 else True
+        # Allow navigating if page is not scrollable, disallow otherwise
+        self.interactive = not page.is_scrollable
+        # Restore zooming
         page.set_allow_zooming(True)
 
         if page.status == 'offlimit':
@@ -464,20 +461,23 @@ class Pager(Adw.Bin, BasePager):
             if position in (Gtk.PositionType.TOP, Gtk.PositionType.BOTTOM):
                 self.scroll_to_direction('left' if position == Gtk.PositionType.TOP else 'right')
 
-    def on_page_rendered(self, page, retry):
+    def on_page_rendered(self, page, update, retry):
         if page.status == 'disposed':
             return
 
-        if not retry:
+        if not update:
             GLib.idle_add(self.adjust_page_placement, page)
+
+        if retry:
+            index = self.carousel.get_position()
+            self.on_page_changed(None, index)
             return
 
-        self.on_page_changed(None, self.carousel.get_position())
+        if page == self.current_page:
+            # Allow navigating if page is not scrollable, disallow otherwise
+            self.interactive = not page.is_scrollable
 
     def on_scroll(self, _controller, dx, dy):
-        if not self.interactive:
-            return Gdk.EVENT_PROPAGATE
-
         modifiers = Gtk.accelerator_get_default_mod_mask()
         state = self.controller_scroll.get_current_event_state()
         if state & modifiers == Gdk.ModifierType.CONTROL_MASK:
@@ -529,9 +529,6 @@ class Pager(Adw.Bin, BasePager):
         return Gdk.EVENT_PROPAGATE
 
     def on_single_click(self, x, _y):
-        if not self.interactive:
-            return
-
         if x < self.reader.size.width / 3:
             # 1st third of the page
             self.scroll_to_direction('left')
@@ -575,7 +572,7 @@ class Pager(Adw.Bin, BasePager):
         self.carousel.set_orientation(orientation)
 
     def update(self, page, index):
-        if self.window.page != 'reader' or page.status == 'disposed':
+        if self.window.page != 'reader' or page.status == 'disposed' or page != self.current_page:
             return GLib.SOURCE_REMOVE
 
         if not page.loadable and page.error is None:

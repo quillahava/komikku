@@ -17,7 +17,7 @@ from komikku.utils import log_error_traceback
 class Page(Gtk.Overlay):
     __gtype_name__ = 'Page'
     __gsignals__ = {
-        'rendered': (GObject.SignalFlags.RUN_FIRST, None, (bool, )),
+        'rendered': (GObject.SignalFlags.RUN_FIRST, None, (bool, bool, )),
     }
 
     def __init__(self, pager, chapter, index):
@@ -96,9 +96,6 @@ class Page(Gtk.Overlay):
         else:
             self.unparent()
 
-    def on_allocable(self, _picture):
-        self.status = 'allocable'
-
     def on_button_retry_clicked(self, _button):
         self.chapter = self.init_chapter
         self.index = self.init_index
@@ -109,6 +106,10 @@ class Page(Gtk.Overlay):
 
     def on_clicked(self, _picture, x, y):
         self.reader.pager.on_single_click(x, y)
+
+    def on_rendered(self, _picture, update, retry):
+        self.status = 'rendered'
+        self.emit('rendered', update, retry)
 
     def on_zoom_begin(self, _picture):
         self.reader.pager.interactive = False
@@ -134,9 +135,7 @@ class Page(Gtk.Overlay):
                 # Page has been removed from pager
                 return False
 
-            self.set_image()
-            self.status = 'rendered'
-            self.emit('rendered', retry)
+            self.set_image(retry)
 
             return False
 
@@ -245,7 +244,7 @@ class Page(Gtk.Overlay):
 
         self.picture.set_allow_zooming(allow)
 
-    def set_image(self):
+    def set_image(self, retry=False):
         if self.path is None and self.data is None:
             picture = KImage.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
         else:
@@ -268,19 +267,20 @@ class Page(Gtk.Overlay):
                 self.error = 'corrupt_file'
                 picture = KImage.new_from_resource('/info/febvre/Komikku/images/missing_file.png')
 
-        picture.connect('allocable', self.on_allocable)
         picture.connect('clicked', self.on_clicked)
+        picture.connect('rendered', self.on_rendered, retry)
         picture.connect('zoom-begin', self.on_zoom_begin)
         picture.connect('zoom-end', self.on_zoom_end)
 
         if self.picture:
             self.picture.dispose()
 
-        if self.scrollable:
-            self.scrolledwindow.set_child(picture)
-        else:
-            self.set_child(picture)
         self.picture = picture
+        self.status = 'allocable'
+        if self.scrollable:
+            self.scrolledwindow.set_child(self.picture)
+        else:
+            self.set_child(self.picture)
 
     def show_retry_button(self):
         if self.retry_button is None:

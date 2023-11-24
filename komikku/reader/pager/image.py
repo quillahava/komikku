@@ -44,8 +44,8 @@ def crop_pixbuf(pixbuf, src_x, src_y, width, height):
 class KImage(Gtk.Widget, Gtk.Scrollable):
     __gtype_name__ = 'KImage'
     __gsignals__ = {
-        'allocable': (GObject.SignalFlags.RUN_FIRST, None, ()),
         'clicked': (GObject.SignalFlags.RUN_FIRST, None, (int, int)),
+        'rendered': (GObject.SignalFlags.RUN_FIRST, None, (bool, )),
         'zoom-begin': (GObject.SignalFlags.RUN_FIRST, None, ()),
         'zoom-end': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
@@ -53,7 +53,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
     def __init__(self, path, pixbuf, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False):
         super().__init__()
 
-        self.__allocable = False
+        self.__rendered = False
         self.__can_zoom = can_zoom
         self.__crop = crop
         self.__hadj = None
@@ -491,9 +491,9 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
 
         snapshot.restore()
 
-        if not self.__allocable:
-            self.__allocable = True
-            self.emit('allocable')
+        self.emit('rendered', self.__rendered)
+        if not self.__rendered:
+            self.__rendered = True
 
     def on_gesture_click_released(self, _gesture, n_press, x, y):
         def emit_clicked(x, y):

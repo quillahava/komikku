@@ -163,11 +163,11 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
         page._ic_height = self.get_height()
         page._ic_position = last_page._ic_position + last_page._ic_height if last_page else 0
-        page._ic_status = 'adding'
 
         page.insert_before(self, None)
 
         page.connect('rendered', self.on_page_rendered)
+        page.activity_indicator.start()
         page.render()
 
     def cancel_deceleration(self):
@@ -251,16 +251,13 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         scroll_offset = self.vadjustment.props.value
 
         while page:
-            if page.picture and page.status != 'rendering' and page.loadable and not page.error:
+            page._ic_position = size - scroll_offset
+
+            if page.picture and not page.error:
                 _, page_height, _, _ = page.picture.do_measure(Gtk.Orientation.VERTICAL, width)
-                if page.activity_indicator.spinner.get_spinning():
-                    page.activity_indicator.stop()
             else:
                 page_height = height
-                if not page.activity_indicator.spinner.get_spinning():
-                    page.activity_indicator.start()
 
-            page._ic_position = size - scroll_offset
             page._ic_height = page_height
 
             if not self.current_page_top and page._ic_position <= 0 and page._ic_position + page._ic_height > 0:
@@ -268,13 +265,18 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
             if not self.current_page_bottom and page._ic_position <= height and page._ic_position + page._ic_height > height:
                 self.current_page_bottom = page
 
+            if page.status in ('rendering', 'allocable') and not page.activity_indicator.spinner.get_spinning():
+                visible = page._ic_position >= 0 and page._ic_position < height
+                visible |= page._ic_position + page_height > 0 and page._ic_position + page_height <= height
+                visible |= page._ic_position < 0 and page._ic_position + page_height > height
+                if visible:
+                    page.activity_indicator.start()
+
             position = Graphene.Point()
             position.init(0, page._ic_position)
 
             transform = Gsk.Transform.translate(Gsk.Transform.new(), position)
             page.allocate(width, page_height, baseline, transform)
-
-            page._ic_status = 'allocated'
 
             size += page_height
             page = page.get_next_sibling()
@@ -353,27 +355,26 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
         return Gdk.EVENT_PROPAGATE
 
-    def on_page_rendered(self, page, retry):
-        if retry:
-            # No idea why this reset is necessary
-            self.gesture_drag.reset()
+    def on_page_rendered(self, page, update, retry):
+        if not update:
+            page.activity_indicator.stop()
+
+            if retry:
+                # No idea why this reset is necessary
+                self.gesture_drag.reset()
 
     def on_page_status_changed(self, page, _status, init_height):
         if page.status not in ('allocable', 'offlimit'):
             return
-        if page.error or page.status == 'offlimit':
-            self.is_scroll_adjusting = False
-            return
 
-        # Adjust scroll if page has been prepended and still above scroll position
-        if page._ic_position < 0:
-            _, page_height, _, _ = page.picture.do_measure(Gtk.Orientation.VERTICAL, self.get_width())
-            self.vadjustment.props.value -= init_height - page_height
+        if page.status == 'allocable':
+            # As soon as page height is known
+            # Adjust scroll value if page has been prepended and still above scroll position
+            if page._ic_position < 0:
+                _, page_height, _, _ = page.picture.do_measure(Gtk.Orientation.VERTICAL, self.get_width())
+                self.vadjustment.props.value += page_height - init_height
 
-            # Force an immediate size allocation to avoid flickering
-            self.do_size_allocate(self.get_width(), self.get_height(), -1, True)
-        else:
-            self.is_scroll_adjusting = False
+        self.is_scroll_adjusting = False
 
     def on_scroll(self, _controller, _dx, dy):
         self.is_scroll_decelerating = False
@@ -400,7 +401,6 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
         page._ic_height = self.get_height()
         page._ic_position = -(self.vadjustment.props.value + page._ic_height)
-        page._ic_status = 'adding'
 
         page.insert_before(self, self.get_first_child())
 
@@ -408,6 +408,7 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
         page.connect('rendered', self.on_page_rendered)
         page.connect('notify::status', self.on_page_status_changed, page._ic_height)
+        page.activity_indicator.start()
         page.render()
 
     def print(self):
