@@ -98,8 +98,23 @@
     <url type="donation">https://valos.gitlab.io/Komikku/#sponsor</url>
 
     <releases>
-        <release version="1.28.0" date="2023-11-13">
+        <release version="1.29.0" date="2023-11-25">
             <description>
+                <ul>
+                    <li>[Reader] RTL/LTR/Vertical pager: Improved initial positioning of images when pages are scrollable</li>
+                    <li>[Reader] RTL/LTR/Vertical pager: Fixed bug preventing swipe gesture navigation on some circumstance with touch screen devices</li>
+                    <li>[Reader] Webtoon pager: Improved scrolling smoothness</li>
+                    <li>[Reader] Pagers: Improved reading progress saving</li>
+                    <li>[Servers] Added MangaReader.to [EN/FR/JA/KO/ZH_HANS]</li>
+                    <li>[Servers] Local: Retrieved more info from ComicInfo.xml when available in the archive</li>
+                    <li>[Servers] WEBTOON: Update</li>
+                    <li>[L10n] Updated Spanish translation</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
+        <release version="1.28.0" date="2023-11-13">
+            <description translatable="no">
                 <ul>
                     <li>[Card] Chapters list: Fixed "Reset" action not always available</li>
                     <li>[Reader] Webtoon pager: Fixed scrolling with touchpad under Wayland</li>

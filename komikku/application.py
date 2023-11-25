@@ -391,14 +391,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Card] Chapters list: Fixed "Reset" action not always available</li>
-                <li>[Reader] Webtoon pager: Fixed scrolling with touchpad under Wayland</li>
-                <li>[Servers] Added LegacyScans [FR]</li>
-                <li>[Servers] Flame Comics: Update (rebranded previously Flame Scans)</li>
-                <li>[Servers] Fr-Scan: Update</li>
-                <li>[Servers] PhenixScans: Update</li>
-                <li>[Servers] Yugen Scans: Update</li>
-                <li>[L10n] Updated Catalan, Chinese (simplified) and French translations</li>
+                <li>[Reader] RTL/LTR/Vertical pager: Improved initial positioning of images when pages are scrollable</li>
+                <li>[Reader] RTL/LTR/Vertical pager: Fixed bug preventing swipe gesture navigation on some circumstance with touch screen devices</li>
+                <li>[Reader] Webtoon pager: Improved scrolling smoothness</li>
+                <li>[Reader] Pagers: Improved reading progress saving</li>
+                <li>[Servers] Added MangaReader.to [EN/FR/JA/KO/ZH_HANS]</li>
+                <li>[Servers] Local: Retrieved more info from ComicInfo.xml when available in the archive</li>
+                <li>[Servers] WEBTOON: Update</li>
+                <li>[L10n] Updated Spanish translation</li>
             </ul>
             <p>Happy reading.</p>
         """)
