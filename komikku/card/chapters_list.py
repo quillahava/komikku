@@ -371,6 +371,7 @@ class ChaptersList:
                 item.emit_changed()
 
             self.card.window.activity_indicator.stop()
+            self.card.window.library.refresh_on_manga_state_changed(self.card.manga)
         else:
             self.card.window.activity_indicator.stop()
             self.card.window.show_notification(_('Failed to update chapters reading status'))
