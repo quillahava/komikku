@@ -11,6 +11,7 @@ import requests
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
 from komikku.servers.utils import get_buffer_mime_type
+from komikku.servers.utils import unscramble_image_rc4
 
 
 class Mangareader(Server):
@@ -139,6 +140,7 @@ class Mangareader(Server):
         for element in soup.select('.iv-card'):
             data['pages'].append(dict(
                 slug=None,
+                scrambled='shuffled' in element.get('class'),
                 image=element.get('data-url'),
             ))
 
@@ -161,8 +163,14 @@ class Mangareader(Server):
         if not mime_type.startswith('image'):
             return None
 
+        if page['scrambled']:
+            # js/read.min.js: key is 2nd argument of unShuffle function
+            buffer = unscramble_image_rc4(r.content, 'stay', 200)
+        else:
+            buffer = r.content
+
         return dict(
-            buffer=r.content,
+            buffer=buffer,
             mime_type=mime_type,
             name=page['image'].split('?')[0].split('/')[-1],
         )

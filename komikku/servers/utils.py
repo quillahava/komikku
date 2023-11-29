@@ -12,8 +12,10 @@ from functools import wraps
 import importlib
 import inspect
 from io import BytesIO
+import itertools
 import logging
 import magic
+import math
 from operator import itemgetter
 import os
 from PIL import Image
@@ -338,5 +340,106 @@ def unscramble_image(image):
             row2 = temp.crop((0, y + 100, temp.width, temp.height))
             output_image.paste(row1, (0, y))
             output_image.paste(row2, (0, y + 100))
+
+    return output_image
+
+
+class RC4:
+    def __init__(self, key):
+        self.key = key.encode()
+        self.keystream = self.PRGA(self.KSA())
+
+        # RC4-drop[256]
+        for _i in range(256):
+            next(self.keystream)
+
+    def KSA(self):
+        # Initialize S as a list of integers from 0 to 255
+        S = list(range(256))
+        j = 0
+
+        for i in range(256):
+            j = (j + S[i] + self.key[i % len(self.key)]) % 256
+            # Swap values
+            S[i], S[j] = S[j], S[i]
+
+        return S
+
+    def PRGA(self, S):
+        i = j = 0
+
+        while True:
+            i = (i + 1) % 256
+            j = (j + S[i]) % 256
+            # Swap values
+            S[i], S[j] = S[j], S[i]
+            K = S[(S[i] + S[j]) % 256]
+            yield K
+
+
+class RC4SeedRandom:
+    def __init__(self, key):
+        self.key = key
+        self.pos = 256
+
+    def get_next(self):
+        if self.pos == 256:
+            self.keystream = RC4(self.key).keystream
+            self.pos = 0
+        self.pos += 1
+
+        return next(self.keystream)
+
+
+def unscramble_image_rc4(image, key, piece_size):
+    """Unscramble an image shuffled with RC4 stream cipher
+
+    :param image: PIL.Image.Image or bytes object
+    """
+    if not isinstance(image, Image.Image):
+        image = Image.open(BytesIO(image))
+
+    output_image = Image.new('RGB', image.size)
+
+    pieces = []
+    for j in range(math.ceil(image.height / piece_size)):
+        for i in range(math.ceil(image.width / piece_size)):
+            pieces.append(dict(
+                x=piece_size * i,
+                y=piece_size * j,
+                w=min(piece_size, image.width - piece_size * i),
+                h=min(piece_size, image.height - piece_size * j)
+            ))
+
+    groups = {}
+    for k, v in itertools.groupby(pieces, key=lambda x: x['w']):
+        if k not in groups:
+            groups[k] = []
+        groups[k] += list(v)
+
+    for _w, group in groups.items():
+        size = len(group)
+
+        permutation = []
+        indexes = list(range(size))
+        random = RC4SeedRandom(key)
+        for i in range(size):
+            num = random.get_next()
+            exp = 8
+            while num < (1 << 52):
+                num = num << 8 | random.get_next()
+                exp += 8
+            while num >= (1 << 53):
+                num = num >> 1
+                exp -= 1
+
+            permutation.append(indexes.pop(int(num * (2 ** -exp) * len(indexes))))
+
+        for i, original in enumerate(permutation):
+            src = group[i]
+            dst = group[original]
+
+            src_piece = image.crop((src['x'], src['y'], src['x'] + src['w'], src['y'] + src['h']))
+            output_image.paste(src_piece, (dst['x'], dst['y']))
 
     return output_image

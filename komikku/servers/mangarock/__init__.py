@@ -120,7 +120,6 @@ class Mangarock(Server):
 
         data = dict(
             pages=[],
-            scrambled=0,
         )
 
         if res['code'] == 0:

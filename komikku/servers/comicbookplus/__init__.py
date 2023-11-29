@@ -119,7 +119,7 @@ class Comicbookplus(Server):
         """
         Returns comic volume data by scraping volume HTML page content
 
-        Currently, only pages and scrambled are expected.
+        Currently, only pages are expected.
         """
         r = self.session_get(self.chapter_url.format(chapter_slug))
         if r.status_code != 200:

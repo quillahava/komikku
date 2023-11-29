@@ -22,7 +22,6 @@ from komikku.servers.utils import convert_image
 from komikku.servers.utils import get_server_class_name_by_id
 from komikku.servers.utils import get_server_dir_name_by_id
 from komikku.servers.utils import get_server_module_name_by_id
-from komikku.servers.utils import unscramble_image
 from komikku.utils import get_cached_data_dir
 from komikku.utils import get_data_dir
 from komikku.utils import is_flatpak
@@ -199,7 +198,6 @@ def init_db():
         title text NOT NULL,
         scanlators json,
         pages json,
-        scrambled integer,
         date date,
         rank integer NOT NULL,
         downloaded integer NOT NULL,
@@ -1041,13 +1039,10 @@ class Chapter:
 
         image = data['buffer']
 
-        if data['mime_type'] == 'image/webp' or self.scrambled:
+        if data['mime_type'] == 'image/webp':
             if data['mime_type'] == 'image/webp':
                 data['name'] = os.path.splitext(data['name'])[0] + '.jpg'
                 image = convert_image(image, 'jpeg')
-
-            if self.scrambled:
-                image = unscramble_image(image)
 
         page_path = os.path.join(self.path, data['name'])
 
