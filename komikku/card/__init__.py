@@ -269,6 +269,11 @@ class CardPage(Adw.NavigationPage):
 
         self.open_in_browser_action.set_enabled(self.manga.server_id != 'local')
 
+        # Reset scrolling in all pages
+        for page in self.stack.get_pages():
+            scrolledwindow = page.get_child() if page.props.name != 'chapters' else page.get_child().get_first_child()
+            scrolledwindow.get_vadjustment().props.value = 0
+
         self.window.navigationview.push(self)
 
     def refresh(self, chapters):
