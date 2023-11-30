@@ -591,7 +591,7 @@ msgstr "Contenu NSFW (18+)"
 
 #: ../data/ui/preferences.blp:196
 msgid "Whether to enable servers with NSFW content"
-msgstr "Autoriser ou non les serveurs avec du contenu NSFW"
+msgstr "Activer ou non les serveurs avec du contenu NSFW"
 
 #: ../data/ui/preferences.blp:200
 msgid "NSFW Only Content (18+)"
@@ -1747,39 +1747,48 @@ msgstr "Pas de connexion Internet, délai dépassé ou serveur en panne"
 msgid "Please complete CAPTCHA"
 msgstr "Veuillez compléter le CAPTCHA"
 
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Basculer le mode plein écran"
+#: ../data/ui/reader.blp:31
+msgid "Toggle fullscreen mode"
+msgstr "Basculer le mode plein écran"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Open preferences"
-#~ msgstr "Ouvrir préférences"
+#: ../data/ui/shortcuts_overview.blp:14
+msgctxt "Shortcut window description"
+msgid "Open preferences"
+msgstr "Ouvrir préférences"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Basculer en mode plein écran"
+#: ../data/ui/shortcuts_overview.blp:19
+msgctxt "Shortcut window description"
+msgid "Toggle fullscreen mode"
+msgstr "Basculer en mode plein écran"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Open shortcuts window"
-#~ msgstr "Ouvrir la fenêtre des raccourcis"
+#: ../data/ui/shortcuts_overview.blp:24
+msgctxt "Shortcut window description"
+msgid "Open shortcuts window"
+msgstr "Ouvrir la fenêtre des raccourcis"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Add manga"
-#~ msgstr "Ajouter un manga"
+#: ../data/ui/shortcuts_overview.blp:33
+msgctxt "Shortcut window description"
+msgid "Add manga"
+msgstr "Ajouter un manga"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Select all"
-#~ msgstr "Tout sélectionner"
+#: ../data/ui/shortcuts_overview.blp:38
+msgctxt "Shortcut window description"
+msgid "Select all"
+msgstr "Tout sélectionner"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Select all chapters"
-#~ msgstr "Sélectionner tous les chapitres"
+#: ../data/ui/shortcuts_overview.blp:52
+msgctxt "Shortcut window description"
+msgid "Select all chapters"
+msgstr "Sélectionner tous les chapitres"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Select all downloads"
-#~ msgstr "Sélectionner tous les téléchargements"
+#: ../data/ui/shortcuts_overview.blp:70
+msgctxt "Shortcut window description"
+msgid "Select all downloads"
+msgstr "Sélectionner tous les téléchargements"
 
-#~ msgid "Cancelled"
-#~ msgstr "Annulé"
+#: ../komikku/servers/mangadex/__init__.py:79
+msgid "Cancelled"
+msgstr "Annulé"
 
 #~ msgid "[Library] Kept badges in phase with reading status"
 #~ msgstr ""
