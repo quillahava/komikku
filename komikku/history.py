@@ -38,7 +38,6 @@ class HistoryPage(Adw.NavigationPage):
         Adw.NavigationPage.__init__(self)
 
         self.window = window
-        self.builder = window.builder
 
         self.connect('hidden', self.on_hidden)
 

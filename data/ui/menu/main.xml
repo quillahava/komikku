@@ -56,6 +56,10 @@
                 <attribute name="action">app.shortcuts</attribute>
             </item>
             <item>
+                <attribute name="label" translatable="yes">Donate</attribute>
+                <attribute name="action">app.support</attribute>
+            </item>
+            <item>
                 <attribute name="label" translatable="yes">About Komikku</attribute>
                 <attribute name="action">app.about</attribute>
             </item>

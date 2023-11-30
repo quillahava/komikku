@@ -36,6 +36,7 @@ from komikku.models.database import clear_cached_data
 from komikku.preferences import PreferencesPage
 from komikku.reader import ReaderPage
 from komikku.servers.utils import get_allowed_servers_list
+from komikku.support import SupportPage
 from komikku.updater import Updater
 from komikku.webview import WebviewPage
 
@@ -253,6 +254,10 @@ class ApplicationWindow(Adw.ApplicationWindow):
         shortcuts_action.connect('activate', self.on_shortcuts_menu_clicked)
         self.application.add_action(shortcuts_action)
 
+        support_action = Gio.SimpleAction.new('support', None)
+        support_action.connect('activate', self.open_support)
+        self.application.add_action(support_action)
+
         quit_action = Gio.SimpleAction.new('quit', None)
         quit_action.connect('activate', self.quit)
         self.application.add_action(quit_action)
@@ -299,6 +304,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         self.explorer = Explorer(self)
         self.history = HistoryPage(self)
         self.preferences = PreferencesPage(self)
+        self.support = SupportPage(self)
         self.webview = WebviewPage(self)
 
         if self.application.profile in ('beta', 'development'):
@@ -404,9 +410,6 @@ class ApplicationWindow(Adw.ApplicationWindow):
         """)
 
         window.add_link(_('Join Chat'), 'https://matrix.to/#/#komikku-gnome:matrix.org')
-        window.add_link(_('Sponsor via Ko-fi'), 'https://ko-fi.com/X8X06EM3L')
-        window.add_link(_('Sponsor via Liberapay'), 'https://liberapay.com/valos/donate')
-        window.add_link(_('Sponsor via Paypal'), 'https://www.paypal.com/donate?business=GSRGEQ78V97PU&no_recurring=0&item_name=You+can+help+me+to+keep+developing+apps+through+donations.&currency_code=EUR')
 
         window.set_transient_for(self)
         window.present()
@@ -471,6 +474,9 @@ class ApplicationWindow(Adw.ApplicationWindow):
         shortcuts_overview.set_modal(True)
         shortcuts_overview.set_transient_for(self)
         shortcuts_overview.present()
+
+    def open_support(self, _action, _param):
+        self.support.show()
 
     def quit(self, *args, force=False):
         def do_quit():

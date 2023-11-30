@@ -1,0 +1,133 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $SupportPage : Adw.NavigationPage {
+  tag: "support";
+  title: _("Support Development");
+  child: Adw.ToolbarView toolbarview {
+    [top]
+    Adw.HeaderBar {
+      centering-policy: strict;
+      title-widget: Adw.WindowTitle {
+        title: _("Support Development");
+      };
+    }
+
+    content: ScrolledWindow {
+      vexpand: true;
+      child: Viewport {
+        scroll-to-focus: true;
+
+        Adw.Clamp {
+          maximum-size: 768;
+          margin-top: 12;
+          margin-end: 12;
+          margin-bottom: 24;
+          margin-start: 12;
+
+          Box {
+            orientation: vertical;
+            spacing: 20;
+
+            Box title_box {
+              orientation: horizontal;
+              spacing: 12;
+              halign: center;
+
+              Image {
+                icon-name: "emote-love-symbolic";
+                icon-size: large;
+                styles [
+                  "accent"
+                ]
+              }
+
+              Label {
+                label: _('How can you support?');
+                wrap: true;
+                styles [
+                  'title-1'
+                ]
+              }
+            }
+            Label {
+              label: _('Developing and maintaining Komikku is a challenging task that takes up most of my free time.');
+              wrap: true;
+              halign: fill;
+              valign: fill;
+              xalign: 0;
+            }
+            Label {
+              label: _('Komikku will always be free and open-source and will never contain ads.');
+              wrap: true;
+              halign: fill;
+              valign: fill;
+              xalign: 0;
+            }
+            Label {
+              label: _('So if you like it, and you are able, please consider a one-time or recurring donation to support me, it will be hugely appreciated.');
+              wrap: true;
+              halign: fill;
+              valign: fill;
+              xalign: 0;
+            }
+
+            ListBox {
+              selection-mode: none;
+              margin-top: 6;
+              styles ["boxed-list"]
+
+              Adw.ActionRow {
+                title: _("Liberapay");
+                subtitle: _("Weekly, monthly or yearly donation");
+                activatable-widget: liberapay_button;
+
+                [suffix]
+                Button liberapay_button {
+                  icon-name: "adw-external-link-symbolic";
+                  tooltip-text: _("Donate and Support");
+                  valign: center;
+                  styles [
+                    'flat'
+                  ]
+                }
+              }
+
+              Adw.ActionRow {
+                title: _("Paypal");
+                subtitle: _("One-time donation");
+                activatable-widget: paypal_button;
+
+                [suffix]
+                Button paypal_button {
+                  icon-name: "adw-external-link-symbolic";
+                  tooltip-text: _("Donate and Support");
+                  valign: center;
+                  styles [
+                    'flat'
+                  ]
+                }
+              }
+
+              Adw.ActionRow {
+                title: _("Ko-fi");
+                subtitle: _("One-time or monthly donation");
+                activatable-widget: kofi_button;
+
+                [suffix]
+                Button kofi_button {
+                  icon-name: "adw-external-link-symbolic";
+                  tooltip-text: _("Donate and Support");
+                  valign: center;
+                  styles [
+                    'flat'
+                  ]
+                }
+              }
+            }
+          }
+        }
+      };
+    };
+  };
+}
