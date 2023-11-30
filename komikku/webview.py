@@ -58,7 +58,7 @@ class WebviewPage(Adw.NavigationPage):
         cpu_arch = platform.machine()
         session_type = GLib.getenv('XDG_SESSION_TYPE').capitalize()
         custom_part = f'{session_type}; Linux {cpu_arch}'
-        self.user_agent = f'Mozilla/5.0 ({custom_part}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15'
+        self.user_agent = f'Mozilla/5.0 ({custom_part}) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15'
 
         # WebKit WebView
         self.settings = WebKit.Settings.new()
