@@ -76,7 +76,7 @@ class Mangadex(Server):
                 {'key': 'ongoing', 'name': _('Ongoing'), 'default': False},
                 {'key': 'completed', 'name': _('Completed'), 'default': False},
                 {'key': 'hiatus', 'name': _('Paused'), 'default': False},
-                {'key': 'cancelled', 'name': _('Cancelled'), 'default': False},
+                {'key': 'cancelled', 'name': _('Canceled'), 'default': False},
             ]
         },
         {

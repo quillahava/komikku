@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 15:10+0100\n"
+"POT-Creation-Date: 2023-11-30 16:25+0100\n"
 "PO-Revision-Date: 2023-04-10 21:23+0000\n"
 "Last-Translator: CakesTwix <cakestwix1@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
@@ -798,19 +798,18 @@ msgstr "Додаток"
 
 #: ../data/ui/shortcuts_overview.blp:14
 msgctxt "Shortcut window description"
-msgid "Open preferences"
-msgstr "Відкрити налаштування"
+msgid "Open Preferences"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:19
 msgctxt "Shortcut window description"
-msgid "Toggle fullscreen mode"
-msgstr "Перемкнути повноекранний режим"
+msgid "Toggle Fullscreen Mode"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:24
-#, fuzzy
 msgctxt "Shortcut window description"
-msgid "Open shortcuts window"
-msgstr "Відкрити вікно ярликів"
+msgid "Open Keyboard Shortcuts"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:30
 msgctxt "Shortcut window description"
@@ -819,13 +818,13 @@ msgstr "Новини"
 
 #: ../data/ui/shortcuts_overview.blp:33
 msgctxt "Shortcut window description"
-msgid "Add manga"
-msgstr "Додати мангу"
+msgid "Add Manga"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:38
 msgctxt "Shortcut window description"
-msgid "Select all"
-msgstr "Вибрати все"
+msgid "Select All"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:43
 msgctxt "Shortcut window description"
@@ -840,8 +839,8 @@ msgstr "Картка манги"
 
 #: ../data/ui/shortcuts_overview.blp:52
 msgctxt "Shortcut window description"
-msgid "Select all chapters"
-msgstr "Вибрати всі глави"
+msgid "Select All Chapters"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:58
 msgctxt "Shortcut window description"
@@ -860,8 +859,8 @@ msgstr "Менеджер завантажень"
 
 #: ../data/ui/shortcuts_overview.blp:70
 msgctxt "Shortcut window description"
-msgid "Select all downloads"
-msgstr "Вибрати всі завантаження"
+msgid "Select All Downloads"
+msgstr ""
 
 #: ../data/ui/support.blp:6 ../data/ui/support.blp:12
 msgid "Support Development"
@@ -1535,8 +1534,9 @@ msgid "Paused"
 msgstr ""
 
 #: ../komikku/servers/mangadex/__init__.py:79
-msgid "Cancelled"
-msgstr ""
+#: ../komikku/servers/mangaworld/__init__.py:53
+msgid "Canceled"
+msgstr "Скасовано"
 
 #: ../komikku/servers/mangadex/__init__.py:85
 msgid "Publication Demographic"
@@ -1649,10 +1649,6 @@ msgstr "Без"
 msgid "16+"
 msgstr "16+"
 
-#: ../komikku/servers/mangaworld/__init__.py:53
-msgid "Canceled"
-msgstr "Скасовано"
-
 #: ../komikku/servers/multi/madara.py:371
 #: ../komikku/servers/readmanhwa/__init__.py:44
 msgid "NSFW Content"
@@ -1738,6 +1734,35 @@ msgstr "Немає з'єднання з Інтернетом, таймаут а�
 #: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr "Будь ласка, заповніть CAPTCHA"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Open preferences"
+#~ msgstr "Відкрити налаштування"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Перемкнути повноекранний режим"
+
+#, fuzzy
+#~ msgctxt "Shortcut window description"
+#~ msgid "Open shortcuts window"
+#~ msgstr "Відкрити вікно ярликів"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Add manga"
+#~ msgstr "Додати мангу"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Select all"
+#~ msgstr "Вибрати все"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Select all chapters"
+#~ msgstr "Вибрати всі глави"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Select all downloads"
+#~ msgstr "Вибрати всі завантаження"
 
 #~ msgid "Sponsor via Ko-fi"
 #~ msgstr "Підтримайте через Ko-fi"

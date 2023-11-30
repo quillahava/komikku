@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 0.25.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 15:10+0100\n"
+"POT-Creation-Date: 2023-11-30 16:25+0100\n"
 "PO-Revision-Date: 2023-09-09 03:07+0000\n"
 "Last-Translator: dedocc <andrewwilliams@outlook.it>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/komikku/main/it/"
@@ -774,17 +774,17 @@ msgstr "Applicazione"
 
 #: ../data/ui/shortcuts_overview.blp:14
 msgctxt "Shortcut window description"
-msgid "Open preferences"
-msgstr "Apri preferenze"
+msgid "Open Preferences"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:19
 msgctxt "Shortcut window description"
-msgid "Toggle fullscreen mode"
-msgstr "Abilita/disabilita lo schermo intero"
+msgid "Toggle Fullscreen Mode"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:24
 msgctxt "Shortcut window description"
-msgid "Open shortcuts window"
+msgid "Open Keyboard Shortcuts"
 msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:30
@@ -794,13 +794,13 @@ msgstr "Libreria"
 
 #: ../data/ui/shortcuts_overview.blp:33
 msgctxt "Shortcut window description"
-msgid "Add manga"
-msgstr "Aggiungi manga"
+msgid "Add Manga"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:38
 msgctxt "Shortcut window description"
-msgid "Select all"
-msgstr "Seleziona tutti"
+msgid "Select All"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:43
 msgctxt "Shortcut window description"
@@ -814,8 +814,8 @@ msgstr "Card manga"
 
 #: ../data/ui/shortcuts_overview.blp:52
 msgctxt "Shortcut window description"
-msgid "Select all chapters"
-msgstr "Seleziona tutti i capitoli"
+msgid "Select All Chapters"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:58
 msgctxt "Shortcut window description"
@@ -834,8 +834,8 @@ msgstr "Gestore dei download"
 
 #: ../data/ui/shortcuts_overview.blp:70
 msgctxt "Shortcut window description"
-msgid "Select all downloads"
-msgstr "Seleziona tutti i download"
+msgid "Select All Downloads"
+msgstr ""
 
 #: ../data/ui/support.blp:6 ../data/ui/support.blp:12
 msgid "Support Development"
@@ -1487,7 +1487,8 @@ msgid "Paused"
 msgstr ""
 
 #: ../komikku/servers/mangadex/__init__.py:79
-msgid "Cancelled"
+#: ../komikku/servers/mangaworld/__init__.py:53
+msgid "Canceled"
 msgstr ""
 
 #: ../komikku/servers/mangadex/__init__.py:85
@@ -1600,10 +1601,6 @@ msgstr ""
 msgid "16+"
 msgstr ""
 
-#: ../komikku/servers/mangaworld/__init__.py:53
-msgid "Canceled"
-msgstr ""
-
 #: ../komikku/servers/multi/madara.py:371
 #: ../komikku/servers/readmanhwa/__init__.py:44
 msgid "NSFW Content"
@@ -1686,6 +1683,30 @@ msgstr "Nessuna connessione a internet, timeout scaduto o server offline"
 #: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr ""
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Open preferences"
+#~ msgstr "Apri preferenze"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Abilita/disabilita lo schermo intero"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Add manga"
+#~ msgstr "Aggiungi manga"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Select all"
+#~ msgstr "Seleziona tutti"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Select all chapters"
+#~ msgstr "Seleziona tutti i capitoli"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Select all downloads"
+#~ msgstr "Seleziona tutti i download"
 
 #~ msgid "[Servers] Self Manga: Update"
 #~ msgstr "[Server] Self Manga: Aggionato"

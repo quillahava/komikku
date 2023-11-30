@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 15:10+0100\n"
+"POT-Creation-Date: 2023-11-30 16:25+0100\n"
 "PO-Revision-Date: 2023-08-14 16:45+0000\n"
 "Last-Translator: Rayen Ghanmi <ghanmirayen12@gmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/komikku/main/ar/"
@@ -783,18 +783,18 @@ msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:14
 msgctxt "Shortcut window description"
-msgid "Open preferences"
-msgstr "افتح التفضيلات"
+msgid "Open Preferences"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:19
 msgctxt "Shortcut window description"
-msgid "Toggle fullscreen mode"
-msgstr "بدّل وضع ملء الشاشة"
+msgid "Toggle Fullscreen Mode"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:24
 msgctxt "Shortcut window description"
-msgid "Open shortcuts window"
-msgstr "افتح نافذة الاختصارات"
+msgid "Open Keyboard Shortcuts"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:30
 msgctxt "Shortcut window description"
@@ -803,13 +803,13 @@ msgstr "المكتبة"
 
 #: ../data/ui/shortcuts_overview.blp:33
 msgctxt "Shortcut window description"
-msgid "Add manga"
-msgstr "أضف منغا"
+msgid "Add Manga"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:38
 msgctxt "Shortcut window description"
-msgid "Select all"
-msgstr "اختر الكل"
+msgid "Select All"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:43
 msgctxt "Shortcut window description"
@@ -823,8 +823,8 @@ msgstr "بطاقة المنغا"
 
 #: ../data/ui/shortcuts_overview.blp:52
 msgctxt "Shortcut window description"
-msgid "Select all chapters"
-msgstr "اختر كل الفصول"
+msgid "Select All Chapters"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:58
 msgctxt "Shortcut window description"
@@ -843,8 +843,8 @@ msgstr "مدير التنزيلات"
 
 #: ../data/ui/shortcuts_overview.blp:70
 msgctxt "Shortcut window description"
-msgid "Select all downloads"
-msgstr "اختر كل التنزيلات"
+msgid "Select All Downloads"
+msgstr ""
 
 #: ../data/ui/support.blp:6 ../data/ui/support.blp:12
 msgid "Support Development"
@@ -1495,8 +1495,9 @@ msgid "Paused"
 msgstr ""
 
 #: ../komikku/servers/mangadex/__init__.py:79
-msgid "Cancelled"
-msgstr ""
+#: ../komikku/servers/mangaworld/__init__.py:53
+msgid "Canceled"
+msgstr "ملغاة"
 
 #: ../komikku/servers/mangadex/__init__.py:85
 msgid "Publication Demographic"
@@ -1608,10 +1609,6 @@ msgstr "بدون"
 msgid "16+"
 msgstr "16+"
 
-#: ../komikku/servers/mangaworld/__init__.py:53
-msgid "Canceled"
-msgstr "ملغاة"
-
 #: ../komikku/servers/multi/madara.py:371
 #: ../komikku/servers/readmanhwa/__init__.py:44
 msgid "NSFW Content"
@@ -1706,6 +1703,34 @@ msgstr "لا اتصال بالشبكة أو مهلة الاتصال انتهت �
 #: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr ""
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Open preferences"
+#~ msgstr "افتح التفضيلات"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "بدّل وضع ملء الشاشة"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Open shortcuts window"
+#~ msgstr "افتح نافذة الاختصارات"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Add manga"
+#~ msgstr "أضف منغا"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Select all"
+#~ msgstr "اختر الكل"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Select all chapters"
+#~ msgstr "اختر كل الفصول"
+
+#~ msgctxt "Shortcut window description"
+#~ msgid "Select all downloads"
+#~ msgstr "اختر كل التنزيلات"
 
 #~ msgid "Sponsor via Ko-fi"
 #~ msgstr "ادعم عبر كو-في"

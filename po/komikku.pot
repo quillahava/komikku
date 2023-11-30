@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.29.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 15:10+0100\n"
+"POT-Creation-Date: 2023-11-30 16:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -758,17 +758,17 @@ msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:14
 msgctxt "Shortcut window description"
-msgid "Open preferences"
+msgid "Open Preferences"
 msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:19
 msgctxt "Shortcut window description"
-msgid "Toggle fullscreen mode"
+msgid "Toggle Fullscreen Mode"
 msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:24
 msgctxt "Shortcut window description"
-msgid "Open shortcuts window"
+msgid "Open Keyboard Shortcuts"
 msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:30
@@ -778,12 +778,12 @@ msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:33
 msgctxt "Shortcut window description"
-msgid "Add manga"
+msgid "Add Manga"
 msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:38
 msgctxt "Shortcut window description"
-msgid "Select all"
+msgid "Select All"
 msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:43
@@ -798,7 +798,7 @@ msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:52
 msgctxt "Shortcut window description"
-msgid "Select all chapters"
+msgid "Select All Chapters"
 msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:58
@@ -818,7 +818,7 @@ msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:70
 msgctxt "Shortcut window description"
-msgid "Select all downloads"
+msgid "Select All Downloads"
 msgstr ""
 
 #: ../data/ui/support.blp:6 ../data/ui/support.blp:12
@@ -1460,7 +1460,8 @@ msgid "Paused"
 msgstr ""
 
 #: ../komikku/servers/mangadex/__init__.py:79
-msgid "Cancelled"
+#: ../komikku/servers/mangaworld/__init__.py:53
+msgid "Canceled"
 msgstr ""
 
 #: ../komikku/servers/mangadex/__init__.py:85
@@ -1571,10 +1572,6 @@ msgstr ""
 
 #: ../komikku/servers/mangatube/__init__.py:56
 msgid "16+"
-msgstr ""
-
-#: ../komikku/servers/mangaworld/__init__.py:53
-msgid "Canceled"
 msgstr ""
 
 #: ../komikku/servers/multi/madara.py:371
