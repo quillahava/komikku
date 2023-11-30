@@ -5,6 +5,7 @@
 from gettext import gettext as _
 
 from gi.repository import Adw
+from gi.repository import GLib
 from gi.repository import Gtk
 
 from komikku.models import Settings
@@ -183,7 +184,7 @@ class PreferencesPage(Adw.NavigationPage):
                 badges.remove(switch_button._value)
         self.settings.library_badges = badges
 
-        self.window.library.populate()
+        GLib.idle_add(self.window.library.populate)
 
     def on_library_display_mode_changed(self, row, _gparam):
         index = row.get_selected()
@@ -193,7 +194,7 @@ class PreferencesPage(Adw.NavigationPage):
         elif index == 1:
             self.settings.library_display_mode = 'grid-compact'
 
-        self.window.library.populate()
+        GLib.idle_add(self.window.library.populate)
 
     def on_library_servers_logo_changed(self, switch_button, _gparam):
         if switch_button.get_active():
@@ -201,7 +202,7 @@ class PreferencesPage(Adw.NavigationPage):
         else:
             self.settings.library_servers_logo = False
 
-        self.window.library.populate()
+        GLib.idle_add(self.window.library.populate)
 
     def on_long_strip_detection_changed(self, switch_button, _gparam):
         self.settings.long_strip_detection = switch_button.get_active()

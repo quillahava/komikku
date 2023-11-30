@@ -101,7 +101,7 @@ class CategoriesList:
 
             # Leave library section mode and refresh library
             self.library.leave_selection_mode()
-            self.library.populate()
+            GLib.idle_add(self.library.populate)
 
         self.library.window.activity_indicator.start()
 

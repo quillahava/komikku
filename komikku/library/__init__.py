@@ -55,6 +55,7 @@ class LibraryPage(Adw.NavigationPage):
     start_page_discover_button = Gtk.Template.Child('start_page_discover_button')
 
     page = None
+    populating = False
     selected_filters = []
     selection_mode = False
     selection_mode_range = False
@@ -583,6 +584,11 @@ class LibraryPage(Adw.NavigationPage):
         self.window.history.show()
 
     def populate(self):
+        if self.populating:
+            return True
+
+        self.populating = True
+
         self.show_page('start_page')
 
         db_conn = create_db_connection()
@@ -630,6 +636,8 @@ class LibraryPage(Adw.NavigationPage):
 
             for thumbnail in thumbnails:
                 self.flowbox.append(thumbnail)
+
+            self.populating = False
 
         # Populate flowbox
         self.compute_thumbnails_cover_size()

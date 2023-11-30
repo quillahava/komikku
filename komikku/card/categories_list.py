@@ -3,6 +3,7 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from gi.repository import Adw
+from gi.repository import GLib
 from gi.repository import Gtk
 
 from komikku.models import create_db_connection
@@ -62,4 +63,4 @@ class CategoriesList:
 
         # Update Library if the current selected category is the activated category or the 'Uncategorized' category
         if Settings.get_default().selected_category in (-1, category_id):
-            self.window.library.populate()
+            GLib.idle_add(self.window.library.populate)
