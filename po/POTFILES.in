@@ -22,6 +22,7 @@ data/ui/preferences_servers_languages.blp
 data/ui/preferences_servers_settings.blp
 data/ui/reader.blp
 data/ui/shortcuts_overview.blp
+data/ui/support.blp
 data/ui/webview.blp
 komikku/application.py
 komikku/card/chapters_list.py
@@ -50,6 +51,7 @@ komikku/servers/mangaworld/__init__.py
 komikku/servers/multi/madara.py
 komikku/servers/multi/manga_stream.py
 komikku/servers/readmanhwa/__init__.py
+komikku/servers/webtoon/__init__.py
 komikku/updater.py
 komikku/utils.py
 komikku/webview.py

@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.23.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-12 16:38+0200\n"
+"POT-Creation-Date: 2023-11-30 15:10+0100\n"
 "PO-Revision-Date: 2023-10-21 15:04+0000\n"
 "Last-Translator: Lili Kurek <github@gramywpsl.pl>\n"
-"Language-Team: Polish <https://hosted.weblate.org/projects/komikku/main/pl/>"
-"\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/komikku/main/pl/"
+">\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -79,141 +79,91 @@ msgstr "Historia czytania"
 msgid "Light and dark themes"
 msgstr "Motywy jasny i ciemny"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:53
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:48
 msgid "The Library page"
 msgstr "Strona Biblioteka"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:57
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:52
 msgid "The Library page with the category sidebar open"
 msgstr "Strona Biblioteka z otwartym paskiem bocznym kategorii"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:61
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:56
 msgid "The Preferences page (Library settings)"
 msgstr "Strona Preferencje (ustawienia biblioteki)"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:65
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:60
 msgid "The Explorer page in mobile format (Servers list)"
 msgstr "Strona Przeglądarka w formacie mobilnym (lista serwerów)"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:69
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:64
 msgid "The Details page"
 msgstr "Strona Szczegóły"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:73
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:68
 msgid "The Details page (chapters list)"
 msgstr "Strona Szczegóły (lista rozdziałów)"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:77
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:72
 msgid "The Reader page"
 msgstr "Strona Czytnik"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:81
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:76
 msgid "The Reader page in mobile format"
 msgstr "Strona Czytnik w formacie mobilnym"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:85
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:80
 msgid "The Category editor page in mobile format"
 msgstr "Strona Edytor kategorii w formacie mobilnym"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:89
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:84
 msgid "The Reading history page in mobile format"
 msgstr "Strona Historia czytania w formacie mobilnym"
 
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:94
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:89
 msgid "@authorfullname@"
 msgstr "@authorfullname@"
 
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:104
+msgid ""
+"[Reader] RTL/LTR/Vertical pager: Improved initial positioning of images when "
+"pages are scrollable"
+msgstr ""
+
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:105
+msgid ""
+"[Reader] RTL/LTR/Vertical pager: Fixed bug preventing swipe gesture "
+"navigation on some circumstance with touch screen devices"
+msgstr ""
+
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:106
+msgid "[Reader] Webtoon pager: Improved scrolling smoothness"
+msgstr ""
+
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:107
+msgid "[Reader] Pagers: Improved reading progress saving"
+msgstr ""
+
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:108
+msgid "[Servers] Added MangaReader.to [EN/FR/JA/KO/ZH_HANS]"
+msgstr ""
+
+#: ../data/info.febvre.Komikku.appdata.xml.in.in:109
+msgid ""
+"[Servers] Local: Retrieved more info from ComicInfo.xml when available in "
+"the archive"
+msgstr ""
+
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
-msgid "[Library] Kept badges in phase with reading status"
-msgstr "[Biblioteka] Plakietki są synchronizowane ze stanem czytania"
+msgid "[Servers] WEBTOON: Update"
+msgstr "[Serwery] WEBTOON: aktualizacja"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
-msgid ""
-"[Card] Chapters list: Added `Clear` action (deletes downloaded pages without "
-"affecting chapter(s) state)"
+msgid "[L10n] Updated Spanish translation"
 msgstr ""
-"[Karta] Lista rozdziałów: dodano akcję `Wyczyść`(usuwa pobrane strony bez "
-"wpływu na stan rozdziałów)"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:112
-msgid "[Card] Added backdrop: Background recoloring to match cover"
-msgstr "[Karta] Dodano tło, które jest kolorowane na podstawie okładki"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
-msgid "[Downloader] Improved speed"
-msgstr "[Downloader] Poprawiona prędkość"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:114
-msgid "[Explorer] Global search: Added a progressbar"
-msgstr "[Przeglądarka] Wyszukiwanie globalne: dodano pasek postępu"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:115
-msgid ""
-"[Explorer] Global search: Added a filter that allows restricting search to "
-"pinned servers only"
-msgstr ""
-"[Przeglądarka] Wyszukiwanie globalne: Dodano filtr pozwalający ograniczyć "
-"wyszukiwanie wyłącznie do przypiętych serwerów"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:116
-msgid "[Servers] Dragon Ball Multiverse: Update"
-msgstr "[Serwery] Dragon Ball Multiverse: aktualizacja"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:117
-msgid "[Servers] Golden Mangás: Update"
-msgstr "[Serwery] Golden Mangás: aktualizacja"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:118
-msgid "[Servers] MANGA Plus by SHUEISHA: Update"
-msgstr "[Serwery] MANGA Plus by SHUEISHA: aktualizacja"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:119
-msgid "[Servers] MangaDex: Update"
-msgstr "[Serwery] MangaDex: aktualizacja"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:120
-msgid "[Servers] Reaper Scans [PT-br]: Update (name change to `Yugen Scans`)"
-msgstr ""
-"[Serwery] Reaper Scans [PT-br]: aktualizacja (zmiana nazwy na `Yugen Scans`)"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:121
-msgid "[L10n] Updated French, Russian, Spanish and Turkish translations"
-msgstr ""
-"[L10n] Aktualizacja tłumaczeń na język francuski, hiszpański, rosyjski i "
-"turecki"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:123
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:136
 msgid "Happy reading."
 msgstr "Miłej lektury."
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:129
-msgid ""
-"[Library] Added sorting: Alphabetical, Latest Read First (default), Latest "
-"Updated First"
-msgstr ""
-"[Biblioteka] Dodano sortowanie: alfabetyczne, najpierw ostatnio czytane "
-"(domyślne), najpierw ostatnio zaktualizowane"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:130
-msgid "[Servers] Mangas Origines [FR]: Reenable"
-msgstr "[Serwery] Mangas Origines [FR]: reaktywacja"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:131
-msgid "[Servers] Bilibili Comics: Update"
-msgstr "[Serwery] Bilibili Comics: aktualizacja"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:132
-msgid "[Servers] Mangalek: Update"
-msgstr "[Serwery] Mangalek: aktualizacja"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:133
-msgid "[Servers] Manhwa Hentai: Update"
-msgstr "[Serwery] Manhwa Hentai: aktualizacja"
-
-#: ../data/info.febvre.Komikku.appdata.xml.in.in:134
-msgid "[L10n] Updated Finnish, Polish and Spanish translations"
-msgstr "[L10n] Aktualizacja tłumaczeń na język fiński, hiszpański i polski"
 
 #: ../data/info.febvre.Komikku.desktop.in:3
 msgid "@prettyname@"
@@ -228,8 +178,8 @@ msgid ""
 "manga;reader;viewer;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offline;"
 "gnome;"
 msgstr ""
-"manga;czytnik;przeglądarka;komiks;manhwa;manhua;bd;webtoon;webcomic;skan;offl"
-"ine;gnome;"
+"manga;czytnik;przeglądarka;komiks;manhwa;manhua;bd;webtoon;webcomic;skan;"
+"offline;gnome;"
 
 #: ../data/ui/about_window.ui.in:28
 msgid ""
@@ -313,7 +263,7 @@ msgid "No downloads"
 msgstr "Brak pobranych"
 
 #: ../data/ui/explorer_search.blp:10 ../data/ui/explorer_search.blp:34
-#: ../data/ui/history.blp:19 ../data/ui/library.blp:36
+#: ../data/ui/history.blp:18 ../data/ui/library.blp:36
 msgid "Search"
 msgstr "Wyszukaj"
 
@@ -345,11 +295,11 @@ msgstr "Szukaj serwerów"
 msgid "Search for servers by name or language"
 msgstr "Szukaj serwerów według nazwy lub języka"
 
-#: ../data/ui/history.blp:6 ../data/ui/history.blp:13
+#: ../data/ui/history.blp:6 ../data/ui/history.blp:12
 msgid "History"
 msgstr "Historia"
 
-#: ../data/ui/history.blp:70
+#: ../data/ui/history.blp:69
 msgid "No history"
 msgstr "Brak historii"
 
@@ -464,6 +414,10 @@ msgid "Keyboard Shortcuts"
 msgstr "Skróty klawiszowe"
 
 #: ../data/ui/menu/main.xml:59
+msgid "Donate"
+msgstr ""
+
+#: ../data/ui/menu/main.xml:63
 msgid "About Komikku"
 msgstr "O Komikku"
 
@@ -898,58 +852,87 @@ msgctxt "Shortcut window description"
 msgid "Select all downloads"
 msgstr "Zaznacz wszystkie pobrania"
 
+#: ../data/ui/support.blp:6 ../data/ui/support.blp:12
+msgid "Support Development"
+msgstr ""
+
+#: ../data/ui/support.blp:46
+msgid "How can you support?"
+msgstr ""
+
+#: ../data/ui/support.blp:54
+msgid ""
+"Developing and maintaining Komikku is a challenging task that takes up most "
+"of my free time."
+msgstr ""
+
+#: ../data/ui/support.blp:61
+msgid "Komikku will always be free and open-source and will never contain ads."
+msgstr ""
+
+#: ../data/ui/support.blp:68
+msgid ""
+"So if you like it, and you are able, please consider a one-time or recurring "
+"donation to support me, it will be hugely appreciated."
+msgstr ""
+
+#: ../data/ui/support.blp:82
+msgid "Weekly, monthly or yearly donation"
+msgstr ""
+
+#: ../data/ui/support.blp:88 ../data/ui/support.blp:104
+#: ../data/ui/support.blp:120
+msgid "Donate and Support"
+msgstr ""
+
+#: ../data/ui/support.blp:98
+msgid "One-time donation"
+msgstr ""
+
+#: ../data/ui/support.blp:114
+msgid "One-time or monthly donation"
+msgstr ""
+
 #: ../data/ui/webview.blp:6
 msgid "Webview"
 msgstr "Webview"
 
-#: ../komikku/application.py:132
+#: ../komikku/application.py:133
 msgid "Multiple URLs not supported"
 msgstr "Wiele URL-i nie jest obsługiwane"
 
-#: ../komikku/application.py:148
+#: ../komikku/application.py:149
 msgid "Invalid URL {}, not handled by any server."
 msgstr "Błędny URL {}, nieobsługiwany przez żaden serwer."
 
-#: ../komikku/application.py:324 ../komikku/card/__init__.py:116
+#: ../komikku/application.py:330 ../komikku/card/__init__.py:116
 #: ../komikku/card/__init__.py:117 ../komikku/categories_editor.py:188
 #: ../komikku/downloader.py:374 ../komikku/downloader.py:375
-#: ../komikku/library/__init__.py:716 ../komikku/library/__init__.py:717
+#: ../komikku/library/__init__.py:720 ../komikku/library/__init__.py:721
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: ../komikku/application.py:404
+#: ../komikku/application.py:412
 msgid "Join Chat"
 msgstr "Dołącz do czatu"
 
-#: ../komikku/application.py:405
-msgid "Sponsor via Ko-fi"
-msgstr "Sponsoruj przez Ko-fi"
-
-#: ../komikku/application.py:406
-msgid "Sponsor via Liberapay"
-msgstr "Sponsoruj przez Liberapay"
-
-#: ../komikku/application.py:407
-msgid "Sponsor via Paypal"
-msgstr "Sponsoruj przez Paypal"
-
-#: ../komikku/application.py:494
+#: ../komikku/application.py:502
 msgid "Are you sure you want to quit?"
 msgstr "Czy na pewno chcesz wyjść?"
 
-#: ../komikku/application.py:497
+#: ../komikku/application.py:505
 msgid "Some chapters are currently being downloaded."
 msgstr "Niektóre rozdziały są obecnie pobierane."
 
-#: ../komikku/application.py:499
+#: ../komikku/application.py:507
 msgid "Some mangas are currently being updated."
 msgstr "Niektóre mangi są obecnie aktualizowane."
 
-#: ../komikku/application.py:503
+#: ../komikku/application.py:511
 msgid "Quit?"
 msgstr "Wyjść?"
 
-#: ../komikku/application.py:505
+#: ../komikku/application.py:513
 msgid "Quit"
 msgstr "Wyjdź"
 
@@ -972,24 +955,24 @@ msgstr "Synchronizacja postępu z serwerem zakończona pomyślnie"
 msgid "Failed to get manga URL"
 msgstr "Nie udało się uzyskać URL mangi"
 
-#: ../komikku/card/__init__.py:333
+#: ../komikku/card/__init__.py:338
 msgid "Unknown author"
 msgstr "Nieznany autor"
 
-#: ../komikku/card/__init__.py:339 ../komikku/card/__init__.py:348
+#: ../komikku/card/__init__.py:344 ../komikku/card/__init__.py:353
 msgid "Unknown status"
 msgstr "Nieznany status"
 
-#: ../komikku/card/__init__.py:349 ../komikku/explorer/__init__.py:60
+#: ../komikku/card/__init__.py:354 ../komikku/explorer/__init__.py:60
 msgid "Local"
 msgstr "Lokalnie"
 
-#: ../komikku/card/__init__.py:375 ../komikku/card/chapters_list.py:602
+#: ../komikku/card/__init__.py:380 ../komikku/card/chapters_list.py:603
 msgid "%m/%d/%Y"
 msgstr "%d.%m.%Y"
 
 #: ../komikku/card/chapters_list.py:305 ../komikku/downloader.py:519
-#: ../komikku/library/__init__.py:747
+#: ../komikku/library/__init__.py:751
 #, python-brace-format
 msgid "{0} selected"
 msgid_plural "{0} selected"
@@ -997,11 +980,11 @@ msgstr[0] "{0} wybrany"
 msgstr[1] "{0} wybrane"
 msgstr[2] "{0} wybranych"
 
-#: ../komikku/card/chapters_list.py:376 ../komikku/card/chapters_list.py:471
+#: ../komikku/card/chapters_list.py:377 ../komikku/card/chapters_list.py:472
 msgid "Failed to update chapters reading status"
 msgstr "Nie udało się zaktualizować stanu czytania rozdziałów"
 
-#: ../komikku/card/chapters_list.py:659 ../komikku/library/__init__.py:386
+#: ../komikku/card/chapters_list.py:660 ../komikku/library/__init__.py:386
 msgid "Download"
 msgstr "Pobierz"
 
@@ -1009,23 +992,23 @@ msgstr "Pobierz"
 msgid "Clear"
 msgstr "Wyczyść"
 
-#: ../komikku/card/chapters_list.py:675
+#: ../komikku/card/chapters_list.py:674
 msgid "Clear and Reset"
 msgstr "Wyczyść i zresetuj"
 
-#: ../komikku/card/chapters_list.py:675
+#: ../komikku/card/chapters_list.py:674
 msgid "Reset"
 msgstr "Zresetuj"
 
-#: ../komikku/card/chapters_list.py:685
+#: ../komikku/card/chapters_list.py:684
 msgid "Mark as Read"
 msgstr "Oznacz jako przeczytane"
 
-#: ../komikku/card/chapters_list.py:689
+#: ../komikku/card/chapters_list.py:688
 msgid "Mark as Unread"
 msgstr "Oznacz jako nieprzeczytane"
 
-#: ../komikku/card/chapters_list.py:693
+#: ../komikku/card/chapters_list.py:692
 msgid "Mark Previous Chapters as Read"
 msgstr "Oznacz poprzednie rozdziały jako przeczytane"
 
@@ -1192,7 +1175,7 @@ msgstr "Szukaj globalnie po nazwie"
 msgid "Search for comics across all the servers you have enabled"
 msgstr "Szukaj komiksów wśród wszystkich włączonych serwerów"
 
-#: ../komikku/explorer/search.py:820
+#: ../komikku/explorer/search.py:825
 msgid "Oops, failed to retrieve manga's information."
 msgstr "Ups, nie udało się znaleźć informacji o mandze."
 
@@ -1204,19 +1187,19 @@ msgstr "Inne"
 msgid "Pinned"
 msgstr "Przypięte"
 
-#: ../komikku/history.py:129
+#: ../komikku/history.py:128
 msgid "Today"
 msgstr "Dzisiaj"
 
-#: ../komikku/history.py:131
+#: ../komikku/history.py:130
 msgid "Yesterday"
 msgstr "Wczoraj"
 
-#: ../komikku/history.py:134
+#: ../komikku/history.py:133
 msgid "%A, %B %e"
 msgstr "%A, %e %B"
 
-#: ../komikku/history.py:177
+#: ../komikku/history.py:176
 msgid "Resume"
 msgstr "Wznów"
 
@@ -1236,23 +1219,23 @@ msgstr "Czy na pewno chcesz pobrać wszystkie rozdziały wybranych mang?"
 msgid "Download?"
 msgstr "Pobrać?"
 
-#: ../komikku/library/__init__.py:602
+#: ../komikku/library/__init__.py:601
 msgid "Welcome to Komikku"
 msgstr "Witamy w Komikku"
 
-#: ../komikku/library/__init__.py:607
+#: ../komikku/library/__init__.py:606
 msgid "Loading…"
 msgstr "Ładowanie…"
 
-#: ../komikku/library/__init__.py:708
+#: ../komikku/library/__init__.py:712
 msgid "Failed to update reading status"
 msgstr "Nie udało się zaktualizować stanu czytania"
 
-#: ../komikku/library/__init__.py:721
+#: ../komikku/library/__init__.py:725
 msgid "Add new comic"
 msgstr "Dodaj nowy komiks"
 
-#: ../komikku/library/__init__.py:751 ../komikku/library/categories_list.py:145
+#: ../komikku/library/__init__.py:755 ../komikku/library/categories_list.py:145
 msgid "Uncategorized"
 msgstr "Nieskategoryzowane"
 
@@ -1260,42 +1243,43 @@ msgstr "Nieskategoryzowane"
 #: ../komikku/servers/bilibili/__init__.py:39
 #: ../komikku/servers/mangapill/__init__.py:36
 #: ../komikku/servers/multi/manga_stream.py:56
+#: ../komikku/servers/webtoon/__init__.py:51
 msgid "All"
 msgstr "Wszystkie"
 
-#: ../komikku/models/database.py:459
+#: ../komikku/models/database.py:457
 #: ../komikku/servers/mangaworld/__init__.py:50
 msgid "Complete"
 msgstr "Ukończone"
 
-#: ../komikku/models/database.py:460 ../komikku/servers/mangadex/__init__.py:76
+#: ../komikku/models/database.py:458 ../komikku/servers/mangadex/__init__.py:76
 #: ../komikku/servers/mangaworld/__init__.py:49
 msgid "Ongoing"
 msgstr "Bieżące"
 
-#: ../komikku/models/database.py:461
+#: ../komikku/models/database.py:459
 #: ../komikku/servers/mangaworld/__init__.py:51
 msgid "Suspended"
 msgstr "Zawieszone"
 
-#: ../komikku/models/database.py:462
+#: ../komikku/models/database.py:460
 #: ../komikku/servers/mangaworld/__init__.py:52
 msgid "Hiatus"
 msgstr "Hiatus"
 
-#: ../komikku/models/database.py:1236
+#: ../komikku/models/database.py:1234
 msgid "Download pending"
 msgstr "Oczekiwanie na pobranie"
 
-#: ../komikku/models/database.py:1237
+#: ../komikku/models/database.py:1235
 msgid "Downloaded"
 msgstr "Pobrano"
 
-#: ../komikku/models/database.py:1238
+#: ../komikku/models/database.py:1236
 msgid "Downloading"
 msgstr "Pobieranie"
 
-#: ../komikku/models/database.py:1239
+#: ../komikku/models/database.py:1237
 msgid "Download error"
 msgstr "Błąd pobierania"
 
@@ -1379,7 +1363,7 @@ msgid ""
 msgstr ""
 "Nie udało się zapisać strony: brak uprawnień dostępu do katalogu obrazów XDG"
 
-#: ../komikku/reader/pager/__init__.py:168
+#: ../komikku/reader/pager/__init__.py:163
 #, python-brace-format
 msgid ""
 "Failed to sync read progress with server:\n"
@@ -1388,30 +1372,30 @@ msgstr ""
 "Nie udało się zsynchronizować postępu z serwerem:\n"
 "{message}"
 
-#: ../komikku/reader/pager/__init__.py:170
+#: ../komikku/reader/pager/__init__.py:165
 msgid "Failed to sync read progress with server"
 msgstr "Nie udało się zsynchronizować postępu z serwerem"
 
-#: ../komikku/reader/pager/__init__.py:433
+#: ../komikku/reader/pager/__init__.py:432
 #: ../komikku/reader/pager/webtoon.py:98
 msgid "There is no previous chapter."
 msgstr "Nie ma poprzedniego rozdziału."
 
-#: ../komikku/reader/pager/__init__.py:435
+#: ../komikku/reader/pager/__init__.py:434
 #: ../komikku/reader/pager/webtoon.py:96
 msgid "It was the last chapter."
 msgstr "To był ostatni rozdział."
 
-#: ../komikku/reader/pager/__init__.py:599
+#: ../komikku/reader/pager/__init__.py:595
 #: ../komikku/reader/pager/webtoon.py:155
 msgid "This chapter is inaccessible."
 msgstr "Ten rozdział jest niedostępny."
 
-#: ../komikku/reader/pager/page.py:256
+#: ../komikku/reader/pager/page.py:265
 msgid "Failed to load image"
 msgstr "Nie udało się wczytać obrazu"
 
-#: ../komikku/reader/pager/page.py:283
+#: ../komikku/reader/pager/page.py:297
 msgid "Retry"
 msgstr "Ponów"
 
@@ -1571,11 +1555,13 @@ msgstr "Seinen"
 #: ../komikku/servers/mangatube/__init__.py:33
 #: ../komikku/servers/mangaworld/__init__.py:30
 #: ../komikku/servers/multi/manga_stream.py:51
+#: ../komikku/servers/webtoon/__init__.py:46
 msgid "Type"
 msgstr "Typ"
 
 #: ../komikku/servers/mangapill/__init__.py:32
 #: ../komikku/servers/multi/manga_stream.py:52
+#: ../komikku/servers/webtoon/__init__.py:47
 msgid "Filter by type"
 msgstr "Filtruj według typu"
 
@@ -1665,6 +1651,14 @@ msgstr "Treść NSFW"
 msgid "Whether to show manga containing NSFW content"
 msgstr "Pokazywanie mangi zawierającej treść NSFW"
 
+#: ../komikku/servers/webtoon/__init__.py:52
+msgid "Originals"
+msgstr ""
+
+#: ../komikku/servers/webtoon/__init__.py:53
+msgid "Canvas"
+msgstr ""
+
 #: ../komikku/updater.py:96
 msgid "Library update completed with errors"
 msgstr "Aktualizacja biblioteki zakończona z błędami"
@@ -1730,9 +1724,89 @@ msgid "No Internet connection, timeout or server down"
 msgstr ""
 "Brak połączenia z internetem, upłynął limit czasu albo serwer nie odpowiada"
 
-#: ../komikku/webview.py:279
+#: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr "Proszę wypełnić Captchę"
+
+#~ msgid "[Library] Kept badges in phase with reading status"
+#~ msgstr "[Biblioteka] Plakietki są synchronizowane ze stanem czytania"
+
+#~ msgid ""
+#~ "[Card] Chapters list: Added `Clear` action (deletes downloaded pages "
+#~ "without affecting chapter(s) state)"
+#~ msgstr ""
+#~ "[Karta] Lista rozdziałów: dodano akcję `Wyczyść`(usuwa pobrane strony bez "
+#~ "wpływu na stan rozdziałów)"
+
+#~ msgid "[Card] Added backdrop: Background recoloring to match cover"
+#~ msgstr "[Karta] Dodano tło, które jest kolorowane na podstawie okładki"
+
+#~ msgid "[Downloader] Improved speed"
+#~ msgstr "[Downloader] Poprawiona prędkość"
+
+#~ msgid "[Explorer] Global search: Added a progressbar"
+#~ msgstr "[Przeglądarka] Wyszukiwanie globalne: dodano pasek postępu"
+
+#~ msgid ""
+#~ "[Explorer] Global search: Added a filter that allows restricting search "
+#~ "to pinned servers only"
+#~ msgstr ""
+#~ "[Przeglądarka] Wyszukiwanie globalne: Dodano filtr pozwalający ograniczyć "
+#~ "wyszukiwanie wyłącznie do przypiętych serwerów"
+
+#~ msgid "[Servers] Dragon Ball Multiverse: Update"
+#~ msgstr "[Serwery] Dragon Ball Multiverse: aktualizacja"
+
+#~ msgid "[Servers] Golden Mangás: Update"
+#~ msgstr "[Serwery] Golden Mangás: aktualizacja"
+
+#~ msgid "[Servers] MANGA Plus by SHUEISHA: Update"
+#~ msgstr "[Serwery] MANGA Plus by SHUEISHA: aktualizacja"
+
+#~ msgid "[Servers] MangaDex: Update"
+#~ msgstr "[Serwery] MangaDex: aktualizacja"
+
+#~ msgid ""
+#~ "[Servers] Reaper Scans [PT-br]: Update (name change to `Yugen Scans`)"
+#~ msgstr ""
+#~ "[Serwery] Reaper Scans [PT-br]: aktualizacja (zmiana nazwy na `Yugen "
+#~ "Scans`)"
+
+#~ msgid "[L10n] Updated French, Russian, Spanish and Turkish translations"
+#~ msgstr ""
+#~ "[L10n] Aktualizacja tłumaczeń na język francuski, hiszpański, rosyjski i "
+#~ "turecki"
+
+#~ msgid ""
+#~ "[Library] Added sorting: Alphabetical, Latest Read First (default), "
+#~ "Latest Updated First"
+#~ msgstr ""
+#~ "[Biblioteka] Dodano sortowanie: alfabetyczne, najpierw ostatnio czytane "
+#~ "(domyślne), najpierw ostatnio zaktualizowane"
+
+#~ msgid "[Servers] Mangas Origines [FR]: Reenable"
+#~ msgstr "[Serwery] Mangas Origines [FR]: reaktywacja"
+
+#~ msgid "[Servers] Bilibili Comics: Update"
+#~ msgstr "[Serwery] Bilibili Comics: aktualizacja"
+
+#~ msgid "[Servers] Mangalek: Update"
+#~ msgstr "[Serwery] Mangalek: aktualizacja"
+
+#~ msgid "[Servers] Manhwa Hentai: Update"
+#~ msgstr "[Serwery] Manhwa Hentai: aktualizacja"
+
+#~ msgid "[L10n] Updated Finnish, Polish and Spanish translations"
+#~ msgstr "[L10n] Aktualizacja tłumaczeń na język fiński, hiszpański i polski"
+
+#~ msgid "Sponsor via Ko-fi"
+#~ msgstr "Sponsoruj przez Ko-fi"
+
+#~ msgid "Sponsor via Liberapay"
+#~ msgstr "Sponsoruj przez Liberapay"
+
+#~ msgid "Sponsor via Paypal"
+#~ msgstr "Sponsoruj przez Paypal"
 
 #~ msgid ""
 #~ "manga;reader;viewer;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offline;"
@@ -1975,9 +2049,6 @@ msgstr "Proszę wypełnić Captchę"
 
 #~ msgid "[Reader] Fixed memory leaks"
 #~ msgstr "[Czytnik] Naprawiono wycieki pamięci"
-
-#~ msgid "[Servers] WEBTOON: Update"
-#~ msgstr "[Serwery] WEBTOON: aktualizacja"
 
 #~ msgid "[L10n] New Finnish and Indonesian translations"
 #~ msgstr "[L10n] Nowe tłumaczenia na fiński i indonezyjski"
