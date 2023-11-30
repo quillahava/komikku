@@ -127,30 +127,38 @@ msgid ""
 "[Reader] RTL/LTR/Vertical pager: Improved initial positioning of images when "
 "pages are scrollable"
 msgstr ""
+"[Lecteur] Pager RTL/LTR/Vertical : Amélioration du placement des images "
+"lorsque les page sont scrollables"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid ""
 "[Reader] RTL/LTR/Vertical pager: Fixed bug preventing swipe gesture "
 "navigation on some circumstance with touch screen devices"
 msgstr ""
+"[Lecteur] Pager RTL/LTR/Vertical : Correction d'un bug empêchant la "
+"navigation par gestes dans certaines circonstances avec les appareils à "
+"écran tactile"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Reader] Webtoon pager: Improved scrolling smoothness"
-msgstr ""
+msgstr "[Lecteur] Pager Webtoon : Amélioration de la fluidité du défilement"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Reader] Pagers: Improved reading progress saving"
 msgstr ""
+"[Lecteur] Pagers : Amélioration de la sauvegarde de la progression de lecture"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 msgid "[Servers] Added MangaReader.to [EN/FR/JA/KO/ZH_HANS]"
-msgstr ""
+msgstr "[Serveurs] Ajout de MangaReader.to [EN/FR/JA/KO/ZH_HANS]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:109
 msgid ""
 "[Servers] Local: Retrieved more info from ComicInfo.xml when available in "
 "the archive"
 msgstr ""
+"[Serveurs] Local : Récupération de plus d'info dans le fichier ComicInfo.xml "
+"quand celui-ci est disponible dans l'archive"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "[Servers] WEBTOON: Update"
@@ -158,7 +166,7 @@ msgstr "[Serveurs] WEBTOON : Mise à jour"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 msgid "[L10n] Updated Spanish translation"
-msgstr ""
+msgstr "[L10n] Mise à jour de la traduction espagnole"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 msgid "Happy reading."
@@ -414,7 +422,7 @@ msgstr "Raccourcis clavier"
 
 #: ../data/ui/menu/main.xml:59
 msgid "Donate"
-msgstr ""
+msgstr "Faire un don"
 
 #: ../data/ui/menu/main.xml:63
 msgid "About Komikku"
@@ -737,7 +745,7 @@ msgstr "Effacer le cache des chapitres et la base de données"
 msgid "Clear chapters cache and database on application close"
 msgstr ""
 "Effacer le cache des chapitres et la base de données à la fermeture de "
-"l’application"
+"l'application"
 
 #: ../data/ui/preferences.blp:309
 msgid "Credentials storage"
@@ -858,44 +866,50 @@ msgstr ""
 
 #: ../data/ui/support.blp:6 ../data/ui/support.blp:12
 msgid "Support Development"
-msgstr ""
+msgstr "Soutenir le développement"
 
 #: ../data/ui/support.blp:46
 msgid "How can you support?"
-msgstr ""
+msgstr "Comment pouvez-vous apporter votre soutien ?"
 
 #: ../data/ui/support.blp:54
 msgid ""
 "Developing and maintaining Komikku is a challenging task that takes up most "
 "of my free time."
 msgstr ""
+"Le développement et la maintenance de Komikku est une tâche ardue qui occupe "
+"la majeure partie de mon temps libre."
 
 #: ../data/ui/support.blp:61
 msgid "Komikku will always be free and open-source and will never contain ads."
 msgstr ""
+"Komikku sera toujours libre et open-source et ne contiendra jamais de "
+"publicité."
 
 #: ../data/ui/support.blp:68
 msgid ""
 "So if you like it, and you are able, please consider a one-time or recurring "
 "donation to support me, it will be hugely appreciated."
 msgstr ""
+"Donc, si vous l'aimez et que vous le pouvez, envisagez de faire un don "
+"unique ou récurrent pour me soutenir, ce sera extrêmement apprécié."
 
 #: ../data/ui/support.blp:82
 msgid "Weekly, monthly or yearly donation"
-msgstr ""
+msgstr "Don hebdomadaire, mensuel ou annuel"
 
 #: ../data/ui/support.blp:88 ../data/ui/support.blp:104
 #: ../data/ui/support.blp:120
 msgid "Donate and Support"
-msgstr ""
+msgstr "Donner et soutenir"
 
 #: ../data/ui/support.blp:98
 msgid "One-time donation"
-msgstr ""
+msgstr "Don unique"
 
 #: ../data/ui/support.blp:114
 msgid "One-time or monthly donation"
-msgstr ""
+msgstr "Don unique ou mensuel"
 
 #: ../data/ui/webview.blp:6
 msgid "Webview"
@@ -1662,11 +1676,11 @@ msgstr "Afficher ou non les mangas avec du contenu NSFW"
 
 #: ../komikku/servers/webtoon/__init__.py:52
 msgid "Originals"
-msgstr ""
+msgstr "Originals"
 
 #: ../komikku/servers/webtoon/__init__.py:53
 msgid "Canvas"
-msgstr ""
+msgstr "Canvas"
 
 #: ../komikku/updater.py:96
 msgid "Library update completed with errors"
@@ -1733,36 +1747,44 @@ msgstr "Pas de connexion Internet, délai dépassé ou serveur en panne"
 msgid "Please complete CAPTCHA"
 msgstr "Veuillez compléter le CAPTCHA"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Open preferences"
-#~ msgstr "Ouvrir préférences"
+#: ../data/ui/shortcuts_overview.blp:14
+msgctxt "Shortcut window description"
+msgid "Open preferences"
+msgstr "Ouvrir préférences"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Basculer en mode plein écran"
+#: ../data/ui/shortcuts_overview.blp:19
+msgctxt "Shortcut window description"
+msgid "Toggle fullscreen mode"
+msgstr "Basculer en mode plein écran"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Open shortcuts window"
-#~ msgstr "Ouvrir la fenêtre des raccourcis"
+#: ../data/ui/shortcuts_overview.blp:24
+msgctxt "Shortcut window description"
+msgid "Open shortcuts window"
+msgstr "Ouvrir la fenêtre des raccourcis"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Add manga"
-#~ msgstr "Ajouter un manga"
+#: ../data/ui/shortcuts_overview.blp:33
+msgctxt "Shortcut window description"
+msgid "Add manga"
+msgstr "Ajouter un manga"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Select all"
-#~ msgstr "Tout sélectionner"
+#: ../data/ui/shortcuts_overview.blp:38
+msgctxt "Shortcut window description"
+msgid "Select all"
+msgstr "Tout sélectionner"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Select all chapters"
-#~ msgstr "Sélectionner tous les chapitres"
+#: ../data/ui/shortcuts_overview.blp:52
+msgctxt "Shortcut window description"
+msgid "Select all chapters"
+msgstr "Sélectionner tous les chapitres"
 
-#~ msgctxt "Shortcut window description"
-#~ msgid "Select all downloads"
-#~ msgstr "Sélectionner tous les téléchargements"
+#: ../data/ui/shortcuts_overview.blp:70
+msgctxt "Shortcut window description"
+msgid "Select all downloads"
+msgstr "Sélectionner tous les téléchargements"
 
-#~ msgid "Cancelled"
-#~ msgstr "Annulé"
+#: ../komikku/servers/mangadex/__init__.py:79
+msgid "Cancelled"
+msgstr "Annulé"
 
 #~ msgid "[Library] Kept badges in phase with reading status"
 #~ msgstr ""
