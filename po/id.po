@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.12.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 16:25+0100\n"
+"POT-Creation-Date: 2023-11-30 17:53+0100\n"
 "PO-Revision-Date: 2023-04-23 07:50+0000\n"
 "Last-Translator: Alim Satria <alimsatria2017@mail.ugm.ac.id>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/komikku/main/"
@@ -777,9 +777,8 @@ msgid "Back"
 msgstr "Kembali"
 
 #: ../data/ui/reader.blp:31
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Alihkan mode layar penuh"
+msgid "Toggle Fullscreen Mode"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -1707,6 +1706,10 @@ msgstr "Tidak ada koneksi Internet, waktu habis atau server down"
 #: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr "Mohon lengkapi CAPTCHA"
+
+#, fuzzy
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Alihkan mode layar penuh"
 
 #~ msgctxt "Shortcut window description"
 #~ msgid "Open preferences"

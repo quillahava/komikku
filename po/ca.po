@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 16:25+0100\n"
+"POT-Creation-Date: 2023-11-30 17:53+0100\n"
 "PO-Revision-Date: 2023-10-30 11:01+0000\n"
 "Last-Translator: Roger VC <rogervilarasau@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/komikku/main/ca/"
@@ -782,8 +782,8 @@ msgid "Back"
 msgstr "Enrere"
 
 #: ../data/ui/reader.blp:31
-msgid "Toggle fullscreen mode"
-msgstr "Canvia al mode de pantalla completa"
+msgid "Toggle Fullscreen Mode"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -1729,6 +1729,9 @@ msgstr ""
 #: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr "Si us plau, completeu el CAPTCHA"
+
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Canvia al mode de pantalla completa"
 
 #~ msgctxt "Shortcut window description"
 #~ msgid "Open preferences"

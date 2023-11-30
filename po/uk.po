@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 16:25+0100\n"
+"POT-Creation-Date: 2023-11-30 17:53+0100\n"
 "PO-Revision-Date: 2023-04-10 21:23+0000\n"
 "Last-Translator: CakesTwix <cakestwix1@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/komikku/main/"
@@ -787,9 +787,8 @@ msgid "Back"
 msgstr "Назад"
 
 #: ../data/ui/reader.blp:31
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Режим повного екрану"
+msgid "Toggle Fullscreen Mode"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -1734,6 +1733,10 @@ msgstr "Немає з'єднання з Інтернетом, таймаут а�
 #: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr "Будь ласка, заповніть CAPTCHA"
+
+#, fuzzy
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Режим повного екрану"
 
 #~ msgctxt "Shortcut window description"
 #~ msgid "Open preferences"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 16:25+0100\n"
+"POT-Creation-Date: 2023-11-30 17:53+0100\n"
 "PO-Revision-Date: 2023-04-20 11:41+0000\n"
 "Last-Translator: Infinitive Witch <infinitivewitch@disroot.org>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
@@ -785,9 +785,8 @@ msgid "Back"
 msgstr "Voltar"
 
 #: ../data/ui/reader.blp:31
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Ativa o modo de tela cheia"
+msgid "Toggle Fullscreen Mode"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -1730,6 +1729,10 @@ msgstr "Sem conexão com a Internet, tempo limite excedido ou servidor inativo"
 #: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr "Por favor complete o CAPTCHA"
+
+#, fuzzy
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Ativa o modo de tela cheia"
 
 #~ msgctxt "Shortcut window description"
 #~ msgid "Open preferences"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 16:25+0100\n"
+"POT-Creation-Date: 2023-11-30 17:53+0100\n"
 "PO-Revision-Date: 2023-11-03 05:04+0000\n"
 "Last-Translator: Eric-Song-Nop <Eric_YF_Song@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -765,9 +765,8 @@ msgid "Back"
 msgstr "返回"
 
 #: ../data/ui/reader.blp:31
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "切换全屏模式"
+msgid "Toggle Fullscreen Mode"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -1685,6 +1684,10 @@ msgstr "无网络连接，超时或者服务器下线"
 #: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "切换全屏模式"
 
 #~ msgctxt "Shortcut window description"
 #~ msgid "Open preferences"

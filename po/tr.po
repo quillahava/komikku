@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 16:25+0100\n"
+"POT-Creation-Date: 2023-11-30 17:53+0100\n"
 "PO-Revision-Date: 2023-10-14 22:11+0000\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/"
@@ -780,8 +780,8 @@ msgid "Back"
 msgstr "Geri"
 
 #: ../data/ui/reader.blp:31
-msgid "Toggle fullscreen mode"
-msgstr "Tam ekran kipini aç/kapat"
+msgid "Toggle Fullscreen Mode"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -1722,6 +1722,9 @@ msgstr ""
 #: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr "Lütfen CAPTCHA'yı tamamlayın"
+
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Tam ekran kipini aç/kapat"
 
 #~ msgctxt "Shortcut window description"
 #~ msgid "Open preferences"

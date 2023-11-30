@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.25.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 16:25+0100\n"
+"POT-Creation-Date: 2023-11-30 17:53+0100\n"
 "PO-Revision-Date: 2023-10-01 09:00+0000\n"
 "Last-Translator: randint <lancameb@hotmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -750,7 +750,7 @@ msgid "Back"
 msgstr ""
 
 #: ../data/ui/reader.blp:31
-msgid "Toggle fullscreen mode"
+msgid "Toggle Fullscreen Mode"
 msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:11

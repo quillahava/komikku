@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 0.19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 16:25+0100\n"
+"POT-Creation-Date: 2023-11-30 17:53+0100\n"
 "PO-Revision-Date: 2023-04-03 17:41+0000\n"
 "Last-Translator: Liliana Marie Prikler <liliana.prikler@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/komikku/main/de/"
@@ -778,9 +778,8 @@ msgid "Back"
 msgstr "Zurück"
 
 #: ../data/ui/reader.blp:31
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Vollbildmodus"
+msgid "Toggle Fullscreen Mode"
+msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -1720,6 +1719,10 @@ msgstr "Keine Internetverbindung, Timeout oder Serverfehler"
 #: ../komikku/webview.py:301
 msgid "Please complete CAPTCHA"
 msgstr "Bitte füllen Sie das CAPTCHA aus"
+
+#, fuzzy
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Vollbildmodus"
 
 #~ msgctxt "Shortcut window description"
 #~ msgid "Open preferences"

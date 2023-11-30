@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.29.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-30 16:25+0100\n"
+"POT-Creation-Date: 2023-11-30 17:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -748,7 +748,7 @@ msgid "Back"
 msgstr ""
 
 #: ../data/ui/reader.blp:31
-msgid "Toggle fullscreen mode"
+msgid "Toggle Fullscreen Mode"
 msgstr ""
 
 #: ../data/ui/shortcuts_overview.blp:11
