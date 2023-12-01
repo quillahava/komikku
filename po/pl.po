@@ -2,22 +2,23 @@
 # Copyright (C) 2021-2023 Lili Kurek
 # This file is distributed under the same license as the Komikku package.
 # Lili Kurek <github@gramywpsl.pl>, 2021-2023.
+# Lili Kurek <lilikurek@proton.me>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.23.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-11-30 17:53+0100\n"
-"PO-Revision-Date: 2023-10-21 15:04+0000\n"
-"Last-Translator: Lili Kurek <github@gramywpsl.pl>\n"
-"Language-Team: Polish <https://hosted.weblate.org/projects/komikku/main/pl/"
-">\n"
+"PO-Revision-Date: 2023-12-01 14:49+0000\n"
+"Last-Translator: Lili Kurek <lilikurek@proton.me>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/komikku/main/pl/>"
+"\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.1\n"
+"X-Generator: Weblate 5.3-dev\n"
 "X-Poedit-Basepath: .\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
@@ -128,30 +129,36 @@ msgid ""
 "[Reader] RTL/LTR/Vertical pager: Improved initial positioning of images when "
 "pages are scrollable"
 msgstr ""
+"[Czytnik] Pager RTL/LTR/pionowy: usprawniono początkowe położenie obrazów "
+"kiedy strony są przewijalne"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid ""
 "[Reader] RTL/LTR/Vertical pager: Fixed bug preventing swipe gesture "
 "navigation on some circumstance with touch screen devices"
 msgstr ""
+"[Czytnik] Pager RTL/LTR/pionowy: naprawiono błąd uniemożliwiający, w "
+"niektórych przypadkach, nawigację gestem przesunięcia na ekranach dotykowych"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Reader] Webtoon pager: Improved scrolling smoothness"
-msgstr ""
+msgstr "[Czytnik] Pager Webtoon: usprawniono płynność przewijania"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Reader] Pagers: Improved reading progress saving"
-msgstr ""
+msgstr "[Czytnik] Pagery: usprawniono prędkość zapisu postępu czytania"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 msgid "[Servers] Added MangaReader.to [EN/FR/JA/KO/ZH_HANS]"
-msgstr ""
+msgstr "[Serwery] Dodano MangaReader.to [EN/FR/JA/KO/ZH_HANS]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:109
 msgid ""
 "[Servers] Local: Retrieved more info from ComicInfo.xml when available in "
 "the archive"
 msgstr ""
+"[Serwery] Lokalny: pobierane więcej informacji z ComicInfo.xml, jeśli "
+"istnieje w archiwum"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "[Servers] WEBTOON: Update"
@@ -159,7 +166,7 @@ msgstr "[Serwery] WEBTOON: aktualizacja"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 msgid "[L10n] Updated Spanish translation"
-msgstr ""
+msgstr "[L10n] Aktualizacja tłumaczenia na język hiszpański"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 msgid "Happy reading."
@@ -415,7 +422,7 @@ msgstr "Skróty klawiszowe"
 
 #: ../data/ui/menu/main.xml:59
 msgid "Donate"
-msgstr ""
+msgstr "Wesprzyj"
 
 #: ../data/ui/menu/main.xml:63
 msgid "About Komikku"
@@ -780,7 +787,7 @@ msgstr "Wstecz"
 
 #: ../data/ui/reader.blp:31
 msgid "Toggle Fullscreen Mode"
-msgstr ""
+msgstr "Przełącz tryb pełnoekranowy"
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -790,17 +797,17 @@ msgstr "Aplikacja"
 #: ../data/ui/shortcuts_overview.blp:14
 msgctxt "Shortcut window description"
 msgid "Open Preferences"
-msgstr ""
+msgstr "Otwórz Preferencje"
 
 #: ../data/ui/shortcuts_overview.blp:19
 msgctxt "Shortcut window description"
 msgid "Toggle Fullscreen Mode"
-msgstr ""
+msgstr "Przełącz tryb pełnoekranowy"
 
 #: ../data/ui/shortcuts_overview.blp:24
 msgctxt "Shortcut window description"
 msgid "Open Keyboard Shortcuts"
-msgstr ""
+msgstr "Otwórz Skróty klawiszowe"
 
 #: ../data/ui/shortcuts_overview.blp:30
 msgctxt "Shortcut window description"
@@ -810,12 +817,12 @@ msgstr "Biblioteka"
 #: ../data/ui/shortcuts_overview.blp:33
 msgctxt "Shortcut window description"
 msgid "Add Manga"
-msgstr ""
+msgstr "Dodaj mangę"
 
 #: ../data/ui/shortcuts_overview.blp:38
 msgctxt "Shortcut window description"
 msgid "Select All"
-msgstr ""
+msgstr "Wybierz wszystko"
 
 #: ../data/ui/shortcuts_overview.blp:43
 msgctxt "Shortcut window description"
@@ -830,7 +837,7 @@ msgstr "Karta mangi"
 #: ../data/ui/shortcuts_overview.blp:52
 msgctxt "Shortcut window description"
 msgid "Select All Chapters"
-msgstr ""
+msgstr "Wybierz wszystkie rozdziały"
 
 #: ../data/ui/shortcuts_overview.blp:58
 msgctxt "Shortcut window description"
@@ -850,48 +857,53 @@ msgstr "Menedżer pobierania"
 #: ../data/ui/shortcuts_overview.blp:70
 msgctxt "Shortcut window description"
 msgid "Select All Downloads"
-msgstr ""
+msgstr "Wybierz wszystkie pobrania"
 
 #: ../data/ui/support.blp:6 ../data/ui/support.blp:12
 msgid "Support Development"
-msgstr ""
+msgstr "Wesprzyj rozwój"
 
 #: ../data/ui/support.blp:46
 msgid "How can you support?"
-msgstr ""
+msgstr "Jak możesz wspierać?"
 
 #: ../data/ui/support.blp:54
 msgid ""
 "Developing and maintaining Komikku is a challenging task that takes up most "
 "of my free time."
 msgstr ""
+"Rozwój i utrzymywanie Komikku jest wymagającym zadaniem, które zajmuje "
+"większość mojego wolnego czasu."
 
 #: ../data/ui/support.blp:61
 msgid "Komikku will always be free and open-source and will never contain ads."
 msgstr ""
+"Komikku zawsze będzie darmowe, open-source i nigdy nie będzie mieć reklam."
 
 #: ../data/ui/support.blp:68
 msgid ""
 "So if you like it, and you are able, please consider a one-time or recurring "
 "donation to support me, it will be hugely appreciated."
 msgstr ""
+"Zatem, jeśli Ci się to podoba i jesteś w stanie, rozpatrz proszę jednorazowy "
+"lub cykliczny datek, by mnie wesprzeć. Bardzo to docenię."
 
 #: ../data/ui/support.blp:82
 msgid "Weekly, monthly or yearly donation"
-msgstr ""
+msgstr "Cotygodniowy, comiesięczny lub coroczny datek"
 
 #: ../data/ui/support.blp:88 ../data/ui/support.blp:104
 #: ../data/ui/support.blp:120
 msgid "Donate and Support"
-msgstr ""
+msgstr "Podaruj i wspieraj"
 
 #: ../data/ui/support.blp:98
 msgid "One-time donation"
-msgstr ""
+msgstr "Jednorazowy datek"
 
 #: ../data/ui/support.blp:114
 msgid "One-time or monthly donation"
-msgstr ""
+msgstr "Jednorazowy lub comiesięczny datek"
 
 #: ../data/ui/webview.blp:6
 msgid "Webview"
@@ -1650,11 +1662,11 @@ msgstr "Pokazywanie mangi zawierającej treść NSFW"
 
 #: ../komikku/servers/webtoon/__init__.py:52
 msgid "Originals"
-msgstr ""
+msgstr "Oryginały"
 
 #: ../komikku/servers/webtoon/__init__.py:53
 msgid "Canvas"
-msgstr ""
+msgstr "Canvas"
 
 #: ../komikku/updater.py:96
 msgid "Library update completed with errors"
