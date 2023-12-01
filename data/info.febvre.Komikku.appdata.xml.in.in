@@ -98,8 +98,20 @@
     <url type="donation">https://valos.gitlab.io/Komikku/#sponsor</url>
 
     <releases>
-        <release version="1.29.0" date="2023-11-25">
+        <release version="1.30.0" date="2023-12-01">
             <description>
+                <ul>
+                    <li>[Library] Avoided simultaneous redisplays (lead to thumbnails duplication otherwise)</li>
+                    <li>[Card] Each time page is redisplayed, scrolling position of subpages (Infos, Chapters, Categories) is now reset to top</li>
+                    <li>[Servers] MangaReader: Added shuffled images decoding</li>
+                    <li>[Support] Added a new page to promote donating</li>
+                    <li>[L10n] Updated French translation</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
+        <release version="1.29.0" date="2023-11-25">
+            <description translatable="no">
                 <ul>
                     <li>[Reader] RTL/LTR/Vertical pager: Improved initial positioning of images when pages are scrollable</li>
                     <li>[Reader] RTL/LTR/Vertical pager: Fixed bug preventing swipe gesture navigation on some circumstance with touch screen devices</li>

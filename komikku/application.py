@@ -397,14 +397,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] RTL/LTR/Vertical pager: Improved initial positioning of images when pages are scrollable</li>
-                <li>[Reader] RTL/LTR/Vertical pager: Fixed bug preventing swipe gesture navigation on some circumstance with touch screen devices</li>
-                <li>[Reader] Webtoon pager: Improved scrolling smoothness</li>
-                <li>[Reader] Pagers: Improved reading progress saving</li>
-                <li>[Servers] Added MangaReader.to [EN/FR/JA/KO/ZH_HANS]</li>
-                <li>[Servers] Local: Retrieved more info from ComicInfo.xml when available in the archive</li>
-                <li>[Servers] WEBTOON: Update</li>
-                <li>[L10n] Updated Spanish translation</li>
+                <li>[Library] Avoided simultaneous redisplays (lead to thumbnails duplication otherwise)</li>
+                <li>[Card] Each time page is redisplayed, scrolling position of subpages (Infos, Chapters, Categories) is now reset to top</li>
+                <li>[Servers] MangaReader: Added shuffled images decoding</li>
+                <li>[Support] Added a new page to promote donating</li>
+                <li>[L10n] Updated French translation</li>
             </ul>
             <p>Happy reading.</p>
         """)
