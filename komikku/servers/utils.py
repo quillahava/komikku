@@ -412,7 +412,7 @@ def unscramble_image_rc4(image, key, piece_size):
             ))
 
     groups = {}
-    for k, v in itertools.groupby(pieces, key=lambda x: x['w']):
+    for k, v in itertools.groupby(pieces, key=lambda x: x['w'] << 16 | x['h']):
         if k not in groups:
             groups[k] = []
         groups[k] += list(v)
