@@ -401,7 +401,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
                 <li>[Card] Each time page is redisplayed, scrolling position of subpages (Infos, Chapters, Categories) is now reset to top</li>
                 <li>[Servers] MangaReader: Added shuffled images decoding</li>
                 <li>[Support] Added a new page to promote donating</li>
-                <li>[L10n] Updated French translation</li>
+                <li>[L10n] Updated French and Polish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)
