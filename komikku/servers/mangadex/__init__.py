@@ -517,6 +517,13 @@ class Mangadex_th(Mangadex):
     lang_code = 'th'
 
 
+class Mangadex_uk(Mangadex):
+    id = 'mangadex_uk'
+    name = SERVER_NAME
+    lang = 'uk'
+    lang_code = 'uk'
+
+
 class Mangadex_vi(Mangadex):
     id = 'mangadex_vi'
     name = SERVER_NAME
