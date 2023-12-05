@@ -27,7 +27,7 @@ from komikku.utils import get_data_dir
 from komikku.utils import is_flatpak
 from komikku.utils import trunc_filename
 
-logger = logging.getLogger('komikku')
+logger = logging.getLogger(__name__)
 
 VERSION = 12
 
@@ -49,7 +49,7 @@ sqlite3.register_converter('json', convert_json)
 def backup_db():
     db_path = get_db_path()
     if os.path.exists(db_path) and check_db():
-        print('Save a DB backup')
+        logger.info('Save a DB backup')
         shutil.copyfile(db_path, get_db_backup_path())
 
 
@@ -104,7 +104,7 @@ def collate_natsort(value1, value2):
 def create_db_connection():
     con = sqlite3.connect(get_db_path(), detect_types=sqlite3.PARSE_DECLTYPES)
     if con is None:
-        print("Error: Can not create the database connection.")
+        logger.error('Can not create the database connection')
         return None
 
     con.row_factory = sqlite3.Row
@@ -163,7 +163,7 @@ def init_db():
     db_backup_path = get_db_backup_path()
     if os.path.exists(db_path) and os.path.exists(db_backup_path) and not check_db():
         # Restore backup
-        print('Restore DB from backup')
+        logger.info('Restore DB from backup')
         shutil.copyfile(db_backup_path, db_path)
 
     sql_create_mangas_table = """CREATE TABLE IF NOT EXISTS mangas (
@@ -363,7 +363,7 @@ def init_db():
             execute_sql(db_conn, 'UPDATE mangas SET in_library = 1;')
             db_conn.execute('PRAGMA user_version = {0}'.format(12))
 
-        print('DB version', db_conn.execute('PRAGMA user_version').fetchone()[0])
+        logger.info('DB version {0}'.format(db_conn.execute('PRAGMA user_version').fetchone()[0]))
 
         db_conn.close()
 

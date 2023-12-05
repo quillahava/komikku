@@ -508,8 +508,11 @@ class PreferencesServersSettingsSubPage(Adw.NavigationPage):
             self.group.remove(child)
             child = next_child
 
+        servers = get_servers_list(order_by=('name', 'lang'))
+        self.window.application.logger.info('{0} servers found'.format(len(servers)))
+
         servers_data = {}
-        for server_data in get_servers_list(order_by=('name', 'lang')):
+        for server_data in servers:
             main_id = get_server_main_id_by_id(server_data['id'])
 
             if main_id not in servers_data:

@@ -26,7 +26,7 @@ import sys
 
 from komikku.servers.loader import server_finder
 
-logger = logging.getLogger('komikku.servers')
+logger = logging.getLogger(__name__)
 
 
 def convert_date_string(date, format=None):
