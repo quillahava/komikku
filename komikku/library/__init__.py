@@ -715,9 +715,18 @@ class LibraryPage(Adw.NavigationPage):
         db_conn.close()
 
         self.window.activity_indicator.stop()
-        self.leave_selection_mode()
+
         if not res:
             self.window.show_notification(_('Failed to update reading status'))
+        else:
+            if Settings.get_default().library_badges:
+                for thumbnail in self.flowbox.get_selected_children():
+                    thumbnail.update()
+
+            self.leave_selection_mode()
+
+            if self.selected_filters:
+                self.flowbox.invalidate_filter()
 
     def update_all(self, _action, _param):
         self.window.updater.update_library()
