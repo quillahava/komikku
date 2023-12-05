@@ -404,6 +404,12 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         )
 
     def dispose(self):
+        if self.__can_zoom:
+            self.remove_controller(self.controller_motion)
+            self.remove_controller(self.controller_scroll)
+            self.remove_controller(self.gesture_click)
+            self.remove_controller(self.gesture_zoom)
+
         if self.animation_tick_callback_id:
             self.remove_tick_callback(self.animation_tick_callback_id)
 

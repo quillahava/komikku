@@ -90,6 +90,7 @@ class Page(Gtk.Overlay):
 
         if self.picture:
             self.picture.dispose()
+            self.picture = None
 
         if self.reader.reading_mode != 'webtoon':
             self.get_parent().remove(self)

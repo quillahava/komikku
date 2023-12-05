@@ -59,6 +59,8 @@ class WebtoonPager(Adw.Bin, BasePager):
 
     def dispose(self):
         self.canvas.dispose()
+        self.canvas.unparent()
+        self.canvas = None
 
     def goto_page(self, index):
         # TODO: use self.canvas.scroll_by_increment when possible

@@ -180,7 +180,7 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         page = self.get_last_child()
         while page:
             prev_page = page.get_prev_sibling()
-            page.unparent()
+            page.dispose()
             page = prev_page
 
         self.scroll_direction = None
