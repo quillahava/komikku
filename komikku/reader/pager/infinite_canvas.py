@@ -168,7 +168,6 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
         page.insert_before(self, None)
 
         page.connect('rendered', self.on_page_rendered)
-        page.activity_indicator.start()
         page.render()
 
     def cancel_deceleration(self):

@@ -82,7 +82,6 @@ class WebtoonPager(Adw.Bin, BasePager):
         page = Page(self, chapter, page_index)
         self.canvas.append(page)
 
-        self.scroll_page = page
         self.current_page = page
 
         GLib.idle_add(self.update, self.current_page)
