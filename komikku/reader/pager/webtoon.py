@@ -85,6 +85,7 @@ class WebtoonPager(Adw.Bin, BasePager):
         self.current_page = page
 
         GLib.idle_add(self.update, self.current_page)
+        GLib.timeout_add(100, self.save_progress, page)
 
     def on_controls_zone_clicked(self, _canvas):
         self.reader.toggle_controls()
