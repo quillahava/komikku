@@ -397,11 +397,11 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Library] Avoided simultaneous redisplays (lead to thumbnails duplication otherwise)</li>
-                <li>[Card] Each time page is redisplayed, scrolling position of subpages (Infos, Chapters, Categories) is now reset to top</li>
-                <li>[Servers] MangaReader: Added shuffled images decoding</li>
-                <li>[Support] Added a new page to promote donating</li>
-                <li>[L10n] Updated French and Polish translations</li>
+                <li>[Reader] Webtoon pager: Fixed scrolling to top and memory leaks</li>
+                <li>[Reader] Webtoon pager: Saved reading progress when navigating with slider of controls overlay</li>
+                <li>[Servers] Added Honey Manga [UK]</li>
+                <li>[Servers] MangaDex: Added Ukrainian</li>
+                <li>[L10n] Updated Spanish and Turkish translations</li>
             </ul>
             <p>Happy reading.</p>
         """)

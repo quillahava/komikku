@@ -98,8 +98,20 @@
     <url type="donation">https://valos.gitlab.io/Komikku/#sponsor</url>
 
     <releases>
-        <release version="1.30.1" date="2023-12-01">
+        <release version="1.31.0" date="2023-12-06">
             <description>
+                <ul>
+                    <li>[Reader] Webtoon pager: Fixed scrolling to top and memory leaks</li>
+                    <li>[Reader] Webtoon pager: Saved reading progress when navigating with slider of controls overlay</li>
+                    <li>[Servers] Added Honey Manga [UK]</li>
+                    <li>[Servers] MangaDex: Added Ukrainian</li>
+                    <li>[L10n] Updated Spanish and Turkish translations</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
+        <release version="1.30.1" date="2023-12-01">
+            <description translatable="no">
                 <ul>
                     <li>[Library] Avoided simultaneous redisplays (lead to thumbnails duplication otherwise)</li>
                     <li>[Card] Each time page is redisplayed, scrolling position of subpages (Infos, Chapters, Categories) is now reset to top</li>
