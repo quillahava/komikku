@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-11-30 17:53+0100\n"
-"PO-Revision-Date: 2023-12-07 11:03+0000\n"
+"PO-Revision-Date: 2023-12-08 12:02+0000\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/>"
 "\n"
@@ -129,38 +129,43 @@ msgid ""
 "[Reader] RTL/LTR/Vertical pager: Improved initial positioning of images when "
 "pages are scrollable"
 msgstr ""
+"[Okuyucu] RTL/LTR/Dikey sayfalayıcı: Sayfalar kaydırılabilir olduğunda "
+"görüntülerin ilk konumlandırması iyileştirildi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid ""
 "[Reader] RTL/LTR/Vertical pager: Fixed bug preventing swipe gesture "
 "navigation on some circumstance with touch screen devices"
 msgstr ""
+"[Okuyucu] RTL/LTR/Dikey sayfalayıcı: Dokunmatik ekranlı aygıtlarda bazı "
+"durumlarda kaydırma hareketiyle gezinmeyi engelleyen hata düzeltildi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Reader] Webtoon pager: Improved scrolling smoothness"
-msgstr ""
+msgstr "[Okuyucu] Webtoon sayfalayıcı: Kaydırma pürüzsüzlüğü iyileştirildi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Reader] Pagers: Improved reading progress saving"
-msgstr ""
+msgstr "[Okuyucu] Sayfalayıcılar: Okuma ilerlemesi kaydetme iyileştirildi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 msgid "[Servers] Added MangaReader.to [EN/FR/JA/KO/ZH_HANS]"
-msgstr ""
+msgstr "[Sunucular] MangaReader.to [EN/FR/JA/KO/ZH_HANS] eklendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:109
 msgid ""
 "[Servers] Local: Retrieved more info from ComicInfo.xml when available in "
 "the archive"
 msgstr ""
+"[Sunucular] Yerel: Arşivde olduğunda ComicInfo.xml'den daha fazla bilgi al"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "[Servers] WEBTOON: Update"
-msgstr ""
+msgstr "[Sunucular] WEBTOON: Güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:111
 msgid "[L10n] Updated Spanish translation"
-msgstr ""
+msgstr "[L10n] İspanyolca çeviri güncellendi"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:113
 msgid "Happy reading."
@@ -881,6 +886,8 @@ msgid ""
 "So if you like it, and you are able, please consider a one-time or recurring "
 "donation to support me, it will be hugely appreciated."
 msgstr ""
+"Eğer beğenirseniz ve imkanınız varsa, projeyi desteklemek için tek seferlik "
+"yada yinelenen şekilde bağış yapmayı ihmal etmeyin."
 
 #: ../data/ui/support.blp:82
 msgid "Weekly, monthly or yearly donation"
@@ -1656,11 +1663,11 @@ msgstr "NSFW içeriği içeren mangaların gösterilme durumu"
 
 #: ../komikku/servers/webtoon/__init__.py:52
 msgid "Originals"
-msgstr ""
+msgstr "Özgünler"
 
 #: ../komikku/servers/webtoon/__init__.py:53
 msgid "Canvas"
-msgstr ""
+msgstr "Tuval"
 
 #: ../komikku/updater.py:96
 msgid "Library update completed with errors"
