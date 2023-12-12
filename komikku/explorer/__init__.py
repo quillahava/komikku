@@ -42,6 +42,10 @@ class Explorer:
 
         # Server logo
         logo = Gtk.Image()
+        if self.search_page.search_global_mode:
+            # Align horizontally logos with covers
+            logo.set_margin_start(3)
+            logo.set_margin_end(3)
         logo.set_size_request(LOGO_SIZE, LOGO_SIZE)
         if data['id'] != 'local':
             if data['logo_path']:

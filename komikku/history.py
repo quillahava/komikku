@@ -162,7 +162,7 @@ class HistoryPage(Adw.NavigationPage):
                             '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT, False)
 
                 cover_frame = Gtk.Frame()
-                cover_frame.add_css_class('history-rounded-cover-frame')
+                cover_frame.add_css_class('row-rounded-cover-frame')
                 cover_frame.set_child(Gtk.Picture.new_for_paintable(paintable))
                 action_row.add_prefix(cover_frame)
 

@@ -488,6 +488,11 @@ class Manga:
         chapters = data.pop('chapters')
         cover_url = data.pop('cover')
 
+        # Remove search-specific data not saved in database
+        for key in ('nb_chapters', 'nb_volumes', 'last_chapter', 'last_volume'):
+            data.pop(key, None)
+            continue
+
         # Fill data with internal data
         data.update(dict(
             in_library=0,

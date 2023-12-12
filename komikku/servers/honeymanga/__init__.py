@@ -205,6 +205,7 @@ class Honeymanga(Server):
                 slug=item['id'],
                 name=item['title'],
                 cover=self.resource_url.format(item['posterId']),
+                nb_chapters=int(item['chapters']),
             ))
 
         return results
@@ -249,6 +250,7 @@ class Honeymanga(Server):
                 slug=item['id'],
                 name=item['title'],
                 cover=self.resource_url.format(item['posterId']),
+                nb_chapters=int(item['chapters']),
             ))
 
         return results

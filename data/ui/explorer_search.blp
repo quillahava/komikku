@@ -11,6 +11,7 @@ template $ExplorerSearchPage : Adw.NavigationPage {
   child: Adw.ToolbarView {
     [top]
     Adw.HeaderBar {
+      centering-policy: strict;
       title-widget: Stack title_stack {
         Adw.ViewSwitcher viewswitcher {
           policy: wide;
@@ -146,7 +147,7 @@ template $ExplorerSearchPage : Adw.NavigationPage {
       }
 
       Adw.ViewStackPage {
-        name: "most_populars";
+        name: "most_popular";
         title: _("Most Popular");
         icon-name: "starred-symbolic";
         child: ScrolledWindow {
@@ -162,13 +163,13 @@ template $ExplorerSearchPage : Adw.NavigationPage {
               margin-bottom: 12;
               margin-start: 12;
 
-              Stack most_populars_stack {
+              Stack most_popular_stack {
                 vhomogeneous: false;
 
                 StackPage {
                   name: "results";
                   child: Adw.Bin {
-                    ListBox most_populars_listbox {
+                    ListBox most_popular_listbox {
                       valign: start;
                       selection-mode: none;
 
@@ -181,7 +182,7 @@ template $ExplorerSearchPage : Adw.NavigationPage {
 
                 StackPage {
                   name: "no_results";
-                  child: Adw.StatusPage most_populars_no_results_status_page {
+                  child: Adw.StatusPage most_popular_no_results_status_page {
                     icon-name: "computer-fail-symbolic";
                     child: Button {
                       label: _("Retry");
@@ -201,7 +202,7 @@ template $ExplorerSearchPage : Adw.NavigationPage {
                     orientation: vertical;
                     valign: center;
 
-                    Spinner most_populars_spinner {
+                    Spinner most_popular_spinner {
                       height-request: 50;
                       width-request: 50;
 
