@@ -26,7 +26,7 @@ logger = logging.getLogger('komikku.servers.mangadex')
 SERVER_NAME = 'MangaDex'
 
 CHAPTERS_PER_REQUEST = 100
-SEARCH_RESULTS_LIMIT = 100
+SEARCH_RESULTS_LIMIT = 50
 
 
 class Mangadex(Server):
@@ -296,45 +296,10 @@ class Mangadex(Server):
         return self.manga_url.format(slug)
 
     def get_latest_updates(self, ratings=None, statuses=None, publication_demographics=None):
-        params = {
-            'limit': SEARCH_RESULTS_LIMIT,
-            'contentRating[]': ratings,
-            'translatedLanguage[]': [self.lang_code],
-            'order[publishAt]': 'desc',
-            'includeFutureUpdates': '0',
-            'includeFuturePublishAt': '0',
-            'includeEmptyPages': '0',
-            'includes[]': ['manga'],  # expand manga relationships with their attributes
-        }
-
-        r = self.session_get(self.api_chapter_base, params=params)
-        if r.status_code != 200:
-            return None
-
-        results = []
-        manga_slugs = set()
-        for result in r.json()['data']:
-            for relationship in result['relationships']:
-                if relationship['type'] != 'manga':
-                    continue
-
-                slug = relationship['id']
-                if slug in manga_slugs:
-                    continue
-
-                if name := self.__get_manga_title(relationship['attributes']):
-                    results.append(dict(
-                        slug=slug,
-                        name=name,
-                    ))
-                    manga_slugs.add(slug)
-                else:
-                    logger.warning(f'Ignoring result {slug}, missing name')
-
-        return results
+        return self.search('', ratings=ratings, orderby='latest')
 
     def get_most_populars(self, ratings=None, statuses=None, publication_demographics=None):
-        return self.search('', ratings)
+        return self.search('', ratings=ratings, orderby='populars')
 
     def resolve_chapters(self, manga_slug):
         chapters = []
@@ -381,15 +346,22 @@ class Mangadex(Server):
 
         return chapters
 
-    def search(self, term, ratings=None, statuses=None, publication_demographics=None):
+    def search(self, term, ratings=None, statuses=None, publication_demographics=None, orderby=None):
         params = {
             'limit': SEARCH_RESULTS_LIMIT,
             'contentRating[]': ratings,
             'status[]': statuses,
+            'includes[]': ['cover_art', ],
             'publicationDemographic[]': publication_demographics,
             'availableTranslatedLanguage[]': [self.lang_code, ],
-            'order[followedCount]': 'desc',
         }
+        if orderby == 'latest':
+            params['order[latestUploadedChapter]'] = 'desc'
+        elif orderby == 'populars':
+            params['order[followedCount]'] = 'desc'
+        else:
+            params['order[title]'] = 'asc'
+
         if term:
             params['title'] = term
 
@@ -398,16 +370,23 @@ class Mangadex(Server):
             return None
 
         results = []
-        for result in r.json()['data']:
-            name = self.__get_manga_title(result['attributes'])
+        for item in r.json()['data']:
+            name = self.__get_manga_title(item['attributes'])
+
+            cover = None
+            for relationship in item['relationships']:
+                if relationship['type'] == 'cover_art':
+                    cover = self.cover_url.format(item['id'], relationship['attributes']['fileName'])
+                    break
 
             if name:
                 results.append(dict(
-                    slug=result['id'],
+                    slug=item['id'],
                     name=name,
+                    cover=cover,
                 ))
             else:
-                logger.warning('Ignoring result {}, missing name'.format(result['id']))
+                logger.warning('Ignoring result {}, missing name'.format(item['id']))
 
         return results
 
