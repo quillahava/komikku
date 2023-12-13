@@ -51,7 +51,7 @@ class Mangakawaii(Server):
     ]
     image_url = '{0}/uploads/manga/{1}/chapters_{2}/{3}/{4}?{5}'
     cover_url = cdn_base_urls[0] + '/uploads/manga/{0}/cover/cover_250x350.jpg'
-    bypass_cf_url = base_url + '/manga/martial-peak/'
+    bypass_cf_url = base_url + '/manga/martial-peak'
 
     csrf_token = None
     is_lang_set = False
