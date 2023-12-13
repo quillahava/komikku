@@ -230,12 +230,20 @@ class CardPage(Adw.NavigationPage):
         self.window.reader.init(self.manga, chapter)
 
     def on_shown(self, _page):
-        if self.window.last_navigation_action != 'push':
-            return
+        def do_populate():
+            if self.window.last_navigation_action != 'push':
+                return
 
-        # Wait page is shown (transition is ended) to populate
-        # Operation is resource intensive and could disrupt page transition
-        self.populate()
+            # Wait page is shown (transition is ended) to populate
+            # Operation is resource intensive and could disrupt page transition
+            self.populate()
+
+        if Settings.get_default().disable_animations:
+            # When animations are disabled, popped/pushed events are sent after `shown` event (bug?)
+            # Use idle_add to be sure that last `popped` or `pushed` event has been received
+            GLib.idle_add(do_populate)
+        else:
+            do_populate()
 
     def on_update_menu_clicked(self, _action, _param):
         self.window.updater.add(self.manga)
