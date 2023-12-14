@@ -375,7 +375,8 @@ class Server(ABC):
     def session_get(self, *args, **kwargs):
         try:
             r = self.session.get(*args, **kwargs)
-        except Exception:
+        except Exception as error:
+            logger.debug(error)
             raise
 
         return r
@@ -383,7 +384,8 @@ class Server(ABC):
     def session_patch(self, *args, **kwargs):
         try:
             r = self.session.patch(*args, **kwargs)
-        except Exception:
+        except Exception as error:
+            logger.debug(error)
             raise
 
         return r
@@ -391,7 +393,8 @@ class Server(ABC):
     def session_post(self, *args, **kwargs):
         try:
             r = self.session.post(*args, **kwargs)
-        except Exception:
+        except Exception as error:
+            logger.debug(error)
             raise
 
         return r
