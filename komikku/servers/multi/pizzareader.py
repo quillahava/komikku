@@ -126,6 +126,8 @@ class PizzaReader(Server):
             results.append(dict(
                 slug=item['slug'],
                 name=item['title'],
+                cover=item['thumbnail_small'],
+                last_chapter=item['last_chapter']['full_title'],
             ))
 
         return results
@@ -142,6 +144,8 @@ class PizzaReader(Server):
             results.append(dict(
                 slug=item['slug'],
                 name=item['title'],
+                cover=item['thumbnail_small'],
+                last_chapter=item['last_chapter']['full_title'],
             ))
 
         return results
@@ -158,6 +162,8 @@ class PizzaReader(Server):
             results.append(dict(
                 slug=item['slug'],
                 name=item['title'],
+                cover=item['thumbnail_small'],
+                last_chapter=item['last_chapter']['full_title'],
             ))
 
         return results
