@@ -361,6 +361,7 @@ class MangaStream(Server):
                 slug=serie['post_link'].split('/')[-2],
                 name=serie['post_title'],
                 cover=serie['post_image'],
+                last_chapter=serie['post_latest'],
             ))
 
         return results
