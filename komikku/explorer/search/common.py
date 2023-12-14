@@ -53,9 +53,9 @@ class ExplorerSearchResultRow(Gtk.ListBoxRow):
         if nb_chapters := data.get('nb_chapters'):
             subtitle.append(ngettext('{0} chapter', '{0} chapters', nb_chapters).format(nb_chapters))
         if last_chapter := data.get('last_chapter'):
-            subtitle.append(_('Last Chapter {}').fornat(last_chapter))
+            subtitle.append(_('Last Chapter: {}').format(last_chapter))
         if last_volume := data.get('last_volume'):
-            subtitle.append(_('Last Volume {}').fornat(last_volume))
+            subtitle.append(_('Last Volume: {}').format(last_volume))
 
         if subtitle:
             action_row.set_subtitle(' · '.join(subtitle))
