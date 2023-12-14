@@ -24,6 +24,7 @@ class ExplorerSearchStackPageSearch(ExplorerSearchStackPage):
         self.stack = self.parent.search_stack
         self.spinner = self.parent.search_spinner
         self.listbox = self.parent.search_listbox
+        self.no_results_status_page = self.parent.search_no_results_status_page
 
         self.listbox.connect('row-activated', self.parent.on_manga_clicked)
 
@@ -54,7 +55,7 @@ class ExplorerSearchStackPageSearch(ExplorerSearchStackPage):
                     GLib.idle_add(error, results, server)
             except Exception as e:
                 user_error_message = log_error_traceback(e)
-                GLib.idle_add(error, None, server.id, user_error_message)
+                GLib.idle_add(error, None, server, user_error_message)
 
         def run_covers(queue):
             while True:

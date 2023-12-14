@@ -43,7 +43,7 @@ class ExplorerSearchStackPageLatestUpdates(ExplorerSearchStackPage):
                     GLib.idle_add(error, results, server)
             except Exception as e:
                 user_error_message = log_error_traceback(e)
-                GLib.idle_add(error, None, server.id, user_error_message)
+                GLib.idle_add(error, None, server, user_error_message)
 
         def run_covers(queue):
             while True:
