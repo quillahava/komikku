@@ -222,6 +222,7 @@ class Heancms(Server):
                 slug=item['series_slug'],
                 name=item['title'],
                 cover=item['thumbnail'],
+                last_chapter=item['chapters'][0]['chapter_name'] if item.get('chapters') else None,
             ))
 
         return results
