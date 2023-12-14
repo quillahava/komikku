@@ -231,9 +231,12 @@ class MyMangaReaderCMS(Server):
 
         results = []
         for element in soup.select('.mangalist .manga-item'):
+            slug = element.a.get('href').split('/')[-1]
+
             results.append(dict(
                 name=element.a.text.strip(),
-                slug=element.a.get('href').split('/')[-1],
+                slug=slug,
+                cover=self.cover_url.format(slug),
             ))
 
         return results
@@ -264,9 +267,12 @@ class MyMangaReaderCMS(Server):
             name = a_element.get('title')
             if not name:
                 name = a_element.text
+            slug = a_element.get('href').split('/')[-1]
+
             results.append(dict(
                 name=name.strip(),
-                slug=a_element.get('href').split('/')[-1],
+                slug=slug,
+                cover=self.cover_url.format(slug),
             ))
 
         return results
@@ -295,6 +301,7 @@ class MyMangaReaderCMS(Server):
                     results.append(dict(
                         slug=item['data'],
                         name=item['value'],
+                        cover=self.cover_url.format(item['data']),
                     ))
             except Exception:
                 return None
