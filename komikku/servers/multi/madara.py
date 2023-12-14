@@ -252,6 +252,8 @@ class Madara(Server):
         for img_element in soup.find(class_=['read-container', 'reading-content']).find_all('img'):
             img_url = img_element.get('data-src')
             if img_url is None:
+                img_url = img_element.get('data-lazy-src')
+            if img_url is None:
                 img_url = img_element.get('src')
 
             data['pages'].append(dict(
@@ -338,26 +340,36 @@ class Madara(Server):
             data['vars[meta_query][0][s]'] = term
             data['vars[s]'] = term
 
-        r = self.session_post(self.api_url, data=data, headers={
-            'X-Requested-With': 'XMLHttpRequest',
-            'Referer': self.base_url
-        })
+        r = self.session_post(
+            self.api_url,
+            data=data,
+            headers={
+                'X-Requested-With': 'XMLHttpRequest',
+                'Referer': self.base_url
+            }
+        )
         if r.status_code != 200:
             return None
 
         soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
-        for element in soup.find_all('div', class_='post-title'):
-            a_element = element.h3.a
+        for element in soup.select('.row'):
+            a_element = element.select_one('.post-title a')
             slug = a_element.get('href').split('/')[-2]
             name = a_element.text.strip()
             if not name or not slug:
                 continue
 
+            if cover_img := element.select_one('.tab-thumb img'):
+                cover = cover_img.get('data-src')
+                if cover is None:
+                    cover = cover_img.get('src')
+
             results.append(dict(
                 slug=slug,
                 name=name,
+                cover=cover,
             ))
 
         return results
@@ -386,16 +398,19 @@ class Madara2(Madara):
         """
         Returns list of latest updates manga
         """
-        r = self.session_get(f'{self.base_url}/', params=dict(
-            s='',
-            post_type='wp-manga',
-            op='',
-            author='',
-            artist='',
-            release='',
-            adult='' if nsfw else 0,
-            m_orderby='new-manga',
-        ))
+        r = self.session_get(
+            f'{self.base_url}/',
+            params=dict(
+                s='',
+                post_type='wp-manga',
+                op='',
+                author='',
+                artist='',
+                release='',
+                adult='' if nsfw else 0,
+                m_orderby='new-manga',
+            )
+        )
         if r.status_code != 200:
             return None
 
@@ -418,16 +433,19 @@ class Madara2(Madara):
         """
         Returns list of most viewed manga
         """
-        r = self.session_get(f'{self.base_url}/', params=dict(
-            s='',
-            post_type='wp-manga',
-            op='',
-            author='',
-            artist='',
-            release='',
-            adult='' if nsfw else 0,
-            m_orderby='views',
-        ))
+        r = self.session_get(
+            f'{self.base_url}/',
+            params=dict(
+                s='',
+                post_type='wp-manga',
+                op='',
+                author='',
+                artist='',
+                release='',
+                adult='' if nsfw else 0,
+                m_orderby='views',
+            )
+        )
         if r.status_code != 200:
             return None
 
@@ -455,8 +473,8 @@ class Madara2(Madara):
             },
             headers={
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'X-Requested-With': 'XMLHttpRequest',
                 'Referer': self.base_url,
+                'X-Requested-With': 'XMLHttpRequest',
             }
         )
         if r.status_code != 200:
