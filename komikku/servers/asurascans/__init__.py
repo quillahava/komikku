@@ -23,10 +23,10 @@ class Asurascans(MangaStream):
 
 class Asurascans_tr(MangaStream):
     id = 'asurascans_tr'
-    name = 'Asura Scans'
+    name = 'Armoni Scans (Asura Scans)'
     lang = 'tr'
 
-    base_url = 'https://asurascanstr.com'
+    base_url = 'https://armoniscans.com'
 
     authors_selector = '.infox .fmed:-soup-contains("Yazar") span, .infox .fmed:-soup-contains("Çizer") span'
     genres_selector = '.infox .mgen a'
