@@ -29,8 +29,12 @@ komikku/card/chapters_list.py
 komikku/card/__init__.py
 komikku/categories_editor.py
 komikku/downloader.py
-komikku/explorer/__init__.py
-komikku/explorer/search.py
+komikku/explorer/common.py
+komikku/explorer/search/__init__.py
+komikku/explorer/search/latest_updates.py
+komikku/explorer/search/most_popular.py
+komikku/explorer/search/search_global.py
+komikku/explorer/search/search.py
 komikku/explorer/servers.py
 komikku/history.py
 komikku/library/categories_list.py
