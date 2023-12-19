@@ -10,6 +10,7 @@ from gi.repository import Gio
 from gi.repository import GObject
 from gi.repository import Gtk
 
+from komikku.explorer.common import ExplorerServerRow
 from komikku.models import Settings
 from komikku.servers import LANGUAGES
 from komikku.servers.utils import get_allowed_servers_list
@@ -37,6 +38,9 @@ class ExplorerServersPage(Adw.NavigationPage):
         self.parent = parent
         self.window = parent.window
 
+        self.servers = None
+
+        self.connect('hidden', self.on_hidden)
         self.connect('shown', self.on_shown)
 
         self.global_search_button.connect('clicked', self.on_global_search_button_clicked)
@@ -61,6 +65,27 @@ class ExplorerServersPage(Adw.NavigationPage):
         self.listbox.connect('row-activated', self.on_server_clicked)
         self.listbox.set_filter_func(self.filter)
 
+    def clear(self):
+        # Clear servers list
+        row = self.listbox.get_first_child()
+        while row:
+            next_row = row.get_next_sibling()
+            if isinstance(row, ExplorerServerRow):
+                row.dispose()
+            row = next_row
+
+        self.listbox.remove_all()
+
+        # Clear pinned servers list
+        row = self.pinned_listbox.get_first_child()
+        while row:
+            next_row = row.get_next_sibling()
+            if isinstance(row, ExplorerServerRow):
+                row.dispose()
+            row = next_row
+
+        self.pinned_listbox.remove_all()
+
     def filter(self, row):
         """
         This function gets one row and has to return:
@@ -82,6 +107,12 @@ class ExplorerServersPage(Adw.NavigationPage):
             term in LANGUAGES.get(server_lang, _('Other')).lower() or
             term in server_lang.lower()
         )
+
+    def on_hidden(self, _page):
+        if self.window.previous_page == self.props.tag:
+            return
+
+        self.clear()
 
     def on_global_search_button_clicked(self, _button):
         self.parent.search_page.show()
@@ -119,15 +150,13 @@ class ExplorerServersPage(Adw.NavigationPage):
         Gio.app_info_launch_default_for_uri(f'file://{path}')
 
     def populate_pinned(self):
-        self.pinned_listbox.remove_all()
-
         count = 0
         pinned_servers = Settings.get_default().pinned_servers
         for server_data in self.servers:
             if server_data['id'] not in pinned_servers:
                 continue
 
-            row = self.parent.build_server_row(server_data)
+            row = ExplorerServerRow(server_data, self)
             self.pinned_listbox.append(row)
             count += 1
 
@@ -153,8 +182,6 @@ class ExplorerServersPage(Adw.NavigationPage):
             self.pinned_listbox.set_visible(False)
             self.preselection = True
 
-        self.listbox.remove_all()
-
         last_lang = None
         for server_data in self.servers:
             if server_data['lang'] != last_lang:
@@ -169,7 +196,7 @@ class ExplorerServersPage(Adw.NavigationPage):
                 row.set_child(label)
                 self.listbox.append(row)
 
-            row = self.parent.build_server_row(server_data)
+            row = ExplorerServerRow(server_data, self)
             self.listbox.append(row)
 
         if self.preselection and len(self.servers) == 1:

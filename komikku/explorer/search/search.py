@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+import gc
 from gettext import gettext as _
 from queue import Empty, Queue
 import threading
@@ -9,9 +10,9 @@ import time
 
 from gi.repository import GLib
 
-from komikku.explorer.search.common import DOWNLOAD_MAX_DELAY
-from komikku.explorer.search.common import ExplorerSearchResultRow
-from komikku.explorer.search.common import ExplorerSearchStackPage
+from komikku.explorer.common import DOWNLOAD_MAX_DELAY
+from komikku.explorer.common import ExplorerSearchResultRow
+from komikku.explorer.common import ExplorerSearchStackPage
 from komikku.utils import log_error_traceback
 
 
@@ -47,18 +48,18 @@ class ExplorerSearchStackPageSearch(ExplorerSearchStackPage):
             self.parent.register_request('search')
 
             try:
-                results = server.search(term, **self.parent.search_filters)
-
-                if results:
+                if results := server.search(term, **self.parent.search_filters):
                     GLib.idle_add(complete, results, server, queue)
                 else:
                     GLib.idle_add(error, results, server)
             except Exception as e:
                 user_error_message = log_error_traceback(e)
                 GLib.idle_add(error, None, server, user_error_message)
+            finally:
+                gc.collect()
 
         def run_covers(queue):
-            while True:
+            while not queue.empty():
                 try:
                     row, server = queue.get()
                 except Empty:
@@ -95,6 +96,8 @@ class ExplorerSearchStackPageSearch(ExplorerSearchStackPage):
 
             self.stack.set_visible_child_name('results')
 
+            thread_covers.start()
+
         def error(results, server, message=None):
             self.spinner.stop()
 
@@ -112,8 +115,8 @@ class ExplorerSearchStackPageSearch(ExplorerSearchStackPage):
             self.stack.set_visible_child_name('no_results')
 
         self.clear()
-        self.stack.set_visible_child_name('loading')
         self.spinner.start()
+        self.stack.set_visible_child_name('loading')
         self.listbox.set_sort_func(None)
 
         if self.parent.requests.get('search') and self.parent.server.id in self.parent.requests['search']:
@@ -128,4 +131,3 @@ class ExplorerSearchStackPageSearch(ExplorerSearchStackPage):
 
         thread_covers = threading.Thread(target=run_covers, args=(queue, ))
         thread_covers.daemon = True
-        thread_covers.start()

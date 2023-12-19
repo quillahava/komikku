@@ -4,6 +4,7 @@
 
 from concurrent.futures import as_completed
 from concurrent.futures import ThreadPoolExecutor
+import gc
 from gettext import gettext as _
 from queue import Empty, Queue
 import threading
@@ -18,10 +19,11 @@ from komikku.models import Settings
 from komikku.servers import LANGUAGES
 from komikku.utils import log_error_traceback
 
-from komikku.explorer.search.common import DOWNLOAD_MAX_DELAY
-from komikku.explorer.search.common import ExplorerSearchResultRow
-from komikku.explorer.search.common import ExplorerSearchStackPage
-from komikku.explorer.search.common import get_server_default_search_filters
+from komikku.explorer.common import DOWNLOAD_MAX_DELAY
+from komikku.explorer.common import ExplorerServerRow
+from komikku.explorer.common import ExplorerSearchResultRow
+from komikku.explorer.common import ExplorerSearchStackPage
+from komikku.explorer.common import get_server_default_search_filters
 
 
 class ExplorerSearchStackPageSearchGlobal(ExplorerSearchStackPage):
@@ -36,7 +38,7 @@ class ExplorerSearchStackPageSearchGlobal(ExplorerSearchStackPage):
         self.parent = parent
         self.window = self.parent.window
         self.stack = self.parent.search_stack
-        self.listbox = self.parent.search_listbox
+        self.listbox = self.parent.search_listbox  # shared with explorer.search page
         self.filter_menu_button = self.parent.filter_menu_button
 
         self.selected_filters = Settings.get_default().explorer_search_global_selected_filters
@@ -91,10 +93,12 @@ class ExplorerSearchStackPageSearchGlobal(ExplorerSearchStackPage):
 
                     self.parent.progressbar.set_fraction((index + 1) / len(servers))
 
+            gc.collect()
+
             GLib.idle_add(complete)
 
         def run_covers(queue):
-            while True:
+            while not queue.empty() or self.lock:
                 try:
                     row, server = queue.get()
                 except Empty:
@@ -113,7 +117,7 @@ class ExplorerSearchStackPageSearchGlobal(ExplorerSearchStackPage):
                             if delay:
                                 time.sleep(delay)
 
-                        queue.task_done()
+                    queue.task_done()
 
         def complete():
             self.lock = False
@@ -166,6 +170,9 @@ class ExplorerSearchStackPageSearchGlobal(ExplorerSearchStackPage):
                 self.listbox.append(row)
 
             self.listbox.invalidate_sort()
+
+            if not thread_covers.is_alive():
+                thread_covers.start()
 
         def search_server(server_data):
             server = getattr(server_data['module'], server_data['class_name'])()
@@ -226,7 +233,7 @@ class ExplorerSearchStackPageSearchGlobal(ExplorerSearchStackPage):
         # Init results list
         for server_data in servers:
             # Server row
-            row = self.parent.parent.build_server_row(server_data)
+            row = ExplorerServerRow(server_data, self.parent)
             row.server_data = server_data
             row.position = 0
             row.results = False

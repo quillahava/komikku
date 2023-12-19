@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
+import gc
 from gettext import gettext as _
 from queue import Empty, Queue
 import threading
@@ -9,9 +10,9 @@ import time
 
 from gi.repository import GLib
 
-from komikku.explorer.search.common import DOWNLOAD_MAX_DELAY
-from komikku.explorer.search.common import ExplorerSearchResultRow
-from komikku.explorer.search.common import ExplorerSearchStackPage
+from komikku.explorer.common import DOWNLOAD_MAX_DELAY
+from komikku.explorer.common import ExplorerSearchResultRow
+from komikku.explorer.common import ExplorerSearchStackPage
 from komikku.utils import log_error_traceback
 
 
@@ -35,18 +36,18 @@ class ExplorerSearchStackPageMostPopular(ExplorerSearchStackPage):
             self.parent.register_request('most_popular')
 
             try:
-                results = server.get_most_populars(**self.parent.search_filters)
-
-                if results:
+                if results := server.get_most_populars(**self.parent.search_filters):
                     GLib.idle_add(complete, results, server, queue)
                 else:
                     GLib.idle_add(error, results, server)
             except Exception as e:
                 user_error_message = log_error_traceback(e)
                 GLib.idle_add(error, None, server, user_error_message)
+            finally:
+                gc.collect()
 
         def run_covers(queue):
-            while True:
+            while not queue.empty():
                 try:
                     row, server = queue.get()
                 except Empty:
@@ -83,6 +84,8 @@ class ExplorerSearchStackPageMostPopular(ExplorerSearchStackPage):
 
             self.stack.set_visible_child_name('results')
 
+            thread_covers.start()
+
         def error(results, server, message=None):
             self.spinner.stop()
 
@@ -114,4 +117,3 @@ class ExplorerSearchStackPageMostPopular(ExplorerSearchStackPage):
 
         thread_covers = threading.Thread(target=run_covers, args=(queue, ))
         thread_covers.daemon = True
-        thread_covers.start()

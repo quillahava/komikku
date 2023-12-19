@@ -10,7 +10,7 @@ from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import Gtk
 
-from komikku.explorer.search.common import get_server_default_search_filters
+from komikku.explorer.common import get_server_default_search_filters
 from komikku.explorer.search.latest_updates import ExplorerSearchStackPageLatestUpdates
 from komikku.explorer.search.most_popular import ExplorerSearchStackPageMostPopular
 from komikku.explorer.search.search import ExplorerSearchStackPageSearch
@@ -102,6 +102,13 @@ class ExplorerSearchPage(Adw.NavigationPage):
             return False
 
         return True
+
+    def clear(self):
+        self.search_page.clear()
+        self.most_popular_page.clear()
+        self.latest_updates_page.clear()
+
+        self.search_global_mode = False
 
     def init_search_filters(self):
         self.search_filters = get_server_default_search_filters(self.server)
@@ -204,7 +211,7 @@ class ExplorerSearchPage(Adw.NavigationPage):
         if self.window.previous_page == self.props.tag:
             return
 
-        self.search_global_mode = False
+        self.clear()
 
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.window.page != self.props.tag:
