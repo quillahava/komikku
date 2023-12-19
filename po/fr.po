@@ -6,16 +6,16 @@ msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-19 23:24+0100\n"
-"PO-Revision-Date: 2023-12-01 14:49+0000\n"
+"PO-Revision-Date: 2023-12-19 22:46+0000\n"
 "Last-Translator: Valéry Febvre <vfebvre@easter-eggs.com>\n"
-"Language-Team: French <https://hosted.weblate.org/projects/komikku/main/fr/"
-">\n"
+"Language-Team: French <https://hosted.weblate.org/projects/komikku/main/fr/>"
+"\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.3-dev\n"
+"X-Generator: Weblate 5.3\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -125,24 +125,28 @@ msgstr "@authorfullname@"
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[Reader] Webtoon pager: Fixed scrolling to top and memory leaks"
 msgstr ""
+"[Lecteur] Pager Webtoon : Correction du défilement vers le haut et de fuites "
+"de mémoire"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid ""
 "[Reader] Webtoon pager: Saved reading progress when navigating with slider "
 "of controls overlay"
 msgstr ""
+"[Lecteur] Pager Webtoon : Sauvegarde de la progression de la lecture lors de "
+"la navigation avec le curseur"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Servers] Added Honey Manga [UK]"
-msgstr ""
+msgstr "[Serveurs] Ajout de Honey Manga [UK]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Servers] MangaDex: Added Ukrainian"
-msgstr ""
+msgstr "[Serveurs] MangaDex : Ajout de l'Ukrainien"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 msgid "[L10n] Updated Spanish and Turkish translations"
-msgstr ""
+msgstr "[L10n] Mise à jour des traductions française et polonaise"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "Happy reading."
@@ -1055,16 +1059,16 @@ msgstr "Téléchargement terminé"
 #, python-brace-format
 msgid "{0} chapter"
 msgid_plural "{0} chapters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} chapitre"
+msgstr[1] "{0} chapitres"
 
 #: ../komikku/explorer/common.py:61
 msgid "Last Chapter: {}"
-msgstr ""
+msgstr "Dernier chapitre : {}"
 
 #: ../komikku/explorer/common.py:63
 msgid "Last Volume: {}"
-msgstr ""
+msgstr "Dernier volume : {}"
 
 #: ../komikku/explorer/common.py:176
 msgid "Comics stored locally as archives in CBZ/CBR formats"
