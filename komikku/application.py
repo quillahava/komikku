@@ -91,6 +91,10 @@ CREDITS = dict(
         'Shima (Russian)',
         'VaGNaroK (Brazilian Portuguese)',
     ),
+    supporters=(
+        'gondolyr',
+        'José',
+    ),
 )
 
 
@@ -390,6 +394,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
         window.set_designers(CREDITS['designers'])
         window.set_developers(CREDITS['developers'])
         window.set_translator_credits('\n'.join(CREDITS['translators']))
+        window.add_acknowledgement_section(_('Supporters'), CREDITS['supporters'])
 
         debug_info = DebugInfo(self.application)
         window.set_debug_info_filename('Komikku-debug-info.txt')
