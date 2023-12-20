@@ -6,6 +6,7 @@ from colorthief import ColorThief
 import datetime
 from enum import IntEnum
 from functools import cache
+import gc
 from gettext import gettext as _
 import importlib
 import json
@@ -782,6 +783,8 @@ class Manga:
             url=self.url,
             last_read=self.last_read
         ))
+        gc.collect()
+
         if data is None:
             return False, 0, 0, False
 
@@ -1036,6 +1039,8 @@ class Chapter:
         page = self.pages[index]
 
         data = self.manga.server.get_manga_chapter_page_image(self.manga.slug, self.manga.name, self.slug, page)
+        gc.collect()
+
         if data is None:
             return None
 
@@ -1144,6 +1149,8 @@ class Chapter:
             return True
 
         data = self.manga.server.get_manga_chapter_data(self.manga.slug, self.manga.name, self.slug, self.url)
+        gc.collect()
+
         if data is None or not data['pages']:
             return False
 
