@@ -175,19 +175,19 @@ class Aralosbd(Server):
         if resp_data['error'] != 0:
             return None
 
-        ids = []
-        results = []
+        results = {}
         for chapter in resp_data['chapters']:
-            if chapter['manga_id'] in ids:
-                continue
+            if chapter['manga_id'] not in results:
+                results[chapter['manga_id']] = dict(
+                    slug=chapter['manga_id'],
+                    name=chapter['manga_title'],
+                    cover=self.base_url + '/' + chapter['icon'],
+                    last_chapter=chapter['chapter_number'],
+                )
+            elif chapter['chapter_number'] > results[chapter['manga_id']]['last_chapter']:
+                results[chapter['manga_id']]['last_chapter'] = chapter['chapter_number']
 
-            results.append(dict(
-                slug=chapter['manga_id'],
-                name=chapter['manga_title'],
-            ))
-            ids.append(chapter['manga_id'])
-
-        return results
+        return results.values()
 
     def get_most_populars(self):
         """
@@ -233,6 +233,8 @@ class Aralosbd(Server):
                 results.append(dict(
                     slug=manga['id'],
                     name=manga['title'],
+                    cover=self.base_url + '/' + manga['icon'],
+                    nb_chapters=manga['chapter_count'],
                 ))
 
             more = page_num < data['page_count'] - 1
