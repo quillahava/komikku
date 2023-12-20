@@ -210,11 +210,13 @@ class Bilibili(Server):
                 results.append(dict(
                     slug=str(manga['season_id']),
                     name=manga['title'],
+                    cover=manga['vertical_cover'],
                 ))
             else:
                 results.append(dict(
                     slug=str(manga['id']),
                     name=BeautifulSoup(manga['title'], 'lxml').text,
+                    cover=manga['vertical_cover'],
                 ))
 
         return results
