@@ -173,6 +173,8 @@ class ExplorerServersPage(Adw.NavigationPage):
         self.pinned_listbox.set_visible(count > 0)
 
     def populate(self, servers=None):
+        self.clear()
+
         if not servers:
             self.servers = get_allowed_servers_list(Settings.get_default())
             self.populate_pinned()

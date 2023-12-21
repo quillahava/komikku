@@ -86,7 +86,8 @@ class ExplorerSearchResultRow(Adw.ActionRow):
         self.manga_data = None
 
         if self.has_cover:
-            self.cover.get_child().set_paintable(None)
+            if self.cover.get_child():
+                self.cover.get_child().set_paintable(None)
             self.cover.remove_controller(self.gesture_click)
 
             if self.popover.get_child():
