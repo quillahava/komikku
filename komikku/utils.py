@@ -118,7 +118,7 @@ def expand_and_resize_cover(buffer):
         new_img = img
 
     new_buffer = BytesIO()
-    new_img.convert('RGB').save(new_buffer, 'JPEG', quality=95)
+    new_img.convert('RGB').save(new_buffer, 'JPEG', quality=50)
 
     return new_buffer.getbuffer()
 
