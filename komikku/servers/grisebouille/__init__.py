@@ -139,6 +139,7 @@ class Grisebouille(Server):
             data.append(dict(
                 slug=slug,
                 name=item.a.img.get('title').encode('iso-8859-1').decode(),
+                cover=item.a.img.get('src'),
             ))
 
         return data
