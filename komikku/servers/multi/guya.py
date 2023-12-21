@@ -166,6 +166,7 @@ class Guya(Server):
             results.append(dict(
                 slug=item['slug'],
                 name=name,
+                cover=self.base_url + item['cover'],
             ))
 
         return results
