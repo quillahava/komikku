@@ -153,6 +153,7 @@ class Dbmultiverse(Server):
         return [dict(
             slug='dbm_{0}'.format(self.lang),
             name='Dragon Ball Multiverse (DBM)',
+            cover=self.cover_url,
         )]
 
     def search(self, term=None):
