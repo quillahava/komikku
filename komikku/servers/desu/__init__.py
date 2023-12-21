@@ -163,4 +163,9 @@ class Desu(Server):
 
         resp_data = r.json()['response']
 
-        return [dict(slug=item['id'], name=item['russian']) for item in resp_data]
+        return [dict(
+            slug=item['id'],
+            name=item['russian'],
+            cover=item['image']['preview'],
+            last_chapter=item['chapters']['updated']['ch'],
+        ) for item in resp_data]
