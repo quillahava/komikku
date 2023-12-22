@@ -348,9 +348,11 @@ class Mangakawaii(Server):
 
         results = []
         for element in soup.find_all('div', class_='media-thumbnail'):
+            slug = element.find('a').get('href').split('/')[-1]
             results.append(dict(
                 name=element.find('div', class_='media-thumbnail__overlay').find('h3').text.strip(),
-                slug=element.find('a').get('href').split('/')[-1],
+                slug=slug,
+                cover=self.cover_url.format(slug),
             ))
 
         return results
@@ -396,6 +398,7 @@ class Mangakawaii(Server):
                     results.append(dict(
                         slug=item['slug'],
                         name=item['value'],
+                        cover=self.cover_url.format(item['slug']),
                     ))
             except Exception:
                 return None
