@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: Komikku 0.30.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-19 23:24+0100\n"
-"PO-Revision-Date: 2023-12-06 10:11+0000\n"
+"PO-Revision-Date: 2023-12-23 00:22+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/komikku/main/es/"
-">\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/komikku/main/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -127,24 +127,28 @@ msgstr "@authorfullname@"
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[Reader] Webtoon pager: Fixed scrolling to top and memory leaks"
 msgstr ""
+"[Lector] El paginador Webtoon: Corregido el desplazamiento a la parte "
+"superior y las pérdidas de memoria"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid ""
 "[Reader] Webtoon pager: Saved reading progress when navigating with slider "
 "of controls overlay"
 msgstr ""
+"[Lector] El paginador de Webtoon: Progreso de lectura guardado al navegar "
+"con el control deslizante de los controles superpuestos"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Servers] Added Honey Manga [UK]"
-msgstr ""
+msgstr "[Servidores] Añadido Honey Manga [UK]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Servers] MangaDex: Added Ukrainian"
-msgstr ""
+msgstr "[Servidores] MangaDex: Añadido ucraniano"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 msgid "[L10n] Updated Spanish and Turkish translations"
-msgstr ""
+msgstr "[L10n] Actualizadas las traducciones al español y al turco"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "Happy reading."
@@ -1055,16 +1059,16 @@ msgstr "Descarga completada"
 #, python-brace-format
 msgid "{0} chapter"
 msgid_plural "{0} chapters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} capítulo"
+msgstr[1] "{0} capítulos"
 
 #: ../komikku/explorer/common.py:61
 msgid "Last Chapter: {}"
-msgstr ""
+msgstr "Último capítulo: {}"
 
 #: ../komikku/explorer/common.py:63
 msgid "Last Volume: {}"
-msgstr ""
+msgstr "Último volumen: {}"
 
 #: ../komikku/explorer/common.py:176
 msgid "Comics stored locally as archives in CBZ/CBR formats"
