@@ -312,6 +312,7 @@ class Mangatube(Server):
                 results.append(dict(
                     slug='{0}-{1}'.format(item['manga_id'], item['manga_slug']),
                     name=item['manga_title'],
+                    cover=item['covers'][0]['img_name'] if item.get('covers') else None,
                 ))
 
         return results
