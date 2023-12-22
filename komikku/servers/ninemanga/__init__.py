@@ -27,6 +27,7 @@ class Ninemanga(Server):
     manga_url = base_url + '/manga/{0}.html?waring=1'
     chapter_url = base_url + '/chapter/{0}/{1}'
     page_url = chapter_url
+    base_cover_url = 'https://img11.niadd.com'
 
     def __init__(self):
         if self.session is None:
@@ -196,10 +197,11 @@ class Ninemanga(Server):
         soup = BeautifulSoup(r.text, 'html.parser')
 
         results = []
-        for a_element in soup.find('ul', class_='direlist').find_all('a', class_='bookname'):
+        for a_element in soup.select('.direlist .bookinfo > dt > a'):
             results.append(dict(
-                name=a_element.text.strip(),
+                name=a_element.img.get('alt').strip(),
                 slug=unquote_plus(a_element.get('href')).split('/')[-1][:-5],
+                cover=a_element.img.get('src'),
             ))
 
         return results
@@ -219,10 +221,11 @@ class Ninemanga(Server):
         soup = BeautifulSoup(r.text, 'html.parser')
 
         results = []
-        for a_element in soup.find('ul', class_='direlist').find_all('a', class_='bookname'):
+        for a_element in soup.select('.direlist .bookinfo > dt > a'):
             results.append(dict(
-                name=a_element.text.strip(),
+                name=a_element.img.get('alt').strip(),
                 slug=unquote_plus(a_element.get('href')).split('/')[-1][:-5],
+                cover=a_element.img.get('src'),
             ))
 
         return results
@@ -244,6 +247,7 @@ class Ninemanga(Server):
                     results.append(dict(
                         slug=item[2],
                         name=item[1],
+                        cover=self.base_cover_url + item[0],
                     ))
             except Exception:
                 return None
