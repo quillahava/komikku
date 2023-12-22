@@ -173,6 +173,7 @@ class Peppercarrot(Server):
         return [dict(
             slug='',
             name='Pepper&Carrot',
+            cover=self.cover_url,
         )]
 
     def search(self, term=None):
