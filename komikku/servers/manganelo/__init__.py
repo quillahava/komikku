@@ -24,8 +24,7 @@ class Manganelo(Server):
 
     base_url = 'https://manganato.com'
     search_url = base_url + '/getstorysearchjson'
-    latest_updates_url = base_url
-    most_populars_url = base_url + '/genre-all?type=topview'
+    manga_list_url = base_url + '/genre-all'
     manga_url = 'https://chapmanganato.com/manga-{0}'
     chapter_url = manga_url + '/chapter-{1}'
 
@@ -176,31 +175,23 @@ class Manganelo(Server):
         """
         Returns latest manga list
         """
-        r = self.session_get(self.latest_updates_url)
-        if r.status_code != 200:
-            return None
-
-        mime_type = get_buffer_mime_type(r.content)
-        if mime_type != 'text/html':
-            return None
-
-        soup = BeautifulSoup(r.text, 'html.parser')
-
-        results = []
-        for item_element in soup.find_all('div', class_='content-homepage-item'):
-            url = item_element.a.get('href')
-            results.append(dict(
-                name=item_element.a.get('title').strip(),
-                slug=url[skip_past(url, '/manga-'):],
-            ))
-
-        return results
+        return self.get_manga_list(orderby='latest')
 
     def get_most_populars(self):
         """
         Returns hot manga list
         """
-        r = self.session_get(self.most_populars_url)
+        return self.get_manga_list(orderby='populars')
+
+    def get_manga_list(self, orderby=None):
+        """
+        Returns hot manga list
+        """
+        params = {}
+        if orderby == 'populars':
+            params['type'] = 'topview'
+
+        r = self.session_get(self.manga_list_url, params=params)
         if r.status_code != 200:
             return None
 
@@ -211,11 +202,12 @@ class Manganelo(Server):
         soup = BeautifulSoup(r.text, 'html.parser')
 
         results = []
-        for element in soup.find_all('div', class_='genres-item-info'):
-            url = element.h3.a.get('href')
+        for element in soup.select('.content-genres-item'):
+            url = element.div.h3.a.get('href')
             results.append(dict(
-                name=element.h3.a.get('title').strip(),
+                name=element.div.h3.a.get('title').strip(),
                 slug=url[skip_past(url, '/manga-'):],
+                cover=element.a.img.get('src'),
             ))
 
         return results
