@@ -126,6 +126,7 @@ class Monkeyuser(Server):
         return [dict(
             slug='',
             name='MonkeyUser',
+            cover=self.cover_url,
         )]
 
     def search(self, term=None):
