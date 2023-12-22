@@ -223,12 +223,16 @@ class Komga(Server):
 
     def login(self, username, password):
         try:
-            r = self.session.get(self.api_base_url, auth=HTTPBasicAuth(username, password))
+            r = self.session.get(
+                self.api_search_url,
+                params={
+                    'remember-me': True,
+                },
+                auth=HTTPBasicAuth(username, password)
+            )
+            if r.status_code != 200:
+                return False
         except Exception:
-            return False
-
-        mime_type = get_buffer_mime_type(r.content)
-        if mime_type != 'text/html':
             return False
 
         self.save_session()
@@ -247,6 +251,7 @@ class Komga(Server):
             results.append(dict(
                 name=item['name'],
                 slug=item['id'],
+                cover=self.api_cover_url.format(item['id']),
             ))
 
         return results
