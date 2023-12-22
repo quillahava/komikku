@@ -115,8 +115,7 @@ class ExplorerSearchResultRow(Adw.ActionRow):
         if not self.has_cover:
             return
 
-        if data:
-            paintable = create_paintable_from_data(data, THUMB_WIDTH, THUMB_HEIGHT, True, False)
+        paintable = create_paintable_from_data(data, THUMB_WIDTH, THUMB_HEIGHT, True, False) if data else None
         if paintable is None:
             paintable = create_paintable_from_resource(
                 '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT, False)
