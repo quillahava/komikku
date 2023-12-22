@@ -18,7 +18,7 @@ class Mangaworld(Server):
     lang = 'it'
     is_nsfw = True
 
-    base_url = 'https://mangaworld.so'
+    base_url = 'https://mangaworld.bz'
     search_url = base_url + '/archive'
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/read/{1}/1?style=list'
@@ -205,10 +205,11 @@ class Mangaworld(Server):
         soup = BeautifulSoup(r.content, 'html.parser')
 
         results = []
-        for a_element in soup.find(class_='comics-grid').find_all('a', class_='manga-title'):
+        for a_element in soup.select('.comics-grid .entry > a'):
             results.append(dict(
-                name=a_element.text.strip(),
+                name=a_element.get('title').strip(),
                 slug='/'.join(a_element.get('href').split('/')[-2:]),
+                cover=a_element.img.get('src'),
             ))
 
         return results
