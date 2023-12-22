@@ -79,9 +79,11 @@ class Mangasin(MyMangaReaderCMS):
 
         results = []
         for a_element in soup.select('.mangalist .manga-item h3 a:nth-child(3)'):
+            slug = a_element.get('href').split('/')[-1]
             results.append(dict(
                 name=a_element.text.strip(),
-                slug=a_element.get('href').split('/')[-1],
+                slug=slug,
+                cover=self.cover_url.format(slug),
             ))
 
         return results
