@@ -3,6 +3,7 @@
 # Author: GrownNed <grownned@gmail.com>
 
 from bs4 import BeautifulSoup
+import datetime
 import json
 import requests
 
@@ -19,8 +20,6 @@ class Readmanga(Server):
 
     base_url = 'https://readmanga.live'
     search_url = base_url + '/search/advancedResults'
-    latest_updates_url = base_url + '/list?sortType=updated'
-    most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
 
@@ -194,56 +193,44 @@ class Readmanga(Server):
         """
         return self.manga_url.format(slug)
 
-    def get_manga_list(self, orderby):
-        r = self.session_get(self.most_populars_url if orderby == 'populars' else self.latest_updates_url)
-        if r.status_code != 200:
-            return None
-
-        mime_type = get_buffer_mime_type(r.content)
-        if mime_type != 'text/html':
-            return None
-
-        soup = BeautifulSoup(r.text, 'lxml')
-
-        results = []
-        for h3_element in soup.find('div', class_='tiles').find_all('h3'):
-            if not h3_element.a:
-                continue
-            results.append(dict(
-                name=h3_element.a.get('title').strip(),
-                slug=h3_element.a.get('href')[1:],
-            ))
-
-        return results
-
     def get_most_populars(self):
         """
         Returns best noted manga
         """
-        return self.get_manga_list('populars')
+        return self.search('', 'POPULARITY')
 
     def get_latest_updates(self):
         """
         Returns latest updated manga
         """
-        return self.get_manga_list('latest')
+        return self.search('', 'DATE_UPDATE')
 
-    def search(self, term):
-        r = self.session_get(self.search_url, params=dict(q=term))
+    def search(self, term, orderby='NAME'):
+        r = self.session_get(
+            self.search_url,
+            params=dict(
+                q=term,
+                offset='',
+                years=f'1950,{datetime.date.today().year + 1}',
+                sortType=orderby,
+            )
+        )
         if r.status_code != 200:
             return None
 
         mime_type = get_buffer_mime_type(r.content)
-        if mime_type != 'text/html':
+        if mime_type not in ('text/plain', 'text/html'):
             return None
 
-        soup = BeautifulSoup(r.text, 'lxml')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         results = []
-        for h3_element in soup.find_all('h3')[1:]:
+        for element in soup.select('.tile'):
+            a_element = element.select_one('.desc > h3 > a')
             results.append(dict(
-                name=h3_element.a.text.strip(),
-                slug=h3_element.a.get('href')[1:],
+                name=a_element.text.strip(),
+                slug=a_element.get('href')[1:],
+                cover=element.select_one('.img img.img-fluid').get('data-original'),
             ))
 
         return sorted(results, key=lambda m: m['name'])
@@ -258,8 +245,6 @@ class Allhentai(Readmanga):
 
     base_url = 'http://2023.allhen.online'
     search_url = base_url + '/search/advanced'
-    latest_updates_url = base_url + '/list?sortType=updated'
-    most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
 
@@ -274,8 +259,6 @@ class Mintmanga(Readmanga):
     # 16
     base_url = 'https://mintmanga.live'
     search_url = base_url + '/search/advancedResults'
-    latest_updates_url = base_url + '/list?sortType=updated'
-    most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
 
@@ -289,8 +272,6 @@ class Selfmanga(Readmanga):
 
     base_url = 'https://selfmanga.live'
     search_url = base_url + '/search/advancedResults'
-    latest_updates_url = base_url + '/list?sortType=updated'
-    most_populars_url = base_url + '/list?sortType=rate'
     manga_url = base_url + '/{0}'
     chapter_url = manga_url + '/{1}?mtr=1'
 
