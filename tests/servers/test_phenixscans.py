@@ -42,7 +42,7 @@ def test_phenixscans(phenixscans_server):
     print('Search')
     try:
         # Use first result of get_most_populars
-        response = phenixscans_server.search(response[0]['name'], '')
+        response = phenixscans_server.search(response[1]['name'], '')
         slug = response[0]['slug']
     except Exception as e:
         slug = None
