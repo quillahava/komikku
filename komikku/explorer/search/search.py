@@ -65,7 +65,11 @@ class ExplorerSearchStackPageSearch(ExplorerSearchStackPage):
                 except Empty:
                     continue
                 else:
-                    if self.window.page == self.parent.props.tag or self.window.previous_page == self.parent.props.tag:
+                    # Proceed only if current page or previous page is `explorer.search`
+                    proceed = self.window.page == self.parent.props.tag or self.window.previous_page == self.parent.props.tag
+                    # And if search page is `search`
+                    proceed = proceed and self.parent.page == 'search'
+                    if proceed:
                         start = time.time()
                         try:
                             data, _etag = server.get_manga_cover_image(row.manga_data['cover'])
