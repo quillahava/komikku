@@ -145,6 +145,7 @@ class Xkcd(Server):
         return [dict(
             slug='',
             name='xkcd',
+            cover=self.cover_url,
         )]
 
     def search(self, term=None):
