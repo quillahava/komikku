@@ -247,10 +247,11 @@ class Mangasee(Server):
 
         self.mangas = sorted(self.mangas, key=lambda m: m['lt'], reverse=True)
 
-        for manga in self.mangas:
+        for manga in self.mangas[:100]:
             results.append(dict(
                 name=manga['s'],
                 slug=manga['i'],
+                cover=self.cover_url.format(manga['i']),
             ))
 
         return results
@@ -302,6 +303,7 @@ class Mangasee(Server):
             results.append(dict(
                 name=manga['s'],
                 slug=manga['i'],
+                cover=self.cover_url.format(manga['i']),
             ))
 
         return results
@@ -321,6 +323,7 @@ class Mangasee(Server):
             results.append(dict(
                 name=manga['s'],
                 slug=manga['i'],
+                cover=self.cover_url.format(manga['i']),
             ))
 
         return results
