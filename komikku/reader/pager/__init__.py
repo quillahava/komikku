@@ -485,6 +485,9 @@ class Pager(Adw.Bin, BasePager):
             return Gdk.EVENT_PROPAGATE
 
         page = self.current_page
+        if page is None:
+            return
+
         if page.is_scrollable:
             # Page is scrollable (horizontally or vertically)
 
