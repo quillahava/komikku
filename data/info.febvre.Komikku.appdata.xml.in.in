@@ -98,8 +98,29 @@
     <url type="donation">https://valos.gitlab.io/Komikku/#sponsor</url>
 
     <releases>
-        <release version="1.31.0" date="2023-12-06">
+        <release version="1.32.0" date="2023-12-23">
             <description>
+                <ul>
+                    <li>[Explorer] Search: Add comics covers (when available)</li>
+                    <li>[UI] Fix broken page navigation when animations are disabled</li>
+                    <li>[About] Add `Supporters` section</li>
+                    <li>[Servers] Asura Scans [EN/TR]: Update</li>
+                    <li>[Servers] Izneo [FR]: Update</li>
+                    <li>[Servers] Komga: Update</li>
+                    <li>[Servers] LSComic [EN]: Update (rebranded, previously LeviatanScans)</li>
+                    <li>[Servers] MangaDex: Update</li>
+                    <li>[Servers] MangaKawaii: Update</li>
+                    <li>[Servers] MangaWorld: Update</li>
+                    <li>[Servers] Mint Manga: Update</li>
+                    <li>[Servers] Read Manga: Update</li>
+                    <li>[Servers] Self Manga: Update</li>
+                    <li>[L10n] Updated Arabic, French and Turkish translations</li>
+                </ul>
+                <p>Happy Christmas and Happy reading.</p>
+            </description>
+        </release>
+        <release version="1.31.0" date="2023-12-06">
+            <description translatable="no">
                 <ul>
                     <li>[Reader] Webtoon pager: Fixed scrolling to top and memory leaks</li>
                     <li>[Reader] Webtoon pager: Saved reading progress when navigating with slider of controls overlay</li>

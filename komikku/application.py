@@ -402,13 +402,22 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] Webtoon pager: Fixed scrolling to top and memory leaks</li>
-                <li>[Reader] Webtoon pager: Saved reading progress when navigating with slider of controls overlay</li>
-                <li>[Servers] Added Honey Manga [UK]</li>
-                <li>[Servers] MangaDex: Added Ukrainian</li>
-                <li>[L10n] Updated Spanish and Turkish translations</li>
+                <li>[Explorer] Search: Add comics covers (when available)</li>
+                <li>[UI] Fix broken page navigation when animations are disabled</li>
+                <li>[About] Add `Supporters` section</li>
+                <li>[Servers] Asura Scans [EN/TR]: Update</li>
+                <li>[Servers] Izneo [FR]: Update</li>
+                <li>[Servers] Komga: Update</li>
+                <li>[Servers] LSComic [EN]: Update (rebranded, previously LeviatanScans)</li>
+                <li>[Servers] MangaDex: Update</li>
+                <li>[Servers] MangaKawaii: Update</li>
+                <li>[Servers] MangaWorld: Update</li>
+                <li>[Servers] Mint Manga: Update</li>
+                <li>[Servers] Read Manga: Update</li>
+                <li>[Servers] Self Manga: Update</li>
+                <li>[L10n] Updated Arabic, French and Turkish translations</li>
             </ul>
-            <p>Happy reading.</p>
+            <p>Happy Christmas and Happy reading.</p>
         """)
 
         window.add_link(_('Join Chat'), 'https://matrix.to/#/#komikku-gnome:matrix.org')
