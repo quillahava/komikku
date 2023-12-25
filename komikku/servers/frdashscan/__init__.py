@@ -14,4 +14,5 @@ class Frdashscan(Madara):
     date_format = None
 
     base_url = 'https://fr-scan.com'
+    chapter_url = base_url + '/manga/{0}/{1}/'  # don't support style param
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'

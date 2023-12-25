@@ -106,12 +106,14 @@ class Madara(Server):
         if cover_div := soup.find('div', class_='summary_image'):
             data['cover'] = cover_div.a.img.get('data-src')
             if data['cover'] is None:
-                data['cover'] = cover_div.a.img.get('data-lazy-srcset')
-                if data['cover']:
-                    # data-lazy-srcset can contain several covers with sizes: url1 size1 url2 size2...
-                    data['cover'] = data['cover'].split()[0]
-            if data['cover'] is None:
-                data['cover'] = cover_div.a.img.get('src')
+                data['cover'] = cover_div.a.img.get('data-lazy-src')
+                if data['cover'] is None:
+                    data['cover'] = cover_div.a.img.get('data-lazy-srcset')
+                    if data['cover']:
+                        # data-lazy-srcset can contain several covers with sizes: url1 size1 url2 size2...
+                        data['cover'] = data['cover'].split()[0]
+                    else:
+                        data['cover'] = cover_div.a.img.get('src')
 
         # Details
         for element in soup.find('div', class_='summary_content').find_all('div', class_='post-content_item'):
@@ -249,12 +251,16 @@ class Madara(Server):
         data = dict(
             pages=[],
         )
-        for img_element in soup.find(class_=['read-container', 'reading-content']).find_all('img'):
+        for img_element in soup.select_one('.read-container, .reading-content').select('img'):
+            if img_element.parent.name == 'noscript':
+                # In case server uses a second <img> encapsulated in a <noscript> element
+                continue
+
             img_url = img_element.get('data-src')
             if img_url is None:
                 img_url = img_element.get('data-lazy-src')
-            if img_url is None:
-                img_url = img_element.get('src')
+                if img_url is None:
+                    img_url = img_element.get('src')
 
             data['pages'].append(dict(
                 slug=None,
