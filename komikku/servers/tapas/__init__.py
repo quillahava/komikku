@@ -169,7 +169,8 @@ class Tapas(Server):
             results.append(dict(
                 slug=div_element.a.get('data-series-id'),
                 url=div_element.a.get('href'),
-                name=div_element.a.img.get('alt'),
+                name=div_element.a.get('data-tiara-event-meta-series'),
+                cover=div_element.a.img.get('src'),
             ))
 
         return results
@@ -234,6 +235,7 @@ class Tapas(Server):
                 slug=a_element.get('data-series-id'),
                 url=a_element.get('href'),
                 name=a_element.text,
+                cover=li_element.select_one('.item-thumb-wrap img').get('src'),
             ))
 
         if page_number == 1:
