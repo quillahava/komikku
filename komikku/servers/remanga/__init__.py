@@ -22,7 +22,7 @@ class Remanga(Server):
     name = 'Remanga'
     lang = 'ru'
 
-    base_url = 'https://xn--80aaig9ahr.xn--c1avg/'
+    base_url = 'https://xn--80aaig9ahr.xn--c1avg'
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/manga/{0}/{1}'
     api_base_url = 'https://api.xn--80aaig9ahr.xn--c1avg'
@@ -206,8 +206,15 @@ class Remanga(Server):
         if r.status_code != 200:
             return None
 
-        resp_data = r.json()['content']
-        return [dict(slug=item['dir'], name=item['rus_name']) for item in resp_data]
+        results = []
+        for item in r.json()['content']:
+            results.append(dict(
+                slug=item['dir'],
+                name=item['rus_name'],
+                cover=self.base_url + item['img']['mid'],
+            ))
+
+        return results
 
     def get_latest_updates(self):
         """
@@ -234,5 +241,12 @@ class Remanga(Server):
         if r.status_code != 200:
             return None
 
-        resp_data = r.json()['content']
-        return [dict(slug=item['dir'], name=item['rus_name']) for item in resp_data]
+        results = []
+        for item in r.json()['content']:
+            results.append(dict(
+                slug=item['dir'],
+                name=item['rus_name'],
+                cover=self.base_url + item['img']['mid'],
+            ))
+
+        return results
