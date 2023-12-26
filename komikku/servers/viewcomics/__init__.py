@@ -21,10 +21,13 @@ class Viewcomics(Server):
 
     base_url = 'https://viewcomics.org'
     search_url = base_url + '/search'
+    api_search_url = base_url + '/ajax/search'
     latest_updates_url = base_url + '/comic-updates'
     most_populars_url = base_url + '/popular-comics'
     manga_url = base_url + '/comic/{0}'
     chapter_url = base_url + '/{0}/{1}/full'
+
+    csrf_token = None
 
     def __init__(self):
         if self.session is None:
@@ -201,33 +204,50 @@ class Viewcomics(Server):
         soup = BeautifulSoup(r.text, 'html.parser')
 
         results = []
-        for a_element in soup.find('div', class_='eg-list').find_all('a', class_='egb-serie'):
+        for element in soup.select('.eg-list .eg-box'):
+            a_element = element.select_one('.egb-serie')
+            img_element = element.select_one('.eg-image img')
             results.append(dict(
                 slug=a_element.get('href').split('/')[-1],
                 name=a_element.text.strip(),
+                cover=img_element.get('src'),
             ))
 
         return results
 
     def search(self, term):
+        if self.csrf_token is None:
+            r = self.session_get(self.search_url)
+            if r.status_code != 200:
+                return None
+
+            soup = BeautifulSoup(r.text, 'html.parser')
+
+            self.csrf_token = soup.select_one('meta[name="csrf-token"]')['content']
+
         r = self.session_get(
-            self.search_url,
-            params=dict(keyword=term),
+            self.api_search_url,
+            params=dict(q=term),
             headers={
-                'referer': self.base_url,
+                'Referer': self.base_url,
+                'X-Csrf-TOKEN': self.csrf_token,
+                'X-Requested-With': 'XMLHttpRequest',
             }
         )
-
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        resp_data = r.json()
+        if resp_data['status'] != '1':
+            return None
 
         results = []
-        for a_element in soup.find('div', class_='eg-list').find_all('a', class_='egb-serie'):
+        for item in resp_data['data']:
             results.append(dict(
-                slug=a_element.get('href').split('/')[-1],
-                name=a_element.text.strip(),
+                slug=item['slug'],
+                name=item['title'],
+                cover=item['img_url'],
+                last_chapter=item['chapter_slug']
             ))
 
         return results
