@@ -163,6 +163,7 @@ class Zeroscans(Server):
                 name=item['name'],
                 slug=item['slug'],
                 cover=item['cover'].get('vertical') or item['cover'].get('horizontal'),
+                nb_chapters=item['chapter_count'],
             ))
             slugs.append(item['slug'])
 
@@ -191,6 +192,7 @@ class Zeroscans(Server):
                 name=item['name'],
                 slug=item['slug'],
                 cover=item['cover']['horizontal'],
+                nb_chapters=item['chapter_count'],
                 view_count=item['view_count'],
             ))
 
