@@ -19,10 +19,10 @@ class Xoxocomics(Server):
     lang = 'en'
     is_nsfw = True
 
-    base_url = 'https://xoxocomics.net'
-    latest_updates_url = base_url + '/comic-updates'
-    most_populars_url = base_url + '/popular-comics'
-    search_url = base_url + '/ajax/search'
+    base_url = 'https://xoxocomic.com'
+    latest_updates_url = base_url + '/comic-update'
+    most_populars_url = base_url + '/popular-comic'
+    search_url = base_url + '/search-comic'
     manga_url = base_url + '/comic/{0}?page={1}'
     chapter_url = base_url + '/comic/{0}/{1}/all'
 
@@ -69,7 +69,7 @@ class Xoxocomics(Server):
 
         for li_element in soup.find('ul', class_='list-info').find_all('li'):
             if 'author' in li_element.get('class'):
-                data['authors'] = [a_element.text.strip() for a_element in li_element.find_all('a')]
+                data['authors'] = [author.strip() for author in li_element.select_one('p:last-child').text.split('-')]
 
             elif 'kind' in li_element.get('class'):
                 data['genres'] = [a_element.text.strip() for a_element in li_element.find_all('a')]
@@ -103,7 +103,7 @@ class Xoxocomics(Server):
                 col_elements = li_element.find_all('div', recursive=False)
 
                 data['chapters'].append(dict(
-                    slug='/'.join(col_elements[0].a.get('href').split('/')[-2:]),
+                    slug=col_elements[0].a.get('href').split('/')[-1],
                     title=col_elements[0].a.text.strip(),
                     date=convert_date_string(col_elements[1].text.strip(), '%m/%d/%Y'),
                 ))
@@ -210,11 +210,13 @@ class Xoxocomics(Server):
 
         soup = BeautifulSoup(r.content, 'html.parser')
 
-        for element in soup.find(class_='items').find_all(class_='item'):
-            a_element = element.figure.figcaption.h3.a
+        for element in soup.select('.items figure'):
+            a_element = element.select_one('figcaption > h3 > a')
+            img_element = element.select_one('.image > a > img')
             results.append(dict(
                 name=a_element.text.strip(),
                 slug=a_element.get('href').split('/')[-1],
+                cover=img_element.get('data-original'),
             ))
 
         return results
@@ -223,7 +225,7 @@ class Xoxocomics(Server):
         results = []
         term = term.lower()
 
-        r = self.session.get(self.search_url, params=dict(q=term))
+        r = self.session.get(self.search_url, params=dict(keyword=term))
         if r.status_code != 200:
             return None
 
@@ -233,10 +235,13 @@ class Xoxocomics(Server):
 
         soup = BeautifulSoup(r.content, 'html.parser')
 
-        for a_element in soup.find_all('a'):
+        for element in soup.select('figure'):
+            a_element = element.select_one('figcaption > h3 > a')
+            img_element = element.select_one('.image > a > img')
             results.append(dict(
                 name=a_element.text.strip(),
                 slug=a_element.get('href').split('/')[-1],
+                cover=img_element.get('data-original'),
             ))
 
         return results
