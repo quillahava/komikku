@@ -34,7 +34,7 @@ class Webtoon(Server):
 
     base_url = 'https://www.webtoons.com'
     search_url = base_url + '/{0}/search'
-    most_populars_url = base_url + '/{0}/top'
+    most_populars_url = base_url + '/{0}/popular'
     manga_url = base_url + '{0}'
     chapters_url = 'https://m.webtoons.com{0}'
     chapter_url = base_url + '{0}'
@@ -232,15 +232,17 @@ class Webtoon(Server):
         """
         return self.manga_url.format(url)
 
-    def get_most_populars(self):
+    def get_most_populars(self, type='all'):
         """
         Returns TOP 10 manga
         """
         headers = {'user-agent': USER_AGENT}
-        if self.lang in LANGUAGES_CODES:
-            r = self.session_get(self.most_populars_url.format(LANGUAGES_CODES[self.lang]), headers=headers)
+        if self.lang != 'zh_Hant':
+            url = self.most_populars_url.format(LANGUAGES_CODES[self.lang])
         else:
-            r = self.session_get(self.most_populars_url, headers=headers)
+            url = self.most_populars_url
+
+        r = self.session_get(url, headers=headers)
         if r.status_code != 200:
             return None
 
@@ -250,20 +252,25 @@ class Webtoon(Server):
 
         soup = BeautifulSoup(r.text, 'html.parser')
 
+        classes = []
+        if type in ('all', 'webtoon'):
+            classes.append('NE=a:tgt')
+        if type in ('all', 'challenge'):
+            classes.append('NE=a:tct')
+
         results = []
-        for li_element in soup.find('ul', class_='lst_type1').find_all('li'):
-            if not li_element.a:
-                continue
+        for class_ in classes:
+            for li_element in soup.find(class_=class_).select('.lst_type1 li'):
+                split_url = urlsplit(li_element.a.get('href'))
+                url = '{0}?{1}'.format(split_url.path, split_url.query)
+                slug = split_url.query.split('=')[-1]
 
-            split_url = urlsplit(li_element.a.get('href'))
-            url = '{0}?{1}'.format(split_url.path, split_url.query)
-            slug = split_url.query.split('=')[-1]
-
-            results.append(dict(
-                slug=slug,
-                url=url,
-                name=li_element.a.find('p', class_='subj').text.strip(),
-            ))
+                results.append(dict(
+                    slug=slug,
+                    url=url,
+                    name=li_element.a.find('p', class_='subj').text.strip(),
+                    cover=li_element.a.img.get('src'),
+                ))
 
         return results
 
@@ -295,8 +302,13 @@ class Webtoon(Server):
         # Seems to help to bypass some region-based restrictions?!?
         self.session.cookies.clear()
 
+        if self.lang != 'zh_Hant':
+            url = self.search_url.format(LANGUAGES_CODES[self.lang])
+        else:
+            url = self.search_url
+
         r = self.session_get(
-            self.search_url.format(LANGUAGES_CODES[self.lang]),
+            url,
             params=dict(
                 keyword=term,
                 searchType=type,
@@ -313,9 +325,9 @@ class Webtoon(Server):
         soup = BeautifulSoup(r.text, 'html.parser')
 
         if type == 'CHALLENGE':
-            a_elements = soup.find_all('a', class_='challenge_item')
+            a_elements = soup.select('a.challenge_item')
         elif type == 'WEBTOON':
-            a_elements = soup.find_all('a', class_='card_item')
+            a_elements = soup.select('a.card_item')
 
         results = []
         for a_element in a_elements:
@@ -324,7 +336,8 @@ class Webtoon(Server):
             results.append(dict(
                 slug=a_element.get('href').split('=')[-1],
                 url=a_element.get('href').replace(self.base_url, ''),
-                name=a_element.find('p', class_='subj').text.strip(),
+                name=a_element.select_one('p.subj').text.strip(),
+                cover=a_element.select_one('img').get('src'),
             ))
 
         return results
@@ -336,7 +349,7 @@ class Dongmanmanhua(Webtoon):
     lang = 'zh_Hans'
 
     base_url = 'https://www.dongmanmanhua.cn'
-    search_url = base_url + '/{0}/search'
+    search_url = base_url + '/search'
     most_populars_url = base_url + '/top'
     manga_url = base_url + '{0}'
     chapters_url = 'https://m.dongmanmanhua.cn/{0}'
