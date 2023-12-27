@@ -15,6 +15,7 @@ class Goldenmangas(Server):
     name = 'Golden Mangás'
     lang = 'pt_BR'
     is_nsfw = True
+    status = 'disabled'
 
     has_cf = True
 
