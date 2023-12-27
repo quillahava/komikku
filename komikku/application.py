@@ -402,22 +402,13 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Explorer] Search: Add comics covers (when available)</li>
-                <li>[UI] Fix broken page navigation when animations are disabled</li>
-                <li>[About] Add `Supporters` section</li>
-                <li>[Servers] Asura Scans [EN/TR]: Update</li>
-                <li>[Servers] Izneo [FR]: Update</li>
-                <li>[Servers] Komga: Update</li>
-                <li>[Servers] LSComic [EN]: Update (rebranded, previously LeviatanScans)</li>
-                <li>[Servers] MangaDex: Update</li>
-                <li>[Servers] MangaKawaii: Update</li>
-                <li>[Servers] MangaWorld: Update</li>
-                <li>[Servers] Mint Manga: Update</li>
-                <li>[Servers] Read Manga: Update</li>
-                <li>[Servers] Self Manga: Update</li>
-                <li>[L10n] Updated Arabic, French and Turkish translations</li>
+                <li>[Servers] Fr-Scan: Update</li>
+                <li>[Servers] WEBTOON: Update</li>
+                <li>[Servers] Xoxocomics: Update</li>
+                <li>[Servers] Golden Mangás [pt_BR]: Disable</li>
+                <li>[L10n] Updated Portuguese (Brazil), Spanish and Turkish translations</li>
             </ul>
-            <p>Happy Christmas and Happy reading.</p>
+            <p>Enjoy hoilday season and happy reading.</p>
         """)
 
         window.add_link(_('Join Chat'), 'https://matrix.to/#/#komikku-gnome:matrix.org')

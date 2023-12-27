@@ -98,8 +98,20 @@
     <url type="donation">https://valos.gitlab.io/Komikku/#sponsor</url>
 
     <releases>
-        <release version="1.32.0" date="2023-12-23">
+        <release version="1.33.0" date="2023-12-27">
             <description>
+                <ul>
+                    <li>[Servers] Fr-Scan: Update</li>
+                    <li>[Servers] WEBTOON: Update</li>
+                    <li>[Servers] Xoxocomics: Update</li>
+                    <li>[Servers] Golden Mangás [pt_BR]: Disable</li>
+                    <li>[L10n] Updated Portuguese (Brazil), Spanish and Turkish translations</li>
+                </ul>
+                <p>Enjoy holiday season and happy reading.</p>
+            </description>
+        </release>
+        <release version="1.32.0" date="2023-12-23">
+            <description translatable="no">
                 <ul>
                     <li>[Explorer] Search: Add comics covers (when available)</li>
                     <li>[UI] Fix broken page navigation when animations are disabled</li>
