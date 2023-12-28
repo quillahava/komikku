@@ -2,13 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Komikku package.
 # Eric-Song-Nop <Eric_YF_Song@outlook.com>, 2023.
+# Inaha <sakuovds@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-19 23:24+0100\n"
-"PO-Revision-Date: 2023-11-03 05:04+0000\n"
-"Last-Translator: Eric-Song-Nop <Eric_YF_Song@outlook.com>\n"
+"PO-Revision-Date: 2023-12-28 10:10+0000\n"
+"Last-Translator: Inaha <sakuovds@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "komikku/main/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -16,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.2-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 "X-Poedit-Bookmarks: -1,118,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
@@ -94,19 +95,19 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:64
 msgid "The Details page"
-msgstr ""
+msgstr "详细信息页面"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:68
 msgid "The Details page (chapters list)"
-msgstr ""
+msgstr "详细信息页面（章节目录）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:72
 msgid "The Reader page"
-msgstr ""
+msgstr "阅读页面"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:76
 msgid "The Reader page in mobile format"
-msgstr ""
+msgstr "移动端阅读页面"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:80
 msgid "The Category editor page in mobile format"
