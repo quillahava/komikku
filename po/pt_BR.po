@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Komikku\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-19 23:24+0100\n"
-"PO-Revision-Date: 2023-12-23 00:22+0000\n"
+"PO-Revision-Date: 2023-12-31 17:08+0000\n"
 "Last-Translator: Unidealistic Raccoon <me@ursuslotor.xyz>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "komikku/main/pt_BR/>\n"
@@ -82,39 +82,39 @@ msgstr "Temas claros e escuros"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:48
 msgid "The Library page"
-msgstr ""
+msgstr "A página da Biblioteca"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:52
 msgid "The Library page with the category sidebar open"
-msgstr ""
+msgstr "A página da Biblioteca com a barra lateral de categoria aberta"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:56
 msgid "The Preferences page (Library settings)"
-msgstr ""
+msgstr "A página de Preferências (Configurações da Biblioteca)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:60
 msgid "The Explorer page in mobile format (Servers list)"
-msgstr ""
+msgstr "A página do Explorador em formato móvel (lista de Servidores)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:64
 msgid "The Details page"
-msgstr ""
+msgstr "A página de Detalhes"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:68
 msgid "The Details page (chapters list)"
-msgstr ""
+msgstr "A página de Detalhes (lista de Capítulos)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:72
 msgid "The Reader page"
-msgstr ""
+msgstr "A página do Leitor"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:76
 msgid "The Reader page in mobile format"
-msgstr ""
+msgstr "A página do Leitor em formato móvel"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:80
 msgid "The Category editor page in mobile format"
-msgstr ""
+msgstr "A página do Editor de Categorias em formato móvel"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:84
 msgid "The Reading history page in mobile format"
@@ -163,6 +163,8 @@ msgid ""
 "manga;reader;viewer;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offline;"
 "gnome;"
 msgstr ""
+"manga;leitor;visualizador;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offlin"
+"e;gnome;"
 
 #: ../data/ui/about_window.ui.in:28
 msgid ""
