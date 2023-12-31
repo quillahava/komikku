@@ -102,7 +102,8 @@ if appstreamcli.found()
     test (
         'Validate appdata/metainfo file',
         appstreamcli,
-        args: ['validate', join_paths(meson.current_build_dir (), app_id + '.appdata.xml')]
+        args: ['validate', '--no-net', '--explain', appdata_file],
+        workdir: meson.current_build_dir()
     )
 endif
 
