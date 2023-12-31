@@ -26,13 +26,6 @@
         </ul>
     </description>
 
-    <categories>
-        <category>Graphics</category>
-        <category>Viewer</category>
-        <category>GTK</category>
-        <category>GNOME</category>
-    </categories>
-
     <requires>
         <display_length compare="ge">360</display_length>
     </requires>
