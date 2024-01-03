@@ -260,7 +260,8 @@ class Page(Gtk.Overlay):
                 )
 
             if picture is None:
-                GLib.unlink(self.path)
+                if self.path:
+                    GLib.unlink(self.path)
 
                 self.show_retry_button()
                 self.window.show_notification(_('Failed to load image'), 2)

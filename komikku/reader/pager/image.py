@@ -20,25 +20,15 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Graphene
+from gi.repository import Gsk
 from gi.repository import Gtk
-from gi.repository.GdkPixbuf import Colorspace
-from gi.repository.GdkPixbuf import Pixbuf
 from gi.repository.GdkPixbuf import PixbufAnimation
 
 logger = logging.getLogger('komikku')
 
-MAX_TEXTURE_SIZE = 4096
-
 ZOOM_FACTOR_DOUBLE_TAP = 2.5
 ZOOM_FACTOR_MAX = 20
 ZOOM_FACTOR_SCROLL_WHEEL = 1.3
-
-
-def crop_pixbuf(pixbuf, src_x, src_y, width, height):
-    pixbuf_cropped = Pixbuf.new(Colorspace.RGB, pixbuf.get_has_alpha(), 8, width, height)
-    pixbuf.copy_area(src_x, src_y, width, height, pixbuf_cropped, 0, 0)
-
-    return pixbuf_cropped
 
 
 class KImage(Gtk.Widget, Gtk.Scrollable):
@@ -50,7 +40,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         'zoom-end': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
-    def __init__(self, path, pixbuf, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False):
+    def __init__(self, path, texture, pixbuf, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False):
         super().__init__()
 
         self.__rendered = False
@@ -62,15 +52,21 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         self.__vadj = None
         self.__zoom = 1
 
-        self.crop_bbox = None
-        self.pixbuf = pixbuf
-        self.ratio = pixbuf.get_width() / pixbuf.get_height()
         self.path = path
-        self.texture = None
-        self.texture_crop = None
 
+        self.texture = texture
+        self.texture_crop = None
+        self.crop_bbox = None
+
+        self.pixbuf = pixbuf
         self.animation_iter = None
         self.animation_tick_callback_id = None
+
+        if texture:
+            self.ratio = texture.get_width() / texture.get_height()
+        else:
+            self.ratio = pixbuf.get_width() / pixbuf.get_height()
+
         self.gesture_click_timeout_id = None
         self.pointer_position = None  # current pointer position
         self.zoom_center = None  # zoom position in image
@@ -120,48 +116,48 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             return None
 
         try:
-            stream = Gio.MemoryInputStream.new_from_data(data, None)
             if mime_type == 'image/gif' and not static_animation:
+                stream = Gio.MemoryInputStream.new_from_data(data, None)
                 pixbuf = PixbufAnimation.new_from_stream(stream)
+                stream.close()
+                texture = None
             else:
-                pixbuf = Pixbuf.new_from_stream(stream)
-            stream.close()
+                pixbuf = None
+                texture = Gdk.Texture.new_from_bytes(GLib.Bytes.new(data))
         except Exception:
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(None, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
+        return cls(None, texture, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
 
     @classmethod
     def new_from_file(cls, path, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False, static_animation=False):
-        format_, _width, _height = Pixbuf.get_file_info(path)
-        if format_ is None:
+        mime_type, _result_uncertain = Gio.content_type_guess(path, None)
+        if not mime_type:
             return None
 
         try:
-            if 'image/gif' in format_.get_mime_types() and not static_animation:
+            if mime_type == 'image/gif' and not static_animation:
                 pixbuf = PixbufAnimation.new_from_file(path)
+                texture = None
             else:
-                pixbuf = Pixbuf.new_from_file(path)
+                pixbuf = None
+                texture = Gdk.Texture.new_from_filename(path)
         except Exception:
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(path, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
-
-    @classmethod
-    def new_from_pixbuf(cls, pixbuf, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False, static_animation=False):
-        return cls(None, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
+        return cls(path, texture, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
 
     @classmethod
     def new_from_resource(cls, path):
         try:
-            pixbuf = Pixbuf.new_from_resource(path)
+            texture = Gdk.Texture.new_from_resource(path)
         except Exception:
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(None, pixbuf)
+        return cls(None, texture, None)
 
     @property
     def borders(self):
@@ -212,18 +208,24 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
     @property
     def image_height(self):
         """ Image original height """
+        if self.pixbuf:
+            return self.pixbuf.get_height()
+
         if self.crop and self.crop_bbox:
             return self.crop_bbox[3] - self.crop_bbox[1]
 
-        return self.pixbuf.get_height() if self.pixbuf else 0
+        return self.texture.get_height() if self.texture else 0
 
     @property
     def image_width(self):
         """ Image original width """
+        if self.pixbuf:
+            return self.pixbuf.get_width()
+
         if self.crop and self.crop_bbox:
             return self.crop_bbox[2] - self.crop_bbox[0]
 
-        return self.pixbuf.get_width() if self.pixbuf else 0
+        return self.texture.get_width() if self.texture else 0
 
     @property
     def image_displayed_height(self):
@@ -295,8 +297,8 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
                 width = adapt_to_height_width
                 height = max_height
         else:
-            width = self.pixbuf.get_width()
-            height = self.pixbuf.get_height()
+            width = self.image_width
+            height = self.image_height
 
         return (width, height)
 
@@ -364,12 +366,13 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         def lookup(x):
             return 255 if x > threshold else 0
 
-        res, buffer = self.pixbuf.save_to_bufferv('jpeg')
-        if res:
-            im = Image.open(BytesIO(buffer)).convert('L').point(lookup, mode='1')
-            bg = Image.new(im.mode, im.size, 255)
-        else:
+        try:
+            buffer = self.texture.save_to_png_bytes()
+        except Exception:
             return None
+        else:
+            im = Image.open(BytesIO(buffer.get_data())).convert('L').point(lookup, mode='1')
+            bg = Image.new(im.mode, im.size, 255)
 
         return ImageChops.difference(im, bg).getbbox()
 
@@ -414,9 +417,9 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             self.remove_tick_callback(self.animation_tick_callback_id)
 
         self.pixbuf = None
+        self.animation_iter = None
         self.texture = None
         self.texture_cropped = None
-        self.animation_iter = None
 
     def do_measure(self, orientation, for_size):
         if orientation == Gtk.Orientation.HORIZONTAL:
@@ -438,26 +441,23 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         def crop_borders():
             """ Crop white borders """
             if self.path is None:
-                return self.pixbuf
+                return self.texture
 
-            # Crop is possible if computed bbox is included in pixbuf
+            # Crop is possible if computed bbox is included in texture
             bbox = self.crop_bbox
-            if bbox is not None and (bbox[2] - bbox[0] < self.pixbuf.get_width() or bbox[3] - bbox[1] < self.pixbuf.get_height()):
-                return crop_pixbuf(self.pixbuf, bbox[0], bbox[1], bbox[2] - bbox[0], bbox[3] - bbox[1])
+            if bbox and (bbox[2] - bbox[0] < self.texture.get_width() or bbox[3] - bbox[1] < self.texture.get_height()):
+                im = Image.open(BytesIO(self.texture.save_to_png_bytes().get_data())).convert('L')
+                io_buffer = BytesIO()
+                im.crop(bbox).convert('RGB').save(io_buffer, 'png')
+                return Gdk.Texture.new_from_bytes(GLib.Bytes.new(io_buffer.getbuffer()))
 
-            return self.pixbuf
+            return self.texture
 
-        if not self.animation_iter:
-            if self.crop and self.texture_crop is None:
-                self.texture_crop = Gdk.Texture.new_for_pixbuf(crop_borders())
-            elif self.texture is None:
-                if self.image_height > MAX_TEXTURE_SIZE:
-                    # Long vertical images commonly used in Webtoons
-                    # Subdivide it into multiple Pixbuf so as not to exceed the hardware limit
-                    self.texture = [Gdk.Texture.new_for_pixbuf(pixbuf) for pixbuf in subdivide_pixbuf(self.pixbuf, MAX_TEXTURE_SIZE)]
-                else:
-                    self.texture = Gdk.Texture.new_for_pixbuf(self.pixbuf)
-        else:
+        if self.texture and self.crop and self.texture_crop is None:
+            # Crop white borders
+            self.texture_crop = crop_borders()
+        elif self.animation_iter:
+            # Get next frame (animated GIF)
             self.texture = Gdk.Texture.new_for_pixbuf(self.animation_iter.get_pixbuf())
 
         self.configure_adjustments()
@@ -481,19 +481,14 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
                 )
             )
 
-        # Add texture
+        # Append texture
         rect = Graphene.Rect().alloc()
-        if isinstance(self.texture, list):
-            cursor = 0
-            for texture in self.texture:
-                ratio = texture.get_height() / texture.get_width()
-                texture_height = int(width * ratio)
-                rect.init(0, cursor, width, texture_height)
-                snapshot.append_texture(texture, rect)
-                cursor += texture_height
-        else:
-            rect.init(0, 0, width, height)
-            snapshot.append_texture(self.texture_crop if self.crop else self.texture, rect)
+        rect.init(0, 0, width, height)
+        snapshot.append_scaled_texture(
+            self.texture_crop if self.crop else self.texture,
+            Gsk.ScalingFilter.LINEAR if self.zoom < 1 else Gsk.ScalingFilter.NEAREST,
+            rect
+        )
 
         snapshot.restore()
 
@@ -600,21 +595,3 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
 
             value = max((y + vadjustment_value - borders[1]) / zoom_ratio - y, 0)
             self.vadjustment.set_value(value)
-
-
-def subdivide_pixbuf(pixbuf, part_height):
-    """Sub-divide a long vertical GdkPixbuf.Pixbuf into multiple GdkPixbuf.Pixbuf"""
-    parts = []
-
-    width = pixbuf.get_width()
-    full_height = pixbuf.get_height()
-
-    for index in range(math.ceil(full_height / part_height)):
-        y = index * part_height
-        height = part_height if y + part_height <= full_height else full_height - y
-
-        part_pixbuf = Pixbuf.new(Colorspace.RGB, pixbuf.get_has_alpha(), 8, width, height)
-        pixbuf.copy_area(0, y, width, height, part_pixbuf, 0, 0)
-        parts.append(part_pixbuf)
-
-    return parts
