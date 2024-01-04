@@ -11,15 +11,16 @@ from gi.repository import Gtk
 from gi.repository import Pango
 
 from komikku.models import Settings
-from komikku.utils import create_paintable_from_file
-from komikku.utils import create_paintable_from_resource
+from komikku.utils import COVER_HEIGHT
+from komikku.utils import COVER_WIDTH
+from komikku.utils import CoverLoader
 
 
 class Thumbnail(Gtk.FlowBoxChild):
     __gtype_name__ = 'Thumbnail'
 
-    default_width = 180
-    default_height = 256
+    default_width = COVER_WIDTH
+    default_height = COVER_HEIGHT
     padding = 6  # padding is overriding via CSS
     margin = 3   # flowbox column spacing divided by 2
 
@@ -129,22 +130,22 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
 
     def __create_cover_texture(self):
         if self.manga.cover_fs_path is None:
-            paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png')
+            paintable = CoverLoader.new_from_resource('/info/febvre/Komikku/images/missing_file.png', COVER_WIDTH, None)
         else:
-            paintable = create_paintable_from_file(self.manga.cover_fs_path, 180, -1, True)
+            paintable = CoverLoader.new_from_file(self.manga.cover_fs_path, COVER_WIDTH, None, True)
             if paintable is None:
-                paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png')
+                paintable = CoverLoader.new_from_resource('/info/febvre/Komikku/images/missing_file.png', COVER_WIDTH, None)
 
-        self.cover_texture = Gdk.Texture.new_for_pixbuf(paintable.pixbuf)
+        self.cover_texture = paintable.texture
 
     def __create_server_logo_texture(self):
         logo_path = self.manga.server.logo_path
         if logo_path is None:
             return
 
-        paintable = create_paintable_from_file(logo_path, self.server_logo_size, self.server_logo_size)
+        paintable = CoverLoader.new_from_file(logo_path, self.server_logo_size, self.server_logo_size, True)
 
-        self.server_logo_texture = Gdk.Texture.new_for_pixbuf(paintable.pixbuf)
+        self.server_logo_texture = paintable.texture
 
     def __get_badges_values(self):
         badges = Settings.get_default().library_badges
@@ -161,7 +162,7 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
     def do_snapshot(self, snapshot, width, height):
         self.rect.init(0, 0, width, height)
 
-        # Drow cover (rounded)
+        # Draw cover (rounded)
         self.rounded_rect.init(self.rect, self.rounded_rect_size, self.rounded_rect_size, self.rounded_rect_size, self.rounded_rect_size)
         snapshot.push_rounded_clip(self.rounded_rect)
         snapshot.append_texture(self.cover_texture, self.rect)
@@ -218,7 +219,7 @@ class ThumbnailCover(GObject.GObject, Gdk.Paintable):
         draw_badge(self.nb_downloaded_chapters, '#f68276')
         draw_badge(self.nb_recent_chapters, '#33d17a')      # @green_3
 
-        # Drow server logo (top left corner)
+        # Draw server logo (top left corner)
         if self.server_logo_texture:
             self.rect.init(6, 6, self.server_logo_size, self.server_logo_size)
             snapshot.append_texture(self.server_logo_texture, self.rect)

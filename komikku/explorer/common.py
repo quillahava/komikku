@@ -11,9 +11,9 @@ from gi.repository import Pango
 
 from komikku.models import Settings
 from komikku.servers import LANGUAGES
-from komikku.utils import create_paintable_from_data
-from komikku.utils import create_paintable_from_resource
+from komikku.utils import COVER_WIDTH
 from komikku.utils import html_escape
+from komikku.utils import PaintableCover
 
 DOWNLOAD_MAX_DELAY = 1  # in seconds
 LOGO_SIZE = 28
@@ -101,8 +101,7 @@ class ExplorerSearchResultRow(Adw.ActionRow):
             return
 
         if not self.popover.get_child():
-            paintable_popover = create_paintable_from_data(self.cover_data, 170, -1, False, True)
-            picture = Gtk.Picture.new_for_paintable(paintable_popover)
+            picture = Gtk.Picture.new_for_paintable(PaintableCover.new_from_data(self.cover_data, COVER_WIDTH))
             picture.add_css_class('cover-dropshadow')
 
             self.popover.set_child(picture)
@@ -115,10 +114,10 @@ class ExplorerSearchResultRow(Adw.ActionRow):
         if not self.has_cover:
             return
 
-        paintable = create_paintable_from_data(data, THUMB_WIDTH, THUMB_HEIGHT, True, False) if data else None
+        paintable = PaintableCover.new_from_data(data, THUMB_WIDTH, THUMB_HEIGHT, True) if data else None
         if paintable is None:
-            paintable = create_paintable_from_resource(
-                '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT, False)
+            paintable = PaintableCover.new_from_resoource(
+                '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT)
         else:
             self.cover_data = data
 

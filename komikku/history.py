@@ -13,9 +13,8 @@ from gi.repository import Gtk
 
 from komikku.models import Chapter
 from komikku.models import create_db_connection
-from komikku.utils import create_paintable_from_file
-from komikku.utils import create_paintable_from_resource
 from komikku.utils import html_escape
+from komikku.utils import PaintableCover
 
 THUMB_WIDTH = 45
 THUMB_HEIGHT = 62
@@ -153,13 +152,13 @@ class HistoryPage(Adw.NavigationPage):
 
                 # Cover
                 if chapter.manga.cover_fs_path is None:
-                    paintable = create_paintable_from_resource(
-                        '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT, False)
+                    paintable = PaintableCover.new_from_resource(
+                        '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT)
                 else:
-                    paintable = create_paintable_from_file(chapter.manga.cover_fs_path, THUMB_WIDTH, THUMB_HEIGHT, True, False)
+                    paintable = PaintableCover.new_from_file(chapter.manga.cover_fs_path, THUMB_WIDTH, THUMB_HEIGHT, True)
                     if paintable is None:
-                        paintable = create_paintable_from_resource(
-                            '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT, False)
+                        paintable = PaintableCover.new_from_resource(
+                            '/info/febvre/Komikku/images/missing_file.png', THUMB_WIDTH, THUMB_HEIGHT)
 
                 cover_frame = Gtk.Frame()
                 cover_frame.add_css_class('row-rounded-cover-frame')

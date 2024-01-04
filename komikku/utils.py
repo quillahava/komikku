@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
-import datetime
 from functools import cache
 from functools import wraps
 from gettext import gettext as _
@@ -12,7 +11,6 @@ from io import BytesIO
 import logging
 import os
 from PIL import Image
-from PIL import ImageChops
 import requests
 import subprocess
 import traceback
@@ -25,11 +23,12 @@ from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository.GdkPixbuf import Colorspace
-from gi.repository.GdkPixbuf import InterpType
-from gi.repository.GdkPixbuf import Pixbuf
+from gi.repository import Graphene
+from gi.repository import Gsk
 from gi.repository.GdkPixbuf import PixbufAnimation
+
+COVER_WIDTH = 180
+COVER_HEIGHT = 256
 
 logger = logging.getLogger('komikku')
 
@@ -42,39 +41,6 @@ def check_cmdline_tool(cmd):
         return False, None
     else:
         return p.returncode == 0, out.decode('utf-8').strip()
-
-
-def create_paintable_from_data(data, width=None, height=None, static_animation=False, preserve_aspect_ratio=True):
-    mime_type, _result_uncertain = Gio.content_type_guess(None, data)
-    if not mime_type:
-        return None
-
-    if mime_type == 'image/gif' and not static_animation:
-        return PaintablePixbufAnimation.new_from_data(data)
-
-    return PaintablePixbuf.new_from_data(data, width, height, preserve_aspect_ratio)
-
-
-def create_paintable_from_file(path, width=None, height=None, static_animation=False, preserve_aspect_ratio=True):
-    format_, _width, _height = Pixbuf.get_file_info(path)
-    if format_ is None:
-        return None
-
-    if 'image/gif' in format_.get_mime_types() and not static_animation:
-        return PaintablePixbufAnimation.new_from_file(path, width, height)
-
-    return PaintablePixbuf.new_from_file(path, width, height, preserve_aspect_ratio)
-
-
-def create_paintable_from_resource(path, width=None, height=None, preserve_aspect_ratio=True):
-    return PaintablePixbuf.new_from_resource(path, width, height, preserve_aspect_ratio)
-
-
-def crop_pixbuf(pixbuf, src_x, src_y, width, height):
-    pixbuf_cropped = Pixbuf.new(Colorspace.RGB, pixbuf.get_has_alpha(), 8, width, height)
-    pixbuf.copy_area(src_x, src_y, width, height, pixbuf_cropped, 0, 0)
-
-    return pixbuf_cropped
 
 
 def expand_and_resize_cover(buffer):
@@ -104,7 +70,7 @@ def expand_and_resize_cover(buffer):
         return buffer
 
     width, height = img.size
-    new_width, new_height = (360, 512)
+    new_width, new_height = (COVER_WIDTH, COVER_HEIGHT)
     if width >= height:
         img = remove_alpha(img)
 
@@ -118,7 +84,7 @@ def expand_and_resize_cover(buffer):
         new_img = img
 
     new_buffer = BytesIO()
-    new_img.convert('RGB').save(new_buffer, 'JPEG', quality=50)
+    new_img.convert('RGB').save(new_buffer, 'JPEG', quality=65)
 
     return new_buffer.getbuffer()
 
@@ -241,112 +207,118 @@ def trunc_filename(filename):
     return filename.encode('utf-8')[:255].decode().strip()
 
 
-class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
-    def __init__(self, path, pixbuf):
+class CoverLoader(GObject.GObject):
+    __gtype_name__ = 'CoverLoader'
+
+    def __init__(self, path, texture, pixbuf, width=None, height=None):
         super().__init__()
 
-        self.cropped = False
-        self.path = path
+        self.texture = texture
         self.pixbuf = pixbuf
-        self.texture = Gdk.Texture.new_for_pixbuf(pixbuf)
-        self.texture_cropped = None
 
-        self.orig_width = self.pixbuf.get_width()
-        self.orig_height = self.pixbuf.get_height()
-        self.width = self.orig_width
-        self.height = self.orig_height
+        if texture:
+            self.orig_width = self.texture.get_width()
+            self.orig_height = self.texture.get_height()
+        else:
+            self.orig_width = self.pixbuf.get_width()
+            self.orig_height = self.pixbuf.get_height()
+
+        # Compute size
+        if width is None and height is None:
+            self.width = self.orig_width
+            self.height = self.orig_height
+        elif width is None or height is None:
+            ratio = self.orig_width / self.orig_height
+            if width is None:
+                self.width = int(height * ratio)
+                self.height = height
+            else:
+                self.width = width
+                self.height = int(width / ratio)
+        else:
+            self.width = width
+            self.height = height
 
     @classmethod
-    def new_from_data(cls, data, width=None, height=None, preserve_aspect_ratio=True):
+    def new_from_data(cls, data, width=None, height=None, static_animation=False):
         mime_type, _result_uncertain = Gio.content_type_guess(None, data)
         if not mime_type:
             return None
 
         try:
-            stream = Gio.MemoryInputStream.new_from_data(data, None)
-
-            if (not width and not height) or mime_type == 'image/gif':
-                pixbuf = Pixbuf.new_from_stream(stream)
-                if mime_type == 'image/gif':
-                    if width == -1:
-                        ratio = pixbuf.get_height() / height
-                        width = pixbuf.get_width() / ratio
-                    elif height == -1:
-                        ratio = pixbuf.get_width() / width
-                        height = pixbuf.get_height() / ratio
-
-                    pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
+            if mime_type == 'image/gif' and not static_animation:
+                stream = Gio.MemoryInputStream.new_from_data(data, None)
+                pixbuf = PixbufAnimation.new_from_stream(stream)
+                stream.close()
+                texture = None
             else:
-                pixbuf = Pixbuf.new_from_stream_at_scale(stream, width, height, preserve_aspect_ratio)
-
-            stream.close()
+                pixbuf = None
+                texture = Gdk.Texture.new_from_bytes(GLib.Bytes.new(data))
         except Exception:
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(None, pixbuf)
+        return cls(None, texture, pixbuf, width, height)
 
     @classmethod
-    def new_from_file(cls, path, width=None, height=None, preserve_aspect_ratio=True):
-        format_, orig_width, orig_height = Pixbuf.get_file_info(path)
-        if format_ is None:
+    def new_from_file(cls, path, width=None, height=None, static_animation=False):
+        mime_type, _result_uncertain = Gio.content_type_guess(path, None)
+        if not mime_type:
             return None
 
         try:
-            if (not width and not height) or 'image/gif' in format_.get_mime_types():
-                pixbuf = Pixbuf.new_from_file(path)
-                if 'image/gif' in format_.get_mime_types():
-                    if width == -1:
-                        ratio = orig_height / height
-                        width = orig_width / ratio
-                    elif height == -1:
-                        ratio = orig_width / width
-                        height = orig_height / ratio
-
-                    pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
+            if mime_type == 'image/gif' and not static_animation:
+                pixbuf = PixbufAnimation.new_from_file(path)
+                texture = None
             else:
-                pixbuf = Pixbuf.new_from_file_at_scale(path, width, height, preserve_aspect_ratio)
+                pixbuf = None
+                texture = Gdk.Texture.new_from_filename(path)
         except Exception:
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(path, pixbuf)
+        return cls(path, texture, pixbuf, width, height)
 
     @classmethod
-    def new_from_pixbuf(cls, pixbuf, width=None, height=None):
-        if width and height:
-            pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
-        return cls(None, pixbuf)
-
-    @classmethod
-    def new_from_resource(cls, path, width=None, height=None, preserve_aspect_ratio=True):
+    def new_from_resource(cls, path, width=None, height=None):
         try:
-            if not width and not height:
-                pixbuf = Pixbuf.new_from_resource(path)
-            else:
-                pixbuf = Pixbuf.new_from_resource_at_scale(path, width, height, preserve_aspect_ratio)
+            texture = Gdk.Texture.new_from_resource(path)
         except Exception:
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(None, pixbuf)
-
-    def _compute_borders_crop_bbox(self):
-        # TODO: Add a slider in settings
-        threshold = 225
-
-        def lookup(x):
-            return 255 if x > threshold else 0
-
-        im = Image.open(self.path).convert('L').point(lookup, mode='1')
-        bg = Image.new(im.mode, im.size, 255)
-
-        return ImageChops.difference(im, bg).getbbox()
+        return cls(None, texture, None, width, height)
 
     def dispose(self):
-        self.pixbuf = None
         self.texture = None
-        self.texture_cropped = None
+        self.pixbuf = None
+
+
+class PaintableCover(CoverLoader, Gdk.Paintable):
+    __gtype_name__ = 'PaintableCover'
+
+    corners_radius = 8
+
+    def __init__(self, path, texture, pixbuf, width=None, height=None):
+        CoverLoader.__init__(self, path, texture, pixbuf, width, height)
+
+        self.animation_iter = None
+        self.animation_timeout_id = None
+
+        self.rect = Graphene.Rect().alloc()
+        self.rounded_rect = Gsk.RoundedRect()
+        self.rounded_rect_size = Graphene.Size().alloc()
+        self.rounded_rect_size.init(self.corners_radius, self.corners_radius)
+
+        if isinstance(self.pixbuf, PixbufAnimation):
+            self.animation_iter = self.pixbuf.get_iter(None)
+            self.animation_timeout_id = GLib.timeout_add(self.animation_iter.get_delay_time(), self.on_delay)
+
+            self.invalidate_contents()
+
+    def dispose(self):
+        CoverLoader.dispose()
+        self.animation_iter = None
 
     def do_get_intrinsic_height(self):
         return self.height
@@ -355,203 +327,32 @@ class PaintablePixbuf(GObject.GObject, Gdk.Paintable):
         return self.width
 
     def do_snapshot(self, snapshot, width, height):
-        def crop_borders():
-            """"Crop white borders"""
-            if self.path is None:
-                return self.pixbuf
+        self.rect.init(0, 0, width, height)
 
-            bbox = self._compute_borders_crop_bbox()
+        if self.animation_iter:
+            # Get next frame (animated GIF)
+            timeval = GLib.TimeVal()
+            timeval.tv_usec = GLib.get_real_time()
+            self.animation_iter.advance(timeval)
+            pixbuf = self.animation_iter.get_pixbuf()
+            self.texture = Gdk.Texture.new_for_pixbuf(pixbuf)
 
-            # Crop is possible if computed bbox is included in pixbuf
-            if bbox is not None and (bbox[2] - bbox[0] < self.orig_width or bbox[3] - bbox[1] < self.orig_height):
-                return crop_pixbuf(self.pixbuf, bbox[0], bbox[1], bbox[2] - bbox[0], bbox[3] - bbox[1])
+        # Append cover (rounded)
+        self.rounded_rect.init(self.rect, self.rounded_rect_size, self.rounded_rect_size, self.rounded_rect_size, self.rounded_rect_size)
+        snapshot.push_rounded_clip(self.rounded_rect)
+        snapshot.append_texture(self.texture, self.rect)
+        snapshot.pop()  # remove the clip
 
-            return self.pixbuf
+    def on_delay(self):
+        if self.animation_iter is None:
+            return GLib.SOURCE_REMOVE
 
-        if self.cropped and self.texture_cropped is None:
-            self.texture_cropped = Gdk.Texture.new_for_pixbuf(crop_borders())
-
-        if self.cropped:
-            self.texture_cropped.snapshot(snapshot, width, height)
-        else:
-            self.texture.snapshot(snapshot, width, height)
-
-    def resize(self, width, height, cropped=False):
-        self.width = width
-        self.height = height
-        self.cropped = cropped
-
-        self.invalidate_size()
-
-
-class PaintablePixbufAnimation(GObject.GObject, Gdk.Paintable):
-    def __init__(self, path, anim, width, height):
-        super().__init__()
-
-        self.anim = anim
-        self.iter = self.anim.get_iter(None)
-        self.path = path
-
-        self.orig_width = self.anim.get_width()
-        self.orig_height = self.anim.get_height()
-        if width == -1:
-            ratio = self.orig_height / height
-            self.width = self.orig_width / ratio
-            self.height = height
-        elif height == -1:
-            ratio = self.orig_width / width
-            self.height = self.orig_height / ratio
-            self.width = width
-        else:
-            self.width = width
-            self.height = height
-
-        self.__delay_cb()
-
-    @classmethod
-    def new_from_data(cls, data):
-        stream = Gio.MemoryInputStream.new_from_data(data, None)
-        anim = PixbufAnimation.new_from_stream(stream)
-        stream.close()
-
-        return cls(None, anim)
-
-    @classmethod
-    def new_from_file(cls, path, width=None, height=None):
-        anim = PixbufAnimation.new_from_file(path)
-
-        return cls(path, anim, width, height)
-
-    def __delay_cb(self):
-        if self.iter is None:
-            return
-        delay = self.iter.get_delay_time()
+        delay = self.animation_iter.get_delay_time()
         if delay == -1:
-            return
-        self.timeout_id = GLib.timeout_add(delay, self.__delay_cb)
+            return GLib.SOURCE_REMOVE
+
+        self.timeout_id = GLib.timeout_add(delay, self.on_delay)
 
         self.invalidate_contents()
 
-    def dispose(self):
-        self.iter = None
-        self.anim = None
-
-    def do_get_intrinsic_height(self):
-        return self.height
-
-    def do_get_intrinsic_width(self):
-        return self.width
-
-    def do_snapshot(self, snapshot, width, height):
-        _res, timeval = GLib.TimeVal.from_iso8601(datetime.datetime.utcnow().isoformat())
-        self.iter.advance(timeval)
-        pixbuf = self.iter.get_pixbuf()
-        pixbuf = pixbuf.scale_simple(width, height, InterpType.BILINEAR)
-        texture = Gdk.Texture.new_for_pixbuf(pixbuf)
-        texture.snapshot(snapshot, width, height)
-
-    def resize(self, width, height):
-        self.width = width
-        self.height = height
-
-        self.invalidate_size()
-
-
-class Picture(Gtk.Picture):
-    def __init__(self, paintable):
-        super().__init__()
-
-        self.set_can_shrink(False)
-        self.set_paintable(paintable)
-
-    @classmethod
-    def new_from_data(cls, data):
-        if paintable := PaintablePixbuf.new_from_data(data):
-            return cls(paintable)
-        return None
-
-    @classmethod
-    def new_from_file(cls, path):
-        if paintable := PaintablePixbuf.new_from_file(path):
-            return cls(paintable)
-        return None
-
-    @classmethod
-    def new_from_pixbuf(cls, pixbuf):
-        if paintable := PaintablePixbuf.new_from_pixbuf(pixbuf):
-            return cls(paintable)
-        return None
-
-    @classmethod
-    def new_from_resource(cls, path):
-        if paintable := PaintablePixbuf.new_from_resource(path):
-            return cls(paintable)
-        return None
-
-    @property
-    def height(self):
-        return self.props.paintable.height
-
-    @property
-    def orig_height(self):
-        return self.props.paintable.orig_height
-
-    @property
-    def orig_width(self):
-        return self.props.paintable.orig_width
-
-    @property
-    def width(self):
-        return self.props.paintable.width
-
-    def dispose(self):
-        paintable = self.get_paintable()
-        self.set_paintable(None)
-        paintable.dispose()
-
-    def resize(self, width, height, cropped=False):
-        self.props.paintable.resize(width, height, cropped)
-
-
-class PictureAnimation(Gtk.Picture):
-    def __init__(self, paintable):
-        super().__init__()
-
-        self.set_can_shrink(False)
-        self.set_paintable(paintable)
-
-    @classmethod
-    def new_from_data(cls, data):
-        if paintable := PaintablePixbufAnimation.new_from_data(data):
-            return cls(paintable)
-        return None
-
-    @classmethod
-    def new_from_file(cls, path):
-        if paintable := PaintablePixbufAnimation.new_from_file(path):
-            return cls(paintable)
-        return None
-
-    @property
-    def height(self):
-        return self.props.paintable.height
-
-    @property
-    def orig_height(self):
-        return self.props.paintable.orig_height
-
-    @property
-    def orig_width(self):
-        return self.props.paintable.orig_width
-
-    @property
-    def width(self):
-        return self.props.paintable.width
-
-    def dispose(self):
-        paintable = self.get_paintable()
-        self.set_paintable(None)
-        paintable.dispose()
-
-    def resize(self, width, height, _cropped=False):
-        self.props.paintable.resize(width, height)
+        return GLib.SOURCE_REMOVE

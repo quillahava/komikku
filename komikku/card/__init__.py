@@ -13,10 +13,10 @@ from gi.repository import Gtk
 from komikku.card.categories_list import CategoriesList
 from komikku.card.chapters_list import ChaptersList
 from komikku.models import Settings
-from komikku.utils import create_paintable_from_file
-from komikku.utils import create_paintable_from_resource
+from komikku.utils import COVER_WIDTH
 from komikku.utils import folder_size
 from komikku.utils import html_escape
+from komikku.utils import PaintableCover
 
 
 @Gtk.Template.from_resource('/info/febvre/Komikku/ui/card.ui')
@@ -325,20 +325,19 @@ class InfoBox:
         self.window.breakpoint.add_setter(self.buttons_box, 'halign', Gtk.Align.CENTER)
 
     def populate(self):
-        cover_width = 170
         manga = self.card.manga
 
         self.name_label.set_text(manga.name)
 
         if manga.cover_fs_path is None:
-            paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', cover_width, -1)
+            paintable = PaintableCover.new_from_resource('/info/febvre/Komikku/images/missing_file.png', COVER_WIDTH)
             self.card.remove_backdrop()
         else:
-            paintable = create_paintable_from_file(manga.cover_fs_path, cover_width, -1)
+            paintable = PaintableCover.new_from_file(manga.cover_fs_path, COVER_WIDTH)
             if paintable:
                 self.card.set_backdrop()
             else:
-                paintable = create_paintable_from_resource('/info/febvre/Komikku/images/missing_file.png', cover_width, -1)
+                paintable = PaintableCover.new_from_resource('/info/febvre/Komikku/images/missing_file.png', COVER_WIDTH)
                 self.card.remove_backdrop()
 
         self.cover_image.set_paintable(paintable)
