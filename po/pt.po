@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Komikku package.
-# ssantos <ssantos@web.de>, 2023.
+# ssantos <ssantos@web.de>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.17.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-19 23:24+0100\n"
-"PO-Revision-Date: 2023-04-08 11:47+0000\n"
+"PO-Revision-Date: 2024-01-07 15:06+0000\n"
 "Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/komikku/main/"
 "pt/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.17-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -80,43 +80,43 @@ msgstr "Temas claros e escuros"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:48
 msgid "The Library page"
-msgstr ""
+msgstr "A página da Biblioteca"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:52
 msgid "The Library page with the category sidebar open"
-msgstr ""
+msgstr "A página da Biblioteca com a barra lateral de categoria aberta"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:56
 msgid "The Preferences page (Library settings)"
-msgstr ""
+msgstr "A página de Preferências (Configurações da Biblioteca)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:60
 msgid "The Explorer page in mobile format (Servers list)"
-msgstr ""
+msgstr "A página do Explorador em formato móvel (lista de Servidores)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:64
 msgid "The Details page"
-msgstr ""
+msgstr "A página de Pormenores"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:68
 msgid "The Details page (chapters list)"
-msgstr ""
+msgstr "A página de Pormenores (lista de Capítulos)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:72
 msgid "The Reader page"
-msgstr ""
+msgstr "A página do Leitor"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:76
 msgid "The Reader page in mobile format"
-msgstr ""
+msgstr "A página do Leitor em formato móvel"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:80
 msgid "The Category editor page in mobile format"
-msgstr ""
+msgstr "A página do Editor de Categorias em formato móvel"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:84
 msgid "The Reading history page in mobile format"
-msgstr ""
+msgstr "A página de histórico de Leitura em formato móvel"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:89
 msgid "@authorfullname@"
@@ -125,24 +125,27 @@ msgstr "@authorfullname@"
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid "[Reader] Webtoon pager: Fixed scrolling to top and memory leaks"
 msgstr ""
+"[Leitor] Webtoon pager: Corrige a rolagem ao topo e vazamentos de memória"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid ""
 "[Reader] Webtoon pager: Saved reading progress when navigating with slider "
 "of controls overlay"
 msgstr ""
+"[Leitor] Webtoon pager: Gravado o progresso de leitura ao navegar com "
+"controles de sobreposição"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Servers] Added Honey Manga [UK]"
-msgstr ""
+msgstr "[Servidores] Acrescenta Honey Manga [UK]"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Servers] MangaDex: Added Ukrainian"
-msgstr ""
+msgstr "[Servidores] MangaDex: Acrescenta idioma Ucraniano"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 msgid "[L10n] Updated Spanish and Turkish translations"
-msgstr ""
+msgstr "[L10n] Atualiza traduções do Espanhol e Turco"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "Happy reading."
@@ -161,6 +164,8 @@ msgid ""
 "manga;reader;viewer;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offline;"
 "gnome;"
 msgstr ""
+"manga;leitor;visualizador;comic;manhwa;manhua;bd;webtoon;webcomic;scan;offlin"
+"e;gnome;"
 
 #: ../data/ui/about_window.ui.in:28
 msgid ""
@@ -233,7 +238,6 @@ msgid "Add"
 msgstr "Acrescentar"
 
 #: ../data/ui/download_manager.blp:6 ../data/ui/download_manager.blp:16
-#, fuzzy
 msgid "Download Manager"
 msgstr "Gestor de Descargas"
 
@@ -247,7 +251,6 @@ msgstr "Nenhuma descarga"
 
 #: ../data/ui/explorer_search.blp:10 ../data/ui/explorer_search.blp:35
 #: ../data/ui/history.blp:18 ../data/ui/library.blp:36
-#, fuzzy
 msgid "Search"
 msgstr "Pesquisar"
 
@@ -289,21 +292,20 @@ msgstr "Nenhum histórico"
 
 #: ../data/ui/library.blp:6 ../data/ui/preferences.blp:66
 #: ../data/ui/preferences.blp:69
-#, fuzzy
 msgid "Library"
 msgstr "Biblioteca"
 
 #: ../data/ui/library.blp:19
 msgid "Toggle categories sidebar"
-msgstr ""
+msgstr "Alternar barra lateral de categorias"
 
 #: ../data/ui/library.blp:23
 msgid "Komikku"
-msgstr ""
+msgstr "Komikku"
 
 #: ../data/ui/library.blp:30
 msgid "Main Menu"
-msgstr ""
+msgstr "Menu Principal"
 
 #: ../data/ui/library.blp:61
 msgid "Search by name, server or genre"
@@ -315,7 +317,7 @@ msgstr "Atualizar"
 
 #: ../data/ui/library.blp:182
 msgid "Discover Comics"
-msgstr ""
+msgstr "Descobrir Comics"
 
 #: ../data/ui/library.blp:256
 msgid "OK"
@@ -360,7 +362,7 @@ msgstr "Apagar tudo"
 
 #: ../data/ui/menu/explorer_search_global_search.xml:7
 msgid "Pinned Servers Only"
-msgstr ""
+msgstr "Apenas Servidores Fixados"
 
 #: ../data/ui/menu/library_search.xml:7
 msgid "Unread"
@@ -380,19 +382,19 @@ msgstr "Atualizar biblioteca"
 
 #: ../data/ui/menu/main.xml:11
 msgid "Sort"
-msgstr ""
+msgstr "Ordenar"
 
 #: ../data/ui/menu/main.xml:16
 msgid "Alphabetical"
-msgstr ""
+msgstr "Alfabética"
 
 #: ../data/ui/menu/main.xml:21
 msgid "Latest Read First"
-msgstr ""
+msgstr "Lido por Último em Primeiro Lugar"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Updated First"
-msgstr ""
+msgstr "Atualizado por Último em Primeiro Lugar"
 
 #: ../data/ui/menu/main.xml:55
 msgid "Keyboard Shortcuts"
@@ -400,7 +402,7 @@ msgstr "Atalhos do teclado"
 
 #: ../data/ui/menu/main.xml:59
 msgid "Donate"
-msgstr ""
+msgstr "Doar"
 
 #: ../data/ui/menu/main.xml:63
 msgid "About Komikku"
@@ -423,9 +425,8 @@ msgid "Hide Page Numbering"
 msgstr "Ocultar numeração de página"
 
 #: ../data/ui/menu/reader.xml:106
-#, fuzzy
 msgid "Save Page"
-msgstr "Gravar página"
+msgstr "Gravar Página"
 
 #: ../data/ui/preferences.blp:10 ../data/ui/preferences.blp:21
 #: ../data/ui/preferences_servers_languages.blp:11
@@ -439,19 +440,19 @@ msgstr "Geral"
 
 #: ../data/ui/preferences.blp:36
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: ../data/ui/preferences.blp:39
 msgid "Light"
-msgstr ""
+msgstr "Claro"
 
 #: ../data/ui/preferences.blp:40
 msgid "Dark"
-msgstr ""
+msgstr "Escuro"
 
 #: ../data/ui/preferences.blp:41
 msgid "Follow System"
-msgstr ""
+msgstr "Seguir Sistema"
 
 #: ../data/ui/preferences.blp:47
 msgid "Night Light"
@@ -473,11 +474,11 @@ msgstr ""
 
 #: ../data/ui/preferences.blp:57
 msgid "Backdrop in Details Page"
-msgstr ""
+msgstr "Fundo na Página de Pormenores"
 
 #: ../data/ui/preferences.blp:58
 msgid "Enable background recoloring to match cover"
-msgstr ""
+msgstr "Ativar recoloração do fundo para combinar com a capa"
 
 #: ../data/ui/preferences.blp:72
 msgid "Display"
@@ -580,7 +581,6 @@ msgstr "Se deve permitir servidores com conteúdo somente NSFW"
 
 #: ../data/ui/preferences.blp:209 ../data/ui/preferences.blp:212
 #: ../data/ui/reader.blp:6
-#, fuzzy
 msgid "Reader"
 msgstr "Leitor"
 
@@ -769,7 +769,7 @@ msgstr "Voltar"
 
 #: ../data/ui/reader.blp:31
 msgid "Toggle Fullscreen Mode"
-msgstr ""
+msgstr "Alternar Modo Ecrã Inteiro"
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -779,17 +779,17 @@ msgstr "Aplicação"
 #: ../data/ui/shortcuts_overview.blp:14
 msgctxt "Shortcut window description"
 msgid "Open Preferences"
-msgstr ""
+msgstr "Abrir Preferências"
 
 #: ../data/ui/shortcuts_overview.blp:19
 msgctxt "Shortcut window description"
 msgid "Toggle Fullscreen Mode"
-msgstr ""
+msgstr "Alternar Modo Ecrã Inteiro"
 
 #: ../data/ui/shortcuts_overview.blp:24
 msgctxt "Shortcut window description"
 msgid "Open Keyboard Shortcuts"
-msgstr ""
+msgstr "Abrir Atalhos do Teclado"
 
 #: ../data/ui/shortcuts_overview.blp:30
 msgctxt "Shortcut window description"
@@ -799,12 +799,12 @@ msgstr "Biblioteca"
 #: ../data/ui/shortcuts_overview.blp:33
 msgctxt "Shortcut window description"
 msgid "Add Manga"
-msgstr ""
+msgstr "Adicionar Manga"
 
 #: ../data/ui/shortcuts_overview.blp:38
 msgctxt "Shortcut window description"
 msgid "Select All"
-msgstr ""
+msgstr "Selecionar Tudo"
 
 #: ../data/ui/shortcuts_overview.blp:43
 msgctxt "Shortcut window description"
@@ -819,7 +819,7 @@ msgstr "Carta de mangá"
 #: ../data/ui/shortcuts_overview.blp:52
 msgctxt "Shortcut window description"
 msgid "Select All Chapters"
-msgstr ""
+msgstr "Selecionar Todos os Capítulos"
 
 #: ../data/ui/shortcuts_overview.blp:58
 msgctxt "Shortcut window description"
@@ -839,52 +839,56 @@ msgstr "Gestor de descargas"
 #: ../data/ui/shortcuts_overview.blp:70
 msgctxt "Shortcut window description"
 msgid "Select All Downloads"
-msgstr ""
+msgstr "Selecionar Todas as Descargas"
 
 #: ../data/ui/support.blp:6 ../data/ui/support.blp:12
 msgid "Support Development"
-msgstr ""
+msgstr "Colaborar com o Desenvolvimento"
 
 #: ../data/ui/support.blp:46
 msgid "How can you support?"
-msgstr ""
+msgstr "Como posso colaborar?"
 
 #: ../data/ui/support.blp:54
 msgid ""
 "Developing and maintaining Komikku is a challenging task that takes up most "
 "of my free time."
 msgstr ""
+"Desenvolver e manter Komikku é uma tarefa desafiadora que toma a maior parte "
+"do meu tempo livre."
 
 #: ../data/ui/support.blp:61
 msgid "Komikku will always be free and open-source and will never contain ads."
-msgstr ""
+msgstr "Komikku será sempre livre e de código-aberto e nunca terá propagandas."
 
 #: ../data/ui/support.blp:68
 msgid ""
 "So if you like it, and you are able, please consider a one-time or recurring "
 "donation to support me, it will be hugely appreciated."
 msgstr ""
+"Então se gostou dele. e puder, por favor considere doar uma única vez ou de "
+"forma recorrente para me ajudar, será grandemente apreciado."
 
 #: ../data/ui/support.blp:82
 msgid "Weekly, monthly or yearly donation"
-msgstr ""
+msgstr "Doação semanal, mensal ou anual"
 
 #: ../data/ui/support.blp:88 ../data/ui/support.blp:104
 #: ../data/ui/support.blp:120
 msgid "Donate and Support"
-msgstr ""
+msgstr "Doar ou Colaborar"
 
 #: ../data/ui/support.blp:98
 msgid "One-time donation"
-msgstr ""
+msgstr "Doação única"
 
 #: ../data/ui/support.blp:114
 msgid "One-time or monthly donation"
-msgstr ""
+msgstr "Doação única ou recorrente"
 
 #: ../data/ui/webview.blp:6
 msgid "Webview"
-msgstr ""
+msgstr "Webview"
 
 #: ../komikku/application.py:136
 msgid "Multiple URLs not supported"
@@ -966,8 +970,8 @@ msgstr "%d/%m/%Y"
 #, python-brace-format
 msgid "{0} selected"
 msgid_plural "{0} selected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} selecionado"
+msgstr[1] "{0} selecionados"
 
 #: ../komikku/card/chapters_list.py:381 ../komikku/card/chapters_list.py:476
 msgid "Failed to update chapters reading status"
@@ -987,7 +991,7 @@ msgstr "Limpar e redefinir"
 
 #: ../komikku/card/chapters_list.py:678
 msgid "Reset"
-msgstr ""
+msgstr "Resetar"
 
 #: ../komikku/card/chapters_list.py:688
 msgid "Mark as Read"
@@ -1049,16 +1053,16 @@ msgstr "Transferência finalizada"
 #, python-brace-format
 msgid "{0} chapter"
 msgid_plural "{0} chapters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} capítulo"
+msgstr[1] "{0} capítulos"
 
 #: ../komikku/explorer/common.py:61
 msgid "Last Chapter: {}"
-msgstr ""
+msgstr "Último Capítulo: {}"
 
 #: ../komikku/explorer/common.py:63
 msgid "Last Volume: {}"
-msgstr ""
+msgstr "Último Volume: {}"
 
 #: ../komikku/explorer/common.py:176
 msgid "Comics stored locally as archives in CBZ/CBR formats"
@@ -1136,11 +1140,11 @@ msgstr "Pesquisa global"
 
 #: ../komikku/explorer/search/__init__.py:328
 msgid "Search globally by name"
-msgstr ""
+msgstr "Pesquisar globalmente pelo nome"
 
 #: ../komikku/explorer/search/__init__.py:330
 msgid "Search for comics across all the servers you have enabled"
-msgstr ""
+msgstr "Procurar por comics por todos os servidores ativados"
 
 #: ../komikku/explorer/search/__init__.py:406
 msgid "Oops, failed to retrieve manga's information."
@@ -1528,11 +1532,11 @@ msgstr "Filtrar por status"
 
 #: ../komikku/servers/mangadex/__init__.py:77
 msgid "Completed"
-msgstr ""
+msgstr "Completo"
 
 #: ../komikku/servers/mangadex/__init__.py:78
 msgid "Paused"
-msgstr ""
+msgstr "Pausado"
 
 #: ../komikku/servers/mangadex/__init__.py:79
 #: ../komikku/servers/mangaworld/__init__.py:53
@@ -1541,27 +1545,27 @@ msgstr "Cancelado"
 
 #: ../komikku/servers/mangadex/__init__.py:85
 msgid "Publication Demographic"
-msgstr ""
+msgstr "Publicação Demográfica"
 
 #: ../komikku/servers/mangadex/__init__.py:86
 msgid "Filter by publication demographics"
-msgstr ""
+msgstr "Filtrar publicação demograficamente"
 
 #: ../komikku/servers/mangadex/__init__.py:89
 msgid "Shounen"
-msgstr ""
+msgstr "Shounen"
 
 #: ../komikku/servers/mangadex/__init__.py:90
 msgid "Shoujo"
-msgstr ""
+msgstr "Shoujo"
 
 #: ../komikku/servers/mangadex/__init__.py:91
 msgid "Josei"
-msgstr ""
+msgstr "Josei"
 
 #: ../komikku/servers/mangadex/__init__.py:92
 msgid "Seinen"
-msgstr ""
+msgstr "Seinen"
 
 #: ../komikku/servers/mangapill/__init__.py:31
 #: ../komikku/servers/mangatube/__init__.py:33
@@ -1661,11 +1665,11 @@ msgstr "Se deve mostrar mangá com conteúdo NSFW"
 
 #: ../komikku/servers/webtoon/__init__.py:52
 msgid "Originals"
-msgstr ""
+msgstr "Originais"
 
 #: ../komikku/servers/webtoon/__init__.py:53
 msgid "Canvas"
-msgstr ""
+msgstr "Canvas"
 
 #: ../komikku/updater.py:96
 msgid "Library update completed with errors"
@@ -1687,26 +1691,26 @@ msgstr "Atualização completa"
 #, python-brace-format
 msgid "{0} successful update"
 msgid_plural "{0} successful updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} atualização bem-sucedida"
+msgstr[1] "{0} atualizações bem-sucedidas"
 
 #: ../komikku/updater.py:108 ../komikku/updater.py:124
 #, python-brace-format
 msgid "{0} new chapter"
 msgid_plural "{0} new chapters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} novo capítulo"
+msgstr[1] "{0} novos capítulos"
 
 #: ../komikku/updater.py:110
 msgid "No new chapters"
-msgstr ""
+msgstr "Sem novos capítulos"
 
 #: ../komikku/updater.py:113
 #, python-brace-format
 msgid "{0} update failed"
 msgid_plural "{0} updates failed"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} atualização falhou"
+msgstr[1] "{0} atualizações falharam"
 
 #: ../komikku/updater.py:140
 msgid "Oops, update has failed. Please try again."
