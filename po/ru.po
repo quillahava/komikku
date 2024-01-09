@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-19 23:24+0100\n"
-"PO-Revision-Date: 2024-01-09 07:55+0000\n"
+"PO-Revision-Date: 2024-01-09 09:01+0000\n"
 "Last-Translator: Сергей <asvmail.as@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/>"
 "\n"
@@ -504,7 +504,7 @@ msgstr "Отображать логотипы серверов"
 
 #: ../data/ui/preferences.blp:90
 msgid "Badges"
-msgstr "Значки"
+msgstr "Информационные бирки"
 
 #: ../data/ui/preferences.blp:93
 msgid "Number of Unread Chapters"
@@ -718,7 +718,7 @@ msgstr "Очистить кэш и базу данных глав"
 
 #: ../data/ui/preferences.blp:304
 msgid "Clear chapters cache and database on application close"
-msgstr "Очищать кэш глав и базы данных при закрытии приложения"
+msgstr "Очищать кэш глав и базу данных при закрытии приложения"
 
 #: ../data/ui/preferences.blp:309
 msgid "Credentials storage"
@@ -731,7 +731,8 @@ msgstr "Разрешить хранение простого текста в к�
 #: ../data/ui/preferences.blp:313
 msgid "Used when no keyring backends are found"
 msgstr ""
-"Используется, если не найдено ни одного приложения управления связками ключей"
+"Используется, если не найдено ни одного приложения управляющего связками "
+"ключей"
 
 #: ../data/ui/preferences.blp:318
 msgid "Tweaks"
