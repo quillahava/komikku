@@ -4,6 +4,7 @@
 
 from bs4 import BeautifulSoup
 import requests
+import textwrap
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
@@ -62,8 +63,13 @@ class Grisebouille(Server):
         data['synopsis'] = soup.select_one('#article > p:nth-child(3)').text.strip().encode('iso-8859-1').decode()
 
         # Chapters
-        for a_element in reversed(soup.select('#article > div > div > ul > li > a')):
-            date, title = a_element.text.strip().encode('iso-8859-1').decode().split(' — ')
+        for a_element in reversed(soup.select('#article ul > li > a')):
+            title_element = a_element.strong.extract()
+            title = title_element.text.strip().encode('iso-8859-1').decode()
+            if data['slug'] == 'superflu' and not title.startswith('s0'):
+                continue
+
+            date = a_element.text.split(' ')[0]
             data['chapters'].append(dict(
                 slug=a_element.get('href').split('/')[-2],
                 title=title,
@@ -87,25 +93,49 @@ class Grisebouille(Server):
         data = dict(
             pages=[],
         )
-        for img_element in soup.select('#article p > img'):
-            url = img_element.get('src')
-            if not url.startswith(self.base_url):
-                continue
+        for index, p_element in enumerate(soup.select('#article p')):
+            if img_element := p_element.img:
+                url = img_element.get('src')
+                if not url.startswith(self.base_url):
+                    continue
 
-            data['pages'].append(dict(
-                slug=None,
-                image=img_element.get('src'),
-            ))
+                data['pages'].append(dict(
+                    slug=None,
+                    image=url.encode('iso-8859-1').decode(),
+                ))
+            else:
+                data['pages'].append(dict(
+                    slug=None,
+                    image=None,
+                    text=p_element.text.encode('iso-8859-1').decode().strip(),
+                    index=index + 1,
+                ))
 
         return data
 
     def get_manga_chapter_page_image(self, manga_slug, manga_name, chapter_slug, page):
         """
-        Returns chapter page scan (image) content
+        Returns chapter page (image or text) content
         """
-        r = self.session_get(page['image'])
-        if r.status_code != 200:
-            return None
+        if page.get('image'):
+            r = self.session_get(page['image'])
+            if r.status_code != 200:
+                return None
+
+            name = page['image'].split('/')[-1]
+        else:
+            r = self.session_get(
+                'https://fakeimg.pl/1500x2126/ffffff/000000/',
+                params=dict(
+                    text='\n'.join(textwrap.wrap(page['text'], 25)),
+                    font_size=64,
+                    font='museo',
+                )
+            )
+            if r.status_code != 200:
+                return None
+
+            name = 'txt_{0:03d}.png'.format(page['index'])
 
         mime_type = get_buffer_mime_type(r.content)
         if not mime_type.startswith('image'):
@@ -114,7 +144,7 @@ class Grisebouille(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=page['image'].split('/')[-1],
+            name=name,
         )
 
     def get_manga_url(self, slug, url):
@@ -133,7 +163,7 @@ class Grisebouille(Server):
         data = []
         for item in soup.find_all('div', class_='item-1-3 l-item-1-2 s-item-1-1'):
             slug = item.a.get('href').split('/')[-2]
-            if slug not in ('comic-trip', 'depeches-melba', 'tu-sais-quoi'):
+            if slug not in ('comic-trip', 'depeches-melba', 'superflu', 'tu-sais-quoi'):
                 continue
 
             data.append(dict(
