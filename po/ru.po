@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-19 23:24+0100\n"
-"PO-Revision-Date: 2024-01-09 09:01+0000\n"
+"PO-Revision-Date: 2024-01-09 15:05+0000\n"
 "Last-Translator: Сергей <asvmail.as@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/>"
 "\n"
@@ -312,7 +312,7 @@ msgstr "Поиск по названию, серверу или жанру"
 
 #: ../data/ui/library.blp:109 ../data/ui/preferences.blp:155
 msgid "Update"
-msgstr "Обновления"
+msgstr "Обновить"
 
 #: ../data/ui/library.blp:182
 msgid "Discover Comics"
@@ -389,11 +389,11 @@ msgstr "По алфавиту"
 
 #: ../data/ui/menu/main.xml:21
 msgid "Latest Read First"
-msgstr "Сначала последнее прочитанное"
+msgstr "Сначала последние прочитанные"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Updated First"
-msgstr "Сначала последнее обновленное"
+msgstr "Сначала последние обновлённые"
 
 #: ../data/ui/menu/main.xml:55
 msgid "Keyboard Shortcuts"
@@ -714,7 +714,7 @@ msgstr "Данные не сохранены в библиотеке"
 
 #: ../data/ui/preferences.blp:299
 msgid "Clear chapters cache and database"
-msgstr "Очистить кэш и базу данных глав"
+msgstr "Очистить кэш глав и базу данных"
 
 #: ../data/ui/preferences.blp:304
 msgid "Clear chapters cache and database on application close"
@@ -1004,7 +1004,7 @@ msgstr "Отметить как непрочитанное"
 
 #: ../komikku/card/chapters_list.py:696
 msgid "Mark Previous Chapters as Read"
-msgstr "Пометить предыдущие главы как прочитанные"
+msgstr "Отметить предыдущие главы как прочитанные"
 
 #: ../komikku/categories_editor.py:77 ../komikku/library/__init__.py:361
 msgid "Delete?"
@@ -1068,7 +1068,7 @@ msgstr "Последний том: {}"
 
 #: ../komikku/explorer/common.py:176
 msgid "Comics stored locally as archives in CBZ/CBR formats"
-msgstr "Комиксы, хранящиеся локально в виде архивов в форматах CBZ/CBR"
+msgstr "Комиксы, хранящиеся локально в виде архивов формата CBZ/CBR"
 
 #: ../komikku/explorer/common.py:193 ../komikku/preferences.py:552
 #: ../komikku/preferences.py:646 ../komikku/servers/mangatube/__init__.py:57
@@ -1302,7 +1302,7 @@ msgstr "Очистить?"
 
 #: ../komikku/preferences.py:133
 msgid "Are you sure you want to clear chapters cache and database?"
-msgstr "Вы уверены, что хотите очистить кэш и базу данных глав?"
+msgstr "Вы уверены, что хотите очистить кэш глав и базу данных?"
 
 #: ../komikku/preferences.py:161
 msgid "Disable animations?"
@@ -1704,7 +1704,7 @@ msgstr[2] "{0} новых глав"
 
 #: ../komikku/updater.py:110
 msgid "No new chapters"
-msgstr "Нет новых глав"
+msgstr "Новые главы отсутствуют"
 
 #: ../komikku/updater.py:113
 #, python-brace-format
