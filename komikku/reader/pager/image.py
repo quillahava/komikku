@@ -446,7 +446,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             # Crop is possible if computed bbox is included in texture
             bbox = self.crop_bbox
             if bbox and (bbox[2] - bbox[0] < self.texture.get_width() or bbox[3] - bbox[1] < self.texture.get_height()):
-                im = Image.open(BytesIO(self.texture.save_to_png_bytes().get_data())).convert('L')
+                im = Image.open(BytesIO(self.texture.save_to_png_bytes().get_data()))
                 io_buffer = BytesIO()
                 im.crop(bbox).convert('RGB').save(io_buffer, 'png')
                 return Gdk.Texture.new_from_bytes(GLib.Bytes.new(io_buffer.getbuffer()))
