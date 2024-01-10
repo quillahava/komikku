@@ -35,14 +35,15 @@ class WebtoonPager(Adw.Bin, BasePager):
         self.scrolledwindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self.scrolledwindow.get_vscrollbar().set_visible(False)
         self.scrolledwindow.set_kinetic_scrolling(True)
-        self.scrolledwindow.get_vadjustment().connect('value-changed', self.on_scroll)
 
         self.canvas = KInfiniteCanvas(self)
         self.canvas.connect('keyboard-navigation', self.on_keyboard_navigation)
         self.canvas.connect('controls-zone-clicked', self.on_controls_zone_clicked)
         self.canvas.connect('offlimit', self.on_offlimit)
         self.canvas.connect('page-requested', self.on_page_requested)
+
         self.scrolledwindow.set_child(self.canvas)
+        self.scrolledwindow.get_vadjustment().connect('value-changed', self.on_scroll)
 
         self.clamp.set_child(self.scrolledwindow)
 

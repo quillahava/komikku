@@ -191,18 +191,18 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
 
         lower = 0
         if first_page := self.get_first_child():
-            if first_page.status == 'offlimit' and self.scroll_direction == Gtk.DirectionType.UP:
+            if first_page.status == 'offlimit' and self.scroll_direction in (None, Gtk.DirectionType.UP):
                 # Offlimit start
                 lower += self.widget_height
-                if first_page._ic_position == -self.widget_height:
+                if first_page._ic_position == -self.widget_height and self.scroll_direction:
                     self.emit('offlimit', 'start')
 
         upper = self.canvas_height
         if last_page := self.get_last_child():
-            if last_page.status == 'offlimit' and self.scroll_direction == Gtk.DirectionType.DOWN:
+            if last_page.status == 'offlimit' and self.scroll_direction in (None, Gtk.DirectionType.DOWN):
                 # Offlimit end
                 upper -= self.widget_height
-                if last_page._ic_position == self.widget_height:
+                if last_page._ic_position == self.widget_height and self.scroll_direction:
                     self.emit('offlimit', 'end')
 
         self.vadjustment.configure(
@@ -374,6 +374,8 @@ class KInfiniteCanvas(Gtk.Widget, Gtk.Scrollable):
                 self.scroll_adjusting_delta = page_height - init_height
                 self.queue_allocate()
         else:
+            # Offlimit: vadjustment lower or upper value must be updated
+            self.configure_adjustments()
             self.is_scroll_adjusting = False
 
     def on_scroll(self, _controller, _dx, dy):
