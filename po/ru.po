@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-19 23:24+0100\n"
-"PO-Revision-Date: 2024-01-09 15:05+0000\n"
+"PO-Revision-Date: 2024-01-11 14:16+0000\n"
 "Last-Translator: Сергей <asvmail.as@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/>"
 "\n"
@@ -133,6 +133,8 @@ msgid ""
 "[Reader] Webtoon pager: Saved reading progress when navigating with slider "
 "of controls overlay"
 msgstr ""
+"[Reader] Webtoon pager: Прогресс чтения сохраняется при навигации с помощью "
+"слайдера и наложении элементов управления"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Servers] Added Honey Manga [UK]"
@@ -623,7 +625,7 @@ msgstr "Тип масштабирования изображения"
 
 #: ../data/ui/preferences.blp:244
 msgid "Adapt to Screen"
-msgstr "По размеру экрану"
+msgstr "По размеру экрана"
 
 #: ../data/ui/preferences.blp:245
 msgid "Adapt to Width"
@@ -889,7 +891,7 @@ msgstr "Однократное или ежемесячное пожертвов�
 
 #: ../data/ui/webview.blp:6
 msgid "Webview"
-msgstr ""
+msgstr "Webview"
 
 #: ../komikku/application.py:136
 msgid "Multiple URLs not supported"
@@ -1505,11 +1507,11 @@ msgstr "Фильтр по рейтингу"
 
 #: ../komikku/servers/mangadex/__init__.py:63
 msgid "Safe"
-msgstr ""
+msgstr "Безопасное содержимое"
 
 #: ../komikku/servers/mangadex/__init__.py:64
 msgid "Suggestive"
-msgstr ""
+msgstr "Непристойное содержимое"
 
 #: ../komikku/servers/mangadex/__init__.py:65
 msgid "Erotica"
@@ -1664,11 +1666,11 @@ msgstr "Можно ли показывать мангу, содержащую NS
 
 #: ../komikku/servers/webtoon/__init__.py:52
 msgid "Originals"
-msgstr ""
+msgstr "Оригинальные"
 
 #: ../komikku/servers/webtoon/__init__.py:53
 msgid "Canvas"
-msgstr ""
+msgstr "Холсты"
 
 #: ../komikku/updater.py:96
 msgid "Library update completed with errors"
