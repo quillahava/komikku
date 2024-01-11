@@ -5,6 +5,7 @@
 from io import BytesIO
 import logging
 import math
+import platform
 
 import gi
 from PIL import Image
@@ -40,7 +41,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         'zoom-end': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
-    def __init__(self, path, texture, pixbuf, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False):
+    def __init__(self, path, data, texture, pixbuf, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False):
         super().__init__()
 
         self.__rendered = False
@@ -52,6 +53,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         self.__vadj = None
         self.__zoom = 1
 
+        self.data = data
         self.path = path
 
         self.texture = texture
@@ -106,9 +108,6 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             self.animation_iter = self.pixbuf.get_iter(None)
             self.animation_tick_callback_id = self.add_tick_callback(self.__animation_tick_callback)
 
-        if self.crop:
-            self.crop_bbox = self.__compute_borders_crop_bbox()
-
     @classmethod
     def new_from_data(cls, data, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False, static_animation=False):
         mime_type, _result_uncertain = Gio.content_type_guess(None, data)
@@ -128,7 +127,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(None, texture, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
+        return cls(None, data, texture, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
 
     @classmethod
     def new_from_file(cls, path, scaling='screen', crop=False, landscape_zoom=False, can_zoom=False, static_animation=False):
@@ -147,7 +146,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(path, texture, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
+        return cls(path, None, texture, pixbuf, scaling=scaling, crop=crop, landscape_zoom=landscape_zoom, can_zoom=can_zoom)
 
     @classmethod
     def new_from_resource(cls, path):
@@ -157,7 +156,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             # Invalid image, corrupted image, unsupported image format,...
             return None
 
-        return cls(None, texture, None)
+        return cls(None, None, texture, None)
 
     @property
     def borders(self):
@@ -363,18 +362,22 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
     def __compute_borders_crop_bbox(self):
         threshold = 225
 
+        if self.path is None and self.data is None:
+            return None
+
         def lookup(x):
             return 255 if x > threshold else 0
 
         try:
-            buffer = self.texture.save_to_png_bytes()
-        except Exception:
+            with Image.open(self.path or BytesIO(self.data)) as im:
+                with im.convert('L') as im_bw:
+                    im_lookup = im_bw.point(lookup, mode='1')
+        except Exception as error:
+            logger.debug(error)
             return None
-        else:
-            im = Image.open(BytesIO(buffer.get_data())).convert('L').point(lookup, mode='1')
-            bg = Image.new(im.mode, im.size, 255)
 
-        return ImageChops.difference(im, bg).getbbox()
+        with Image.new(im_lookup.mode, im_lookup.size, 255) as im_bg:
+            return ImageChops.difference(im_lookup, im_bg).getbbox()
 
     def cancel_deceleration(self):
         if isinstance(self.get_parent(), Gtk.ScrolledWindow):
@@ -419,7 +422,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         self.pixbuf = None
         self.animation_iter = None
         self.texture = None
-        self.texture_cropped = None
+        self.texture_crop = None
 
     def do_measure(self, orientation, for_size):
         if orientation == Gtk.Orientation.HORIZONTAL:
@@ -440,16 +443,19 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
     def do_snapshot(self, snapshot):
         def crop_borders():
             """ Crop white borders """
-            if self.path is None:
-                return self.texture
-
             # Crop is possible if computed bbox is included in texture
             bbox = self.crop_bbox
             if bbox and (bbox[2] - bbox[0] < self.texture.get_width() or bbox[3] - bbox[1] < self.texture.get_height()):
-                im = Image.open(BytesIO(self.texture.save_to_png_bytes().get_data()))
-                io_buffer = BytesIO()
-                im.crop(bbox).convert('RGB').save(io_buffer, 'png')
-                return Gdk.Texture.new_from_bytes(GLib.Bytes.new(io_buffer.getbuffer()))
+                try:
+                    with Image.open(self.path or BytesIO(self.data)) as im:
+                        with im.convert('RGB') as im_rgb:
+                            with im_rgb.crop(bbox) as im_crop:
+                                with BytesIO() as io_buffer:
+                                    im_crop.save(io_buffer, 'png')
+                                    return Gdk.Texture.new_from_bytes(GLib.Bytes.new(io_buffer.getvalue()))
+                except Exception as error:
+                    logger.debug(error)
+                    return self.texture
 
             return self.texture
 
@@ -484,11 +490,15 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         # Append texture
         rect = Graphene.Rect().alloc()
         rect.init(0, 0, width, height)
-        snapshot.append_scaled_texture(
-            self.texture_crop if self.crop else self.texture,
-            Gsk.ScalingFilter.LINEAR if self.zoom < 1 else Gsk.ScalingFilter.NEAREST,
-            rect
-        )
+        if self.zoom < 1:
+            if self.texture.get_height() > 8192 and platform.machine() == 'aarch64':
+                filter = Gsk.ScalingFilter.LINEAR
+            else:
+                filter = Gsk.ScalingFilter.TRILINEAR
+        else:
+            filter = Gsk.ScalingFilter.NEAREST
+
+        snapshot.append_scaled_texture(self.texture_crop if self.crop else self.texture, filter, rect)
 
         snapshot.restore()
 

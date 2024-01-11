@@ -86,7 +86,7 @@ def expand_and_resize_cover(buffer):
     new_buffer = BytesIO()
     new_img.convert('RGB').save(new_buffer, 'JPEG', quality=65)
 
-    return new_buffer.getbuffer()
+    return new_buffer.getvalue()
 
 
 def folder_size(path):

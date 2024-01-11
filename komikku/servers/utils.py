@@ -44,21 +44,27 @@ def convert_date_string(date, format=None):
     return d.date()
 
 
-def convert_image(image, format='jpeg', ret_type='image'):
+def convert_image(im, format='jpeg', ret_type='image'):
     """Convert an image to a specific format
 
-    :param image: PIL.Image.Image or bytes object
+    :param im: PIL.Image.Image or bytes object
     :param format: convertion format: jpeg, png, webp,...
     :param ret_type: image (PIL.Image.Image) or bytes (bytes object)
     """
-    if not isinstance(image, Image.Image):
-        image = Image.open(BytesIO(image))
+    if not isinstance(im, Image.Image):
+        im = Image.open(BytesIO(im))
 
     io_buffer = BytesIO()
-    image.convert('RGB').save(io_buffer, format)
+    with im.convert('RGB') as im_rgb:
+        im_rgb.save(io_buffer, format)
+
+    im.close()
+
     if ret_type == 'bytes':
-        return io_buffer.getbuffer()
+        return io_buffer.getvalue()
+
     io_buffer.seek(0)
+
     return Image.open(io_buffer)
 
 
