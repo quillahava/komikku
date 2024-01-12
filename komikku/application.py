@@ -83,12 +83,15 @@ CREDITS = dict(
         'Abidin Toumi (Arabic)',
         'Sabri Ünal (Turkish)',
         'Roger Vilarasau (Catalan)',
+        'CakesTwix (Ukrainian)',
         'Gallegonovato (Spanish)',
         'GrownNed (Russian)',
+        'Inaha (Simplified Chinese)'
         'Infinitive Witch (Brazilian Portuguese)',
-        'CakesTwix (Ukrainian)',
         'Mek101 (Italian)',
+        'Ser82 (Russian)',
         'Shima (Russian)',
+        'Unidealistic Raccoon (Brazilian Portuguese)'
         'VaGNaroK (Brazilian Portuguese)',
     ),
     supporters=(
@@ -402,13 +405,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Servers] Fr-Scan: Update</li>
-                <li>[Servers] WEBTOON: Update</li>
-                <li>[Servers] Xoxocomics: Update</li>
-                <li>[Servers] Golden Mangás [pt_BR]: Disable</li>
-                <li>[L10n] Updated Portuguese (Brazil), Spanish and Turkish translations</li>
+                <li>[Reader] Used best image scaling filter based on zoom value</li>
+                <li>[Reader] Fixed memory leaks</li>
+                <li>[Reader] RTL/LTR/Vertical pager: Fixed unzoom by double tap/click</li>
+                <li>[Reader] Webtoon pager: Improved detection when first or last chapter is reached</li>
+                <li>[Servers] Grise Bouille [FR]: Update</li>
+                <li>[L10n] Updated Chinese (Simplified), Portuguese, Portuguese (Brazil) and Russian translations</li>
             </ul>
-            <p>Enjoy hoilday season and happy reading.</p>
+            <p>Happy reading.</p>
         """)
 
         window.add_link(_('Join Chat'), 'https://matrix.to/#/#komikku-gnome:matrix.org')
