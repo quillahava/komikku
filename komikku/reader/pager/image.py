@@ -488,8 +488,9 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             )
 
         # Append texture
+        scale_factor = self.get_scale_factor()
         rect = Graphene.Rect().alloc()
-        rect.init(0, 0, width, height)
+        rect.init(0, 0, width * scale_factor, height * scale_factor)
         if self.zoom < 1:
             if self.texture.get_height() > 8192 and platform.machine() == 'aarch64':
                 filter = Gsk.ScalingFilter.LINEAR
@@ -497,7 +498,8 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
                 filter = Gsk.ScalingFilter.TRILINEAR
         else:
             filter = Gsk.ScalingFilter.NEAREST
-
+        if scale_factor != 1:
+            snapshot.scale(1 / scale_factor, 1 / scale_factor)
         snapshot.append_scaled_texture(self.texture_crop if self.crop else self.texture, filter, rect)
 
         snapshot.restore()
