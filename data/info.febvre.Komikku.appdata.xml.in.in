@@ -95,7 +95,7 @@
     <url type="donation">https://valos.gitlab.io/Komikku/#sponsor</url>
 
     <releases>
-        <release version="1.34.0" date="2024-01-12">
+        <release version="1.34.1" date="2024-01-12">
             <description>
                 <ul>
                     <li>[Reader] Used best image scaling filter based on zoom value</li>
