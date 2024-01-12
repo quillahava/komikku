@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Komikku package.
-# Jiri Grönroos <jiri.gronroos@iki.fi>, 2023.
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.12.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-19 23:24+0100\n"
-"PO-Revision-Date: 2023-07-26 15:06+0000\n"
+"PO-Revision-Date: 2024-01-12 21:01+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
-"Language-Team: Finnish <https://hosted.weblate.org/projects/komikku/main/fi/"
-">\n"
+"Language-Team: Finnish <https://hosted.weblate.org/projects/komikku/main/fi/>"
+"\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -82,7 +82,7 @@ msgstr "Vaalea ja tumma teema"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:48
 msgid "The Library page"
-msgstr ""
+msgstr "Kirjasto-sivu"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:52
 msgid "The Library page with the category sidebar open"
@@ -90,7 +90,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:56
 msgid "The Preferences page (Library settings)"
-msgstr ""
+msgstr "Asetukset-sivu (Kirjaston asetukset)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:60
 msgid "The Explorer page in mobile format (Servers list)"
@@ -288,7 +288,7 @@ msgstr "Kirjasto"
 
 #: ../data/ui/library.blp:19
 msgid "Toggle categories sidebar"
-msgstr ""
+msgstr "Luokkien sivupalkki päälle/pois"
 
 #: ../data/ui/library.blp:23
 msgid "Komikku"
@@ -353,7 +353,7 @@ msgstr "Poista kaikki"
 
 #: ../data/ui/menu/explorer_search_global_search.xml:7
 msgid "Pinned Servers Only"
-msgstr ""
+msgstr "Vain kiinnitetyt palvelimet"
 
 #: ../data/ui/menu/library_search.xml:7
 msgid "Unread"
@@ -373,19 +373,19 @@ msgstr "Päivitä kirjasto"
 
 #: ../data/ui/menu/main.xml:11
 msgid "Sort"
-msgstr ""
+msgstr "Järjestys"
 
 #: ../data/ui/menu/main.xml:16
 msgid "Alphabetical"
-msgstr ""
+msgstr "Aakkosjärjestys"
 
 #: ../data/ui/menu/main.xml:21
 msgid "Latest Read First"
-msgstr ""
+msgstr "Viimeksi luettu ensin"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Updated First"
-msgstr ""
+msgstr "Viimeksi päivitetty ensin"
 
 #: ../data/ui/menu/main.xml:55
 msgid "Keyboard Shortcuts"
@@ -393,7 +393,7 @@ msgstr "Pikanäppäimet"
 
 #: ../data/ui/menu/main.xml:59
 msgid "Donate"
-msgstr ""
+msgstr "Lahjoita"
 
 #: ../data/ui/menu/main.xml:63
 msgid "About Komikku"
@@ -751,7 +751,7 @@ msgstr "Takaisin"
 
 #: ../data/ui/reader.blp:31
 msgid "Toggle Fullscreen Mode"
-msgstr ""
+msgstr "Koko näytön tila päälle/pois"
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
@@ -761,17 +761,17 @@ msgstr "Sovellus"
 #: ../data/ui/shortcuts_overview.blp:14
 msgctxt "Shortcut window description"
 msgid "Open Preferences"
-msgstr ""
+msgstr "Avaa asetukset"
 
 #: ../data/ui/shortcuts_overview.blp:19
 msgctxt "Shortcut window description"
 msgid "Toggle Fullscreen Mode"
-msgstr ""
+msgstr "Koko näytön tila päälle/pois"
 
 #: ../data/ui/shortcuts_overview.blp:24
 msgctxt "Shortcut window description"
 msgid "Open Keyboard Shortcuts"
-msgstr ""
+msgstr "Avaa pikanäppäimet"
 
 #: ../data/ui/shortcuts_overview.blp:30
 msgctxt "Shortcut window description"
@@ -781,12 +781,12 @@ msgstr "Kirjasto"
 #: ../data/ui/shortcuts_overview.blp:33
 msgctxt "Shortcut window description"
 msgid "Add Manga"
-msgstr ""
+msgstr "Lisää manga"
 
 #: ../data/ui/shortcuts_overview.blp:38
 msgctxt "Shortcut window description"
 msgid "Select All"
-msgstr ""
+msgstr "Valitse kaikki"
 
 #: ../data/ui/shortcuts_overview.blp:43
 msgctxt "Shortcut window description"
@@ -801,7 +801,7 @@ msgstr "Manga-kortti"
 #: ../data/ui/shortcuts_overview.blp:52
 msgctxt "Shortcut window description"
 msgid "Select All Chapters"
-msgstr ""
+msgstr "Valitse kaikki kappaleet"
 
 #: ../data/ui/shortcuts_overview.blp:58
 msgctxt "Shortcut window description"
@@ -821,15 +821,15 @@ msgstr "Lataushallinta"
 #: ../data/ui/shortcuts_overview.blp:70
 msgctxt "Shortcut window description"
 msgid "Select All Downloads"
-msgstr ""
+msgstr "Valitse kaikki lataukset"
 
 #: ../data/ui/support.blp:6 ../data/ui/support.blp:12
 msgid "Support Development"
-msgstr ""
+msgstr "Tue kehitystä"
 
 #: ../data/ui/support.blp:46
 msgid "How can you support?"
-msgstr ""
+msgstr "Miten voit tukea?"
 
 #: ../data/ui/support.blp:54
 msgid ""
@@ -854,15 +854,15 @@ msgstr ""
 #: ../data/ui/support.blp:88 ../data/ui/support.blp:104
 #: ../data/ui/support.blp:120
 msgid "Donate and Support"
-msgstr ""
+msgstr "Lahjoita ja tue"
 
 #: ../data/ui/support.blp:98
 msgid "One-time donation"
-msgstr ""
+msgstr "Kertalahjoitus"
 
 #: ../data/ui/support.blp:114
 msgid "One-time or monthly donation"
-msgstr ""
+msgstr "Kerta- tai kuukausilahjoitus"
 
 #: ../data/ui/webview.blp:6
 msgid "Webview"
@@ -1027,12 +1027,12 @@ msgstr "Lataus valmistui"
 #, python-brace-format
 msgid "{0} chapter"
 msgid_plural "{0} chapters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} kappale"
+msgstr[1] "{0} kappaletta"
 
 #: ../komikku/explorer/common.py:61
 msgid "Last Chapter: {}"
-msgstr ""
+msgstr "Viimeinen kappale: {}"
 
 #: ../komikku/explorer/common.py:63
 msgid "Last Volume: {}"
@@ -1479,11 +1479,11 @@ msgstr "Suodata tilojen mukaan"
 
 #: ../komikku/servers/mangadex/__init__.py:77
 msgid "Completed"
-msgstr ""
+msgstr "Valmis"
 
 #: ../komikku/servers/mangadex/__init__.py:78
 msgid "Paused"
-msgstr ""
+msgstr "Keskeytetty"
 
 #: ../komikku/servers/mangadex/__init__.py:79
 #: ../komikku/servers/mangaworld/__init__.py:53
