@@ -558,6 +558,7 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
         self.pointer_position = (x, y)
 
     def on_scroll(self, _controller, _dx, dy):
+        """ <Ctrl>+Scroll zooming """
         modifiers = Gtk.accelerator_get_default_mod_mask()
         state = self.controller_scroll.get_current_event_state()
         if state & modifiers == Gdk.ModifierType.CONTROL_MASK:
@@ -572,7 +573,6 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
             return
 
         self.controller_scroll.set_propagation_phase(Gtk.PropagationPhase.CAPTURE if allow else Gtk.PropagationPhase.NONE)
-        self.gesture_click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE if allow else Gtk.PropagationPhase.NONE)
         self.gesture_zoom.set_propagation_phase(Gtk.PropagationPhase.CAPTURE if allow else Gtk.PropagationPhase.NONE)
 
     def set_zoom(self, zoom=None, center=None):
