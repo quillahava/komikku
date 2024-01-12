@@ -86,12 +86,12 @@ CREDITS = dict(
         'CakesTwix (Ukrainian)',
         'Gallegonovato (Spanish)',
         'GrownNed (Russian)',
-        'Inaha (Simplified Chinese)'
+        'Inaha (Simplified Chinese)',
         'Infinitive Witch (Brazilian Portuguese)',
         'Mek101 (Italian)',
         'Ser82 (Russian)',
         'Shima (Russian)',
-        'Unidealistic Raccoon (Brazilian Portuguese)'
+        'Unidealistic Raccoon (Brazilian Portuguese)',
         'VaGNaroK (Brazilian Portuguese)',
     ),
     supporters=(
