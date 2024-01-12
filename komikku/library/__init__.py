@@ -606,6 +606,9 @@ class LibraryPage(Adw.NavigationPage):
             self.start_page_progressbar.set_visible(False)
             self.start_page_title_label.set_markup('<span weight="bold">' + _('Welcome to Komikku') + '</span>')
             self.start_page_discover_button.set_visible(True)
+
+            self.populating = False
+
             return
 
         self.start_page_progressbar.set_visible(True)
