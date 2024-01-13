@@ -11,11 +11,15 @@ class Toonily(Madara):
     lang = 'en'
     is_nsfw = True
 
+    base_url = 'https://toonily.com'
+
     date_format = '%b %-d, %y'
     medium = None
     series_name = 'webtoon'
 
-    base_url = 'https://toonily.com'
+    results_selector = '.manga'
+    result_name_slug_selector = '.post-title a'
+    result_cover_selector = '.item-thumb img'
 
     def is_long_strip(self, _manga_data):
         return True

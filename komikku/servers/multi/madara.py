@@ -25,6 +25,7 @@
 # Reaperscans [EN/AR/FR/ID/TR]
 # Submanga [ES] (disabled)
 # ToonGod [EN]
+# Toonily [EN]
 # Wakascan [FR] (disabled)
 
 from bs4 import BeautifulSoup
@@ -53,6 +54,10 @@ class Madara(Server):
     date_format: str = '%B %d, %Y'
     medium: str = 'manga'
     series_name: str = 'manga'
+
+    results_selector = '.row'
+    result_name_slug_selector = '.post-title a'
+    result_cover_selector = '.tab-thumb img'
 
     def __init__(self):
         self.api_url = self.base_url + '/wp-admin/admin-ajax.php'
@@ -360,14 +365,14 @@ class Madara(Server):
         soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
-        for element in soup.select('.row'):
-            a_element = element.select_one('.post-title a')
+        for element in soup.select(self.results_selector):
+            a_element = element.select_one(self.result_name_slug_selector)
             slug = a_element.get('href').split('/')[-2]
             name = a_element.text.strip()
             if not name or not slug:
                 continue
 
-            if cover_img := element.select_one('.tab-thumb img'):
+            if cover_img := element.select_one(self.result_cover_selector):
                 cover = cover_img.get('data-src')
                 if cover is None:
                     cover = cover_img.get('src')
