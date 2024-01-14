@@ -410,7 +410,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
                 <li>[Reader] RTL/LTR/Vertical pager: Fixed unzoom by double tap/click</li>
                 <li>[Reader] Webtoon pager: Improved detection when first or last chapter is reached</li>
                 <li>[Servers] Grise Bouille [FR]: Update</li>
-                <li>[L10n] Updated Chinese (Simplified), Portuguese, Portuguese (Brazil) and Russian translations</li>
+                <li>[Servers] Toonily [EN]: Fix</li>
+                <li>[L10n] Updated Chinese (Simplified), Finnish, Portuguese, Portuguese (Brazil) and Russian translations</li>
             </ul>
             <p>Happy reading.</p>
         """)
