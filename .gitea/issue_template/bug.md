@@ -1,23 +1,22 @@
 ---
-name: "Bug"
-about: "Bug, Issue"
-title: "[BUG]"
-ref: "develop"
+name: "Bug report"
+about: "File a bug report"
+title: "[BUG] "
 labels:
 
 - bug
-- "help needed"
+- unconfirmed
 ---
 
 # What problem did you encounter
 
-## What is the actual behaviour?
+## What is the actual behavior?
 
-## What is the expected behaviour?
+## What is the expected behavior?
 
 ## How to reproduce
 
-  Please provide steps to reproduce the issue. If it's a graphical issue please attach screenshots.
+  Please provide steps to reproduce the issue. If it's a graphical issue, please attach screenshots.
 
 # Debugging information
 
