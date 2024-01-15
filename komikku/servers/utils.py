@@ -288,15 +288,24 @@ def search_duckduckgo(site, term):
     from komikku.servers import USER_AGENT
 
     session = requests.Session()
-    session.headers.update({'user-agent': USER_AGENT})
-
-    params = dict(
-        q=f'site:{site} {term}',
-    )
+    session.headers.update({'User-Agent': USER_AGENT})
 
     try:
-        r = session.get('https://lite.duckduckgo.com/lite/', params=params)
-    except Exception:
+        url = 'https://lite.duckduckgo.com'
+        session.get(url)
+        r = session.post(
+            url + '/lite',
+            data={
+                'q': f'site:{site} {term}',
+            },
+            headers={
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Origin': url,
+                'Referer': url + '/',
+            },
+        )
+    except Exception as error:
+        logger.debug(error)
         raise
 
     soup = BeautifulSoup(r.content, 'html.parser')

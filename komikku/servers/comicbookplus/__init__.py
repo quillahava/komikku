@@ -100,8 +100,8 @@ class Comicbookplus(Server):
                     tds_elements = tr_element.find_all('td')
 
                     data['chapters'].append(dict(
-                        title=tds_elements[1].a.text.strip(),
-                        slug=parse_qs(urlparse(tds_elements[1].a.get('href')).query)['dlid'][0],
+                        title=tds_elements[2].a.text.strip(),
+                        slug=parse_qs(urlparse(tds_elements[2].a.get('href')).query)['dlid'][0],
                         date=convert_date_string(tds_elements[5].text.strip(), format='%b %d, %Y'),
                     ))
 
