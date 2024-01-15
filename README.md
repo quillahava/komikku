@@ -58,7 +58,7 @@ If you'd like to help translating __Komikku__ into your language, please head ov
 [![Translation status](https://hosted.weblate.org/widgets/komikku/-/main/multi-auto.svg)](https://hosted.weblate.org/engage/komikku/)
 
 ### Code of Conduct
-We follow the [GNOME Code of Conduct](/CODE_OF_CONDUCT.md).
+We follow the [GNOME Code of Conduct](CODE_OF_CONDUCT.md).
 All communications in project spaces are expected to follow it.
 
 ## Sponsor this project
@@ -73,4 +73,5 @@ __Komikku__ is a `Free software`. If you like it and would like to support and f
 
 ## Disclaimer
 
-The developers of this application does not have any affiliation with the content providers available.
+- The developers of this application does not have any affiliation with the content providers available.
+- The application itself has no content and can be considered as a browser-like app.
