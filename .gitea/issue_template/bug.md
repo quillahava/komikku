@@ -1,3 +1,14 @@
+---
+name: "Bug"
+about: "Bug, Issue"
+title: "[BUG]"
+ref: "develop"
+labels:
+
+- bug
+- "help needed"
+---
+
 # What problem did you encounter
 
 ## What is the actual behaviour?
