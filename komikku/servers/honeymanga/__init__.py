@@ -25,7 +25,7 @@ class Honeymanga(Server):
     api_list_url = api_base_url.format('data') + '/v2/manga/cursor-list'
     api_manga_url = api_base_url.format('data') + '/manga/{0}'
     api_chapters_url = api_base_url.format('data') + '/v2/chapter/cursor-list'
-    api_chapter_url = api_base_url.format('data') + '/chapter/frames'
+    api_chapter_url = api_base_url.format('data') + '/chapter/frames/{0}'
 
     def __init__(self):
         if self.session is None:
@@ -129,11 +129,8 @@ class Honeymanga(Server):
 
         Currently, only pages are expected.
         """
-        r = self.session_post(
-            self.api_chapter_url,
-            data={
-                'chapterId': chapter_slug,
-            },
+        r = self.session_get(
+            self.api_chapter_url.format(chapter_slug),
             headers={
                 'Referer': self.chapter_url.format(chapter_slug, manga_slug),
             }
