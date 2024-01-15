@@ -42,9 +42,9 @@ class Mangahub(Server):
     search_url = base_url + '/search'
     manga_url = base_url + '/manga/{0}'
     chapter_url = base_url + '/chapter/{0}/{1}'
-    api_url = 'https://api.mghubcdn.com/graphql'
-    image_url = 'https://img.mghubcdn.com/file/imghub/{0}'
-    cover_url = 'https://thumb.mghubcdn.com/{0}'
+    api_url = 'https://api2.mangahub.io/graphql'
+    image_url = 'https://imgx.mangahub.io/{0}'
+    cover_url = 'https://thumb.mangahub.io/{0}'
 
     def __init__(self):
         self.api_key = None
@@ -224,7 +224,7 @@ class Mangahub(Server):
             'Content-Type': 'application/json',
             'Referer': self.base_url + '/',
             'Origin': self.base_url,
-            'x-mhub-access': self.api_key,
+            'X-Mhub-Access': self.api_key,
         })
         if r.status_code != 200:
             return None
@@ -235,6 +235,7 @@ class Mangahub(Server):
                 slug=row['slug'],
                 name=row['title'],
                 cover=self.cover_url.format(row['image']),
+                last_chapter=row['latestChapter'],
             ))
 
         return results
