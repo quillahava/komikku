@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2023 GrownNed
+# Copyright (C) 2020-2024 GrownNed
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: GrownNed <grownned@gmail.com>
 

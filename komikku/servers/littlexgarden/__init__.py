@@ -1,4 +1,4 @@
-# Copyright (C) 2023 Pierre-Emmanuel Devin
+# Copyright (C) 2023-2024 Pierre-Emmanuel Devin
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-late
 # Author: Pierre-Emmanuel Devin <pierreemmanuel.devin@posteo.net>
 

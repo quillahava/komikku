@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2023 JaskaranSM
+# Copyright (C) 2020-2024 JaskaranSM
 # SPDX-License-Identifier: GPL-3.0-only or GPL-3.0-or-later
 # Author: JaskaranSM
 
