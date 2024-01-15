@@ -2,7 +2,6 @@
 
 [![](https://circle.gnome.org/assets/button/badge.svg)](https://apps.gnome.org/Komikku/)
 [![](https://stopthemingmy.app/badge.svg)](https://stopthemingmy.app)
-[![Pipeline status](https://gitlab.com/valos/Komikku/badges/main/pipeline.svg)](https://gitlab.com/valos/Komikku/-/pipelines)
 [![Translation status](https://hosted.weblate.org/widgets/komikku/-/main/svg-badge.svg)](https://hosted.weblate.org/engage/komikku/)
 [![Donate using Liberapay](https://img.shields.io/liberapay/receives/valos.svg?logo=liberapay)](https://en.liberapay.com/valos/donate)
 
@@ -45,19 +44,6 @@ __Komikku__ is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.
 __Komikku__ is available as native package in the repositories of the following distributions:
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/komikku.svg)](https://repology.org/project/komikku/versions)
-
-### Flatpak of development version
-
-1. Setup [Flatpak](https://www.flatpak.org/setup/) for your Linux distro.
-2. Download the Komikku flatpak from the last passed [Gitlab pipeline](https://gitlab.com/valos/Komikku/-/jobs/artifacts/main/raw/info.febvre.KomikkuDevel.flatpak?job=flatpak).
-3. Install the flatpak:
-```bash
-flatpak install info.febvre.KomikkuDevel.flatpak
-```
-4. Launch it:
-```bash
-flatpak run -d info.febvre.KomikkuDevel
-```
 
 ## Contributing
 

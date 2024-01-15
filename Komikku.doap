@@ -8,7 +8,7 @@
   <shortdesc xml:lang="en">A manga reader for GNOME</shortdesc>
   <description xml:lang="en">A manga reader for GNOME</description>
   <homepage rdf:resource="https://valos.gitlab.io/Komikku/" />
-  <bug-database rdf:resource="https://gitlab.com/valos/Komikku/-/issues" />
+  <bug-database rdf:resource="https://codeberg.org/valos/Komikku/issues" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#apps" />
   <programming-language>Python</programming-language>
   <license rdf:resource="https://www.gnu.org/licenses/gpl-3.0.html" />
@@ -22,7 +22,7 @@
       <foaf:mbox rdf:resource="mailto:vfebvre@easter-eggs.com" />
       <foaf:account>
         <foaf:OnlineAccount>
-          <foaf:accountServiceHomepage rdf:resource="https://gitlab.com"/>
+          <foaf:accountServiceHomepage rdf:resource="https://codeberg.org"/>
           <foaf:accountName>valos</foaf:accountName>
         </foaf:OnlineAccount>
       </foaf:account>

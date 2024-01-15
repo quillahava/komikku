@@ -15,7 +15,7 @@ authoremail = 'vfebvre@easter-eggs.com'
 domainname = 'febvre'
 domainext = 'info'
 
-gitrepo = 'https://gitlab.com/' + authornickname + '/' + prettyname
+gitrepo = 'https://codeberg.org/' + authornickname + '/' + prettyname
 website = 'https://valos.gitlab.io/Komikku/'
 
 python = import('python')

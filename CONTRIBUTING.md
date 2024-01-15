@@ -39,8 +39,7 @@ flatpak install --user flathub org.gnome.Builder
 
 Then, open __GNOME Builder__, click the **Clone...** button and paste the repository url.
 
-By default, GNOME Builder should select the `info.febvre.KomikkuDevel.json` manifest, which is the
-manifest used for building the Gitlab CI pipeline version.
+By default, GNOME Builder should select the `info.febvre.KomikkuDevel.json` manifest.
 
 ### Building from source
 
@@ -67,7 +66,7 @@ Komikku can be built in a Python virtual environment. However, some tools and de
 
 2. Clone the repository:
     ```sh
-    git clone https://gitlab.com/valos/Komikku.git
+    git clone https://codeberg.org/valos/Komikku.git
     cd Komikku
     ```
 
@@ -163,13 +162,11 @@ Fixes #123456
 
 ## Merge Request
 
-Before submitting a merge request, make sure that [your fork is available publicly](https://gitlab.gnome.org/help/user/public_access.md), otherwise CI won't be able to run.
-
 Use the title of your commit as the title of your MR if there's only one. Otherwise it should summarize all your commits. If your commits do several tasks that can be separated, open several merge requests.
 
 In the details, write a more detailed description of what it does. If your changes include a change in the UI or the UX, provide screenshots in both light and dark mode, and/or a screencast of the new behavior.
 
-Don't forget to mention the issue that this merge request solves or is related to, if applicable. GitLab recognizes the syntax `Closes #XXXX` or `Fixes #XXXX` that will close the corresponding issue accordingly when your change is merged.
+Don't forget to mention the issue that this merge request solves or is related to, if applicable. Codeberg recognizes the syntax `close #XXXX`, `closes #XXXX`, `closed #XXXX`, `fix #XXXX`, `fixes #XXXX`, `fixed #XXXX`, `resolve #XXXX`, `resolves #XXXX` or `resolved #XXXX` that will close the corresponding issue accordingly when your change is merged.
 
 We expect to always work with a clean commit history. When you apply fixes or suggestions,
 [amend](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---amend) or
