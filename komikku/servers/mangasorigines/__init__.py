@@ -15,3 +15,5 @@ class Mangasorigines(Madara):
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
     chapter_url = base_url + '/manga/{0}/{1}/'
     bypass_cf_url = base_url + '/manga/sakamoto-days/'
+
+    details_synopsis_selector = '.manga-excerpt'

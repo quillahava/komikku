@@ -49,6 +49,8 @@ class Reaperscans_fr(Madara):
 
     base_url = 'https://reaperscans.fr'
 
+    details_scanlators_selector = '.post-content_item:-soup-contains("Team") .summary-content'
+
 
 class Reaperscans_id(Madara):
     id = 'reaperscans_id'

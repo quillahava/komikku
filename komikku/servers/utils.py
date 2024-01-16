@@ -281,7 +281,7 @@ def get_soup_element_inner_text(outer, text=None):
 
 
 def remove_emoji_from_string(text):
-    return emoji.replace_emoji(text, replace='')
+    return emoji.replace_emoji(text, replace='').strip()
 
 
 def search_duckduckgo(site, term):

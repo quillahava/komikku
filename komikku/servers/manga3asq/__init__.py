@@ -15,3 +15,5 @@ class Manga3asq(Madara2):
     base_url = 'https://3asq.org'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
     chapter_url = base_url + '/manga/{0}/{1}/'
+
+    details_synopsis_selector = '.manga-excerpt'

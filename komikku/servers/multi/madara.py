@@ -19,7 +19,7 @@
 # Leomanga [ES] (disabled)
 # Leviatanscans [EN]
 # Manga-Scantrad [FR]
-# Mangas Origines [FR] (disabled)
+# Mangas Origines [FR]
 # Manhwa Hentai [EN]
 # Phoenix Fansub [ES] (disabled)
 # Reaperscans [EN/AR/FR/ID/TR]
@@ -55,6 +55,12 @@ class Madara(Server):
     medium: str = 'manga'
     series_name: str = 'manga'
 
+    chapters_list_selector = '#manga-chapters-holder'
+    details_authors_selector = '.author-content a, .artist-content a'
+    details_scanlators_selector = None
+    details_genres_selector = '.genres-content a'
+    details_status_selector = '.post-status .post-content_item:nth-child(2) .summary-content'
+    details_synopsis_selector = '.summary__content'
     results_selector = '.row'
     result_name_slug_selector = '.post-title a'
     result_cover_selector = '.tab-thumb img'
@@ -121,44 +127,25 @@ class Madara(Server):
                         data['cover'] = cover_div.a.img.get('src')
 
         # Details
-        for element in soup.find('div', class_='summary_content').find_all('div', class_='post-content_item'):
-            label_element = element.find('div', class_='summary-heading')
-            if not label_element:
-                label_element = element.find('h5')
-            if label_element:
-                label = get_soup_element_inner_text(label_element)
-            else:
-                continue
+        for element in soup.select(self.details_authors_selector):
+            author = element.text.strip()
+            if author not in data['authors']:
+                data['authors'].append(author)
 
-            # Remove emoji
-            label = remove_emoji_from_string(label)
+        if self.details_scanlators_selector:
+            for element in soup.select(self.details_scanlators_selector):
+                data['scanlators'].append(element.text.strip())
 
-            content_element = element.find('div', class_='summary-content')
-            if content_element:
-                content = content_element.text.strip()
+        for element in soup.select(self.details_genres_selector):
+            genre = element.text.strip()
+            if genre not in data['genres']:
+                data['genres'].append(genre)
 
-            if label.startswith(('Author', 'Artist', 'Auteur', 'Autor', 'Artista', 'Yazar', 'Sanatçı', 'Çizer', 'الرسام', 'المؤلف', 'Автор', 'Художник')):
-                for author in content.split(','):
-                    author = author.strip()
-                    if author in ('', 'Updating'):
-                        continue
-                    if author not in data['authors']:
-                        data['authors'].append(author)
-            elif label.startswith(('Team', 'Tradutor', 'Revisor')):
-                for scanlator in content.split(','):
-                    scanlator = scanlator.strip()
-                    if scanlator == '' or scanlator in data['scanlators']:
-                        continue
-                    data['scanlators'].append(scanlator)
-            elif label.startswith(('Genre', 'Gênero', 'Tür', 'Kategori', 'التصنيف', 'Жанр')):
-                for genre in content.split(','):
-                    genre = genre.strip()
-                    if genre == '':
-                        continue
-                    data['genres'].append(genre)
-            elif label.startswith(('Status', 'État', 'Statut', 'STATUS', 'Durum', 'الحالة', 'Статус')):
+        if self.details_status_selector:
+            if element := soup.select_one(self.details_status_selector):
+                status = element.text.strip()
                 # Remove emoji
-                status = remove_emoji_from_string(content)
+                status = remove_emoji_from_string(status)
 
                 if status in ('Completed', 'Terminé', 'Completé', 'Completo', 'Concluído', 'Tamamlandı', 'مكتملة', 'Закончена'):
                     data['status'] = 'complete'
@@ -166,20 +153,16 @@ class Madara(Server):
                     data['status'] = 'ongoing'
                 elif status in ('On Hold', 'En pause'):
                     data['status'] = 'hiatus'
-            elif label.startswith(('Summary')):
-                # In case of synopsis has been moved with details
-                if text_element := element.find('p, strong'):
-                    data['synopsis'] = text_element.text.strip()
 
-        summary_container = soup.find('div', class_=['summary__content', 'manga-excerpt', 'manga-summary'])
-        if summary_container:
-            if p_elements := summary_container.find_all('p'):
-                data['synopsis'] = '\n\n'.join([p_element.text.strip() for p_element in p_elements])
-            else:
-                data['synopsis'] = summary_container.text.strip()
+        if self.details_synopsis_selector:
+            if summary_container := soup.select_one(self.details_synopsis_selector):
+                if p_elements := summary_container.select('p'):
+                    data['synopsis'] = '\n\n'.join([p_element.text.strip() for p_element in p_elements])
+                else:
+                    data['synopsis'] = summary_container.text.strip()
 
         # Chapters
-        chapters_container = soup.find('div', id='manga-chapters-holder')
+        chapters_container = soup.select_one(self.chapters_list_selector)
         if chapters_container:
             # Chapters list is empty and is loaded via an Ajax call
             if self.chapters_url:
