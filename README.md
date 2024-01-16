@@ -71,6 +71,10 @@ __Komikku__ is a `Free software`. If you like it and would like to support and f
 |Liberapay|[![lp Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/valos/donate)|Weekly/monthly/yearly donation|
 |PayPal|[![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?business=GSRGEQ78V97PU&no_recurring=0&item_name=You+can+help+me+to+keep+developing+apps+through+donations.&currency_code=EUR)|One-time donation|
 
+## About the name
+
+Komikku (コミック) is a Japanese word meaning `comics`.
+
 ## Disclaimer
 
 - The developers of this application does not have any affiliation with the content providers available.
