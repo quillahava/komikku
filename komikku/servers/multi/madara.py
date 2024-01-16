@@ -14,7 +14,7 @@
 # Argos Scan [PT] (disabled)
 # Atikrost [TR] (disabled)
 # Best Manga [RU]
-# Colored Council [EN]
+# Colored Council [EN] (disabled)
 # Fr-Scan (Id frdashscan) [FR]
 # Leomanga [ES]
 # Leviatanscans [EN]

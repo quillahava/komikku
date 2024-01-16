@@ -9,6 +9,7 @@ class Coloredcouncil(Madara):
     id = 'coloredcouncil'
     name = 'Colored Manga'
     lang = 'en'
+    status = 'disabled'
 
     series_name = 'mangas'
     date_format = '%d-%b'
