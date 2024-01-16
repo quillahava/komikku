@@ -1,15 +1,15 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Komikku package.
-# Alifiyan Rosyidi <hello@ar14.works>, 2023.
+# Alifiyan Rosyidi <hello@ar14.works>, 2023, 2024.
 # Alim Satria <alimsatria2017@mail.ugm.ac.id>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.12.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-19 23:24+0100\n"
-"PO-Revision-Date: 2023-04-23 07:50+0000\n"
-"Last-Translator: Alim Satria <alimsatria2017@mail.ugm.ac.id>\n"
+"PO-Revision-Date: 2024-01-17 00:11+0000\n"
+"Last-Translator: Alifiyan Rosyidi <hello@ar14.works>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/komikku/main/"
 "id/>\n"
 "Language: id\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.18-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -81,43 +81,43 @@ msgstr "Tema terang dan gelap"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:48
 msgid "The Library page"
-msgstr ""
+msgstr "Halaman Pustaka"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:52
 msgid "The Library page with the category sidebar open"
-msgstr ""
+msgstr "Halaman Pustaka dengan sidebar terbuka"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:56
 msgid "The Preferences page (Library settings)"
-msgstr ""
+msgstr "Halaman Preferensi (Pengaturan Pustaka)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:60
 msgid "The Explorer page in mobile format (Servers list)"
-msgstr ""
+msgstr "Halaman Jelajah dalam format mobile (daftar Server)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:64
 msgid "The Details page"
-msgstr ""
+msgstr "Halaman Detail"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:68
 msgid "The Details page (chapters list)"
-msgstr ""
+msgstr "Halaman Detail (daftar bab)"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:72
 msgid "The Reader page"
-msgstr ""
+msgstr "Halaman Pembaca"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:76
 msgid "The Reader page in mobile format"
-msgstr ""
+msgstr "Halaman Pembaca dalam format mobile"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:80
 msgid "The Category editor page in mobile format"
-msgstr ""
+msgstr "Halaman penyunting Kategori dalam format mobile"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:84
 msgid "The Reading history page in mobile format"
-msgstr ""
+msgstr "Halaman Riwayat baca dalam format mobile"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:89
 msgid "@authorfullname@"
@@ -233,9 +233,8 @@ msgid "Add"
 msgstr "Tambahkan"
 
 #: ../data/ui/download_manager.blp:6 ../data/ui/download_manager.blp:16
-#, fuzzy
 msgid "Download Manager"
-msgstr "Pengelola unduhan"
+msgstr "Pengelola Unduhan"
 
 #: ../data/ui/download_manager.blp:28
 msgid "Start/Stop download"
@@ -247,7 +246,6 @@ msgstr "Tidak ada unduhan"
 
 #: ../data/ui/explorer_search.blp:10 ../data/ui/explorer_search.blp:35
 #: ../data/ui/history.blp:18 ../data/ui/library.blp:36
-#, fuzzy
 msgid "Search"
 msgstr "Cari"
 
@@ -289,7 +287,6 @@ msgstr "Tidak ada riwayat"
 
 #: ../data/ui/library.blp:6 ../data/ui/preferences.blp:66
 #: ../data/ui/preferences.blp:69
-#, fuzzy
 msgid "Library"
 msgstr "Pustaka"
 
@@ -423,7 +420,6 @@ msgid "Hide Page Numbering"
 msgstr "Sembunyikan Penomoran Halaman"
 
 #: ../data/ui/menu/reader.xml:106
-#, fuzzy
 msgid "Save Page"
 msgstr "Simpan Halaman"
 
@@ -579,7 +575,6 @@ msgstr "Mengatur apakah akan mengaktifkan server dengan konten NSFW saja"
 
 #: ../data/ui/preferences.blp:209 ../data/ui/preferences.blp:212
 #: ../data/ui/reader.blp:6
-#, fuzzy
 msgid "Reader"
 msgstr "Pembaca"
 
