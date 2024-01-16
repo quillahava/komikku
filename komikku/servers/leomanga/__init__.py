@@ -10,6 +10,7 @@ class Leomanga(Madara):
     name = 'Lector Manga (Leomanga)'
     lang = 'es'
     is_nsfw = True
+    status = 'disabled'
 
     base_url = 'https://lectormanga.fun'
     chapters_url = base_url + '/manga/{0}/ajax/chapters/'
