@@ -15,7 +15,7 @@ class Zeroscans(Server):
     name = 'Zero Scans'
     lang = 'en'
 
-    base_url = 'https://zeroscans.com'
+    base_url = 'https://zscans.com'
     api_url = base_url + '/swordflake'
     api_latest_updates_url = api_url + '/new-chapters'
     api_search_url = api_url + '/comics'
@@ -163,7 +163,6 @@ class Zeroscans(Server):
                 name=item['name'],
                 slug=item['slug'],
                 cover=item['cover'].get('vertical') or item['cover'].get('horizontal'),
-                nb_chapters=item['chapter_count'],
             ))
             slugs.append(item['slug'])
 
