@@ -5,6 +5,7 @@
 import logging
 import re
 import requests
+import time
 from urllib.parse import urlparse
 
 from komikku.servers import Server
@@ -92,14 +93,19 @@ class Remanga(Server):
         branch_id = resp_data['branches'][0]['id']
         page = 1
         while True:
+            start = time.time()
             r = self.session_get(
                 self.api_chapters_url,
                 params=dict(
                     branch_id=branch_id,
+                    ordering='-index',
+                    user_data=1,
+                    count=40,
                     page=page,
                 ),
                 headers={
-                    'content-type': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Referer': self.base_url,
                 }
             )
             if r.status_code != 200:
@@ -118,9 +124,12 @@ class Remanga(Server):
                 chapters.append(dict(
                     slug=str(chapter['id']),  # must be a string
                     title=title,
-                    date=convert_date_string(chapter['upload_date'][:-16], '%Y-%m-%d'),
+                    date=convert_date_string(chapter['upload_date'][:-10], '%Y-%m-%d'),
                 ))
             page += 1
+
+            delay = min(3 * (time.time() - start), 1)
+            time.sleep(delay)
 
         data['chapters'] = list(reversed(chapters))
 
