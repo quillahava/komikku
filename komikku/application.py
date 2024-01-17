@@ -405,13 +405,16 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] Used best image scaling filter based on zoom value</li>
-                <li>[Reader] Fixed memory leaks</li>
-                <li>[Reader] RTL/LTR/Vertical pager: Fixed unzoom by double tap/click</li>
-                <li>[Reader] Webtoon pager: Improved detection when first or last chapter is reached</li>
-                <li>[Servers] Grise Bouille [FR]: Update</li>
-                <li>[Servers] Toonily [EN]: Fix</li>
-                <li>[L10n] Updated Chinese (Simplified), Finnish, Portuguese, Portuguese (Brazil) and Russian translations</li>
+                <li>[Servers] Comic Book Plus (EN): Update</li>
+                <li>[Servers] Honey Manga (UK): Update</li>
+                <li>[Servers] MangaHub (EN): Update</li>
+                <li>[Servers] Mangalek (AR): Update</li>
+                <li>[Servers] Manhwa Hentai (EN): Update</li>
+                <li>[Servers] Remanga (RU): Update</li>
+                <li>[Servers] Zero Scans (EN): Update</li>
+                <li>[Servers] Colored Manga (EN): Disable</li>
+                <li>[Servers] Lector Manga (ES): Disable</li>
+                <li>[L10n] Updated Indonesian translation</li>
             </ul>
             <p>Happy reading.</p>
         """)

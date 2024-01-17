@@ -95,8 +95,25 @@
     <url type="donation">https://valos.gitlab.io/Komikku/#sponsor</url>
 
     <releases>
-        <release version="1.34.2" date="2024-01-13">
+        <release version="1.35.0" date="2024-01-17">
             <description>
+                <ul>
+                    <li>[Servers] Comic Book Plus (EN): Update</li>
+                    <li>[Servers] Honey Manga (UK): Update</li>
+                    <li>[Servers] MangaHub (EN): Update</li>
+                    <li>[Servers] Mangalek (AR): Update</li>
+                    <li>[Servers] Manhwa Hentai (EN): Update</li>
+                    <li>[Servers] Remanga (RU): Update</li>
+                    <li>[Servers] Zero Scans (EN): Update</li>
+                    <li>[Servers] Colored Manga (EN): Disable</li>
+                    <li>[Servers] Lector Manga (ES): Disable</li>
+                    <li>[L10n] Updated Indonesian translation</li>
+                </ul>
+                <p>Happy reading.</p>
+            </description>
+        </release>
+        <release version="1.34.2" date="2024-01-13">
+            <description translatable="no">
                 <ul>
                     <li>[Reader] Used best image scaling filter based on zoom value</li>
                     <li>[Reader] Fixed memory leaks</li>
