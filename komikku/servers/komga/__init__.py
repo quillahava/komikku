@@ -47,6 +47,7 @@ class Komga(Server):
 
     headers = {
         'User-Agent': 'Komikku Komga',
+        'Accept': 'application/json',
     }
 
     def __init__(self, username=None, password=None, address=None):
@@ -232,7 +233,8 @@ class Komga(Server):
             )
             if r.status_code != 200:
                 return False
-        except Exception:
+        except Exception as error:
+            logger.warning(error)
             return False
 
         self.save_session()
