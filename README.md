@@ -11,11 +11,11 @@
 
 __Komikku__ is a manga reader for [GNOME](https://www.gnome.org). It focuses on providing a clean, intuitive and adaptive interface.
 
-## License
+## 📝 License
 
 __Komikku__ is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.html).
 
-## Keys features
+## 🌟 Keys features
 
 * Online reading from dozens of servers
 * Offline reading of downloaded comics
@@ -33,11 +33,11 @@ __Komikku__ is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.
 * Reading history
 * Light and dark themes
 
-## Screenshots
+## 📸 Screenshots
 
 <img src="screenshots/library-dark.png" width="912">
 
-## Installation
+## 🚀 Installation
 
 ### Flatpak
 
@@ -49,7 +49,7 @@ __Komikku__ is available as native package in the repositories of the following 
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/komikku.svg)](https://repology.org/project/komikku/versions)
 
-## Contributing
+## 👨‍💻 Contributing
 
 ### Code
 
@@ -65,7 +65,7 @@ If you'd like to help translating __Komikku__ into your language, please head ov
 We follow the [GNOME Code of Conduct](CODE_OF_CONDUCT.md).
 All communications in project spaces are expected to follow it.
 
-## Sponsor this project
+## ❤️ Sponsor this project
 
 __Komikku__ is a `Free software`. If you like it and would like to support and fund it, you may donate through one of the plateform below. Any amount will be greatly appreciated __;-)__
 
@@ -75,11 +75,11 @@ __Komikku__ is a `Free software`. If you like it and would like to support and f
 |Liberapay|[![lp Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/valos/donate)|Weekly/monthly/yearly donation|
 |PayPal|[![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?business=GSRGEQ78V97PU&no_recurring=0&item_name=You+can+help+me+to+keep+developing+apps+through+donations.&currency_code=EUR)|One-time donation|
 
-## About the name
+## 💡 About the name
 
 Komikku (コミック) is a Japanese word meaning `Comics`.
 
-## Disclaimer
+## ⚠️ Disclaimer
 
 - The developers of this application does not have any affiliation with the content providers available.
 - The application itself has no content and can be considered as a browser-like app.
