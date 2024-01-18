@@ -1,9 +1,13 @@
 # <a href="https://apps.gnome.org/Komikku/"><img height="88" src="data/icons/info.febvre.Komikku.svg" />Komikku</a>
 
-[![](https://circle.gnome.org/assets/button/badge.svg)](https://apps.gnome.org/Komikku/)
-[![](https://stopthemingmy.app/badge.svg)](https://stopthemingmy.app)
-[![Translation status](https://hosted.weblate.org/widgets/komikku/-/main/svg-badge.svg)](https://hosted.weblate.org/engage/komikku/)
+[![GNOME Circle](https://circle.gnome.org/assets/button/badge.svg)](https://apps.gnome.org/Komikku/)
+[![Please Don't Theme](https://stopthemingmy.app/badge.svg)](https://stopthemingmy.app)
+[![Chat on Matrix](https://raw.githubusercontent.com/matrix-org/matrix.to/main/images-nohash/matrix-badge.svg)](https://matrix.to/#/!YXjunwpNHcXYeSdbbb:matrix.org?via=matrix.org)
 [![Donate using Liberapay](https://img.shields.io/liberapay/receives/valos.svg?logo=liberapay)](https://en.liberapay.com/valos/donate)
+[![Flathub download stats](https://img.shields.io/badge/dynamic/json?color=informational&label=downloads&logo=flathub&logoColor=white&query=%24.installs_total&url=https%3A%2F%2Fflathub.org%2Fapi%2Fv2%2Fstats%2Finfo.febvre.Komikku)](https://klausenbusk.github.io/flathub-stats/#ref=info.febvre.Komikku&interval=infinity&downloadType=installs)
+[![Translation status](https://hosted.weblate.org/widgets/komikku/-/main/svg-badge.svg)](https://hosted.weblate.org/engage/komikku/)
+[![Open Hub](https://www.openhub.net/p/komikku/widgets/project_thin_badge?format=gif)](https://www.openhub.net/p/komikku)
+[![Made with Python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org)
 
 __Komikku__ is a manga reader for [GNOME](https://www.gnome.org). It focuses on providing a clean, intuitive and adaptive interface.
 
@@ -73,7 +77,7 @@ __Komikku__ is a `Free software`. If you like it and would like to support and f
 
 ## About the name
 
-Komikku (コミック) is a Japanese word meaning `comics`.
+Komikku (コミック) is a Japanese word meaning `Comics`.
 
 ## Disclaimer
 
