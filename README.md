@@ -37,7 +37,7 @@ __Komikku__ is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.
 
 ### Flatpak
 
-<a href='https://flathub.org/apps/details/info.febvre.Komikku'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+<a href='https://flathub.org/apps/details/info.febvre.Komikku'><img width='240' alt='Download on Flathub' src='https://flathub.org/api/badge?locale=en'/></a>
 
 ### Native package
 
