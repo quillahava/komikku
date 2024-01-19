@@ -364,7 +364,9 @@ class Server(ABC):
         - slug: A slug (str) allowing to forge URL of the HTML page of the manga
         - url: URL of manga HTML page if `slug` is not usable
         - name: Name of the manga
-        - cover: Absolute URL of the manga cover [optional but recommanded for future developments]
+        - cover: Absolute URL of the manga cover [optional]
+        - last_chapter: last chapter available [optional]
+        - nb_chapters: number of chapters available [optional]
 
         It's of course possible to add any other information if necessary.
 

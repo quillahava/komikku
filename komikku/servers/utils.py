@@ -44,11 +44,11 @@ def convert_date_string(date, format=None):
     return d.date()
 
 
-def convert_image(im, format='jpeg', ret_type='image'):
+def convert_image(im, format='JPEG', ret_type='image'):
     """Convert an image to a specific format
 
     :param im: PIL.Image.Image or bytes object
-    :param format: convertion format: jpeg, png, webp,...
+    :param format: convertion format: https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html
     :param ret_type: image (PIL.Image.Image) or bytes (bytes object)
     """
     if not isinstance(im, Image.Image):

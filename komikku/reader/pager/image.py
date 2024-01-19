@@ -451,7 +451,8 @@ class KImage(Gtk.Widget, Gtk.Scrollable):
                         with im.convert('RGB') as im_rgb:
                             with im_rgb.crop(bbox) as im_crop:
                                 with BytesIO() as io_buffer:
-                                    im_crop.save(io_buffer, 'png')
+                                    # Use the very fast TIFF format (Pillow uses libtiff)
+                                    im_crop.save(io_buffer, 'tiff')
                                     return Gdk.Texture.new_from_bytes(GLib.Bytes.new(io_buffer.getvalue()))
                 except Exception as error:
                     logger.debug(error)
