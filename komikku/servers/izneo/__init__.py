@@ -254,6 +254,9 @@ class Izneo(Server):
             except Exception:
                 return None
 
+            if not resp_data['totalSeries']:
+                break
+
             for serie in resp_data['series']:
                 results.append(dict(
                     name=serie['name'],
