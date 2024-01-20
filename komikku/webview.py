@@ -173,6 +173,8 @@ class WebviewPage(Adw.NavigationPage):
         self.webkit_webview.get_settings().set_user_agent(user_agent or self.user_agent)
         self.webkit_webview.get_settings().set_auto_load_images(True)
 
+        self.auto_exited = False
+        self.exited = False
         self.lock = True
 
         logger.debug('Load page %s', uri)
@@ -182,9 +184,6 @@ class WebviewPage(Adw.NavigationPage):
         return True
 
     def show(self):
-        self.auto_exited = False
-        self.exited = False
-
         self.window.navigationview.push(self)
 
 
@@ -235,7 +234,7 @@ def bypass_cf(func):
 
         def load_page():
             if not webview.open(url):
-                return True
+                return GLib.SOURCE_CONTINUE
 
             webview.connect_signal('load-changed', on_load_changed)
             webview.connect_signal('load-failed', on_load_failed)
