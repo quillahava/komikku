@@ -6,10 +6,12 @@
 # MangaReader [EN/FR/JA/KO/ZH_HANS]
 
 from bs4 import BeautifulSoup
+from gettext import gettext as _
 import requests
 
 from komikku.servers import Server
 from komikku.servers import USER_AGENT
+from komikku.servers.exceptions import ServerException
 from komikku.servers.utils import get_buffer_mime_type
 from komikku.servers.utils import unscramble_image_rc4
 
@@ -44,7 +46,7 @@ class Mangareader(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -96,8 +98,8 @@ class Mangareader(Server):
                     title=a_element.get('title').strip(),
                 ))
         else:
-            # Manga exists but has not chapters in self.lang
-            return None
+            # Manga exists but has no chapters in self.lang (not filtered in search)
+            raise ServerException(_('Not available in {0} language').format(self.lang.upper()))
 
         return data
 
@@ -113,7 +115,7 @@ class Mangareader(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         chapter_id = soup.select_one('#wrapper').get('data-reading-id')
 
@@ -130,7 +132,7 @@ class Mangareader(Server):
 
         json_data = r.json()
         if json_data['status']:
-            soup = BeautifulSoup(r.json()['html'], 'html.parser')
+            soup = BeautifulSoup(r.json()['html'], 'lxml')
         else:
             return None
 
@@ -208,7 +210,7 @@ class Mangareader(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for item in soup.select('.item-spc'):
@@ -227,6 +229,7 @@ class Mangareader(Server):
         return self.get_manga_list(sort='most-viewed')
 
     def search(self, term):
+        # Beware: Search does not take language into account
         r = self.session_get(
             self.search_url,
             params=dict(keyword=term),
@@ -237,7 +240,7 @@ class Mangareader(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         results = []
         for item in soup.select('.item-spc'):
