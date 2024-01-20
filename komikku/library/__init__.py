@@ -746,7 +746,7 @@ class LibraryPage(Adw.NavigationPage):
                 self.search_button.set_visible(False)
                 self.menu_button.set_visible(False)
             else:
-                self.left_button.set_tooltip_text(_('Add new comic'))
+                self.left_button.set_tooltip_text(_('Add New Comic'))
                 self.left_button.set_icon_name('list-add-symbolic')
                 self.search_button.set_visible(True)
                 self.menu_button.set_visible(True)

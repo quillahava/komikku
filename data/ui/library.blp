@@ -10,13 +10,13 @@ template $LibraryPage : Adw.NavigationPage {
       [start]
       Button left_button {
         icon-name: "list-add-symbolic";
-        tooltip-text: _("Add new comic");
+        tooltip-text: _("Add New Comic");
       }
 
       [start]
       ToggleButton categories_togglebutton {
         icon-name: "user-bookmarks-symbolic";
-        tooltip-text: _("Toggle categories sidebar");
+        tooltip-text: _("Toggle Categories Sidebar");
       }
 
       title-widget: Adw.WindowTitle title {
@@ -231,7 +231,7 @@ template $LibraryPage : Adw.NavigationPage {
             name: "empty";
             child: Adw.StatusPage {
               icon-name: "user-bookmarks-symbolic";
-              title: _("No categories");
+              title: _("No Categories");
 
               styles [
                 "compact",

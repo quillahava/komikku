@@ -327,7 +327,7 @@ class ExplorerSearchPage(Adw.NavigationPage):
 
             self.searchentry.props.placeholder_text = _('Search globally by name')
             self.searchentry.set_text('')
-            self.search_intro_status_page.set_title(_('Search for comics across all the servers you have enabled'))
+            self.search_intro_status_page.set_title(_('Search for Comics'))
             self.search_intro_status_page.set_description('')
             self.search_stack.set_visible_child_name('intro')
             start_page = 'search'
