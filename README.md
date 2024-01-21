@@ -9,13 +9,13 @@
 [![Open Hub](https://www.openhub.net/p/komikku/widgets/project_thin_badge?format=gif)](https://www.openhub.net/p/komikku)
 [![Made with Python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org)
 
-__Komikku__ is a manga reader for [GNOME](https://www.gnome.org). It focuses on providing a clean, intuitive and adaptive interface.
+**Komikku** is a manga reader for [GNOME](https://www.gnome.org). It focuses on providing a clean, intuitive and adaptive interface.
 
-## 📝 License
+## 🪪 License
 
-__Komikku__ is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.html).
+**Komikku** is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.html).
 
-## 🌟 Keys features
+## ✨ Keys features
 
 * Online reading from dozens of servers
 * Offline reading of downloaded comics
@@ -33,7 +33,7 @@ __Komikku__ is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.
 * Reading history
 * Light and dark themes
 
-## 📸 Screenshots
+## 📸 Screenshot
 
 <img src="screenshots/library-dark.png" width="912">
 
@@ -45,7 +45,7 @@ __Komikku__ is licensed under the [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.
 
 ### Native package
 
-__Komikku__ is available as native package in the repositories of the following distributions:
+**Komikku** is available as native package in the repositories of the following distributions:
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/komikku.svg)](https://repology.org/project/komikku/versions)
 
@@ -57,7 +57,7 @@ Please follow our [contributing guidelines](CONTRIBUTING.md).
 
 ### Translations
 
-If you'd like to help translating __Komikku__ into your language, please head over to [Weblate](https://hosted.weblate.org/engage/komikku/).
+If you'd like to help translating **Komikku** into your language, please head over to [Weblate](https://hosted.weblate.org/engage/komikku/).
 
 [![Translation status](https://hosted.weblate.org/widgets/komikku/-/main/multi-auto.svg)](https://hosted.weblate.org/engage/komikku/)
 
@@ -67,7 +67,7 @@ All communications in project spaces are expected to follow it.
 
 ## ❤️ Sponsor this project
 
-__Komikku__ is a `Free software`. If you like it and would like to support and fund it, you may donate through one of the plateform below. Any amount will be greatly appreciated __;-)__
+**Komikku** is a `Free software`. If you like it and would like to support and fund it, you may donate through one of the plateform below. Any amount will be greatly appreciated 🤩.
 
 |Plateforms|||
 |:---:|:--:|---|
