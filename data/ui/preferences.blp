@@ -296,20 +296,20 @@ template $PreferencesPage : Adw.NavigationPage {
             description: _("Data not saved in the library");
 
             Adw.ActionRow clear_cached_data_actionrow {
-              title: _("Clear chapters cache and database");
+              title: _("Clear Chapters Cache and Database");
               activatable: true;
             }
 
             Adw.SwitchRow clear_cached_data_on_app_close_switch {
-              title: _("Clear chapters cache and database on application close");
+              title: _("Clear Chapters Cache and Database on Exit");
             }
           }
 
           Adw.PreferencesGroup {
-            title: _("Credentials storage");
+            title: _("Credentials Storage");
 
             Adw.SwitchRow credentials_storage_plaintext_fallback_switch {
-              title: _("Allow plaintext storage as fallback");
+              title: _("Allow Plaintext Storage as Fallback");
               subtitle: _("Used when no keyring backends are found");
             }
           }
