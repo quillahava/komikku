@@ -56,7 +56,7 @@ class Centraldemangas(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -141,7 +141,7 @@ class Centraldemangas(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         # Pages URLs infos are located in the last JS script at the bottom of document
         pages_slugs = None
@@ -212,7 +212,7 @@ class Centraldemangas(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for a_element in soup.find_all('div', class_='ui red segment')[0].find_all('a')[:-1]:

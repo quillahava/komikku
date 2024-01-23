@@ -52,7 +52,7 @@ class Catmanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
         json_data = json.loads(soup.find(
             'script',
             id=re.compile('__NEXT_DATA__'),
@@ -125,7 +125,7 @@ class Catmanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
         json_data = json.loads(soup.find(
             'script',
             id=re.compile('__NEXT_DATA__'),
@@ -174,7 +174,7 @@ class Catmanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
         json_data = json.loads(soup.find(
             'script',
             id=re.compile('__NEXT_DATA__'),

@@ -54,7 +54,7 @@ class Comicbookplus(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -92,7 +92,7 @@ class Comicbookplus(Server):
             if page > 0:
                 r = self.session_get(self.manga_url.format(initial_data['slug']) + f'&limit={page * 100}')
 
-                soup = BeautifulSoup(r.text, 'html.parser')
+                soup = BeautifulSoup(r.text, 'lxml')
 
             chapters_element = soup.find('table', class_='catlistings')
             if chapters_element:
@@ -129,7 +129,7 @@ class Comicbookplus(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         url = soup.find('img', id='maincomic').get('src')
         split_url = url.split('/')
@@ -184,7 +184,7 @@ class Comicbookplus(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         cids = []
@@ -215,7 +215,7 @@ class Comicbookplus(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         cids = []

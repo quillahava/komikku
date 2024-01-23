@@ -48,7 +48,7 @@ class Guya(Server):
             genres=[],
             status=None,
             cover=self.base_url + resp_data['cover'],
-            synopsis=BeautifulSoup(resp_data['description'], 'html.parser').text.strip() if resp_data['description'] else None,
+            synopsis=BeautifulSoup(resp_data['description'], 'lxml').text.strip() if resp_data['description'] else None,
             chapters=self.resolve_chapters(initial_data['slug']),
             server_id=self.id,
         ))
@@ -99,7 +99,7 @@ class Guya(Server):
         if not mime_type.startswith('text/html'):
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         results = dict()
         for a_element in soup.select('#chapterTable > tr > td:nth-child(2) > a'):

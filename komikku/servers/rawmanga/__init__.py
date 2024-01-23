@@ -72,7 +72,7 @@ class Rawmanga(MangaStream):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = dict(
             pages=[],
@@ -98,7 +98,7 @@ class Rawmanga(MangaStream):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
         image_url = soup.select_one('.reader a img.picture').get('src')
 
         r = self.session_get(image_url, headers=headers)
@@ -149,7 +149,7 @@ class Rawmanga(MangaStream):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for a_element in soup.select('.bsx > a'):

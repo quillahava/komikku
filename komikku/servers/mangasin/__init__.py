@@ -75,7 +75,7 @@ class Mangasin(MyMangaReaderCMS):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for a_element in soup.select('.mangalist .manga-item h3 a:nth-child(3)'):

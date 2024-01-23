@@ -94,7 +94,7 @@ class Reaperscans_pt(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -142,7 +142,7 @@ class Reaperscans_pt(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         id_ = None
         for script_element in soup.find_all('script'):

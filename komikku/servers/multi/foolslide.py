@@ -21,7 +21,7 @@ re_chapter_date = re.compile(r'\d{4}.\d{2}.\d{2}')
 # Supported servers:
 # Jaimini's Box [EN] (disabled)
 # Kirei Cake [EN] (disabled)
-# Le Cercle du Scan [FR]
+# Le Cercle du Scan [FR] (disabled)
 # Tutto Anime Manga [IT] (disabled)
 
 
@@ -74,7 +74,7 @@ class FoOlSlide(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         adult_alert = False
         if soup.find('div', class_='alert'):
@@ -84,7 +84,7 @@ class FoOlSlide(Server):
             if r is None:
                 return None
 
-            soup = BeautifulSoup(r.text, 'html.parser')
+            soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -159,7 +159,7 @@ class FoOlSlide(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         # List of pages is available in JavaScript variable '_0x3320' or 'pages'
         # Walk in all scripts to find it
@@ -238,7 +238,7 @@ class FoOlSlide(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.find('div', class_='series').find_all('div', class_='group'):
@@ -263,7 +263,7 @@ class FoOlSlide(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         slugs = []
@@ -291,7 +291,7 @@ class FoOlSlide(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         nav_buttons = soup.find_all('a', class_='gbutton')
         if nav_buttons:
@@ -316,7 +316,7 @@ class FoOlSlide(Server):
         )
 
         if r.status_code == 200:
-            soup = BeautifulSoup(r.text, 'html.parser')
+            soup = BeautifulSoup(r.text, 'lxml')
 
             results = []
             for element in soup.find('div', class_='list').find_all('div', class_='group'):

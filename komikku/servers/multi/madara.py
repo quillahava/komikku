@@ -97,7 +97,7 @@ class Madara(Server):
         if mime_type not in ('text/html', 'text/plain'):
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -188,7 +188,7 @@ class Madara(Server):
                     }
                 )
 
-            soup = BeautifulSoup(r.text, 'html.parser')
+            soup = BeautifulSoup(r.text, 'lxml')
 
         elements = soup.find_all('li', class_='wp-manga-chapter')
         for element in reversed(elements):

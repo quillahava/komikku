@@ -60,7 +60,7 @@ class Mangaeden(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -136,7 +136,7 @@ class Mangaeden(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = dict(
             pages=[],
@@ -193,7 +193,7 @@ class Mangaeden(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for tr_element in soup.find('table', id='mangaList').tbody.find_all('tr'):
@@ -216,7 +216,7 @@ class Mangaeden(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for tr_element in soup.find('table', id='mangaList').tbody.find_all('tr'):

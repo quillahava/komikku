@@ -52,7 +52,7 @@ class Genkan(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -107,7 +107,7 @@ class Genkan(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = dict(
             pages=[],
@@ -169,7 +169,7 @@ class Genkan(Server):
         r = self.session_get(self.most_populars_url)
 
         if r.status_code == 200:
-            soup = BeautifulSoup(r.text, 'html.parser')
+            soup = BeautifulSoup(r.text, 'lxml')
 
             results = []
             for a_element in soup.find_all('a', class_='list-title ajax'):
@@ -188,7 +188,7 @@ class Genkan(Server):
         r = self.session_get(self.search_url.format(term))
 
         if r.status_code == 200:
-            soup = BeautifulSoup(r.text, 'html.parser')
+            soup = BeautifulSoup(r.text, 'lxml')
 
             results = []
             for a_element in soup.find_all('a', class_='list-title ajax'):
@@ -211,7 +211,7 @@ class GenkanInitial(Genkan):
         r = self.session_get(self.search_url)
 
         if r.status_code == 200:
-            soup = BeautifulSoup(r.text, 'html.parser')
+            soup = BeautifulSoup(r.text, 'lxml')
 
             results = []
             for a_element in soup.find_all('a', class_='list-title ajax'):

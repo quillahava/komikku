@@ -46,7 +46,7 @@ class Littlexgarden(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         if soup.find(class_='error'):
             # No longer exists
@@ -165,7 +165,7 @@ class Littlexgarden(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
         if soup.find(class_='error'):
             raise NotFoundError
 
@@ -235,7 +235,7 @@ class Littlexgarden(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         slugs = []
@@ -267,7 +267,7 @@ class Littlexgarden(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.select('#manga-list a'):

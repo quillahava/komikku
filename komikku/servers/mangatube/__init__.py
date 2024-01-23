@@ -83,7 +83,7 @@ class Mangatube(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -175,7 +175,7 @@ class Mangatube(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         # List of pages is available in JavaScript variable 'pages'
         # Walk in all scripts to find it
@@ -244,7 +244,7 @@ class Mangatube(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         results = []
         for element in soup.select('.series-update .series-update-wraper'):

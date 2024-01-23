@@ -74,7 +74,7 @@ class Mangaworld(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -140,7 +140,7 @@ class Mangaworld(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         data = dict(
             pages=[],
@@ -202,7 +202,7 @@ class Mangaworld(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         results = []
         for a_element in soup.select('.comics-grid .entry > a'):

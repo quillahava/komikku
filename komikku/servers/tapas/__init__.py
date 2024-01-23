@@ -62,7 +62,7 @@ class Tapas(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -105,7 +105,7 @@ class Tapas(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = dict(
             slug=chapter_slug,
@@ -162,7 +162,7 @@ class Tapas(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for div_element in soup.find_all(class_='item__thumb'):
@@ -191,7 +191,7 @@ class Tapas(Server):
 
         content = r.json()['data']['body']
 
-        soup = BeautifulSoup(content, 'html.parser')
+        soup = BeautifulSoup(content, 'lxml')
 
         chapters = []
         for chapter in soup.find_all('a'):
@@ -222,7 +222,7 @@ class Tapas(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for li_element in soup.find_all(class_='search-item-wrap'):

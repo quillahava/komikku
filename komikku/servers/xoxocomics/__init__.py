@@ -62,7 +62,7 @@ class Xoxocomics(Server):
             cover=None,
         ))
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         data['name'] = soup.find('ul', class_='breadcrumb').find_all('a')[-1].text.strip()
         data['cover'] = soup.find(id='item-detail').find('div', class_="col-image").img.get('src')
@@ -94,7 +94,7 @@ class Xoxocomics(Server):
                 if mime_type != 'text/html':
                     return None
 
-                soup = BeautifulSoup(r.content, 'html.parser')
+                soup = BeautifulSoup(r.content, 'lxml')
 
             for li_element in soup.find(id='nt_listchapter').find('ul').find_all('li'):
                 if 'heading' in li_element.get('class'):
@@ -132,7 +132,7 @@ class Xoxocomics(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         data = dict(
             pages=[],
@@ -184,7 +184,7 @@ class Xoxocomics(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         for a_element in soup.select('.list-chapter .row h3 > a'):
             results.append(dict(
@@ -208,7 +208,7 @@ class Xoxocomics(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         for element in soup.select('.items figure'):
             a_element = element.select_one('figcaption > h3 > a')
@@ -233,7 +233,7 @@ class Xoxocomics(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         for element in soup.select('figure'):
             a_element = element.select_one('figcaption > h3 > a')

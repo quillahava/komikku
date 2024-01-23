@@ -41,7 +41,7 @@ class Teamx(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -94,7 +94,7 @@ class Teamx(Server):
         if r.status_code != 200:
             return data
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         for option_element in reversed(soup.select('#select_chapter option')):
             chapter_url = option_element.get('value')
@@ -123,7 +123,7 @@ class Teamx(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = dict(
             pages=[],
@@ -173,7 +173,7 @@ class Teamx(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for a_element in soup.select('.imgu a'):
@@ -193,7 +193,7 @@ class Teamx(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for a_element in soup.select('.swiper-slide .entry-image a'):
@@ -210,7 +210,7 @@ class Teamx(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for li_element in soup.select('li'):

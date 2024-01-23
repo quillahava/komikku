@@ -49,7 +49,7 @@ class Manganelo(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         if soup.find(class_='panel-not-found'):
             # No longer exists
@@ -126,7 +126,7 @@ class Manganelo(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         if soup.find(class_='panel-not-found'):
             # No longer exists
@@ -199,7 +199,7 @@ class Manganelo(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.select('.content-genres-item'):
@@ -224,7 +224,7 @@ class Manganelo(Server):
             link = item['url_story']
             results.append(dict(
                 slug=link[skip_past(link, '/manga-'):],
-                name=BeautifulSoup(item['name'], 'html.parser').text,
+                name=BeautifulSoup(item['name'], 'lxml').text,
                 cover=item['image'],
             ))
 

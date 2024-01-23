@@ -64,7 +64,7 @@ class Scanmanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -138,7 +138,7 @@ class Scanmanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         data = dict(
             pages=[],
@@ -220,7 +220,7 @@ class Scanmanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for a_element in soup.select('#content_news .nom_manga'):
@@ -253,7 +253,7 @@ class Scanmanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.find_all('div', class_='titre_fiche_technique'):

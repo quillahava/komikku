@@ -96,7 +96,7 @@ class Mangakawaii(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         self.csrf_token = soup.select_one('meta[name="csrf-token"]')['content']
 
@@ -207,7 +207,7 @@ class Mangakawaii(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = dict(
             pages=[],
@@ -258,7 +258,7 @@ class Mangakawaii(Server):
         if mime_type != 'text/html':
             return []
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         chapters = []
         for tr_element in soup.find_all('tr'):
@@ -344,7 +344,7 @@ class Mangakawaii(Server):
         if mime_type != 'text/plain':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.find_all('div', class_='media-thumbnail'):

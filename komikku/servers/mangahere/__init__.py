@@ -52,7 +52,7 @@ class Mangahere(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -104,7 +104,7 @@ class Mangahere(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         for script_element in soup.find_all('script'):
             script = script_element.string
@@ -161,7 +161,7 @@ class Mangahere(Server):
             if mime_type != 'text/html':
                 return None
 
-            soup = BeautifulSoup(r.text, 'html.parser')
+            soup = BeautifulSoup(r.text, 'lxml')
 
             # We need a secret key and the chapter ID
             for script_element in soup.find_all('script'):
@@ -249,7 +249,7 @@ class Mangahere(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for li_element in soup.select('.line-list > div> ul > li'):

@@ -64,7 +64,7 @@ class Ninemanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -135,7 +135,7 @@ class Ninemanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
         options_elements = soup.find('select', id='page').find_all('option')
 
         data = dict(
@@ -158,7 +158,7 @@ class Ninemanga(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
         url = soup.find('img', id='manga_pic_1').get('src')
 
         # Get scan image
@@ -194,7 +194,7 @@ class Ninemanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for a_element in soup.select('.direlist .bookinfo > dt > a'):
@@ -218,7 +218,7 @@ class Ninemanga(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for a_element in soup.select('.direlist .bookinfo > dt > a'):

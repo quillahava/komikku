@@ -55,7 +55,7 @@ class Viewcomics(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -113,7 +113,7 @@ class Viewcomics(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         data = dict(
             pages=[],
@@ -173,7 +173,7 @@ class Viewcomics(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for a_element in soup.select('.line-list > li > a'):
@@ -201,7 +201,7 @@ class Viewcomics(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.select('.eg-list .eg-box'):
@@ -221,7 +221,7 @@ class Viewcomics(Server):
             if r.status_code != 200:
                 return None
 
-            soup = BeautifulSoup(r.text, 'html.parser')
+            soup = BeautifulSoup(r.text, 'lxml')
 
             self.csrf_token = soup.select_one('meta[name="csrf-token"]')['content']
 

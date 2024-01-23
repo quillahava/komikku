@@ -38,7 +38,7 @@ class Goldenmangas(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -114,7 +114,7 @@ class Goldenmangas(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         data = dict(
             pages=[],
@@ -158,7 +158,7 @@ class Goldenmangas(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text.encode('utf-8'), 'html.parser', from_encoding='utf-8')
+        soup = BeautifulSoup(r.text.encode('utf-8'), 'lxml', from_encoding='utf-8')
 
         results = []
         for a_element in soup.select('.atualizacao > a'):
@@ -175,7 +175,7 @@ class Goldenmangas(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.text.encode('utf-8'), 'html.parser', from_encoding='utf-8')
+        soup = BeautifulSoup(r.text.encode('utf-8'), 'lxml', from_encoding='utf-8')
 
         results = []
         for a_element in soup.select('#capitulosdestaque > a'):
@@ -192,7 +192,7 @@ class Goldenmangas(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         results = []
         for element in soup.find_all(class_='mangas'):

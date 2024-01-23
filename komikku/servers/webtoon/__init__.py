@@ -83,7 +83,7 @@ class Webtoon(Server):
         split_url = urlsplit(r.url)
         url = '{0}?{1}'.format(split_url.path, split_url.query)
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -153,7 +153,7 @@ class Webtoon(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         imgs = soup.find('div', id='_imageList').find_all('img')
 
@@ -182,7 +182,7 @@ class Webtoon(Server):
         if mime_type != 'text/html':
             return []
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         li_elements = soup.find('ul', id='_episodeList').find_all('li', recursive=False)
 
@@ -250,7 +250,7 @@ class Webtoon(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         classes = []
         if type in ('all', 'webtoon'):
@@ -322,7 +322,7 @@ class Webtoon(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         if type == 'CHALLENGE':
             a_elements = soup.select('a.challenge_item')
