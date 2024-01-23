@@ -3,6 +3,7 @@
 # Author: Valéry Febvre <vfebvre@easter-eggs.com>
 
 from bs4 import BeautifulSoup
+import datetime
 import requests
 
 from komikku.servers import Server
@@ -18,10 +19,9 @@ class Monkeyuser(Server):
     true_search = False
 
     base_url = 'https://www.monkeyuser.com'
-    manga_url = base_url + '/toc/'
-    chapter_url = base_url + '/{0}/'
-    image_url = base_url + '/assets/images/{0}'
-    cover_url = base_url + '/assets/images/2021/226-update.png'
+    chapter_url = base_url + '{0}'
+    image_url = base_url + '{0}'
+    cover_url = base_url + '/images/logo.png'
 
     def __init__(self):
         if self.session is None:
@@ -32,16 +32,6 @@ class Monkeyuser(Server):
         """
         Returns manga data by scraping manga HTML page content
         """
-        r = self.session_get(self.manga_url)
-        if r.status_code != 200:
-            return None
-
-        mime_type = get_buffer_mime_type(r.content)
-        if mime_type != 'text/html':
-            return None
-
-        soup = BeautifulSoup(r.text, 'html.parser')
-
         data = initial_data.copy()
         data.update(dict(
             authors=['Stefanache Cornel', 'Constantin Orasanu', 'Maria Sîrbu'],
@@ -55,17 +45,28 @@ class Monkeyuser(Server):
         ))
 
         # Chapters
-        for element in reversed(soup.select('.toc-entry')):
-            a_element = element.select_one('a')
-            title = a_element.text.strip()
-            if 'animated' in title.lower():
-                continue
+        for year in range(2016, datetime.date.today().year + 1):
+            r = self.session_get(f'{self.base_url}/{year}/')
+            if r.status_code != 200:
+                return None
 
-            data['chapters'].append(dict(
-                slug='/'.join(a_element.get('href').split('/')[1:-1]),
-                date=convert_date_string(element.select_one('strong').text.strip(), '%B %d, %Y'),
-                title=title,
-            ))
+            mime_type = get_buffer_mime_type(r.content)
+            if mime_type != 'text/html':
+                return None
+
+            soup = BeautifulSoup(r.text, 'lxml')
+
+            for element in reversed(soup.select('.comic')):
+                a_element = element.select_one('a')
+                title = a_element.text.split('|')[-1].strip()
+                if 'animated' in title.lower():
+                    continue
+
+                data['chapters'].append(dict(
+                    slug=a_element.get('href'),
+                    date=convert_date_string(element.select_one('time').get('datetime')[:10], '%Y-%m-%d'),
+                    title=title,
+                ))
 
         return data
 
@@ -83,15 +84,15 @@ class Monkeyuser(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         if img_element := soup.select_one('.content img'):
             # Some chapters have no image but an embedded Youtube video
             return dict(
                 pages=[
                     dict(
-                        slug='/'.join(img_element.get('src').split('/')[-2:]),
-                        image=None,
+                        slug=None,
+                        image=img_element.get('src'),
                     ),
                 ]
             )
@@ -102,7 +103,7 @@ class Monkeyuser(Server):
         """
         Returns chapter page scan (image) content
         """
-        r = self.session_get(self.image_url.format(page['slug']))
+        r = self.session_get(self.image_url.format(page['image']))
         if r.status_code != 200:
             return None
 
@@ -113,14 +114,14 @@ class Monkeyuser(Server):
         return dict(
             buffer=r.content,
             mime_type=mime_type,
-            name=page['slug'].split('/')[-1],
+            name=page['image'].split('/')[-1],
         )
 
     def get_manga_url(self, slug, url):
         """
         Returns manga absolute URL
         """
-        return self.manga_url
+        return self.base_url
 
     def get_most_populars(self):
         return [dict(
