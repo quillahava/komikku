@@ -28,7 +28,7 @@ class Readcomiconline(Server):
     base_url = 'https://readcomiconline.li'
     latest_updates_url = base_url + '/ComicList/LatestUpdate'
     most_populars_url = base_url + '/ComicList/MostPopular'
-    search_url = base_url + '/Search/SearchSuggest'
+    search_url = base_url + '/AdvanceSearch'
     manga_url = base_url + '/Comic/{0}'
     chapter_url = base_url + '/Comic/{0}/{1}?readType=1'
 
@@ -65,7 +65,7 @@ class Readcomiconline(Server):
             cover=None,
         ))
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
         info_elements = soup.select_one('div.col.info')
 
@@ -135,7 +135,7 @@ class Readcomiconline(Server):
             }, 100);
         """
         html = get_page_html(self.chapter_url.format(manga_slug, chapter_slug), user_agent=USER_AGENT_MOBILE, wait_js_code=js)
-        soup = BeautifulSoup(html, 'html.parser')
+        soup = BeautifulSoup(html, 'lxml')
 
         data = dict(
             pages=[],
@@ -187,13 +187,16 @@ class Readcomiconline(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.content, 'lxml')
 
-        for element in soup.find('div', class_='item-list').find_all(class_='info'):
-            a_element = element.p.a
+        for a_element in soup.select('.item-list .cover a'):
+            if not a_element.get('href'):
+                continue
+
             results.append(dict(
-                name=a_element.text.strip(),
+                name=a_element.img.get('title').strip(),
                 slug=a_element.get('href').split('/')[-1],
+                cover=self.base_url + a_element.img.get('src'),
             ))
 
         return results
@@ -211,39 +214,36 @@ class Readcomiconline(Server):
         return self.get_manga_list(orderby='populars')
 
     def search(self, term):
-        results = []
-        term = term.lower()
-
-        r = self.session.post(
+        r = self.session.get(
             self.search_url,
-            data=dict(
-                type='Comic',
-                keyword=term
+            params=dict(
+                comicName=term,
+                ig='',
+                eg='',
+                status='',
             ),
             headers={
-                'x-requested-with': 'XMLHttpRequest',
-                'referer': self.base_url
+                'Referer': self.search_url,
             }
         )
         if r.status_code != 200:
             return None
-        if not r.text:
-            # No results
-            return results
 
         mime_type = get_buffer_mime_type(r.content)
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
-        for a_element in soup:
+        results = []
+        for a_element in soup.select('.item-list > .section > .cover > a'):
             if not a_element.get('href'):
                 continue
 
             results.append(dict(
-                name=a_element.text.strip(),
+                name=a_element.img.get('title').strip(),
                 slug=a_element.get('href').split('/')[-1],
+                cover=self.base_url + a_element.img.get('src'),
             ))
 
         return results
