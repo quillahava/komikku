@@ -8,9 +8,9 @@
 # FR Scan [FR] (Disabled)
 # Jpmangas [FR]
 # Lelscan-VF [FR]
-# Mangadoor [ES]
+# Mangadoor [ES] (Disabled)
 # Mangasin [ES]
-# Read Comics Online [RU]
+# Read Comics Online [EN]
 # Scan FR [FR]
 # Scan OP [FR] (Disabled)
 # ScanOnePiece [FR]
@@ -60,7 +60,7 @@ class MyMangaReaderCMS(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -102,16 +102,11 @@ class MyMangaReaderCMS(Server):
                 elif value in ('complete', 'terminé', 'completa'):
                     data['status'] = 'complete'
 
-        synopsis_element = soup.find('div', class_='well').p
-        if synopsis_element.p:
-            # Difference encountered on `mangasin` server
-            # Note: HTML is broken in this part, this is why we use html.parser above
-            # Anyway, the retrieved synopsis is not entirely correct, there is a surplus of text.
-            synopsis_element = synopsis_element.p
-        data['synopsis'] = synopsis_element.text.strip()
-        alert_element = soup.find('div', class_='alert-danger')
-        if alert_element:
-            data['synopsis'] += '\n\n' + alert_element.text.strip()
+        if synopsis_element := soup.find('div', class_='well'):
+            data['synopsis'] = synopsis_element.text.strip()
+            alert_element = soup.find('div', class_='alert-danger')
+            if alert_element:
+                data['synopsis'] += '\n\n' + alert_element.text.strip()
 
         data['chapters'] = self.get_manga_chapters_data(soup)
 
@@ -154,7 +149,7 @@ class MyMangaReaderCMS(Server):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         pages_imgs = soup.find('div', id='all').find_all('img')
 
@@ -227,7 +222,7 @@ class MyMangaReaderCMS(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.select('.mangalist .manga-item'):
@@ -260,7 +255,7 @@ class MyMangaReaderCMS(Server):
         if r.status_code != 200 or mime_type not in ('text/html', 'text/plain'):
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for a_element in soup.find_all('a', class_='chart-title'):
@@ -329,7 +324,7 @@ class MyMangaReaderCMSv1(MyMangaReaderCMS):
         if r.status_code != 200 or mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -395,7 +390,7 @@ class MyMangaReaderCMSv1(MyMangaReaderCMS):
         if r.status_code != 200 or mime_type not in ('text/html', 'text/plain'):
             return None
 
-        soup = BeautifulSoup(r.text, 'html.parser')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.find_all('div', class_='thumbnail'):
