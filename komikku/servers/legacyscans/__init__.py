@@ -27,7 +27,6 @@ class Legacyscans(Server):
     api_most_popular_url = api_url + '/misc/views/monthly'
     manga_url = base_url + '/comics/{0}'
     chapter_url = base_url + '/comics/{0}/{1}'
-    image_url = api_url + '/public/chapterImages/{0}'
 
     def __init__(self):
         self.session = None
@@ -119,7 +118,7 @@ class Legacyscans(Server):
         for img_element in soup.select('.readerComics > img'):
             data['pages'].append(dict(
                 slug=None,
-                image='/'.join(img_element.get('src').split('/')[-3:]),
+                image=img_element.get('src'),
             ))
 
         return data
@@ -130,7 +129,7 @@ class Legacyscans(Server):
         Returns chapter page scan (image) content
         """
         r = self.session_get(
-            self.image_url.format(page['image']),
+            page['image'],
             headers={
                 'Referer': self.chapter_url.format(manga_slug, chapter_slug),
             }
