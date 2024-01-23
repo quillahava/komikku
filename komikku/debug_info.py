@@ -118,7 +118,7 @@ class DebugInfo:
         info += 'Compiled against:\n'
         info += f'- GLib: {GLib.MAJOR_VERSION}.{GLib.MINOR_VERSION}.{GLib.MICRO_VERSION}\n'
         info += f'- GTK: {Gtk.MAJOR_VERSION}.{Gtk.MINOR_VERSION}.{Gtk.MICRO_VERSION}\n'
-        info += f'- Adwaita: {Adw.MAJOR_VERSION}.{Adw.MINOR_VERSION}.{Adw.MICRO_VERSION}\n'
+        info += f'- Adwaita: {Adw.VERSION_S}\n'
         info += f'- WebKitGTK: {WebKit.MAJOR_VERSION}.{WebKit.MINOR_VERSION}.{WebKit.MICRO_VERSION}\n'
         info += f'- Soup: {Soup.MAJOR_VERSION}.{Soup.MINOR_VERSION}.{Soup.MICRO_VERSION}\n'
         info += '\n'
