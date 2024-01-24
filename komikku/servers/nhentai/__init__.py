@@ -68,15 +68,15 @@ class Nhentai(Server):
             title=info.find('h1').text.strip(),
         ))
 
-        for tag_container in info.find_all('div', class_='tag-container'):
+        for tag_container in info.select('#tags .tag-container'):
             category = tag_container.text.split(':')[0].strip()
 
             if category == 'Uploaded':
                 time = tag_container.find('time').get('datetime')
                 data['chapters'][0]['date'] = convert_date_string(time.split('T')[0], '%Y-%m-%d')
 
-            for tag in tag_container.find_all('a', class_='tag'):
-                clean_tag = tag.find('span', class_='name').text.strip()
+            for tag in tag_container.select('.tag'):
+                clean_tag = tag.select_one('span.name').text.strip()
                 if category in ['Artists', 'Groups', ]:
                     data['authors'].append(clean_tag)
                 if category in ['Tags', ]:
@@ -162,6 +162,7 @@ class Nhentai(Server):
                     results.append(dict(
                         slug=a_element.get('href').rstrip('/').split('/')[-1],
                         name=caption_element.text.strip(),
+                        cover=a_element.img.get('data-src'),
                     ))
             except Exception:
                 return None
