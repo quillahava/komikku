@@ -53,6 +53,7 @@ komikku/servers/mangapill/__init__.py
 komikku/servers/mangatube/__init__.py
 komikku/servers/mangaworld/__init__.py
 komikku/servers/multi/madara.py
+komikku/servers/multi/mangareader.py
 komikku/servers/multi/manga_stream.py
 komikku/servers/readmanhwa/__init__.py
 komikku/servers/webtoon/__init__.py
