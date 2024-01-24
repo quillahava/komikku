@@ -50,6 +50,7 @@ class WebviewPage(Adw.NavigationPage):
         Adw.NavigationPage.__init__(self)
 
         self.__handlers_ids = []
+        self.__handlers_webview_ids = []
         self.window = window
 
         self.connect('hidden', self.on_hidden)
@@ -142,14 +143,23 @@ class WebviewPage(Adw.NavigationPage):
         logger.debug('Page closed')
 
     def connect_signal(self, *args):
-        handler_id = self.webkit_webview.connect(*args)
+        handler_id = self.connect(*args)
         self.__handlers_ids.append(handler_id)
+
+    def connect_webview_signal(self, *args):
+        handler_id = self.webkit_webview.connect(*args)
+        self.__handlers_webview_ids.append(handler_id)
 
     def disconnect_all_signals(self):
         for handler_id in self.__handlers_ids:
-            self.webkit_webview.disconnect(handler_id)
+            self.disconnect(handler_id)
 
         self.__handlers_ids = []
+
+        for handler_id in self.__handlers_webview_ids:
+            self.webkit_webview.disconnect(handler_id)
+
+        self.__handlers_webview_ids = []
 
     def exit(self):
         if self.window.page != self.props.tag or self.exited:
@@ -219,33 +229,38 @@ def bypass_cf(func):
                 logger.debug(f'{server.id}: Session has CF cookie. Checking...')
                 # Check session validity
                 r = server.session_get(url)
-                if r.status_code == 200:
+                if r.ok:
                     logger.debug(f'{server.id}: Session OK')
                     return func(*args, **kwargs)
 
-                logger.debug(f'{server.id}: Session KO')
+                logger.debug(f'{server.id}: Session KO ({r.status_code})')
             else:
                 logger.debug(f'{server.id}: Session has no CF cookie. Loading page in webview...')
 
         cf_reload_count = -1
         done = False
         error = None
+        loaded = False
+
         webview = Gio.Application.get_default().window.webview
 
         def load_page():
             if not webview.open(url):
+                logger.debug('Load page: locked => wait')
                 return GLib.SOURCE_CONTINUE
-
-            webview.connect_signal('load-changed', on_load_changed)
-            webview.connect_signal('load-failed', on_load_failed)
-            webview.connect_signal('notify::title', on_title_changed)
 
         def on_load_changed(_webkit_webview, event):
             nonlocal cf_reload_count
             nonlocal error
+            nonlocal loaded
 
-            if event != WebKit.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
-                # Challenge has been passed
+            logger.debug(f'load changed: {event}')
+
+            if event != WebKit.LoadEvent.STARTED:
+                loaded = False
+
+            elif event != WebKit.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
+                # Challenge has been passed and followed by a redirect
 
                 # Disable images auto-load
                 webview.webkit_webview.get_settings().set_auto_load_images(False)
@@ -254,36 +269,12 @@ def bypass_cf(func):
                 # Webview should not be closed, we need to store cookies first
                 webview.exit()
 
-            if event != WebKit.LoadEvent.FINISHED and not webview.auto_exited:
-                # Wait loading is finished
-                # Sometime FINISHED event never appends. COMMITTED event and auto-exited flag are sufficient
-                return
-
-            cf_reload_count += 1
-            if cf_reload_count > CF_RELOAD_MAX:
-                error = 'Max CF reload exceeded'
-                webview.close()
-                webview.exit()
-                return
-
-            # Detect end of CF challenge via JavaScript
-            js = """
-                let checkCF = setInterval(() => {
-                    if (!document.getElementById('challenge-running')) {
-                        document.title = 'ready';
-                        clearInterval(checkCF);
-                    }
-                    else if (document.querySelector('input.pow-button')) {
-                        // button
-                        document.title = 'captcha 1';
-                    }
-                    else if (document.querySelector('iframe[id^="cf-chl-widget"]')) {
-                        // checkbox in an iframe
-                        document.title = 'captcha 2';
-                    }
-                }, 100);
-            """
-            webview.webkit_webview.evaluate_javascript(js, -1)
+            elif event == WebKit.LoadEvent.FINISHED:
+                cf_reload_count += 1
+                if cf_reload_count > CF_RELOAD_MAX:
+                    error = 'Max CF reload exceeded'
+                    webview.close()
+                    webview.exit()
 
         def on_load_failed(_webkit_webview, _event, uri, _gerror):
             nonlocal error
@@ -294,17 +285,47 @@ def bypass_cf(func):
             webview.exit()
 
         def on_title_changed(_webkit_webview, _title):
+            nonlocal loaded
+
             if webview.webkit_webview.props.title.startswith('captcha'):
                 logger.debug(f'{server.id}: Captcha `{webview.webkit_webview.props.title}` detected')
+
                 # Show webview, user must complete a CAPTCHA
                 webview.title.set_title(_('Please complete CAPTCHA'))
                 webview.title.set_subtitle(server.name)
                 if webview.window.page != webview.props.tag:
                     webview.show()
 
-            if webview.webkit_webview.props.title != 'ready':
                 return
 
+            if webview.webkit_webview.props.title != 'ready':
+                # We can't rely on `load-changed` event to detect if page is loaded or at least can be considered as loaded
+                # because sometime FINISHED event never appends.
+                # Instead, we consider page adequately loaded when its title is defined.
+                if not loaded:
+                    loaded = True
+                    # Detect end of CF challenge via JavaScript
+                    js = """
+                        let checkCF = setInterval(() => {
+                            if (!document.getElementById('challenge-running')) {
+                                document.title = 'ready';
+                                clearInterval(checkCF);
+                            }
+                            else if (document.querySelector('input.pow-button')) {
+                                // button
+                                document.title = 'captcha 1';
+                            }
+                            else if (document.querySelector('iframe[id^="cf-chl-widget"]')) {
+                                // checkbox in an iframe
+                                document.title = 'captcha 2';
+                            }
+                        }, 100);
+                    """
+                    webview.webkit_webview.evaluate_javascript(js, -1)
+
+                return
+
+            # Challenge has been passed
             # Exit from webview if end of chalenge has not been detected in on_load_changed
             # Webview should not be closed, we need to store cookies first
             webview.exit()
@@ -344,7 +365,11 @@ def bypass_cf(func):
 
             webview.close()
 
-        webview.connect('exited', on_webview_exited)
+        webview.connect_signal('exited', on_webview_exited)
+        webview.connect_webview_signal('load-changed', on_load_changed)
+        webview.connect_webview_signal('load-failed', on_load_failed)
+        webview.connect_webview_signal('notify::title', on_title_changed)
+
         GLib.timeout_add(100, load_page)
 
         while not done and error is None:
@@ -368,7 +393,7 @@ def eval_js(code):
         if not webview.open('about:blank'):
             return True
 
-        webview.connect_signal('load-changed', on_load_changed)
+        webview.connect_webview_signal('load-changed', on_load_changed)
 
         if DEBUG:
             webview.show()
@@ -417,9 +442,9 @@ def get_page_html(url, user_agent=None, wait_js_code=None):
         if not webview.open(url, user_agent=user_agent):
             return True
 
-        webview.connect_signal('load-changed', on_load_changed)
-        webview.connect_signal('load-failed', on_load_failed)
-        webview.connect_signal('notify::title', on_title_changed)
+        webview.connect_webview_signal('load-changed', on_load_changed)
+        webview.connect_webview_signal('load-failed', on_load_failed)
+        webview.connect_webview_signal('notify::title', on_title_changed)
 
         if DEBUG:
             webview.show()
