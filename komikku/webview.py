@@ -246,7 +246,6 @@ def bypass_cf(func):
 
         def load_page():
             if not webview.open(url):
-                logger.debug('Load page: locked => wait')
                 return GLib.SOURCE_CONTINUE
 
         def on_load_changed(_webkit_webview, event):
@@ -254,7 +253,7 @@ def bypass_cf(func):
             nonlocal error
             nonlocal loaded
 
-            logger.debug(f'load changed: {event}')
+            logger.debug(f'Load changed: {event}')
 
             if event != WebKit.LoadEvent.STARTED:
                 loaded = False
