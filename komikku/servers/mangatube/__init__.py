@@ -244,7 +244,7 @@ class Mangatube(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.select('.series-update .series-update-wraper'):

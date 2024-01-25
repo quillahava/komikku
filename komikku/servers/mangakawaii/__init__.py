@@ -258,7 +258,7 @@ class Mangakawaii(Server):
         if mime_type != 'text/html':
             return []
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         chapters = []
         for tr_element in soup.find_all('tr'):

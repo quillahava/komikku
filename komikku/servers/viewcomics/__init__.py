@@ -55,7 +55,7 @@ class Viewcomics(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -113,7 +113,7 @@ class Viewcomics(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = dict(
             pages=[],

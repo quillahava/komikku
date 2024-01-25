@@ -10,6 +10,7 @@ from komikku.servers.utils import convert_date_string
 from komikku.servers.utils import do_login
 
 # Improved from https://github.com/manga-py/manga-py
+# This server uses a region restriction, a VPN can be required
 
 
 class Vizmanga(Server):
@@ -52,7 +53,7 @@ class Vizmanga(Server):
 
         self.refresh_login()
         r = self.session_get(self.api_chapters_url.format(initial_data['slug']))
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         authors = []
         synopsis = ''
@@ -182,7 +183,7 @@ class Vizmanga(Server):
         Returns full list of manga sorted by rank
         """
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
         divs = soup.findAll('a', {'class': f'disp-bl color-white {classes}'})
         result = []
         for div in divs:
@@ -204,7 +205,7 @@ class Vizmanga(Server):
 
     def refresh_login(self):
         r = self.session_get(self.refresh_login_url)
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
         return bool(soup.select('.o_profile-link'))
 
     def login(self, username, password):

@@ -308,7 +308,7 @@ def search_duckduckgo(site, term):
         logger.debug(error)
         raise
 
-    soup = BeautifulSoup(r.content, 'html.parser')
+    soup = BeautifulSoup(r.text, 'html.parser')
 
     results = []
     for a_element in soup.find_all('a', class_='result-link'):

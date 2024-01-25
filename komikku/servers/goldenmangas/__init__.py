@@ -114,7 +114,7 @@ class Goldenmangas(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = dict(
             pages=[],
@@ -192,7 +192,7 @@ class Goldenmangas(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.find_all(class_='mangas'):

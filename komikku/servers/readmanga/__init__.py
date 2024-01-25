@@ -222,7 +222,7 @@ class Readmanga(Server):
         if mime_type not in ('text/plain', 'text/html'):
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for element in soup.select('.tile'):

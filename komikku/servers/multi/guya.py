@@ -99,7 +99,7 @@ class Guya(Server):
         if not mime_type.startswith('text/html'):
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = dict()
         for a_element in soup.select('#chapterTable > tr > td:nth-child(2) > a'):

@@ -65,7 +65,7 @@ class Readcomiconline(Server):
             cover=None,
         ))
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         info_elements = soup.select_one('div.col.info')
 
@@ -187,7 +187,7 @@ class Readcomiconline(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         for a_element in soup.select('.item-list .cover a'):
             if not a_element.get('href'):

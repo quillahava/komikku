@@ -234,7 +234,7 @@ class Madara(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = dict(
             pages=[],

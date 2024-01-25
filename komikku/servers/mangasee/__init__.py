@@ -69,7 +69,7 @@ class Mangasee(Server):
             cover=self.cover_url.format(data['slug']),
         ))
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data['name'] = soup.find('h1').text.strip()
 
@@ -163,7 +163,7 @@ class Mangasee(Server):
         if mime_type != 'text/html':
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         chapter = None
         domain = None
@@ -269,7 +269,7 @@ class Mangasee(Server):
             if mime_type != 'text/html':
                 return None
 
-            soup = BeautifulSoup(r.content, 'lxml')
+            soup = BeautifulSoup(r.text, 'lxml')
 
             try:
                 for script in soup.find_all('script'):

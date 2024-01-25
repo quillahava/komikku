@@ -46,7 +46,7 @@ class Mangareader(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         data = initial_data.copy()
         data.update(dict(
@@ -115,7 +115,7 @@ class Mangareader(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         chapter_id = soup.select_one('#wrapper').get('data-reading-id')
 
@@ -240,7 +240,7 @@ class Mangareader(Server):
         if r.status_code != 200:
             return None
 
-        soup = BeautifulSoup(r.content, 'lxml')
+        soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
         for item in soup.select('.item-spc'):

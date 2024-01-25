@@ -104,7 +104,7 @@ class Server(ABC):
             if r.status_code != 200:
                 return None
 
-            soup = BeautifulSoup(r.content, 'html.parser')
+            soup = BeautifulSoup(r.text, 'html.parser')
 
             title_element = soup.select_one(cls.manga_title_css_selector)
             if not title_element:
