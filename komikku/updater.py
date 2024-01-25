@@ -22,9 +22,10 @@ class Updater(GObject.GObject):
     Mangas updater
     """
     __gsignals__ = {
-        'manga-updated': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT, int, int, bool)),
+        'manga-updated': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT)),
     }
 
+    current_id = None
     queue = []
     running = False
     stop_flag = False
@@ -67,10 +68,12 @@ class Updater(GObject.GObject):
                 if self.stop_flag is True:
                     break
 
-                manga = Manga.get(self.queue.pop(0))
+                manga_id = self.queue.pop(0)
+                manga = Manga.get(manga_id)
                 if manga is None:
                     continue
 
+                self.current_id = manga_id
                 try:
                     status, recent_chapters_ids, nb_deleted_chapters, synced = manga.update_full()
                     if status is True:
@@ -87,6 +90,7 @@ class Updater(GObject.GObject):
                     total_errors += 1
                     GLib.idle_add(error, manga, user_error_message)
 
+            self.current_id = None
             self.running = False
 
             # End notification
@@ -129,7 +133,15 @@ class Updater(GObject.GObject):
                     self.window.downloader.add(recent_chapters_ids, emit_signal=True)
                     self.window.downloader.start()
 
-            self.emit('manga-updated', manga, nb_recent_chapters, nb_deleted_chapters, synced)
+            self.emit(
+                'manga-updated',
+                manga,
+                dict(
+                    nb_deleted_chapters=nb_recent_chapters,
+                    nb_recent_chapters=nb_recent_chapters,
+                    synced=synced,
+                )
+            )
 
             return False
 

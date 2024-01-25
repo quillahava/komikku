@@ -30,6 +30,8 @@ class CardPage(Adw.NavigationPage):
     resume_button = Gtk.Template.Child('resume_button')
     menu_button = Gtk.Template.Child('menu_button')
 
+    progressbar = Gtk.Template.Child('progressbar')
+    progressbar_timeout_id = None
     stack = Gtk.Template.Child('stack')
     categories_stack = Gtk.Template.Child('categories_stack')
     categories_listbox = Gtk.Template.Child('categories_listbox')
@@ -63,6 +65,7 @@ class CardPage(Adw.NavigationPage):
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/card.xml')
         self.builder.add_from_resource('/info/febvre/Komikku/ui/menu/card_selection_mode.xml')
 
+        self.connect('hidden', self.on_hidden)
         self.connect('shown', self.on_shown)
         self.window.controller_key.connect('key-pressed', self.on_key_pressed)
 
@@ -173,6 +176,10 @@ class CardPage(Adw.NavigationPage):
     def on_delete_menu_clicked(self, _action, _gparam):
         self.window.library.delete_mangas([self.manga, ])
 
+    def on_hidden(self, _page):
+        # Force stop of update indicator (in case an update is in progress)
+        self.toggle_update_indicator(False)
+
     def on_key_pressed(self, _controller, keyval, _keycode, state):
         if self.window.page != self.props.tag:
             return Gdk.EVENT_PROPAGATE
@@ -192,14 +199,14 @@ class CardPage(Adw.NavigationPage):
 
         return Gdk.EVENT_PROPAGATE
 
-    def on_manga_updated(self, _updater, manga, nb_recent_chapters, nb_deleted_chapters, synced):
-        if self.window.page == self.props.tag and self.manga.id == manga.id:
+    def on_manga_updated(self, _updater, manga, result):
+        if (self.window.page == self.props.tag or self.window.previous_page == self.props.tag) and self.manga.id == manga.id:
             self.manga = manga
 
             if manga.server.sync:
                 self.window.show_notification(_('Read progress synchronization with server completed successfully'))
 
-            if nb_recent_chapters > 0 or nb_deleted_chapters > 0 or synced:
+            if result['nb_recent_chapters'] > 0 or result['nb_deleted_chapters'] > 0 or result['synced']:
                 self.chapters_list.populate()
 
             self.info_box.populate()
@@ -231,6 +238,9 @@ class CardPage(Adw.NavigationPage):
 
     def on_shown(self, _page):
         def do_populate():
+            # Show update indicator (in case an update is in progress)
+            self.toggle_update_indicator()
+
             if self.window.last_navigation_action != 'push':
                 return
 
@@ -249,10 +259,17 @@ class CardPage(Adw.NavigationPage):
         self.window.updater.add(self.manga)
         self.window.updater.start()
 
+        # Start update indicator
+        self.toggle_update_indicator()
+
     def populate(self):
         self.chapters_list.set_sort_order(invalidate=False)
         self.chapters_list.populate()
         self.categories_list.populate()
+
+    def refresh(self, chapters):
+        self.info_box.refresh()
+        self.chapters_list.refresh(chapters)
 
     def remove_backdrop(self):
         self.remove_css_class('backdrop')
@@ -284,9 +301,31 @@ class CardPage(Adw.NavigationPage):
 
         self.window.navigationview.push(self)
 
-    def refresh(self, chapters):
-        self.info_box.refresh()
-        self.chapters_list.refresh(chapters)
+    def toggle_update_indicator(self, state=True):
+        if state is False:
+            # Force indicator to stop (when page is left for example)
+            if self.progressbar_timeout_id is not None:
+                try:
+                    GLib.source_remove(self.progressbar_timeout_id)
+                except Exception:
+                    pass
+                else:
+                    self.progressbar_timeout_id = None
+                    self.progressbar.props.fraction = 0
+
+            return
+
+        def pulse(manga_id):
+            if self.window.updater.current_id == manga_id:
+                self.progressbar.pulse()
+                return GLib.SOURCE_CONTINUE
+
+            # Update is ended, stop indicator
+            self.progressbar_timeout_id = None
+            self.progressbar.props.fraction = 0
+            return GLib.SOURCE_REMOVE
+
+        self.progressbar_timeout_id = GLib.timeout_add(250, pulse, self.manga.id)
 
 
 class InfoBox:

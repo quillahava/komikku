@@ -516,7 +516,7 @@ class LibraryPage(Adw.NavigationPage):
 
         return Gdk.EVENT_PROPAGATE
 
-    def on_manga_updated(self, _obj, manga, _nb_recent_chapters, _nb_deleted_chapters, _synced):
+    def on_manga_updated(self, _obj, manga, result):
         self.refresh_on_manga_state_changed(manga)
 
     def on_overlaysplitview_revealed(self, _overlaysplitview, _param):
