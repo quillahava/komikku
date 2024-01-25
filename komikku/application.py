@@ -405,16 +405,15 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Servers] Comic Book Plus (EN): Update</li>
-                <li>[Servers] Honey Manga (UK): Update</li>
-                <li>[Servers] MangaHub (EN): Update</li>
-                <li>[Servers] Mangalek (AR): Update</li>
-                <li>[Servers] Manhwa Hentai (EN): Update</li>
-                <li>[Servers] Remanga (RU): Update</li>
-                <li>[Servers] Zero Scans (EN): Update</li>
-                <li>[Servers] Colored Manga (EN): Disable</li>
-                <li>[Servers] Lector Manga (ES): Disable</li>
-                <li>[L10n] Updated Indonesian translation</li>
+                <li>[Reader] RTL/LTR/Vertical pager: Speed up white borders cropping</li>
+                <li>[Servers] Izneo: Update</li>
+                <li>[Servers] LegacyScans (FR): Update</li>
+                <li>[Servers] Manhuaus (EN): Fixed manga statuses</li>
+                <li>[Servers] MonkeyUser (EN): Update</li>
+                <li>[Servers] NHentai (EN/JA/ZH): Added covers in searches results</li>
+                <li>[Servers] Read Comic Online (EN): Update</li>
+                <li>[Servers] Mangadoor (ES): Disable</li>
+                <li>[L10n] Updated French translation</li>
             </ul>
             <p>Happy reading.</p>
         """)
