@@ -162,6 +162,8 @@ class ChaptersList:
         item.chapter = Chapter.get(item.chapter.id)
         item.emit_changed()
 
+        if reset:
+            self.card.info_box.refresh()
         self.card.window.library.refresh_on_manga_state_changed(self.card.manga)
 
     def clear_selected_chapters(self, _action, _param, reset):
@@ -172,6 +174,8 @@ class ChaptersList:
             item.chapter = Chapter.get(item.chapter.id)
             item.emit_changed()
 
+        if reset:
+            self.card.info_box.refresh()
         self.card.window.library.refresh_on_manga_state_changed(self.card.manga)
 
         self.card.leave_selection_mode()
