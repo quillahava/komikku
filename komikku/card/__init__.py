@@ -198,7 +198,7 @@ class CardPage(Adw.NavigationPage):
             self.on_update_request()
 
     def on_gesture_drag_update(self, _controller, _offset_x, offset_y):
-        if self.info_scrolledwindow.get_vadjustment().props.value != 0:
+        if self.info_scrolledwindow.get_vadjustment().props.value != 0 or self.selection_mode:
             return
 
         self.pool_to_update_offset = offset_y
