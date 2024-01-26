@@ -8,6 +8,7 @@ from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
+from gi.repository import GObject
 from gi.repository import Gtk
 
 from komikku.card.categories_list import CategoriesList
@@ -38,6 +39,7 @@ class CardPage(Adw.NavigationPage):
     chapters_listview = Gtk.Template.Child('chapters_listview')
     chapters_selection_mode_actionbar = Gtk.Template.Child('chapters_selection_mode_actionbar')
     chapters_selection_mode_menubutton = Gtk.Template.Child('chapters_selection_mode_menubutton')
+    info_scrolledwindow = Gtk.Template.Child('info_scrolledwindow')
     cover_box = Gtk.Template.Child('cover_box')
     cover_image = Gtk.Template.Child('cover_image')
     name_label = Gtk.Template.Child('name_label')
@@ -55,6 +57,8 @@ class CardPage(Adw.NavigationPage):
     viewswitcherbar = Gtk.Template.Child('viewswitcherbar')
 
     manga = None
+    pool_to_update = False
+    pool_to_update_offset = 0
     selection_mode = False
 
     def __init__(self, window):
@@ -76,6 +80,16 @@ class CardPage(Adw.NavigationPage):
         # Focus is lost after showing popover submenu (bug?)
         self.menu_button.get_popover().connect('closed', lambda _popover: self.menu_button.grab_focus())
 
+        # Pool-to-Update
+        self.pool_to_update_revealer = self.window.pool_to_update_revealer
+        self.pool_to_update_spinner = self.window.pool_to_update_spinner
+        self.pool_to_update_revealer.bind_property('child-revealed', self.pool_to_update_spinner, 'spinning', 0)
+        # Drag gesture
+        self.gesture_drag = Gtk.GestureDrag.new()
+        self.gesture_drag.connect('drag-end', self.on_gesture_drag_end)
+        self.gesture_drag.connect('drag-update', self.on_gesture_drag_update)
+        self.stack.add_controller(self.gesture_drag)
+
         self.info_box = InfoBox(self)
         self.categories_list = CategoriesList(self)
         self.chapters_list = ChaptersList(self)
@@ -93,7 +107,7 @@ class CardPage(Adw.NavigationPage):
         self.window.application.add_action(self.delete_action)
 
         self.update_action = Gio.SimpleAction.new('card.update', None)
-        self.update_action.connect('activate', self.on_update_menu_clicked)
+        self.update_action.connect('activate', self.on_update_request)
         self.window.application.add_action(self.update_action)
 
         variant = GLib.Variant.new_string('desc')
@@ -176,6 +190,27 @@ class CardPage(Adw.NavigationPage):
     def on_delete_menu_clicked(self, _action, _gparam):
         self.window.library.delete_mangas([self.manga, ])
 
+    def on_gesture_drag_end(self, _controller, _offset_x, _offset_y):
+        self.pool_to_update = False
+        self.pool_to_update_revealer.set_reveal_child(False)
+
+        if self.pool_to_update_offset > 2 * 150:
+            self.on_update_request()
+
+    def on_gesture_drag_update(self, _controller, _offset_x, offset_y):
+        if self.info_scrolledwindow.get_vadjustment().props.value != 0:
+            return
+
+        self.pool_to_update_offset = offset_y
+
+        if not self.pool_to_update:
+            self.pool_to_update = True
+            # Adjust revealer position
+            self.pool_to_update_revealer.set_margin_top(self.get_child().get_top_bar_height())
+            self.pool_to_update_revealer.set_reveal_child(True)
+        else:
+            self.pool_to_update_spinner.props.margin_top = max(0, min(150, offset_y / 2))
+
     def on_hidden(self, _page):
         # Force stop of update indicator (in case an update is in progress)
         self.toggle_update_indicator(False)
@@ -255,7 +290,7 @@ class CardPage(Adw.NavigationPage):
         else:
             do_populate()
 
-    def on_update_menu_clicked(self, _action, _param):
+    def on_update_request(self, _action=None, _param=None):
         self.window.updater.add(self.manga)
         self.window.updater.start()
 

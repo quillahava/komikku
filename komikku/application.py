@@ -182,6 +182,8 @@ class ApplicationWindow(Adw.ApplicationWindow):
     notification_timer = None
     notification_label = Gtk.Template.Child('notification_label')
     notification_revealer = Gtk.Template.Child('notification_revealer')
+    pool_to_update_revealer = Gtk.Template.Child('pool_to_update_revealer')
+    pool_to_update_spinner = Gtk.Template.Child('pool_to_update_spinner')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

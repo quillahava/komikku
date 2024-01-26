@@ -11,25 +11,44 @@ template $ApplicationWindow: Adw.ApplicationWindow {
   }
 
   content: Overlay overlay {
-    child: Adw.NavigationView navigationview {
-    };
+    child: Adw.NavigationView navigationview {};
 
     [overlay]
-    Overlay notification_overlay {
+    Overlay {
+      can-target: false;
+      valign: start;
+      child: Revealer pool_to_update_revealer {
+        can-target: false;
+        halign: center;
+        child: Spinner pool_to_update_spinner {
+          height-request: 32;
+          width-request: 32;
+
+          styles [
+            "spinner",
+          ]
+        };
+      };
+    }
+
+    [overlay]
+    Overlay {
       can-target: false;
       valign: start;
       child: Revealer notification_revealer {
         can-target: false;
         halign: center;
-        child: Label notification_label {
-          label: "app notification message";
-          justify: center;
-          wrap: true;
+        child: Box {
+          Label notification_label {
+            label: "app notification message";
+            justify: center;
+            wrap: true;
 
-          styles [
-            "app-notification",
-            "heading",
-          ]
+            styles [
+              "app-notification",
+              "heading",
+            ]
+          }
         };
       };
     }
