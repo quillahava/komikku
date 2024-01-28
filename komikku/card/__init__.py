@@ -8,7 +8,6 @@ from gi.repository import Adw
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GLib
-from gi.repository import GObject
 from gi.repository import Gtk
 
 from komikku.card.categories_list import CategoriesList
@@ -35,7 +34,9 @@ class CardPage(Adw.NavigationPage):
     progressbar_timeout_id = None
     stack = Gtk.Template.Child('stack')
     categories_stack = Gtk.Template.Child('categories_stack')
+    categories_scrolledwindow = Gtk.Template.Child('categories_scrolledwindow')
     categories_listbox = Gtk.Template.Child('categories_listbox')
+    chapters_scrolledwindow = Gtk.Template.Child('chapters_scrolledwindow')
     chapters_listview = Gtk.Template.Child('chapters_listview')
     chapters_selection_mode_actionbar = Gtk.Template.Child('chapters_selection_mode_actionbar')
     chapters_selection_mode_menubutton = Gtk.Template.Child('chapters_selection_mode_menubutton')
@@ -86,9 +87,10 @@ class CardPage(Adw.NavigationPage):
         self.pool_to_update_revealer.bind_property('child-revealed', self.pool_to_update_spinner, 'spinning', 0)
         # Drag gesture
         self.gesture_drag = Gtk.GestureDrag.new()
+        self.gesture_drag.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         self.gesture_drag.connect('drag-end', self.on_gesture_drag_end)
         self.gesture_drag.connect('drag-update', self.on_gesture_drag_update)
-        self.stack.add_controller(self.gesture_drag)
+        self.add_controller(self.gesture_drag)
 
         self.info_box = InfoBox(self)
         self.categories_list = CategoriesList(self)
@@ -198,7 +200,17 @@ class CardPage(Adw.NavigationPage):
             self.on_update_request()
 
     def on_gesture_drag_update(self, _controller, _offset_x, offset_y):
-        if self.info_scrolledwindow.get_vadjustment().props.value != 0 or self.selection_mode:
+        _active, start_x, start_y = self.gesture_drag.get_start_point()
+
+        page = self.stack.get_visible_child_name()
+        if page == 'info':
+            scroll_value = self.info_scrolledwindow.get_vadjustment().props.value
+        elif page == 'chapters':
+            scroll_value = self.chapters_scrolledwindow.get_vadjustment().props.value
+        else:
+            scroll_value = self.categories_scrolledwindow.get_vadjustment().props.value
+
+        if scroll_value != 0 or offset_y < 0 or self.selection_mode or start_x < 32 or start_y > self.get_height() / 3:
             return
 
         self.pool_to_update_offset = offset_y

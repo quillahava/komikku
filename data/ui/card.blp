@@ -389,7 +389,7 @@ template $CardPage : Adw.NavigationPage {
             child: Box {
               orientation: vertical;
 
-              ScrolledWindow {
+              ScrolledWindow chapters_scrolledwindow {
                 vexpand: true;
 
                 Adw.ClampScrollable {
@@ -454,7 +454,7 @@ template $CardPage : Adw.NavigationPage {
             name: "categories";
             title: _("Categories");
             icon-name: "user-bookmarks-symbolic";
-            child: ScrolledWindow {
+            child: ScrolledWindow categories_scrolledwindow {
               child: Viewport {
                 scroll-to-focus: true;
 
