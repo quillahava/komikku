@@ -193,6 +193,9 @@ class CardPage(Adw.NavigationPage):
         self.window.library.delete_mangas([self.manga, ])
 
     def on_gesture_drag_end(self, _controller, _offset_x, _offset_y):
+        if not self.pool_to_update:
+            return
+
         self.pool_to_update = False
         self.pool_to_update_revealer.set_reveal_child(False)
 
