@@ -255,7 +255,7 @@ def bypass_cf(func):
 
             logger.debug(f'Load changed: {event}')
 
-            if event != WebKit.LoadEvent.STARTED:
+            if event == WebKit.LoadEvent.STARTED:
                 loaded = False
 
             elif event != WebKit.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
@@ -285,6 +285,17 @@ def bypass_cf(func):
 
         def on_title_changed(_webkit_webview, _title):
             nonlocal loaded
+            nonlocal error
+
+            if webview.webkit_webview.props.title == 'error':
+                # CF error message detected
+                # Bad extensions have been loaded, preventing the challenge from running?
+                error = 'CF challenge bypass error'
+
+                webview.close()
+                webview.exit()
+
+                return
 
             if webview.webkit_webview.props.title.startswith('captcha'):
                 logger.debug(f'{server.id}: Captcha `{webview.webkit_webview.props.title}` detected')
@@ -306,7 +317,12 @@ def bypass_cf(func):
                     # Detect end of CF challenge via JavaScript
                     js = """
                         let checkCF = setInterval(() => {
-                            if (!document.getElementById('challenge-running')) {
+                            if (document.getElementById('challenge-error-title')) {
+                                // Your browser is outdated!
+                                document.title = 'error';
+                                clearInterval(checkCF);
+                            }
+                            else if (!document.getElementById('challenge-running')) {
                                 document.title = 'ready';
                                 clearInterval(checkCF);
                             }
