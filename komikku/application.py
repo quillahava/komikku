@@ -407,15 +407,14 @@ class ApplicationWindow(Adw.ApplicationWindow):
 
         window.set_release_notes("""
             <ul>
-                <li>[Reader] RTL/LTR/Vertical pager: Speed up white borders cropping</li>
-                <li>[Servers] Izneo: Update</li>
-                <li>[Servers] LegacyScans (FR): Update</li>
-                <li>[Servers] Manhuaus (EN): Fixed manga statuses</li>
-                <li>[Servers] MonkeyUser (EN): Update</li>
-                <li>[Servers] NHentai (EN/JA/ZH): Added covers in searches results</li>
-                <li>[Servers] Read Comic Online (EN): Update</li>
-                <li>[Servers] Mangadoor (ES): Disable</li>
-                <li>[L10n] Updated French translation</li>
+                <li>[Card] Added an indicator when an update is in progress</li>
+                <li>[Card] Added Pull-to-Update feature</li>
+                <li>[Card] Updated disk usage when one or more chapters are reset</li>
+                <li>[Webview] Fixed typo error causing overload</li>
+                <li>[About] Fixed "Report an Issue" link</li>
+                <li>[Servers] Some improvements to speed up HTML pages parsing</li>
+                <li>[Servers] Manga-Scantrad (FR): Fix status CSS selector</li>
+                <li>[L10n] Updated Russian translation</li>
             </ul>
             <p>Happy reading.</p>
         """)
