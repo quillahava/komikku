@@ -237,10 +237,8 @@ class ChaptersList:
             self.on_selection_changed(None, None, None)
 
     def on_row_activate(self, _listview, position):
-        # Prevent unwanted activations
-        # - double-click in selection mode
-        # - click at end of a Pull-to-Update
-        if self.card.selection_mode or self.card.pool_to_update:
+        # Prevent unwanted activations: double-click in selection mode
+        if self.card.selection_mode:
             return
 
         chapter = self.list_model.get_item(position).chapter

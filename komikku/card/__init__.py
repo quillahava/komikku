@@ -202,6 +202,8 @@ class CardPage(Adw.NavigationPage):
         if self.pool_to_update_offset > 2 * 150:
             self.on_update_request()
 
+        self.gesture_drag.set_state(Gtk.EventSequenceState.CLAIMED)
+
     def on_gesture_drag_update(self, _controller, _offset_x, offset_y):
         _active, start_x, start_y = self.gesture_drag.get_start_point()
 
