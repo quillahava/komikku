@@ -88,10 +88,10 @@
 
     <url type="homepage">@website@</url>
     <url type="contact">https://matrix.to/#/#komikku-gnome:matrix.org</url>
-    <url type="bugtracker">@gitrepo@/-/issues</url>
+    <url type="bugtracker">@gitrepo@/issues</url>
     <url type="vcs-browser">@gitrepo@</url>
     <url type="translate">https://hosted.weblate.org/projects/komikku</url>
-    <url type="contribute">@gitrepo@/-/blob/main/CONTRIBUTING.md</url>
+    <url type="contribute">@gitrepo@/src/branch/main/CONTRIBUTING.md</url>
     <url type="donation">https://valos.gitlab.io/Komikku/#sponsor</url>
 
     <releases>
