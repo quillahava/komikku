@@ -269,6 +269,7 @@ def bypass_cf(func):
             if event != WebKit.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
                 # Challenge has been passed
                 # Disable images auto-load
+                logger.debug('Disable images automatic loading')
                 webview.webkit_webview.get_settings().set_auto_load_images(False)
 
             elif event == WebKit.LoadEvent.COMMITTED:
@@ -289,7 +290,7 @@ def bypass_cf(func):
         def monitor_challenge():
             # Detect CF challenge via JavaScript in current page
             # - No challenge found: change title to 'ready'
-            # - A captcha is detected: change title to 'captacha 1' or 'captcha 2'
+            # - A captcha is detected: change title to 'captcha 1' or 'captcha 2'
             # - An error occurs during challenge: change title to 'error'
             js = """
                 let checkCF = setInterval(() => {
