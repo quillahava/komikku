@@ -410,7 +410,7 @@ class ApplicationWindow(Adw.ApplicationWindow):
                 <li>[Card] Added an indicator when an update is in progress</li>
                 <li>[Card] Added Pull-to-Update feature</li>
                 <li>[Card] Updated disk usage when one or more chapters are reset</li>
-                <li>[Webview] Fixed typo error causing overload</li>
+                <li>[Webview] Fixed rare cases where pages loading end could not be detected</li>
                 <li>[About] Fixed "Report an Issue" link</li>
                 <li>[Servers] Some improvements to speed up HTML pages parsing</li>
                 <li>[Servers] Manga-Scantrad (FR): Fix status CSS selector</li>
