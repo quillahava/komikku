@@ -240,8 +240,10 @@ def bypass_cf(func):
         cf_reload_count = -1
         done = False
         error = None
-        loaded = False
-
+        load_event = None
+        load_event_finished_timeout = 10
+        load_events_monitor_id = None
+        load_events_monitor_ts = None
         webview = Gio.Application.get_default().window.webview
 
         def load_page():
@@ -251,22 +253,28 @@ def bypass_cf(func):
         def on_load_changed(_webkit_webview, event):
             nonlocal cf_reload_count
             nonlocal error
-            nonlocal loaded
+            nonlocal load_event
+            nonlocal load_events_monitor_id
+            nonlocal load_events_monitor_ts
 
+            load_event = event
             logger.debug(f'Load changed: {event}')
 
-            if event == WebKit.LoadEvent.STARTED:
-                loaded = False
+            if event == WebKit.LoadEvent.STARTED and load_events_monitor_id:
+                try:
+                    GLib.source_remove(load_events_monitor_id)
+                except Exception:
+                    pass
 
-            elif event != WebKit.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
-                # Challenge has been passed and followed by a redirect
-
+            if event != WebKit.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
+                # Challenge has been passed
                 # Disable images auto-load
                 webview.webkit_webview.get_settings().set_auto_load_images(False)
 
-                # Exit from webview
-                # Webview should not be closed, we need to store cookies first
-                webview.exit()
+            elif event == WebKit.LoadEvent.COMMITTED:
+                # Sometime FINISHED event never appends
+                load_events_monitor_ts = time.time()
+                load_events_monitor_id = GLib.idle_add(monitor_load_events)
 
             elif event == WebKit.LoadEvent.FINISHED:
                 cf_reload_count += 1
@@ -274,6 +282,49 @@ def bypass_cf(func):
                     error = 'Max CF reload exceeded'
                     webview.close()
                     webview.exit()
+                    return
+
+                monitor_challenge()
+
+        def monitor_challenge():
+            # Detect CF challenge via JavaScript in current page
+            # - No challenge found: change title to 'ready'
+            # - A captcha is detected: change title to 'captacha 1' or 'captcha 2'
+            # - An error occurs during challenge: change title to 'error'
+            js = """
+                let checkCF = setInterval(() => {
+                    if (document.getElementById('challenge-error-title')) {
+                        // Your browser is outdated!
+                        document.title = 'error';
+                        clearInterval(checkCF);
+                    }
+                    else if (!document.getElementById('challenge-running')) {
+                        document.title = 'ready';
+                        clearInterval(checkCF);
+                    }
+                    else if (document.querySelector('input.pow-button')) {
+                        // button
+                        document.title = 'captcha 1';
+                    }
+                    else if (document.querySelector('iframe[id^="cf-chl-widget"]')) {
+                        // checkbox in an iframe
+                        document.title = 'captcha 2';
+                    }
+                }, 100);
+            """
+            webview.webkit_webview.evaluate_javascript(js, -1)
+
+        def monitor_load_events():
+            if load_event != WebKit.LoadEvent.FINISHED:
+                # Sometime FINISHED event never appends
+                # Page is considered to be loaded, if  COMMITTED event has occurred, after load_event_finished_timeout seconds
+                if load_event == WebKit.LoadEvent.COMMITTED and time.time() - load_events_monitor_ts > load_event_finished_timeout:
+                    logger.debug('Event FINISHED timeout')
+                    monitor_challenge()
+                else:
+                    return GLib.SOURCE_CONTINUE
+
+            return GLib.SOURCE_REMOVE
 
         def on_load_failed(_webkit_webview, _event, uri, _gerror):
             nonlocal error
@@ -284,10 +335,12 @@ def bypass_cf(func):
             webview.exit()
 
         def on_title_changed(_webkit_webview, _title):
-            nonlocal loaded
             nonlocal error
 
-            if webview.webkit_webview.props.title == 'error':
+            title = webview.webkit_webview.props.title
+            logger.debug(f'Title changed: {title}')
+
+            if title == 'error':
                 # CF error message detected
                 # Bad extensions have been loaded, preventing the challenge from running?
                 error = 'CF challenge bypass error'
@@ -297,47 +350,15 @@ def bypass_cf(func):
 
                 return
 
-            if webview.webkit_webview.props.title.startswith('captcha'):
-                logger.debug(f'{server.id}: Captcha `{webview.webkit_webview.props.title}` detected')
-
+            if title.startswith('captcha'):
+                logger.debug(f'{server.id}: Captcha `{title}` detected')
                 # Show webview, user must complete a CAPTCHA
                 webview.title.set_title(_('Please complete CAPTCHA'))
                 webview.title.set_subtitle(server.name)
                 if webview.window.page != webview.props.tag:
                     webview.show()
 
-                return
-
-            if webview.webkit_webview.props.title != 'ready':
-                # We can't rely on `load-changed` event to detect if page is loaded or at least can be considered as loaded
-                # because sometime FINISHED event never appends.
-                # Instead, we consider page adequately loaded when its title is defined.
-                if not loaded:
-                    loaded = True
-                    # Detect end of CF challenge via JavaScript
-                    js = """
-                        let checkCF = setInterval(() => {
-                            if (document.getElementById('challenge-error-title')) {
-                                // Your browser is outdated!
-                                document.title = 'error';
-                                clearInterval(checkCF);
-                            }
-                            else if (!document.getElementById('challenge-running')) {
-                                document.title = 'ready';
-                                clearInterval(checkCF);
-                            }
-                            else if (document.querySelector('input.pow-button')) {
-                                // button
-                                document.title = 'captcha 1';
-                            }
-                            else if (document.querySelector('iframe[id^="cf-chl-widget"]')) {
-                                // checkbox in an iframe
-                                document.title = 'captcha 2';
-                            }
-                        }, 100);
-                    """
-                    webview.webkit_webview.evaluate_javascript(js, -1)
-
+            if title != 'ready':
                 return
 
             # Challenge has been passed
@@ -346,9 +367,9 @@ def bypass_cf(func):
             webview.exit()
 
             logger.debug(f'{server.id}: Page loaded, getting cookies...')
-            webview.network_session.get_cookie_manager().get_cookies(server.base_url, None, on_get_cookies_finish, None)
+            webview.network_session.get_cookie_manager().get_cookies(server.base_url, None, on_get_cookies_finished, None)
 
-        def on_get_cookies_finish(cookie_manager, result, _user_data):
+        def on_get_cookies_finished(cookie_manager, result, _user_data):
             nonlocal done
 
             server.session = requests.Session()
