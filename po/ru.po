@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-02 01:51+0100\n"
-"PO-Revision-Date: 2024-01-26 06:02+0000\n"
+"PO-Revision-Date: 2024-02-03 02:01+0000\n"
 "Last-Translator: Сергей <asvmail.as@gmail.com>\n"
-"Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/"
-">\n"
+"Language-Team: Russian <https://hosted.weblate.org/projects/komikku/main/ru/>"
+"\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -126,32 +126,35 @@ msgstr "@authorfullname@"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:101
 msgid "[Card] Added an indicator when an update is in progress"
-msgstr ""
+msgstr "[Card] Добавлен индикатор выполнения обновления"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:102
 msgid "[Card] Added Pull-to-Update feature"
-msgstr ""
+msgstr "[Card] Добавлена функция обновления по запросу"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:103
 msgid "[Card] Updated disk usage when one or more chapters are reset"
 msgstr ""
+"[Card] Обновлено использование диска при сбросе одной или нескольких глав"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:104
 msgid ""
 "[Webview] Fixed rare cases where pages loading end could not be detected"
 msgstr ""
+"[Webview] Исправлены редкие случаи, когда невозможно было определить "
+"окончание загрузки страниц"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:105
 msgid "[About] Fixed \"Report an Issue\" link"
-msgstr ""
+msgstr "[О приложении] Исправлена ссылка «Сообщить о проблеме»"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:106
 msgid "[Servers] Some improvements to speed up HTML pages parsing"
-msgstr ""
+msgstr "[Серверы] Некоторые улучшения для ускорения анализа HTML-страниц"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:107
 msgid "[Servers] Manga-Scantrad (FR): Fix status CSS selector"
-msgstr ""
+msgstr "[Серверы] Manga-Scantrad (FR): Исправлен статус CSS селектора"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:108
 msgid "[L10n] Updated Russian translation"
