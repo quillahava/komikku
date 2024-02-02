@@ -7,7 +7,7 @@
     <metadata_license>CC-BY-4.0</metadata_license>
     <content_rating type="oars-1.1" />
 
-    <name>@prettyname@</name>
+    <name translate="no">@prettyname@</name>
     <summary>Read your favorite manga</summary>
     <description>
         <p>With its simple, elegant and adaptive interface, this manga reader allows you to search, sort and read all your favorite manga with ease.</p>
@@ -80,11 +80,11 @@
     </screenshots>
 
     <!-- developer_name tag deprecated with Appstream 1.0 -->
-    <developer_name translatable="no">@authorfullname@</developer_name>
+    <developer_name translate="no">@authorfullname@</developer_name>
     <developer id="codeberg.org">
-        <name translatable="no">@authorfullname@</name>
+        <name translate="no">@authorfullname@</name>
     </developer>
-    <update_contact>@authoremail@</update_contact>
+    <update_contact translate="no">@authoremail@</update_contact>
 
     <url type="homepage">@website@</url>
     <url type="contact">https://matrix.to/#/#komikku-gnome:matrix.org</url>
@@ -111,7 +111,7 @@
             </description>
         </release>
         <release version="1.36.0" date="2024-01-25">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] RTL/LTR/Vertical pager: Speed up white borders cropping</li>
                     <li>[Servers] Izneo: Update</li>
@@ -127,7 +127,7 @@
             </description>
         </release>
         <release version="1.35.0" date="2024-01-17">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Comic Book Plus (EN): Update</li>
                     <li>[Servers] Honey Manga (UK): Update</li>
@@ -144,7 +144,7 @@
             </description>
         </release>
         <release version="1.34.2" date="2024-01-13">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] Used best image scaling filter based on zoom value</li>
                     <li>[Reader] Fixed memory leaks</li>
@@ -158,7 +158,7 @@
             </description>
         </release>
         <release version="1.33.0" date="2023-12-27">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Fr-Scan: Update</li>
                     <li>[Servers] WEBTOON: Update</li>
@@ -170,7 +170,7 @@
             </description>
         </release>
         <release version="1.32.0" date="2023-12-23">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Explorer] Search: Add comics covers (when available)</li>
                     <li>[UI] Fix broken page navigation when animations are disabled</li>
@@ -191,7 +191,7 @@
             </description>
         </release>
         <release version="1.31.0" date="2023-12-06">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] Webtoon pager: Fixed scrolling to top and memory leaks</li>
                     <li>[Reader] Webtoon pager: Saved reading progress when navigating with slider of controls overlay</li>
@@ -203,7 +203,7 @@
             </description>
         </release>
         <release version="1.30.1" date="2023-12-01">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Avoided simultaneous redisplays (lead to thumbnails duplication otherwise)</li>
                     <li>[Card] Each time page is redisplayed, scrolling position of subpages (Infos, Chapters, Categories) is now reset to top</li>
@@ -215,7 +215,7 @@
             </description>
         </release>
         <release version="1.29.0" date="2023-11-25">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] RTL/LTR/Vertical pager: Improved initial positioning of images when pages are scrollable</li>
                     <li>[Reader] RTL/LTR/Vertical pager: Fixed bug preventing swipe gesture navigation on some circumstance with touch screen devices</li>
@@ -230,7 +230,7 @@
             </description>
         </release>
         <release version="1.28.0" date="2023-11-13">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Card] Chapters list: Fixed "Reset" action not always available</li>
                     <li>[Reader] Webtoon pager: Fixed scrolling with touchpad under Wayland</li>
@@ -245,7 +245,7 @@
             </description>
         </release>
         <release version="1.27.1" date="2023-10-12">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] When filtered, it's now correctly updated when changes occur (additions, new chapters, reading progressions)</li>
                     <li>[Card] Chapters list: Added missing icon</li>
@@ -258,7 +258,7 @@
             </description>
         </release>
         <release version="1.27.0" date="2023-10-12">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Kept badges in phase with reading status</li>
                     <li>[Card] Chapters list: Added `Clear` action (deletes downloaded pages without affecting chapter(s) state)</li>
@@ -277,7 +277,7 @@
             </description>
         </release>
         <release version="1.26.0" date="2023-09-27">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Added sorting: Alphabetical, Latest Read First (default), Latest Updated First</li>
                     <li>[Servers] Mangas Origines [FR]: Reenable</li>
@@ -290,7 +290,7 @@
             </description>
         </release>
         <release version="1.25.1" date="2023-09-24">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Categories sidebar: Added badges to display number of comics per category</li>
                     <li>[Card] Fixed a bug that occurred during certain `Update` actions</li>
@@ -299,7 +299,7 @@
             </description>
         </release>
         <release version="1.25.0" date="2023-09-21">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[UX] Refined visuals taking advantage of the new capabilities of GNOME 45</li>
                     <li>[Explorer] Global search: Improved speed</li>
@@ -312,19 +312,19 @@
             </description>
         </release>
         <release version="1.24.2" date="2023-09-15">
-            <description translatable="no">
+            <description translate="no">
                 <p>[Reader] Webtoon pager: Fixed a scrolling bug</p>
                 <p>Happy reading.</p>
             </description>
         </release>
         <release version="1.24.1" date="2023-09-14">
-            <description translatable="no">
+            <description translate="no">
                 <p>Bugfix release: A regression prevented detection of the SecretService backend used for the keyring</p>
                 <p>Happy reading.</p>
             </description>
         </release>
         <release version="1.24.0" date="2023-09-13">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Added Manhwa Hentai (NSFW only) [EN]</li>
                     <li>[Servers] Added Team-X [AR]</li>
@@ -345,7 +345,7 @@
             </description>
         </release>
         <release version="1.23.0" date="2023-08-16">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] Full rewrite of the Webtoon pager</li>
                     <li>[Servers] Adds PhenixScans [FR]</li>
@@ -369,7 +369,7 @@
             </description>
         </release>
         <release version="1.22.0" date="2023-06-15">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>RTL/LTR/Vertical pager: Added &lt;Crtl+Mouse Wheel&gt; zoom</li>
                     <li>[Servers] JapScan: Update</li>
@@ -383,7 +383,7 @@
             </description>
         </release>
         <release version="1.21.1" date="2023-05-18">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] LTR/RTL/Vertical pager: Fixed double tap/click zoom</li>
                     <li>[Servers] Jpmangas: Update</li>
@@ -394,7 +394,7 @@
             </description>
         </release>
         <release version="1.21.0" date="2023-05-16">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] LTR/RTL/Vertical pager: Fixed zoom bugs</li>
                     <li>[Reader] Fixed crashes caused by corrupted images</li>
@@ -408,7 +408,7 @@
             </description>
         </release>
         <release version="1.20.0" date="2023-05-01">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Added Flame Scans [EN]</li>
                     <li>[Servers] Added MangaHere [EN]</li>
@@ -432,7 +432,7 @@
             </description>
         </release>
         <release version="1.19.0" date="2023-04-22">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Preferences] Disappearance of the `Dark Theme` setting in favor of a new `Theme` setting offering 3 choices (Light, Dark, Follow System)</li>
                     <li>[Servers] Added Escaneos de Leviatan [ES]</li>
@@ -446,7 +446,7 @@
             </description>
         </release>
         <release version="1.18.0" date="2023-04-11">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] RTL/LTR/Vertical pager: Fixed touchpad 2-fingers swipe gesture (Wayland only)</li>
                     <li>[Updater] Slightly improves notifications</li>
@@ -462,7 +462,7 @@
             </description>
         </release>
         <release version="1.17.1" date="2023-03-31">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>Fixed search entries appearance</li>
                     <li>Fixed webview</li>
@@ -473,7 +473,7 @@
             </description>
         </release>
         <release version="1.17.0" date="2023-03-29">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] NHentai: Reactivation</li>
                     <li>[Servers] 3asq: Update</li>
@@ -489,7 +489,7 @@
             </description>
         </release>
         <release version="1.16.0" date="2023-03-24">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Explorer] Added ability to read from search results (new settings have been added in Preferences to manage cached data)</li>
                     <li>[Reader] Fixed memory leaks</li>
@@ -501,7 +501,7 @@
             </description>
         </release>
         <release version="1.15.0" date="2023-03-16">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] Webtoon pager: Removed unwanted scrolling when clicking on 'Retry' button of a page</li>
                     <li>[Servers] FMTEAM: Fixed logo</li>
@@ -513,7 +513,7 @@
             </description>
         </release>
         <release version="1.14.0" date="2023-03-10">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[UX] Added possibility to go back with mouse Back button</li>
                     <li>[Library] Fixed range selection mode</li>
@@ -529,7 +529,7 @@
             </description>
         </release>
         <release version="1.13.0" date="2023-03-03">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[UX] Previous maximized state of window is now saved and restored when application starts</li>
                     <li>[Library] Previous selected filters are now saved and restored when application starts</li>
@@ -544,14 +544,14 @@
             </description>
         </release>
         <release version="1.12.1" date="2023-02-21">
-            <description translatable="no">
+            <description translate="no">
                 <p>Bugfix release</p>
                 <p>Fixed a bug that caused the loss of some pinned servers in the explorer (it's certainly too late for those who have updated to version 1.12.0).</p>
                 <p>BEWARE, since 1.12.0, all servers that contain explicit sexual content or nudity, such as hentai, mature, ecchi or yaoi/yuri are now tagged NSFW (18+).</p>
             </description>
         </release>
         <release version="1.12.0" date="2023-02-18">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[UI] Added ability to go back with &lt;ALT+Left&gt; shortcut</li>
                     <li>[Reader] Added ability to navigate foward with &lt;SPACE&gt; key</li>
@@ -569,7 +569,7 @@
             </description>
         </release>
         <release version="1.11.1" date="2023-02-08">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[UI] Use #f66151 color (orange) as app's accent color</li>
                     <li>[Shortcuts] Add &lt;Ctrl+f&gt; in History and Explorer => Servers (toggles search entry)</li>
@@ -582,7 +582,7 @@
             </description>
         </release>
         <release version="1.10.1" date="2023-01-27">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Improved thumbnails appearance</li>
                     <li>[Explorer] Various improvements in search</li>
@@ -594,7 +594,7 @@
             </description>
         </release>
         <release version="1.9.0" date="2023-01-18">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] LTR, RTL, vertical pager: Added 2-finger zoom gesture</li>
                     <li>[Reader] LTR, RTL, vertical pager: Improved double-tap zoom on touchscreens</li>
@@ -607,7 +607,7 @@
             </description>
         </release>
         <release version="1.8.0" date="2023-01-05">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Add Bilibili Comics ES, FR, ID</li>
                     <li>[Servers] Add Golden Mangás [pt_BR]</li>
@@ -620,7 +620,7 @@
             </description>
         </release>
         <release version="1.7.0" date="2022-12-24">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Explorer] Add `Latest Updates` (not available for all compatible servers yet)</li>
                     <li>[Servers] Add Reaper Scans AR, FR, ID and TR</li>
@@ -636,7 +636,7 @@
             </description>
         </release>
         <release version="1.6.1" date="2022-12-14">
-            <description translatable="no">
+            <description translate="no">
                 <p>Bug-fix release:</p>
                 <ul>
                     <li>Missing database indexes</li>
@@ -645,7 +645,7 @@
             </description>
         </release>
         <release version="1.6.0" date="2022-12-14">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>New icon 🎉 Thank you to its author Tobias Bernard</li>
                     <li>[Card] Chapters are now downloaded in ascending order of chapter numbers</li>
@@ -659,7 +659,7 @@
             </description>
         </release>
         <release version="1.5.0" date="2022-11-27">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] Webtoon reading mode: Add srcolling with Page Up and Page Down keys</li>
                     <li>[Explorer] Global search: Put servers without results at end</li>
@@ -679,7 +679,7 @@
             </description>
         </release>
         <release version="1.4.1" date="2022-11-14">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>Fixed app not starting on SteamOS (Steam Deck)</li>
                     <li>[Library] Improved thumbnails badges</li>
@@ -691,7 +691,7 @@
             </description>
         </release>
         <release version="1.4.0" date="2022-11-09">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Improved loading: Added a waiting page with a progress bar</li>
                     <li>[Explorer] Fixed Global Search when several languages are enabled</li>
@@ -701,7 +701,7 @@
             </description>
         </release>
         <release version="1.3.0" date="2022-11-05">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Downloader] Improved download speed</li>
                     <li>[Explorer] Add Global search</li>
@@ -711,7 +711,7 @@
             </description>
         </release>
         <release version="1.2.0" date="2022-10-26">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] Improved Webtoon reading mode</li>
                     <li>[Servers] Add Local server (CBZ/CBR archives)</li>
@@ -724,7 +724,7 @@
             </description>
         </release>
         <release version="1.1.0" date="2022-10-06">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>Landscape covers (rare) are now converted to portrait</li>
                     <li>[Reader] Webtoon reading mode: Bugfix</li>
@@ -742,7 +742,7 @@
             </description>
         </release>
         <release version="1.0.0" date="2022-09-25">
-            <description translatable="no">
+            <description translate="no">
                 <p>After several months of effort, Komikku's port to GTK4 and libadwaita is ended.</p>
                 <p>The highlights of this new major version:</p>
                 <ul>
@@ -765,7 +765,7 @@
             </description>
         </release>
         <release version="0.41.0" date="2022-09-01">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Add Aralos BD [FR]</li>
                     <li>[Servers] Add Manga-Scantrad [FR]</li>
@@ -784,7 +784,7 @@
             </description>
         </release>
         <release version="0.40.0" date="2022-07-25">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Add Remanga [RU]</li>
                     <li>[Servers] Add Manga.in.ua [UA]</li>
@@ -803,7 +803,7 @@
             </description>
         </release>
         <release version="0.39.0" date="2022-06-01">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Add Mangapill [EN]</li>
                     <li>[Servers] FR Scan: Update</li>
@@ -817,7 +817,7 @@
             </description>
         </release>
         <release version="0.38.0" date="2022-04-19">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Add Manhuaus [EN]</li>
                     <li>[Servers] Apoll Comics: Update</li>
@@ -828,7 +828,7 @@
             </description>
         </release>
         <release version="0.37.0" date="2022-02-28">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>Add `Quit` shortcut action (Ctrl+Q)</li>
                     <li>[Servers] Fixed loading of images in `webp` format</li>
@@ -845,7 +845,7 @@
             </description>
         </release>
         <release version="0.36.1" date="2022-01-14">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] MangaDex: Update</li>
                     <li>[Servers] NHentai: Update</li>
@@ -856,7 +856,7 @@
             </description>
         </release>
         <release version="0.36.0" date="2021-12-21">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Card] Add keyboard navigation outside of selection mode</li>
                     <li>[Servers] CatManga: Disable</li>
@@ -874,7 +874,7 @@
             </description>
         </release>
         <release version="0.35.2" date="2021-10-29">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Faster rendering on category changes</li>
                     <li>[Servers] Argos Scan: Disable</li>
@@ -886,7 +886,7 @@
             </description>
         </release>
         <release version="0.35.1" date="2021-10-14">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] MangaDex: Search now takes language into account</li>
                     <li>[Servers] Under Flatpak, fixed problem with the HTML parser</li>
@@ -894,7 +894,7 @@
             </description>
         </release>
         <release version="0.35.0" date="2021-10-12">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>Add Reading History</li>
                     <li>[Servers] Add Le Cercle du Scan [FR]</li>
@@ -916,7 +916,7 @@
             </description>
         </release>
         <release version="0.34.1" date="2021-10-02">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] MANGA Plus by SHUEISHA: Update</li>
                     <li>[Servers] Mangahub: Fixed bug when summary is missing</li>
@@ -926,7 +926,7 @@
             </description>
         </release>
         <release version="0.34.0" date="2021-09-30">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Add Asura Scans [EN, TR]</li>
                     <li>[Servers] Add FR Scan [FR]</li>
@@ -944,14 +944,14 @@
             </description>
         </release>
         <release version="0.33.1" date="2021-09-22">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Read Manga: Update</li>
                 </ul>
             </description>
         </release>
         <release version="0.33.0" date="2021-09-22">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] Controls overlay: Fix a bug in pages slider</li>
                     <li>[Servers] Add MangaKawaii [EN]</li>
@@ -964,7 +964,7 @@
             </description>
         </release>
         <release version="0.32.0" date="2021-09-17">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Thumbnails: Fix rendering of servers logos and badges on mobile devices</li>
                     <li>[Card] Fixed synopsis display when it contains HTML</li>
@@ -979,7 +979,7 @@
             </description>
         </release>
         <release version="0.31.0" date="2021-09-10">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[UI] Major redesign (except Library and Reader)</li>
                     <li>[Card] Fixed chapters list scrolling on mobile devices</li>
@@ -1005,7 +1005,7 @@
             </description>
         </release>
         <release version="0.30.0" date="2021-08-04">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Card] Chapters list: Add sorting by title (can be slow with long lists)</li>
                     <li>[Reader] Improve touch screen support</li>
@@ -1015,7 +1015,7 @@
             </description>
         </release>
         <release version="0.29.2" date="2021-06-12">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Servers] Mangadex: Update</li>
                     <li>[Servers] MangaKawaii: Update</li>
@@ -1024,14 +1024,14 @@
             </description>
         </release>
         <release version="0.29.1" date="2021-06-05">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Fix bug preventing app startup (empty library only)</li>
                 </ul>
             </description>
         </release>
         <release version="0.29.0" date="2021-06-03">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Displayed currently selected category in subtitle</li>
                     <li>[Library] Add 'Uncategorized' category</li>
@@ -1045,7 +1045,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.28.1" date="2021-05-15">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>Several UI changes to improve scaling on small devices screens</li>
                     <li>[Library] Add categories edition in bulk (via multiple selection mode)</li>
@@ -1069,7 +1069,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.27.0" date="2021-03-17">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Add Categories to organize the library</li>
                     <li>[Servers] Add Read Comics Online (EN)</li>
@@ -1087,14 +1087,14 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.26.1" date="2021-02-08">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Preferences] Fixed a bug in saving logins credentials</li>
                 </ul>
             </description>
         </release>
         <release version="0.26.0" date="2021-02-04">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>Refined the ability to add comics via the command line: more servers supported</li>
                     <li>[Explorer] Search: Add button to open server's website in browser</li>
@@ -1109,14 +1109,14 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.25.1" date="2021-01-20">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>Fixing manga addition</li>
                 </ul>
             </description>
         </release>
         <release version="0.25.0" date="2021-01-18">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>Added ability to add comics via the command line</li>
                     <li>[Servers] Add Scan Manga (FR)</li>
@@ -1126,7 +1126,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.24.0" date="2020-12-17">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Allow Selection mode while in search and search in Selection mode</li>
                     <li>[Card] The chapter `Reset` action is now proposed as soon as chapter pages are known</li>
@@ -1140,7 +1140,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.23.0" date="2020-11-20">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Add dialog] Add Back navigation between pages via Esc key</li>
                     <li>[Add dialog] Search page: Give keyboard focus to search entry when a printable character is typed</li>
@@ -1156,14 +1156,14 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.22.1" date="2020-11-17">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] Re-allow page scaling in Vertical reading mode (disabled by mistake in 0.22.0)</li>
                 </ul>
             </description>
         </release>
         <release version="0.22.0" date="2020-11-15">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Allow bulk downloading of manga, as well as marking all chapters as (un)read</li>
                     <li>[Card] Chapters list: Add sort by date</li>
@@ -1184,14 +1184,14 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.21.1" date="2020-09-27">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Several bugs fixes</li>
                 </ul>
             </description>
         </release>
         <release version="0.21.0" date="2020-09-23">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Rounded mangas thumbnails</li>
                     <li>[L10n] German translation update</li>
@@ -1200,7 +1200,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.20.0" date="2020-09-15">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Search: Add filter options (Downloaded, Unread, Recent)</li>
                     <li>[Preferences] The window and its subpages can now be closed with Esc key</li>
@@ -1213,7 +1213,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.19.0" date="2020-08-02">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>Add HiDPI display support</li>
                     <li>[Preferences] Use Handy.PreferencesWindow subpages to display Servers Languages and Servers Settings</li>
@@ -1221,7 +1221,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.18.0" date="2020-07-28">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Press &lt;Enter&gt; opens first manga in search</li>
                     <li>[Library] Disable range selection when in search mode</li>
@@ -1243,7 +1243,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.17.0" date="2020-05-29">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Preferences] New UI</li>
                     <li>[Servers] MangaNelo: Fix images loading</li>
@@ -1252,12 +1252,12 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.16.1" date="2020-05-24">
-            <description translatable="no">
+            <description translate="no">
                 <p>Fix 2 critical bugs (app crashs)</p>
             </description>
         </release>
         <release version="0.16.0" date="2020-05-24">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library/Readers] Add support of animated GIFs</li>
                     <li>[Library] Add &lt;Control&gt;+F shortcut: Enter search mode</li>
@@ -1270,7 +1270,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.15.1" date="2020-05-07">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Faster chapters list rendering</li>
                     <li>[Library] Faster read/unread state toggling with long chapters selections</li>
@@ -1282,7 +1282,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.15.0" date="2020-04-21">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Library] Add search by genre (exact match)</li>
                     <li>[Library/Chapters] Add range selection: long press on an item then long press on another to select everything in between</li>
@@ -1297,7 +1297,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.14.0" date="2020-04-01">
-            <description translatable="no">
+            <description translate="no">
                 <ul>
                     <li>[Reader] Add 'Original Size' scaling</li>
                     <li>[Reader] Several fixes in keyboard navigation</li>
@@ -1310,7 +1310,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.13.0" date="2020-03-12">
-            <description translatable="no">
+            <description translate="no">
                 <p>[Reader] Fix crash with corrupt or empty images</p>
                 <p>[Settings] Add servers settings</p>
                 <p>[Servers] Add Union Mangás (PT)</p>
@@ -1325,13 +1325,13 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.12.1" date="2020-02-29">
-            <description translatable="no">
+            <description translate="no">
                 <p>[Servers] Mangakawaii: Fixed manga cover</p>
                 <p>Improved manga update</p>
             </description>
         </release>
         <release version="0.12.0" date="2020-02-26">
-            <description translatable="no">
+            <description translate="no">
                 <p>[Manga] Fixed the unread action of chapters</p>
                 <p>[Reader] Cursor hiding during keyboard navigation</p>
                 <p>[Reader] Arrow scrolling in every reading directions</p>
@@ -1346,12 +1346,12 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.11.1" date="2020-02-14">
-            <description translatable="no">
+            <description translate="no">
                 <p>Added the Dutch translation</p>
             </description>
         </release>
         <release version="0.11.0" date="2020-02-11">
-            <description translatable="no">
+            <description translate="no">
                 <p>Added Desu server (RU)</p>
                 <p>Added the Russian translation</p>
                 <p>Updated the Brazilian Portuguese translation</p>
@@ -1359,12 +1359,12 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.10.1" date="2020-02-06">
-            <description translatable="no">
+            <description translate="no">
                 <p>Fixe a bug in Download Manager</p>
             </description>
         </release>
         <release version="0.10.0" date="2020-02-05">
-            <description translatable="no">
+            <description translate="no">
                 <p>Added a Download Manager</p>
                 <p>[Manga] Improved chapters download</p>
                 <p>[Reader] Vertical reading direction: Added scrolling with UP and DOWN keys</p>
@@ -1375,7 +1375,7 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.9.0" date="2020-01-17">
-            <description translatable="no">
+            <description translate="no">
                 <p>[Library] Add an unread badge</p>
                 <p>[Library/Manga] Added "Select All" in selection mode</p>
                 <p>[Library/Manga] Now leaves selection mode when no mangas/chapters are selected</p>
@@ -1387,116 +1387,116 @@ update and need to be readded.</li>
             </description>
         </release>
         <release version="0.8.1" date="2020-01-09">
-            <description translatable="no">
+            <description translate="no">
                 <p>Jaimini's Box server: Fixed mangas with an adult alert</p>
             </description>
         </release>
         <release version="0.8.0" date="2020-01-09">
-            <description translatable="no">
+            <description translate="no">
                 <p>Added MANGA Plus server (EN, ES)</p>
                 <p>Added Jaimini's Box</p>
             </description>
         </release>
         <release version="0.7.2" date="2020-01-03">
-            <description translatable="no">
+            <description translate="no">
                 <p>Fixed 'Night Light' preference</p>
                 <p>Fixed JapScan server search</p>
             </description>
         </release>
         <release version="0.7.1" date="2019-12-31">
-            <description translatable="no">
+            <description translate="no">
                 <p>Pager focus is now correctly restored when menu is closed (useful for keypad navigation).</p>
                 <p>Happy new year to everyone.</p>
             </description>
         </release>
         <release version="0.7.0" date="2019-12-30">
-            <description translatable="no">
+            <description translate="no">
                 <p>Added 'Vertical' reading direction</p>
                 <p>Added 'Night Light' preference</p>
             </description>
         </release>
         <release version="0.6.2" date="2019-12-22">
-            <description translatable="no">
+            <description translate="no">
                 <p>Fixed Manganelo and WEBTOON servers</p>
             </description>
         </release>
         <release version="0.6.1" date="2019-12-18">
-            <description translatable="no">
+            <description translate="no">
                 <p>Ninemanga: Fixed missing chapters issue (EN, BR, DE, ES, IT)</p>
                 <p>Pepper&amp;Carrot: Fixed chapters update</p>
                 <p>Pepper&amp;Carrot: Added missing Cover and Credits pages</p>
             </description>
         </release>
         <release version="0.6.0" date="2019-12-17">
-            <description translatable="no">
+            <description translate="no">
                 <p>New preference: Servers languages</p>
                 <p>Bug fixes in Scantrad France and DB Multiverse</p>
             </description>
         </release>
         <release version="0.5.1" date="2019-12-11">
-            <description translatable="no">
+            <description translate="no">
                 <p>A bug fix in change of reading direction</p>
                 <p>A bug fix in Pepper&amp;Carrot</p>
             </description>
         </release>
         <release version="0.5.0" date="2019-12-11">
-            <description translatable="no">
+            <description translate="no">
                 <p>Added Pepper&amp;Carrot server</p>
                 <p>A free(libre) and open-source webcomic supported directly by its patrons to change the comic book industry!</p>
             </description>
         </release>
         <release version="0.4.0" date="2019-12-08">
-            <description translatable="no">
+            <description translate="no">
                 <p>New preference: Automatically update library at startup</p>
                 <p>Fix in Mangakawaii server (Cloudflare problem)</p>
             </description>
         </release>
         <release version="0.3.1" date="2019-11-29">
-            <description translatable="no">
+            <description translate="no">
                 <p>Fixes in Mangakawaii server</p>
             </description>
         </release>
         <release version="0.3.0" date="2019-11-28">
-            <description translatable="no">
+            <description translate="no">
                 <p>Added Dragon Ball Multiverse (DBM) server</p>
                 <p>Fixes in Japscan server (search still broken)</p>
             </description>
         </release>
         <release version="0.2.0" date="2019-11-23">
-            <description translatable="no">
+            <description translate="no">
                 <p>New servers: NineManga Russian, Webtoon Indonesia and Webtoon Thai</p>
                 <p>For all servers that allow it, most popular mangas are now offered as starting search results.</p>
             </description>
         </release>
         <release version="0.1.5" date="2019-11-20">
-            <description translatable="no">
+            <description translate="no">
                 <p>Improve speed of dates parsing</p>
                 <p>Fixed order of manga chapters for Scantrad France and Central de Mangás</p>
             </description>
         </release>
         <release version="0.1.4" date="2019-11-19">
-            <description translatable="no">
+            <description translate="no">
                 <p>Fix keyboard navigation in reader</p>
             </description>
         </release>
         <release version="0.1.3" date="2019-11-18">
-            <description translatable="no">
+            <description translate="no">
                 <p>Add a new server: xkcd (English)</p>
             </description>
         </release>
         <release version="0.1.2" date="2019-11-14">
-            <description translatable="no">
+            <description translate="no">
                 <p>Add the Portuguese (Brazil) translation</p>
                 <p>Add a new server: Central de Mangas (Portuguese)</p>
             </description>
         </release>
         <release version="0.1.1" date="2019-11-12">
-            <description translatable="no">
+            <description translate="no">
                 <p>Bug fix: Change the location of the data storage</p>
             </description>
         </release>
         <release version="0.1.0" date="2019-11-10">
-            <description translatable="no">
+            <description translate="no">
                 <p>First release</p>
             </description>
         </release>
