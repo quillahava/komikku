@@ -2,13 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Komikku package.
 # randint <lancameb@hotmail.com>, 2023.
+# Zhao Se <zhaose233@zhaose.cyou>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku 1.25.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-02 01:51+0100\n"
-"PO-Revision-Date: 2023-10-01 09:00+0000\n"
-"Last-Translator: randint <lancameb@hotmail.com>\n"
+"PO-Revision-Date: 2024-02-03 02:01+0000\n"
+"Last-Translator: Zhao Se <zhaose233@zhaose.cyou>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "komikku/main/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -16,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.1-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:11
 msgid "Read your favorite manga"
@@ -36,82 +37,83 @@ msgstr "你會愛上 Komikku 的理由？"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:17
 msgid "Online and offline reading from dozens of servers"
-msgstr ""
+msgstr "在線或離線閱讀來自各個伺服器的漫畫"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:18
 msgid "Support for locally stored manga (in CBZ or CBR formats)"
-msgstr ""
+msgstr "支援本機儲存的漫畫（以 CBZ 或 CBR 的格式）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:19
 msgid "RTL, LTR, Vertical and Webtoon reading modes"
-msgstr ""
+msgstr "從右至左，從左至右，垂直，以及 Webtoon 閱讀模式"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:20
 msgid ""
 "Support several types of navigation: keyboard arrow keys, right and left "
 "navigation layout via mouse click or tapping (touchpad/touch screen), mouse "
 "wheel, 2-fingers swipe gesture (touchpad), swipe gesture (touch screen)"
-msgstr ""
+msgstr "支援多種類型的導航：鍵盤方向鍵，透過滑鼠或觸控點擊左右導航布局，滑鼠滾輪，兩"
+"雙滑動（觸控板），滑動手勢（觸控熒幕）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:21
 msgid "Categories to organize your library"
-msgstr ""
+msgstr "用於組織書櫃的類別"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:22
 msgid "Automatic update of manga"
-msgstr ""
+msgstr "自動更新漫畫"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:23
 msgid "Automatic download of new chapters"
-msgstr ""
+msgstr "自動下載新章節"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:24
 msgid "Reading history"
-msgstr ""
+msgstr "閱讀歷史"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:25
 msgid "Light and dark themes"
-msgstr ""
+msgstr "亮色與暗色主題"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:41
 msgid "The Library page"
-msgstr ""
+msgstr "書櫃頁面"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:45
 msgid "The Library page with the category sidebar open"
-msgstr ""
+msgstr "打開類別側邊欄的書櫃頁"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:49
 msgid "The Preferences page (Library settings)"
-msgstr ""
+msgstr "設定頁面（書櫃設定）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:53
 msgid "The Explorer page in mobile format (Servers list)"
-msgstr ""
+msgstr "行動裝置格式的探索頁面（伺服器目錄）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:57
 msgid "The Details page"
-msgstr ""
+msgstr "詳情頁"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:61
 msgid "The Details page (chapters list)"
-msgstr ""
+msgstr "詳請頁（章節目錄）"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:65
 msgid "The Reader page"
-msgstr ""
+msgstr "閱讀頁"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:69
 msgid "The Reader page in mobile format"
-msgstr ""
+msgstr "行動裝置格式的閱讀頁"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:73
 msgid "The Category editor page in mobile format"
-msgstr ""
+msgstr "行動裝置格式的類別編輯頁"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:77
 msgid "The Reading history page in mobile format"
-msgstr ""
+msgstr "行動裝置格式的閱讀歷史頁"
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:85
 msgid "@authorfullname@"
@@ -152,7 +154,7 @@ msgstr ""
 
 #: ../data/info.febvre.Komikku.appdata.xml.in.in:110
 msgid "Happy reading."
-msgstr ""
+msgstr "開心閱讀。"
 
 #: ../data/info.febvre.Komikku.desktop.in:3
 msgid "@prettyname@"
@@ -176,28 +178,31 @@ msgid ""
 "by buying the official comics when they are\n"
 "available in your region/language."
 msgstr ""
+"一個為 GNOME 訂制的漫畫閱讀器\n"
+"\n"
+"👉 不要忘記，你可以通過購買正版漫畫來支援作者。"
 
 #: ../data/ui/card.blp:30 ../data/ui/card.blp:445
 #: ../data/ui/card_chapters_list_row.blp:44 ../data/ui/download_manager.blp:22
 #: ../data/ui/library.blp:130 ../data/ui/reader.blp:25
 msgid "Menu"
-msgstr ""
+msgstr "選單"
 
 #: ../data/ui/card.blp:36
 msgid "Resume Reading"
-msgstr ""
+msgstr "恢復閱讀"
 
 #: ../data/ui/card.blp:55
 msgid "Info"
-msgstr ""
+msgstr "資訊"
 
 #: ../data/ui/card.blp:142
 msgid "Add to Library"
-msgstr ""
+msgstr "添加至書櫃"
 
 #: ../data/ui/card.blp:172
 msgid "Details"
-msgstr ""
+msgstr "詳情"
 
 #: ../data/ui/card.blp:203
 msgid "Genres"
@@ -209,65 +214,65 @@ msgstr ""
 
 #: ../data/ui/card.blp:299
 msgid "Last Update"
-msgstr ""
+msgstr "最後更新"
 
 #: ../data/ui/card.blp:331
 msgid "Size on Disk"
-msgstr ""
+msgstr "佔用磁碟空間"
 
 #: ../data/ui/card.blp:357
 msgid "Synopsis"
-msgstr ""
+msgstr "概要"
 
 #: ../data/ui/card.blp:485 ../data/ui/categories_editor.blp:64
 #: ../data/ui/library.blp:235
 msgid "No Categories"
-msgstr ""
+msgstr "無類別"
 
 #: ../data/ui/card_chapters_list_row.blp:61
 msgid "New"
-msgstr ""
+msgstr "新的"
 
 #: ../data/ui/categories_editor.blp:33
 msgid "Add"
-msgstr ""
+msgstr "添加"
 
 #: ../data/ui/download_manager.blp:6 ../data/ui/download_manager.blp:16
 msgid "Download Manager"
-msgstr ""
+msgstr "下載管理員"
 
 #: ../data/ui/download_manager.blp:28
 msgid "Start/Stop Download"
-msgstr ""
+msgstr "開始/停止下載"
 
 #: ../data/ui/download_manager.blp:65
 msgid "No Downloads"
-msgstr ""
+msgstr "無下載"
 
 #: ../data/ui/explorer_search.blp:10 ../data/ui/explorer_search.blp:35
 #: ../data/ui/history.blp:18 ../data/ui/library.blp:36
 msgid "Search"
-msgstr ""
+msgstr "搜尋"
 
 #: ../data/ui/explorer_search.blp:28
 msgid "Open in Browser"
-msgstr ""
+msgstr "於瀏覽器中打開"
 
 #: ../data/ui/explorer_search.blp:151
 msgid "Most Popular"
-msgstr ""
+msgstr "最流行的"
 
 #: ../data/ui/explorer_search.blp:223
 msgid "Latest Updates"
-msgstr ""
+msgstr "最近更新"
 
 #: ../data/ui/explorer_servers.blp:6 ../data/ui/preferences.blp:169
 msgid "Servers"
-msgstr ""
+msgstr "伺服器"
 
 #: ../data/ui/explorer_servers.blp:13
 msgid "Search Comics Across All Servers"
-msgstr ""
+msgstr "於所有伺服器上搜尋漫畫"
 
 #: ../data/ui/explorer_servers.blp:19
 msgid "Search Servers"
@@ -275,32 +280,32 @@ msgstr ""
 
 #: ../data/ui/explorer_servers.blp:33
 msgid "Search for servers by name or language"
-msgstr ""
+msgstr "按名稱或語言搜尋伺服器"
 
 #: ../data/ui/history.blp:6 ../data/ui/history.blp:12
 msgid "History"
-msgstr ""
+msgstr "歷史"
 
 #: ../data/ui/history.blp:69
 msgid "No History"
-msgstr ""
+msgstr "無歷史"
 
 #: ../data/ui/library.blp:6 ../data/ui/preferences.blp:66
 #: ../data/ui/preferences.blp:69
 msgid "Library"
-msgstr ""
+msgstr "書櫃"
 
 #: ../data/ui/library.blp:19
 msgid "Toggle Categories Sidebar"
-msgstr ""
+msgstr "切換類別側邊欄"
 
 #: ../data/ui/library.blp:23
 msgid "Komikku"
-msgstr ""
+msgstr "Komikku"
 
 #: ../data/ui/library.blp:30
 msgid "Main Menu"
-msgstr ""
+msgstr "主選單"
 
 #: ../data/ui/library.blp:61
 msgid "Search by name, server or genre"
@@ -308,162 +313,162 @@ msgstr ""
 
 #: ../data/ui/library.blp:109 ../data/ui/preferences.blp:155
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
 #: ../data/ui/library.blp:183
 msgid "Discover Comics"
-msgstr ""
+msgstr "探索和發現漫畫"
 
 #: ../data/ui/library.blp:257
 msgid "OK"
-msgstr ""
+msgstr "好的"
 
 #: ../data/ui/menu/card.xml:18
 msgid "Order of Chapters"
-msgstr ""
+msgstr "章節順序"
 
 #: ../data/ui/menu/card.xml:23
 msgid "⬆ By Source"
-msgstr ""
+msgstr "⬆ 按來源"
 
 #: ../data/ui/menu/card.xml:28
 msgid "⬇ By Source"
-msgstr ""
+msgstr "⬇ 按來源"
 
 #: ../data/ui/menu/card.xml:34
 msgid "⬆ By Date"
-msgstr ""
+msgstr "⬆ 按日期"
 
 #: ../data/ui/menu/card.xml:39
 msgid "⬇ By Date"
-msgstr ""
+msgstr "⬇ 按日期"
 
 #: ../data/ui/menu/card.xml:45
 msgid "⬆ By Title"
-msgstr ""
+msgstr "⬆ 按標題"
 
 #: ../data/ui/menu/card.xml:50
 msgid "⬇ By Title"
-msgstr ""
+msgstr "⬇ 按標題"
 
 #: ../data/ui/menu/card_selection_mode.xml:18
 #: ../data/ui/menu/library_selection_mode.xml:25
 msgid "Select All"
-msgstr ""
+msgstr "全部選取"
 
 #: ../data/ui/menu/download_manager.xml:7
 msgid "Delete All"
-msgstr ""
+msgstr "全部刪除"
 
 #: ../data/ui/menu/explorer_search_global_search.xml:7
 msgid "Pinned Servers Only"
-msgstr ""
+msgstr "僅固定的伺服器"
 
 #: ../data/ui/menu/library_search.xml:7
 msgid "Unread"
-msgstr ""
+msgstr "未讀"
 
 #: ../data/ui/menu/library_search.xml:15
 msgid "Recents"
-msgstr ""
+msgstr "最近"
 
 #: ../data/ui/menu/library_selection_mode.xml:7
 msgid "Edit Categories"
-msgstr ""
+msgstr "編輯類別"
 
 #: ../data/ui/menu/main.xml:7
 msgid "Update Library"
-msgstr ""
+msgstr "更新書櫃"
 
 #: ../data/ui/menu/main.xml:11
 msgid "Sort"
-msgstr ""
+msgstr "排序"
 
 #: ../data/ui/menu/main.xml:16
 msgid "Alphabetical"
-msgstr ""
+msgstr "按字母順序"
 
 #: ../data/ui/menu/main.xml:21
 msgid "Latest Read First"
-msgstr ""
+msgstr "最近閱讀的在先"
 
 #: ../data/ui/menu/main.xml:26
 msgid "Latest Updated First"
-msgstr ""
+msgstr "最近更新的在先"
 
 #: ../data/ui/menu/main.xml:55
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "鍵盤捷徑鍵"
 
 #: ../data/ui/menu/main.xml:59
 msgid "Donate"
-msgstr ""
+msgstr "支援"
 
 #: ../data/ui/menu/main.xml:63
 msgid "About Komikku"
-msgstr ""
+msgstr "關於 Komikku"
 
 #: ../data/ui/menu/reader.xml:35
 msgid "Type of Scaling"
-msgstr ""
+msgstr "縮放方式"
 
 #: ../data/ui/menu/reader.xml:91
 msgid "Zoom Landscape Pages"
-msgstr ""
+msgstr "縮放橫向頁"
 
 #: ../data/ui/menu/reader.xml:95
 msgid "Crop Borders"
-msgstr ""
+msgstr "切割邊緣"
 
 #: ../data/ui/menu/reader.xml:99
 msgid "Hide Page Numbering"
-msgstr ""
+msgstr "隠藏頁數"
 
 #: ../data/ui/menu/reader.xml:106
 msgid "Save Page"
-msgstr ""
+msgstr "存儲頁面"
 
 #: ../data/ui/preferences.blp:10 ../data/ui/preferences.blp:21
 #: ../data/ui/preferences_servers_languages.blp:11
 #: ../data/ui/preferences_servers_settings.blp:11
 msgid "Preferences"
-msgstr ""
+msgstr "偏好設定"
 
 #: ../data/ui/preferences.blp:29 ../data/ui/preferences.blp:32
 msgid "General"
-msgstr ""
+msgstr "通用"
 
 #: ../data/ui/preferences.blp:36
 msgid "Theme"
-msgstr ""
+msgstr "主題"
 
 #: ../data/ui/preferences.blp:39
 msgid "Light"
-msgstr ""
+msgstr "明亮"
 
 #: ../data/ui/preferences.blp:40
 msgid "Dark"
-msgstr ""
+msgstr "暗黑"
 
 #: ../data/ui/preferences.blp:41
 msgid "Follow System"
-msgstr ""
+msgstr "跟隨系統"
 
 #: ../data/ui/preferences.blp:47
 msgid "Night Light"
-msgstr ""
+msgstr "夜燈"
 
 #: ../data/ui/preferences.blp:48
 msgid "Automatically enable dark theme at night"
-msgstr ""
+msgstr "在夜晚自動啓用暗黑主題"
 
 #: ../data/ui/preferences.blp:52
 msgid "Desktop Notifications"
-msgstr ""
+msgstr "桌面通知"
 
 #: ../data/ui/preferences.blp:53
 msgid "Use desktop notifications for downloads and library updates"
-msgstr ""
+msgstr "用桌面通知來提示下載或書櫃更新"
 
 #: ../data/ui/preferences.blp:57
 msgid "Backdrop in Details Page"
@@ -471,31 +476,31 @@ msgstr ""
 
 #: ../data/ui/preferences.blp:58
 msgid "Enable background recoloring to match cover"
-msgstr ""
+msgstr "啓用背景著色以匹配封面"
 
 #: ../data/ui/preferences.blp:72
 msgid "Display"
-msgstr ""
+msgstr "顯示"
 
 #: ../data/ui/preferences.blp:75
 msgid "Display Mode"
-msgstr ""
+msgstr "顯示模式"
 
 #: ../data/ui/preferences.blp:78
 msgid "Grid"
-msgstr ""
+msgstr "網格"
 
 #: ../data/ui/preferences.blp:79
 msgid "Compact Grid"
-msgstr ""
+msgstr "緊湊網格"
 
 #: ../data/ui/preferences.blp:85
 msgid "Servers Logo"
-msgstr ""
+msgstr "伺服器徽標"
 
 #: ../data/ui/preferences.blp:86
 msgid "Display servers logo"
-msgstr ""
+msgstr "展示伺服器徽標"
 
 #: ../data/ui/preferences.blp:90
 msgid "Badges"
@@ -503,112 +508,113 @@ msgstr ""
 
 #: ../data/ui/preferences.blp:93
 msgid "Number of Unread Chapters"
-msgstr ""
+msgstr "未讀章節數"
 
 #: ../data/ui/preferences.blp:113
 msgid "Number of Downloaded Chapters"
-msgstr ""
+msgstr "已下載章節數"
 
 #: ../data/ui/preferences.blp:133
 msgid "Number of Recent and Unread Chapters"
-msgstr ""
+msgstr "最近未讀章節數"
 
 #: ../data/ui/preferences.blp:158
 msgid "Update at Startup"
-msgstr ""
+msgstr "在啓動時更新"
 
 #: ../data/ui/preferences.blp:159
 msgid "Automatically update library at startup"
-msgstr ""
+msgstr "在啓動時自動更新書櫃"
 
 #: ../data/ui/preferences.blp:163
 msgid "Auto Download of New Chapters"
-msgstr ""
+msgstr "自動下載新章節"
 
 #: ../data/ui/preferences.blp:164
 msgid "Automatically download new chapters"
-msgstr ""
+msgstr "自動下載新章節"
 
 #: ../data/ui/preferences.blp:172
 #: ../data/ui/preferences_servers_languages.blp:6
 #: ../data/ui/preferences_servers_languages.blp:12
 msgid "Servers Languages"
-msgstr ""
+msgstr "伺服器語言"
 
 #: ../data/ui/preferences.blp:173
 msgid "Restrict servers to selected languages"
-msgstr ""
+msgstr "限制伺服器為選取的語言"
 
 #: ../data/ui/preferences.blp:181 ../data/ui/preferences_servers_settings.blp:6
 #: ../data/ui/preferences_servers_settings.blp:12
 msgid "Servers Settings"
-msgstr ""
+msgstr "伺服器設定"
 
 #: ../data/ui/preferences.blp:182
 msgid "Enable/disable and configure servers"
-msgstr ""
+msgstr "啓用/禁用以及設定伺服器"
 
 #: ../data/ui/preferences.blp:190
 msgid "Long Strip Detection"
-msgstr ""
+msgstr "長條偵測"
 
 #: ../data/ui/preferences.blp:191
 msgid "Automatically detect long vertical strip when possible"
-msgstr ""
+msgstr "如果可能，自動偵測垂直長條"
 
 #: ../data/ui/preferences.blp:195
 msgid "NSFW Content (18+)"
-msgstr ""
+msgstr "NSFW 內容（18+）"
 
 #: ../data/ui/preferences.blp:196
 msgid "Whether to enable servers with NSFW content"
-msgstr ""
+msgstr "是否要啓用 NSFW 內容"
 
 #: ../data/ui/preferences.blp:200
 msgid "NSFW Only Content (18+)"
-msgstr ""
+msgstr "僅 NSFW 的內容（18+）"
 
 #: ../data/ui/preferences.blp:201
 msgid "Whether to enable servers with NSFW only content"
-msgstr ""
+msgstr "是否啓用僅有 NSFW 內容的伺服器"
 
 #: ../data/ui/preferences.blp:209 ../data/ui/preferences.blp:212
 #: ../data/ui/reader.blp:6
+#, fuzzy
 msgid "Reader"
-msgstr ""
+msgstr "閱讀器"
 
 #: ../data/ui/preferences.blp:216
 msgid "Reading Mode"
-msgstr ""
+msgstr "閱讀模式"
 
 #: ../data/ui/preferences.blp:219
 msgid "⬅ Right to Left"
-msgstr ""
+msgstr "⬅ 從右往左"
 
 #: ../data/ui/preferences.blp:220
 msgid "➡ Left to Right"
-msgstr ""
+msgstr "➡ 從左往右"
 
 #: ../data/ui/preferences.blp:221
 msgid "⬇ Vertical"
-msgstr ""
+msgstr "⬇ 垂直"
 
 #: ../data/ui/preferences.blp:222
 msgid "⬇ Webtoon"
-msgstr ""
+msgstr "⬇ Webtoon 模式"
 
 #: ../data/ui/preferences.blp:228
 msgid "Maximum Width"
-msgstr ""
+msgstr "最大寬度"
 
 #: ../data/ui/preferences.blp:229
 msgid ""
 "Constrain reader's width to a given maximum size (Webtoon reading mode only)"
-msgstr ""
+msgstr "將閱讀器的寬度限制為給定的最大尺寸（僅限 Webtoon 模式）"
 
 #: ../data/ui/preferences.blp:240
 msgid "Scaling"
-msgstr ""
+msgstr "縮放"
 
 #: ../data/ui/preferences.blp:241
 msgid "Type of scaling to adapt image"
@@ -616,52 +622,52 @@ msgstr ""
 
 #: ../data/ui/preferences.blp:244
 msgid "Adapt to Screen"
-msgstr ""
+msgstr "適應熒幕"
 
 #: ../data/ui/preferences.blp:245
 msgid "Adapt to Width"
-msgstr ""
+msgstr "適應寬度"
 
 #: ../data/ui/preferences.blp:246
 msgid "Adapt to Height"
-msgstr ""
+msgstr "適應高度"
 
 #: ../data/ui/preferences.blp:247
 msgid "Original Size"
-msgstr ""
+msgstr "原始尺寸"
 
 #: ../data/ui/preferences.blp:253
 msgid "Landscape Pages Zoom"
-msgstr ""
+msgstr "橫向頁面縮放"
 
 #: ../data/ui/preferences.blp:254
 msgid ""
 "Zoom page to fit height when page is landscape (Adapt to Screen scaling only)"
-msgstr ""
+msgstr "橫向頁面時縮放頁面以適應高度（僅適應熒幕時）"
 
 #: ../data/ui/preferences.blp:258
 msgid "Background Color"
-msgstr ""
+msgstr "背景顏色"
 
 #: ../data/ui/preferences.blp:261
 msgid "White"
-msgstr ""
+msgstr "白色"
 
 #: ../data/ui/preferences.blp:262
 msgid "Gray"
-msgstr ""
+msgstr "灰色"
 
 #: ../data/ui/preferences.blp:263
 msgid "Black"
-msgstr ""
+msgstr "黑色"
 
 #: ../data/ui/preferences.blp:264
 msgid "System Style"
-msgstr ""
+msgstr "跟隨系統"
 
 #: ../data/ui/preferences.blp:270
 msgid "Borders Crop"
-msgstr ""
+msgstr "邊框裁剪"
 
 #: ../data/ui/preferences.blp:271
 msgid ""
@@ -670,26 +676,30 @@ msgid ""
 "NOTE: Requires more CPU usage and can cause rendering and animation "
 "slowdowns, especially on mobile devices."
 msgstr ""
+"裁剪圖片的白色邊框\n"
+"\n"
+"注意：將消耗更多的處理器資源，有可能會造成動畫或者渲染緩慢，尤其是對於行動設"
+"備。"
 
 #: ../data/ui/preferences.blp:275
 msgid "Page Numbering"
-msgstr ""
+msgstr "頁碼"
 
 #: ../data/ui/preferences.blp:276
 msgid "Hide the page numbering at the bottom of the screen while reading"
-msgstr ""
+msgstr "在閱讀時隠藏熒幕下方的頁碼"
 
 #: ../data/ui/preferences.blp:280
 msgid "Fullscreen"
-msgstr ""
+msgstr "全熒幕"
 
 #: ../data/ui/preferences.blp:281
 msgid "Automatically enter fullscreen mode"
-msgstr ""
+msgstr "自動進入全熒幕模式"
 
 #: ../data/ui/preferences.blp:289 ../data/ui/preferences.blp:292
 msgid "Advanced"
-msgstr ""
+msgstr "進階"
 
 #: ../data/ui/preferences.blp:295
 msgid "Data"
@@ -701,126 +711,127 @@ msgstr ""
 
 #: ../data/ui/preferences.blp:299
 msgid "Clear Chapters Cache and Database"
-msgstr ""
+msgstr "清除章節快取和資料庫"
 
 #: ../data/ui/preferences.blp:304
 msgid "Clear Chapters Cache and Database on Exit"
-msgstr ""
+msgstr "在退出時清除章節快取和資料庫"
 
 #: ../data/ui/preferences.blp:309
 msgid "Credentials Storage"
-msgstr ""
+msgstr "憑證儲存"
 
 #: ../data/ui/preferences.blp:312
 msgid "Allow Plaintext Storage as Fallback"
-msgstr ""
+msgstr "允許使用明文作為候補方案"
 
 #: ../data/ui/preferences.blp:313
 msgid "Used when no keyring backends are found"
-msgstr ""
+msgstr "當找不到金鑰環後端時使用"
 
 #: ../data/ui/preferences.blp:318
 msgid "Tweaks"
-msgstr ""
+msgstr "調教"
 
 #: ../data/ui/preferences.blp:321
 msgid "Disable Animations"
-msgstr ""
+msgstr "禁用動畫"
 
 #: ../data/ui/preferences.blp:322
 msgid ""
 "Useful with E Ink e-readers to avoid very choppy and unpleasant animations "
 "(due to the low refresh rate of the screen)"
-msgstr ""
+msgstr "對於 E-Ink 設備很有用，可以防止卡頓和令人不快的動畫表現（由於熒幕的低更新率）"
 
 #: ../data/ui/preferences.blp:326
 msgid ""
 "This tweak is only intended for users who do not use the GNOME desktop "
 "environment and therefore cannot disable animations globally via GNOME "
 "Settings (Accessibility ⇨ Seeing ⇨ Reduce Animation)."
-msgstr ""
+msgstr "此調整僅適用於不使用 GNOME 桌面環境的用戶，因為他們無法通過 GNOME "
+"設定全域禁用動畫（無障礙輔助 ⇨ 視覺 ⇨ 减少動畫）。"
 
 #: ../data/ui/reader.blp:17
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
 #: ../data/ui/reader.blp:31
 msgid "Toggle Fullscreen Mode"
-msgstr ""
+msgstr "切換全熒幕模式"
 
 #: ../data/ui/shortcuts_overview.blp:11
 msgctxt "Shortcut window description"
 msgid "Application"
-msgstr ""
+msgstr "應用"
 
 #: ../data/ui/shortcuts_overview.blp:14
 msgctxt "Shortcut window description"
 msgid "Open Preferences"
-msgstr ""
+msgstr "開啓偏好設定"
 
 #: ../data/ui/shortcuts_overview.blp:19
 msgctxt "Shortcut window description"
 msgid "Toggle Fullscreen Mode"
-msgstr ""
+msgstr "切換全熒幕模式"
 
 #: ../data/ui/shortcuts_overview.blp:24
 msgctxt "Shortcut window description"
 msgid "Open Keyboard Shortcuts"
-msgstr ""
+msgstr "打開鍵盤捷徑"
 
 #: ../data/ui/shortcuts_overview.blp:30
 msgctxt "Shortcut window description"
 msgid "Library"
-msgstr ""
+msgstr "書櫃"
 
 #: ../data/ui/shortcuts_overview.blp:33
 msgctxt "Shortcut window description"
 msgid "Add Manga"
-msgstr ""
+msgstr "添加漫畫"
 
 #: ../data/ui/shortcuts_overview.blp:38
 msgctxt "Shortcut window description"
 msgid "Select All"
-msgstr ""
+msgstr "全部選取"
 
 #: ../data/ui/shortcuts_overview.blp:43
 msgctxt "Shortcut window description"
 msgid "Search"
-msgstr ""
+msgstr "搜尋"
 
 #: ../data/ui/shortcuts_overview.blp:49
 msgctxt "Shortcut window description"
 msgid "Manga Card"
-msgstr ""
+msgstr "漫畫卡片"
 
 #: ../data/ui/shortcuts_overview.blp:52
 msgctxt "Shortcut window description"
 msgid "Select All Chapters"
-msgstr ""
+msgstr "選取全部章節"
 
 #: ../data/ui/shortcuts_overview.blp:58
 msgctxt "Shortcut window description"
 msgid "Reader"
-msgstr ""
+msgstr "閱讀器"
 
 #: ../data/ui/shortcuts_overview.blp:61
 msgctxt "Shortcut window description"
 msgid "Save Page"
-msgstr ""
+msgstr "儲存頁面"
 
 #: ../data/ui/shortcuts_overview.blp:67
 msgctxt "Shortcut window description"
 msgid "Download Manager"
-msgstr ""
+msgstr "下載管理員"
 
 #: ../data/ui/shortcuts_overview.blp:70
 msgctxt "Shortcut window description"
 msgid "Select All Downloads"
-msgstr ""
+msgstr "選取全部下載"
 
 #: ../data/ui/support.blp:6 ../data/ui/support.blp:12
 msgid "Support Development"
-msgstr ""
+msgstr "支援開發"
 
 #: ../data/ui/support.blp:46
 msgid "How can you support?"
@@ -896,15 +907,15 @@ msgstr ""
 
 #: ../komikku/application.py:520
 msgid "Some mangas are currently being updated."
-msgstr ""
+msgstr "有漫畫正在更新中。"
 
 #: ../komikku/application.py:524
 msgid "Quit?"
-msgstr ""
+msgstr "退出？"
 
 #: ../komikku/application.py:526
 msgid "Quit"
-msgstr ""
+msgstr "退出"
 
 #: ../komikku/card/__init__.py:159
 #, python-brace-format
@@ -913,26 +924,29 @@ msgid ""
 "{0} server is not longer supported.\n"
 "Please switch to another server."
 msgstr ""
+"注音\n"
+"{0} 伺服器不再被支援。\n"
+"請切換至其他伺服器。"
 
 #: ../komikku/card/__init__.py:259
 msgid "Read progress synchronization with server completed successfully"
-msgstr ""
+msgstr "成功與伺服器同步讀取進度"
 
 #: ../komikku/card/__init__.py:270
 msgid "Failed to get manga URL"
-msgstr ""
+msgstr "無法取得漫畫地址"
 
 #: ../komikku/card/__init__.py:436
 msgid "Unknown author"
-msgstr ""
+msgstr "未知作者"
 
 #: ../komikku/card/__init__.py:442 ../komikku/card/__init__.py:451
 msgid "Unknown status"
-msgstr ""
+msgstr "未知狀態"
 
 #: ../komikku/card/__init__.py:452 ../komikku/explorer/common.py:174
 msgid "Local"
-msgstr ""
+msgstr "本機"
 
 #: ../komikku/card/__init__.py:478 ../komikku/card/chapters_list.py:607
 msgid "%m/%d/%Y"
@@ -1059,10 +1073,17 @@ msgid ""
 "\n"
 "NOTE: The 'unrar' or 'unar' command-line tool is required for CBR archives."
 msgstr ""
+"需要特定的目錄結構才能使本機漫畫被正確識別。\n"
+"\n"
+"每個漫畫必須有它自己的目錄，目錄中包含以 CBZ 或 CBR 格式存檔的章節/卷。\n"
+"\n"
+"目錄的名稱將被用於漫畫名稱。\n"
+"\n"
+"注意：需要 'unrar' 或 'unar' 命令行工具才能使用 CBR 格式。"
 
 #: ../komikku/explorer/common.py:231
 msgid "Open local folder"
-msgstr ""
+msgstr "開啓本機目錄"
 
 #: ../komikku/explorer/common.py:239
 msgid "Toggle pinned status"
@@ -1070,11 +1091,11 @@ msgstr ""
 
 #: ../komikku/explorer/search/__init__.py:252
 msgid "Oops, server website URL is unknown."
-msgstr ""
+msgstr "糟糕，伺服器頁面 URL 未知。"
 
 #: ../komikku/explorer/search/__init__.py:292
 msgid "Search {}"
-msgstr ""
+msgstr "搜索 {}"
 
 #: ../komikku/explorer/search/__init__.py:294
 msgid "Search for Reading"
@@ -1082,58 +1103,62 @@ msgstr ""
 
 #: ../komikku/explorer/search/__init__.py:296
 msgid "Empty search is allowed."
-msgstr ""
+msgstr "允許進行空搜尋。"
 
 #: ../komikku/explorer/search/__init__.py:298
+#, fuzzy
 msgid ""
 "Alternatively, you can look up specific comics using the syntax:\n"
 "\n"
 "<b>id:ID from comic URL</b>"
 msgstr ""
+"或者，您可以使用以下語法尋找特定漫畫：\n"
+"\n"
+"<b>id:ID from comic URL</b>"
 
 #: ../komikku/explorer/search/__init__.py:326
 msgid "Global Search"
-msgstr ""
+msgstr "全域搜尋"
 
 #: ../komikku/explorer/search/__init__.py:328
 msgid "Search globally by name"
-msgstr ""
+msgstr "按名稱全域搜尋"
 
 #: ../komikku/explorer/search/__init__.py:330
 msgid "Search for Comics"
-msgstr ""
+msgstr "搜尋漫畫"
 
 #: ../komikku/explorer/search/__init__.py:406
 msgid "Oops, failed to retrieve manga's information."
-msgstr ""
+msgstr "糟糕，未能檢索到漫畫資訊。"
 
 #: ../komikku/explorer/search/latest_updates.py:100
 msgid "Oops, failed to retrieve latest updates."
-msgstr ""
+msgstr "糟糕，未能檢索到最近更新。"
 
 #: ../komikku/explorer/search/latest_updates.py:104
 msgid "No Latest Updates Found"
-msgstr ""
+msgstr "未找到最近更新"
 
 #: ../komikku/explorer/search/latest_updates.py:113
 #: ../komikku/explorer/search/most_popular.py:113
 #: ../komikku/explorer/search/search.py:127
 #: ../komikku/explorer/search/search_global.py:71
 msgid "A request is already in progress."
-msgstr ""
+msgstr "有請求正在進行中。"
 
 #: ../komikku/explorer/search/most_popular.py:100
 msgid "Oops, failed to retrieve most popular."
-msgstr ""
+msgstr "糟糕，未能檢索到最受歡迎的內容。"
 
 #: ../komikku/explorer/search/most_popular.py:104
 msgid "No Most Popular Found"
-msgstr ""
+msgstr "未能找到最受歡迎的內容"
 
 #: ../komikku/explorer/search/search.py:112
 #: ../komikku/explorer/search/search_global.py:160
 msgid "Oops, search failed. Please try again."
-msgstr ""
+msgstr "糟糕，搜尋失敗。請重試。"
 
 #: ../komikku/explorer/search/search.py:116
 msgid "No Results Found"
@@ -1145,23 +1170,23 @@ msgstr ""
 
 #: ../komikku/explorer/search/search_global.py:165
 msgid "No results"
-msgstr ""
+msgstr "沒有結果"
 
 #: ../komikku/explorer/servers.py:107 ../komikku/explorer/servers.py:197
 msgid "Other"
-msgstr ""
+msgstr "其它"
 
 #: ../komikku/explorer/servers.py:169
 msgid "Pinned"
-msgstr ""
+msgstr "已固定"
 
 #: ../komikku/history.py:127
 msgid "Today"
-msgstr ""
+msgstr "今天"
 
 #: ../komikku/history.py:129
 msgid "Yesterday"
-msgstr ""
+msgstr "昨天"
 
 #: ../komikku/history.py:132
 msgid "%A, %B %e"
@@ -1173,39 +1198,39 @@ msgstr ""
 
 #: ../komikku/library/__init__.py:357
 msgid "Are you sure you want to delete this manga?"
-msgstr ""
+msgstr "你確定要刪除此漫畫嗎？"
 
 #: ../komikku/library/__init__.py:359
 msgid "Are you sure you want to delete selected mangas?"
-msgstr ""
+msgstr "你確定要刪除已選中的漫畫嗎？"
 
 #: ../komikku/library/__init__.py:383
 msgid "Are you sure you want to download all chapters of selected mangas?"
-msgstr ""
+msgstr "你確定要下載已選中漫畫的所有章節嗎？"
 
 #: ../komikku/library/__init__.py:385
 msgid "Download?"
-msgstr ""
+msgstr "下載？"
 
 #: ../komikku/library/__init__.py:607
 msgid "Welcome to Komikku"
-msgstr ""
+msgstr "歡迎來到 Komikku"
 
 #: ../komikku/library/__init__.py:615
 msgid "Loading…"
-msgstr ""
+msgstr "載入中…"
 
 #: ../komikku/library/__init__.py:727
 msgid "Failed to update reading status"
-msgstr ""
+msgstr "無法更新閱讀狀態"
 
 #: ../komikku/library/__init__.py:749
 msgid "Add New Comic"
-msgstr ""
+msgstr "加入新漫畫"
 
 #: ../komikku/library/__init__.py:779 ../komikku/library/categories_list.py:145
 msgid "Uncategorized"
-msgstr ""
+msgstr "未分類"
 
 #: ../komikku/library/categories_list.py:139
 #: ../komikku/servers/bilibili/__init__.py:39
@@ -1213,7 +1238,7 @@ msgstr ""
 #: ../komikku/servers/multi/manga_stream.py:56
 #: ../komikku/servers/webtoon/__init__.py:51
 msgid "All"
-msgstr ""
+msgstr "全部"
 
 #: ../komikku/models/database.py:458
 #: ../komikku/servers/mangaworld/__init__.py:50
@@ -1237,31 +1262,31 @@ msgstr ""
 
 #: ../komikku/models/database.py:1246
 msgid "Download pending"
-msgstr ""
+msgstr "等待下載"
 
 #: ../komikku/models/database.py:1247
 msgid "Downloaded"
-msgstr ""
+msgstr "已下載"
 
 #: ../komikku/models/database.py:1248
 msgid "Downloading"
-msgstr ""
+msgstr "下載中"
 
 #: ../komikku/models/database.py:1249
 msgid "Download error"
-msgstr ""
+msgstr "下載錯誤"
 
 #: ../komikku/preferences.py:132
 msgid "Clear?"
-msgstr ""
+msgstr "清理？"
 
 #: ../komikku/preferences.py:133
 msgid "Are you sure you want to clear chapters cache and database?"
-msgstr ""
+msgstr "確定要清除章節快取與資料庫嗎？"
 
 #: ../komikku/preferences.py:161
 msgid "Disable animations?"
-msgstr ""
+msgstr "禁用動書？"
 
 #: ../komikku/preferences.py:162
 msgid ""
@@ -1269,56 +1294,59 @@ msgid ""
 "\n"
 "The gesture navigation in the reader will not work properly anymore."
 msgstr ""
+"你確定要禁用動畫嗎？\n"
+"\n"
+"手勢導航將不再可用。"
 
 #: ../komikku/preferences.py:163
 msgid "Disable"
-msgstr ""
+msgstr "禁用"
 
 #: ../komikku/preferences.py:580
 msgid "User Account"
-msgstr ""
+msgstr "帳戶"
 
 #: ../komikku/preferences.py:588
 msgid "Address"
-msgstr ""
+msgstr "地址"
 
 #: ../komikku/preferences.py:594
 msgid "Username"
-msgstr ""
+msgstr "用戶名"
 
 #: ../komikku/preferences.py:598
 msgid "Password"
-msgstr ""
+msgstr "密碼"
 
 #: ../komikku/preferences.py:610
 msgid "System keyring service is disabled. Credential cannot be saved."
-msgstr ""
+msgstr "系統金鑰環服務被禁用。無法儲存憑證。"
 
 #: ../komikku/preferences.py:615
 msgid ""
 "No keyring backends were found to store credential. Use plaintext storage as "
 "fallback."
-msgstr ""
+msgstr "沒有金鑰環可用於存取憑證。作為替代使用明文儲存。"
 
 #: ../komikku/preferences.py:620
 msgid ""
 "No keyring backends were found to store credential. Plaintext storage will "
 "be used as fallback."
-msgstr ""
+msgstr "沒有金鑰環可用於存取憑證。作為替代將使用明文儲存。"
 
 #: ../komikku/preferences.py:628
 msgid "Test"
-msgstr ""
+msgstr "測試"
 
 #: ../komikku/reader/__init__.py:327
 #, python-brace-format
 msgid "Page successfully saved to {0}"
-msgstr ""
+msgstr "成功儲存頁面至 {0}"
 
 #: ../komikku/reader/__init__.py:354
 msgid ""
 "Failed to save page: missing permission to access the XDG pictures directory"
-msgstr ""
+msgstr "儲存頁面失敗：沒有權限存取 XDG 圖片目錄"
 
 #: ../komikku/reader/pager/__init__.py:163
 #, python-brace-format
@@ -1326,33 +1354,35 @@ msgid ""
 "Failed to sync read progress with server:\n"
 "{message}"
 msgstr ""
+"無法與伺服器同步讀取進度：\n"
+"{message}"
 
 #: ../komikku/reader/pager/__init__.py:165
 msgid "Failed to sync read progress with server"
-msgstr ""
+msgstr "無法與伺服器同步讀取進度"
 
 #: ../komikku/reader/pager/__init__.py:432
 #: ../komikku/reader/pager/webtoon.py:101
 msgid "There is no previous chapter."
-msgstr ""
+msgstr "沒有前一章。"
 
 #: ../komikku/reader/pager/__init__.py:434
 #: ../komikku/reader/pager/webtoon.py:99
 msgid "It was the last chapter."
-msgstr ""
+msgstr "這是最後一章。"
 
 #: ../komikku/reader/pager/__init__.py:598
 #: ../komikku/reader/pager/webtoon.py:158
 msgid "This chapter is inaccessible."
-msgstr ""
+msgstr "此章節無法訪問。"
 
 #: ../komikku/reader/pager/page.py:267
 msgid "Failed to load image"
-msgstr ""
+msgstr "無法載入圖檔"
 
 #: ../komikku/reader/pager/page.py:299
 msgid "Retry"
-msgstr ""
+msgstr "重試"
 
 #: ../komikku/servers/bilibili/__init__.py:34
 msgid "Price"
@@ -1360,7 +1390,7 @@ msgstr ""
 
 #: ../komikku/servers/bilibili/__init__.py:35
 msgid "Filter by price"
-msgstr ""
+msgstr "按價格過濾"
 
 #: ../komikku/servers/bilibili/__init__.py:40
 msgid "Free"
@@ -1393,55 +1423,55 @@ msgstr ""
 
 #: ../komikku/servers/dynasty/__init__.py:45
 msgid "Series"
-msgstr ""
+msgstr "系列"
 
 #: ../komikku/servers/dynasty/__init__.py:46
 msgid "Chapters"
-msgstr ""
+msgstr "章節"
 
 #: ../komikku/servers/dynasty/__init__.py:52
 msgid "With Tags"
-msgstr ""
+msgstr "含有標簽"
 
 #: ../komikku/servers/dynasty/__init__.py:53
 msgid "Tags to search for"
-msgstr ""
+msgstr "要搜尋的標簽"
 
 #: ../komikku/servers/dynasty/__init__.py:59
 msgid "Without Tags"
-msgstr ""
+msgstr "不含有標簽"
 
 #: ../komikku/servers/dynasty/__init__.py:60
 msgid "Tags to exclude from search"
-msgstr ""
+msgstr "從搜尋中排除標簽"
 
 #: ../komikku/servers/exceptions.py:10
 msgid "Error: {}"
-msgstr ""
+msgstr "錯誤：{}"
 
 #: ../komikku/servers/exceptions.py:16
 msgid "Local archive is corrupt."
-msgstr ""
+msgstr "本地存檔已損壞。"
 
 #: ../komikku/servers/exceptions.py:21
 msgid "Unable to extract page. Maybe the 'unrar' tool is missing?"
-msgstr ""
+msgstr "無法取出頁面。'unrar' 工具是否缺失？"
 
 #: ../komikku/servers/exceptions.py:26
 msgid "Failed to bypass Cloudflare protection. Please try again."
-msgstr ""
+msgstr "無法繞過 Cloudflare 保護。請再試一次。"
 
 #: ../komikku/servers/exceptions.py:31
 msgid "No longer exists."
-msgstr ""
+msgstr "不再存在。"
 
 #: ../komikku/servers/mangadex/__init__.py:59
 msgid "Rating"
-msgstr ""
+msgstr "評分"
 
 #: ../komikku/servers/mangadex/__init__.py:60
 msgid "Filter by content ratings"
-msgstr ""
+msgstr "按評分過濾"
 
 #: ../komikku/servers/mangadex/__init__.py:63
 msgid "Safe"
@@ -1462,25 +1492,25 @@ msgstr ""
 #: ../komikku/servers/mangadex/__init__.py:72
 #: ../komikku/servers/mangaworld/__init__.py:45
 msgid "Status"
-msgstr ""
+msgstr "狀態"
 
 #: ../komikku/servers/mangadex/__init__.py:73
 #: ../komikku/servers/mangaworld/__init__.py:46
 msgid "Filter by statuses"
-msgstr ""
+msgstr "按狀態過濾"
 
 #: ../komikku/servers/mangadex/__init__.py:77
 msgid "Completed"
-msgstr ""
+msgstr "已完成"
 
 #: ../komikku/servers/mangadex/__init__.py:78
 msgid "Paused"
-msgstr ""
+msgstr "已暫停"
 
 #: ../komikku/servers/mangadex/__init__.py:79
 #: ../komikku/servers/mangaworld/__init__.py:53
 msgid "Canceled"
-msgstr ""
+msgstr "已取消"
 
 #: ../komikku/servers/mangadex/__init__.py:85
 msgid "Publication Demographic"
@@ -1589,23 +1619,24 @@ msgid "Without"
 msgstr ""
 
 #: ../komikku/servers/mangatube/__init__.py:56
+#, fuzzy
 msgid "16+"
-msgstr ""
+msgstr "16+"
 
 #: ../komikku/servers/multi/madara.py:377
 #: ../komikku/servers/readmanhwa/__init__.py:44
 msgid "NSFW Content"
-msgstr ""
+msgstr "NSFW 內容"
 
 #: ../komikku/servers/multi/madara.py:378
 #: ../komikku/servers/readmanhwa/__init__.py:45
 msgid "Whether to show manga containing NSFW content"
-msgstr ""
+msgstr "是否要顯示含有 NSFW 元素的漫畫"
 
 #: ../komikku/servers/multi/mangareader.py:102
 #, python-brace-format
 msgid "Not available in {0} language"
-msgstr ""
+msgstr "於 {0} 語言下不可用"
 
 #: ../komikku/servers/webtoon/__init__.py:52
 msgid "Originals"
@@ -1617,65 +1648,62 @@ msgstr ""
 
 #: ../komikku/updater.py:100
 msgid "Library update completed with errors"
-msgstr ""
+msgstr "書櫃更新已完成，但存在錯誤"
 
 #: ../komikku/updater.py:102
 msgid "Library update completed"
-msgstr ""
+msgstr "書櫃更新已完成"
 
 #: ../komikku/updater.py:105
 msgid "Update completed with errors"
-msgstr ""
+msgstr "更新已完成，但存在錯誤"
 
 #: ../komikku/updater.py:107
 msgid "Update completed"
-msgstr ""
+msgstr "更新已完成"
 
 #: ../komikku/updater.py:111
 #, python-brace-format
 msgid "{0} successful update"
 msgid_plural "{0} successful updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} 個更新已成功"
 
 #: ../komikku/updater.py:112 ../komikku/updater.py:128
 #, python-brace-format
 msgid "{0} new chapter"
 msgid_plural "{0} new chapters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} 個新章節"
 
 #: ../komikku/updater.py:114
 msgid "No new chapters"
-msgstr ""
+msgstr "沒有新章節"
 
 #: ../komikku/updater.py:117
 #, python-brace-format
 msgid "{0} update failed"
 msgid_plural "{0} updates failed"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} 個更新失敗"
 
 #: ../komikku/updater.py:152
 msgid "Oops, update has failed. Please try again."
-msgstr ""
+msgstr "更新失敗，請再試一次。"
 
 #: ../komikku/updater.py:161
 msgid "Library update started"
-msgstr ""
+msgstr "開始更新書櫃"
 
 #: ../komikku/updater.py:163
 msgid "Update started"
-msgstr ""
+msgstr "開始更新"
 
 #: ../komikku/utils.py:175
 msgid "You are currently offline"
-msgstr ""
+msgstr "你正處於離線狀態"
 
 #: ../komikku/utils.py:191
 msgid "No Internet connection, timeout or server down"
-msgstr ""
+msgstr "没有網路連線，超時或是伺服器故障"
 
 #: ../komikku/webview.py:357
 msgid "Please complete CAPTCHA"
-msgstr ""
+msgstr "請完成 CAPTCHA 認證"
