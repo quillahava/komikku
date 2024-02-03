@@ -286,7 +286,7 @@ class CardPage(Adw.NavigationPage):
         def do_populate():
             if self.manga.server.status == 'disabled':
                 self.window.show_notification(
-                    _('NOTICE\n{0} is not longer supported.\nPlease switch to another server.').format(self.manga.server.name)
+                    _('NOTICE\n{0} is no longer supported.\nPlease switch to another server.').format(self.manga.server.name)
                 )
 
             # Show update indicator (in case an update is in progress)
