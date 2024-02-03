@@ -143,7 +143,7 @@ class CardPage(Adw.NavigationPage):
         self.resume_button.set_visible(False)
         self.menu_button.set_visible(False)
 
-    def init(self, manga, show=True):
+    def init(self, manga):
         # Default page is `Info`
         self.stack.set_visible_child_name('info')
 
@@ -154,13 +154,7 @@ class CardPage(Adw.NavigationPage):
         # Unref chapters to force a reload
         self.manga._chapters = None
 
-        if manga.server.status == 'disabled':
-            self.window.show_notification(
-                _('NOTICE\n{0} server is not longer supported.\nPlease switch to another server.').format(manga.server.name)
-            )
-
-        if show:
-            self.show()
+        self.show()
 
     def leave_selection_mode(self, *args):
         self.selection_mode = False
@@ -290,6 +284,11 @@ class CardPage(Adw.NavigationPage):
 
     def on_shown(self, _page):
         def do_populate():
+            if self.manga.server.status == 'disabled':
+                self.window.show_notification(
+                    _('NOTICE\n{0} is not longer supported.\nPlease switch to another server.').format(self.manga.server.name)
+                )
+
             # Show update indicator (in case an update is in progress)
             self.toggle_update_indicator()
 
