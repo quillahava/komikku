@@ -77,10 +77,10 @@ class Updater(GObject.GObject):
                 try:
                     status, recent_chapters_ids, nb_deleted_chapters, synced = manga.update_full()
                     if status is True:
+                        total_successes += 1
                         nb_chapters = len(recent_chapters_ids)
                         if nb_chapters > 0:
                             total_chapters += nb_chapters
-                            total_successes += 1
                         GLib.idle_add(complete, manga, recent_chapters_ids, nb_deleted_chapters, synced)
                     else:
                         total_errors += 1
@@ -92,6 +92,10 @@ class Updater(GObject.GObject):
 
             self.current_id = None
             self.running = False
+
+            if not self.update_library_flag and total_successes + total_errors == 1:
+                # If only one comic has been updated, it's not necessary to send end notification
+                return
 
             # End notification
             if self.update_library_flag:
@@ -132,6 +136,8 @@ class Updater(GObject.GObject):
                 if Settings.get_default().new_chapters_auto_download:
                     self.window.downloader.add(recent_chapters_ids, emit_signal=True)
                     self.window.downloader.start()
+            else:
+                show_notification(f'updater.{manga.id}', manga.name, _('No new chapters'))
 
             self.emit(
                 'manga-updated',
@@ -159,9 +165,7 @@ class Updater(GObject.GObject):
 
         if self.update_library_flag:
             title = _('Library update started')
-        else:
-            title = _('Update started')
-        show_notification('updater.0', title)
+            show_notification('updater.0', title)
 
         self.running = True
         self.stop_flag = False
