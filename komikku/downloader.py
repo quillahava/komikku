@@ -232,8 +232,10 @@ class Downloader(GObject.GObject):
                     GLib.idle_add(notify_download_error, download, user_error_message)
 
         def notify_download_error(download, message=None):
+            lines = [_('Download failure: {0}').format(download.chapter.manga.server.name)]
             if message:
-                self.window.show_notification(message)
+                lines.append(message)
+            self.window.show_notification('\n'.join(lines))
 
             self.emit('download-changed', download, None)
 
