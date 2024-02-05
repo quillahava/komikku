@@ -260,12 +260,6 @@ def bypass_cf(func):
             load_event = event
             logger.debug(f'Load changed: {event}')
 
-            if event == WebKit.LoadEvent.STARTED and load_events_monitor_id:
-                try:
-                    GLib.source_remove(load_events_monitor_id)
-                except Exception:
-                    pass
-
             if event != WebKit.LoadEvent.REDIRECTED and '__cf_chl_tk' in webview.webkit_webview.get_uri():
                 # Challenge has been passed
                 # Disable images auto-load
@@ -278,6 +272,8 @@ def bypass_cf(func):
                 load_events_monitor_id = GLib.idle_add(monitor_load_events)
 
             elif event == WebKit.LoadEvent.FINISHED:
+                unmonitor_load_events()
+
                 cf_reload_count += 1
                 if cf_reload_count > CF_RELOAD_MAX:
                     error = 'Max CF reload exceeded'
@@ -316,14 +312,18 @@ def bypass_cf(func):
             webview.webkit_webview.evaluate_javascript(js, -1)
 
         def monitor_load_events():
+            nonlocal load_events_monitor_id
+
             if load_event != WebKit.LoadEvent.FINISHED:
                 # Sometime FINISHED event never appends
-                # Page is considered to be loaded, if  COMMITTED event has occurred, after load_event_finished_timeout seconds
+                # Page is considered to be loaded, if COMMITTED event has occurred, after load_event_finished_timeout seconds
                 if load_event == WebKit.LoadEvent.COMMITTED and time.time() - load_events_monitor_ts > load_event_finished_timeout:
-                    logger.debug('Event FINISHED timeout')
+                    logger.debug(f'Event FINISHED timeout ({load_event_finished_timeout}s)')
                     monitor_challenge()
                 else:
                     return GLib.SOURCE_CONTINUE
+
+            load_events_monitor_id = None
 
             return GLib.SOURCE_REMOVE
 
@@ -401,6 +401,20 @@ def bypass_cf(func):
             error = 'CF challenge bypass aborted'
 
             webview.close()
+
+        def unmonitor_load_events():
+            nonlocal load_events_monitor_id
+
+            if not load_events_monitor_id:
+                return
+
+            logger.debug('Unmonitor load events')
+            try:
+                GLib.source_remove(load_events_monitor_id)
+            except Exception:
+                pass
+            finally:
+                load_events_monitor_id = None
 
         webview.connect_signal('exited', on_webview_exited)
         webview.connect_webview_signal('load-changed', on_load_changed)
