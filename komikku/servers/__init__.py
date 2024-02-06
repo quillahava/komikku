@@ -202,6 +202,7 @@ class Server(ABC):
             return None, None
 
         headers = {
+            'Accept': 'image/avif,image/webp,*/*',
             'Referer': self.base_url,
         }
         if etag:
