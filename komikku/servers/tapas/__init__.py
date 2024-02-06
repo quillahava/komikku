@@ -3,6 +3,7 @@
 # Author: Lili Kurek <lilikurek@proton.me>
 
 from bs4 import BeautifulSoup
+import datetime
 import logging
 import requests
 
@@ -15,7 +16,7 @@ logger = logging.getLogger('komikku.servers.tapas')
 
 # each page is 10 entries
 SEARCH_RESULTS_PAGES = 10
-CHAPTERS_PER_REQUEST = 100
+CHAPTERS_PER_REQUEST = 20
 
 
 class Tapas(Server):
@@ -67,9 +68,9 @@ class Tapas(Server):
         data = initial_data.copy()
         data.update(dict(
             authors=[],
-            scanlators=[],
+            scanlators=[],  # not available
             genres=[],
-            status=None,
+            status=None,  # not available
             synopsis=None,
             chapters=[],
             server_id=self.id,
@@ -184,28 +185,27 @@ class Tapas(Server):
     def resolve_chapters(self, manga_slug, page=1):
         r = self.session_get(
             self.chapters_url.format(manga_slug),
-            params=dict(max_limit=CHAPTERS_PER_REQUEST, page=page, large=True)
+            params=dict(
+                max_limit=CHAPTERS_PER_REQUEST,
+                page=page,
+                since=int(datetime.datetime.now().timestamp()) * 1000,
+                large='true',
+                last_access=0,
+            )
         )
         if r.status_code != 200:
             return None
 
-        content = r.json()['data']['body']
-
-        soup = BeautifulSoup(content, 'lxml')
-
         chapters = []
-        for chapter in soup.find_all('a'):
-            if 'js-coming-soon' in chapter.get('class') or 'js-have-to-sign' in chapter.get('class'):
+        episodes = r.json()['data']['episodes']
+        for episode in episodes:
+            if episode['early_access'] or episode['must_pay'] or episode['scheduled']:
                 continue
 
             chapters.append(dict(
-                slug=chapter.get('data-id'),
-                # is this really necessary? for ep1 of 111423 it prints "Episode 1 - 1. The End of the Tunnel"
-                title='{0} - {1}'.format(
-                    chapter.find(class_='scene').text.strip(),
-                    chapter.find(class_='title__body').text.strip()
-                ),
-                date=convert_date_string(soup.find(class_='additional').span.text, format='%b %d, %Y'),
+                slug=str(episode['id']),  # slug nust be a string
+                title=episode["title"],
+                date=convert_date_string(episode['publish_date'].split('T')[0], format='%Y-%m-%d'),
             ))
 
         if r.json()['data']['pagination']['has_next']:
@@ -214,7 +214,14 @@ class Tapas(Server):
         return chapters
 
     def search(self, term, page_number=1):
-        r = self.session_get(self.search_url, params=dict(q=term, pageNumber=page_number))
+        r = self.session_get(
+            self.search_url,
+            params=dict(
+                q=term,
+                t='COMICS',
+                pageNumber=page_number,
+            )
+        )
         if r.status_code != 200:
             return None
 
@@ -225,10 +232,10 @@ class Tapas(Server):
         soup = BeautifulSoup(r.text, 'lxml')
 
         results = []
-        for li_element in soup.find_all(class_='search-item-wrap'):
-            a_element = li_element.find(class_='title').a
+        for li_element in soup.select('.search-item-wrap'):
+            a_element = li_element.select_one('.title-section a.link')
 
-            if a_element.get('data-sale-type') not in ('FREE', 'WAIT_OR_MUST_PAY'):
+            if a_element.get('data-sale-type') not in ('EARLY_ACCESS', 'FREE', 'WAIT_OR_MUST_PAY'):
                 continue
 
             results.append(dict(
@@ -239,12 +246,10 @@ class Tapas(Server):
             ))
 
         if page_number == 1:
-            try:
-                no_of_pages = int(soup.find_all(class_='paging__button--num')[-1].text)
-            except TypeError:
-                return results
+            if buttons := soup.select('a.paging__button--num'):
+                last_page_number = int(buttons[-1].text)
 
-            for page in range(2, min(SEARCH_RESULTS_PAGES + 1, no_of_pages + 1)):
-                results += self.search(term, page)
+                for page in range(2, min(SEARCH_RESULTS_PAGES + 1, last_page_number + 1)):
+                    results += self.search(term, page)
 
         return results
