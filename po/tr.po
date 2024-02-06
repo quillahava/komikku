@@ -4,16 +4,16 @@
 #
 # Ege Çelikçi <egecelikci@gmail.com>, 2020.
 # Sabri Ünal <libreajans@gmail.com>, 2022, 2023.
-# Volkan Yıldırım <volki+weblate@disroot.org>, 2023.
+# Volkan Yıldırım <volki+weblate@disroot.org>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: Komikku main\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-02 01:51+0100\n"
-"PO-Revision-Date: 2023-12-25 01:10+0000\n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
-"Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/"
-">\n"
+"PO-Revision-Date: 2024-02-07 20:01+0000\n"
+"Last-Translator: Volkan Yıldırım <volki+weblate@disroot.org>\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/komikku/main/tr/>"
+"\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -199,7 +199,7 @@ msgstr "Menü"
 
 #: ../data/ui/card.blp:36
 msgid "Resume Reading"
-msgstr ""
+msgstr "Okumaya Devam Et"
 
 #: ../data/ui/card.blp:55
 msgid "Info"
@@ -236,7 +236,7 @@ msgstr "Özet"
 #: ../data/ui/card.blp:485 ../data/ui/categories_editor.blp:64
 #: ../data/ui/library.blp:235
 msgid "No Categories"
-msgstr ""
+msgstr "Kategori Yok"
 
 #: ../data/ui/card_chapters_list_row.blp:61
 msgid "New"
@@ -252,11 +252,11 @@ msgstr "İndirme Yöneticisi"
 
 #: ../data/ui/download_manager.blp:28
 msgid "Start/Stop Download"
-msgstr ""
+msgstr "İndirmeyi Başlat/Durdur"
 
 #: ../data/ui/download_manager.blp:65
 msgid "No Downloads"
-msgstr ""
+msgstr "İndirme Yok"
 
 #: ../data/ui/explorer_search.blp:10 ../data/ui/explorer_search.blp:35
 #: ../data/ui/history.blp:18 ../data/ui/library.blp:36
@@ -285,7 +285,7 @@ msgstr ""
 
 #: ../data/ui/explorer_servers.blp:19
 msgid "Search Servers"
-msgstr ""
+msgstr "Sunucuları Ara"
 
 #: ../data/ui/explorer_servers.blp:33
 msgid "Search for servers by name or language"
@@ -297,7 +297,7 @@ msgstr "Geçmiş"
 
 #: ../data/ui/history.blp:69
 msgid "No History"
-msgstr ""
+msgstr "Geçmiş Boş"
 
 #: ../data/ui/library.blp:6 ../data/ui/preferences.blp:66
 #: ../data/ui/preferences.blp:69
@@ -306,7 +306,7 @@ msgstr "Kitaplık"
 
 #: ../data/ui/library.blp:19
 msgid "Toggle Categories Sidebar"
-msgstr ""
+msgstr "Kategori Çubuğunu Aç/Kapa"
 
 #: ../data/ui/library.blp:23
 msgid "Komikku"
