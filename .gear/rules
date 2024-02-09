@@ -1,0 +1,2 @@
+tar: v@version@:.
+spec: .gear/komikku.spec

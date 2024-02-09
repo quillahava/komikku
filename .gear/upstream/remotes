@@ -1,0 +1,3 @@
+[remote "upstream"]
+	url = https://codeberg.org/valos/Komikku.git
+	fetch = +refs/heads/*:refs/remotes/upstream/*

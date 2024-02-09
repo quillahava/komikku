@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mkdir -p .gear/tags
+
+git tag | while read tag; do
+  commit_hash=$(git rev-list -n 1 "$tag")
+
+  echo "$commit_hash $tag"
+done > .gear/tags/list
+
